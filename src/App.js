@@ -1,5 +1,20 @@
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 function App() {
-    return <div className="App">Tavarat Kiertoon</div>;
+    const router = createBrowserRouter([
+        {
+            path: '/',
+            element: <Base />,
+            children: [
+                {
+                    path: '/',
+                    element: <TavaratKiertoon />,
+                },
+            ],
+        },
+    ]);
+
+    return <RouterProvider router={router} />;
 }
 
 export default App;
