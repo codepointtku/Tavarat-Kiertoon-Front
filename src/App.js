@@ -10,7 +10,7 @@ function App() {
             element: <Base />,
             children: [
                 {
-                    path: '/',
+                    path: '/tavaratkiertoon',
                     element: <TavaratKiertoon />,
                 },
             ],
