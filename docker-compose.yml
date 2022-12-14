@@ -1,0 +1,8 @@
+version: '3.9'
+services:
+    tavarat-kiertoon-front:
+        container_name: tavarat-kiertoon-front
+        restart: unless-stopped
+        build: .
+        ports:
+            - '80:3000'
