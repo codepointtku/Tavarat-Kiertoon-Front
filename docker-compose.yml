@@ -1,6 +1,6 @@
 version: '3.9'
 services:
-    tavarat-kiertoon-front:
+    tavarat-kiertoon:
         container_name: tavarat-kiertoon-front
         restart: unless-stopped
         build: .
