@@ -3,10 +3,10 @@ import { redirect } from 'react-router-dom';
 
 function StorageView() {
     // replace this with authcontext later
-    const auth = false;
+    const auth = { admin: false, storage: false };
 
     useEffect(() => {
-        if (!auth) {
+        if (!auth.storage) {
             return redirect('/tavaratkiertoon');
         }
         return null;
