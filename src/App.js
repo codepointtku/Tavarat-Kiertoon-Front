@@ -10,6 +10,8 @@ import Base from './MainComponents/Base';
 import TavaratKiertoon from './MainComponents/TavaratKiertoon';
 import StorageView from './MainComponents/StorageView';
 import AdminView from './MainComponents/AdminView';
+import OrdersList from './Components/OrdersList';
+import OrderView from './Components/OrderView';
 
 function App() {
     const router = createBrowserRouter([
@@ -26,11 +28,11 @@ function App() {
                     element: <StorageView />,
                     children: [
                         {
-                            path: '/',
+                            path: '/varasto',
                             element: <OrdersList />,
                         },
                         {
-                            path: '/tilaus',
+                            path: '/varasto/tilaus',
                             element: <OrderView />,
                         },
                     ],
