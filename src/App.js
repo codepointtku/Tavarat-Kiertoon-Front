@@ -24,6 +24,16 @@ function App() {
                 {
                     path: '/varasto',
                     element: <StorageView />,
+                    children: [
+                        {
+                            path: '/',
+                            element: <OrdersList />,
+                        },
+                        {
+                            path: '/tilaus',
+                            element: <OrderView />,
+                        },
+                    ],
                 },
                 {
                     path: '/admin',

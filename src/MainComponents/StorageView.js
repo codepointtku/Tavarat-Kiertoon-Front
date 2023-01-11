@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { redirect } from 'react-router-dom';
+import { redirect, Outlet } from 'react-router-dom';
 
 function StorageView() {
     // replace this with authcontext later
@@ -12,7 +12,11 @@ function StorageView() {
         return null;
     }, [auth]);
 
-    return <div>ToniPal Kahville!</div>;
+    return (
+        <main>
+            <Outlet />
+        </main>
+    );
 }
 
 export default StorageView;
