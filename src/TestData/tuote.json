@@ -1,0 +1,8 @@
+{
+    "product": {
+        "id": "1234",
+        "name": "työtuoli",
+        "category": "tuolit",
+        "color": "white"
+    }
+}
