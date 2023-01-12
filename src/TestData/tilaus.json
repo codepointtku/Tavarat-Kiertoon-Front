@@ -1,0 +1,14 @@
+{
+    "order": {
+        "id": 1,
+        "products": {
+            "product": {
+                "id": 1234
+            }
+        },
+        "date": "2018-12-10T13:49:51.141Z",
+        "recipient": "Jaska Jokunen",
+        "address": "Humalistonkatu 1",
+        "status": "order received"
+    }
+}
