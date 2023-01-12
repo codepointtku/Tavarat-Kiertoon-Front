@@ -1,14 +1,5 @@
 import { Table, TableBody, TableContainer, TableHead, TableCell, TableRow, Paper } from '@mui/material';
-
-function orderData(name, category, date) {
-    return { name, category, date };
-}
-
-// Test data
-const rows = [
-    orderData('Tuoli', 'furniture', '12.1.2023'),
-    orderData('Tonipal kahville', 'inspirational quote', '12.1.2023'),
-];
+import productData from '../TestData/tuote.json';
 
 function OrderView() {
     return (
@@ -17,20 +8,20 @@ function OrderView() {
                 <TableHead>
                     <TableRow>
                         <TableCell>Tuotenimi</TableCell>
+                        <TableCell align="right">Tuotenumero</TableCell>
                         <TableCell align="right">Kategoria</TableCell>
-                        <TableCell align="right">Päivämäärä</TableCell>
+                        <TableCell align="right">Väri</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.name}>
-                            <TableCell component="th" scope="row">
-                                {row.name}
-                            </TableCell>
-                            <TableCell align="right">{row.category}</TableCell>
-                            <TableCell align="right">{row.date}</TableCell>
-                        </TableRow>
-                    ))}
+                    <TableRow key={productData.product.id}>
+                        <TableCell component="th" scope="row">
+                            {productData.product.name}
+                        </TableCell>
+                        <TableCell align="right">{productData.product.id}</TableCell>
+                        <TableCell align="right">{productData.product.category}</TableCell>
+                        <TableCell align="right">{productData.product.color}</TableCell>
+                    </TableRow>
                 </TableBody>
             </Table>
         </TableContainer>
