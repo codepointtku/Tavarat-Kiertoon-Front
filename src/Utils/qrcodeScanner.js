@@ -27,7 +27,7 @@ class Html5QrcodePlugin extends React.Component {
         // eslint-disable-next-line
         const verbose = this.props.verbose === true;
 
-        // Suceess callback is required.
+        // Succeess callback is required.
         // eslint-disable-next-line
         if (!this.props.qrCodeSuccessCallback) {
             console.log('qrCodeSuccessCallback is required callback.');
@@ -36,6 +36,15 @@ class Html5QrcodePlugin extends React.Component {
         this.html5QrcodeScanner = new Html5QrcodeScanner(qrcodeRegionId, config, verbose);
         // eslint-disable-next-line
         this.html5QrcodeScanner.render(this.props.qrCodeSuccessCallback, this.props.qrCodeErrorCallback);
+        // eslint-disable-next-line
+        this.html5QrcodeScanner.html5Qrcode.start(
+            { facingMode: 'environment' },
+            config,
+            // eslint-disable-next-line
+            this.props.qrCodeSuccessCallback,
+            // eslint-disable-next-line
+            this.props.qrCodeErrorCallback
+        );
     }
 
     componentWillUnmount() {
