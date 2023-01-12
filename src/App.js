@@ -7,7 +7,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import Base from './MainComponents/Base';
-import TavaratKiertoon from './MainComponents/TavaratKiertoon';
+import DefaultView from './MainComponents/DefaultView';
 import StorageView from './MainComponents/StorageView';
 import AdminView from './MainComponents/AdminView';
 import OrdersList from './Components/OrdersList';
@@ -20,8 +20,8 @@ function App() {
             element: <Base />,
             children: [
                 {
-                    path: '/tavaratkiertoon',
-                    element: <TavaratKiertoon />,
+                    path: '/',
+                    element: <DefaultView />,
                 },
                 {
                     path: '/varasto',
