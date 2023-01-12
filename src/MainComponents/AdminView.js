@@ -9,9 +9,8 @@ function AdminView() {
 
     useEffect(() => {
         if (!auth.admin) {
-            return navigate('/tavaratkiertoon');
+            navigate('/tavaratkiertoon');
         }
-        return null;
     }, [auth]);
 
     return <div>ToniPal juo energiavettä!</div>;
