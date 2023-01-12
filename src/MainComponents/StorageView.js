@@ -1,18 +1,23 @@
 import { useEffect } from 'react';
-import { redirect } from 'react-router-dom';
+import { useNavigate, Outlet } from 'react-router-dom';
 
 function StorageView() {
+    const navigate = useNavigate();
+
     // replace this with authcontext later
-    const auth = { admin: false, storage: false };
+    const auth = { admin: true, storage: true };
 
     useEffect(() => {
         if (!auth.storage) {
-            return redirect('/tavaratkiertoon');
+            navigate('/tavaratkiertoon');
         }
-        return null;
     }, [auth]);
 
-    return <div>ToniPal Kahville!</div>;
+    return (
+        <main>
+            <Outlet />
+        </main>
+    );
 }
 
 export default StorageView;
