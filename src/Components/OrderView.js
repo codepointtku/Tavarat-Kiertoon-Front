@@ -11,7 +11,30 @@ const rows = [
 ];
 
 function OrderView() {
-    return <div>Tilausnäkymä</div>;
+    return (
+        <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Tuotenimi</TableCell>
+                        <TableCell align="right">Kategoria</TableCell>
+                        <TableCell align="right">Päivämäärä</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {rows.map((row) => (
+                        <TableRow key={row.name}>
+                            <TableCell component="th" scope="row">
+                                {row.name}
+                            </TableCell>
+                            <TableCell align="right">{row.category}</TableCell>
+                            <TableCell align="right">{row.date}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
 }
 
 export default OrderView;
