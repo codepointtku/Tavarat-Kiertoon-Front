@@ -24,7 +24,7 @@
     "scripts": {
         "start": "npm ci && react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test",
+        "test": "playwright test",
         "eject": "react-scripts eject",
         "pretty": "prettier --write ."
     },
@@ -47,6 +47,7 @@
         ]
     },
     "devDependencies": {
+        "@playwright/test": "^1.29.2",
         "babel-eslint": "^10.1.0",
         "eslint": "^8.2.0",
         "eslint-config-airbnb": "^19.0.4",
