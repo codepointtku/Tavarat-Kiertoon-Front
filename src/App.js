@@ -1,5 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+import './Styles/index.css';
+
 // default font imports
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
