@@ -1,5 +1,6 @@
 import { Table, TableBody, TableContainer, TableHead, TableCell, TableRow, Paper } from '@mui/material';
 import productData from '../TestData/tuote.json';
+import orderData from '../TestData/tilaus.json';
 
 function OrderView() {
     return (
@@ -14,14 +15,18 @@ function OrderView() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    <TableRow key={productData.product.id}>
-                        <TableCell component="th" scope="row">
-                            {productData.product.name}
-                        </TableCell>
-                        <TableCell align="right">{productData.product.id}</TableCell>
-                        <TableCell align="right">{productData.product.category}</TableCell>
-                        <TableCell align="right">{productData.product.color}</TableCell>
-                    </TableRow>
+                    {productData.product.id === orderData.order.products.product.id ? (
+                        <TableRow key={productData.product.id}>
+                            <TableCell component="th" scope="row">
+                                {productData.product.name}
+                            </TableCell>
+                            <TableCell align="right">{productData.product.id}</TableCell>
+                            <TableCell align="right">{productData.product.category}</TableCell>
+                            <TableCell align="right">{productData.product.color}</TableCell>
+                        </TableRow>
+                    ) : (
+                        <TableCell>Tonipal kahville</TableCell>
+                    )}
                 </TableBody>
             </Table>
         </TableContainer>
