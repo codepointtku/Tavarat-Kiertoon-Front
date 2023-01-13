@@ -15,18 +15,27 @@ function OrderView() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {productData.product.id === orderData.order.products.product.id ? (
-                        <TableRow key={productData.product.id}>
-                            <TableCell component="th" scope="row">
-                                {productData.product.name}
-                            </TableCell>
-                            <TableCell align="right">{productData.product.id}</TableCell>
-                            <TableCell align="right">{productData.product.category}</TableCell>
-                            <TableCell align="right">{productData.product.color}</TableCell>
-                        </TableRow>
-                    ) : (
-                        <TableCell>Tonipal kahville</TableCell>
-                    )}
+                    {orderData.order.products.map((value) => {
+                        if (Object.keys(productData).includes(value)) {
+                            return (
+                                <TableRow key={value}>
+                                    <TableCell component="th" scope="row">
+                                        {productData[value].name}
+                                    </TableCell>
+                                    <TableCell align="right">{value}</TableCell>
+                                    <TableCell align="right">{productData[value].category}</TableCell>
+                                    <TableCell align="right">{productData[value].color}</TableCell>
+                                </TableRow>
+                            );
+                        }
+                        return (
+                            <TableRow>
+                                <TableCell component="th" scope="row">
+                                    Tuotenumerolla {value} ei löytynyt tuotetta.
+                                </TableCell>
+                            </TableRow>
+                        );
+                    })}
                 </TableBody>
             </Table>
         </TableContainer>
