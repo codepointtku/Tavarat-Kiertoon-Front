@@ -156,7 +156,7 @@ export default function CustomizedTablesWithPagination() {
           ).map((row) => (
             <StyledTableRow key={row.id}>
               <StyledTableCell component="th" scope="row">
-                <Link to={`${row.id}`}>
+                <Link to={`/varasto/tilaus/${row.id}`}>
                     {row.id}
                     <LaunchIcon fontSize='small' />
                 </Link>
