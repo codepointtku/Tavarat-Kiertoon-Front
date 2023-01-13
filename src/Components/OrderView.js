@@ -23,9 +23,10 @@ const cellRow = () => {
                     <TableCell component="th" scope="row">
                         {productData[value].name}
                     </TableCell>
+                    <TableCell align="right">1</TableCell>
                     <TableCell align="right">{value}</TableCell>
                     <TableCell align="right">{productData[value].category}</TableCell>
-                    <TableCell align="right">{productData[value].color}</TableCell>
+                    <TableCell align="right">{productData[value].location}</TableCell>
                 </TableRow>
             );
         }
@@ -46,9 +47,10 @@ function OrderView() {
                 <TableHead>
                     <TableRow>
                         <TableCell>Tuotenimi</TableCell>
+                        <TableCell align="right">Saldo</TableCell>
                         <TableCell align="right">Tuotenumero</TableCell>
                         <TableCell align="right">Kategoria</TableCell>
-                        <TableCell align="right">Väri</TableCell>
+                        <TableCell align="right">Sijainti</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>{cellRow()}</TableBody>
