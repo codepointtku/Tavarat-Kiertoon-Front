@@ -1,8 +1,17 @@
 {
-    "product": {
-        "id": 1234,
+    "1234": {
         "name": "työtuoli",
         "category": "tuolit",
         "color": "white"
+    },
+    "5678": {
+        "name": "kahvikuppi",
+        "category": "kahvittelu",
+        "color": "brown"
+    },
+    "1245": {
+        "name": "jakkara",
+        "category": "tuolit",
+        "color": "black"
     }
 }
