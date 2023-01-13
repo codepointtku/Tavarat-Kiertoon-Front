@@ -17,6 +17,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import { Link } from 'react-router-dom';
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -155,10 +156,10 @@ export default function CustomizedTablesWithPagination() {
           ).map((row) => (
             <StyledTableRow key={row.id}>
               <StyledTableCell component="th" scope="row">
-                <IconButton size="small">
-                  {row.id}
-                  <LaunchIcon fontSize='small' />
-                </IconButton>
+                <Link to={`${row.id}`}>
+                    {row.id}
+                    <LaunchIcon fontSize='small' />
+                </Link>
               </StyledTableCell>
               <StyledTableCell align="right">{row.status}</StyledTableCell>
               <StyledTableCell align="right">{row.address}</StyledTableCell>
