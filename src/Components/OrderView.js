@@ -2,6 +2,8 @@ import { Table, TableBody, TableContainer, TableHead, TableCell, TableRow, Paper
 import productData from '../TestData/tuote.json';
 import orderData from '../TestData/tilaus.json';
 
+const orderId = orderData['2']; // For now change the number to see different orders.
+
 function OrderView() {
     return (
         <TableContainer component={Paper}>
@@ -15,7 +17,7 @@ function OrderView() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {orderData.order.products.map((value) => {
+                    {orderId.products.map((value) => {
                         if (Object.keys(productData).includes(value)) {
                             return (
                                 <TableRow key={value}>
