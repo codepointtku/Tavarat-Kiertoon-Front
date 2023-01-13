@@ -155,10 +155,10 @@ export default function CustomizedTablesWithPagination() {
           ).map((row) => (
             <StyledTableRow key={row.id}>
               <StyledTableCell component="th" scope="row">
-                <a href='#'>
-                {row.id}
-                <LaunchIcon fontSize='small' />
-                </a>
+                <IconButton size="small">
+                  {row.id}
+                  <LaunchIcon fontSize='small' />
+                </IconButton>
               </StyledTableCell>
               <StyledTableCell align="right">{row.status}</StyledTableCell>
               <StyledTableCell align="right">{row.address}</StyledTableCell>
