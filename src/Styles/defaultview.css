@@ -5,15 +5,3 @@
 div {
     border: 0.1rem solid #000;
 }
-
-.laatikko {
-    display: flex;
-    padding: 1rem;
-    border: 0.1rem solid blue;
-}
-
-.maksalaatikko {
-    margin: 1rem;
-    padding: 1rem;
-    border: 0.1rem solid red;
-}
