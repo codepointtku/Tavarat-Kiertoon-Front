@@ -32,7 +32,7 @@ function App() {
                             element: <OrdersList />,
                         },
                         {
-                            path: '/varasto/tilaus',
+                            path: '/varasto/tilaus/:id',
                             element: <OrderView />,
                         },
                     ],

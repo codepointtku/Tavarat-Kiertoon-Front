@@ -1,8 +1,37 @@
 import { Table, TableBody, TableContainer, TableHead, TableCell, TableRow, Paper } from '@mui/material';
+import { useParams } from 'react-router-dom';
 import productData from '../TestData/tuote.json';
 import orderData from '../TestData/tilaus.json';
 
-const orderId = orderData['2']; // For now change the number to see different orders.
+const cellRow = () => {
+    let order = '';
+    try {
+        order = orderData[useParams().id].products;
+    } catch (error) {
+        return <h1>Tonipal Kahville!</h1>;
+    }
+    return order.map((value) => {
+        if (Object.keys(productData).includes(value)) {
+            return (
+                <TableRow key={value}>
+                    <TableCell component="th" scope="row">
+                        {productData[value].name}
+                    </TableCell>
+                    <TableCell align="right">{value}</TableCell>
+                    <TableCell align="right">{productData[value].category}</TableCell>
+                    <TableCell align="right">{productData[value].color}</TableCell>
+                </TableRow>
+            );
+        }
+        return (
+            <TableRow>
+                <TableCell component="th" scope="row">
+                    Tuotenumerolla {value} ei löytynyt tuotetta.
+                </TableCell>
+            </TableRow>
+        );
+    });
+};
 
 function OrderView() {
     return (
@@ -16,29 +45,7 @@ function OrderView() {
                         <TableCell align="right">Väri</TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
-                    {orderId.products.map((value) => {
-                        if (Object.keys(productData).includes(value)) {
-                            return (
-                                <TableRow key={value}>
-                                    <TableCell component="th" scope="row">
-                                        {productData[value].name}
-                                    </TableCell>
-                                    <TableCell align="right">{value}</TableCell>
-                                    <TableCell align="right">{productData[value].category}</TableCell>
-                                    <TableCell align="right">{productData[value].color}</TableCell>
-                                </TableRow>
-                            );
-                        }
-                        return (
-                            <TableRow>
-                                <TableCell component="th" scope="row">
-                                    Tuotenumerolla {value} ei löytynyt tuotetta.
-                                </TableCell>
-                            </TableRow>
-                        );
-                    })}
-                </TableBody>
+                <TableBody>{cellRow()}</TableBody>
             </Table>
         </TableContainer>
     );
