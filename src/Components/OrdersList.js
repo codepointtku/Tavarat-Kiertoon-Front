@@ -1,5 +1,7 @@
+import CustomizedTablesWithPagination from "./DataTable";
+
 function OrdersList() {
-    return <div>Tilauslista</div>;
+    return <CustomizedTablesWithPagination />;
 }
 
 export default OrdersList;
