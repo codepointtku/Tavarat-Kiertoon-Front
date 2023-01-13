@@ -12,6 +12,7 @@ import StorageView from './MainComponents/StorageView';
 import AdminView from './MainComponents/AdminView';
 import OrdersList from './Components/OrdersList';
 import OrderView from './Components/OrderView';
+import QrScanner from './Components/QrScanner';
 
 function App() {
     const router = createBrowserRouter([
@@ -34,6 +35,10 @@ function App() {
                         {
                             path: '/varasto/tilaus',
                             element: <OrderView />,
+                        },
+                        {
+                            path: '/varasto/koodinlukija',
+                            element: <QrScanner />,
                         },
                     ],
                 },
