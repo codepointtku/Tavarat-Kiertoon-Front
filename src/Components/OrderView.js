@@ -8,7 +8,13 @@ const cellRow = () => {
     try {
         order = orderData[useParams().id].products;
     } catch (error) {
-        return <h1>Tonipal Kahville!</h1>;
+        return (
+            <TableRow>
+                <TableCell component="th" scope="row">
+                    <h1>Tilausnumeroa ei löytynyt</h1>
+                </TableCell>
+            </TableRow>
+        );
     }
     return order.map((value) => {
         if (Object.keys(productData).includes(value)) {
