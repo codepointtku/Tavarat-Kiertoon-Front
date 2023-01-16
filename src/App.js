@@ -35,7 +35,7 @@ function App() {
                             element: <OrdersList />,
                         },
                         {
-                            path: '/varasto/tilaus/:id',
+                            path: '/varasto/tilaus',
                             element: <OrderView />,
                         },
                         {
