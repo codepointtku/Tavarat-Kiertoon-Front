@@ -9,6 +9,9 @@ import {
     tableCellClasses,
     styled,
     IconButton,
+    Box,
+    Typography,
+    Collapse,
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -65,9 +68,11 @@ const cellRow = () => {
             const newEntry = productFind(entry);
             newEntry.count = 1;
             newEntry.id = entry;
+            newEntry.items = [newEntry];
             orderList.forEach((each, key) => {
                 if (each.barcode === newEntry.barcode) {
                     newEntry.count += each.count;
+                    newEntry.items = newEntry.items.concat(each.items);
                     orderList.pop(key);
                 }
             });
@@ -88,19 +93,54 @@ const cellRow = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     return orderList.map((value) => (
-        <StyledTableRow key={value.id}>
-            <IconButton aria-label="expand row" size="small" onClick={() => setIsOpen(!isOpen)}>
-                {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-            <TableCell component="th" scope="row">
-                {value.name}
-            </TableCell>
-            <TableCell align="right">{value.count}</TableCell>
-            <TableCell align="right">{value.barcode}</TableCell>
-            <TableCell align="right">{value.id}</TableCell>
-            <TableCell align="right">{value.category}</TableCell>
-            <TableCell align="right">{value.location}</TableCell>
-        </StyledTableRow>
+        <>
+            <StyledTableRow key={value.id}>
+                <IconButton aria-label="expand row" size="small" onClick={() => setIsOpen(!isOpen)}>
+                    {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                </IconButton>
+                <TableCell component="th" scope="row">
+                    {value.name}
+                </TableCell>
+                <TableCell align="right">{value.count}</TableCell>
+                <TableCell align="right">{value.barcode}</TableCell>
+                <TableCell align="right">{value.id}</TableCell>
+                <TableCell align="right">{value.category}</TableCell>
+                <TableCell align="right">{value.location}</TableCell>
+            </StyledTableRow>
+            <TableRow>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                    <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                        <Box sx={{ margin: 1 }}>
+                            <Typography variant="h6" gutterBottom component="div">
+                                Tuotteet
+                            </Typography>
+                            <Table size="small" aria-label="purchases">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Nimi</TableCell>
+                                        <TableCell>Viivakoodi</TableCell>
+                                        <TableCell align="right">Kategoria</TableCell>
+                                        <TableCell align="right">Väri</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {value.items.map((item) => (
+                                        <TableRow key={item.name}>
+                                            <TableCell component="th" scope="row">
+                                                {item.name}
+                                            </TableCell>
+                                            <TableCell>{item.barcode}</TableCell>
+                                            <TableCell align="right">{item.category}</TableCell>
+                                            <TableCell align="right">{item.color}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </Box>
+                    </Collapse>
+                </TableCell>
+            </TableRow>
+        </>
     ));
 };
 
