@@ -1,5 +1,7 @@
+import OrderListTable from './DataTable';
+
 function OrdersList() {
-    return <div>Tilauslista</div>;
+    return <OrderListTable />;
 }
 
 export default OrdersList;
