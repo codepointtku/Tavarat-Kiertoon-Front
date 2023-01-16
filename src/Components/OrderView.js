@@ -1,12 +1,16 @@
 import { Table, TableBody, TableContainer, TableHead, TableCell, TableRow, Paper } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import productData from '../TestData/tuote.json';
 import orderData from '../TestData/tilaus.json';
 
 const cellRow = () => {
     let order = '';
+    const [searchParams] = useSearchParams();
     try {
-        order = orderData[useParams().id].products;
+        if (searchParams.get('id') === true) {
+            return true;
+        }
+        order = orderData[useSearchParams().id].products;
     } catch (error) {
         return (
             <TableRow>
@@ -16,8 +20,12 @@ const cellRow = () => {
             </TableRow>
         );
     }
+    console.log(searchParams);
+    const productList = {};
     return order.map((value) => {
         if (Object.keys(productData).includes(value)) {
+            productList[productData[value]] = [productData[value].location, productData[value].category, 1];
+            console.log(productList);
             return (
                 <TableRow key={value}>
                     <TableCell component="th" scope="row">
