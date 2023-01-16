@@ -112,7 +112,7 @@ const rows = [
     createData(4117, 'toimitettu', 'Humalistonkatu 2', 'Maisa Mannerlaatta', '2.1.2023'),
 ];
 
-export default function CustomizedTablesWithPagination() {
+export default function OrderListTable() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 

@@ -1,7 +1,7 @@
-import CustomizedTablesWithPagination from "./DataTable";
+import OrderListTable from './DataTable';
 
 function OrdersList() {
-    return <CustomizedTablesWithPagination />;
+    return <OrderListTable />;
 }
 
 export default OrdersList;
