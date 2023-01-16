@@ -1,7 +1,6 @@
 {
     "1234": {
         "name": "työtuoli",
-        "quantity": 1,
         "barcode": "01",
         "category": "tuolit",
         "color": "white",
@@ -9,7 +8,6 @@
     },
     "5679": {
         "name": "kahvikuppi",
-        "quantity": 1,
         "barcode": "tonipal_kahville",
         "category": "kahvittelu",
         "color": "brown",
@@ -17,7 +15,6 @@
     },
     "5678": {
         "name": "kahvikuppi",
-        "quantity": 1,
         "barcode": "tonipal_kahville",
         "category": "kahvittelu",
         "color": "brown",
@@ -25,7 +22,6 @@
     },
     "5670": {
         "name": "kahvikuppi",
-        "quantity": 1,
         "barcode": "tonipal_kahville",
         "category": "kahvittelu",
         "color": "brown",
@@ -33,7 +29,6 @@
     },
     "1245": {
         "name": "jakkara",
-        "quantity": 1,
         "barcode": "02",
         "category": "tuolit",
         "color": "black",
