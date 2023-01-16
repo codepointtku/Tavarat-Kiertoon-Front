@@ -20,7 +20,6 @@ const cellRow = () => {
     }
 
     const orderList = [];
-
     order.forEach((entry) => {
         try {
             const newEntry = productData[entry];
@@ -44,8 +43,6 @@ const cellRow = () => {
             });
         }
     });
-
-    console.log(orderList);
 
     return orderList.map((value) => (
         <TableRow key={value.id}>
