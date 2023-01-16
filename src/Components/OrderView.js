@@ -1,5 +1,19 @@
-import { Table, TableBody, TableContainer, TableHead, TableCell, TableRow, Paper } from '@mui/material';
+import {
+    Table,
+    TableBody,
+    TableContainer,
+    TableHead,
+    TableCell,
+    TableRow,
+    Paper,
+    tableCellClasses,
+    styled,
+    IconButton,
+} from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useSearchParams } from 'react-router-dom';
+import { useState } from 'react';
 import productData from '../TestData/tuote.json';
 import orderData from '../TestData/tilaus.json';
 
@@ -8,6 +22,26 @@ const orderFind = (id) => orderData[id];
 
 // replace this with apiCall later on
 const productFind = (id) => productData[id];
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.success.dark,
+        color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+        border: 0,
+    },
+}));
 
 const cellRow = () => {
     let order = '';
@@ -50,8 +84,13 @@ const cellRow = () => {
         }
     });
 
+    const [isOpen, setIsOpen] = useState(false);
+
     return orderList.map((value) => (
-        <TableRow key={value.id}>
+        <StyledTableRow key={value.id}>
+            <IconButton aria-label="expand row" size="small" onClick={() => setIsOpen(!isOpen)}>
+                {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
             <TableCell component="th" scope="row">
                 {value.name}
             </TableCell>
@@ -60,22 +99,23 @@ const cellRow = () => {
             <TableCell align="right">{value.id}</TableCell>
             <TableCell align="right">{value.category}</TableCell>
             <TableCell align="right">{value.location}</TableCell>
-        </TableRow>
+        </StyledTableRow>
     ));
 };
 
 function OrderView() {
     return (
         <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Tuotenimi</TableCell>
-                        <TableCell align="right">Saldo</TableCell>
-                        <TableCell align="right">Viivakoodi</TableCell>
-                        <TableCell align="right">Tuotenumero</TableCell>
-                        <TableCell align="right">Kategoria</TableCell>
-                        <TableCell align="right">Sijainti</TableCell>
+                        <StyledTableCell> </StyledTableCell>
+                        <StyledTableCell>Tuotenimi</StyledTableCell>
+                        <StyledTableCell align="right">Saldo</StyledTableCell>
+                        <StyledTableCell align="right">Viivakoodi</StyledTableCell>
+                        <StyledTableCell align="right">Tuotenumero</StyledTableCell>
+                        <StyledTableCell align="right">Kategoria</StyledTableCell>
+                        <StyledTableCell align="right">Sijainti</StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>{cellRow()}</TableBody>
