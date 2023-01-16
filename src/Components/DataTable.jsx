@@ -19,9 +19,8 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { Link } from 'react-router-dom';
 
-function TablePaginationActions(props) {
+function TablePaginationActions({ count, page, rowsPerPage, onPageChange }) {
     const theme = useTheme();
-    const { count, page, rowsPerPage, onPageChange } = props;
 
     const handleFirstPageButtonClick = (event) => {
         onPageChange(event, 0);
