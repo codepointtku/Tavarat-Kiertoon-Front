@@ -21,15 +21,20 @@ const cellRow = () => {
 
     const orderList = [];
 
-    order.forEach((value) => {
-        if (Object.keys(productData).includes(value)) {
-            if (orderList.some((key) => orderList[key].location !== productData[value].location)) {
-                orderList[value].count += 1;
-            } else {
-                const targetOrder = productData[value];
-                targetOrder.count = 1;
-                orderList.push(targetOrder);
-            }
+    order.forEach((entry) => {
+        try {
+            const newEntry = productData[entry];
+            newEntry.count = 1;
+            newEntry.id = entry;
+            orderList.forEach((each, key) => {
+                if (orderList.length > 0 && each.barcode === newEntry.barcode) {
+                    newEntry.count += each.count;
+                    orderList.pop(key);
+                }
+            });
+            orderList.push(newEntry);
+        } catch {
+            orderList.push({});
         }
     });
 
