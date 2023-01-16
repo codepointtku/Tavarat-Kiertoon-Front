@@ -32,7 +32,7 @@ const cellRow = () => {
             newEntry.count = 1;
             newEntry.id = entry;
             orderList.forEach((each, key) => {
-                if (orderList.length > 0 && each.barcode === newEntry.barcode) {
+                if (each.barcode === newEntry.barcode) {
                     newEntry.count += each.count;
                     orderList.pop(key);
                 }
