@@ -27,6 +27,13 @@
         "color": "brown",
         "location": "kahvihuone"
     },
+    "5671": {
+        "name": "kahvinkeitin",
+        "barcode": "it's kaffe time",
+        "category": "kahvittelu",
+        "color": "white",
+        "location": "kahvihuone"
+    },
     "1245": {
         "name": "jakkara",
         "barcode": "02",

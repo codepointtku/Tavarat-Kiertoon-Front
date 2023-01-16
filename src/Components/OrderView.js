@@ -48,6 +48,7 @@ const cellRow = () => {
                         {productData[value].name}
                     </TableCell>
                     <TableCell align="right">1</TableCell>
+                    <TableCell align="right">{productData[value].barcode}</TableCell>
                     <TableCell align="right">{value}</TableCell>
                     <TableCell align="right">{productData[value].category}</TableCell>
                     <TableCell align="right">{productData[value].location}</TableCell>
@@ -72,6 +73,7 @@ function OrderView() {
                     <TableRow>
                         <TableCell>Tuotenimi</TableCell>
                         <TableCell align="right">Saldo</TableCell>
+                        <TableCell align="right">Viivakoodi</TableCell>
                         <TableCell align="right">Tuotenumero</TableCell>
                         <TableCell align="right">Kategoria</TableCell>
                         <TableCell align="right">Sijainti</TableCell>
