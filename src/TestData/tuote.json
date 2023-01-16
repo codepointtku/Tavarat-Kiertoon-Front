@@ -1,30 +1,35 @@
 {
     "1234": {
         "name": "työtuoli",
+        "quantity": 1,
         "category": "tuolit",
         "color": "white",
         "location": "varasto_0"
     },
     "5679": {
         "name": "kahvikuppi",
+        "quantity": 1,
         "category": "kahvittelu",
         "color": "brown",
         "location": "kahvihuone"
     },
     "5678": {
         "name": "kahvikuppi",
+        "quantity": 1,
         "category": "kahvittelu",
         "color": "brown",
         "location": "kahvihuone"
     },
     "5670": {
         "name": "kahvikuppi",
+        "quantity": 1,
         "category": "kahvittelu",
         "color": "brown",
         "location": "kahvihuone"
     },
     "1245": {
         "name": "jakkara",
+        "quantity": 1,
         "category": "tuolit",
         "color": "black",
         "location": "varasto_0"
