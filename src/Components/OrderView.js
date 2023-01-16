@@ -31,9 +31,11 @@ const cellRow = () => {
             const newEntry = productFind(entry);
             newEntry.count = 1;
             newEntry.id = entry;
+            newEntry.items = [newEntry];
             orderList.forEach((each, key) => {
                 if (each.barcode === newEntry.barcode) {
                     newEntry.count += each.count;
+                    newEntry.items = newEntry.items.concat(each.items);
                     orderList.pop(key);
                 }
             });
@@ -49,6 +51,8 @@ const cellRow = () => {
             });
         }
     });
+
+    console.log(orderList);
 
     return orderList.map((value) => (
         <TableRow key={value.id}>
