@@ -26,6 +26,7 @@ const orderFind = (id) => orderData[id];
 // replace this with apiCall later on
 const productFind = (id) => productData[id];
 
+// move this into a file and import this later on
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: theme.palette.success.dark,
@@ -36,6 +37,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
 }));
 
+// move this into a file and import this later on
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
         backgroundColor: theme.palette.action.hover,
@@ -62,10 +64,12 @@ const cellRow = () => {
         );
     }
 
+    const sourceStates = {};
     const orderList = [];
     order.forEach((entry) => {
         try {
             const newEntry = productFind(entry);
+            sourceStates[entry] = false;
             newEntry.count = 1;
             newEntry.id = entry;
             newEntry.items = [newEntry];
@@ -97,7 +101,7 @@ const cellRow = () => {
             .filter((item, index, arr) => arr.indexOf(item) === index);
     });
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(sourceStates);
 
     return orderList.map((value) => (
         <>
