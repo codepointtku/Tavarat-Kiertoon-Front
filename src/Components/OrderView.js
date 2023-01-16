@@ -3,12 +3,18 @@ import { useSearchParams } from 'react-router-dom';
 import productData from '../TestData/tuote.json';
 import orderData from '../TestData/tilaus.json';
 
+// replace this with apiCall later on
+const orderFind = (id) => orderData[id];
+
+// replace this with apiCall later on
+const productFind = (id) => productData[id];
+
 const cellRow = () => {
     let order = '';
     const [searchParams] = useSearchParams();
     try {
         const orderId = searchParams.get('id');
-        order = orderData[orderId].products;
+        order = orderFind(orderId).products;
     } catch (error) {
         return (
             <TableRow>
@@ -22,7 +28,7 @@ const cellRow = () => {
     const orderList = [];
     order.forEach((entry) => {
         try {
-            const newEntry = productData[entry];
+            const newEntry = productFind(entry);
             newEntry.count = 1;
             newEntry.id = entry;
             orderList.forEach((each, key) => {
