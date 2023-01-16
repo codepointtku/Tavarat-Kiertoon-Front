@@ -34,35 +34,31 @@ const cellRow = () => {
             });
             orderList.push(newEntry);
         } catch {
-            orderList.push({});
+            orderList.push({
+                name: 'Tuotetta ei olemassa',
+                id: entry,
+                barcode: '-',
+                count: 0,
+                category: '-',
+                location: '-',
+            });
         }
     });
 
     console.log(orderList);
 
-    return order.map((value) => {
-        if (Object.keys(productData).includes(value)) {
-            return (
-                <TableRow key={value}>
-                    <TableCell component="th" scope="row">
-                        {productData[value].name}
-                    </TableCell>
-                    <TableCell align="right">1</TableCell>
-                    <TableCell align="right">{productData[value].barcode}</TableCell>
-                    <TableCell align="right">{value}</TableCell>
-                    <TableCell align="right">{productData[value].category}</TableCell>
-                    <TableCell align="right">{productData[value].location}</TableCell>
-                </TableRow>
-            );
-        }
-        return (
-            <TableRow>
-                <TableCell component="th" scope="row">
-                    Tuotenumerolla {value} ei löytynyt tuotetta.
-                </TableCell>
-            </TableRow>
-        );
-    });
+    return orderList.map((value) => (
+        <TableRow key={value.id}>
+            <TableCell component="th" scope="row">
+                {value.name}
+            </TableCell>
+            <TableCell align="right">{value.count}</TableCell>
+            <TableCell align="right">{value.barcode}</TableCell>
+            <TableCell align="right">{value.id}</TableCell>
+            <TableCell align="right">{value.category}</TableCell>
+            <TableCell align="right">{value.location}</TableCell>
+        </TableRow>
+    ));
 };
 
 function OrderView() {
