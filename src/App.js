@@ -15,6 +15,7 @@ import AdminView from './MainComponents/AdminView';
 import OrdersList from './Components/OrdersList';
 import OrderView from './Components/OrderView';
 import QrScanner from './Components/QrScanner';
+import ProductDetails from './Components/ProductDetails';
 
 function App() {
     const router = createBrowserRouter([
@@ -47,6 +48,10 @@ function App() {
                 {
                     path: '/admin',
                     element: <AdminView />,
+                },
+                {
+                    path: '/tuotteet',
+                    element: <ProductDetails />,
                 },
             ],
         },
