@@ -1,0 +1,16 @@
+{
+    "4128": {
+        "products": ["1234", "1245", "4422"],
+        "date": "2018-12-10T13:49:51.141Z",
+        "recipient": "Jaska Jokunen",
+        "address": "Humalistonkatu 1",
+        "status": "order received"
+    },
+    "4127": {
+        "products": ["5678", "5679", "5670", "5671"],
+        "date": "2018-12-10T13:49:51.141Z",
+        "recipient": "Kahvipakottaja",
+        "address": "Tonipal Kahville Katu 9001",
+        "status": "Kahvi tippuu"
+    }
+}
