@@ -49,10 +49,10 @@ function ProductList() {
                 {mockData?.map((product) => (
                     <Grid item key={product.id}>
                         <ProductCard
-                        // TODO: pass data down when proptypes are installed
-                        // productName={product.productName}
-                        // description={product.description}
-                        // dateAdded={product.dateAdded}
+                            id={product.id}
+                            productName={product.productName}
+                            description={product.description}
+                            dateAdded={product.dateAdded}
                         />
                     </Grid>
                 ))}
