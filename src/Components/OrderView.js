@@ -18,16 +18,22 @@ const cellRow = () => {
             </TableRow>
         );
     }
-    const productList = [];
-    Object.entries(order).forEach((entry) => {
-        if (Object.keys(productData).includes(entry)) {
-            if (productList.some((any) => any === productData[entry].location)) {
-                productList[order] += 1;
+
+    const orderList = [];
+
+    order.forEach((value) => {
+        if (Object.keys(productData).includes(value)) {
+            if (orderList.some((key) => orderList[key].location !== productData[value].location)) {
+                orderList[value].count += 1;
             } else {
-                productList.push(order);
+                const targetOrder = productData[value];
+                targetOrder.count = 1;
+                orderList.push(targetOrder);
             }
         }
     });
+
+    console.log(orderList);
 
     return order.map((value) => {
         if (Object.keys(productData).includes(value)) {
