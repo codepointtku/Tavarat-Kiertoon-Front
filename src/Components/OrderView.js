@@ -7,10 +7,8 @@ const cellRow = () => {
     let order = '';
     const [searchParams] = useSearchParams();
     try {
-        if (searchParams.get('id') === true) {
-            return true;
-        }
-        order = orderData[useSearchParams().id].products;
+        const orderId = searchParams.get('id');
+        order = orderData[orderId].products;
     } catch (error) {
         return (
             <TableRow>
@@ -20,12 +18,19 @@ const cellRow = () => {
             </TableRow>
         );
     }
-    console.log(searchParams);
-    const productList = {};
+    const productList = [];
+    Object.entries(order).forEach((entry) => {
+        if (Object.keys(productData).includes(entry)) {
+            if (productList.some((any) => any === productData[entry].location)) {
+                productList[order] += 1;
+            } else {
+                productList.push(order);
+            }
+        }
+    });
+
     return order.map((value) => {
         if (Object.keys(productData).includes(value)) {
-            productList[productData[value]] = [productData[value].location, productData[value].category, 1];
-            console.log(productList);
             return (
                 <TableRow key={value}>
                     <TableCell component="th" scope="row">
