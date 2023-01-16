@@ -48,6 +48,7 @@ const cellRow = () => {
                 count: 0,
                 category: '-',
                 location: '-',
+                items: [],
             });
         }
     });
