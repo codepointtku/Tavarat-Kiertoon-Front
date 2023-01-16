@@ -53,6 +53,13 @@ const cellRow = () => {
         }
     });
 
+    // Finds unique barcodes in the items under the each product. Move to sub-table as mapping later.
+    orderList.forEach((entry, key) => {
+        orderList[key].items = entry.items
+            .map((obj) => obj.barcode)
+            .filter((item, index, arr) => arr.indexOf(item) === index);
+    });
+
     console.log(orderList);
 
     return orderList.map((value) => (
