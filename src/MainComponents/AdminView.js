@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Outlet } from 'react-router-dom';
 
 function AdminView() {
     const navigate = useNavigate();
@@ -13,7 +13,14 @@ function AdminView() {
         }
     }, [auth]);
 
-    return <div>ToniPal juo energiavettä!</div>;
+    return (
+    <>
+    <div>Extra admin navbar will ne here</div>
+    <main>
+        <Outlet/>
+    </main>
+    </>
+    )
 }
 
 export default AdminView;
