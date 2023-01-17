@@ -15,6 +15,10 @@ import AdminView from './MainComponents/AdminView';
 import OrdersList from './Components/OrdersList';
 import OrderView from './Components/OrderView';
 import QrScanner from './Components/QrScanner';
+import UsersView from './Components/UsersView';
+import UserDetails from './Components/UserDetails';
+import LocationsView from './Components/LocationsView';
+import LocationDetails from './Components/LocationDetails';
 
 function App() {
     const router = createBrowserRouter([
@@ -47,6 +51,25 @@ function App() {
                 {
                     path: '/admin',
                     element: <AdminView />,
+                    children: [
+                        {
+                            path: '/admin',
+                            element: <UsersView />
+                        },
+                        {
+                            path: '/admin/user',
+                            element: <UserDetails />
+                        }
+                                                {
+                            path: '/admin/varastot',
+                            element: <LocationsView />
+                        }
+                                                {
+                            path: '/admin/varastot/varasto',
+                            element: <LocationDetails />
+                        }
+                        
+                    ]
                 },
             ],
         },
