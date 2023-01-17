@@ -78,22 +78,26 @@ const detailRow = (value) => {
                             <Typography variant="h6" gutterBottom component="div">
                                 Tuotteet
                             </Typography>
-                            <Table size="small" aria-label="purchases">
+                            <Table size="small">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Nimi</TableCell>
-                                        <TableCell>Viivakoodi</TableCell>
+                                        <TableCell component="th" scope="row">
+                                            Tuotenumero
+                                        </TableCell>
+                                        <TableCell align="right">Tuotenimi</TableCell>
+                                        <TableCell align="right">Viivakoodi</TableCell>
                                         <TableCell align="right">Kategoria</TableCell>
                                         <TableCell align="right">Väri</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {value.items.map((item) => (
-                                        <TableRow key={item.name}>
+                                        <TableRow key={item.id}>
                                             <TableCell component="th" scope="row">
-                                                {item.name}
+                                                {item.id}
                                             </TableCell>
-                                            <TableCell>{item.barcode}</TableCell>
+                                            <TableCell align="right">{item.name}</TableCell>
+                                            <TableCell align="right">{item.barcode}</TableCell>
                                             <TableCell align="right">{item.category}</TableCell>
                                             <TableCell align="right">{item.color}</TableCell>
                                         </TableRow>
@@ -154,12 +158,13 @@ const cellRow = () => {
         }
     });
 
-    // Finds unique barcodes in the items under the each product. Move to sub-table as mapping later.
+    /* Finds unique barcodes in the items under the each product. Move to sub-table as mapping later.
     orderList.forEach((entry, key) => {
         orderList[key].items = entry.items
             .map((obj) => obj.barcode)
             .filter((item, index, arr) => arr.indexOf(item) === index);
     });
+    */
 
     return orderList.map((value) => detailRow(value));
 };
