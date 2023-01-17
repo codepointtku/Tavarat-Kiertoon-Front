@@ -48,6 +48,66 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
+const detailRow = (value) => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+        <>
+            <StyledTableRow key={value.id}>
+                <IconButton
+                    aria-label="expand row"
+                    size="small"
+                    onClick={() => {
+                        setIsOpen(!isOpen);
+                    }}
+                >
+                    {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                </IconButton>
+                <TableCell component="th" scope="row">
+                    {value.name}
+                </TableCell>
+                <TableCell align="right">{value.count}</TableCell>
+                <TableCell align="right">{value.barcode}</TableCell>
+                <TableCell align="right">{value.id}</TableCell>
+                <TableCell align="right">{value.category}</TableCell>
+                <TableCell align="right">{value.location}</TableCell>
+            </StyledTableRow>
+            <TableRow>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                    <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                        <Box sx={{ margin: 1 }}>
+                            <Typography variant="h6" gutterBottom component="div">
+                                Tuotteet
+                            </Typography>
+                            <Table size="small" aria-label="purchases">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Nimi</TableCell>
+                                        <TableCell>Viivakoodi</TableCell>
+                                        <TableCell align="right">Kategoria</TableCell>
+                                        <TableCell align="right">Väri</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {value.items.map((item) => (
+                                        <TableRow key={item.name}>
+                                            <TableCell component="th" scope="row">
+                                                {item.name}
+                                            </TableCell>
+                                            <TableCell>{item.barcode}</TableCell>
+                                            <TableCell align="right">{item.category}</TableCell>
+                                            <TableCell align="right">{item.color}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </Box>
+                    </Collapse>
+                </TableCell>
+            </TableRow>
+        </>
+    );
+};
+
 const cellRow = () => {
     let order = '';
     const [searchParams] = useSearchParams();
@@ -101,58 +161,7 @@ const cellRow = () => {
             .filter((item, index, arr) => arr.indexOf(item) === index);
     });
 
-    const [isOpen, setIsOpen] = useState(sourceStates);
-
-    return orderList.map((value) => (
-        <>
-            <StyledTableRow key={value.id}>
-                <IconButton aria-label="expand row" size="small" onClick={() => setIsOpen(!isOpen)}>
-                    {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                </IconButton>
-                <TableCell component="th" scope="row">
-                    {value.name}
-                </TableCell>
-                <TableCell align="right">{value.count}</TableCell>
-                <TableCell align="right">{value.barcode}</TableCell>
-                <TableCell align="right">{value.id}</TableCell>
-                <TableCell align="right">{value.category}</TableCell>
-                <TableCell align="right">{value.location}</TableCell>
-            </StyledTableRow>
-            <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    <Collapse in={isOpen} timeout="auto" unmountOnExit>
-                        <Box sx={{ margin: 1 }}>
-                            <Typography variant="h6" gutterBottom component="div">
-                                Tuotteet
-                            </Typography>
-                            <Table size="small" aria-label="purchases">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Nimi</TableCell>
-                                        <TableCell>Viivakoodi</TableCell>
-                                        <TableCell align="right">Kategoria</TableCell>
-                                        <TableCell align="right">Väri</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {value.items.map((item) => (
-                                        <TableRow key={item.name}>
-                                            <TableCell component="th" scope="row">
-                                                {item.name}
-                                            </TableCell>
-                                            <TableCell>{item.barcode}</TableCell>
-                                            <TableCell align="right">{item.category}</TableCell>
-                                            <TableCell align="right">{item.color}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </Box>
-                    </Collapse>
-                </TableCell>
-            </TableRow>
-        </>
-    ));
+    return orderList.map((value) => detailRow(value));
 };
 
 function OrderView() {
