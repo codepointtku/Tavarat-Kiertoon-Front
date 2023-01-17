@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme, styled } from '@mui/material/styles';
-import { Box, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableFooter, TablePagination, TableRow, Paper, IconButton } from '@mui/material';
+import { Box, Table, TableBody, TableContainer, TableHead, TableFooter, TablePagination, TableRow, Paper, IconButton } from '@mui/material';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 import { LaunchIcon, FirstPageIcon, KeyboardArrowLeft, LastPageIcon, KeyboardArrowSRight} from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
