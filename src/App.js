@@ -59,15 +59,15 @@ function App() {
                         {
                             path: '/admin/user',
                             element: <UserDetails />
-                        }
-                                                {
+                        },
+                        {                      
                             path: '/admin/varastot',
                             element: <LocationsView />
-                        }
-                                                {
+                        },
+                        {                        
                             path: '/admin/varastot/varasto',
                             element: <LocationDetails />
-                        }
+                        },
                         
                     ]
                 },
