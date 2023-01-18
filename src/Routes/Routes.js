@@ -19,6 +19,9 @@ import UserDetails from '../Components/UserDetails';
 import LocationsView from '../Components/LocationsView';
 import LocationDetails from '../Components/LocationDetails';
 
+import ProductList from '../Components/ProductList';
+import ProductDetails from '../Components/ProductDetails';
+
 function Routes() {
     const router = createBrowserRouter([
         {
@@ -28,6 +31,16 @@ function Routes() {
                     <DefaultView />
                 </Base>
             ),
+            children: [
+                {
+                    path: '/',
+                    element: <ProductList />,
+                },
+                {
+                    path: '/tuotteet/:id',
+                    element: <ProductDetails />,
+                },
+            ],
         },
         {
             path: '/varasto',
