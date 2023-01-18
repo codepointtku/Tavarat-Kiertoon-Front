@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableFooter from '@mui/material/TableFooter';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import {
+    Table,
+    TableBody,
+    TableContainer,
+    TableHead,
+    TableFooter,
+    TablePagination,
+    TableRow,
+    Paper,
+} from '@mui/material';
 import LaunchIcon from '@mui/icons-material/Launch';
 import { Link } from 'react-router-dom';
 import TablePaginationActions from './TablePaginationActions';
@@ -33,7 +35,7 @@ const rows = [
     createData(4117, 'toimitettu', 'Humalistonkatu 2', 'Maisa Mannerlaatta', '2.1.2023'),
 ];
 
-export default function OrderListTable() {
+function OrderListTable() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -109,3 +111,5 @@ export default function OrderListTable() {
         </TableContainer>
     );
 }
+
+export default OrderListTable;
