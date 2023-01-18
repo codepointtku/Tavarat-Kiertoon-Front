@@ -1,5 +1,5 @@
 function LocationsView() {
-    return <div>location list here</div>
+    return <div>location list here</div>;
 }
 
-export default LocationsView
+export default LocationsView;

@@ -54,22 +54,21 @@ function App() {
                     children: [
                         {
                             path: '/admin',
-                            element: <UsersView />
+                            element: <UsersView />,
                         },
                         {
                             path: '/admin/user',
-                            element: <UserDetails />
+                            element: <UserDetails />,
                         },
-                        {                      
+                        {
                             path: '/admin/varastot',
-                            element: <LocationsView />
+                            element: <LocationsView />,
                         },
-                        {                        
+                        {
                             path: '/admin/varastot/varasto',
-                            element: <LocationDetails />
+                            element: <LocationDetails />,
                         },
-                        
-                    ]
+                    ],
                 },
             ],
         },

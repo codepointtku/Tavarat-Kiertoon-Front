@@ -14,13 +14,13 @@ function AdminView() {
     }, [auth]);
 
     return (
-    <>
-    <div>Extra admin navbar will ne here</div>
-    <main>
-        <Outlet/>
-    </main>
-    </>
-    )
+        <>
+            <div>Extra admin navbar will ne here</div>
+            <main>
+                <Outlet />
+            </main>
+        </>
+    );
 }
 
 export default AdminView;
