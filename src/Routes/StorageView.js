@@ -1,23 +1,15 @@
 import { Button } from '@mui/material';
-import { useEffect } from 'react';
-import { useNavigate, Outlet } from 'react-router-dom';
+import { useContext } from 'react';
+import { Outlet, Navigate } from 'react-router-dom';
+import AuthContext from '../Context/AuthContext';
 
 function StorageView() {
-    const navigate = useNavigate();
-
-    // replace this with authcontext later
-    const auth = { admin: true, storage: true };
-
-    useEffect(() => {
-        if (!auth.storage) {
-            navigate('/tavaratkiertoon');
-        }
-    }, [auth]);
+    const { auth } = useContext(AuthContext);
 
     return (
         <>
             <Button variant="contained">Varastonäkymä (tää on testinappula, poista myöhemmin)</Button>
-            <Outlet />
+            {auth.storage ? <Outlet /> : <Navigate to="/" />}
         </>
     );
 }
