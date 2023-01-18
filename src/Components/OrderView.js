@@ -31,15 +31,17 @@ const detailRow = (value) => {
     return (
         <>
             <StyledTableRow key={value.id}>
-                <IconButton
-                    aria-label="expand row"
-                    size="small"
-                    onClick={() => {
-                        setIsOpen(!isOpen);
-                    }}
-                >
-                    {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                </IconButton>
+                <TableCell>
+                    <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        onClick={() => {
+                            setIsOpen(!isOpen);
+                        }}
+                    >
+                        {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    </IconButton>
+                </TableCell>
                 <TableCell component="th" scope="row">
                     {value.name}
                 </TableCell>
