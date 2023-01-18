@@ -5,19 +5,19 @@ import DefaultView from './DefaultView';
 import StorageView from './StorageView';
 import AdminView from './AdminView';
 
-import OrdersList from '../Components/OrdersList';
-import OrderView from '../Components/OrderView';
-import QrScanner from '../Components/QrScanner';
-
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
 import Base from '../Layouts/Base';
 import Admin from '../Layouts/Admin';
 
-import UsersView from './Components/UsersView';
-import UserDetails from './Components/UserDetails';
-import LocationsView from './Components/LocationsView';
-import LocationDetails from './Components/LocationDetails';
+import OrdersList from '../Components/OrdersList';
+import OrderView from '../Components/OrderView';
+import QrScanner from '../Components/QrScanner';
+
+import UsersView from '../Components/UsersView';
+import UserDetails from '../Components/UserDetails';
+import LocationsView from '../Components/LocationsView';
+import LocationDetails from '../Components/LocationDetails';
 
 function Routes() {
     const router = createBrowserRouter([
