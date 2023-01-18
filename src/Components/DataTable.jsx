@@ -14,7 +14,10 @@ import {
     IconButton,
 } from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import { LaunchIcon, FirstPageIcon, KeyboardArrowLeft, LastPageIcon, KeyboardArrowRight } from '@mui/icons-material';
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
+import LaunchIcon from '@mui/icons-material/Launch';
+import LastPageIcon from '@mui/icons-material/LastPage';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
 import { Link } from 'react-router-dom';
 
 function TablePaginationActions({ count, page, rowsPerPage, onPageChange }) {
