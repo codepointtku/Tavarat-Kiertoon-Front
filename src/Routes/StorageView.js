@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import { useEffect } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 
@@ -14,9 +15,10 @@ function StorageView() {
     }, [auth]);
 
     return (
-        <main>
+        <>
+            <Button variant="contained">Varastonäkymä (tää on testinappula, poista myöhemmin)</Button>
             <Outlet />
-        </main>
+        </>
     );
 }
 

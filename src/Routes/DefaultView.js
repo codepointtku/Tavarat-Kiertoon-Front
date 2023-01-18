@@ -1,5 +1,4 @@
 import ProductList from '../Components/ProductList';
-import '../Styles/defaultview.css';
 
 function DefaultView() {
     return (
