@@ -3,7 +3,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import defaultTheme from './Themes/defaultTheme';
 import './Themes/index.css';
 
-import Routes from './Routes';
+import Routes from './Routes/Routes';
 
 function App() {
     return (

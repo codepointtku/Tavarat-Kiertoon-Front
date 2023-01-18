@@ -14,7 +14,10 @@ import adminTheme from '../Themes/adminTheme';
 import Base from '../Layouts/Base';
 import Admin from '../Layouts/Admin';
 
-// maybe rename this filename to "Routes.js" or "Router.js"
+import UsersView from './Components/UsersView';
+import UserDetails from './Components/UserDetails';
+import LocationsView from './Components/LocationsView';
+import LocationDetails from './Components/LocationDetails';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -59,6 +62,24 @@ function Routes() {
                     </Admin>
                 </ThemeProvider>
             ),
+            children: [
+                {
+                    path: '/admin',
+                    element: <UsersView />,
+                },
+                {
+                    path: '/admin/user',
+                    element: <UserDetails />,
+                },
+                {
+                    path: '/admin/varastot',
+                    element: <LocationsView />,
+                },
+                {
+                    path: '/admin/varastot/varasto',
+                    element: <LocationDetails />,
+                },
+            ],
         },
     ]);
 
