@@ -14,10 +14,10 @@ import adminTheme from '../Themes/adminTheme';
 import Base from '../Layouts/Base';
 import Admin from '../Layouts/Admin';
 
-import UsersView from './Components/UsersView';
-import UserDetails from './Components/UserDetails';
-import LocationsView from './Components/LocationsView';
-import LocationDetails from './Components/LocationDetails';
+import UsersView from '../Components/UsersView';
+import UserDetails from '../Components/UserDetails';
+import LocationsView from '../Components/LocationsView';
+import LocationDetails from '../Components/LocationDetails';
 
 function Routes() {
     const router = createBrowserRouter([
