@@ -6,17 +6,17 @@ import {
     TableCell,
     TableRow,
     Paper,
-    tableCellClasses,
-    styled,
     IconButton,
     Box,
     Typography,
     Collapse,
 } from '@mui/material';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import StyledTableRow from './StyledTableRow';
+import StyledTableCell from './StyledTableCell';
 import productData from '../TestData/tuote.json';
 import orderData from '../TestData/tilaus.json';
 
@@ -25,28 +25,6 @@ const orderFind = (id) => orderData[id];
 
 // replace this with apiCall later on
 const productFind = (id) => productData[id];
-
-// move this into a file and import this later on
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.success.dark,
-        color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
-}));
-
-// move this into a file and import this later on
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));
 
 const detailRow = (value) => {
     const [isOpen, setIsOpen] = useState(false);
