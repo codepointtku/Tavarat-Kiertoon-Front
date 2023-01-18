@@ -112,7 +112,7 @@ const rows = [
     createData(4117, 'toimitettu', 'Humalistonkatu 2', 'Maisa Mannerlaatta', '2.1.2023'),
 ];
 
-export default function OrderListTable() {
+function OrderListTable() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -188,3 +188,5 @@ export default function OrderListTable() {
         </TableContainer>
     );
 }
+
+export default OrderListTable;
