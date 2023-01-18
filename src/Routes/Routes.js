@@ -35,12 +35,10 @@ function Routes() {
                 {
                     path: '/',
                     element: <ProductList />,
-                    children: [
-                        {
-                            path: '/tuotteet/:id',
-                            element: <ProductDetails />,
-                        },
-                    ],
+                },
+                {
+                    path: '/tuotteet/:id',
+                    element: <ProductDetails />,
                 },
             ],
         },
