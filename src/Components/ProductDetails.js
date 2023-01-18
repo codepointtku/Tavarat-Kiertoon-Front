@@ -1,5 +1,9 @@
+import { useParams } from 'react-router-dom';
+
 function ProductDetails() {
-    return <div>ProductDetails - tuotteen yksityiskohtaiset tiedot</div>;
+    const { productId } = useParams();
+
+    return <div>ProductDetails id:{productId} - tuotteen yksityiskohtaiset tiedot</div>;
 }
 
 export default ProductDetails;
