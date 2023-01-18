@@ -1,14 +1,18 @@
-import { Box, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function ProductCard({ productName, description, dateAdded, id }) {
-    const navigate = useNavigate();
-
     return (
         <Box sx={{ minWidth: 275 }}>
-            <Card variant="outlined">
+            <Card>
                 <CardContent>
+                    <CardMedia
+                        component="img"
+                        alt="kuva"
+                        height="140"
+                        image="/static/images/cards/contemplative-reptile.jpg"
+                    />
                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         Yksinkertainen tuotekortti - /Components/ProductCard.js
                     </Typography>
@@ -17,12 +21,7 @@ function ProductCard({ productName, description, dateAdded, id }) {
                     <Typography>Date: {dateAdded}</Typography>
                 </CardContent>
                 <CardActions>
-                    <Button
-                        component={Link}
-                        to={`/tuotteet?ID=${id}`}
-                        onClick={() => navigate(`/tuotteet?ID=${id}`)}
-                        size="small"
-                    >
+                    <Button component={Link} to={`/tuotteet/${id}`} size="small">
                         Linkki productDetails-sivulle
                     </Button>
                 </CardActions>
@@ -31,6 +30,7 @@ function ProductCard({ productName, description, dateAdded, id }) {
     );
 }
 
+// Types not ready, string type for testing
 ProductCard.propTypes = {
     productName: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,

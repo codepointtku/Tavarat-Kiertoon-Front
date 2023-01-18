@@ -1,8 +1,7 @@
-import { useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function ProductDetails() {
-    const [searchParams] = useSearchParams();
-    const productId = searchParams.get('ID');
+    const { productId } = useParams();
 
     return <div>ProductDetails id:{productId} - tuotteen yksityiskohtaiset tiedot</div>;
 }
