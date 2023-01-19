@@ -12,10 +12,19 @@ const defaultTheme = createTheme({
         fontWeightBold: 800,
         button: { textTransform: 'initial' },
     },
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 600,
+            md: 900,
+            lg: 1200,
+            xl: 1536,
+        },
+    },
     props: {
         MuiButtonBase: {
             disableRipple: false,
-            variant: 'contained',
+            // variant: 'contained',
         },
         MuiList: {
             dense: true,

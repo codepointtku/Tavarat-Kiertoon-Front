@@ -8,8 +8,13 @@ const adminTheme = createTheme({
         primary: {
             ...defaultTheme.palette.primary,
             main: '#e50064',
-            // light: '#c7d7eb',
-            // contrastText: '#ffffff',
+            light: '#f8c2d9',
+            dark: '#f8c2d9',
+            contrastText: '#ffffff',
+        },
+        secondary: {
+            ...defaultTheme.palette.secondary,
+            main: '#e50064',
         },
     },
 });

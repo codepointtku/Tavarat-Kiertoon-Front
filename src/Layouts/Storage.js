@@ -1,25 +1,24 @@
 import PropTypes from 'prop-types';
+import { Button } from '@mui/material';
 
-import Container from '@mui/material/Container';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 
-// default Layout
+// storage Layout
 
-function Base({ children }) {
+function Storage({ children }) {
     return (
         <>
             <Header />
-            <Container maxWidth="lg">
-                <main>{children}</main>
-            </Container>
+            <Button>What</Button>
+            <main>{children}</main>
             <Footer />
         </>
     );
 }
 
-Base.propTypes = {
+Storage.propTypes = {
     children: PropTypes.element.isRequired,
 };
 
-export default Base;
+export default Storage;
