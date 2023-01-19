@@ -24,7 +24,6 @@ const defaultTheme = createTheme({
     props: {
         MuiButtonBase: {
             disableRipple: false,
-            // variant: 'contained',
         },
         MuiList: {
             dense: true,

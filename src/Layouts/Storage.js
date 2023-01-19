@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Button } from '@mui/material';
+// import Container from '@mui/material/Container';
 
 import Header from './Components/Header';
 import Footer from './Components/Footer';
@@ -10,8 +10,9 @@ function Storage({ children }) {
     return (
         <>
             <Header />
-            <Button>What</Button>
+            {/* <Container> */}
             <main>{children}</main>
+            {/* </Container> */}
             <Footer />
         </>
     );
