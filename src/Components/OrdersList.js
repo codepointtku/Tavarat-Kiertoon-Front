@@ -26,8 +26,10 @@ function OrdersList() {
             console.log(newParams);
         }, [searchParams]);
 
-        const paramSet = (values) => {
-            setSearchParams(values);
+        const paramSet = (key, value) => {
+            const iniParams = paramState;
+            iniParams[key] = value;
+            setSearchParams(iniParams);
         };
 
         return [paramState, paramSet];
@@ -44,7 +46,7 @@ function OrdersList() {
             <button
                 type="button"
                 onClick={() => {
-                    setUsedParams({ page: 3, rows: 25 });
+                    setUsedParams('page', usedParams.page + 1);
                 }}
             >
                 Test
