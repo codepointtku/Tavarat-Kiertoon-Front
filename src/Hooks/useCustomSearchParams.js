@@ -15,7 +15,6 @@ const useCustomSearchParams = (params) => {
                 newParams[key] = searchParams.get(key);
             }
         }, []);
-
         setSearchParams(newParams);
     }, []);
 
@@ -27,7 +26,6 @@ const useCustomSearchParams = (params) => {
             newParams[key] = Number(searchParams.get(key));
         });
         setParamState(newParams);
-        console.log(newParams);
     }, [searchParams]);
 
     const paramSet = (key, value) => {
