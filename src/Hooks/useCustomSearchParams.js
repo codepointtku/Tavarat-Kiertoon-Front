@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+// works as useState, paramState is dictionary, paramSet works as paramSet(key, value)
 const useCustomSearchParams = (params, check) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [paramState, setParamState] = useState();
