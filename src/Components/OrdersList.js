@@ -20,7 +20,7 @@ function OrdersList() {
             const keys = Array.from(searchParams.keys());
 
             keys.forEach((key) => {
-                newParams[key] = searchParams.get(key);
+                newParams[key] = Number(searchParams.get(key));
             });
             setParamState(newParams);
             console.log(newParams);
