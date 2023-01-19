@@ -68,7 +68,7 @@ function OrderListTable() {
                         (row) => (
                             <StyledTableRow key={row.id}>
                                 <StyledTableCell component="th" scope="row">
-                                    <Link to={`/varasto/tilaus?id=${row.id}`}>
+                                    <Link to={`/varasto/tilaus/${row.id}`}>
                                         {row.id}
                                         <LaunchIcon fontSize="small" />
                                     </Link>

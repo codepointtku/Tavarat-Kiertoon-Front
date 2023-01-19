@@ -11,7 +11,7 @@ import {
     Typography,
     Collapse,
 } from '@mui/material';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -94,10 +94,11 @@ const detailRow = (value) => {
 
 const cellRow = () => {
     let order = '';
+    const { id } = useParams();
     const [searchParams] = useSearchParams();
+    console.log(searchParams);
     try {
-        const orderId = searchParams.get('id');
-        order = orderFind(orderId).products;
+        order = orderFind(id).products;
     } catch (error) {
         return (
             <TableRow>
