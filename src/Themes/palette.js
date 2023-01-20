@@ -35,9 +35,10 @@ const palette = {
             light: '#cfe9e7',
         },
         success: {
-            main: '#4CAF50',
+            main: '#81C784',
             light: '#81C784',
             dark: '#388E3C',
+            stashmain: '#4CAF50',
         },
     },
 };

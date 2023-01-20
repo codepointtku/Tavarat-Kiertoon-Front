@@ -1,28 +1,49 @@
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
+import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
-function ProductCard({ productName, description, dateAdded, id }) {
+function ProductCard({ productName, description, id }) {
+    const [addedToCart, setAddedToCart] = useState(false);
+    const [addToCartButtonValue, setValue] = useState('Lisää koriin');
+
+    const handleClickAddToCartBtn = () => {
+        setAddedToCart(!addedToCart);
+        setValue('Lisätty!');
+    };
+
     return (
         <Box sx={{ minWidth: 240 }}>
-            <Card>
-                <CardContent>
-                    <CardMedia
-                        component="img"
-                        alt="kuva"
-                        height="140"
-                        image="/static/images/cards/contemplative-reptile.jpg"
-                    />
-                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                        Yksinkertainen tuotekortti - /Components/ProductCard.js
-                    </Typography>
-                    <Typography>Product: {productName}</Typography>
-                    <Typography>Desription: {description}</Typography>
-                    <Typography>Date: {dateAdded}</Typography>
-                </CardContent>
+            <Card sx={{ maxWidth: 300 }}>
+                <CardActionArea>
+                    <CardMedia component="img" alt="kuva" height="200" image="br.jpg" />
+                    <CardContent>
+                        <Typography variant="h6">{productName}</Typography>
+                        <Typography variant="body2" paragraph>
+                            {description}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
                 <CardActions>
-                    <Button component={Link} to={`/tuotteet/${id}`} size="small">
-                        Linkki productDetails-sivulle
+                    <Button
+                        variant="outlined"
+                        component={Link}
+                        to={`/tuotteet/${id}`}
+                        size="small"
+                        startIcon={<InfoOutlinedIcon />}
+                    >
+                        Lisää tietoa
+                    </Button>
+                    <Button
+                        color={addedToCart ? 'success' : 'primary'}
+                        size="small"
+                        startIcon={<AddShoppingCartOutlinedIcon />}
+                        onClick={handleClickAddToCartBtn}
+                    >
+                        {addToCartButtonValue}
                     </Button>
                 </CardActions>
             </Card>
@@ -34,7 +55,6 @@ function ProductCard({ productName, description, dateAdded, id }) {
 ProductCard.propTypes = {
     productName: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    dateAdded: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
 };
 
