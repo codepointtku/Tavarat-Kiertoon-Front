@@ -9,6 +9,17 @@ test.beforeEach(async ({ page }) => {
 test.describe('order detail view', () => {
     test('open order', async ({ page }) => {
         await page.click('text=4127');
-        await expect(page.getByText('kahvikuppi')).toBeVisible();
+        await expect(page.getByText('Tuotenimi')).toBeVisible();
+    });
+    test('open collapsible table', async ({ page }) => {
+        await page.click('text=4127');
+        await page.click('//*[@id="root"]/main/div/table/tbody/tr[1]/td[1]/button');
+        await expect(page.getByText('5679')).toBeVisible();
+    });
+    test('close collapsible table', async ({ page }) => {
+        await page.click('text=4127');
+        await page.click('//*[@id="root"]/main/div/table/tbody/tr[1]/td[1]/button');
+        await page.click('//*[@id="root"]/main/div/table/tbody/tr[1]/td[1]/button');
+        await expect(page.getByText('5679')).not.toBeVisible();
     });
 });
