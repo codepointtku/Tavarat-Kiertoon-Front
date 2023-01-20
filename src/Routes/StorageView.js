@@ -8,7 +8,7 @@ function StorageView() {
 
     return (
         <>
-            <Button variant="contained">Varastonäkymä (tää on testinappula, poista myöhemmin)</Button>
+            <Button>Varastonäkymä (tää on testinappula, poista myöhemmin)</Button>
             {auth.storage ? <Outlet /> : <Navigate to="/" />}
         </>
     );
