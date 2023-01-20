@@ -58,7 +58,7 @@ function Routes() {
                     element: <OrdersList />,
                 },
                 {
-                    path: '/varasto/tilaus',
+                    path: '/varasto/tilaus/:id',
                     element: <OrderView />,
                 },
                 {
@@ -82,7 +82,7 @@ function Routes() {
                     element: <UsersView />,
                 },
                 {
-                    path: '/admin/user',
+                    path: '/admin/user/:id',
                     element: <UserDetails />,
                 },
                 {
@@ -90,7 +90,7 @@ function Routes() {
                     element: <LocationsView />,
                 },
                 {
-                    path: '/admin/varastot/varasto',
+                    path: '/admin/varastot/varasto/:id',
                     element: <LocationDetails />,
                 },
             ],
