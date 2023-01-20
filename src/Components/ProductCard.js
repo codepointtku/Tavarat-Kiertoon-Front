@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 function ProductCard({ productName, description, dateAdded, id }) {
     return (
-        <Box sx={{ minWidth: 275 }}>
+        <Box sx={{ minWidth: 240 }}>
             <Card>
                 <CardContent>
                     <CardMedia

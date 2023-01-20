@@ -1,4 +1,5 @@
 import { Button } from '@mui/material';
+import Container from '@mui/material/Container';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../Context/AuthContext';
@@ -40,44 +41,46 @@ function TestButtons() {
     return (
         <div>
             <hr />
-            <div style={{ marginBottom: '5px' }}>
-                <b>Links to pages: </b>
-                <Link to="/">Home</Link> <Link to="/varasto">Varasto</Link>{' '}
-                <Link to="/varasto/tilaus">Varasto/Tilaus</Link>{' '}
-                <Link to="/varasto/koodinlukija">Varasto/Koodinlukija</Link>
-                <br />
-                <Link to="/admin">Admin</Link> <Link to="/admin/user">Admin/Käyttäjä</Link>{' '}
-                <Link to="/admin/varastot">Admin/Varastot</Link>{' '}
-                <Link to="/admin/varastot/varasto">Admin/Varastot/Varasto</Link>{' '}
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <b>Logins:</b>
-                <button
-                    type="button"
-                    onClick={loginUserButtonHandler}
-                    style={{
-                        marginLeft: '5px',
-                        marginRight: '5px',
-                        background: auth.user ? 'lightgreen' : 'lightsalmon',
-                    }}
-                >
-                    Käyttäjä: {auth.user ? 'Log Out' : 'Log In'}
-                </button>
-                <button
-                    type="button"
-                    onClick={loginStorageButtonHandler}
-                    style={{ marginRight: '5px', background: auth.storage ? 'lightgreen' : 'lightsalmon' }}
-                >
-                    Varasto: {auth.storage ? 'Log Out' : 'Log In'}
-                </button>
-                <button
-                    type="button"
-                    onClick={loginAdminButtonHandler}
-                    style={{ background: auth.admin ? 'lightgreen' : 'lightsalmon' }}
-                >
-                    Admin: {auth.admin ? 'Log Out' : 'Log In'}
-                </button>
-            </div>
+            <Container maxWidth="sm">
+                <div style={{ marginBottom: '5px' }}>
+                    <b>Links to pages: </b>
+                    <Link to="/">Home</Link> <Link to="/varasto">Varasto</Link>{' '}
+                    <Link to="/varasto/tilaus">Varasto/Tilaus</Link>{' '}
+                    <Link to="/varasto/koodinlukija">Varasto/Koodinlukija</Link>
+                    <br />
+                    <Link to="/admin">Admin</Link> <Link to="/admin/user">Admin/Käyttäjä</Link>{' '}
+                    <Link to="/admin/varastot">Admin/Varastot</Link>{' '}
+                    <Link to="/admin/varastot/varasto">Admin/Varastot/Varasto</Link>{' '}
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                    <b>Logins:</b>
+                    <button
+                        type="button"
+                        onClick={loginUserButtonHandler}
+                        style={{
+                            marginLeft: '5px',
+                            marginRight: '5px',
+                            background: auth.user ? 'lightgreen' : 'lightsalmon',
+                        }}
+                    >
+                        Käyttäjä: {auth.user ? 'Log Out' : 'Log In'}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={loginStorageButtonHandler}
+                        style={{ marginRight: '5px', background: auth.storage ? 'lightgreen' : 'lightsalmon' }}
+                    >
+                        Varasto: {auth.storage ? 'Log Out' : 'Log In'}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={loginAdminButtonHandler}
+                        style={{ background: auth.admin ? 'lightgreen' : 'lightsalmon' }}
+                    >
+                        Admin: {auth.admin ? 'Log Out' : 'Log In'}
+                    </button>
+                </div>
+            </Container>
             <hr />
         </div>
     );
