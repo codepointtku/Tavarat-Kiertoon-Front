@@ -1,10 +1,13 @@
 import { createTheme } from '@mui/material/styles';
+import defaultTheme from './defaultTheme';
 
 const storageTheme = createTheme({
+    ...defaultTheme,
     palette: {
+        ...defaultTheme.palette,
         primary: {
             main: '#00855f',
-            light: '#c7d7eb',
+            light: '#bfe9de',
             contrastText: '#ffffff',
         },
     },

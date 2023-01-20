@@ -42,8 +42,8 @@ function ButtonAppBar() {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Adminin työkalupalkki-esimerkki
                     </Typography>
-                    <Button color="inherit">Luo juttuja</Button>
-                    <Button color="inherit">Editoi juttuja</Button>
+                    <Button>Luo juttuja</Button>
+                    <Button>Editoi juttuja</Button>
                     <Button>sudo rm -rf</Button>
                 </Toolbar>
             </AppBar>

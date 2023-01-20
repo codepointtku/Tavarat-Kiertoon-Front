@@ -45,9 +45,9 @@ function ProductList() {
     return (
         <>
             <div>ProductList.js - Content render area. </div>
-            <Grid container spacing={3}>
+            <Grid container spacing={2}>
                 {mockData?.map((product) => (
-                    <Grid item key={product.id}>
+                    <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
                         <ProductCard
                             id={product.id}
                             productName={product.productName}
