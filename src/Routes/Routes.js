@@ -8,6 +8,7 @@ import AdminView from './AdminView';
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
 import Base from '../Layouts/Base';
+import Storage from '../Layouts/Storage';
 import Admin from '../Layouts/Admin';
 
 import OrdersList from '../Components/OrdersList';
@@ -46,9 +47,9 @@ function Routes() {
             path: '/varasto',
             element: (
                 <ThemeProvider theme={storageTheme}>
-                    <Base>
+                    <Storage>
                         <StorageView />
-                    </Base>
+                    </Storage>
                 </ThemeProvider>
             ),
             children: [
