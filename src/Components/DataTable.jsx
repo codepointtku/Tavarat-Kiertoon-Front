@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
     Table,
     TableBody,
@@ -35,21 +36,26 @@ const rows = [
     createData(4117, 'toimitettu', 'Humalistonkatu 2', 'Maisa Mannerlaatta', '2.1.2023'),
 ];
 
-function OrderListTable() {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-
+function OrderListTable({ page, rowsPerPage, setUsedParams }) {
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
     const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+        setUsedParams('page', newPage);
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+        setUsedParams('rows', parseInt(event.target.value, 10));
+        setUsedParams('page', 0);
     };
+
+    useEffect(() => {
+        if (page > Math.floor(rows.length / rowsPerPage)) {
+            setUsedParams('page', Math.floor(rows.length / rowsPerPage));
+        } else if (page < 0) {
+            setUsedParams('page', 0);
+        }
+    }, [page]);
 
     return (
         <TableContainer component={Paper}>
@@ -111,5 +117,11 @@ function OrderListTable() {
         </TableContainer>
     );
 }
+
+OrderListTable.propTypes = {
+    page: PropTypes.number.isRequired,
+    setUsedParams: PropTypes.func.isRequired,
+    rowsPerPage: PropTypes.number.isRequired,
+};
 
 export default OrderListTable;
