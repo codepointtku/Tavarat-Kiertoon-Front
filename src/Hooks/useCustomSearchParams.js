@@ -17,7 +17,7 @@ const useCustomSearchParams = (params) => {
                 newParams[key] = searchParams.get(key);
             }
         }, []);
-        setSearchParams(newParams);
+        setSearchParams(newParams, { replace: true });
     }, []);
 
     useEffect(() => {
