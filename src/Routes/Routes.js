@@ -23,6 +23,9 @@ import LocationDetails from '../Components/LocationDetails';
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
 
+// import productData from '../TestData/tuote.json';
+import orderData from '../TestData/tilaus.json';
+
 function Routes() {
     const router = createBrowserRouter([
         {
@@ -60,6 +63,13 @@ function Routes() {
                 {
                     path: '/varasto/tilaus/:id',
                     element: <OrderView />,
+                    loader: async ({ params }) => {
+                        const data = orderData[params.id];
+                        if (data) {
+                            return data;
+                        }
+                        return null;
+                    },
                 },
                 {
                     path: '/varasto/koodinlukija',
