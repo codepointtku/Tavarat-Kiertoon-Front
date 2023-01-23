@@ -4,7 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-const pages = ['Tilaukset', 'Varastot', 'Käyttäjät'];
+const pages = ['Tilaukset', 'Varastot', 'Käyttäjät', 'Hakemukset'];
 
 export default function AdminBar() {
     return (
