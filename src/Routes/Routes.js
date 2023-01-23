@@ -57,8 +57,15 @@ function Routes() {
             ),
             children: [
                 {
-                    path: '/varasto',
+                    path: '/varasto/:view:page',
                     element: <OrdersList />,
+                    loader: async ({ params }) => {
+                        const data = orderData[params.id];
+                        if (data) {
+                            return data;
+                        }
+                        return null;
+                    },
                 },
                 {
                     path: '/varasto/tilaus/:id',
