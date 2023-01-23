@@ -34,6 +34,62 @@
         "color": "white",
         "location": "kahvihuone"
     },
+    "5672": {
+        "name": "kahvipaketti",
+        "barcode": "555-kaffe",
+        "category": "kahvittelu",
+        "color": "black",
+        "location": "kahvihuone"
+    },
+    "5673": {
+        "name": "kahvimylly",
+        "barcode": "grind to halt",
+        "category": "kahvittelu",
+        "color": "clear",
+        "location": "kahvihuone"
+    },
+    "5674": {
+        "name": "kahvipapu",
+        "barcode": "single coffee bean",
+        "category": "kahvittelu",
+        "color": "brown",
+        "location": "kahvihuone"
+    },
+    "5675": {
+        "name": "tonipal_kahville",
+        "barcode": "kahvipakotus",
+        "category": "inspirational quote",
+        "color": "white",
+        "location": "kahvihuone"
+    },
+    "5676": {
+        "name": "kahvipannu",
+        "barcode": "café",
+        "category": "kahvittelu",
+        "color": "black",
+        "location": "witches coven"
+    },
+    "5677": {
+        "name": "termoskannu",
+        "barcode": "kahvisäilytys",
+        "category": "kahvittelu",
+        "color": "gray",
+        "location": "kahvihuone"
+    },
+    "5680": {
+        "name": "kahvilautanen",
+        "barcode": "kaffe",
+        "category": "hifistely",
+        "color": "white",
+        "location": "kahvihuone"
+    },
+    "5681": {
+        "name": "kahviaddiktio",
+        "barcode": "nyt kaffee",
+        "category": "mielentila",
+        "color": "transparent",
+        "location": "mind"
+    },
     "1245": {
         "name": "jakkara",
         "barcode": "02",
