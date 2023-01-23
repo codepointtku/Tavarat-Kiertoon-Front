@@ -13,8 +13,8 @@ import {
     Collapse,
     TablePagination,
 } from '@mui/material';
-import { useSearchParams, useLoaderData } from 'react-router-dom';
-import { useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import TablePaginationActions from './TablePaginationActions';
@@ -29,75 +29,13 @@ import productData from '../TestData/tuote.json';
 // replace this with apiCall later on
 const productFind = (id) => productData[id];
 
-const detailRow = (value) => {
-    const [isOpen, setIsOpen] = useState(false);
-    return (
-        <>
-            <StyledTableRow key={value.id}>
-                <TableCell>
-                    <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={() => {
-                            setIsOpen(!isOpen);
-                        }}
-                    >
-                        {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
-                </TableCell>
-                <TableCell component="th" scope="row">
-                    {value.name}
-                </TableCell>
-                <TableCell align="right">{value.count}</TableCell>
-                <TableCell align="right">{value.barcode}</TableCell>
-                <TableCell align="right">{value.id}</TableCell>
-                <TableCell align="right">{value.category}</TableCell>
-                <TableCell align="right">{value.location}</TableCell>
-            </StyledTableRow>
-            <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    <Collapse in={isOpen} timeout="auto" unmountOnExit>
-                        <Box sx={{ margin: 1 }}>
-                            <Typography variant="h6" gutterBottom component="div">
-                                Tuotteet
-                            </Typography>
-                            <Table size="small">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell component="th" scope="row">
-                                            Tuotenumero
-                                        </TableCell>
-                                        <TableCell align="right">Tuotenimi</TableCell>
-                                        <TableCell align="right">Viivakoodi</TableCell>
-                                        <TableCell align="right">Kategoria</TableCell>
-                                        <TableCell align="right">Väri</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {value.items.map((item) => (
-                                        <TableRow key={item.id}>
-                                            <TableCell component="th" scope="row">
-                                                {item.id}
-                                            </TableCell>
-                                            <TableCell align="right">{item.name}</TableCell>
-                                            <TableCell align="right">{item.barcode}</TableCell>
-                                            <TableCell align="right">{item.category}</TableCell>
-                                            <TableCell align="right">{item.color}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </Box>
-                    </Collapse>
-                </TableCell>
-            </TableRow>
-        </>
-    );
-};
+function OrderView() {
+    const [page, setPage] = useState(0);
 
-const cellRow = () => {
-    const [searchParams] = useSearchParams();
-    console.log(searchParams);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    const [isOpen, setIsOpen] = useState({});
+
     const order = useLoaderData();
     if (order === null) {
         return (
@@ -108,9 +46,9 @@ const cellRow = () => {
             </TableRow>
         );
     }
-
     const sourceStates = {};
     const orderList = [];
+
     order.products.forEach((entry) => {
         try {
             const newEntry = productFind(entry);
@@ -139,38 +77,8 @@ const cellRow = () => {
         }
     });
 
-    /* Finds unique barcodes in the items under the each product. Move to sub-table as mapping later.
-    orderList.forEach((entry, key) => {
-        orderList[key].items = entry.items
-            .map((obj) => obj.barcode)
-            .filter((item, index, arr) => arr.indexOf(item) === index);
-    });
-    */
-
-    return orderList.map((value) => detailRow(value));
-};
-
-function OrderView() {
-    let order = '';
-    const { id } = useParams();
-    const [searchParams] = useSearchParams();
-    console.log(searchParams);
-    try {
-        order = orderFind(id).products;
-    } catch (error) {
-        return (
-            <TableRow>
-                <TableCell component="th" scope="row">
-                    <h1>Tilausnumeroa ei löytynyt</h1>
-                </TableCell>
-            </TableRow>
-        );
-    }
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-
     // Avoid a layout jump when reaching the last page with empty rows.
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - order.length) : 0;
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - orderList.length) : 0;
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -178,8 +86,13 @@ function OrderView() {
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
+        console.log(event.target.value);
         setPage(0);
     };
+
+    useEffect(() => {
+        setIsOpen({ sourceStates });
+    }, []);
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
@@ -195,11 +108,71 @@ function OrderView() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {(rowsPerPage > 0 ? order.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : order).map(
-                        (row) => (
-                            <div key={row.id}>{cellRow()}</div>
-                        )
-                    )}
+                    {(rowsPerPage > 0
+                        ? orderList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : orderList
+                    ).map((value) => (
+                        <>
+                            <StyledTableRow key={value.id}>
+                                <TableCell>
+                                    <IconButton
+                                        aria-label="expand row"
+                                        size="small"
+                                        onClick={() => {
+                                            setIsOpen((prev) => ({ ...prev, [value.id]: !isOpen[value.id] }));
+                                        }}
+                                    >
+                                        {isOpen[value.id] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                    </IconButton>
+                                </TableCell>
+                                <TableCell component="th" scope="row">
+                                    {value.name}
+                                </TableCell>
+                                <TableCell align="right">{value.count}</TableCell>
+                                <TableCell align="right">{value.barcode}</TableCell>
+                                <TableCell align="right">{value.id}</TableCell>
+                                <TableCell align="right">{value.category}</TableCell>
+                                <TableCell align="right">{value.location}</TableCell>
+                            </StyledTableRow>
+                            <TableRow>
+                                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                                    <Collapse in={isOpen[value.id]} timeout="auto" unmountOnExit>
+                                        <Box sx={{ margin: 1 }}>
+                                            <Typography variant="h6" gutterBottom component="div">
+                                                Tuotteet
+                                            </Typography>
+                                            <Table size="small">
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell component="th" scope="row">
+                                                            Tuotenumero
+                                                        </TableCell>
+                                                        <TableCell align="right">Tuotenimi</TableCell>
+                                                        <TableCell align="right">Viivakoodi</TableCell>
+                                                        <TableCell align="right">Kategoria</TableCell>
+                                                        <TableCell align="right">Väri</TableCell>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {value.items.map((item) => (
+                                                        <TableRow key={item.id}>
+                                                            <TableCell component="th" scope="row">
+                                                                {item.id}
+                                                            </TableCell>
+                                                            <TableCell align="right">{item.name}</TableCell>
+                                                            <TableCell align="right">{item.barcode}</TableCell>
+                                                            <TableCell align="right">{item.category}</TableCell>
+                                                            <TableCell align="right">{item.color}</TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        </Box>
+                                    </Collapse>
+                                </TableCell>
+                            </TableRow>
+                        </>
+                    ))}
                     {emptyRows > 0 && (
                         <StyledTableRow style={{ height: 53 * emptyRows }}>
                             <StyledTableCell colSpan={6} />
@@ -211,7 +184,7 @@ function OrderView() {
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                             colSpan={3}
-                            count={order.length}
+                            count={orderList.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             SelectProps={{

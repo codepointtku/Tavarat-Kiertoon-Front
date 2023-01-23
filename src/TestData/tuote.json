@@ -62,6 +62,34 @@
         "color": "white",
         "location": "kahvihuone"
     },
+    "5676": {
+        "name": "kahvipannu",
+        "barcode": "café",
+        "category": "kahvittelu",
+        "color": "black",
+        "location": "witches coven"
+    },
+    "5677": {
+        "name": "termoskannu",
+        "barcode": "kahvisäilytys",
+        "category": "kahvittelu",
+        "color": "gray",
+        "location": "kahvihuone"
+    },
+    "5680": {
+        "name": "kahvilautanen",
+        "barcode": "kaffe",
+        "category": "hifistely",
+        "color": "white",
+        "location": "kahvihuone"
+    },
+    "5681": {
+        "name": "kahviaddiktio",
+        "barcode": "nyt kaffee",
+        "category": "mielentila",
+        "color": "transparent",
+        "location": "mind"
+    },
     "1245": {
         "name": "jakkara",
         "barcode": "02",
