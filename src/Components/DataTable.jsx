@@ -74,7 +74,11 @@ function OrderListTable({ page, rowsPerPage, setUsedParams }) {
                         (row) => (
                             <StyledTableRow key={row.id}>
                                 <StyledTableCell component="th" scope="row">
-                                    <Link to={`/varasto/tilaus/${row.id}?page=0&rows=5`}>
+                                    <Link
+                                        to={{ pathname: '/varasto/tilaus' }}
+                                        params={{ id: row.id }}
+                                        search={{ page: 0, rows: 5 }}
+                                    >
                                         {row.id}
                                         <LaunchIcon fontSize="small" />
                                     </Link>
