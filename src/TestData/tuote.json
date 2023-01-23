@@ -34,6 +34,34 @@
         "color": "white",
         "location": "kahvihuone"
     },
+    "5672": {
+        "name": "kahvipaketti",
+        "barcode": "555-kaffe",
+        "category": "kahvittelu",
+        "color": "black",
+        "location": "kahvihuone"
+    },
+    "5673": {
+        "name": "kahvimylly",
+        "barcode": "grind to halt",
+        "category": "kahvittelu",
+        "color": "clear",
+        "location": "kahvihuone"
+    },
+    "5674": {
+        "name": "kahvipapu",
+        "barcode": "single coffee bean",
+        "category": "kahvittelu",
+        "color": "brown",
+        "location": "kahvihuone"
+    },
+    "5675": {
+        "name": "tonipal_kahville",
+        "barcode": "kahvipakotus",
+        "category": "inspirational quote",
+        "color": "white",
+        "location": "kahvihuone"
+    },
     "1245": {
         "name": "jakkara",
         "barcode": "02",

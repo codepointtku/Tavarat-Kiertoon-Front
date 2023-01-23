@@ -7,7 +7,7 @@
         "status": "order received"
     },
     "4127": {
-        "products": ["5678", "5679", "5670", "5671"],
+        "products": ["5678", "5679", "5670", "5671", "5672", "5673", "5674", "5675"],
         "date": "2018-12-10T13:49:51.141Z",
         "recipient": "Kahvipakottaja",
         "address": "Tonipal Kahville Katu 9001",

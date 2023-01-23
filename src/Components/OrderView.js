@@ -5,16 +5,19 @@ import {
     TableHead,
     TableCell,
     TableRow,
+    TableFooter,
     Paper,
     IconButton,
     Box,
     Typography,
     Collapse,
+    TablePagination,
 } from '@mui/material';
 import { useSearchParams, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import TablePaginationActions from './TablePaginationActions';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
 import productData from '../TestData/tuote.json';
@@ -151,6 +154,35 @@ const cellRow = () => {
 };
 
 function OrderView() {
+    let order = '';
+    const { id } = useParams();
+    const [searchParams] = useSearchParams();
+    console.log(searchParams);
+    try {
+        order = orderFind(id).products;
+    } catch (error) {
+        return (
+            <TableRow>
+                <TableCell component="th" scope="row">
+                    <h1>Tilausnumeroa ei löytynyt</h1>
+                </TableCell>
+            </TableRow>
+        );
+    }
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    // Avoid a layout jump when reaching the last page with empty rows.
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - order.length) : 0;
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
@@ -165,7 +197,38 @@ function OrderView() {
                         <StyledTableCell align="right">Sijainti</StyledTableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>{cellRow()}</TableBody>
+                <TableBody>
+                    {(rowsPerPage > 0 ? order.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : order).map(
+                        (row) => (
+                            <div key={row.id}>{cellRow()}</div>
+                        )
+                    )}
+                    {emptyRows > 0 && (
+                        <StyledTableRow style={{ height: 53 * emptyRows }}>
+                            <StyledTableCell colSpan={6} />
+                        </StyledTableRow>
+                    )}
+                </TableBody>
+                <TableFooter>
+                    <TableRow>
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                            colSpan={3}
+                            count={order.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            SelectProps={{
+                                inputProps: {
+                                    'aria-label': 'rows per page',
+                                },
+                                native: true,
+                            }}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                            ActionsComponent={TablePaginationActions}
+                        />
+                    </TableRow>
+                </TableFooter>
             </Table>
         </TableContainer>
     );
