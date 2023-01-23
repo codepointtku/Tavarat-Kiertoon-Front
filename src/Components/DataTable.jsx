@@ -96,7 +96,7 @@ function OrderListTable({ page, rowsPerPage, setUsedParams }) {
                 <TableFooter>
                     <TableRow>
                         <TablePagination
-                            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                            rowsPerPageOptions={[5, 10, 25, 100]}
                             colSpan={3}
                             count={rows.length}
                             rowsPerPage={rowsPerPage}
