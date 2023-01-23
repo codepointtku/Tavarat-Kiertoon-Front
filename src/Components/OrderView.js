@@ -13,7 +13,7 @@ import {
     Collapse,
     TablePagination,
 } from '@mui/material';
-import { useSearchParams, useParams } from 'react-router-dom';
+import { useSearchParams, useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -21,10 +21,10 @@ import TablePaginationActions from './TablePaginationActions';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
 import productData from '../TestData/tuote.json';
-import orderData from '../TestData/tilaus.json';
+// import orderData from '../TestData/tilaus.json';
 
 // replace this with apiCall later on
-const orderFind = (id) => orderData[id];
+// const orderFind = (id) => orderData[id];
 
 // replace this with apiCall later on
 const productFind = (id) => productData[id];
@@ -96,13 +96,10 @@ const detailRow = (value) => {
 };
 
 const cellRow = () => {
-    let order = '';
-    const { id } = useParams();
     const [searchParams] = useSearchParams();
     console.log(searchParams);
-    try {
-        order = orderFind(id).products;
-    } catch (error) {
+    const order = useLoaderData();
+    if (order === null) {
         return (
             <TableRow>
                 <TableCell component="th" scope="row">
@@ -114,7 +111,7 @@ const cellRow = () => {
 
     const sourceStates = {};
     const orderList = [];
-    order.forEach((entry) => {
+    order.products.forEach((entry) => {
         try {
             const newEntry = productFind(entry);
             sourceStates[entry] = false;
