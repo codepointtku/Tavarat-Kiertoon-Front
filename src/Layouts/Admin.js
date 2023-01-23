@@ -1,15 +1,16 @@
 import PropTypes from 'prop-types';
 
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+// import AppBar from '@mui/material/AppBar';
+// import Box from '@mui/material/Box';
+// import Toolbar from '@mui/material/Toolbar';
+// import Typography from '@mui/material/Typography';
+// import Button from '@mui/material/Button';
+// import IconButton from '@mui/material/IconButton';
+// import MenuIcon from '@mui/icons-material/Menu';
 
 import Header from './Components/Header';
 import Footer from './Components/Footer';
+import AdminBar from '../Components/AdminBar';
 
 // admin Layout
 
@@ -17,7 +18,7 @@ function Admin({ children }) {
     return (
         <>
             <Header />
-            <ButtonAppBar />
+            <AdminBar />
             <main>{children}</main>
             <Footer />
         </>
@@ -31,22 +32,22 @@ Admin.propTypes = {
 export default Admin;
 
 // mock admin app bar for testing purposes, this shall be deleted
-function ButtonAppBar() {
-    return (
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        Adminin työkalupalkki-esimerkki
-                    </Typography>
-                    <Button>Luo juttuja</Button>
-                    <Button>Editoi juttuja</Button>
-                    <Button>sudo rm -rf</Button>
-                </Toolbar>
-            </AppBar>
-        </Box>
-    );
-}
+// function ButtonAppBar() {
+//     return (
+//         <Box sx={{ flexGrow: 1 }}>
+//             <AppBar position="static">
+//                 <Toolbar>
+//                     <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+//                         <MenuIcon />
+//                     </IconButton>
+//                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+//                         Adminin työkalupalkki-esimerkki
+//                     </Typography>
+//                     <Button>Luo juttuja</Button>
+//                     <Button>Editoi juttuja</Button>
+//                     <Button>sudo rm -rf</Button>
+//                 </Toolbar>
+//             </AppBar>
+//         </Box>
+//     );
+// }

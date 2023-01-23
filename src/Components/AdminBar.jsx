@@ -12,9 +12,9 @@ export default function AdminBar() {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Admin
                     </Typography>
-                    <Button color="inherit">Tilaukset</Button>
-                    <Button color="inherit">Varastot</Button>
-                    <Button color="inherit">Käyttäjät</Button>
+                    <Button>Tilaukset</Button>
+                    <Button>Varastot</Button>
+                    <Button>Käyttäjät</Button>
                 </Toolbar>
             </AppBar>
         </Box>
