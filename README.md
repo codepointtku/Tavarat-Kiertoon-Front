@@ -52,3 +52,11 @@ On the next start Docker will rebuild the images using the new code.
 ## Styles and Stylesheets
 
 (Sass CSS extension language is used to make writing CSS a better developer experience.)
+
+## Testing
+
+Test configuration is set to 'localhost/'.
+
+If you want to run tests outside of Docker, change the url to 'localhost:3000'
+
+Run playwright tests from the terminal with the command: `npm test`
