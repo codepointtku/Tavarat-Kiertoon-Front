@@ -2,15 +2,15 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../Context/AuthContext'; */
-import { AppBar, Container } from '@mui/material';
+import { Container } from '@mui/material';
 
     // JTo: Commented while TestButtons are in use.
     // const { auth, setAuth } = useContext(AuthContext);
 function Header() {
     return (
-        <AppBar>
-                <Container><img src="Turku_vaaka_300ppi_viiva_white.png" alt="Turku logo valkoinen" style={{width: 200 }}/></Container>
-        </AppBar>
+        <header style={{ backgroundColor: "#009bd8" }}>
+                <Container><img src="Turku_vaaka_300ppi_viiva_white.png" alt="Turku logo valkoinen" style={{ width: 200 }}/></Container>
+        </header>
     )
 }
 
