@@ -3,10 +3,18 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-
-const pages = ['Tilaukset', 'Varastot', 'Käyttäjät', 'Hakemukset'];
+import { useNavigate } from 'react-router-dom';
 
 export default function AdminBar() {
+    const pages = [
+        { name: 'Tilaukset', path: '/admin/tilaukset' },
+        { name: 'Varastot', path: '/admin/varastot' },
+        { name: 'Käyttäjät', path: '/admin/käyttäjät' },
+        { name: 'Hakemukset', path: '/admin/hakemukset' },
+    ];
+
+    const navigate = useNavigate();
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -16,8 +24,14 @@ export default function AdminBar() {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
                         {pages.map((page) => (
-                            <Button key={page} sx={{ my: 2, color: 'white', display: 'block' }}>
-                                {page}
+                            <Button
+                                key={page.name}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                onClick={() => {
+                                    navigate(`${page.path}`);
+                                }}
+                            >
+                                {page.name}
                             </Button>
                         ))}
                     </Box>
