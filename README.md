@@ -60,3 +60,5 @@ Test configuration is set to 'localhost/'.
 If you want to run tests outside of Docker, change the url to 'localhost:3000'
 
 Run playwright tests from the terminal with the command: `npm test`
+
+start json server with productdb.json with command `npm run server`
