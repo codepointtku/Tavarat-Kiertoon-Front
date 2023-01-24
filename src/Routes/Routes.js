@@ -75,11 +75,12 @@ function Routes() {
                         dataList.sort((a, b) => {
                             if (statuses[a.status] > statuses[b.status]) {
                                 return a
-                            } else if (a.status === b.status) {
+                            }
+                            if (a.status === b.status) {
                                 if (a.id > b.id) {
                                     return a
-                                } return b
-                            }
+                                } 
+                            } return b
                             })
                         
                             if (dataList) {
