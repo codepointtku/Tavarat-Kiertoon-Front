@@ -60,13 +60,14 @@ function Routes() {
                 {
                     path: '/varasto/:num/:view',
                     element: <OrdersList />,
-                    loader: async () => {
-                        const dataList = []
-                        orderList.forEach(() => {
-
-                        })
-                        if (data) {
-                            return data;
+                    loader: async ({params}) => {
+                        // num will the back-end which entries to bring
+                        const dataList = [...orderList]
+                        // view is order status, unless archived can bring all?
+                        // or will be replaced into the back-end later?
+                        dataList.sort((a, b) => (a.status > b.status) ? 1 : (a.status === b.status) ? ((a.id > b.id) ? 1 : -1) : -1 )
+                        if (dataList) {
+                            return dataList;
                         }
                         return null;
                     },
