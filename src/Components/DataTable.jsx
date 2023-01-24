@@ -36,8 +36,6 @@ const rows = [
     createData(4117, 'toimitettu', 'Humalistonkatu 2', 'Maisa Mannerlaatta', '2.1.2023'),
 ];
 
-console.log(JSON.stringify(rows));
-
 function OrderListTable({ page, rowsPerPage, setUsedParams }) {
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
