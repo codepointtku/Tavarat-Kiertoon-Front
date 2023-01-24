@@ -65,7 +65,13 @@ function Routes() {
                         const dataList = [...orderList]
                         // view is order status, unless archived can bring all?
                         // or will be replaced into the back-end later?
-                        dataList.sort((a, b) => (a.status > b.status) ? 1 : (a.status === b.status) ? ((a.id > b.id) ? 1 : -1) : -1 )
+                        const statuses = {
+                            waiting: 3,
+                            delivery: 2,
+                            foinished: 1,
+                        }
+                        statuses[params.view] = 10
+                        dataList.sort((a, b) => (statuses[a.status] > statuses[b.status]) ? 1 : (a.status === b.status) ? ((a.id > b.id) ? 1 : -1) : -1 )
                         if (dataList) {
                             return dataList;
                         }
