@@ -25,6 +25,7 @@ import ProductDetails from '../Components/ProductDetails';
 
 // import productData from '../TestData/tuote.json';
 import orderData from '../TestData/tilaus.json';
+import orderList from '../TestData/tilaukset.json'
 
 function Routes() {
     const router = createBrowserRouter([
@@ -57,10 +58,13 @@ function Routes() {
             ),
             children: [
                 {
-                    path: '/varasto/:view:page',
+                    path: '/varasto/:num/:view',
                     element: <OrdersList />,
-                    loader: async ({ params }) => {
-                        const data = orderData[params.id];
+                    loader: async () => {
+                        const dataList = []
+                        orderList.forEach(() => {
+
+                        })
                         if (data) {
                             return data;
                         }
