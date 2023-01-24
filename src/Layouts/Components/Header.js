@@ -1,26 +1,24 @@
-import { Button } from '@mui/material';
-import Container from '@mui/material/Container';
+/* import { Button } from '@mui/material';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import AuthContext from '../../Context/AuthContext';
+import AuthContext from '../../Context/AuthContext'; */
+import { AppBar, Container } from '@mui/material';
 
-function Header() {
     // JTo: Commented while TestButtons are in use.
     // const { auth, setAuth } = useContext(AuthContext);
-
+function Header() {
     return (
-        <div>
-            <Button>Header Button</Button>
-            <TestButtons />
-        </div>
-    );
+        <AppBar>
+                <Container><img src="Turku_vaaka_300ppi_viiva_white.png" alt="Turku logo valkoinen" style={{width: 200 }}/></Container>
+        </AppBar>
+    )
 }
 
-/**
+/*
  * JTo: This is for TESTING page navigation and Auth Context.
  * Remove this when real Login and Navigation codes are done
  * @returns
- */
+ * <TestButtons />
 function TestButtons() {
     const { auth, setAuth } = useContext(AuthContext);
 
@@ -42,6 +40,7 @@ function TestButtons() {
         <div>
             <hr />
             <Container maxWidth="sm">
+
                 <div style={{ marginBottom: '5px' }}>
                     <b>Links to pages: </b>
                     <Link to="/">Home</Link> <Link to="/varasto?page=0&rows=5">Varasto</Link>{' '}
@@ -85,5 +84,7 @@ function TestButtons() {
         </div>
     );
 }
+
+*/
 
 export default Header;
