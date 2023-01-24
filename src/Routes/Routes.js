@@ -61,29 +61,28 @@ function Routes() {
                     path: '/varasto/:num/:view',
                     element: <OrdersList />,
                     loader: async ({params}) => {
-                        // num will the back-end which entries to bring
+                        // num will tell back-end which entries to bring
                         const dataList = [...orderList]
                         // view is order status, unless archived can bring all?
                         // or will be replaced into the back-end later?
                         const statuses = {
-                            waiting: 3,
-                            delivery: 2,
-                            foinished: 1,
+                            waiting: 2,
+                            delivery: 1,
+                            finished: 0,
                         }
                         statuses[params.view] = 10
-                        
                         dataList.sort((a, b) => {
                             if (statuses[a.status] > statuses[b.status]) {
-                                return a
+                                return -1
                             }
                             if (a.status === b.status) {
                                 if (a.id > b.id) {
-                                    return a
+                                    return -1
                                 } 
-                            } return b
+                            } return 1
                             })
                         
-                            if (dataList) {
+                        if (dataList) {
                             return dataList;
                         }
                         return null;
