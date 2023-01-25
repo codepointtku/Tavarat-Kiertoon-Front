@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
+import Divider from '@mui/material/Divider';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function SortByMenu() {
@@ -38,7 +39,9 @@ export default function SortByMenu() {
                 TransitionComponent={Fade}
             >
                 <MenuItem onClick={handleClose}>1. perusteella</MenuItem>
+                <Divider />
                 <MenuItem onClick={handleClose}>2. perusteella</MenuItem>
+                <Divider />
                 <MenuItem onClick={handleClose}>3. perusteella</MenuItem>
             </Menu>
         </div>
