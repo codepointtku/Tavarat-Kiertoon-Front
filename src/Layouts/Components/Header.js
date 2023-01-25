@@ -22,7 +22,7 @@ function Header() {
  * JTo: This is for TESTING page navigation and Auth Context.
  * Remove this when real Login and Navigation codes are done
  * @returns
- * <TestButtons />
+ * 
 function TestButtons() {
     const { auth, setAuth } = useContext(AuthContext);
 
