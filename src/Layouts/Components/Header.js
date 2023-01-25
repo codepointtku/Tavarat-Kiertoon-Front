@@ -47,7 +47,7 @@ function TestButtons() {
 
                 <div style={{ marginBottom: '5px' }}>
                     <b>Links to pages: </b>
-                    <Link to="/">Home</Link> <Link to="/varasto?page=0&rows=5">Varasto</Link>{' '}
+                    <Link to="/">Home</Link> <Link to="/varasto/0/delivery?page=0&rows=5">Varasto</Link>{' '}
                     <Link to="/varasto/tilaus">Varasto/Tilaus</Link>{' '}
                     <Link to="/varasto/koodinlukija">Varasto/Koodinlukija</Link>
                     <br />

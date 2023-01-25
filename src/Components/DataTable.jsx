@@ -16,30 +16,11 @@ import TablePaginationActions from './TablePaginationActions';
 import StyledTableCell from './StyledTableCell';
 import StyledTableRow from './StyledTableRow';
 
-function createData(id, status, address, recipient, date) {
-    return { id, status, address, recipient, date };
-}
-
-// Change to handle actual orders data later
-const rows = [
-    createData(4128, 'käsittelyssä', 'Hämeenkatu 1', 'Matti Meikäläinen', '12.1.2023'),
-    createData(4127, 'toimituksessa', 'Humalistonkatu 2', 'Maisa Mannerlaatta', '12.1.2023'),
-    createData(4126, 'toimitettu', 'Eerikinkatu 3', 'Jaska Jokunen', '11.1.2023'),
-    createData(4125, 'toimitettu', 'Eerikinkatu 3', 'Jaska Jokunen', '9.1.2023'),
-    createData(4124, 'toimitettu', 'Hämeenkatu 1', 'Matti Meikäläinen', '7.1.2023'),
-    createData(4123, 'toimitettu', 'Hämeenkatu 4', 'Kaisa Keihäs', '6.1.2023'),
-    createData(4122, 'toimitettu', 'Hämeenkatu 1', 'Matti Meikäläinen', '6.1.2023'),
-    createData(4121, 'toimitettu', 'Hämeenkatu 4', 'Kaisa Keihäs', '5.1.2023'),
-    createData(4120, 'toimitettu', 'Eerikinkatu 3', 'Jaska Jokunen', '4.1.2023'),
-    createData(4119, 'toimitettu', 'Humalistonkatu 2', 'Maisa Mannerlaatta', '4.1.2023'),
-    createData(4118, 'toimitettu', 'Eerikinkatu 3', 'Jaska Jokunen', '3.1.2023'),
-    createData(4117, 'toimitettu', 'Humalistonkatu 2', 'Maisa Mannerlaatta', '2.1.2023'),
-];
-
-function OrderListTable({ page, rowsPerPage, setUsedParams }) {
+function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
+    
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
+    
     const handleChangePage = (event, newPage) => {
         setUsedParams('page', newPage);
     };
@@ -122,6 +103,13 @@ OrderListTable.propTypes = {
     page: PropTypes.number.isRequired,
     setUsedParams: PropTypes.func.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
+    rows: PropTypes.arrayOf(PropTypes.objectOf({
+        id: PropTypes.number.isRequired,
+        status: PropTypes.string.isRequired,
+        address: PropTypes.string.isRequired,
+        recipient: PropTypes.string.isRequired,
+        date: PropTypes.string.isRequired,
+    })).isRequired
 };
 
 export default OrderListTable;
