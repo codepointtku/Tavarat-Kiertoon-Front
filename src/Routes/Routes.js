@@ -15,7 +15,7 @@ import OrdersList from '../Components/OrdersList';
 import OrderView from '../Components/OrderView';
 import QrScanner from '../Components/QrScanner';
 
-import UsersView from '../Components/UsersView';
+import UsersList from '../Components/UsersList';
 import UserDetails from '../Components/UserDetails';
 import LocationsView from '../Components/LocationsView';
 import LocationDetails from '../Components/LocationDetails';
@@ -88,8 +88,8 @@ function Routes() {
             ),
             children: [
                 {
-                    path: '/admin',
-                    element: <UsersView />,
+                    path: '/admin/user',
+                    element: <UsersList />,
                 },
                 {
                     path: '/admin/user/:id',
