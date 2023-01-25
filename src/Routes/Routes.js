@@ -44,11 +44,17 @@ function Routes() {
                         const { data } = await axios.get('http://localhost:3001/products');
                         return data;
                     },
-
                 },
                 {
                     path: '/tuotteet/:id',
                     element: <ProductDetails />,
+                    loader: async ({ params }) => {
+                        const { data } = await axios.get(`http://localhost:3001/products/${params.id}`);
+                        if (data) {
+                            return data;
+                        }
+                        return null;
+                    },
                 },
             ],
         },
