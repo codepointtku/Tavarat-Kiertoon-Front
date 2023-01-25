@@ -26,7 +26,8 @@ import ProductDetails from '../Components/ProductDetails';
 
 // import productData from '../TestData/tuote.json';
 import orderData from '../TestData/tilaus.json';
-import orderList from '../TestData/tilaukset.json'
+import orderList from '../TestData/tilaukset.json';
+import userList from '../TestData/user.json';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -72,28 +73,29 @@ function Routes() {
                 {
                     path: '/varasto/:num/:view',
                     element: <OrdersList />,
-                    loader: async ({params}) => {
+                    loader: async ({ params }) => {
                         // num will tell back-end which entries to bring
-                        const dataList = [...orderList]
+                        const dataList = [...orderList];
                         // view is order status, unless archived can bring all?
                         // or will be replaced into the back-end later?
                         const statuses = {
                             waiting: 2,
                             delivery: 1,
                             finished: 0,
-                        }
-                        statuses[params.view] = 10
+                        };
+                        statuses[params.view] = 10;
                         dataList.sort((a, b) => {
                             if (statuses[a.status] > statuses[b.status]) {
-                                return -1
+                                return -1;
                             }
                             if (a.status === b.status) {
                                 if (a.id > b.id) {
-                                    return -1
-                                } 
-                            } return 1
-                            })
-                        
+                                    return -1;
+                                }
+                            }
+                            return 1;
+                        });
+
                         if (dataList) {
                             return dataList;
                         }
@@ -128,8 +130,36 @@ function Routes() {
             ),
             children: [
                 {
-                    path: '/admin/user',
+                    path: '/admin/user/:num/:view',
                     element: <UsersList />,
+                    loader: async ({ params }) => {
+                        // num will tell back-end which entries to bring
+                        const dataList = [...userList];
+                        // view is order status, unless archived can bring all?
+                        // or will be replaced into the back-end later?
+                        const statuses = {
+                            admin: 2,
+                            varasto: 1,
+                            kahvinkeittäjä: 0,
+                        };
+                        statuses[params.view] = 10;
+                        dataList.sort((a, b) => {
+                            if (statuses[a.status] > statuses[b.status]) {
+                                return -1;
+                            }
+                            if (a.status === b.status) {
+                                if (a.id > b.id) {
+                                    return -1;
+                                }
+                            }
+                            return 1;
+                        });
+
+                        if (dataList) {
+                            return dataList;
+                        }
+                        return null;
+                    },
                 },
                 {
                     path: '/admin/user/:id',
