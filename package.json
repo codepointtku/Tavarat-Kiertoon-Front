@@ -31,7 +31,7 @@
         "test": "playwright test",
         "eject": "react-scripts eject",
         "pretty": "prettier --write .",
-        "server": "json-server -p3001 --watch mockData.json"
+        "server": "npm install && json-server -p3001 --watch productdb.json"
     },
     "eslintConfig": {
         "extends": [

@@ -41,15 +41,10 @@ function Routes() {
                     path: '/',
                     element: <ProductList />,
                     loader: async () => {
-                        const { data } = await axios.get('http://localhost:3001/mockData');
+                        const { data } = await axios.get('http://localhost:3001/products');
                         return data;
                     },
 
-                    // loader: () =>
-                    //     axios.get('http://localhost:3001/mockData').then((req) => {
-                    //         const { data } = req;
-                    //         return data;
-                    //     }),
                 },
                 {
                     path: '/tuotteet/:id',
