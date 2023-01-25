@@ -65,10 +65,10 @@ function LoginForm() {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link variant="body2">Unohtunut salasana?</Link>
+                            <Link variant="body2" href="http://ESLintMeeMuikulle.com/">Unohtunut salasana?</Link>
                         </Grid>
                         <Grid item>
-                            <Link variant="body2">Rekisteröidy</Link>
+                            <Link variant="body2" href="http://ESLintMeeMuikulle.com/">Rekisteröidy</Link>
                         </Grid>
                     </Grid>
                 </Box>

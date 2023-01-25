@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
-
-import LoginForm from './LoginForm';
-import ContactForm from './ContactForm';
+import PropTypes from 'prop-types';
 
 import {
     AppBar,
@@ -21,7 +19,6 @@ import {
     ListItemText,
 } from '@mui/material';
 
-// icons
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
@@ -30,6 +27,9 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import PhishingIcon from '@mui/icons-material/Phishing';
+
+import LoginForm from './LoginForm';
+import ContactForm from './ContactForm';
 
 //
 
@@ -209,3 +209,9 @@ function DefaultAppBar() {
 }
 
 export default DefaultAppBar;
+
+Drawer.propTypes = {
+    currentOpenDrawer: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    children: PropTypes.element.isRequired,
+}
