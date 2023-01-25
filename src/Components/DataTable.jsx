@@ -17,10 +17,9 @@ import StyledTableCell from './StyledTableCell';
 import StyledTableRow from './StyledTableRow';
 
 function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
-    
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-    
+
     const handleChangePage = (event, newPage) => {
         setUsedParams('page', newPage);
     };
@@ -103,13 +102,16 @@ OrderListTable.propTypes = {
     page: PropTypes.number.isRequired,
     setUsedParams: PropTypes.func.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
-    rows: PropTypes.arrayOf(PropTypes.objectOf({
-        id: PropTypes.number.isRequired,
-        status: PropTypes.string.isRequired,
-        address: PropTypes.string.isRequired,
-        recipient: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-    })).isRequired
+    rows: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number,
+            status: PropTypes.string,
+            address: PropTypes.string,
+            recipient: PropTypes.string,
+            date: PropTypes.string,
+            products: PropTypes.arrayOf(PropTypes.string),
+        })
+    ).isRequired,
 };
 
 export default OrderListTable;
