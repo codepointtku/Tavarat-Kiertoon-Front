@@ -26,6 +26,7 @@ import ProductDetails from '../Components/ProductDetails';
 
 // import productData from '../TestData/tuote.json';
 import orderData from '../TestData/tilaus.json';
+import orderList from '../TestData/tilaukset.json'
 
 function Routes() {
     const router = createBrowserRouter([
@@ -69,8 +70,35 @@ function Routes() {
             ),
             children: [
                 {
-                    path: '/varasto',
+                    path: '/varasto/:num/:view',
                     element: <OrdersList />,
+                    loader: async ({params}) => {
+                        // num will tell back-end which entries to bring
+                        const dataList = [...orderList]
+                        // view is order status, unless archived can bring all?
+                        // or will be replaced into the back-end later?
+                        const statuses = {
+                            waiting: 2,
+                            delivery: 1,
+                            finished: 0,
+                        }
+                        statuses[params.view] = 10
+                        dataList.sort((a, b) => {
+                            if (statuses[a.status] > statuses[b.status]) {
+                                return -1
+                            }
+                            if (a.status === b.status) {
+                                if (a.id > b.id) {
+                                    return -1
+                                } 
+                            } return 1
+                            })
+                        
+                        if (dataList) {
+                            return dataList;
+                        }
+                        return null;
+                    },
                 },
                 {
                     path: '/varasto/tilaus/:id',
