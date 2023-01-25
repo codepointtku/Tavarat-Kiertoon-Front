@@ -15,12 +15,12 @@ import { Link } from 'react-router-dom';
 import TablePaginationActions from './TablePaginationActions';
 import StyledTableCell from './StyledTableCell';
 import StyledTableRow from './StyledTableRow';
+import SortByMenu from './SortByMenu';
 
 function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
-    
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-    
+
     const handleChangePage = (event, newPage) => {
         setUsedParams('page', newPage);
     };
@@ -76,6 +76,7 @@ function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
                 </TableBody>
                 <TableFooter>
                     <TableRow>
+                        <SortByMenu />
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25, 100]}
                             colSpan={3}
@@ -103,13 +104,15 @@ OrderListTable.propTypes = {
     page: PropTypes.number.isRequired,
     setUsedParams: PropTypes.func.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
-    rows: PropTypes.arrayOf(PropTypes.objectOf({
-        id: PropTypes.number.isRequired,
-        status: PropTypes.string.isRequired,
-        address: PropTypes.string.isRequired,
-        recipient: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-    })).isRequired
+    rows: PropTypes.arrayOf(
+        PropTypes.objectOf({
+            id: PropTypes.number.isRequired,
+            status: PropTypes.string.isRequired,
+            address: PropTypes.string.isRequired,
+            recipient: PropTypes.string.isRequired,
+            date: PropTypes.string.isRequired,
+        })
+    ).isRequired,
 };
 
 export default OrderListTable;
