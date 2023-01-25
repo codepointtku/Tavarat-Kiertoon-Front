@@ -2,7 +2,7 @@ import { Box, Button, Card, CardActions, CardContent, CardMedia, Paper, Typograp
 import { useLoaderData, useParams } from 'react-router-dom';
 
 function ProductDetails() {
-    const { productId } = useParams();
+    const { id: productId } = useParams();
     const { productName, description, dateAdded } = useLoaderData();
 
     return (
