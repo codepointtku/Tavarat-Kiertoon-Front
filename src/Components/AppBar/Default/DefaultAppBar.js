@@ -1,6 +1,8 @@
 import { useState } from 'react';
-
 import { styled, alpha } from '@mui/material/styles';
+
+import LoginForm from './LoginForm';
+import ContactForm from './ContactForm';
 
 import {
     AppBar,
@@ -17,27 +19,17 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    Typography,
-    Container,
-    Button,
 } from '@mui/material';
 
-// imports for mock login/signup -form
-import Avatar from '@mui/material/Avatar';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-
 // icons
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import CallIcon from '@mui/icons-material/Call';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import PhishingIcon from '@mui/icons-material/Phishing';
 
 //
 
@@ -102,7 +94,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-start',
 }));
 
-const drawerWidth = 340;
+const drawerWidth = 490;
 
 function Drawer({ currentOpenDrawer, name, children }) {
     return (
@@ -126,7 +118,7 @@ function Drawer({ currentOpenDrawer, name, children }) {
     );
 }
 
-function StickyNavigationBar() {
+function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState(null);
 
     const drawerOpen = (drawer) => () => {
@@ -140,6 +132,7 @@ function StickyNavigationBar() {
     return (
         <Box>
             <AppBar
+                bgcolor="primary"
                 sx={{
                     width: 'min-content',
                     boxShadow: 0,
@@ -178,9 +171,11 @@ function StickyNavigationBar() {
                     </Stack>
                 </Toolbar>
             </AppBar>
+
             <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart">
+                {/* tähän oma komponentti.. */}
                 <List>
-                    {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                    {['Jakkara', 'Nahkasohva', 'Piirtoheitin', 'Chuck Norriksen verkkarit'].map((text, index) => (
                         <ListItem key={text} disablePadding>
                             <ListItemButton>
                                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
@@ -191,92 +186,26 @@ function StickyNavigationBar() {
                 </List>
                 <Divider />
                 <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                    {['Kassalle', 'Muikulle', 'Pihalle'].map((text, index) => (
                         <ListItem key={text} disablePadding>
                             <ListItemButton>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                                <ListItemIcon>{index % 2 === 0 ? <ShoppingCartCheckoutIcon /> : <PhishingIcon />}</ListItemIcon>
                                 <ListItemText primary={text} />
                             </ListItemButton>
                         </ListItem>
                     ))}
                 </List>
             </Drawer>
-            <Drawer currentOpenDrawer={currentOpenDrawer} name="account">
-                <div>
-                    <Typography variant="body2" color="text.secondary" align="center">
-                        Sun accountti
-                    </Typography>
 
-                    <Container component="main" maxWidth="xs">
-                        <Box
-                            sx={{
-                                marginTop: 8,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                                <LockOutlinedIcon />
-                            </Avatar>
-                            <Typography component="h1" variant="h5">
-                                Kirjaudu sisään
-                            </Typography>
-                            <Box component="form" noValidate sx={{ mt: 1 }}>
-                                <TextField
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
-                                    autoFocus
-                                />
-                                <TextField
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    name="password"
-                                    label="Password"
-                                    type="password"
-                                    id="password"
-                                    autoComplete="current-password"
-                                />
-                                <FormControlLabel
-                                    control={<Checkbox value="remember" color="primary" />}
-                                    label="Remember me"
-                                />
-                                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                                    Sign In
-                                </Button>
-                                <Grid container>
-                                    <Grid item xs>
-                                        <Link variant="body2">Forgot password?</Link>
-                                    </Grid>
-                                    <Grid item>
-                                        <Link variant="body2">Don't have an account? Sign Up</Link>
-                                    </Grid>
-                                </Grid>
-                            </Box>
-                        </Box>
-                    </Container>
-                </div>
+            <Drawer currentOpenDrawer={currentOpenDrawer} name="account">
+                <LoginForm />
             </Drawer>
+
             <Drawer currentOpenDrawer={currentOpenDrawer} name="contact">
-                <List>
-                    {['Testi', 'Moikka', 'Send email', 'Jeppistä'].map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
+                <ContactForm />
             </Drawer>
         </Box>
     );
 }
 
-export default StickyNavigationBar;
+export default DefaultAppBar;
