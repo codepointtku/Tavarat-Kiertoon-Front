@@ -26,7 +26,7 @@
     },
     "scripts": {
         "start": "npm ci && react-scripts start",
-        "dev": "concurrently \"npm install && json-server -p3001 --watch productdb.json\" \"react-scripts start\"",
+        "dev": "npm install && concurrently \"json-server -p3001 --watch productdb.json\" \"react-scripts start\"",
         "build": "react-scripts build",
         "test": "playwright test",
         "eject": "react-scripts eject",
