@@ -1,7 +1,7 @@
 import UsersListTable from './UsersListTable';
 import useCustomSearchParams from '../Hooks/useCustomSearchParams';
 
-function OrderView() {
+function UsersList() {
     const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });
 
     return (
@@ -11,4 +11,4 @@ function OrderView() {
     );
 }
 
-export default OrderView;
+export default UsersList;
