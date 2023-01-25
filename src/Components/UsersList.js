@@ -1,5 +1,14 @@
-function UsersList() {
-    return <div>user list will be here</div>;
+import UsersListTable from './UsersListTable';
+import useCustomSearchParams from '../Hooks/useCustomSearchParams';
+
+function OrderView() {
+    const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });
+
+    return (
+        usedParams && (
+            <UsersListTable page={usedParams.page} rowsPerPage={usedParams.rows} setUsedParams={setUsedParams} />
+        )
+    );
 }
 
-export default UsersList;
+export default OrderView;
