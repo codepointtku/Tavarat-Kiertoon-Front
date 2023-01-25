@@ -132,8 +132,9 @@ function DefaultAppBar() {
     return (
         <Box>
             <AppBar
-                bgcolor="primary"
+                // bgcolor="primary"
                 sx={{
+                    backgroundColor: "primary.light",
                     width: 'min-content',
                     boxShadow: 0,
                 }}

@@ -1,28 +1,15 @@
-/* import { Button } from '@mui/material';
-import { useContext } from 'react';
-import AuthContext from '../../Context/AuthContext'; */
-import { Container } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-    // JTo: Commented while TestButtons are in use.
-    // const { auth, setAuth } = useContext(AuthContext);
-function Header() {
-    return (
-        <header style={{ backgroundColor: "#009bd8", marginBottom: 20}}>
-                <Container>
-                    <Link to="/">
-                        <img src="Turku_vaaka_300ppi_viiva_white.png" alt="Turku logo ja teksti valkoinen" style={{ width: 200 }} />
-                    </Link>
-                </Container>
-        </header>
-    )
-}
+import { useContext } from 'react';
+import { Box, Container } from '@mui/material';
 
-/*
- * JTo: This is for TESTING page navigation and Auth Context.
- * Remove this when real Login and Navigation codes are done
- * @returns
- * 
+import AuthContext from '../../Context/AuthContext';
+// JTo: Commented while TestButtons are in use.
+// const { auth, setAuth } = useContext(AuthContext);
+
+//  * JTo: This is for TESTING page navigation and Auth Context.
+//  * Remove this when real Login and Navigation codes are done
+
 function TestButtons() {
     const { auth, setAuth } = useContext(AuthContext);
 
@@ -42,7 +29,6 @@ function TestButtons() {
 
     return (
         <div>
-            <hr />
             <Container maxWidth="sm">
 
                 <div style={{ marginBottom: '5px' }}>
@@ -84,11 +70,23 @@ function TestButtons() {
                     </button>
                 </div>
             </Container>
-            <hr />
         </div>
     );
 }
 
-*/
+function Header() {
+    return (
+        <header style={{ marginBottom: 20 }}>
+            <Box
+                sx={{ backgroundColor: 'primary.light' }}
+            >
+                <Link to="/">
+                    <img src="Turku_vaaka_300ppi_viiva_white.png" alt="Turku logo ja teksti valkoinen" style={{ width: 200 }} />
+                </Link>
+            </Box>
+            <TestButtons />
+        </header>
+    )
+}
 
 export default Header;
