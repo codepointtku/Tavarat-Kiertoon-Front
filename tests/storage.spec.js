@@ -2,8 +2,9 @@ import { test, expect } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await page.click('//*[@id="root"]/div[1]/div/div[2]/button[2]');
-    await page.click('//*[@id="root"]/div[1]/div/div[1]/a[2]');
+    await page.click('//*[@id="root"]/div[1]/div/div/div[2]/button[2]');
+    await page.click('//*[@id="root"]/div[1]/div/div/div[2]/button[2]');
+    await page.click('text=Varasto');
 });
 
 test.describe('storage view', () => {
@@ -22,8 +23,8 @@ test.describe('storage view', () => {
         await page.locator('select[aria-label="rows per page"]').selectOption({ label: '10' });
         await expect(page.getByText('1–10 of 12')).toBeVisible();
     });
-    test('all rows', async ({ page }) => {
-        await page.locator('select[aria-label="rows per page"]').selectOption({ label: 'All' });
+    test('100 rows', async ({ page }) => {
+        await page.locator('select[aria-label="rows per page"]').selectOption({ label: '100' });
         await expect(page.getByText('1–12 of 12')).toBeVisible();
     });
 });
