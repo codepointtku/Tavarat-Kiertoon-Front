@@ -75,8 +75,8 @@ function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
                     )}
                 </TableBody>
                 <TableFooter>
+                    <SortByMenu />
                     <TableRow>
-                        <SortByMenu />
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25, 100]}
                             colSpan={3}
