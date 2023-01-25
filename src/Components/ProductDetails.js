@@ -2,7 +2,7 @@ import { Box, Button, Card, CardActions, CardContent, CardMedia, Paper, Typograp
 import { useLoaderData, useParams } from 'react-router-dom';
 
 function ProductDetails() {
-    const { productId } = useParams();
+    const { id: productId } = useParams();
     const { productName, description, dateAdded } = useLoaderData();
 
     return (
@@ -11,6 +11,9 @@ function ProductDetails() {
                 <Card sx={{ maxWidth: 1200 }}>
                     <CardMedia component="img" alt="product image" height="300" image="../br.jpg" />
                     <CardContent>
+                        <Typography variant="body5" color="text.secondary">
+                            Product Details View, product id: {productId}
+                        </Typography>
                         <Typography gutterBottom variant="h5" component="div">
                             Product: {productName}
                         </Typography>
@@ -25,8 +28,7 @@ function ProductDetails() {
                         <Button size="small">Share</Button>
                         <Button size="small">Learn More</Button>
                     </CardActions>
-                </Card>{' '}
-                <Typography> ProductDetails id:{productId} - tuotteen yksityiskohtaiset tiedot</Typography>
+                </Card>
             </Paper>
         </Box>
     );
