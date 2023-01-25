@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
     // const { auth, setAuth } = useContext(AuthContext);
 function Header() {
     return (
-        <header style={{ backgroundColor: "#009bd8"}}>
+        <header style={{ backgroundColor: "#009bd8", marginBottom: 20}}>
                 <Container>
                     <Link to="/">
                         <img src="Turku_vaaka_300ppi_viiva_white.png" alt="Turku logo ja teksti valkoinen" style={{ width: 200 }} />
