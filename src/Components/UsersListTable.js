@@ -14,7 +14,9 @@ import {
     Box,
     Typography,
     IconButton,
+    Grid,
 } from '@mui/material';
+import Button from '@mui/material/Button';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import TablePaginationActions from './TablePaginationActions';
@@ -79,9 +81,13 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
                                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                                         <Collapse in={isOpen[row.id]} timeout="auto" unmountOnExit>
                                             <Box sx={{ margin: 1 }}>
-                                                <Typography variant="h6" gutterBottom component="div">
-                                                    Käyttäjä {row.id}
-                                                </Typography>
+                                                <Grid container justifyContent="space-between" direction="row">
+                                                    <Typography variant="h6">Käyttäjä {row.id}</Typography>
+                                                    <Button type="button" align="right">
+                                                        Muokkaa käyttäjää
+                                                    </Button>
+                                                </Grid>
+
                                                 <Table size="small">
                                                     <TableHead>
                                                         <TableRow>
