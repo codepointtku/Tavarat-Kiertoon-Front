@@ -1,29 +1,13 @@
-/* import { Button } from '@mui/material';
+// import { Button } from '@mui/material';
 import { useContext } from 'react';
-import AuthContext from '../../Context/AuthContext'; */
 import { Link } from 'react-router-dom';
-import { Container } from '@mui/material';
+import { Container, Box } from '@mui/material';
+import AuthContext from '../../Context/AuthContext';
 import logo from "../../Assets/Turku_vaaka_300ppi_viiva_white.png";
 
     // JTo: Commented while TestButtons are in use.
     // const { auth, setAuth } = useContext(AuthContext);
-function Header() {
-    return (
-        <header style={{ backgroundColor: "#009bd8", marginBottom: 20}}>
-                <Container>
-                    <Link to="/">
-                        <img src={logo} alt="Turku logo ja teksti valkoinen" style={{ width: 200 }} />
-                    </Link>
-                </Container>
-        </header>
-    )
-}
 
-/*
- * JTo: This is for TESTING page navigation and Auth Context.
- * Remove this when real Login and Navigation codes are done
- * @returns
- * 
 function TestButtons() {
     const { auth, setAuth } = useContext(AuthContext);
 
@@ -43,7 +27,6 @@ function TestButtons() {
 
     return (
         <div>
-            <hr />
             <Container maxWidth="sm">
 
                 <div style={{ marginBottom: '5px' }}>
@@ -85,11 +68,25 @@ function TestButtons() {
                     </button>
                 </div>
             </Container>
-            <hr />
         </div>
     );
 }
 
-*/
+function Header() {
+    return (
+        <header style={{ marginBottom: 20 }}>
+            <Box
+                sx={{ backgroundColor: 'primary.light' }}
+            >
+                <Container>
+                    <Link to="/">
+                        <img src={logo} alt="Turku logo ja teksti valkoinen" style={{ width: 200 }} />
+                    </Link>
+                </Container>
+            </Box>
+            <TestButtons />
+        </header>
+    )
+}
 
 export default Header;
