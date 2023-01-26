@@ -23,6 +23,7 @@ import LocationDetails from '../Components/LocationDetails';
 
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
+import Announcements from '../Components/Announcements';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -151,6 +152,14 @@ function Routes() {
                     element: <LocationDetails />,
                 },
             ],
+        },
+        {
+            path: '/tiedotteet',
+            element: (
+                    <Base>
+                        <Announcements />
+                    </Base>
+                )    
         },
     ]);
 
