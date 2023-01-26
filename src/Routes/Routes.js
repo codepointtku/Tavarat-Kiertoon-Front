@@ -16,7 +16,7 @@ import OrdersList from '../Components/OrdersList';
 import OrderView from '../Components/OrderView';
 import QrScanner from '../Components/QrScanner';
 
-import UsersView from '../Components/UsersView';
+import UsersList from '../Components/UsersList';
 import UserDetails from '../Components/UserDetails';
 import LocationsView from '../Components/LocationsView';
 import LocationDetails from '../Components/LocationDetails';
@@ -125,11 +125,21 @@ function Routes() {
             ),
             children: [
                 {
-                    path: '/admin',
-                    element: <UsersView />,
+                    path: '/admin/users',
+                    element: <UsersList />,
+                    loader: async () => {
+                        // num will tell back-end which entries to bring
+                        const { data } = await axios.get('http://localhost:3001/users');
+                        // view is order status, unless archived can bring all?
+                        // or will be replaced into the back-end later?
+                        if (data) {
+                            return data;
+                        }
+                        return data;
+                    },
                 },
                 {
-                    path: '/admin/user/:id',
+                    path: '/admin/users/:id',
                     element: <UserDetails />,
                 },
                 {

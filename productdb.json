@@ -134,5 +134,31 @@
             "date": "2.1.2023",
             "products": []
         }
+    ],
+    "users": [
+        {
+            "id": "user_0",
+            "name": "tonipal_kahville",
+            "phone": "555-kahvia-tarttis",
+            "email": "kahvi@genericemailservice.com",
+            "last_login": "2018-12-10T13:49:51.141Z",
+            "roles": ["kahvinkeittäjä"]
+        },
+        {
+            "id": "user_1",
+            "name": "varastomiäs",
+            "phone": "varasto numero",
+            "email": "varasto@genericemailservice.com",
+            "last_login": "ny",
+            "roles": ["varasto"]
+        },
+        {
+            "id": "user_2",
+            "name": "master",
+            "phone": "404",
+            "email": "admin@genericemailservice.com",
+            "last_login": "2023-01-25T11:29:51.141Z",
+            "roles": ["admin"]
+        }
     ]
 }
