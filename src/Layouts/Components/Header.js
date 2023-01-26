@@ -30,14 +30,13 @@ function TestButtons() {
     return (
         <div>
             <Container maxWidth="sm">
-
                 <div style={{ marginBottom: '5px' }}>
                     <b>Links to pages: </b>
                     <Link to="/">Home</Link> <Link to="/varasto/0/delivery?page=0&rows=5">Varasto</Link>{' '}
                     <Link to="/varasto/tilaus">Varasto/Tilaus</Link>{' '}
                     <Link to="/varasto/koodinlukija">Varasto/Koodinlukija</Link>
                     <br />
-                    <Link to="/admin">Admin</Link> <Link to="/admin/user/0/admin?page=0&rows=5">Admin/Käyttäjä</Link>{' '}
+                    <Link to="/admin">Admin</Link> <Link to="/admin/users?page=0&rows=5">Admin/Käyttäjä</Link>{' '}
                     <Link to="/admin/varastot">Admin/Varastot</Link>{' '}
                     <Link to="/admin/varastot/varasto">Admin/Varastot/Varasto</Link>{' '}
                 </div>
@@ -77,16 +76,18 @@ function TestButtons() {
 function Header() {
     return (
         <header style={{ marginBottom: 20 }}>
-            <Box
-                sx={{ backgroundColor: 'primary.light' }}
-            >
+            <Box sx={{ backgroundColor: 'primary.light' }}>
                 <Link to="/">
-                    <img src="Turku_vaaka_300ppi_viiva_white.png" alt="Turku logo ja teksti valkoinen" style={{ width: 200 }} />
+                    <img
+                        src="Turku_vaaka_300ppi_viiva_white.png"
+                        alt="Turku logo ja teksti valkoinen"
+                        style={{ width: 200 }}
+                    />
                 </Link>
             </Box>
             <TestButtons />
         </header>
-    )
+    );
 }
 
 export default Header;
