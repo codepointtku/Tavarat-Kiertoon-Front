@@ -1,12 +1,16 @@
-import testData from "../TestData/announcement.json"
+import { Container } from '@mui/material'
+import ArticleCard from './ArticleCard'
+import testData from '../TestData/announcement.json'
 
 
 function Announcements(){
-    const test = JSON.stringify(testData)
 
     return(
-        <h1>{test}</h1>
+        <Container>
+            <ArticleCard data={testData} />
+        </Container>
     )
 }
+
 
 export default Announcements
