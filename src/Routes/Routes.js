@@ -24,11 +24,6 @@ import LocationDetails from '../Components/LocationDetails';
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
 
-// import productData from '../TestData/tuote.json';
-import orderData from '../TestData/tilaus.json';
-import orderList from '../TestData/tilaukset.json';
-import userList from '../TestData/user.json';
-
 function Routes() {
     const router = createBrowserRouter([
         {
@@ -74,8 +69,8 @@ function Routes() {
                     path: '/varasto/:num/:view',
                     element: <OrdersList />,
                     loader: async ({ params }) => {
+                        const { data } = await axios.get('http://localhost:3001/orders');
                         // num will tell back-end which entries to bring
-                        const dataList = [...orderList];
                         // view is order status, unless archived can bring all?
                         // or will be replaced into the back-end later?
                         const statuses = {
@@ -84,7 +79,7 @@ function Routes() {
                             finished: 0,
                         };
                         statuses[params.view] = 10;
-                        dataList.sort((a, b) => {
+                        data.sort((a, b) => {
                             if (statuses[a.status] > statuses[b.status]) {
                                 return -1;
                             }
@@ -96,8 +91,8 @@ function Routes() {
                             return 1;
                         });
 
-                        if (dataList) {
-                            return dataList;
+                        if (data) {
+                            return data;
                         }
                         return null;
                     },
@@ -106,7 +101,7 @@ function Routes() {
                     path: '/varasto/tilaus/:id',
                     element: <OrderView />,
                     loader: async ({ params }) => {
-                        const data = orderData[params.id];
+                        const { data } = await axios.get(`http://localhost:3001/orders/${params.id}`);
                         if (data) {
                             return data;
                         }
