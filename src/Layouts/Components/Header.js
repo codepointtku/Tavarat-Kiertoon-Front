@@ -1,8 +1,9 @@
 /* import { Button } from '@mui/material';
 import { useContext } from 'react';
 import AuthContext from '../../Context/AuthContext'; */
-import { Container } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { Container } from '@mui/material';
+import logo from "../../Assets/Turku_vaaka_300ppi_viiva_white.png";
 
     // JTo: Commented while TestButtons are in use.
     // const { auth, setAuth } = useContext(AuthContext);
@@ -11,7 +12,7 @@ function Header() {
         <header style={{ backgroundColor: "#009bd8", marginBottom: 20}}>
                 <Container>
                     <Link to="/">
-                        <img src="Turku_vaaka_300ppi_viiva_white.png" alt="Turku logo ja teksti valkoinen" style={{ width: 200 }} />
+                        <img src={logo} alt="Turku logo ja teksti valkoinen" style={{ width: 200 }} />
                     </Link>
                 </Container>
         </header>
