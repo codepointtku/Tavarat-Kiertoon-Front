@@ -160,5 +160,19 @@
             "last_login": "2023-01-25T11:29:51.141Z",
             "roles": ["admin"]
         }
+    ],
+    "categories": [
+        { "id": 1, "name": "tuolit", "lft": 1, "rght": 12, "tree_id": 1, "level": 0, "parent": null },
+        { "id": 2, "name": "suuret nahkatuolit", "lft": 2, "rght": 3, "tree_id": 1, "level": 1, "parent": 1 },
+        { "id": 3, "name": "sikarituolit", "lft": 4, "rght": 9, "tree_id": 1, "level": 1, "parent": 1 },
+        { "id": 4, "name": "lyhytjalkaiset sikarituolit", "lft": 5, "rght": 6, "tree_id": 1, "level": 2, "parent": 3 },
+        { "id": 14, "name": "hansikkaat", "lft": 7, "rght": 8, "tree_id": 1, "level": 2, "parent": 3 },
+        { "id": 12, "name": "sähkötuolit", "lft": 10, "rght": 11, "tree_id": 1, "level": 1, "parent": 1 },
+        { "id": 5, "name": "pöydät", "lft": 1, "rght": 4, "tree_id": 2, "level": 0, "parent": null },
+        { "id": 8, "name": "kodinkoneet", "lft": 1, "rght": 2, "tree_id": 3, "level": 0, "parent": null },
+        { "id": 9, "name": "rollaattorit", "lft": 1, "rght": 4, "tree_id": 4, "level": 0, "parent": null },
+        { "id": 10, "name": "suuret_rollaattorit", "lft": 2, "rght": 3, "tree_id": 4, "level": 1, "parent": 9 },
+        { "id": 11, "name": "kassakaapit", "lft": 1, "rght": 2, "tree_id": 5, "level": 0, "parent": null },
+        { "id": 18, "name": "asd", "lft": 1, "rght": 2, "tree_id": 6, "level": 0, "parent": null }
     ]
 }
