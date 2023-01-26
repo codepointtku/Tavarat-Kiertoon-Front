@@ -10,7 +10,7 @@ export default function Footer() {
                 px: 3,
                 mt: 'auto',
                 //   Miten teemasta backgroundColor primary tms?
-                backgroundColor: '#663900',
+                backgroundColor: 'primary.main',
             }}
         >
             <Grid sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', textAlign: 'center', gridGap: 30 }}>
