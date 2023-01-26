@@ -43,7 +43,9 @@ function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell>Tilaus (ID)</StyledTableCell>
+                        <StyledTableCell>
+                            Tilaus (ID) <SortByMenu />
+                        </StyledTableCell>
                         <StyledTableCell align="right">Status</StyledTableCell>
                         <StyledTableCell align="right">Toimitusosoite</StyledTableCell>
                         <StyledTableCell align="right">Tilaaja</StyledTableCell>
@@ -75,7 +77,6 @@ function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
                     )}
                 </TableBody>
                 <TableFooter>
-                    <SortByMenu />
                     <TableRow>
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25, 100]}
