@@ -19,12 +19,14 @@ import {
 import Button from '@mui/material/Button';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { useNavigate } from 'react-router-dom';
 import TablePaginationActions from './TablePaginationActions';
 import StyledTableCell from './StyledTableCell';
 import StyledTableRow from './StyledTableRow';
 
 function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
     const [isOpen, setIsOpen] = useState({});
+    const navigate = useNavigate();
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
     const handleChangePage = (event, newPage) => {
@@ -83,7 +85,11 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
                                             <Box sx={{ margin: 1 }}>
                                                 <Grid container justifyContent="space-between" direction="row">
                                                     <Typography variant="h6">Käyttäjä {row.id}</Typography>
-                                                    <Button type="button" align="right">
+                                                    <Button
+                                                        type="button"
+                                                        align="right"
+                                                        onClick={() => navigate(row.id)}
+                                                    >
                                                         Muokkaa käyttäjää
                                                     </Button>
                                                 </Grid>
