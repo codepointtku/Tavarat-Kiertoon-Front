@@ -125,35 +125,17 @@ function Routes() {
             ),
             children: [
                 {
-                    path: '/admin/user/:num/:view',
+                    path: '/admin',
                     element: <UsersList />,
-                    loader: async ({ params }) => {
+                    loader: async () => {
                         // num will tell back-end which entries to bring
-                        const dataList = [...userList];
+                        const { data } = await axios.get('http://localhost:3001/users');
                         // view is order status, unless archived can bring all?
                         // or will be replaced into the back-end later?
-                        const statuses = {
-                            admin: 2,
-                            varasto: 1,
-                            kahvinkeittäjä: 0,
-                        };
-                        statuses[params.view] = 10;
-                        dataList.sort((a, b) => {
-                            if (statuses[a.status] > statuses[b.status]) {
-                                return -1;
-                            }
-                            if (a.status === b.status) {
-                                if (a.id > b.id) {
-                                    return -1;
-                                }
-                            }
-                            return 1;
-                        });
-
-                        if (dataList) {
-                            return dataList;
+                        if (data) {
+                            return data;
                         }
-                        return null;
+                        return data;
                     },
                 },
                 {
