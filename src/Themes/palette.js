@@ -39,6 +39,7 @@ const palette = {
             light: '#81C784',
             dark: '#388E3C',
             stashmain: '#4CAF50',
+            monookkeli: '#1f8278'
         },
     },
 };
