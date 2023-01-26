@@ -17,7 +17,7 @@ import OrderView from '../Components/OrderView';
 import QrScanner from '../Components/QrScanner';
 
 import UsersList from '../Components/UsersList';
-import UserDetails from '../Components/UserDetails';
+import UserEdit from '../Components/UserEdit';
 import LocationsView from '../Components/LocationsView';
 import LocationDetails from '../Components/LocationDetails';
 
@@ -140,7 +140,7 @@ function Routes() {
                 },
                 {
                     path: '/admin/users/:id',
-                    element: <UserDetails />,
+                    element: <UserEdit />,
                 },
                 {
                     path: '/admin/varastot',
