@@ -125,7 +125,7 @@ function Routes() {
             ),
             children: [
                 {
-                    path: '/admin',
+                    path: '/admin/users',
                     element: <UsersList />,
                     loader: async () => {
                         // num will tell back-end which entries to bring
@@ -139,7 +139,7 @@ function Routes() {
                     },
                 },
                 {
-                    path: '/admin/user/:id',
+                    path: '/admin/users/:id',
                     element: <UserDetails />,
                 },
                 {
