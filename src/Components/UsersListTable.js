@@ -15,10 +15,8 @@ import { Link } from 'react-router-dom';
 import TablePaginationActions from './TablePaginationActions';
 import StyledTableCell from './StyledTableCell';
 import StyledTableRow from './StyledTableRow';
-import SortByMenu from './SortByMenu';
 
-function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
-    // Avoid a layout jump when reaching the last page with empty rows.
+function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
     const handleChangePage = (event, newPage) => {
@@ -43,11 +41,11 @@ function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell>Tilaus (ID)</StyledTableCell>
-                        <StyledTableCell align="right">Status</StyledTableCell>
-                        <StyledTableCell align="right">Toimitusosoite</StyledTableCell>
-                        <StyledTableCell align="right">Tilaaja</StyledTableCell>
-                        <StyledTableCell align="right">Päivämäärä</StyledTableCell>
+                        <StyledTableCell>Käyttäjä (ID)</StyledTableCell>
+                        <StyledTableCell align="right">Nimi</StyledTableCell>
+                        <StyledTableCell align="right">Puhelinnumero</StyledTableCell>
+                        <StyledTableCell align="right">Sähköposti</StyledTableCell>
+                        <StyledTableCell align="right">Oikeudet</StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -55,15 +53,15 @@ function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
                         (row) => (
                             <StyledTableRow key={row.id}>
                                 <StyledTableCell component="th" scope="row">
-                                    <Link to={`/varasto/tilaus/${row.id}?page=0&rows=5`}>
+                                    <Link to={`/admin/user/${row.id}`}>
                                         {row.id}
                                         <LaunchIcon fontSize="small" />
                                     </Link>
                                 </StyledTableCell>
-                                <StyledTableCell align="right">{row.status}</StyledTableCell>
-                                <StyledTableCell align="right">{row.address}</StyledTableCell>
-                                <StyledTableCell align="right">{row.recipient}</StyledTableCell>
-                                <StyledTableCell align="right">{row.date}</StyledTableCell>
+                                <StyledTableCell align="right">{row.name}</StyledTableCell>
+                                <StyledTableCell align="right">{row.phone}</StyledTableCell>
+                                <StyledTableCell align="right">{row.email}</StyledTableCell>
+                                <StyledTableCell align="right">{row.roles}</StyledTableCell>
                             </StyledTableRow>
                         )
                     )}
@@ -75,7 +73,6 @@ function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
                     )}
                 </TableBody>
                 <TableFooter>
-                    <SortByMenu />
                     <TableRow>
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25, 100]}
@@ -100,20 +97,19 @@ function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
     );
 }
 
-OrderListTable.propTypes = {
+UsersListTable.propTypes = {
     page: PropTypes.number.isRequired,
     setUsedParams: PropTypes.func.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
     rows: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number,
-            status: PropTypes.string,
-            address: PropTypes.string,
-            recipient: PropTypes.string,
-            date: PropTypes.string,
-            products: PropTypes.arrayOf(PropTypes.string),
+        PropTypes.objectOf({
+            id: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+            phone: PropTypes.string.isRequired,
+            email: PropTypes.string.isRequired,
+            roles: PropTypes.arrayOf(PropTypes.string).isRequired,
         })
     ).isRequired,
 };
 
-export default OrderListTable;
+export default UsersListTable;

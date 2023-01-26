@@ -16,17 +16,13 @@ import OrdersList from '../Components/OrdersList';
 import OrderView from '../Components/OrderView';
 import QrScanner from '../Components/QrScanner';
 
-import UsersView from '../Components/UsersView';
+import UsersList from '../Components/UsersList';
 import UserDetails from '../Components/UserDetails';
 import LocationsView from '../Components/LocationsView';
 import LocationDetails from '../Components/LocationDetails';
 
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
-
-// import productData from '../TestData/tuote.json';
-import orderData from '../TestData/tilaus.json';
-import orderList from '../TestData/tilaukset.json'
 
 function Routes() {
     const router = createBrowserRouter([
@@ -72,30 +68,31 @@ function Routes() {
                 {
                     path: '/varasto/:num/:view',
                     element: <OrdersList />,
-                    loader: async ({params}) => {
+                    loader: async ({ params }) => {
+                        const { data } = await axios.get('http://localhost:3001/orders');
                         // num will tell back-end which entries to bring
-                        const dataList = [...orderList]
                         // view is order status, unless archived can bring all?
                         // or will be replaced into the back-end later?
                         const statuses = {
                             waiting: 2,
                             delivery: 1,
                             finished: 0,
-                        }
-                        statuses[params.view] = 10
-                        dataList.sort((a, b) => {
+                        };
+                        statuses[params.view] = 10;
+                        data.sort((a, b) => {
                             if (statuses[a.status] > statuses[b.status]) {
-                                return -1
+                                return -1;
                             }
                             if (a.status === b.status) {
                                 if (a.id > b.id) {
-                                    return -1
-                                } 
-                            } return 1
-                            })
-                        
-                        if (dataList) {
-                            return dataList;
+                                    return -1;
+                                }
+                            }
+                            return 1;
+                        });
+
+                        if (data) {
+                            return data;
                         }
                         return null;
                     },
@@ -104,7 +101,7 @@ function Routes() {
                     path: '/varasto/tilaus/:id',
                     element: <OrderView />,
                     loader: async ({ params }) => {
-                        const data = orderData[params.id];
+                        const { data } = await axios.get(`http://localhost:3001/orders/${params.id}`);
                         if (data) {
                             return data;
                         }
@@ -128,11 +125,21 @@ function Routes() {
             ),
             children: [
                 {
-                    path: '/admin',
-                    element: <UsersView />,
+                    path: '/admin/users',
+                    element: <UsersList />,
+                    loader: async () => {
+                        // num will tell back-end which entries to bring
+                        const { data } = await axios.get('http://localhost:3001/users');
+                        // view is order status, unless archived can bring all?
+                        // or will be replaced into the back-end later?
+                        if (data) {
+                            return data;
+                        }
+                        return data;
+                    },
                 },
                 {
-                    path: '/admin/user/:id',
+                    path: '/admin/users/:id',
                     element: <UserDetails />,
                 },
                 {

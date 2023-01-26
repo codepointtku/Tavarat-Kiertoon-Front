@@ -1,28 +1,13 @@
-/* import { Button } from '@mui/material';
+// import { Button } from '@mui/material';
 import { useContext } from 'react';
-import AuthContext from '../../Context/AuthContext'; */
-import { Container } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { Container, Box } from '@mui/material';
+import AuthContext from '../../Context/AuthContext';
+import logo from "../../Assets/Turku_vaaka_300ppi_viiva_white.png";
 
-    // JTo: Commented while TestButtons are in use.
-    // const { auth, setAuth } = useContext(AuthContext);
-function Header() {
-    return (
-        <header style={{ backgroundColor: "#009bd8", marginBottom: 20}}>
-                <Container>
-                    <Link to="/">
-                        <img src="Turku_vaaka_300ppi_viiva_white.png" alt="Turku logo ja teksti valkoinen" style={{ width: 200 }} />
-                    </Link>
-                </Container>
-        </header>
-    )
-}
+// JTo: Commented while TestButtons are in use.
+// const { auth, setAuth } = useContext(AuthContext);
 
-/*
- * JTo: This is for TESTING page navigation and Auth Context.
- * Remove this when real Login and Navigation codes are done
- * @returns
- * 
 function TestButtons() {
     const { auth, setAuth } = useContext(AuthContext);
 
@@ -42,16 +27,14 @@ function TestButtons() {
 
     return (
         <div>
-            <hr />
             <Container maxWidth="sm">
-
                 <div style={{ marginBottom: '5px' }}>
                     <b>Links to pages: </b>
                     <Link to="/">Home</Link> <Link to="/varasto/0/delivery?page=0&rows=5">Varasto</Link>{' '}
                     <Link to="/varasto/tilaus">Varasto/Tilaus</Link>{' '}
                     <Link to="/varasto/koodinlukija">Varasto/Koodinlukija</Link>
                     <br />
-                    <Link to="/admin">Admin</Link> <Link to="/admin/user">Admin/Käyttäjä</Link>{' '}
+                    <Link to="/admin">Admin</Link> <Link to="/admin/users?page=0&rows=5">Admin/Käyttäjä</Link>{' '}
                     <Link to="/admin/varastot">Admin/Varastot</Link>{' '}
                     <Link to="/admin/varastot/varasto">Admin/Varastot/Varasto</Link>{' '}
                 </div>
@@ -84,11 +67,25 @@ function TestButtons() {
                     </button>
                 </div>
             </Container>
-            <hr />
         </div>
     );
 }
 
-*/
+function Header() {
+    return (
+        <header style={{ marginBottom: 20 }}>
+            <Box
+                sx={{ backgroundColor: 'primary.main' }}
+            >
+                <Container>
+                    <Link to="/">
+                        <img src={logo} alt="Turku logo ja teksti valkoinen" style={{ width: 200 }} />
+                    </Link>
+                </Container>
+            </Box>
+            <TestButtons />
+        </header>
+    );
+}
 
 export default Header;
