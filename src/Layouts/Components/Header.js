@@ -5,8 +5,8 @@ import { Container, Box } from '@mui/material';
 import AuthContext from '../../Context/AuthContext';
 import logo from "../../Assets/Turku_vaaka_300ppi_viiva_white.png";
 
-    // JTo: Commented while TestButtons are in use.
-    // const { auth, setAuth } = useContext(AuthContext);
+// JTo: Commented while TestButtons are in use.
+// const { auth, setAuth } = useContext(AuthContext);
 
 function TestButtons() {
     const { auth, setAuth } = useContext(AuthContext);
@@ -75,7 +75,7 @@ function Header() {
     return (
         <header style={{ marginBottom: 20 }}>
             <Box
-                sx={{ backgroundColor: 'primary.light' }}
+                sx={{ backgroundColor: 'primary.main' }}
             >
                 <Container>
                     <Link to="/">
