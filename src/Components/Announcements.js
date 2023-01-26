@@ -1,13 +1,11 @@
 import { Container } from '@mui/material'
-// import ArticleCard from './ArticleCard'
+import ArticleCard from './ArticleCard'
 import testData from '../TestData/announcement.json'
 
 
 function Announcements(){
     const cards = testData.map(item => (
-        <div style={{borderStyle: "solid", margin: 10}}>
-            <p>{item.title} {item.date} {item.time}</p>
-        </div>
+        <ArticleCard title={item.title} date={item.date} time={item.time} />
     ))
 
     return(
@@ -17,5 +15,4 @@ function Announcements(){
     )
 }
 
-// <ArticleCard data={testData} />
 export default Announcements
