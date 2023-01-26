@@ -1,21 +1,21 @@
 import PropTypes from 'prop-types';
-// import { Card } from '@mui/material'
+import { Card } from '@mui/material'
 
-function ArticleCard({data}){
+function ArticleCard({title, date, time}){
     return(
-        <h1 style={{textAlign: "center"}}>{data[2].title}</h1>
-        /* <Card>
-            <h1>{data.title}</h1>
-        </Card> */ 
+        <Card sx={{margin: 5, textAlign: "center"}}>
+            <h1>{title}</h1>
+            <hr /> 
+            <h4>{date}</h4>
+            <h4>{time}</h4>
+        </Card>
     )
 }
 
 ArticleCard.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.any)
+    title: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+    time: PropTypes.string.isRequired
 } 
-
-ArticleCard.defaultProps = {
-    data: ""
-}
 
 export default ArticleCard
