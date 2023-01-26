@@ -1,8 +1,11 @@
+import testData from "../TestData/announcement.json"
 
 
 function Announcements(){
+    const test = JSON.stringify(testData)
+
     return(
-        <h1>text</h1>
+        <h1>{test}</h1>
     )
 }
 
