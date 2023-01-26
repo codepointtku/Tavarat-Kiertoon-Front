@@ -24,6 +24,7 @@ export default function SortByMenu() {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
+                style={{ backgroundColor: '#e50064' }}
             >
                 Lajittele
                 <ExpandMoreIcon />
