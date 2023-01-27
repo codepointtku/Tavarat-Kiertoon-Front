@@ -21,6 +21,7 @@ import UserEdit from '../Components/UserEdit';
 
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
+import FaqView from '../Components/FaqView';
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 
@@ -52,6 +53,10 @@ function Routes() {
                         }
                         return null;
                     },
+                },
+                {
+                    path: '/faq',
+                    element: <FaqView />,
                 },
             ],
         },

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate, useSearchParams, useParams, generatePath } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -7,6 +8,9 @@ import Divider from '@mui/material/Divider';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function SortByMenu() {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const { num } = useParams();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -40,11 +44,32 @@ export default function SortByMenu() {
                 onClose={handleClose}
                 TransitionComponent={Fade}
             >
-                <MenuItem onClick={handleClose}>1. perusteella</MenuItem>
+                <MenuItem
+                    onClick={() => {
+                        handleClose();
+                        navigate(generatePath(`/varasto/:num/:view?${searchParams}`, { view: 'waiting', num }));
+                    }}
+                >
+                    Waiting
+                </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleClose}>2. perusteella</MenuItem>
+                <MenuItem
+                    onClick={() => {
+                        handleClose();
+                        navigate(generatePath(`/varasto/:num/:view?${searchParams}`, { view: 'delivery', num }));
+                    }}
+                >
+                    Delivery
+                </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleClose}>3. perusteella</MenuItem>
+                <MenuItem
+                    onClick={() => {
+                        handleClose();
+                        navigate(generatePath(`/varasto/:num/:view?${searchParams}`, { view: 'finished', num }));
+                    }}
+                >
+                    Finished
+                </MenuItem>
             </Menu>
         </div>
     );
