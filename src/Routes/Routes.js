@@ -123,6 +123,13 @@ function Routes() {
                     </Admin>
                 </ThemeProvider>
             ),
+            loader: async () => {
+                const { data } = await axios.get('http://localhost:3001/storages');
+                if (data) {
+                    return data;
+                }
+                return data;
+            },
             children: [
                 {
                     path: '/admin/users',

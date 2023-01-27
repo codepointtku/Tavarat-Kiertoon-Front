@@ -160,5 +160,19 @@
             "last_login": "2023-01-25T11:29:51.141Z",
             "roles": ["admin"]
         }
+    ],
+    "storages": [
+        {
+            "id": 1,
+            "name": "kahvivarasto",
+            "address": "tonipal_kahville katu 9001",
+            "inUse": true
+        },
+        {
+            "id": 2,
+            "name": "localstorage",
+            "address": "localhost",
+            "inUse": false
+        }
     ]
 }
