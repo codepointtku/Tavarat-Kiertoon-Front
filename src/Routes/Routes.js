@@ -20,6 +20,7 @@ import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
 import LocationsView from '../Components/LocationsView';
 import LocationDetails from '../Components/LocationDetails';
+import AddItem from '../Components/AddItem';
 
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
@@ -112,6 +113,10 @@ function Routes() {
                         }
                         return null;
                     },
+                },
+                {
+                    path: 'varasto/luo',
+                    element: <AddItem />,
                 },
                 {
                     path: '/varasto/koodinlukija',
