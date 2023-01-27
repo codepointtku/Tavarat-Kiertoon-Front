@@ -174,5 +174,37 @@
         { "id": 10, "name": "suuret_rollaattorit", "lft": 2, "rght": 3, "tree_id": 4, "level": 1, "parent": 9 },
         { "id": 11, "name": "kassakaapit", "lft": 1, "rght": 2, "tree_id": 5, "level": 0, "parent": null },
         { "id": 18, "name": "asd", "lft": 1, "rght": 2, "tree_id": 6, "level": 0, "parent": null }
+    ],
+    "announcements": [
+        {
+            "title": "Varha:an ei voi tilata tuotteita",
+            "date": "26.01.2023 - 12:58",
+            "content": "Varha:an ei voi tilata tuotteita, koska se on suljettu. Tilausjärjestelmä on kuitenkin käytössä, joten voit tilata tuotteita, mutta ne eivät tule koskaan perille. Tämä on vain testi."
+        },
+        {
+            "title": "Askartelua ja sähköpostia",
+            "date": "08.07.2021 - 14:40",
+            "content": "Askartelutuotteidein tilaus on ollut pitkään tauolla mutta meillä on nyt ilo kertoa että askartelutuotteet ovat tulossa takaisin, tuotteita tullaan lisäämään lähiaikoina ja askartelutilauksia aletaan ottamaan taas vastaan. Tarkemmasta ajankohdasta tiedotamme tarkemmin myöhemmin. Tavarat kiertoon järjestelmä alkaa nyt myös lähettämään tilannetietoa tilauksista. Tästä päivästä lähtien järjestelmä lähettää tilaajalle viestin sähköpostilla kun tilaus otetaan käsittelyyn sekä kun tilaus on toimitettu."
+        },
+        {
+            "title": "Tavarat Kiertoon saatavilla nyt VPN yhteydellä",
+            "date": "16.11.2020 - 11:39",
+            "content": "Tavarat Kiertoon palvelua on nyt mahdollista käyttää kaupungin verkon ulkopuolelta VPN yhteydellä. Jos sinulla on jo VPN käytössä niin sivustolle pääsee välittömästi ilman toimenpiteitä. Jos sinulla ei ole VPN yhteyttä mutta sinulla on tarve päästä Tavarat Kiertoon sivustolle kaupungin verkon ulkopuolelta, pyydä VPN palvelu ohjeiden mukaan."
+        },
+        {
+            "title": "Vanha osoite rv.ekotuki.net poistettu käytöstä",
+            "date": "09.09.2020 - 12:05",
+            "content": "Vanha osoite rv.ekotuki.net poistettu käytöstä. Tavarat Kiertoon palvelu on nyt saatavilla osoitteessa https://tavaratkiertoon.fi"
+        },
+        {
+            "title": "Hakuvahti ominaisuus lisätty järjestelmään",
+            "date": "26.06.2020 - 11:47",
+            "content": "Hakuvahti ominaisuus lisätty järjestelmään. Voit nyt asettaa hakuvahdin tuotteille ja järjestelmä ilmoittaa sinulle sähköpostilla kun tuote on saatavilla. Hakuvahti löytyy tuotteen tiedoista. Hakuvahti on vielä testausvaiheessa joten toivomme palautetta käyttäjiltä järjestelmän toimivuudesta. Hyvää kesää & lomia Tavarat Kiertoon kehitystiimiltä!"
+        },
+        {
+            "title": "Tavarat kiertävät taas, sekä uusi palvelin",
+            "date": "01.06.2020 - 11:02",
+            "content": "Toimituksia aletaan taas tekemään ja tuotteita voi nyt taas tilata järjestelmästä. Päivitimme myös järjestelmän palvelimen joten palvelun pitäisi toimia entistä nopeammin. Jos kuitenkin ilmenee ongelmia niin ota ihmeessä yhteyttä !"
+        }
     ]
 }
