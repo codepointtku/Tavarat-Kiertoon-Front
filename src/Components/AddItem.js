@@ -3,7 +3,7 @@ import { useLocation, useNavigate, generatePath } from 'react-router';
 function AddItem() {
     const location = useLocation();
     const navigate = useNavigate();
-    console.log(location.state);
+    console.log(location);
 
     return (
         <>

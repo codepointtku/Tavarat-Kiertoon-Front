@@ -5,7 +5,7 @@ function QrScanner() {
     const navigate = useNavigate();
     const onNewScanResult = (decodedText, decodedResult) => {
         console.log(decodedResult, decodedText);
-        navigate(-1, { replace: true, state: decodedText });
+        navigate(-1, { replace: true, state: { qrcode: decodedText } });
     };
     return <Html5QrcodePlugin fps={10} qrbox={250} disableFlip={false} qrCodeSuccessCallback={onNewScanResult} />;
 }
