@@ -19,7 +19,9 @@ function ProductCard({ productName, description, id }) {
         <Box sx={{ minWidth: 240 }}>
             <Card sx={{ maxWidth: 300 }}>
                 <CardActionArea>
-                    <CardMedia component="img" alt="kuva" height="200" image="br.jpg" />
+                    <Link to={`/tuotteet/${id}`}>
+                        <CardMedia component="img" alt="kuva" height="200" image="br.jpg" />
+                    </Link>
                     <CardContent>
                         <Typography variant="h6">{productName}</Typography>
                         <Typography variant="body2" paragraph>
