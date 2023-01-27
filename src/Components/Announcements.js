@@ -1,11 +1,12 @@
 import { Container } from '@mui/material'
+import { useLoaderData } from 'react-router-dom'
 import ArticleCard from './ArticleCard'
-import testData from '../TestData/announcement.json'
 
 
 function Announcements(){
+    const testData = useLoaderData()
     const cards = testData.map(item => (
-        <ArticleCard title={item.title} date={item.date} time={item.time} content={item.content} />
+        <ArticleCard title={item.title} date={item.date} content={item.content} />
     ))
 
     return(

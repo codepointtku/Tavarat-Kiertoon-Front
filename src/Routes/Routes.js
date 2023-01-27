@@ -159,7 +159,16 @@ function Routes() {
                     <Base>
                         <Announcements />
                     </Base>
-                )    
+                ),
+            loader: async () => {
+                const { data } = await axios.get('http://localhost:3001/announcements');
+                try {
+                    return data
+                }
+                catch {
+                    return null
+                }
+            }   
         },
     ]);
 
