@@ -24,6 +24,8 @@ import LocationDetails from '../Components/LocationDetails';
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
 
+import StatsPage from '../Components/Stats/index';
+
 function Routes() {
     const router = createBrowserRouter([
         {
@@ -53,6 +55,10 @@ function Routes() {
                         return null;
                     },
                 },
+                {
+                    path: '/stats',
+                    element: <StatsPage />
+                }
             ],
         },
         {
