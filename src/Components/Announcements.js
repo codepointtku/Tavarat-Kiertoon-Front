@@ -5,7 +5,7 @@ import testData from '../TestData/announcement.json'
 
 function Announcements(){
     const cards = testData.map(item => (
-        <ArticleCard title={item.title} date={item.date} time={item.time} />
+        <ArticleCard title={item.title} date={item.date} time={item.time} content={item.content} />
     ))
 
     return(
