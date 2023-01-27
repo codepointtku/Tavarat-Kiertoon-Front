@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom';
 import TablePaginationActions from './TablePaginationActions';
 import StyledTableCell from './StyledTableCell';
 import StyledTableRow from './StyledTableRow';
+import SortByMenu from './SortByMenu';
 
 function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
     // Avoid a layout jump when reaching the last page with empty rows.
@@ -42,7 +43,9 @@ function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell>Tilaus (ID)</StyledTableCell>
+                        <StyledTableCell>
+                            Tilaus (ID) <SortByMenu />
+                        </StyledTableCell>
                         <StyledTableCell align="right">Status</StyledTableCell>
                         <StyledTableCell align="right">Toimitusosoite</StyledTableCell>
                         <StyledTableCell align="right">Tilaaja</StyledTableCell>
