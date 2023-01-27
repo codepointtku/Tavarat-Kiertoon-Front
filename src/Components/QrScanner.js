@@ -4,6 +4,7 @@ import Html5QrcodePlugin from '../Utils/qrcodeScanner';
 function QrScanner() {
     const navigate = useNavigate();
     const location = useLocation();
+
     const onNewScanResult = (decodedText, decodedResult) => {
         console.log(decodedResult, decodedText);
         navigate(generatePath('/varasto/luo'), { replace: true, state: { ...location.state, qrcode: decodedText } });

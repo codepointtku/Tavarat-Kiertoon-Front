@@ -10,8 +10,6 @@ function AddItem() {
         setItem(location.state);
     }, [location]);
 
-    console.log(location);
-
     return (
         <>
             <button
