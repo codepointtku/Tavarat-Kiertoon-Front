@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -7,6 +8,7 @@ import Divider from '@mui/material/Divider';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function SortByMenu() {
+    const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -43,6 +45,7 @@ export default function SortByMenu() {
                 <MenuItem
                     onClick={() => {
                         handleClose();
+                        navigate();
                     }}
                 >
                     1. perusteella
@@ -51,6 +54,7 @@ export default function SortByMenu() {
                 <MenuItem
                     onClick={() => {
                         handleClose();
+                        navigate();
                     }}
                 >
                     2. perusteella
@@ -59,6 +63,7 @@ export default function SortByMenu() {
                 <MenuItem
                     onClick={() => {
                         handleClose();
+                        navigate();
                     }}
                 >
                     3. perusteella
