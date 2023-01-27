@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
-import { Table, TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Table, TableBody, TableContainer, TableHead, TableRow, TableCell } from '@mui/material';
 import StyledTableCell from './StyledTableCell';
-import StyledTableRow from './StyledTableRow';
 
 function Storages({ storages }) {
+    const navigate = useNavigate();
     return (
         <>
             <h2 align="center">Varastot</h2>
@@ -25,12 +26,16 @@ function Storages({ storages }) {
                     </TableHead>
                     <TableBody>
                         {storages.map((storage) => (
-                            <StyledTableRow>
-                                <StyledTableCell>{storage.id}</StyledTableCell>
-                                <StyledTableCell align="right">{storage.name}</StyledTableCell>
-                                <StyledTableCell align="right">{storage.address}</StyledTableCell>
-                                <StyledTableCell align="right">{storage.inUse.toString()}</StyledTableCell>
-                            </StyledTableRow>
+                            <TableRow
+                                onClick={() => navigate(`varastot/${storage.id}`)}
+                                style={{ cursor: 'pointer' }}
+                                hover
+                            >
+                                <TableCell>{storage.id}</TableCell>
+                                <TableCell align="right">{storage.name}</TableCell>
+                                <TableCell align="right">{storage.address}</TableCell>
+                                <TableCell align="right">{storage.inUse.toString()}</TableCell>
+                            </TableRow>
                         ))}
                     </TableBody>
                 </Table>
