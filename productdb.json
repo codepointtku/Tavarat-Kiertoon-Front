@@ -1,40 +1,144 @@
 {
     "products": [
         {
-            "id": "1",
-            "productName": "Piirtoheitin",
-            "description": "Hyväkuntone piirtoheitin suoraa 80-luvulta",
-            "dateAdded": "01.06.1999"
+            "id": 1234,
+            "name": "työtuoli",
+            "barcode": "01",
+            "category": "tuolit",
+            "color": "white",
+            "location": "varasto_0",
+            "dateAdded": "01.01.2023",
+            "description": "Tuotteen tarkempi kuvaus ja kunto. "
         },
         {
-            "id": "2",
-            "productName": "Jakkara",
-            "description": "Eläköityneen rehtorin luotettava jakkara",
-            "dateAdded": "01.01.2023"
+            "id": 5679,
+            "name": "kahvikuppi",
+            "barcode": "tonipal_kahville",
+            "category": "kahvittelu",
+            "color": "brown",
+            "location": "kahvihuone",
+            "dateAdded": "01.01.2023",
+            "description": "Tuotteen tarkempi kuvaus ja kunto."
         },
         {
-            "id": "3",
-            "productName": "Bob Rossin pensselit",
-            "description": "5 kpl setti eri paksusia, jouhet ok, vähän maalinjämiä",
-            "dateAdded": "01.01.2023"
+            "id": 5678,
+            "name": "kahvikuppi",
+            "barcode": "tonipal_kahville",
+            "category": "kahvittelu",
+            "color": "brown",
+            "location": "kahvihuone",
+            "dateAdded": "01.01.2023",
+            "description": "Tuotteen tarkempi kuvaus ja kunto."
         },
         {
-            "id": "4",
-            "productName": "Vichy-pullo",
-            "description": "Tyhjä",
-            "dateAdded": "01.01.2023"
+            "id": 5670,
+            "name": "kahvikuppi",
+            "barcode": "tonipal_kahville",
+            "category": "kahvittelu",
+            "color": "brown",
+            "location": "kahvihuone",
+            "dateAdded": "01.01.2023",
+            "description": "Tuotteen tarkempi kuvaus ja kunto."
         },
         {
-            "id": "5",
-            "productName": "Kahvinkeitin",
-            "description": "Alalemun koulu osti opehuoneeseen uuden mokkamasterin, tää wanha jäi ylimääräseks",
-            "dateAdded": "01.01.2023"
+            "id": 5671,
+            "name": "kahvinkeitin",
+            "barcode": "it's kaffe time",
+            "category": "kahvittelu",
+            "color": "white",
+            "location": "kahvihuone",
+            "dateAdded": "01.01.2023",
+            "description": "Tuotteen tarkempi kuvaus ja kunto."
         },
         {
-            "id": "6",
-            "productName": "Joku missä on överipitkä teksti",
-            "description": "Katotaas mitä tapahtuu kun tähän kirjoittaa ihan älyttömän mällin tekstiä, jos joku vaikka innostuu copypasteemaan tähän descriptioniin vahingossa koko users manualin viidellä eri kielellä ja silleenspäin pois ja tuolleen noin ja siitä ja puita!",
-            "dateAdded": "01.01.2023"
+            "id": 5672,
+            "name": "kahvipaketti",
+            "barcode": "555-kaffe",
+            "category": "kahvittelu",
+            "color": "black",
+            "location": "kahvihuone",
+            "dateAdded": "01.01.2023",
+            "description": "Tuotteen tarkempi kuvaus ja kunto."
+        },
+        {
+            "id": 5673,
+            "name": "kahvimylly",
+            "barcode": "grind to halt",
+            "category": "kahvittelu",
+            "color": "clear",
+            "location": "kahvihuone",
+            "dateAdded": "01.01.2023",
+            "description": "Tuotteen tarkempi kuvaus ja kunto."
+        },
+        {
+            "id": 5674,
+            "name": "kahvipapu",
+            "barcode": "single coffee bean",
+            "category": "kahvittelu",
+            "color": "brown",
+            "location": "kahvihuone",
+            "dateAdded": "01.01.2023",
+            "description": "Tuotteen tarkempi kuvaus ja kunto."
+        },
+        {
+            "id": 5675,
+            "name": "tonipal_kahville",
+            "barcode": "kahvipakotus",
+            "category": "inspirational quote",
+            "color": "white",
+            "location": "kahvihuone",
+            "dateAdded": "01.01.2023",
+            "description": "Tuotteen tarkempi kuvaus ja kunto."
+        },
+        {
+            "id": 5676,
+            "name": "kahvipannu",
+            "barcode": "café",
+            "category": "kahvittelu",
+            "color": "black",
+            "location": "witches coven",
+            "dateAdded": "01.01.2023",
+            "description": "Tuotteen tarkempi kuvaus ja kunto."
+        },
+        {
+            "id": 5677,
+            "name": "termoskannu",
+            "barcode": "kahvisäilytys",
+            "category": "kahvittelu",
+            "color": "gray",
+            "location": "kahvihuone",
+            "dateAdded": "01.01.2023",
+            "description": "Tuotteen tarkempi kuvaus ja kunto."
+        },
+        {
+            "id": 5680,
+            "name": "kahvilautanen",
+            "barcode": "kaffe",
+            "category": "hifistely",
+            "color": "white",
+            "location": "kahvihuone",
+            "dateAdded": "01.01.2023",
+            "description": "Tuotteen tarkempi kuvaus ja kunto."
+        },
+        {
+            "id": 5681,
+            "name": "kahviaddiktio",
+            "barcode": "nyt kaffee",
+            "category": "mielentila",
+            "color": "transparent",
+            "location": "mind",
+            "dateAdded": "01.01.2023",
+            "description": "Tuotteen tarkempi kuvaus ja kunto."
+        },
+        {
+            "id": 1245,
+            "name": "jakkara",
+            "barcode": "02",
+            "category": "tuolit",
+            "color": "black",
+            "location": "varasto_0",
+            "dateAdded": "01.01.2023",
+            "description": "Tuotteen tarkempi kuvaus ja kunto."
         }
     ],
     "orders": [
