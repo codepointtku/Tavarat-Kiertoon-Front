@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useParams, generatePath } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -19,6 +19,8 @@ export default function SortByMenu() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    console.log(num);
 
     return (
         <div>
@@ -47,7 +49,7 @@ export default function SortByMenu() {
                 <MenuItem
                     onClick={() => {
                         handleClose();
-                        navigate(`varasto/${num}/waiting${searchParams}`);
+                        navigate(generatePath(`/varasto/:num/:view?${searchParams}`, { view: 'waiting', num }));
                     }}
                 >
                     Waiting
@@ -56,7 +58,7 @@ export default function SortByMenu() {
                 <MenuItem
                     onClick={() => {
                         handleClose();
-                        navigate(`varasto/${num}/delivery${searchParams}`);
+                        navigate(generatePath(`/varasto/:num/:view?${searchParams}`, { view: 'delivery', num }));
                     }}
                 >
                     Delivery
@@ -65,7 +67,7 @@ export default function SortByMenu() {
                 <MenuItem
                     onClick={() => {
                         handleClose();
-                        navigate(`varasto/${num}/finished${searchParams}`);
+                        navigate(generatePath(`/varasto/:num/:view?${searchParams}`, { view: 'finished', num }));
                     }}
                 >
                     Finished
