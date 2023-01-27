@@ -24,7 +24,7 @@ import LocationDetails from '../Components/LocationDetails';
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
 
-import StatsPage from '../Components/Stats/index';
+import StatsPage from '../Components/Stats/ChartsIndex';
 
 function Routes() {
     const router = createBrowserRouter([
