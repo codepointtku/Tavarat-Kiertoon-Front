@@ -54,6 +54,10 @@ function Routes() {
                         return null;
                     },
                 },
+                {
+                    path: '/faq',
+                    element: <FaqView />,
+                },
             ],
         },
         {
@@ -152,14 +156,6 @@ function Routes() {
                     element: <LocationDetails />,
                 },
             ],
-        },
-        {
-            path: '/faq',
-            element: (
-                <Base>
-                    <FaqView />
-                </Base>
-            ),
         },
     ]);
 
