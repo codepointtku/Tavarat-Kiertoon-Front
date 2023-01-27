@@ -6,8 +6,7 @@ function ArticleCard({title, date, time}){
         <Card sx={{margin: 5, textAlign: "center"}}>
             <h1>{title}</h1>
             <hr /> 
-            <h4>{date}</h4>
-            <h4>{time}</h4>
+            <h5 style={{color: '#777777'}}>{date} {time}</h5>
         </Card>
     )
 }
