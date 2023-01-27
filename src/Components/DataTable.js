@@ -10,7 +10,6 @@ import {
     TableRow,
     Paper,
 } from '@mui/material';
-import LaunchIcon from '@mui/icons-material/Launch';
 import { Link } from 'react-router-dom';
 import TablePaginationActions from './TablePaginationActions';
 import StyledTableCell from './StyledTableCell';
@@ -57,10 +56,7 @@ function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
                         (row) => (
                             <StyledTableRow key={row.id}>
                                 <StyledTableCell component="th" scope="row">
-                                    <Link to={`/varasto/tilaus/${row.id}?page=0&rows=5`}>
-                                        {row.id}
-                                        <LaunchIcon fontSize="small" />
-                                    </Link>
+                                    <Link to={`/varasto/tilaus/${row.id}?page=0&rows=5`}>{row.id}</Link>
                                 </StyledTableCell>
                                 <StyledTableCell align="right">{row.status}</StyledTableCell>
                                 <StyledTableCell align="right">{row.address}</StyledTableCell>
