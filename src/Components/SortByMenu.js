@@ -40,11 +40,29 @@ export default function SortByMenu() {
                 onClose={handleClose}
                 TransitionComponent={Fade}
             >
-                <MenuItem onClick={handleClose}>1. perusteella</MenuItem>
+                <MenuItem
+                    onClick={() => {
+                        handleClose();
+                    }}
+                >
+                    1. perusteella
+                </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleClose}>2. perusteella</MenuItem>
+                <MenuItem
+                    onClick={() => {
+                        handleClose();
+                    }}
+                >
+                    2. perusteella
+                </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleClose}>3. perusteella</MenuItem>
+                <MenuItem
+                    onClick={() => {
+                        handleClose();
+                    }}
+                >
+                    3. perusteella
+                </MenuItem>
             </Menu>
         </div>
     );
