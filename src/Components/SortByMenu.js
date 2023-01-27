@@ -20,8 +20,6 @@ export default function SortByMenu() {
         setAnchorEl(null);
     };
 
-    console.log(num);
-
     return (
         <div>
             <Button
