@@ -206,5 +206,19 @@
             "date": "01.06.2020 - 11:02",
             "content": "Toimituksia aletaan taas tekemään ja tuotteita voi nyt taas tilata järjestelmästä. Päivitimme myös järjestelmän palvelimen joten palvelun pitäisi toimia entistä nopeammin. Jos kuitenkin ilmenee ongelmia niin ota ihmeessä yhteyttä !"
         }
+    ],
+    "storages": [
+        {
+            "id": 1,
+            "name": "kahvivarasto",
+            "address": "tonipal_kahville katu 9001",
+            "inUse": true
+        },
+        {
+            "id": 2,
+            "name": "localstorage",
+            "address": "localhost",
+            "inUse": false
+        }
     ]
 }
