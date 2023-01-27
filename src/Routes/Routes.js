@@ -115,7 +115,7 @@ function Routes() {
                     },
                 },
                 {
-                    path: 'varasto/luo',
+                    path: '/varasto/luo',
                     element: <AddItem />,
                 },
                 {
