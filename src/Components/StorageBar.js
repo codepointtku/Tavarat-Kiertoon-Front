@@ -6,7 +6,10 @@ import Button from '@mui/material/Button';
 import { useNavigate, Link } from 'react-router-dom';
 
 export default function StorageBar() {
-    const pages = [{ name: 'Tilaukset', path: '/varasto/0/delivery?page=0&rows=5' }];
+    const pages = [
+        { name: 'Tilaukset', path: '/varasto/0/delivery?page=0&rows=5' },
+        { name: 'Luo tuotteita', path: '/varasto/luo' },
+    ];
 
     const navigate = useNavigate();
 
