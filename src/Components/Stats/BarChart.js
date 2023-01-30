@@ -1,26 +1,13 @@
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 /* eslint-disable-next-line */
 import { faker } from '@faker-js/faker';
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-);
+import { Container } from '@mui/material';
 
-const titletext = "Tuotteita kierrätetty";
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+const titletext = 'Tuotteita kierrätetty';
 
 export const options = {
     responsive: true,
@@ -30,15 +17,23 @@ export const options = {
         },
         title: {
             display: true,
-            text: titletext
+            text: titletext,
         },
     },
 };
 
 const labels = [
-    'Tammikuu', 'Helmikuu', 'Maaliskuu',
-    'Huhtikuu', 'Toukokuu', 'Kesäkuu',
-    'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu', 'Joulukuu'
+    'Tammikuu',
+    'Helmikuu',
+    'Maaliskuu',
+    'Huhtikuu',
+    'Toukokuu',
+    'Kesäkuu',
+    'Elokuu',
+    'Syyskuu',
+    'Lokakuu',
+    'Marraskuu',
+    'Joulukuu',
 ];
 
 export const data = {
@@ -58,7 +53,11 @@ export const data = {
 };
 
 function BarChart() {
-    return <Bar options={options} data={data} />
-};
+    return (
+        <Container maxWidth="lg">
+            <Bar options={options} data={data} />
+        </Container>
+    );
+}
 
 export default BarChart;

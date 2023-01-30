@@ -12,15 +12,9 @@ import { Line } from 'react-chartjs-2';
 /* eslint-disable-next-line */
 import { faker } from '@faker-js/faker';
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-);
+import { Container } from '@mui/material';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 export const options = {
     responsive: true,
@@ -52,10 +46,7 @@ export const options = {
     },
 };
 
-const labels = [
-    '2010', '2011', '2012', '2013', '2014', '2015',
-    '2016', '2017', '2018', '2019', '2020', '2021'
-];
+const labels = ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021'];
 
 export const data = {
     labels,
@@ -78,7 +69,11 @@ export const data = {
 };
 
 function MultiAxisLineChart() {
-    return <Line options={options} data={data} />;
+    return (
+        <Container maxWidth="lg">
+            <Line options={options} data={data} />;
+        </Container>
+    );
 }
 
 export default MultiAxisLineChart;

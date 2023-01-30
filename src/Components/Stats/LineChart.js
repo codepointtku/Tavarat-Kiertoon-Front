@@ -12,15 +12,9 @@ import { Line } from 'react-chartjs-2';
 /* eslint-disable-next-line */
 import { faker } from '@faker-js/faker';
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-);
+import { Container } from '@mui/material';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 export const options = {
     responsive: true,
@@ -36,9 +30,17 @@ export const options = {
 };
 
 const labels = [
-    'Tammikuu', 'Helmikuu', 'Maaliskuu',
-    'Huhtikuu', 'Toukokuu', 'Kesäkuu',
-    'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu', 'Joulukuu'
+    'Tammikuu',
+    'Helmikuu',
+    'Maaliskuu',
+    'Huhtikuu',
+    'Toukokuu',
+    'Kesäkuu',
+    'Elokuu',
+    'Syyskuu',
+    'Lokakuu',
+    'Marraskuu',
+    'Joulukuu',
 ];
 
 export const data = {
@@ -60,7 +62,11 @@ export const data = {
 };
 
 function LineChart() {
-    return <Line options={options} data={data} />;
+    return (
+        <Container maxWidth="lg">
+            <Line options={options} data={data} />;
+        </Container>
+    );
 }
 
 export default LineChart;
