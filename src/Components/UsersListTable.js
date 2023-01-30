@@ -47,7 +47,7 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
     }, [page]);
 
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ padding: '2rem' }}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
                     <TableRow>

@@ -18,11 +18,13 @@ import QrScanner from '../Components/QrScanner';
 
 import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
-import LocationsView from '../Components/LocationsView';
-import LocationDetails from '../Components/LocationDetails';
 
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
+import FaqView from '../Components/FaqView';
+import StoragesList from '../Components/StoragesList';
+import StorageEdit from '../Components/StorageEdit';
+import AddItem from '../Components/AddItem';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -52,6 +54,10 @@ function Routes() {
                         }
                         return null;
                     },
+                },
+                {
+                    path: '/faq',
+                    element: <FaqView />,
                 },
             ],
         },
@@ -109,6 +115,10 @@ function Routes() {
                     },
                 },
                 {
+                    path: '/varasto/luo',
+                    element: <AddItem />,
+                },
+                {
                     path: '/varasto/koodinlukija',
                     element: <QrScanner />,
                 },
@@ -124,6 +134,18 @@ function Routes() {
                 </ThemeProvider>
             ),
             children: [
+                {
+                    path: '/admin',
+                    element: <StoragesList />,
+                    loader: async () => {
+                        const { data } = await axios.get('http://localhost:3001/storages');
+                        if (data) {
+                            return data;
+                        }
+                        console.log(data);
+                        return null;
+                    },
+                },
                 {
                     path: '/admin/users',
                     element: <UsersList />,
@@ -143,12 +165,12 @@ function Routes() {
                     element: <UserEdit />,
                 },
                 {
-                    path: '/admin/varastot',
-                    element: <LocationsView />,
+                    path: '/admin/varastot/:id',
+                    element: <StorageEdit />,
                 },
                 {
-                    path: '/admin/varastot/varasto/:id',
-                    element: <LocationDetails />,
+                    path: '/admin/hakemukset',
+                    element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
                 },
             ],
         },
