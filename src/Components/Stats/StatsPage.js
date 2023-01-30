@@ -13,7 +13,6 @@ import RadarChart from './RadarChart';
 
 import SideAccordions from './SideAccordions';
 
-// // this horryfying if-statement shall be abolished and refactored in the future.
 function VisibleChart({ currentVisibleChart }) {
     switch (currentVisibleChart) {
         case 'bar':
