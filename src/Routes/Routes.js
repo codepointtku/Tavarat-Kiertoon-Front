@@ -24,6 +24,7 @@ import ProductDetails from '../Components/ProductDetails';
 import FaqView from '../Components/FaqView';
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
+import AddItem from '../Components/AddItem';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -112,6 +113,10 @@ function Routes() {
                         }
                         return null;
                     },
+                },
+                {
+                    path: '/varasto/luo',
+                    element: <AddItem />,
                 },
                 {
                     path: '/varasto/koodinlukija',
