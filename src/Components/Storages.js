@@ -8,20 +8,14 @@ function Storages({ storages }) {
     return (
         <>
             <h2 align="center">Varastot</h2>
-            <TableContainer align="center">
-                <Table style={{ width: 300, margin: '20px 0px' }} aria-label="customized table">
+            <TableContainer align="center" sx={{ padding: '2rem' }}>
+                <Table style={{ width: 300 }} aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell style={{ backgroundColor: 'blue' }}>Varasto ID </StyledTableCell>
-                            <StyledTableCell style={{ backgroundColor: 'blue' }} align="right">
-                                Nimi
-                            </StyledTableCell>
-                            <StyledTableCell style={{ backgroundColor: 'blue' }} align="right">
-                                Osoite
-                            </StyledTableCell>
-                            <StyledTableCell style={{ backgroundColor: 'blue' }} align="right">
-                                Käytössä
-                            </StyledTableCell>
+                            <StyledTableCell>Varasto ID </StyledTableCell>
+                            <StyledTableCell align="right">Nimi</StyledTableCell>
+                            <StyledTableCell align="right">Osoite</StyledTableCell>
+                            <StyledTableCell align="right">Käytössä</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
