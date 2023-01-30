@@ -56,7 +56,7 @@ function AddItem() {
                     </Box>
                     <TabPanel value={1}>Uusi tuote</TabPanel>
                     <TabPanel value={2}>
-                        <AddExistingItem item={item} />
+                        <AddExistingItem item={item} setTab={setTab} />
                     </TabPanel>
                 </TabContext>
             </Box>

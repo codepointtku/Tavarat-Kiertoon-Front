@@ -3,7 +3,7 @@ import { useNavigate, generatePath, useLocation } from 'react-router';
 import PropTypes from 'prop-types';
 import { Button, TextField, Box } from '@mui/material';
 
-function AddExistingItem({ item }) {
+function AddExistingItem({ item, setTab }) {
     const navigate = useNavigate();
     const location = useLocation();
     const [barCode, setBarCode] = useState(false);
@@ -45,9 +45,10 @@ function AddExistingItem({ item }) {
             </Box>
             <Button
                 onClick={() => {
+                    setTab(1);
                     navigate(generatePath('/varasto/luo'), {
                         replace: true,
-                        state: { ...location.state, barcode: barCode, id: itemId },
+                        state: { ...location.state, barcode: barCode, id: itemId, oldItem: true },
                     });
                 }}
             >
@@ -66,6 +67,7 @@ AddExistingItem.propTypes = {
         location: PropTypes.string,
         isOld: PropTypes.bool,
     }).isRequired,
+    setTab: PropTypes.func.isRequired,
 };
 
 export default AddExistingItem;
