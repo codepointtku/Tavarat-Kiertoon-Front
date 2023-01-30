@@ -13,28 +13,25 @@ import RadarChart from './RadarChart';
 
 import SideAccordions from './SideAccordions';
 
-// this horryfying if-statement shall be abolished and refactored in the future.
+// // this horryfying if-statement shall be abolished and refactored in the future.
 function VisibleChart({ currentVisibleChart }) {
-    if (currentVisibleChart === 'bar') {
-        return <BarChart />;
-    }
-    if (currentVisibleChart === 'area') {
-        return <AreaChart />;
-    }
-    if (currentVisibleChart === 'line') {
-        return <LineChart />;
-    }
-    if (currentVisibleChart === 'multiline') {
-        return <MultiAxisLineChart />;
-    }
-    if (currentVisibleChart === 'pie') {
-        return <PieChart />;
-    }
-    if (currentVisibleChart === 'polar') {
-        return <PolarAreaChart />;
-    }
-    if (currentVisibleChart === 'radar') {
-        return <RadarChart />;
+    switch (currentVisibleChart) {
+        case 'bar':
+            return <BarChart />;
+        case 'area':
+            return <AreaChart />;
+        case 'line':
+            return <LineChart />;
+        case 'multiline':
+            return <MultiAxisLineChart />;
+        case 'pie':
+            return <PieChart />;
+        case 'polar':
+            return <PolarAreaChart />;
+        case 'radar':
+            return <RadarChart />;
+        default:
+            return <BarChart />;
     }
 }
 
