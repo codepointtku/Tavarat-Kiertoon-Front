@@ -25,7 +25,7 @@ import FaqView from '../Components/FaqView';
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
-import ItemForm from '../Components/ItemForm';
+import ItemForm from '../Components/AddNewItem';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -123,9 +123,13 @@ function Routes() {
                     path: '/varasto/lomake',
                     element: <ItemForm />,
                     loader: async () => {
-                        const { data } = await axios.get(`http://localhost:3001/categories/`);
-                        if (data) {
-                            return data;
+                        const dataList = [];
+                        let { data } = await axios.get('http://localhost:3001/categories/');
+                        dataList.push(data);
+                        data = await axios.get('http://localhost:3001/storages/');
+                        dataList.push(data.data);
+                        if (dataList) {
+                            return dataList;
                         }
                         return null;
                     },

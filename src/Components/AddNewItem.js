@@ -1,9 +1,9 @@
 import { useNavigate, useLoaderData } from 'react-router';
 import { TextField, Box, MenuItem } from '@mui/material';
 
-function ItemForm() {
+function AddNewItem() {
     const navigate = useNavigate();
-    const categories = useLoaderData();
+    const data = useLoaderData();
 
     return (
         <>
@@ -22,11 +22,15 @@ function ItemForm() {
                         <TextField required id="outlined-required" label="Nimi" />
                     </h5>
                     <h5>
-                        <TextField disabled id="outlined-disabled" label="Viivakoodi" />
+                        <TextField disabled id="outlined-disabled" label="Viivakoodi">
+                            <button type="button" onClick={() => navigate('/koodinlukija')}>
+                                Koodinlukija
+                            </button>
+                        </TextField>
                     </h5>
                     <h5>
                         <TextField required id="outlined-select" select label="Kategoria">
-                            {categories.map((category) => (
+                            {data[0].map((category) => (
                                 <MenuItem key={category.id} value={category.name}>
                                     {category.name}
                                 </MenuItem>
@@ -34,18 +38,21 @@ function ItemForm() {
                         </TextField>
                     </h5>
                     <h5>
-                        <TextField required id="outlined-required" label="Sijainti" />
+                        <TextField required id="outlined-select" select label="Sijainti">
+                            {data[1].map((location) => (
+                                <MenuItem key={location.id} value={location.name}>
+                                    {location.name}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                     </h5>
                     <h5>
                         <TextField id="filled-helperText" label="Vapaa Kuvaus" />
                     </h5>
                 </div>
             </Box>
-            <button type="button" onClick={() => navigate('/koodinlukija')}>
-                Koodinlukija
-            </button>
         </>
     );
 }
 
-export default ItemForm;
+export default AddNewItem;
