@@ -7,7 +7,7 @@ function QrScanner() {
 
     const onNewScanResult = (decodedText, decodedResult) => {
         console.log(decodedResult, decodedText);
-        navigate(generatePath('/varasto/luo'), { replace: true, state: { ...location.state, qrcode: decodedText } });
+        navigate(generatePath('/varasto/luo'), { replace: true, state: { ...location.state, barcode: decodedText } });
     };
     return <Html5QrcodePlugin fps={10} qrbox={250} disableFlip={false} qrCodeSuccessCallback={onNewScanResult} />;
 }
