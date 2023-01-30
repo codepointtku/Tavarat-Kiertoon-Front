@@ -26,6 +26,8 @@ import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
 
+import ChartsIndex from '../Components/Stats/ChartsIndex';
+
 function Routes() {
     const router = createBrowserRouter([
         {
@@ -58,6 +60,10 @@ function Routes() {
                 {
                     path: '/faq',
                     element: <FaqView />,
+                },
+                {
+                    path: '/stats',
+                    element: <ChartsIndex />,
                 },
             ],
         },
