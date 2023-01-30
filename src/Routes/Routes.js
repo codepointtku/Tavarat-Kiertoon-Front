@@ -26,7 +26,7 @@ import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
 
-import ChartsIndex from '../Components/Stats/ChartsIndex';
+import StatsPage from '../Components/Stats/StatsPage';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -63,7 +63,7 @@ function Routes() {
                 },
                 {
                     path: '/stats',
-                    element: <ChartsIndex />,
+                    element: <StatsPage />,
                 },
             ],
         },
