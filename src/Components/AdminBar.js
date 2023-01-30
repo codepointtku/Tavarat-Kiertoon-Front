@@ -7,7 +7,7 @@ import { useNavigate, Link } from 'react-router-dom';
 
 export default function AdminBar() {
     const pages = [
-        { name: 'Tilaukset', path: '/admin/tilaukset/:num/:view' },
+        { name: 'Tilaukset', path: '/varasto/:num/:view' },
         { name: 'Käyttäjät', path: '/admin/users?page=0&rows=5' },
         { name: 'Hakemukset', path: '/admin/hakemukset' },
     ];

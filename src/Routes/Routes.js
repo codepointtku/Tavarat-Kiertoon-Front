@@ -168,49 +168,6 @@ function Routes() {
                     path: '/admin/varastot/:id',
                     element: <StorageEdit />,
                 },
-                {
-                    path: '/admin/tilaukset/:num/:view',
-                    element: <OrdersList />,
-                    loader: async ({ params }) => {
-                        const { data } = await axios.get('http://localhost:3001/orders');
-                        // num will tell back-end which entries to bring
-                        // view is order status, unless archived can bring all?
-                        // or will be replaced into the back-end later?
-                        const statuses = {
-                            waiting: 2,
-                            delivery: 1,
-                            finished: 0,
-                        };
-                        statuses[params.view] = 10;
-                        data.sort((a, b) => {
-                            if (statuses[a.status] > statuses[b.status]) {
-                                return -1;
-                            }
-                            if (a.status === b.status) {
-                                if (a.id > b.id) {
-                                    return -1;
-                                }
-                            }
-                            return 1;
-                        });
-
-                        if (data) {
-                            return data;
-                        }
-                        return null;
-                    },
-                },
-                {
-                    path: 'admin/tilaus/:id',
-                    element: <OrderView />,
-                    loader: async ({ params }) => {
-                        const { data } = await axios.get(`http://localhost:3001/orders/${params.id}`);
-                        if (data) {
-                            return data;
-                        }
-                        return null;
-                    },
-                },
             ],
         },
     ]);
