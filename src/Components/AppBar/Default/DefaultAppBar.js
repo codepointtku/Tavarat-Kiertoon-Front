@@ -119,7 +119,7 @@ function Drawer({ currentOpenDrawer, name, children }) {
 }
 
 function DefaultAppBar() {
-    const [currentOpenDrawer, setCurrentOpenDrawer] = useState(null);
+    const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
 
     const drawerOpen = (drawer) => () => {
         if (currentOpenDrawer === drawer) {
@@ -134,7 +134,7 @@ function DefaultAppBar() {
             <AppBar
                 // bgcolor="primary"
                 sx={{
-                    backgroundColor: "primary.main",
+                    backgroundColor: 'primary.main',
                     width: 'min-content',
                     boxShadow: 0,
                 }}
@@ -190,7 +190,9 @@ function DefaultAppBar() {
                     {['Kassalle', 'Muikulle', 'Pihalle'].map((text, index) => (
                         <ListItem key={text} disablePadding>
                             <ListItemButton>
-                                <ListItemIcon>{index % 2 === 0 ? <ShoppingCartCheckoutIcon /> : <PhishingIcon />}</ListItemIcon>
+                                <ListItemIcon>
+                                    {index % 2 === 0 ? <ShoppingCartCheckoutIcon /> : <PhishingIcon />}
+                                </ListItemIcon>
                                 <ListItemText primary={text} />
                             </ListItemButton>
                         </ListItem>
@@ -214,5 +216,5 @@ export default DefaultAppBar;
 Drawer.propTypes = {
     currentOpenDrawer: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    children: PropTypes.element.isRequired,
-}
+    children: PropTypes.node.isRequired,
+};

@@ -63,7 +63,7 @@ export const data = {
 function AreaChart() {
     return (
         <Container maxWidth="lg">
-            <Line options={options} data={data} />;
+            <Line options={options} data={data} />
         </Container>
     );
 }

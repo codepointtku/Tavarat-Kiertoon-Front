@@ -26,7 +26,7 @@ export const data = {
 
 function PolarAreaChart() {
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="xs">
             <PolarArea data={data} />
         </Container>
     );

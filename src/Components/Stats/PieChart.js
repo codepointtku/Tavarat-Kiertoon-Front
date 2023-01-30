@@ -34,7 +34,7 @@ export const data = {
 
 function PieChart() {
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="xs">
             <Pie data={data} />
         </Container>
     );

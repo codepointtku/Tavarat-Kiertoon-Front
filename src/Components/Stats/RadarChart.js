@@ -20,7 +20,7 @@ export const data = {
 
 function RadarChart() {
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="xs">
             <Radar data={data} />
         </Container>
     );
