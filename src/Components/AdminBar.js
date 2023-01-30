@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 export default function AdminBar() {
     const pages = [
         { name: 'Tilaukset', path: '/admin/tilaukset' },
-        { name: 'Varastot', path: '/admin/varastot' },
         { name: 'Käyttäjät', path: '/admin/users?page=0&rows=5' },
         { name: 'Hakemukset', path: '/admin/hakemukset' },
     ];

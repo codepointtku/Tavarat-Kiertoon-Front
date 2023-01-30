@@ -2,8 +2,8 @@ import { test, expect } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await page.click('//*[@id="root"]/div[1]/div/div/div[2]/button[2]');
-    await page.click('//*[@id="root"]/div[1]/div/div/div[2]/button[2]');
+    await page.click('//*[@id="root"]/header/div[2]/div/div[2]/button[2]');
+    await page.click('//*[@id="root"]/header/div[2]/div/div[2]/button[2]');
     await page.click('text=Varasto');
 });
 
