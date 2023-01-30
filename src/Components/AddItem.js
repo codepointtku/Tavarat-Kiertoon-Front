@@ -3,6 +3,8 @@ import { useLocation, useNavigate, generatePath } from 'react-router';
 import { Box, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 
+import AddExistingItem from './AddExistingItem';
+
 function AddItem() {
     // empty location.state when item is finally added and site navigates away!
     const location = useLocation();
@@ -53,7 +55,9 @@ function AddItem() {
                         </TabList>
                     </Box>
                     <TabPanel value={1}>Uusi tuote</TabPanel>
-                    <TabPanel value={2}>Olemassaoleva tuotteet</TabPanel>
+                    <TabPanel value={2}>
+                        <AddExistingItem />
+                    </TabPanel>
                 </TabContext>
             </Box>
         </>
