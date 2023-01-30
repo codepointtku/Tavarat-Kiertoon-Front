@@ -13,7 +13,7 @@ function AddExistingItem({ item }) {
                 Lue Viivakoodi
             </Button>
             Lisää olemassaolevaan esineryhmään
-            <Button>Lue Viivakoodi</Button>
+            <Button>Lisää Esine</Button>
         </>
     );
 }
