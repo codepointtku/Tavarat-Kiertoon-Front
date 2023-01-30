@@ -4,6 +4,7 @@ import { Box, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 import AddExistingItem from './AddExistingItem';
+import AddNewItem from './AddNewItem';
 
 function AddItem() {
     // empty location.state when item is finally added and site navigates away!
@@ -22,6 +23,7 @@ function AddItem() {
                 barcode: '',
                 category: '',
                 location: '',
+                info: '',
                 oldItem: false,
             });
         }
@@ -54,7 +56,9 @@ function AddItem() {
                             <Tab label="Lisää olemassaolevaan" value={2} />
                         </TabList>
                     </Box>
-                    <TabPanel value={1}>Uusi tuote</TabPanel>
+                    <TabPanel value={1}>
+                        {item ? <AddNewItem item={item} setItem={setItem} /> : <h1>Tonipal kahville</h1>}
+                    </TabPanel>
                     <TabPanel value={2}>
                         <AddExistingItem item={item} setTab={setTab} />
                     </TabPanel>

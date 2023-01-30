@@ -25,7 +25,7 @@ import FaqView from '../Components/FaqView';
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
-import ItemForm from '../Components/AddNewItem';
+import AddNewItem from '../Components/AddNewItem';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -118,10 +118,6 @@ function Routes() {
                 {
                     path: '/varasto/luo',
                     element: <AddItem />,
-                },
-                {
-                    path: '/varasto/lomake',
-                    element: <ItemForm />,
                     loader: async () => {
                         const dataList = [];
                         let { data } = await axios.get('http://localhost:3001/categories/');
@@ -133,6 +129,10 @@ function Routes() {
                         }
                         return null;
                     },
+                },
+                {
+                    path: '/varasto/lomake',
+                    element: <AddNewItem />,
                 },
                 {
                     path: '/varasto/koodinlukija',
