@@ -76,7 +76,7 @@ function Header() {
     return (
         <header style={{ marginBottom: 20 }}>
             <Box
-                sx={{ backgroundColor: 'primary.main' }}
+                sx={{ backgroundColor: 'primary.main', paddingTop: 2}}
             >
                 <Container>
                     <Link to="/">
