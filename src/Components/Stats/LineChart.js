@@ -24,7 +24,7 @@ export const options = {
         },
         title: {
             display: true,
-            text: 'Chart.js Line Chart',
+            text: 'Tavaroita kierrätetty',
         },
     },
 };
@@ -64,7 +64,7 @@ export const data = {
 function LineChart() {
     return (
         <Container maxWidth="lg">
-            <Line options={options} data={data} />;
+            <Line options={options} data={data} />
         </Container>
     );
 }

@@ -1,7 +1,23 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Container, Box, Divider, Button, ButtonGroup, Typography, Grid } from '@mui/material';
+import {
+    Container,
+    Box,
+    Divider,
+    Button,
+    ButtonGroup,
+    Typography,
+    Grid,
+    // List,
+    // ListItem,
+    // ListItemText,
+} from '@mui/material';
+
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import BarChart from './BarChart';
 import AreaChart from './AreaChart';
@@ -36,26 +52,74 @@ function VisibleChart({ currentVisibleChart }) {
     }
 }
 
+function CustomizedAccordions() {
+    const [expanded, setExpanded] = useState('panel1');
+
+    const handleChange = (panel) => (event, newExpanded) => {
+        setExpanded(newExpanded ? panel : false);
+    };
+
+    const years = [
+        { y: '2023', amount: '123' },
+        { y: '2022', amount: '842' },
+        { y: '2021', amount: '831' },
+        { y: '2020', amount: '556' },
+        { y: '2019', amount: '123' },
+        { y: '2018', amount: '123' },
+    ];
+
+    const categories = [
+        { prod: 'Hammasharjat', amount: '554' },
+        { prod: 'Sandaalit', amount: '887' },
+        { prod: 'Sähkölaitteet', amount: '234' },
+    ];
+
+    return (
+        <div>
+            <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+                <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+                    <Typography>Tilauksia tehty</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    {years.map((year) => (
+                        <>
+                            <Typography variant="body1">{year.y}</Typography>
+                            <Typography variant="body2" color="primary.dark">
+                                {year.amount}
+                            </Typography>
+                        </>
+                    ))}
+
+                    <Divider sx={{ marginTop: '0.6rem', marginBottom: '0.6rem' }} />
+
+                    <Typography color="primary.dark">Yhteensä:</Typography>
+                    <Typography color="success.dark">4321</Typography>
+                </AccordionDetails>
+            </Accordion>
+
+            <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+                <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+                    <Typography>Saatavilla</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    {categories.map((cat) => (
+                        <>
+                            <Typography variant="body1">{cat.prod}</Typography>
+                            <Typography variant="body2" color="primary.dark">
+                                {cat.amount}
+                            </Typography>
+                        </>
+                    ))}
+                </AccordionDetails>
+            </Accordion>
+        </div>
+    );
+}
+
 function SideStats() {
     return (
         <Box>
-            {/* prettier-ignore */}
-            <Typography>
-                Tilauksia tehty
-                2016 11 kpl
-                2017 199 kpl
-                2018 276 kpl
-                2019 501 kpl
-                2020 556 kpl
-                2021 831 kpl
-                2022 842 kpl
-                2023 29 kpl
-                Yhteensä 3245 kpl
-                Saatavilla
-                Huonekalu 635 203
-                Laite 64 38
-                Sekalaiset 6 6
-            </Typography>
+            <CustomizedAccordions />
         </Box>
     );
 }
@@ -64,18 +128,8 @@ function StatsPage() {
     const [currentVisibleChart, setCurrentVisibleChart] = useState('bar');
 
     return (
-        <Box
-        // maxWidth="xl"
-        // sx={{
-        //     display: 'flex',
-        //     flexDirection: 'row',
-        //     alignItems: 'center',
-        //     justifyContent: 'center',
-        // }}
-        >
-            <Box>
-                <Divider />
-            </Box>
+        <Box mb={2}>
+            <Divider />
 
             <Grid container>
                 <Grid item xs={2}>

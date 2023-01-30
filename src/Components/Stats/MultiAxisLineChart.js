@@ -26,7 +26,7 @@ export const options = {
     plugins: {
         title: {
             display: true,
-            text: 'Chart.js Line Chart - Multi Axis',
+            text: 'Tavaroita kierrätetty',
         },
     },
     scales: {
@@ -71,7 +71,7 @@ export const data = {
 function MultiAxisLineChart() {
     return (
         <Container maxWidth="lg">
-            <Line options={options} data={data} />;
+            <Line options={options} data={data} />
         </Container>
     );
 }
