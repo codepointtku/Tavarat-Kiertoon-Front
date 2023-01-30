@@ -24,6 +24,7 @@ import LocationDetails from '../Components/LocationDetails';
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
 import Announcements from '../Components/Announcements';
+import FaqView from '../Components/FaqView';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -53,6 +54,10 @@ function Routes() {
                         }
                         return null;
                     },
+                },
+                {
+                    path: '/faq',
+                    element: <FaqView />,
                 },
             ],
         },
