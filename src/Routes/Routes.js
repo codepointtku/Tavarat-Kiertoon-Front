@@ -25,6 +25,7 @@ import FaqView from '../Components/FaqView';
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
+import Delivery from '../toimitus';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -58,6 +59,10 @@ function Routes() {
                 {
                     path: '/faq',
                     element: <FaqView />,
+                },
+                {
+                    path: '/delivery',
+                    element: <Delivery />,
                 },
             ],
         },
