@@ -1,8 +1,68 @@
 {
     "products": [
         {
+            "id": 4321,
+            "name": "Piirtoheitin",
+            "description": "Hyväkuntone piirtoheitin suoraa 80-luvulta",
+            "dateAdded": "01.06.1999",
+            "barcode": "03",
+            "category": "elektroniikka",
+            "color": "black",
+            "location": "varasto_0"
+        },
+        {
+            "id": 4322,
+            "name": "Jakkara",
+            "description": "Eläköityneen rehtorin luotettava jakkara",
+            "dateAdded": "01.01.2023",
+            "barcode": "04",
+            "category": "tuolit",
+            "color": "black",
+            "location": "varasto_0"
+        },
+        {
+            "id": 4323,
+            "name": "Bob Rossin pensselit",
+            "description": "5 kpl setti eri paksusia, jouhet ok, vähän maalinjämiä",
+            "barcode": "05",
+            "category": "työkalut",
+            "color": "black",
+            "location": "varasto_0",
+            "dateAdded": "01.01.2023"
+        },
+        {
+            "id": 4324,
+            "name": "Vichy-pullo",
+            "description": "Tyhjä",
+            "barcode": "06",
+            "category": "tuolit",
+            "color": "black",
+            "location": "varasto_0",
+            "dateAdded": "01.01.2023"
+        },
+        {
+            "id": 4325,
+            "name": "Kahvinkeitin",
+            "description": "Alalemun koulu osti opehuoneeseen uuden mokkamasterin, tää wanha jäi ylimääräseks",
+            "barcode": "07",
+            "category": "keittiö",
+            "color": "black",
+            "location": "varasto_0",
+            "dateAdded": "01.01.2023"
+        },
+        {
+            "id": 4326,
+            "name": "Joku missä on överipitkä teksti",
+            "description": "Katotaas mitä tapahtuu kun tähän kirjoittaa ihan älyttömän mällin tekstiä, jos joku vaikka innostuu copypasteemaan tähän descriptioniin vahingossa koko users manualin viidellä eri kielellä ja silleenspäin pois ja tuolleen noin ja siitä ja puita!",
+            "barcode": "08",
+            "category": "tuolit",
+            "color": "black",
+            "location": "varasto_0",
+            "dateAdded": "01.01.2023"
+        },
+        {
             "id": 1234,
-            "name": "työtuoli",
+            "name": "Työtuoli",
             "barcode": "01",
             "category": "tuolit",
             "color": "white",
@@ -12,7 +72,7 @@
         },
         {
             "id": 5679,
-            "name": "kahvikuppi",
+            "name": "Kahvikuppi",
             "barcode": "tonipal_kahville",
             "category": "kahvittelu",
             "color": "brown",
@@ -22,7 +82,7 @@
         },
         {
             "id": 5678,
-            "name": "kahvikuppi",
+            "name": "Kahvikuppi",
             "barcode": "tonipal_kahville",
             "category": "kahvittelu",
             "color": "brown",
@@ -32,7 +92,7 @@
         },
         {
             "id": 5670,
-            "name": "kahvikuppi",
+            "name": "Kahvikuppi",
             "barcode": "tonipal_kahville",
             "category": "kahvittelu",
             "color": "brown",
@@ -42,7 +102,7 @@
         },
         {
             "id": 5671,
-            "name": "kahvinkeitin",
+            "name": "Kahvinkeitin",
             "barcode": "it's kaffe time",
             "category": "kahvittelu",
             "color": "white",
@@ -52,7 +112,7 @@
         },
         {
             "id": 5672,
-            "name": "kahvipaketti",
+            "name": "Kahvipaketti",
             "barcode": "555-kaffe",
             "category": "kahvittelu",
             "color": "black",
@@ -62,7 +122,7 @@
         },
         {
             "id": 5673,
-            "name": "kahvimylly",
+            "name": "Kahvimylly",
             "barcode": "grind to halt",
             "category": "kahvittelu",
             "color": "clear",
@@ -72,7 +132,7 @@
         },
         {
             "id": 5674,
-            "name": "kahvipapu",
+            "name": "Kahvipapu",
             "barcode": "single coffee bean",
             "category": "kahvittelu",
             "color": "brown",
@@ -82,7 +142,7 @@
         },
         {
             "id": 5675,
-            "name": "tonipal_kahville",
+            "name": "Tonipal_kahville",
             "barcode": "kahvipakotus",
             "category": "inspirational quote",
             "color": "white",
@@ -92,7 +152,7 @@
         },
         {
             "id": 5676,
-            "name": "kahvipannu",
+            "name": "Kahvipannu",
             "barcode": "café",
             "category": "kahvittelu",
             "color": "black",
@@ -102,7 +162,7 @@
         },
         {
             "id": 5677,
-            "name": "termoskannu",
+            "name": "Termoskannu",
             "barcode": "kahvisäilytys",
             "category": "kahvittelu",
             "color": "gray",
@@ -112,7 +172,7 @@
         },
         {
             "id": 5680,
-            "name": "kahvilautanen",
+            "name": "Kahvilautanen",
             "barcode": "kaffe",
             "category": "hifistely",
             "color": "white",
@@ -122,7 +182,7 @@
         },
         {
             "id": 5681,
-            "name": "kahviaddiktio",
+            "name": "Kahviaddiktio",
             "barcode": "nyt kaffee",
             "category": "mielentila",
             "color": "transparent",
@@ -132,7 +192,7 @@
         },
         {
             "id": 1245,
-            "name": "jakkara",
+            "name": "Jakkara",
             "barcode": "02",
             "category": "tuolit",
             "color": "black",
