@@ -1,11 +1,14 @@
+import { useState } from 'react';
+
 import {
     Container,
     Box,
     Divider,
     Button,
+    ButtonGroup,
     // Typography,
     // Grid,
-} from '@mui/material'
+} from '@mui/material';
 
 import BarChart from './BarChart';
 import AreaChart from './AreaChart';
@@ -15,68 +18,60 @@ import PieChart from './PieChart';
 import PolarAreaChart from './PolarAreaChart';
 import RadarChart from './RadarChart';
 
-const charts = [
-    { name: 'Palkki' },
-    { name: 'Alue' },
-    { name: 'Viiva' },
-    { name: 'MultiViiva' },
-    { name: 'Piirakka' },
-    { name: 'Rullakebab' },
-    { name: 'Tutka' },
-]
-
 function StatsPage() {
+    const [currentVisibleChart, setCurrentVisibleChart] = useState('bar');
+
+    // this horryfying ifelse-statement shall be abolished and refactored in the future.
+    const VisibleChart = () => {
+        if (currentVisibleChart === 'bar') {
+            return <BarChart />;
+        } else if (currentVisibleChart === 'area') {
+            return <AreaChart />;
+        } else if (currentVisibleChart === 'line') {
+            return <LineChart />;
+        } else if (currentVisibleChart === 'multiline') {
+            return <MultiAxisLineChart />;
+        } else if (currentVisibleChart === 'pie') {
+            return <PieChart />;
+        } else if (currentVisibleChart === 'polar') {
+            return <PolarAreaChart />;
+        } else if (currentVisibleChart === 'radar') {
+            return <RadarChart />;
+        }
+    };
+
     return (
-        // <>
         <Box>
-            <Container maxWidth="md">
-                {charts.map((chart) => (<Button>{chart.name}</Button>))}
+            <Divider />
+
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    '& > *': {
+                        m: 1,
+                    },
+                }}
+            >
+                <ButtonGroup variant="text" aria-label="text button group">
+                    <Button onClick={() => setCurrentVisibleChart('bar')}>Palkki</Button>
+                    <Button onClick={() => setCurrentVisibleChart('area')}>Alue</Button>
+                    <Button onClick={() => setCurrentVisibleChart('line')}>Viiva</Button>
+                    <Button onClick={() => setCurrentVisibleChart('multiline')}>Multiviiva</Button>
+                    <Button onClick={() => setCurrentVisibleChart('pie')}>Piirakka</Button>
+                    <Button onClick={() => setCurrentVisibleChart('polar')}>Area</Button>
+                    <Button onClick={() => setCurrentVisibleChart('radar')}>Tutka</Button>
+                </ButtonGroup>
+            </Box>
+
+            <Divider />
+
+            <Container maxWidth="lg" sx={{ height: '70%' }}>
+                <VisibleChart />
             </Container>
-            <Divider />
-            <Box>
-                <Container>
-                    <BarChart />
-                </Container>
-            </Box>
-            <Divider />
-            <Box>
-                <Container>
-                    <AreaChart />
-                </Container>
-            </Box>
-            <Divider />
-            <Box>
-                <Container>
-                    <LineChart />
-                </Container>
-            </Box>
-            <Divider />
-            <Box>
-                <Container>
-                    <MultiAxisLineChart />
-                </Container>
-            </Box>
-            <Divider />
-            <Box>
-                <Container maxWidth="xs">
-                    <PieChart />
-                </Container>
-            </Box>
-            <Divider />
-            <Box>
-                <Container maxWidth="xs">
-                    <PolarAreaChart />
-                </Container>
-            </Box>
-            <Divider />
-            <Box>
-                <Container maxWidth="xs">
-                    <RadarChart />
-                </Container>
-            </Box>
         </Box>
-        // </>
-    )
+    );
 }
 
 export default StatsPage;

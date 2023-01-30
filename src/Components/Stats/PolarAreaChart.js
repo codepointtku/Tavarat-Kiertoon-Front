@@ -1,11 +1,7 @@
-import {
-    Chart as ChartJS,
-    RadialLinearScale,
-    ArcElement,
-    Tooltip,
-    Legend,
-} from 'chart.js';
+import { Chart as ChartJS, RadialLinearScale, ArcElement, Tooltip, Legend } from 'chart.js';
 import { PolarArea } from 'react-chartjs-2';
+
+import { Container } from '@mui/material';
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
@@ -29,7 +25,11 @@ export const data = {
 };
 
 function PolarAreaChart() {
-    return <PolarArea data={data} />;
+    return (
+        <Container maxWidth="sm">
+            <PolarArea data={data} />
+        </Container>
+    );
 }
 
 export default PolarAreaChart;

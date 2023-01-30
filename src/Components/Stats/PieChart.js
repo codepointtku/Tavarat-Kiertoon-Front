@@ -1,6 +1,8 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
+import { Container } from '@mui/material';
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const data = {
@@ -31,7 +33,11 @@ export const data = {
 };
 
 function PieChart() {
-    return <Pie data={data} />;
+    return (
+        <Container maxWidth="sm">
+            <Pie data={data} />
+        </Container>
+    );
 }
 
 export default PieChart;

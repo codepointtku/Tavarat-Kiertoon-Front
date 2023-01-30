@@ -1,22 +1,9 @@
-import {
-    Chart as ChartJS,
-    RadialLinearScale,
-    PointElement,
-    LineElement,
-    Filler,
-    Tooltip,
-    Legend,
-} from 'chart.js';
+import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
 
-ChartJS.register(
-    RadialLinearScale,
-    PointElement,
-    LineElement,
-    Filler,
-    Tooltip,
-    Legend
-);
+import { Container } from '@mui/material';
+
+ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
 export const data = {
     labels: ['Konversio', 'Puuhöylä', 'Varat', 'Säästöt', 'Kierrätetyt', 'Käyttökelvottomat'],
@@ -32,7 +19,11 @@ export const data = {
 };
 
 function RadarChart() {
-    return <Radar data={data} />;
+    return (
+        <Container maxWidth="sm">
+            <Radar data={data} />
+        </Container>
+    );
 }
 
 export default RadarChart;
