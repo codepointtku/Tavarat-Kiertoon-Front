@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Box } from '@mui/material';
 import AuthContext from '../../Context/AuthContext';
-import logo from "../../Assets/Turku_vaaka_300ppi_viiva_white.png";
+import logo from '../../Assets/Turku_vaaka_300ppi_viiva_white.png';
 
 // JTo: Commented while TestButtons are in use.
 // const { auth, setAuth } = useContext(AuthContext);
@@ -32,7 +32,8 @@ function TestButtons() {
                     <b>Links to pages: </b>
                     <Link to="/">Home</Link> <Link to="/varasto/0/delivery?page=0&rows=5">Varasto</Link>{' '}
                     <Link to="/varasto/tilaus">Varasto/Tilaus</Link>{' '}
-                    <Link to="/varasto/koodinlukija">Varasto/Koodinlukija</Link>
+                    <Link to="/varasto/koodinlukija">Varasto/Koodinlukija</Link>{' '}
+                    <Link to="/varasto/lomake">Varasto/Lomake</Link>
                     <br />
                     <Link to="/admin">Admin</Link> <Link to="/admin/users?page=0&rows=5">Admin/Käyttäjä</Link>{' '}
                     <Link to="/admin/varastot">Admin/Varastot</Link>{' '}
@@ -74,9 +75,7 @@ function TestButtons() {
 function Header() {
     return (
         <header style={{ marginBottom: 20 }}>
-            <Box
-                sx={{ backgroundColor: 'primary.main' }}
-            >
+            <Box sx={{ backgroundColor: 'primary.main' }}>
                 <Container>
                     <Link to="/">
                         <img src={logo} alt="Turku logo ja teksti valkoinen" style={{ width: 200 }} />
