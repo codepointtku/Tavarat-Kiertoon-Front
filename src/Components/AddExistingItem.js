@@ -6,8 +6,8 @@ import { Button, TextField, Box } from '@mui/material';
 function AddExistingItem({ item }) {
     const navigate = useNavigate();
     const location = useLocation();
-    const [barCode, setBarCode] = useState();
-    const [itemId, setItemId] = useState();
+    const [barCode, setBarCode] = useState(false);
+    const [itemId, setItemId] = useState(false);
 
     return (
         <>
@@ -17,7 +17,7 @@ function AddExistingItem({ item }) {
             >
                 Lue Viivakoodi
             </Button>
-            <h3>Lisää esine kirjoitetun viivakoodin tai esineID:n perusteella</h3>
+            <h3>Lisää esine kirjoitetun viivakoodin tai TuoteID:n perusteella</h3>
             <Box
                 component="form"
                 sx={{
@@ -31,7 +31,7 @@ function AddExistingItem({ item }) {
                     label="TuoteID"
                     variant="outlined"
                     onChange={(event) => {
-                        setItemId(event.value);
+                        setItemId(event.target.value);
                     }}
                 />
                 <TextField
@@ -39,7 +39,7 @@ function AddExistingItem({ item }) {
                     label="Viivakoodi"
                     variant="outlined"
                     onChange={(event) => {
-                        setBarCode(event.value);
+                        setBarCode(event.target.value);
                     }}
                 />
             </Box>
