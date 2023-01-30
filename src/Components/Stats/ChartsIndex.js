@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import {
     Container,
@@ -18,27 +19,33 @@ import PieChart from './PieChart';
 import PolarAreaChart from './PolarAreaChart';
 import RadarChart from './RadarChart';
 
+// this horryfying ifelse-statement shall be abolished and refactored in the future.
+function VisibleChart({ currentVisibleChart }) {
+    if (currentVisibleChart === 'bar') {
+        return <BarChart />;
+    }
+    if (currentVisibleChart === 'area') {
+        return <AreaChart />;
+    }
+    if (currentVisibleChart === 'line') {
+        return <LineChart />;
+    }
+    if (currentVisibleChart === 'multiline') {
+        return <MultiAxisLineChart />;
+    }
+    if (currentVisibleChart === 'pie') {
+        return <PieChart />;
+    }
+    if (currentVisibleChart === 'polar') {
+        return <PolarAreaChart />;
+    }
+    if (currentVisibleChart === 'radar') {
+        return <RadarChart />;
+    }
+}
+
 function StatsPage() {
     const [currentVisibleChart, setCurrentVisibleChart] = useState('bar');
-
-    // this horryfying ifelse-statement shall be abolished and refactored in the future.
-    const VisibleChart = () => {
-        if (currentVisibleChart === 'bar') {
-            return <BarChart />;
-        } else if (currentVisibleChart === 'area') {
-            return <AreaChart />;
-        } else if (currentVisibleChart === 'line') {
-            return <LineChart />;
-        } else if (currentVisibleChart === 'multiline') {
-            return <MultiAxisLineChart />;
-        } else if (currentVisibleChart === 'pie') {
-            return <PieChart />;
-        } else if (currentVisibleChart === 'polar') {
-            return <PolarAreaChart />;
-        } else if (currentVisibleChart === 'radar') {
-            return <RadarChart />;
-        }
-    };
 
     return (
         <Box>
@@ -67,11 +74,15 @@ function StatsPage() {
 
             <Divider />
 
-            <Container maxWidth="lg" sx={{ height: '70%' }}>
-                <VisibleChart />
+            <Container maxWidth="xl" sx={{ height: '70%' }}>
+                <VisibleChart currentVisibleChart={currentVisibleChart} />
             </Container>
         </Box>
     );
 }
 
 export default StatsPage;
+
+VisibleChart.propTypes = {
+    currentVisibleChart: PropTypes.string.isRequired,
+};
