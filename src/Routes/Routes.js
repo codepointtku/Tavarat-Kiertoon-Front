@@ -18,13 +18,12 @@ import QrScanner from '../Components/QrScanner';
 
 import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
-import LocationsView from '../Components/LocationsView';
-import LocationDetails from '../Components/LocationDetails';
-import AddItem from '../Components/AddItem';
 
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
 import FaqView from '../Components/FaqView';
+import StoragesList from '../Components/StoragesList';
+import StorageEdit from '../Components/StorageEdit';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -135,6 +134,18 @@ function Routes() {
             ),
             children: [
                 {
+                    path: '/admin',
+                    element: <StoragesList />,
+                    loader: async () => {
+                        const { data } = await axios.get('http://localhost:3001/storages');
+                        if (data) {
+                            return data;
+                        }
+                        console.log(data);
+                        return null;
+                    },
+                },
+                {
                     path: '/admin/users',
                     element: <UsersList />,
                     loader: async () => {
@@ -153,12 +164,8 @@ function Routes() {
                     element: <UserEdit />,
                 },
                 {
-                    path: '/admin/varastot',
-                    element: <LocationsView />,
-                },
-                {
-                    path: '/admin/varastot/varasto/:id',
-                    element: <LocationDetails />,
+                    path: '/admin/varastot/:id',
+                    element: <StorageEdit />,
                 },
             ],
         },

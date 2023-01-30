@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import AdminBar from '../Components/AdminBar';
