@@ -168,6 +168,10 @@ function Routes() {
                     path: '/admin/varastot/:id',
                     element: <StorageEdit />,
                 },
+                {
+                    path: '/admin/hakemukset',
+                    element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
+                },
             ],
         },
     ]);
