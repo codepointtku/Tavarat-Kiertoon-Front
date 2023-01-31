@@ -146,10 +146,6 @@ function Routes() {
                     },
                 },
                 {
-                    path: '/varasto/lomake',
-                    element: <AddNewItem />,
-                },
-                {
                     path: '/varasto/koodinlukija',
                     element: <QrScanner />,
                 },
