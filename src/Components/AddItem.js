@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, generatePath } from 'react-router';
-import { Box, Tab } from '@mui/material';
+import { Box, Tab, Button } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 import AddExistingItem from './AddExistingItem';
@@ -54,7 +54,12 @@ function AddItem() {
                             <Tab label="Lisää olemassaolevaan" value={2} />
                         </TabList>
                     </Box>
-                    <TabPanel value={1}>Uusi tuote</TabPanel>
+                    <TabPanel value={1}>
+                        <Button variant="contained" component="label">
+                            Upload
+                            <input hidden accept="image/*" multiple type="file" />
+                        </Button>
+                    </TabPanel>
                     <TabPanel value={2}>
                         <AddExistingItem item={item} setTab={setTab} />
                     </TabPanel>
