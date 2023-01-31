@@ -5,10 +5,10 @@ import {
     CardActions,
     CardContent,
     CardMedia,
-    Paper,
     Typography,
     ImageList,
     ImageListItem,
+    Container,
 } from '@mui/material';
 import { useLoaderData, useParams } from 'react-router-dom';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -56,11 +56,11 @@ function ProductDetails() {
 
     return (
         <Box>
-            <Paper elevation={3} sx={{ maxWidth: 1200 }}>
+            <Container maxWidth="md">
                 <Card>
                     <CardMedia component="img" alt="product image" height="300" image={image} />
                     <CardContent>
-                        <ImageList sx={{ width: 1000, height: 164 }} cols={6} rowHeight={164}>
+                        <ImageList cols={6} rowHeight={164}>
                             {itemData.map((item) => (
                                 <ImageListItem key={item.id} onClick={() => setImage(item.img)}>
                                     <img src={`${item.img}`} srcSet={`${item.img}`} alt={item.title} loading="lazy" />
@@ -70,22 +70,27 @@ function ProductDetails() {
                         <Typography gutterBottom variant="h5" component="div">
                             {productName}
                         </Typography>
-                        <Typography variant="body6" color="text.secondary">
-                            Product Details View, product id: {productId}
-                        </Typography>
+                        {/* show id if component used in storageview or admin */}
+                        {auth.storage ||
+                            (auth.admin && (
+                                <Typography variant="body6" color="text.secondary">
+                                    Product id: {productId}
+                                </Typography>
+                            ))}
+
                         <Typography variant="body1" color="text.secondary" gutterBottom>
                             Description: {description}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                             Added on: {dateAdded}
                         </Typography>
-                        {/* generate barcode if component used in storageview */}
-                        {auth.storage && (
-                            <Typography variant="body2" color="text.secondary">
-                                Barcode: {barcode}
-                            </Typography>
-                        )}
-
+                        {/* generate barcode if component used in storageview or admin */}
+                        {auth.storage ||
+                            (auth.admin && (
+                                <Typography variant="body2" color="text.secondary">
+                                    Barcode: {barcode}
+                                </Typography>
+                            ))}
                         {/* miten näyttää kategoriat, buttoneina? */}
                         <Typography variant="body2" color="text.secondary">
                             Kategoriat:
@@ -101,7 +106,7 @@ function ProductDetails() {
                         </Button>
                     </CardActions>
                 </Card>
-            </Paper>
+            </Container>
         </Box>
     );
 }
