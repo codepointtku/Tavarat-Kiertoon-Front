@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useNavigate, generatePath } from 'react-router';
 import { useLoaderData } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { TextField, Box, MenuItem, Button } from '@mui/material';
@@ -7,8 +7,8 @@ function AddNewItem({ item, setItem }) {
     const data = useLoaderData();
     const navigate = useNavigate();
 
-    const handleChange = (key, value) => {
-        setItem({ ...item, key: value });
+    const handleChange = (key, event) => {
+        setItem({ ...item, [key]: event.target.value });
     };
 
     return (
@@ -29,7 +29,7 @@ function AddNewItem({ item, setItem }) {
                             id="outlined-required"
                             label="Nimi"
                             onChange={(event) => {
-                                handleChange('name', event.target.value);
+                                handleChange('name', event);
                             }}
                             multiline
                             inputProps={{ maxLength: 255 }}
@@ -38,20 +38,46 @@ function AddNewItem({ item, setItem }) {
                         />
                     </h5>
                     <h5>
-                        <TextField disabled id="outlined-disabled" label="Viivakoodi" />
-                        <Button size="small" type="button" onClick={() => navigate('/varasto/koodinlukija')}>
+                        <TextField
+                            disabled
+                            id="outlined-disabled"
+                            label="Viivakoodi"
+                            onChange={(event) => {
+                                handleChange('barcode', event);
+                            }}
+                            defaultValue={item.barcode}
+                        >
+                            {item.barcode}
+                        </TextField>
+                        <Button onClick={() => navigate(generatePath('/varasto/koodinlukija'), { state: { ...item } })}>
                             Koodinlukija
                         </Button>
                     </h5>
                     <h5>
-                        <TextField required id="outlined-select" select label="Sijainti">
+                        <TextField
+                            required
+                            id="outlined-select"
+                            select
+                            label="Sijainti"
+                            onChange={(event) => {
+                                handleChange('location', event);
+                            }}
+                        >
                             {data[1].map((location) => (
                                 <MenuItem key={location.id} value={location.name}>
                                     {location.name}
                                 </MenuItem>
                             ))}
                         </TextField>
-                        <TextField required id="outlined-select" select label="Kategoria">
+                        <TextField
+                            required
+                            id="outlined-select"
+                            select
+                            label="Kategoria"
+                            onChange={(event) => {
+                                handleChange('category', event);
+                            }}
+                        >
                             {data[0].map((category) => (
                                 <MenuItem key={category.id} value={category.name}>
                                     {category.name}
@@ -64,7 +90,7 @@ function AddNewItem({ item, setItem }) {
                             id="filled-helperText"
                             label="Vapaa Kuvaus"
                             onChange={(event) => {
-                                handleChange('info', event.target.value);
+                                handleChange('info', event);
                             }}
                             multiline
                             inputProps={{ maxLength: 1000 }}
