@@ -36,7 +36,9 @@ function AddItem() {
         setTab(newValue);
     };
 
-    console.log(item);
+    const uploadFile = (file) => {
+        console.log(file);
+    };
 
     return (
         <>
@@ -57,7 +59,15 @@ function AddItem() {
                     <TabPanel value={1}>
                         <Button variant="contained" component="label">
                             Upload
-                            <input hidden accept="image/*" multiple type="file" />
+                            <input
+                                onChange={(event) => {
+                                    uploadFile(event.target.files);
+                                }}
+                                hidden
+                                accept="image/*"
+                                multiple
+                                type="file"
+                            />
                         </Button>
                     </TabPanel>
                     <TabPanel value={2}>
