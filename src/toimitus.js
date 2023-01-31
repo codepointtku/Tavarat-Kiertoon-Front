@@ -1,48 +1,62 @@
-import { Box, Container, Typography } from '@mui/material';
+import { Container, Grid, Typography } from '@mui/material';
 
 function Delivery() {
     return (
         <Container fixed>
-            <Box sx={{ p: 2 }}>
-                <Typography variant="h4">Toimitus</Typography>
+            <Grid rowSpacing="10">
+                <Typography variant="h3" paragraph color="primary.main">
+                    Toimitus
+                </Typography>
 
-                <Typography variant="caption">Kalustekierron kuljetuksia hoitaa Turun Valmennuspiste</Typography>
+                <Typography variant="body2" paragraph>
+                    Kalustekierron kuljetuksia hoitaa Turun Valmennuspiste
+                </Typography>
 
-                <Typography variant="caption">Kuljetuksien tiedustelut Vesa Lehtonen, puh. 040 531 8689</Typography>
+                <Typography variant="body2" paragraph>
+                    Kuljetuksien tiedustelut Vesa Lehtonen, puh. 040 531 8689
+                </Typography>
 
-                <Typography variant="caption">Osoite: Rieskalähteentie 76, 20300 Turku</Typography>
+                <Typography variant="body2" paragraph>
+                    Osoite: Rieskalähteentie 76, 20300 Turku
+                </Typography>
 
                 <Typography>
                     Sähköposti: <a href="mailto: tyokeskus.kierratys@turku.fi">tyokeskus.kierratys@turku.fi</a>
                 </Typography>
 
-                <Typography>Puh: +358 40 531 8689</Typography>
-            </Box>
+                <Typography paragraph>Puh: +358 40 531 8689</Typography>
+            </Grid>
 
-            <Box sx={{ p: 2 }}>
-                <Typography variant="h4">Kuljetus</Typography>
-                <Typography variant="caption">
+            <Grid rowSpacing="10">
+                <Typography variant="h3" color="primary.main" paragraph>
+                    Kuljetus
+                </Typography>
+                <Typography variant="body2" paragraph>
                     Järjestelmästä tilattujen kierrätysuotteiden kuljetuksesta ei peritä erillistä maksua. Asennustöistä
                     voidaan periä työn laajuudesta riippuen lisämaksu.
                 </Typography>
-                <Typography variant="caption">
+                <Typography variant="body2" paragraph>
                     Kuljetus tilataan tuotetilauksen yhteydessä. Vastuu tuotteen kuljetuksesta on tilaajalla.
                 </Typography>
 
-                <Typography variant="caption">
+                <Typography variant="body2" paragraph>
                     Tarkempia tietoja kuljetuksen kustannuksista ja kuljetusaikatauluista saat ottamalla yhteyttä
                     työkeskukseen.
                 </Typography>
-            </Box>
+            </Grid>
 
-            <Box sx={{ p: 2 }}>
-                <Typography variant="h4">Askartelumateriaalit</Typography>
-                <Typography variant="h6">Askartelumateriaalien kierrätys on väliaikaisesti tauolla.</Typography>
-                <Typography variant="caption">
+            <Grid rowSpacing="10">
+                <Typography variant="h3" paragraph color="primary.main">
+                    Askartelumateriaalit
+                </Typography>
+                <Typography variant="h6" paragraph color="primary.main">
+                    Askartelumateriaalien kierrätys on väliaikaisesti tauolla.
+                </Typography>
+                <Typography variant="body2" paragraph>
                     Askartelumateriaalin tilaukset lähetetään mahdollisuuksien mukaan sisäisellä postilla. Suurempien
                     erien yhteydessä kuljetuksen voi järjestää itse sopimalla noudon askartelumateriaalien varastolta.
                 </Typography>
-            </Box>
+            </Grid>
         </Container>
     );
 }
