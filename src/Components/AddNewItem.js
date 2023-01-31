@@ -18,7 +18,7 @@ function AddNewItem({ item, setItem }) {
                 align="center"
                 component="form"
                 sx={{
-                    '& .MuiTextField-root': { m: 1, width: '25ch' },
+                    '& .MuiTextField-root': { m: 1, width: '50ch' },
                 }}
                 autoComplete="off"
             >
@@ -97,6 +97,9 @@ function AddNewItem({ item, setItem }) {
                             helperText={`${item.info.length}/1000`}
                             defaultValue={item.info}
                         />
+                    </h5>
+                    <h5>
+                        <Button size="large">Lisää tuote</Button>
                     </h5>
                 </div>
             </Box>
