@@ -26,6 +26,7 @@ import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
 import Delivery from '../toimitus';
+import BackgroundInfo from '../Components/Backgroundinfo';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -63,6 +64,10 @@ function Routes() {
                 {
                     path: '/delivery',
                     element: <Delivery />,
+                },
+                {
+                    path: '/backgroundinfo',
+                    element: <BackgroundInfo />,
                 },
             ],
         },
