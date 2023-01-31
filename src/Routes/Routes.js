@@ -28,6 +28,8 @@ import AddItem from '../Components/AddItem';
 import Delivery from '../toimitus';
 import BackgroundInfo from '../Components/Backgroundinfo';
 
+import StatsPage from '../Components/Stats/StatsPage';
+
 function Routes() {
     const router = createBrowserRouter([
         {
@@ -68,6 +70,10 @@ function Routes() {
                 {
                     path: '/backgroundinfo',
                     element: <BackgroundInfo />,
+                },
+                {
+                    path: '/stats',
+                    element: <StatsPage />,
                 },
             ],
         },
@@ -177,6 +183,10 @@ function Routes() {
                 {
                     path: '/admin/varastot/:id',
                     element: <StorageEdit />,
+                },
+                {
+                    path: '/admin/hakemukset',
+                    element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
                 },
             ],
         },
