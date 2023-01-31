@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
 import axios from 'axios';
+
 import DefaultView from './DefaultView';
 import StorageView from './StorageView';
 import AdminView from './AdminView';
@@ -66,6 +67,10 @@ function Routes() {
                 {
                     path: '/delivery',
                     element: <Delivery />,
+                    loader: async () => {
+                        const { data } = await axios.get('http://localhost:3001/contacts');
+                        return data;
+                    },
                 },
                 {
                     path: '/backgroundinfo',
