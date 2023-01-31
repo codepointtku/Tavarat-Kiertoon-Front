@@ -39,6 +39,7 @@ function AddNewItem({ item, setItem }) {
                     </h5>
                     <h5>
                         <TextField
+                            required
                             disabled
                             id="outlined-disabled"
                             label="Viivakoodi"
