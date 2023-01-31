@@ -27,15 +27,16 @@ function TestButtons() {
 
     return (
         <div>
-            <Container maxWidth="sm">
+            <Container maxWidth="md">
                 <div style={{ marginBottom: '5px' }}>
                     <b>Links to pages: </b>
-                    <Link to="/">Home</Link> <Link to="/varasto/0/delivery?page=0&rows=5">Varasto</Link>{' '}
-                    <Link to="/varasto/koodinlukija">Varasto/Koodinlukija</Link>
+                    <Link to="/">Home --- </Link> <Link to="/varasto/0/delivery?page=0&rows=5">Varasto --- </Link>
+                    <Link to="/varasto/koodinlukija">Varasto/Koodinlukija --- </Link>
                     <br />
-                    <Link to="/admin">Admin</Link> <Link to="/admin/users?page=0&rows=5">Admin/Käyttäjä</Link>{' '}
-                    <Link to="/admin/varastot">Admin/Varastot</Link>{' '}
-                    <Link to="/admin/varastot/varasto">Admin/Varastot/Varasto</Link>{' '}
+                    <Link to="/admin">Admin --- </Link> <Link to="/admin/users?page=0&rows=5">Admin/Käyttäjä --- </Link>
+                    <Link to="/admin/varastot">Admin/Varastot --- </Link>
+                    <Link to="/admin/varastot/varasto">Admin/Varastot/Varasto --- </Link>
+                    <Link to="/stats">Stats --- </Link>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <b>Logins:</b>
