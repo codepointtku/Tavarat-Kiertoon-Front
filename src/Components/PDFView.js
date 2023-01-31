@@ -1,7 +1,7 @@
 import { PDFViewer } from '@react-pdf/renderer';
 import MyDocument from './PDFCreator';
 
-function PDFViev() {
+function PDFView() {
     return (
         <PDFViewer style={{ width: '100%', height: '1500px', border: '1px solid blue' }}>
             <MyDocument />
@@ -9,4 +9,4 @@ function PDFViev() {
     );
 }
 
-export default PDFViev;
+export default PDFView;
