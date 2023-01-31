@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, generatePath } from 'react-router';
 import { Box, Tab, Button } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
+import imageCompression from 'browser-image-compression';
 
 import AddExistingItem from './AddExistingItem';
 
@@ -36,8 +37,15 @@ function AddItem() {
         setTab(newValue);
     };
 
-    const uploadFile = (file) => {
-        console.log(file);
+    const uploadFile = async (files) => {
+        const options = {
+            maxSizeMB: 1,
+            useWebWorker: true,
+        };
+
+        const uploads = await Promise.all(Object.values(files).map(async (file) => imageCompression(file, options)));
+
+        console.log(uploads);
     };
 
     return (
