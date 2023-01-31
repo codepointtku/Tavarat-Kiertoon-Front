@@ -5,12 +5,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useNavigate, Link } from 'react-router-dom';
 
-export default function AdminBar() {
-    const pages = [
-        { name: 'Tilaukset', path: '/varasto/0/delivery?page=0&rows=5' },
-        { name: 'Käyttäjät', path: '/admin/users?page=0&rows=5' },
-        { name: 'Hakemukset', path: '/admin/hakemukset' },
-    ];
+export default function StorageBar() {
+    const pages = [{ name: 'Tilaukset', path: '/varasto/0/delivery?page=0&rows=5' }];
 
     const navigate = useNavigate();
 
@@ -19,8 +15,8 @@ export default function AdminBar() {
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        <Link to="/admin" style={{ color: 'white' }}>
-                            Admin
+                        <Link to="/varasto" style={{ color: 'white' }}>
+                            Varasto
                         </Link>
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>

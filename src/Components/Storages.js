@@ -6,41 +6,32 @@ import StyledTableCell from './StyledTableCell';
 function Storages({ storages }) {
     const navigate = useNavigate();
     return (
-        <>
-            <h2 align="center">Varastot</h2>
-            <TableContainer align="center">
-                <Table style={{ width: 300, margin: '20px 0px' }} aria-label="customized table">
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell style={{ backgroundColor: 'blue' }}>Varasto ID </StyledTableCell>
-                            <StyledTableCell style={{ backgroundColor: 'blue' }} align="right">
-                                Nimi
-                            </StyledTableCell>
-                            <StyledTableCell style={{ backgroundColor: 'blue' }} align="right">
-                                Osoite
-                            </StyledTableCell>
-                            <StyledTableCell style={{ backgroundColor: 'blue' }} align="right">
-                                Käytössä
-                            </StyledTableCell>
+        <TableContainer align="center" sx={{ padding: '2rem' }}>
+            <Table style={{ width: 300 }} aria-label="customized table">
+                <TableHead>
+                    <TableRow>
+                        <StyledTableCell>Varasto ID </StyledTableCell>
+                        <StyledTableCell align="right">Nimi</StyledTableCell>
+                        <StyledTableCell align="right">Osoite</StyledTableCell>
+                        <StyledTableCell align="right">Käytössä</StyledTableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {storages.map((storage) => (
+                        <TableRow
+                            onClick={() => navigate(`varastot/${storage.id}`)}
+                            style={{ cursor: 'pointer' }}
+                            hover
+                        >
+                            <TableCell>{storage.id}</TableCell>
+                            <TableCell align="right">{storage.name}</TableCell>
+                            <TableCell align="right">{storage.address}</TableCell>
+                            <TableCell align="right">{storage.inUse.toString()}</TableCell>
                         </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {storages.map((storage) => (
-                            <TableRow
-                                onClick={() => navigate(`varastot/${storage.id}`)}
-                                style={{ cursor: 'pointer' }}
-                                hover
-                            >
-                                <TableCell>{storage.id}</TableCell>
-                                <TableCell align="right">{storage.name}</TableCell>
-                                <TableCell align="right">{storage.address}</TableCell>
-                                <TableCell align="right">{storage.inUse.toString()}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
     );
 }
 
