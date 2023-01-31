@@ -1,4 +1,4 @@
-*,
+/* *,
 *::before,
 *::after {
     box-sizing: border-box;
@@ -14,4 +14,4 @@ body,
 img {
     display: block;
     max-width: 100%;
-}
+} */
