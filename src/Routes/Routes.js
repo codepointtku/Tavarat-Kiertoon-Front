@@ -190,6 +190,13 @@ function Routes() {
                 {
                     path: '/admin/users/:id',
                     element: <UserEdit />,
+                    loader: async ({ params }) => {
+                        const { data } = await axios.get(`http://localhost:3001/users/${params.id}`);
+                        if (data) {
+                            return data;
+                        }
+                        return data;
+                    },
                 },
                 {
                     path: '/admin/varastot/:id',
