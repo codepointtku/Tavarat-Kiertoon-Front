@@ -133,6 +133,17 @@ function Routes() {
                 {
                     path: '/varasto/luo',
                     element: <AddItem />,
+                    loader: async () => {
+                        const dataList = [];
+                        let { data } = await axios.get('http://localhost:3001/categories/');
+                        dataList.push(data);
+                        data = await axios.get('http://localhost:3001/storages/');
+                        dataList.push(data.data);
+                        if (dataList) {
+                            return dataList;
+                        }
+                        return null;
+                    },
                 },
                 {
                     path: '/varasto/koodinlukija',
