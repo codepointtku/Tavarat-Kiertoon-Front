@@ -20,10 +20,6 @@ function TestButtons() {
         setAuth(newAuth);
     };
 
-    const createPDFButtonHandler = () => {
-        console.log('Create PDF');
-    };
-
     return (
         <div>
             <Container maxWidth="md">
@@ -63,13 +59,6 @@ function TestButtons() {
                         style={{ background: auth.admin ? 'lightgreen' : 'lightsalmon' }}
                     >
                         Admin: {auth.admin ? 'Log Out' : 'Log In'}
-                    </button>
-                    <button
-                        type="button"
-                        onClick={createPDFButtonHandler}
-                        style={{ background: 'darkBlue', color: 'white', marginLeft: '20px' }}
-                    >
-                        Create PDF
                     </button>
                 </div>
             </Container>

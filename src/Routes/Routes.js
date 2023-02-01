@@ -76,10 +76,6 @@ function Routes() {
                     path: '/stats',
                     element: <StatsPage />,
                 },
-                {
-                    path: '/pdf',
-                    element: <PDFView />,
-                },
             ],
         },
         {
@@ -143,6 +139,10 @@ function Routes() {
                     path: '/varasto/koodinlukija',
                     element: <QrScanner />,
                 },
+                {
+                    path: '/varasto/pdf',
+                    element: <PDFView />,
+                },
             ],
         },
         {
@@ -163,7 +163,6 @@ function Routes() {
                         if (data) {
                             return data;
                         }
-                        console.log(data);
                         return null;
                     },
                 },

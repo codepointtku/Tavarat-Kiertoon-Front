@@ -5,7 +5,6 @@ import ProductCard from './ProductCard';
 
 function ProductList() {
     const data = useLoaderData();
-    console.log(data);
     return (
         <Grid container spacing={2}>
             {data?.map((product) => (

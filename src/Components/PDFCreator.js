@@ -16,7 +16,9 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-function MyDocument() {
+/* eslint-disable-next-line */
+function PDFDocument(props) {
+
     return (
         <Document>
             <Page size="A4" style={styles.page}>
@@ -31,4 +33,4 @@ function MyDocument() {
     );
 }
 
-export default MyDocument;
+export default PDFDocument;
