@@ -65,6 +65,7 @@ AddExistingItem.propTypes = {
         name: PropTypes.string,
         category: PropTypes.string,
         location: PropTypes.string,
+        info: PropTypes.string,
         isOld: PropTypes.bool,
     }).isRequired,
     setTab: PropTypes.func.isRequired,
