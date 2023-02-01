@@ -29,6 +29,7 @@ import Delivery from '../toimitus';
 import BackgroundInfo from '../Components/Backgroundinfo';
 
 import StatsPage from '../Components/Stats/StatsPage';
+import Dummy from '../Components/Treeview/DummyDevPage';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -74,6 +75,10 @@ function Routes() {
                 {
                     path: '/stats',
                     element: <StatsPage />,
+                },
+                {
+                    path: '/dummy',
+                    element: <Dummy />,
                 },
             ],
         },
