@@ -47,6 +47,7 @@ function AddItem() {
 
         const uploads = await Promise.all(Object.values(files).map(async (file) => imageCompression(file, options)));
 
+        // bring images to back-end with a call, then setItems into images brought back.
         console.log(uploads);
     };
 
