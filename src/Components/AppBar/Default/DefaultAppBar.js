@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 
@@ -26,7 +27,6 @@ import CallIcon from '@mui/icons-material/Call';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
-import PhishingIcon from '@mui/icons-material/Phishing';
 
 import LoginForm from './LoginForm';
 import ContactForm from './ContactForm';
@@ -128,6 +128,7 @@ function DefaultAppBar() {
             setCurrentOpenDrawer(drawer);
         }
     };
+    const navigate = useNavigate();
 
     return (
         <Box>
@@ -187,14 +188,14 @@ function DefaultAppBar() {
                 </List>
                 <Divider />
                 <List>
-                    {['Kassalle', 'Muikulle', 'Pihalle'].map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>{index % 2 === 0 ? <ShoppingCartCheckoutIcon /> : <PhishingIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
+                    <ListItem disablePadding>
+                        <ListItemButton onClick={() =>  navigate("/ostoskori")}>
+                            <ListItemIcon>
+                                <ShoppingCartCheckoutIcon /> 
+                            </ListItemIcon>
+                            <ListItemText primary="Kassalle" />
+                        </ListItemButton>
+                    </ListItem>
                 </List>
             </Drawer>
 
