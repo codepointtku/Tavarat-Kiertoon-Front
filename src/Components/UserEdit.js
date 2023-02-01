@@ -1,11 +1,10 @@
-import { MenuItem, TextField, Box } from '@mui/material';
+import { MenuItem, TextField, Box, Button } from '@mui/material';
 import { useState } from 'react';
 import { useLoaderData } from 'react-router';
 
 function UserEdit() {
     const loader = useLoaderData();
     const [userData, setUserData] = useState(loader);
-    console.log(userData);
 
     const roles = ['kahvinkeittäjä', 'varasto', 'admin'];
 
@@ -73,6 +72,9 @@ function UserEdit() {
                     </h5>
                 </div>
             </Box>
+            <h5 align="center">
+                <Button>Tallenna käyttäjän tiedot</Button>
+            </h5>
         </>
     );
 }
