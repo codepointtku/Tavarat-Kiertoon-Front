@@ -10,8 +10,8 @@ export default function AdminBar() {
     const [currentPage, setCurrentPage] = useState('Varastot');
 
     const pages = [
-        { name: 'Tilaukset', path: '/varasto/0/delivery?page=0&rows=5' },
-        { name: 'Käyttäjät', path: '/admin/users?page=0&rows=5' },
+        { name: 'Tilaukset', path: '/varasto/0/delivery' },
+        { name: 'Käyttäjät', path: '/admin/users' },
         { name: 'Hakemukset', path: '/admin/hakemukset' },
     ];
 
@@ -27,6 +27,12 @@ export default function AdminBar() {
             setCurrentPage('Varastot');
         }
     }, [location]);
+
+    function handleNavigation(path) {
+        if (path !== location.pathname) {
+            navigate(path);
+        }
+    }
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -44,7 +50,7 @@ export default function AdminBar() {
                                 key={page.name}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                                 onClick={() => {
-                                    navigate(`${page.path}`);
+                                    handleNavigation(`${page.path}`);
                                 }}
                             >
                                 {page.name}
