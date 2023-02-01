@@ -19,9 +19,9 @@ export default function AdminBar() {
     const location = useLocation();
 
     useEffect(() => {
-        if (location.pathname === '/admin/users') {
+        if (location.pathname.startsWith('/admin/users')) {
             setCurrentPage('Käyttäjät');
-        } else if (location.pathname === '/admin/hakemukset') {
+        } else if (location.pathname.startsWith('/admin/hakemukset')) {
             setCurrentPage('Hakemukset');
         } else {
             setCurrentPage('Varastot');
