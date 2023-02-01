@@ -25,6 +25,8 @@ import FaqView from '../Components/FaqView';
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
+import Delivery from '../toimitus';
+import BackgroundInfo from '../Components/Backgroundinfo';
 
 import StatsPage from '../Components/Stats/StatsPage';
 
@@ -60,6 +62,14 @@ function Routes() {
                 {
                     path: '/faq',
                     element: <FaqView />,
+                },
+                {
+                    path: '/delivery',
+                    element: <Delivery />,
+                },
+                {
+                    path: '/backgroundinfo',
+                    element: <BackgroundInfo />,
                 },
                 {
                     path: '/stats',
@@ -123,6 +133,17 @@ function Routes() {
                 {
                     path: '/varasto/luo',
                     element: <AddItem />,
+                    loader: async () => {
+                        const dataList = [];
+                        let { data } = await axios.get('http://localhost:3001/categories/');
+                        dataList.push(data);
+                        data = await axios.get('http://localhost:3001/storages/');
+                        dataList.push(data.data);
+                        if (dataList) {
+                            return dataList;
+                        }
+                        return null;
+                    },
                 },
                 {
                     path: '/varasto/koodinlukija',

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 
 import { Container, Box, Divider, Button, ButtonGroup, Grid } from '@mui/material';
 
@@ -13,27 +12,6 @@ import RadarChart from './RadarChart';
 
 import SideAccordions from './SideAccordions';
 
-function VisibleChart({ currentVisibleChart }) {
-    switch (currentVisibleChart) {
-        case 'bar':
-            return <BarChart />;
-        case 'area':
-            return <AreaChart />;
-        case 'line':
-            return <LineChart />;
-        case 'multiline':
-            return <MultiAxisLineChart />;
-        case 'pie':
-            return <PieChart />;
-        case 'polar':
-            return <PolarAreaChart />;
-        case 'radar':
-            return <RadarChart />;
-        default:
-            return <BarChart />;
-    }
-}
-
 function SideStats() {
     return (
         <Box>
@@ -42,18 +20,57 @@ function SideStats() {
     );
 }
 
+const chartTypes = [
+    {
+        label: 'Palkki',
+        type: 'bar',
+        component: BarChart,
+    },
+    {
+        label: 'Alue',
+        type: 'area',
+        component: AreaChart,
+    },
+    {
+        label: 'Viiva',
+        type: 'line',
+        component: LineChart,
+    },
+    {
+        label: 'Multiviiva',
+        type: 'multiline',
+        component: MultiAxisLineChart,
+    },
+    {
+        label: 'Piirakka',
+        type: 'pie',
+        component: PieChart,
+    },
+    {
+        label: 'Area',
+        type: 'polar',
+        component: PolarAreaChart,
+    },
+    {
+        label: 'Tutka',
+        type: 'radar',
+        component: RadarChart,
+    },
+];
+
 function StatsPage() {
-    const [currentVisibleChart, setCurrentVisibleChart] = useState('bar');
+    const [visibleChart, setVisibleChart] = useState('bar');
+
+    const chartType = chartTypes.find(({ type }) => type === visibleChart);
+    const VisibleChart = chartType.component;
 
     return (
         <Box mb={2}>
             <Divider />
-
             <Grid container>
                 <Grid item xs={2}>
                     <SideStats />
                 </Grid>
-
                 <Grid item xs={10}>
                     <Box
                         sx={{
@@ -67,20 +84,16 @@ function StatsPage() {
                         }}
                     >
                         <ButtonGroup variant="text" aria-label="text button group">
-                            <Button onClick={() => setCurrentVisibleChart('bar')}>Palkki</Button>
-                            <Button onClick={() => setCurrentVisibleChart('area')}>Alue</Button>
-                            <Button onClick={() => setCurrentVisibleChart('line')}>Viiva</Button>
-                            <Button onClick={() => setCurrentVisibleChart('multiline')}>Multiviiva</Button>
-                            <Button onClick={() => setCurrentVisibleChart('pie')}>Piirakka</Button>
-                            <Button onClick={() => setCurrentVisibleChart('polar')}>Area</Button>
-                            <Button onClick={() => setCurrentVisibleChart('radar')}>Tutka</Button>
+                            {chartTypes.map(({ label, type }) => (
+                                <Button key={type} onClick={() => setVisibleChart(type)}>
+                                    {label}
+                                </Button>
+                            ))}
                         </ButtonGroup>
                     </Box>
-
                     <Divider />
-
                     <Container maxWidth="xl" sx={{ height: 'min-content' }}>
-                        <VisibleChart currentVisibleChart={currentVisibleChart} />
+                        <VisibleChart />
                     </Container>
                 </Grid>
             </Grid>
@@ -89,7 +102,3 @@ function StatsPage() {
 }
 
 export default StatsPage;
-
-VisibleChart.propTypes = {
-    currentVisibleChart: PropTypes.string.isRequired,
-};

@@ -5,6 +5,7 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import imageCompression from 'browser-image-compression';
 
 import AddExistingItem from './AddExistingItem';
+import AddNewItem from './AddNewItem';
 
 function AddItem() {
     // empty location.state when item is finally added and site navigates away!
@@ -23,6 +24,7 @@ function AddItem() {
                 barcode: '',
                 category: '',
                 location: '',
+                info: '',
                 oldItem: false,
             });
         }
@@ -77,6 +79,7 @@ function AddItem() {
                                 type="file"
                             />
                         </Button>
+                        {item ? <AddNewItem item={item} setItem={setItem} /> : <h1>Tonipal kahville</h1>}
                     </TabPanel>
                     <TabPanel value={2}>
                         <AddExistingItem item={item} setTab={setTab} />
