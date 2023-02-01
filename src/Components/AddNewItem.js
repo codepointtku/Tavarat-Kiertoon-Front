@@ -3,7 +3,7 @@ import { useLoaderData } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { TextField, Box, MenuItem, Button } from '@mui/material';
 
-function AddNewItem({ item, setItem }) {
+function AddNewItem({ item, setItem, uploadFile }) {
     const data = useLoaderData();
     const navigate = useNavigate();
 
@@ -100,6 +100,20 @@ function AddNewItem({ item, setItem }) {
                         />
                     </h5>
                     <h5>
+                        <Button variant="contained" component="label">
+                            Lisää kuvat
+                            <input
+                                onChange={(event) => {
+                                    uploadFile(event.target.files);
+                                }}
+                                hidden
+                                accept="image/*"
+                                multiple
+                                type="file"
+                            />
+                        </Button>
+                    </h5>
+                    <h5>
                         <Button size="large">Lisää tuote</Button>
                     </h5>
                 </div>
@@ -119,6 +133,7 @@ AddNewItem.propTypes = {
         isOld: PropTypes.bool,
     }).isRequired,
     setItem: PropTypes.func.isRequired,
+    uploadFile: PropTypes.func.isRequired,
 };
 
 export default AddNewItem;
