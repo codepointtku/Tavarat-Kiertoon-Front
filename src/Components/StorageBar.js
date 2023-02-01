@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 
 export default function StorageBar() {
     const [currentPage, setCurrentPage] = useState('Tilaukset');
@@ -15,19 +15,24 @@ export default function StorageBar() {
     ];
 
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.pathname === '/varasto/luo') {
+            setCurrentPage('Lisää tuote');
+        } else if (location.pathname === '/varasto/0/delivery') {
+            setCurrentPage('Tilaukset');
+        } else {
+            setCurrentPage(null);
+        }
+    }, [location]);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        <Link
-                            to="/varasto"
-                            style={{ color: 'white' }}
-                            onClick={() => {
-                                setCurrentPage(null);
-                            }}
-                        >
+                        <Link to="/varasto" style={{ color: 'white' }}>
                             Varasto
                         </Link>
                         <Typography variant="subtitle2">{currentPage}</Typography>
@@ -39,7 +44,6 @@ export default function StorageBar() {
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                                 onClick={() => {
                                     navigate(`${page.path}`);
-                                    setCurrentPage(`${page.name}`);
                                 }}
                             >
                                 {page.name}
