@@ -27,6 +27,7 @@ import CallIcon from '@mui/icons-material/Call';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import LoginForm from './LoginForm';
 import ContactForm from './ContactForm';
@@ -120,6 +121,7 @@ function Drawer({ currentOpenDrawer, name, children }) {
 
 function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState(null);
+    const [hoveredOver, setHoveredOver] = useState(false)
 
     const drawerOpen = (drawer) => () => {
         if (currentOpenDrawer === drawer) {
@@ -179,9 +181,10 @@ function DefaultAppBar() {
                 <List>
                     {['Jakkara', 'Nahkasohva', 'Piirtoheitin', 'Chuck Norriksen verkkarit'].map((text, index) => (
                         <ListItem key={text} disablePadding>
-                            <ListItemButton>
+                            <ListItemButton onMouseOver={() => setHoveredOver(true)} onMouseOut={() => setHoveredOver(false)}>
                                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                                 <ListItemText primary={text} />
+                                { hoveredOver && <DeleteIcon /> }
                             </ListItemButton>
                         </ListItem>
                     ))}
