@@ -67,19 +67,11 @@ function AddItem() {
                         </TabList>
                     </Box>
                     <TabPanel value={1}>
-                        <Button variant="contained" component="label">
-                            Upload
-                            <input
-                                onChange={(event) => {
-                                    uploadFile(event.target.files);
-                                }}
-                                hidden
-                                accept="image/*"
-                                multiple
-                                type="file"
-                            />
-                        </Button>
-                        {item ? <AddNewItem item={item} setItem={setItem} /> : <h1>Tonipal kahville</h1>}
+                        {item ? (
+                            <AddNewItem item={item} setItem={setItem} uploadFile={uploadFile} />
+                        ) : (
+                            <h1>Tonipal kahville</h1>
+                        )}
                     </TabPanel>
                     <TabPanel value={2}>
                         <AddExistingItem item={item} setTab={setTab} />
