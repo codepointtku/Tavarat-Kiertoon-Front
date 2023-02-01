@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
-function ProductCard({ productName, description, id }) {
+function ProductCard({ productName, id }) {
     const [addedToCart, setAddedToCart] = useState(false);
     const [addToCartButtonValue, setValue] = useState('Lisää koriin');
 
@@ -18,15 +18,10 @@ function ProductCard({ productName, description, id }) {
     return (
         <Box sx={{ minWidth: 240 }}>
             <Card sx={{ maxWidth: 300 }}>
-                <CardActionArea>
-                    <Link to={`/tuotteet/${id}`}>
-                        <CardMedia component="img" alt="kuva" height="200" image="br.jpg" />
-                    </Link>
+                <CardActionArea component={Link} to={`/tuotteet/${id}`}>
+                    <CardMedia component="img" alt="kuva" height="200" image="br.jpg" />
                     <CardContent>
                         <Typography variant="h6">{productName}</Typography>
-                        <Typography variant="body2" paragraph>
-                            {description}
-                        </Typography>
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
@@ -56,8 +51,7 @@ function ProductCard({ productName, description, id }) {
 // Types not ready, string type for testing
 ProductCard.propTypes = {
     productName: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
 };
 
 export default ProductCard;
