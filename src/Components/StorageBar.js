@@ -10,7 +10,7 @@ export default function StorageBar() {
     const [currentPage, setCurrentPage] = useState('Tilaukset');
 
     const pages = [
-        { name: 'Tilaukset', path: '/varasto/0/delivery?page=0&rows=5' },
+        { name: 'Tilaukset', path: '/varasto/0/delivery' },
         { name: 'Lisää tuote', path: '/varasto/luo' },
     ];
 
@@ -26,6 +26,12 @@ export default function StorageBar() {
             setCurrentPage(null);
         }
     }, [location]);
+
+    function handleNavigation(path) {
+        if (path !== location.pathname) {
+            navigate(path);
+        }
+    }
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -43,7 +49,7 @@ export default function StorageBar() {
                                 key={page.name}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                                 onClick={() => {
-                                    navigate(`${page.path}`);
+                                    handleNavigation(`${page.path}`);
                                 }}
                             >
                                 {page.name}
