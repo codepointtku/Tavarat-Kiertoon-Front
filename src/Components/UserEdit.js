@@ -66,7 +66,9 @@ function UserEdit() {
                             defaultValue={userData.roles}
                         >
                             {roles.map((role) => (
-                                <MenuItem value={role}>{role}</MenuItem>
+                                <MenuItem key={role} value={role}>
+                                    {role}
+                                </MenuItem>
                             ))}
                         </TextField>
                     </h5>
