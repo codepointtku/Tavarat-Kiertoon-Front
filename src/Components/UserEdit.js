@@ -63,7 +63,7 @@ function UserEdit() {
                                 handleChange('roles', event);
                             }}
                             sx={{ width: '19%' }}
-                            defaultValue={userData.roles}
+                            value={userData.roles}
                         >
                             {roles.map((role) => (
                                 <MenuItem key={role} value={role}>
