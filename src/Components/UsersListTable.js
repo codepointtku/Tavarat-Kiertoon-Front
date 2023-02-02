@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
     Table,
@@ -61,8 +61,8 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
                 <TableBody>
                     {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows).map(
                         (row) => (
-                            <>
-                                <StyledTableRow key={row.id}>
+                            <Fragment key={row.id}>
+                                <StyledTableRow>
                                     <StyledTableCell component="th" scope="row">
                                         <IconButton
                                             aria-label="expand row"
@@ -79,7 +79,7 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
                                     <StyledTableCell align="right">{row.email}</StyledTableCell>
                                     <StyledTableCell align="right">{row.roles}</StyledTableCell>
                                 </StyledTableRow>
-                                <TableRow key={`row${row.id}`}>
+                                <TableRow>
                                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                                         <Collapse in={isOpen[row.id]} timeout="auto" unmountOnExit>
                                             <Box sx={{ margin: 1 }}>
@@ -108,7 +108,7 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
                                                         </TableRow>
                                                     </TableHead>
                                                     <TableBody>
-                                                        <TableRow key={row.id}>
+                                                        <TableRow>
                                                             <TableCell component="th" scope="row">
                                                                 {row.id}
                                                             </TableCell>
@@ -124,7 +124,7 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
                                         </Collapse>
                                     </TableCell>
                                 </TableRow>
-                            </>
+                            </Fragment>
                         )
                     )}
 
