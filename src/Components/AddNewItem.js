@@ -20,7 +20,8 @@ function AddNewItem({ item, setItem, uploadFile }) {
             validator.isLength(String(item.name), { min: 3, max: 255 }) &&
             validator.isLength(String(item.barcode), { min: 1 }) &&
             validator.isLength(String(item.location), { min: 1 }) &&
-            validator.isLength(String(item.category), { min: 1 })
+            validator.isLength(String(item.category), { min: 1 }) &&
+            validator.isLength(String(item.info), { min: 5 })
         ) {
             setValidProduct(true);
         } else {
