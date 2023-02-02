@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
     Table,
@@ -61,8 +61,8 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
                 <TableBody>
                     {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows).map(
                         (row) => (
-                            <>
-                                <StyledTableRow key={row.id}>
+                            <Fragment key={row.id}>
+                                <StyledTableRow>
                                     <StyledTableCell component="th" scope="row">
                                         <IconButton
                                             aria-label="expand row"
@@ -108,7 +108,7 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
                                                         </TableRow>
                                                     </TableHead>
                                                     <TableBody>
-                                                        <TableRow key={row.id}>
+                                                        <TableRow>
                                                             <TableCell component="th" scope="row">
                                                                 {row.id}
                                                             </TableCell>
@@ -124,7 +124,7 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
                                         </Collapse>
                                     </TableCell>
                                 </TableRow>
-                            </>
+                            </Fragment>
                         )
                     )}
 
@@ -164,7 +164,7 @@ UsersListTable.propTypes = {
     setUsedParams: PropTypes.func.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
     rows: PropTypes.arrayOf(
-        PropTypes.objectOf({
+        PropTypes.shape({
             id: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
             phone: PropTypes.string.isRequired,

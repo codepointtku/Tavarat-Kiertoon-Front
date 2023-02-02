@@ -12,7 +12,7 @@ export default function AdminBar() {
     const pages = [
         { name: 'Varastot', path: '/admin' },
         { name: 'Tilaukset', path: '/varasto/0/delivery' },
-        { name: 'Käyttäjät', path: '/admin/users' },
+        { name: 'Käyttäjät', path: '/admin/users?page=0&rows=5' },
         { name: 'Hakemukset', path: '/admin/hakemukset' },
     ];
 
