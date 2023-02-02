@@ -86,6 +86,7 @@ function AddNewItem({ item, setItem, uploadFile }) {
                         onChange={(event) => {
                             handleChange('location', event);
                         }}
+                        defaultValue=""
                     >
                         {data[1].map((location) => (
                             <MenuItem key={location.id} value={location.name}>
@@ -101,6 +102,7 @@ function AddNewItem({ item, setItem, uploadFile }) {
                         onChange={(event) => {
                             handleChange('category', event);
                         }}
+                        defaultValue=""
                     >
                         {data[0].map((category) => (
                             <MenuItem key={category.id} value={category.name}>
