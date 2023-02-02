@@ -1,31 +1,40 @@
-import TreeView from '@mui/lab/TreeView';
+import { useLoaderData } from 'react-router-dom';
+
+import { TreeView, TreeItem } from '@mui/lab';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import TreeItem from '@mui/lab/TreeItem';
+
+const arrayToTree = require('array-to-tree');
 
 function CategoryTree() {
+    const categories = useLoaderData();
+
+    const categoryTreeMain = arrayToTree(categories, {
+        parentProperty: 'parent',
+        customID: 'id',
+    });
+
+    const data = {
+        id: 'root',
+        name: 'Tuotekategoriat',
+        children: categoryTreeMain,
+    };
+
+    const renderTree = (nodes) => (
+        <TreeItem key={nodes.id} nodeId={String(nodes.id)} label={nodes.name}>
+            {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
+        </TreeItem>
+    );
+
     return (
         <TreeView
-            aria-label="category navigator"
+            aria-label="rich object"
             defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpanded={['root']}
             defaultExpandIcon={<ChevronRightIcon />}
-            sx={{ flexGrow: 1, maxWidth: 400, overflowY: 'auto', p: 4 }}
+            sx={{ flexGrow: 1, maxWidth: 320, overflowY: 'auto' }}
         >
-            <TreeItem nodeId="1" label="Tuotekategoriat">
-                <TreeItem nodeId="10" label="Huonekalut" />
-                <TreeItem nodeId="11" label="Laitteet" />
-                <TreeItem nodeId="12" label="Sähköpyörät" />
-            </TreeItem>
-
-            <TreeItem nodeId="2" label="Tiedotteet">
-                <TreeItem nodeId="20" label="Ajankohtaista" />
-                <TreeItem nodeId="30" label="Arkisto" />
-            </TreeItem>
-
-            <TreeItem nodeId='40' label="Ohjeet">
-                <TreeItem nodeId='41' label='Tilaaminen' />
-                <TreeItem nodeId='42' label='Noutokuljetus' />
-            </TreeItem>
+            {renderTree(data)}
         </TreeView>
     );
 }

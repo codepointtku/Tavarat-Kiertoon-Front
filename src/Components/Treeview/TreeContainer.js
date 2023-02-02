@@ -1,13 +1,13 @@
-import { Container } from "@mui/material";
+import { Container } from '@mui/material';
 
-import CategoryTree from "./CategoryTree";
+import CategoryTree from './CategoryTree';
 
 function TreeContainer() {
     return (
-        <Container maxWidth="md">
+        <Container maxWidth="sm">
             <CategoryTree />
         </Container>
-    )
+    );
 }
 
 export default TreeContainer;
