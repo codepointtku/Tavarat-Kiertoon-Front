@@ -4,7 +4,7 @@ import { TreeView, TreeItem } from '@mui/lab';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
-const arrayToTree = require('array-to-tree');
+import arrayToTree from 'array-to-tree';
 
 function CategoryTree() {
     const categories = useLoaderData();
