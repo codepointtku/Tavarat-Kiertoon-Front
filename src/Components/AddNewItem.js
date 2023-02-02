@@ -54,7 +54,7 @@ function AddNewItem({ item, setItem, uploadFile }) {
                         <Button onClick={() => navigate(generatePath('/varasto/koodinlukija'), { state: { ...item } })}>
                             Koodinlukija
                         </Button>
-                        <Barcode value={item.barcode} />
+                        {item.barcode.length > 5 && <Barcode value={item.barcode} />}
                     </h5>
                     <h5>
                         <TextField
