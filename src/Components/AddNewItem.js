@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, generatePath } from 'react-router';
 import { useLoaderData } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Barcode from 'react-barcode';
 import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent } from '@mui/material';
 import validator from 'validator';
 
@@ -74,7 +75,9 @@ function AddNewItem({ item, setItem, uploadFile }) {
                         >
                             Koodinlukija
                         </Button>
+                        {item.barcode.length > 0 && <Barcode value={item.barcode} />}
                     </CardActions>
+
                     <TextField
                         required
                         id="outlined-select"
