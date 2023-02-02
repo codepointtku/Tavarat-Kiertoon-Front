@@ -1,4 +1,4 @@
-import { Container } from '@mui/material'
+import { Container, Typography } from '@mui/material'
 import { useLoaderData } from 'react-router-dom'
 import ArticleCard from './ArticleCard'
 
@@ -11,6 +11,7 @@ function Announcements(){
 
     return(
         <Container>
+            <Typography variant="h3" sx={{textAlign: "center", fontWeight: 500}}>Tiedotteet</Typography>
             {cards}
         </Container>
     )
