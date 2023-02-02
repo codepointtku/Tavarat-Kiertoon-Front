@@ -41,7 +41,7 @@ export default function Footer() {
                             UKK - FAQ{' '}
                         </Typography>
                     </Link>
-                    <Link to="/announcements" underline="hover">
+                    <Link to="/tiedotteet" underline="hover">
                         <Typography variant="subtitle1" gutterBottom color="inherit">
                             Tiedotteet
                         </Typography>
