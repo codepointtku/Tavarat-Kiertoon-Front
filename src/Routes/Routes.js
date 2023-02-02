@@ -138,6 +138,17 @@ function Routes() {
                 {
                     path: '/varasto/luo',
                     element: <AddItem />,
+                    loader: async () => {
+                        const dataList = [];
+                        let { data } = await axios.get('http://localhost:3001/categories/');
+                        dataList.push(data);
+                        data = await axios.get('http://localhost:3001/storages/');
+                        dataList.push(data.data);
+                        if (dataList) {
+                            return dataList;
+                        }
+                        return null;
+                    },
                 },
                 {
                     path: '/varasto/koodinlukija',
@@ -184,6 +195,13 @@ function Routes() {
                 {
                     path: '/admin/users/:id',
                     element: <UserEdit />,
+                    loader: async ({ params }) => {
+                        const { data } = await axios.get(`http://localhost:3001/users/${params.id}`);
+                        if (data) {
+                            return data;
+                        }
+                        return data;
+                    },
                 },
                 {
                     path: '/admin/varastot/:id',
