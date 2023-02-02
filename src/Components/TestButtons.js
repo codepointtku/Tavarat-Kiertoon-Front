@@ -25,10 +25,9 @@ function TestButtons() {
             <Container maxWidth="md">
                 <div style={{ marginBottom: '5px' }}>
                     <b>Links to pages: </b>
-                    <Link to="/">Home --- </Link> <Link to="/varasto/0/delivery?page=0&rows=5">Varastot --- </Link>
-                    <br />
+                    <Link to="/">Home --- </Link>
+                    <Link to="/varasto/0/delivery?page=0&rows=5">Varastot --- </Link>
                     <Link to="/admin">Admin --- </Link>
-                    <Link to="/admin/varastot">/Varastot --- </Link>
                     <Link to="/stats">Stats --- </Link>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
