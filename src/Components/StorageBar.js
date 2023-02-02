@@ -6,25 +6,24 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 
-export default function AdminBar() {
-    const [currentPage, setCurrentPage] = useState('Varastot');
+export default function StorageBar() {
+    const [currentPage, setCurrentPage] = useState('Tilaukset');
 
     const pages = [
         { name: 'Tilaukset', path: '/varasto/0/delivery' },
-        { name: 'Käyttäjät', path: '/admin/users' },
-        { name: 'Hakemukset', path: '/admin/hakemukset' },
+        { name: 'Lisää tuote', path: '/varasto/luo' },
     ];
 
     const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
-        if (location.pathname.startsWith('/admin/users')) {
-            setCurrentPage('Käyttäjät');
-        } else if (location.pathname.startsWith('/admin/hakemukset')) {
-            setCurrentPage('Hakemukset');
+        if (location.pathname === '/varasto/luo') {
+            setCurrentPage('Lisää tuote');
+        } else if (location.pathname === '/varasto/0/delivery') {
+            setCurrentPage('Tilaukset');
         } else {
-            setCurrentPage('Varastot');
+            setCurrentPage(null);
         }
     }, [location]);
 
@@ -39,8 +38,8 @@ export default function AdminBar() {
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        <Link to="/admin" style={{ color: 'white' }}>
-                            Admin
+                        <Link to="/varasto" style={{ color: 'white' }}>
+                            Varasto
                         </Link>
                         <Typography variant="subtitle2">{currentPage}</Typography>
                     </Typography>

@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
 import axios from 'axios';
+
 import DefaultView from './DefaultView';
 import StorageView from './StorageView';
 import AdminView from './AdminView';
@@ -18,13 +19,18 @@ import QrScanner from '../Components/QrScanner';
 
 import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
-import LocationsView from '../Components/LocationsView';
-import LocationDetails from '../Components/LocationDetails';
 
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
 import Announcements from '../Components/Announcements';
 import FaqView from '../Components/FaqView';
+import StoragesList from '../Components/StoragesList';
+import StorageEdit from '../Components/StorageEdit';
+import AddItem from '../Components/AddItem';
+import Delivery from '../toimitus';
+import BackgroundInfo from '../Components/Backgroundinfo';
+
+import StatsPage from '../Components/Stats/StatsPage';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -58,6 +64,22 @@ function Routes() {
                 {
                     path: '/faq',
                     element: <FaqView />,
+                },
+                {
+                    path: '/delivery',
+                    element: <Delivery />,
+                    loader: async () => {
+                        const { data } = await axios.get('http://localhost:3001/contacts');
+                        return data;
+                    },
+                },
+                {
+                    path: '/backgroundinfo',
+                    element: <BackgroundInfo />,
+                },
+                {
+                    path: '/stats',
+                    element: <StatsPage />,
                 },
             ],
         },
@@ -115,6 +137,21 @@ function Routes() {
                     },
                 },
                 {
+                    path: '/varasto/luo',
+                    element: <AddItem />,
+                    loader: async () => {
+                        const dataList = [];
+                        let { data } = await axios.get('http://localhost:3001/categories/');
+                        dataList.push(data);
+                        data = await axios.get('http://localhost:3001/storages/');
+                        dataList.push(data.data);
+                        if (dataList) {
+                            return dataList;
+                        }
+                        return null;
+                    },
+                },
+                {
                     path: '/varasto/koodinlukija',
                     element: <QrScanner />,
                 },
@@ -130,6 +167,18 @@ function Routes() {
                 </ThemeProvider>
             ),
             children: [
+                {
+                    path: '/admin',
+                    element: <StoragesList />,
+                    loader: async () => {
+                        const { data } = await axios.get('http://localhost:3001/storages');
+                        if (data) {
+                            return data;
+                        }
+                        console.log(data);
+                        return null;
+                    },
+                },
                 {
                     path: '/admin/users',
                     element: <UsersList />,
@@ -147,14 +196,21 @@ function Routes() {
                 {
                     path: '/admin/users/:id',
                     element: <UserEdit />,
+                    loader: async ({ params }) => {
+                        const { data } = await axios.get(`http://localhost:3001/users/${params.id}`);
+                        if (data) {
+                            return data;
+                        }
+                        return data;
+                    },
                 },
                 {
-                    path: '/admin/varastot',
-                    element: <LocationsView />,
+                    path: '/admin/varastot/:id',
+                    element: <StorageEdit />,
                 },
                 {
-                    path: '/admin/varastot/varasto/:id',
-                    element: <LocationDetails />,
+                    path: '/admin/hakemukset',
+                    element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
                 },
             ],
         },
