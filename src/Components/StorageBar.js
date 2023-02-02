@@ -20,10 +20,10 @@ export default function StorageBar() {
     useEffect(() => {
         if (location.pathname.startsWith('/varasto/luo')) {
             setCurrentPage('Lisää tuote');
-        } else if (location.pathname.startsWith('/varasto/0')) {
-            setCurrentPage('Tilaukset');
         } else if (location.pathname.startsWith('/varasto/tilaus')) {
             setCurrentPage('Tilaus');
+        } else if (location.pathname.startsWith('/varasto')) {
+            setCurrentPage('Tilaukset');
         } else {
             setCurrentPage(null);
         }
