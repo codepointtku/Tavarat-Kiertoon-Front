@@ -31,6 +31,7 @@ import Delivery from '../toimitus';
 import BackgroundInfo from '../Components/Backgroundinfo';
 
 import StatsPage from '../Components/Stats/StatsPage';
+import Dummy from '../Components/Treeview/DummyDevPage';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -91,12 +92,19 @@ function Routes() {
                     loader: async () => {
                         const { data } = await axios.get('http://localhost:3001/announcements');
                         try {
-                            return data
+                            return data;
+                        } catch {
+                            return null;
                         }
-                        catch {
-                            return null
-                        }
-                    }   
+                    },
+                },
+                {
+                    path: '/dummy',
+                    element: <Dummy />,
+                    loader: async () => {
+                        const { data } = await axios.get('http://localhost:3001/categories');
+                        return data;
+                    },
                 },
             ],
         },
