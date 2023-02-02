@@ -57,8 +57,9 @@ function AddNewItem({ item, setItem, uploadFile }) {
                         >
                             Koodinlukija
                         </Button>
+                        {item.barcode.length > 0 && <Barcode value={item.barcode} />}
                     </CardActions>
-                    {item.barcode.length > 0 && <Barcode value={item.barcode} />}
+
                     <TextField
                         required
                         id="outlined-select"
