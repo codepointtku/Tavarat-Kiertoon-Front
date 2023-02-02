@@ -3,7 +3,7 @@ import { useLoaderData } from 'react-router-dom';
 
 function Delivery() {
     const data = useLoaderData();
-    const url = `mailto:${data[0].email}`;
+    const url = `mailto:${data.email}`;
     // console.log(data, data.name);
     return (
         <Container fixed>
@@ -17,18 +17,18 @@ function Delivery() {
                 </Typography>
 
                 <Typography variant="body2" paragraph>
-                    Kuljetuksien tiedustelut {data[0].name}
+                    Kuljetuksien tiedustelut {data.name}
                 </Typography>
 
                 <Typography variant="body2" paragraph>
-                    {data[0].address}
+                    {data.address}
                 </Typography>
 
                 <Typography>
-                    <Link href={url}>{data[0].email}</Link>
+                    <Link href={url}>{data.email}</Link>
                 </Typography>
 
-                <Typography paragraph> {data[0].phoneNumber} </Typography>
+                <Typography paragraph> {data.phoneNumber} </Typography>
             </Grid>
 
             <Grid rowSpacing="10">

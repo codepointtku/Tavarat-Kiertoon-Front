@@ -22,6 +22,7 @@ import UserEdit from '../Components/UserEdit';
 
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
+import Announcements from '../Components/Announcements';
 import FaqView from '../Components/FaqView';
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
@@ -30,6 +31,7 @@ import ShoppingCart from '../Components/ShoppingCart';
 import Delivery from '../toimitus';
 import BackgroundInfo from '../Components/Backgroundinfo';
 import StatsPage from '../Components/Stats/StatsPage';
+import Dummy from '../Components/Treeview/DummyDevPage';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -39,7 +41,11 @@ function Routes() {
                 <Base>
                     <DefaultView />
                 </Base>
-            ),
+            ),loader: async () => {
+                const { data } = await axios.get('http://localhost:3001/contacts');
+                return data;
+            },
+            
             children: [
                 {
                     path: '/',
@@ -83,6 +89,26 @@ function Routes() {
                 {
                     path: '/ostoskori',
                     element: <ShoppingCart />,
+                },
+                {
+                    path: '/tiedotteet',
+                    element: <Announcements />,
+                    loader: async () => {
+                        const { data } = await axios.get('http://localhost:3001/announcements');
+                        try {
+                            return data;
+                        } catch {
+                            return null;
+                        }
+                    },
+                },
+                {
+                    path: '/dummy',
+                    element: <Dummy />,
+                    loader: async () => {
+                        const { data } = await axios.get('http://localhost:3001/categories');
+                        return data;
+                    },
                 },
             ],
         },

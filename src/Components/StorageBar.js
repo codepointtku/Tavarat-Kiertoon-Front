@@ -18,9 +18,9 @@ export default function StorageBar() {
     const location = useLocation();
 
     useEffect(() => {
-        if (location.pathname === '/varasto/luo') {
+        if (location.pathname.startsWith('/varasto/luo')) {
             setCurrentPage('Lisää tuote');
-        } else if (location.pathname === '/varasto/0/delivery') {
+        } else if (location.pathname.startsWith('/varasto/0')) {
             setCurrentPage('Tilaukset');
         } else {
             setCurrentPage(null);
@@ -38,7 +38,7 @@ export default function StorageBar() {
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        <Link to="/varasto" style={{ color: 'white' }}>
+                        <Link to="/varasto/0/delivery?rows=5&page=0" style={{ color: 'white' }}>
                             Varasto
                         </Link>
                         <Typography variant="subtitle2">{currentPage}</Typography>

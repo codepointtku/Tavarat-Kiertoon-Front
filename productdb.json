@@ -385,7 +385,7 @@
             "inUse": false
         }
     ],
-    "contacts": [
+    "contacts": 
         {
             "id": 1,
             "name": "Vesa Lehtonen",
@@ -393,5 +393,5 @@
             "email": "tyokeskus.kierratys@turku.fi",
             "phoneNumber": "+358 40 531 8689"
         }
-    ]
+    
 }

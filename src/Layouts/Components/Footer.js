@@ -1,8 +1,11 @@
-import { Grid, Link, Typography } from '@mui/material';
+import { Grid, Link as MuiLink, Typography } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import { useLoaderData, Link } from 'react-router-dom';
 import LOGO2 from '../../Assets/LOGO2.png';
 
 export default function Footer() {
+    const data = useLoaderData();
+    // const url = `mailto:${data.email}`;
     return (
         <Grid
             component="footer"
@@ -21,24 +24,25 @@ export default function Footer() {
                         Yhteystiedot{' '}
                     </Typography>
 
-                    <Typography>puh: +358 40 531 8689</Typography>
+                    <Typography> {data.phoneNumber} </Typography>
 
-                    <Typography>Rieskalähteentie 76, 20300 Turku</Typography>
-                    <Link href="https://github.com/codepointtku/Tavarat-Kiertoon-Front" color="#663900">
+                    <Typography>{data.address}</Typography>
+
+                    <MuiLink href="https://github.com/codepointtku/Tavarat-Kiertoon-Front" color="#663900">
                         <GitHubIcon />
-                    </Link>
+                    </MuiLink>
                 </Grid>
                 <Grid>
                     <Typography variant="subtitle2">Tietoa</Typography>
-                    <Link href="/faq" color="inherit" underline="hover">
+                    <Link to="/faq" underline="hover">
                         {' '}
-                        <Typography variant="subtitle1" gutterBottom>
+                        <Typography variant="subtitle1" gutterBottom color="inherit">
                             {' '}
                             UKK - FAQ{' '}
                         </Typography>
                     </Link>
-                    <Link href="/announcements" color="inherit" underline="hover">
-                        <Typography variant="subtitle1" gutterBottom>
+                    <Link to="/tiedotteet" underline="hover">
+                        <Typography variant="subtitle1" gutterBottom color="inherit">
                             Tiedotteet
                         </Typography>
                     </Link>
