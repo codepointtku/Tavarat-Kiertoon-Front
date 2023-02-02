@@ -98,7 +98,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
     }, []);
 
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ padding: '2rem' }}>
             <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
                 <TableHead>
                     <TableRow>

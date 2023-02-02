@@ -137,7 +137,7 @@ function DefaultAppBar() {
             <AppBar
                 // bgcolor="primary"
                 sx={{
-                    backgroundColor: "primary.main",
+                    backgroundColor: 'primary.main',
                     width: 'min-content',
                     boxShadow: 0,
                 }}
@@ -218,5 +218,5 @@ export default DefaultAppBar;
 Drawer.propTypes = {
     currentOpenDrawer: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    children: PropTypes.element.isRequired,
-}
+    children: PropTypes.node.isRequired,
+};

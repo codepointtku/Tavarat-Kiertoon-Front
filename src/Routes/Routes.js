@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
 import axios from 'axios';
+
 import DefaultView from './DefaultView';
 import StorageView from './StorageView';
 import AdminView from './AdminView';
@@ -26,6 +27,9 @@ import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
 import ShoppingCart from '../Components/ShoppingCart';
+import Delivery from '../toimitus';
+import BackgroundInfo from '../Components/Backgroundinfo';
+import StatsPage from '../Components/Stats/StatsPage';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -59,6 +63,22 @@ function Routes() {
                 {
                     path: '/faq',
                     element: <FaqView />,
+                },
+                {
+                    path: '/delivery',
+                    element: <Delivery />,
+                    loader: async () => {
+                        const { data } = await axios.get('http://localhost:3001/contacts');
+                        return data;
+                    },
+                },
+                {
+                    path: '/backgroundinfo',
+                    element: <BackgroundInfo />,
+                },
+                {
+                    path: '/stats',
+                    element: <StatsPage />,
                 },
                 {
                     path: '/ostoskori',
@@ -122,6 +142,17 @@ function Routes() {
                 {
                     path: '/varasto/luo',
                     element: <AddItem />,
+                    loader: async () => {
+                        const dataList = [];
+                        let { data } = await axios.get('http://localhost:3001/categories/');
+                        dataList.push(data);
+                        data = await axios.get('http://localhost:3001/storages/');
+                        dataList.push(data.data);
+                        if (dataList) {
+                            return dataList;
+                        }
+                        return null;
+                    },
                 },
                 {
                     path: '/varasto/koodinlukija',
@@ -168,10 +199,21 @@ function Routes() {
                 {
                     path: '/admin/users/:id',
                     element: <UserEdit />,
+                    loader: async ({ params }) => {
+                        const { data } = await axios.get(`http://localhost:3001/users/${params.id}`);
+                        if (data) {
+                            return data;
+                        }
+                        return data;
+                    },
                 },
                 {
                     path: '/admin/varastot/:id',
                     element: <StorageEdit />,
+                },
+                {
+                    path: '/admin/hakemukset',
+                    element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
                 },
             ],
         },
