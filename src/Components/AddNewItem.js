@@ -2,6 +2,7 @@ import { useNavigate, generatePath } from 'react-router';
 import { useLoaderData } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { TextField, Box, MenuItem, Button } from '@mui/material';
+import Barcode from 'react-barcode';
 
 function AddNewItem({ item, setItem, uploadFile }) {
     const data = useLoaderData();
@@ -53,6 +54,7 @@ function AddNewItem({ item, setItem, uploadFile }) {
                         <Button onClick={() => navigate(generatePath('/varasto/koodinlukija'), { state: { ...item } })}>
                             Koodinlukija
                         </Button>
+                        <Barcode value={item.barcode} />
                     </h5>
                     <h5>
                         <TextField
