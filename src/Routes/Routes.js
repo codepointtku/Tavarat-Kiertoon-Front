@@ -22,6 +22,7 @@ import UserEdit from '../Components/UserEdit';
 
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
+import Announcements from '../Components/Announcements';
 import FaqView from '../Components/FaqView';
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
@@ -79,6 +80,19 @@ function Routes() {
                 {
                     path: '/stats',
                     element: <StatsPage />,
+                },
+                {
+                    path: '/tiedotteet',
+                    element: <Announcements />,
+                    loader: async () => {
+                        const { data } = await axios.get('http://localhost:3001/announcements');
+                        try {
+                            return data
+                        }
+                        catch {
+                            return null
+                        }
+                    }   
                 },
             ],
         },

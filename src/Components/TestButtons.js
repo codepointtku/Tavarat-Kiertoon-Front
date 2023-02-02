@@ -29,6 +29,7 @@ function TestButtons() {
                     <Link to="/varasto/0/delivery?page=0&rows=5">Varastot --- </Link>
                     <Link to="/admin">Admin --- </Link>
                     <Link to="/stats">Stats --- </Link>
+                    <Link to="/tiedotteet">Tiedotteet</Link>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <b>Logins:</b>
