@@ -384,5 +384,14 @@
             "address": "localhost",
             "inUse": false
         }
+    ],
+    "contacts": [
+        {
+            "id": 1,
+            "name": "Vesa Lehtonen",
+            "address": "Rieskalähteentie 76, 20300 Turku",
+            "email": "tyokeskus.kierratys@turku.fi",
+            "phoneNumber": "+358 40 531 8689"
+        }
     ]
 }
