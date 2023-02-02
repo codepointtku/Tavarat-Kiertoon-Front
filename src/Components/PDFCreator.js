@@ -17,16 +17,30 @@ const styles = StyleSheet.create({
 
 // Create Document Component
 /* eslint-disable-next-line */
-function PDFDocument(props) {
+function PDFDocument({ order }) {
+    /* eslint-disable-next-line */
+    console.log("PDFCreator", order)
+
+    /* eslint-disable-next-line */
+    const orderId = order.id
+
+    /* eslint-disable-next-line */
+    const orderRecipient = order.recipient
+
+    /* eslint-disable-next-line */
+    const orderAddress = order.address
 
     return (
         <Document>
             <Page size="A4" style={styles.page}>
                 <View style={styles.section}>
-                    <Text>Section #1</Text>
+                <Text>Tilaus {orderId}</Text>
+                <Text>Vastaanottaja {orderRecipient}</Text>
+                <Text>Toimitusosoite {orderAddress}</Text>
                 </View>
                 <View style={styles.section}>
                     <Text>Section #2</Text>
+                    <Text>Jotain tosi tärkeää tietoa</Text>
                 </View>
             </Page>
         </Document>

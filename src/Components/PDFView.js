@@ -8,7 +8,7 @@ function PDFView() {
 
     return (
         <PDFViewer style={{ width: '100%', height: '1500px', border: '1px solid blue' }}>
-            <PDFDocument order={location.state}/>
+            <PDFDocument order={location.state.data}/>
         </PDFViewer>
     );
 }
