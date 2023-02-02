@@ -41,11 +41,13 @@ function Routes() {
                 <Base>
                     <DefaultView />
                 </Base>
-            ),loader: async () => {
+            ),
+            loader: async () => {
                 const { data } = await axios.get('http://localhost:3001/contacts');
+                console.log(data);
                 return data;
             },
-            
+
             children: [
                 {
                     path: '/',
@@ -117,6 +119,11 @@ function Routes() {
                     </Storage>
                 </ThemeProvider>
             ),
+            loader: async () => {
+                const { data } = await axios.get('http://localhost:3001/contacts');
+                console.log(data);
+                return data;
+            },
             children: [
                 {
                     path: '/varasto/:num/:view',
@@ -191,6 +198,10 @@ function Routes() {
                     </Admin>
                 </ThemeProvider>
             ),
+            loader: async () => {
+                const { data } = await axios.get('http://localhost:3001/contacts');
+                return data;
+            },
             children: [
                 {
                     path: '/admin',
