@@ -22,6 +22,8 @@ export default function StorageBar() {
             setCurrentPage('Lisää tuote');
         } else if (location.pathname.startsWith('/varasto/0')) {
             setCurrentPage('Tilaukset');
+        } else if (location.pathname.startsWith('/varasto/tilaus')) {
+            setCurrentPage('Tilaus');
         } else {
             setCurrentPage(null);
         }
