@@ -72,7 +72,6 @@ function AddNewItem({ item, setItem, uploadFile }) {
                             </MenuItem>
                         ))}
                     </TextField>
-
                     <TextField
                         required
                         id="outlined-select"
@@ -88,7 +87,6 @@ function AddNewItem({ item, setItem, uploadFile }) {
                             </MenuItem>
                         ))}
                     </TextField>
-
                     <TextField
                         id="filled-helperText"
                         label="Vapaa Kuvaus"
