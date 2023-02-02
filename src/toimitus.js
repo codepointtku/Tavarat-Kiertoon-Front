@@ -1,6 +1,10 @@
-import { Container, Grid, Typography } from '@mui/material';
+import { Container, Grid, Typography, Link } from '@mui/material';
+import { useLoaderData } from 'react-router-dom';
 
 function Delivery() {
+    const data = useLoaderData();
+    const url = `mailto:${data[0].email}`;
+    // console.log(data, data.name);
     return (
         <Container fixed>
             <Grid rowSpacing="10">
@@ -13,18 +17,18 @@ function Delivery() {
                 </Typography>
 
                 <Typography variant="body2" paragraph>
-                    Kuljetuksien tiedustelut Vesa Lehtonen, puh. 040 531 8689
+                    Kuljetuksien tiedustelut {data[0].name}
                 </Typography>
 
                 <Typography variant="body2" paragraph>
-                    Osoite: Rieskalähteentie 76, 20300 Turku
+                    {data[0].address}
                 </Typography>
 
                 <Typography>
-                    Sähköposti: <a href="mailto: tyokeskus.kierratys@turku.fi">tyokeskus.kierratys@turku.fi</a>
+                    <Link href={url}>{data[0].email}</Link>
                 </Typography>
 
-                <Typography paragraph>Puh: +358 40 531 8689</Typography>
+                <Typography paragraph> {data[0].phoneNumber} </Typography>
             </Grid>
 
             <Grid rowSpacing="10">
