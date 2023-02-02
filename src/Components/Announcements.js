@@ -12,6 +12,7 @@ function Announcements(){
     return(
         <Container>
             <Typography variant="h3" sx={{textAlign: "center", fontWeight: 500}}>Tiedotteet</Typography>
+            <hr />
             {cards}
         </Container>
     )
