@@ -38,7 +38,7 @@ export default function StorageBar() {
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        <Link to="/varasto" style={{ color: 'white' }}>
+                        <Link to="/varasto/0/delivery?rows=5&page=0" style={{ color: 'white' }}>
                             Varasto
                         </Link>
                         <Typography variant="subtitle2">{currentPage}</Typography>
