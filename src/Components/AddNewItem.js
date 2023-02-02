@@ -13,7 +13,7 @@ function AddNewItem({ item, setItem, uploadFile }) {
 
     return (
         <>
-            <h1 align="center">ItemForm</h1>
+            <h1 align="center">Uusi tuote</h1>
             <Box
                 align="center"
                 component="form"
