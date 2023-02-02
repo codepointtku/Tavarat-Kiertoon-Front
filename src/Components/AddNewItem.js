@@ -75,7 +75,7 @@ function AddNewItem({ item, setItem, uploadFile }) {
                         >
                             Koodinlukija
                         </Button>
-                        {item.barcode.length > 0 && <Barcode value={item.barcode} />}
+                        {item.barcode.length > 0 && <Barcode value={item.barcode} format="CODE39" />}
                     </CardActions>
 
                     <TextField
