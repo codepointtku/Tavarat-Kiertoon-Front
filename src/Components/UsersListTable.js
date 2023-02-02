@@ -79,7 +79,7 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
                                     <StyledTableCell align="right">{row.email}</StyledTableCell>
                                     <StyledTableCell align="right">{row.roles}</StyledTableCell>
                                 </StyledTableRow>
-                                <TableRow>
+                                <TableRow key={`row${row.id}`}>
                                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                                         <Collapse in={isOpen[row.id]} timeout="auto" unmountOnExit>
                                             <Box sx={{ margin: 1 }}>
@@ -164,7 +164,7 @@ UsersListTable.propTypes = {
     setUsedParams: PropTypes.func.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
     rows: PropTypes.arrayOf(
-        PropTypes.objectOf({
+        PropTypes.shape({
             id: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
             phone: PropTypes.string.isRequired,
