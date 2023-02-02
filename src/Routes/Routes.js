@@ -94,6 +94,14 @@ function Routes() {
                         }
                     },
                 },
+                {
+                    path: '/dummy',
+                    element: <Dummy />,
+                    loader: async () => {
+                        const { data } = await axios.get('http://localhost:3001/categories');
+                        return data;
+                    },
+                },
             ],
         },
         {
