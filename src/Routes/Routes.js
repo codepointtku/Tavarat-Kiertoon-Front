@@ -81,6 +81,19 @@ function Routes() {
                     path: '/stats',
                     element: <StatsPage />,
                 },
+                {
+                    path: '/tiedotteet',
+                    element: <Announcements />,
+                    loader: async () => {
+                        const { data } = await axios.get('http://localhost:3001/announcements');
+                        try {
+                            return data
+                        }
+                        catch {
+                            return null
+                        }
+                    }   
+                },
             ],
         },
         {
@@ -213,23 +226,6 @@ function Routes() {
                     element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
                 },
             ],
-        },
-        {
-            path: '/tiedotteet',
-            element: (
-                    <Base>
-                        <Announcements />
-                    </Base>
-                ),
-            loader: async () => {
-                const { data } = await axios.get('http://localhost:3001/announcements');
-                try {
-                    return data
-                }
-                catch {
-                    return null
-                }
-            }   
         },
     ]);
 
