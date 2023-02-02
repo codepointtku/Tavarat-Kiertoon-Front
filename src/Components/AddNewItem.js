@@ -1,8 +1,10 @@
+import { useEffect, useState } from 'react';
 import { useNavigate, generatePath } from 'react-router';
 import { useLoaderData } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Barcode from 'react-barcode';
 import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent } from '@mui/material';
+import validator from 'validator';
 
 function AddNewItem({ item, setItem, uploadFile }) {
     const data = useLoaderData();
@@ -11,6 +13,22 @@ function AddNewItem({ item, setItem, uploadFile }) {
     const handleChange = (key, event) => {
         setItem({ ...item, [key]: event.target.value });
     };
+
+    const [validProduct, setValidProduct] = useState(false);
+
+    useEffect(() => {
+        if (
+            validator.isLength(String(item.name), { min: 3, max: 255 }) &&
+            validator.isLength(String(item.barcode), { min: 1 }) &&
+            validator.isLength(String(item.location), { min: 1 }) &&
+            validator.isLength(String(item.category), { min: 1 }) &&
+            validator.isLength(String(item.info), { min: 5 })
+        ) {
+            setValidProduct(true);
+        } else {
+            setValidProduct(false);
+        }
+    });
 
     return (
         <Card sx={{ maxWidth: '60vw' }}>
@@ -116,7 +134,11 @@ function AddNewItem({ item, setItem, uploadFile }) {
                         </Button>
                     </CardActions>
                     <CardActions>
-                        <Button size="large">Lisää tuote</Button>
+                        {validProduct ? (
+                            <Button size="large">Lisää tuote</Button>
+                        ) : (
+                            <Button disabled>Lisää tuote</Button>
+                        )}
                     </CardActions>
                 </CardContent>
             </Box>
