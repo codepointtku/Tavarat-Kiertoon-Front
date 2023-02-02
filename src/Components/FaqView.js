@@ -20,7 +20,7 @@ function FaqView() {
                         Ohje
                     </MuiLink>
                     -sivulta voi olla{' '}
-                    <Link href=" " underline="hover">
+                    <Link to=" " underline="hover">
                         meihin yhteydessä täältä.
                     </Link>
                 </Typography>
@@ -82,7 +82,7 @@ function FaqView() {
                 </Typography>
                 <Typography variant="body2">
                     Tuotteiden sijaintitiedot löytyvät tuotetiedoista. Lisätietoa varastoista löydät{' '}
-                    <Link href=" " underline="hover">
+                    <Link to=" " underline="hover">
                         varastot
                     </Link>{' '}
                     -sivulta.
@@ -103,7 +103,7 @@ function FaqView() {
                 </Typography>
                 <Typography variant="body2">
                     Kuljetushinnaston löydät{' '}
-                    <Link href=" " underline="hover">
+                    <Link to=" " underline="hover">
                         Toimitus
                     </Link>{' '}
                     -välilehdeltä. Lisätietoja kuljetuksen hinnoittelusta{' '}

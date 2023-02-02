@@ -40,7 +40,11 @@ function Routes() {
                 <Base>
                     <DefaultView />
                 </Base>
-            ),
+            ),loader: async () => {
+                const { data } = await axios.get('http://localhost:3001/contacts');
+                return data;
+            },
+            
             children: [
                 {
                     path: '/',
