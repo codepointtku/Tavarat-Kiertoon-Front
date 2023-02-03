@@ -50,7 +50,7 @@ const itemData = [
 
 function ProductDetails() {
     const { id: productId } = useParams();
-    const { name: productName, description, dateAdded, category, barcode } = useLoaderData();
+    const { name: productName, description, dateAdded, category, barcode} = useLoaderData();
     const [image, setImage] = useState(itemData[0].img);
     const { auth } = useContext(AuthContext);
 

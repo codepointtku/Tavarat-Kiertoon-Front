@@ -4,14 +4,15 @@ import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutl
 import { Button } from '@mui/material';
 
 
-function AddToCartButton({size}){
+function AddToCartButton({size, productName}){
     const [addedToCart, setAddedToCart] = useState(false);
     const [addToCartButtonValue, setValue] = useState('Lisää koriin');
 
     const handleClickAddToCartBtn = () => {
         setAddedToCart(!addedToCart);
         setValue(addToCartButtonValue === 'Lisätty!' ? 'Lisää koriin' : 'Lisätty!');
-    };
+        console.log(productName);
+    }
 
     return (
         <Button
@@ -28,7 +29,8 @@ function AddToCartButton({size}){
 }
 
 AddToCartButton.propTypes = {
-    size: PropTypes.string.isRequired
+    size: PropTypes.string.isRequired,
+    productName: PropTypes.string.isRequired
 }
 
 export default AddToCartButton

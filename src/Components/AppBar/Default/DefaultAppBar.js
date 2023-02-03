@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import {
     AppBar,
     Box,
+    Button,
     Toolbar,
     InputBase,
     IconButton,
@@ -15,8 +16,6 @@ import {
     List,
     Divider,
     ListItem,
-    ListItemButton,
-    ListItemIcon,
     ListItemText,
 } from '@mui/material';
 
@@ -182,13 +181,10 @@ function DefaultAppBar() {
                 </List>
                 <Divider />
                 <List>
-                    <ListItem disablePadding>
-                        <ListItemButton onClick={() =>  navigate("/ostoskori")}>
-                            <ListItemIcon>
-                                <ShoppingCartCheckoutIcon /> 
-                            </ListItemIcon>
+                    <ListItem>
+                        <Button onClick={() =>  navigate("/ostoskori")} variant="contained" startIcon={<ShoppingCartCheckoutIcon />} > 
                             <ListItemText primary="Kassalle" />
-                        </ListItemButton>
+                        </Button>
                     </ListItem>
                 </List>
             </Drawer>
