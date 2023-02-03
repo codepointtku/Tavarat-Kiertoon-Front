@@ -1,7 +1,9 @@
-import TreeContainer from "./TreeContainer";
+// import TreeContainer from "./TreeContainer";
+
+import SignupPage from '../Signup/SignupPage';
 
 function Dummy() {
-    return <TreeContainer />
+    return <SignupPage />;
 }
 
 export default Dummy;
