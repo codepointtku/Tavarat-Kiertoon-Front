@@ -11,7 +11,7 @@ export default function StorageBar() {
 
     const pages = [
         { name: 'Tilaukset', path: '/varasto/0/delivery' },
-        { name: 'Lisää tuote', path: '/varasto/luo' },
+        { name: 'Luo tuote', path: '/varasto/luo' },
     ];
 
     const navigate = useNavigate();
