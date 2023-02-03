@@ -77,3 +77,31 @@ test.describe('koodinlukija', () => {
         await expect(page.getByText('404 Not Found')).not.toBeVisible();
     });
 });
+
+test.describe('admin', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('admin');
+        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+    });
+});
+
+test.describe('users', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('admin/users');
+        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+    });
+});
+
+test.describe('user', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('admin/users/0');
+        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+    });
+});
+
+test.describe('hakemukset', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/hakemukset');
+        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+    });
+});
