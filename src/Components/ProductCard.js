@@ -12,7 +12,7 @@ function ProductCard({ productName, id }) {
 
     const handleClickAddToCartBtn = () => {
         setAddedToCart(!addedToCart);
-        setValue('Lisätty!');
+        setValue(addToCartButtonValue === 'Lisätty!' ? 'Lisää koriin' : 'Lisätty!');
     };
 
     return (
