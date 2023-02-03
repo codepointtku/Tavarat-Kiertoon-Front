@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 
 import { Divider, Typography, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -33,12 +33,12 @@ function SideAccordions() {
                 </AccordionSummary>
                 <AccordionDetails>
                     {years.map((year) => (
-                        <>
+                        <Fragment key={year.y}>
                             <Typography variant="body1">{year.y}</Typography>
                             <Typography variant="body2" color="primary.dark">
                                 {year.amount}
                             </Typography>
-                        </>
+                        </Fragment>
                     ))}
 
                     <Divider sx={{ marginTop: '0.6rem', marginBottom: '0.6rem' }} />
@@ -54,12 +54,12 @@ function SideAccordions() {
                 </AccordionSummary>
                 <AccordionDetails>
                     {categories.map((cat) => (
-                        <>
+                        <Fragment key={cat.prod}>
                             <Typography variant="body1">{cat.prod}</Typography>
                             <Typography variant="body2" color="primary.dark">
                                 {cat.amount}
                             </Typography>
-                        </>
+                        </Fragment>
                     ))}
                 </AccordionDetails>
             </Accordion>

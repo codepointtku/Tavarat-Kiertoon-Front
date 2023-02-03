@@ -63,10 +63,12 @@ function UserEdit() {
                                 handleChange('roles', event);
                             }}
                             sx={{ width: '19%' }}
-                            defaultValue={userData.roles}
+                            value={userData.roles}
                         >
                             {roles.map((role) => (
-                                <MenuItem value={role}>{role}</MenuItem>
+                                <MenuItem key={role} value={role}>
+                                    {role}
+                                </MenuItem>
                             ))}
                         </TextField>
                     </h5>

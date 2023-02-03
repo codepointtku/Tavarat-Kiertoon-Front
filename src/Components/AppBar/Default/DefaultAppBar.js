@@ -123,7 +123,7 @@ function DefaultAppBar() {
 
     const drawerOpen = (drawer) => () => {
         if (currentOpenDrawer === drawer) {
-            setCurrentOpenDrawer(null);
+            setCurrentOpenDrawer('');
         } else {
             setCurrentOpenDrawer(drawer);
         }

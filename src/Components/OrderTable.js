@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useLoaderData } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import TablePaginationActions from './TablePaginationActions';
@@ -116,8 +116,8 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                         ? orderList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : orderList
                     ).map((value) => (
-                        <>
-                            <StyledTableRow key={value.id}>
+                        <Fragment key={value.id}>
+                            <StyledTableRow>
                                 <TableCell>
                                     <IconButton
                                         aria-label="expand row"
@@ -175,7 +175,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                                     </Collapse>
                                 </TableCell>
                             </TableRow>
-                        </>
+                        </Fragment>
                     ))}
                     {emptyRows > 0 && (
                         <StyledTableRow style={{ height: 53 * emptyRows }}>
