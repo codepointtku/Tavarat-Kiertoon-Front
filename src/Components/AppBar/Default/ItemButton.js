@@ -14,7 +14,7 @@ function ItemButton({text, index}){
         <ListItemButton onMouseOver={() => setHoveredOver(true)} onMouseOut={() => setHoveredOver(false)}>
             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
             <ListItemText primary={text} />
-            { hoveredOver && <DeleteIcon /> }
+            { hoveredOver && <DeleteIcon sx={{color: "red"}} /> }
         </ListItemButton>
     </ListItem>
     )
