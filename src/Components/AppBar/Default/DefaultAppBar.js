@@ -28,7 +28,8 @@ import MailIcon from '@mui/icons-material/Mail';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import PhishingIcon from '@mui/icons-material/Phishing';
 
-import LoginForm from './LoginForm';
+// import LoginForm from './LoginForm';
+import SignupForm from './SignupForm';
 import ContactForm from './ContactForm';
 
 //
@@ -201,7 +202,7 @@ function DefaultAppBar() {
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account">
-                <LoginForm />
+                <SignupForm />
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="contact">
