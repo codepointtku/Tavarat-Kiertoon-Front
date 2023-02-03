@@ -49,3 +49,31 @@ test.describe('tiedotteet', () => {
         await expect(page.getByText('404 Not Found')).not.toBeVisible();
     });
 });
+
+test.describe('varasto', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/varasto');
+        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+    });
+});
+
+test.describe('tilaus', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/varasto/tilaus/4127?page=0&rows=5');
+        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+    });
+});
+
+test.describe('luo', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('varasto/luo');
+        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+    });
+});
+
+test.describe('koodinlukija', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('varasto/koodinlukija');
+        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+    });
+});
