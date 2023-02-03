@@ -1,20 +1,11 @@
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
-import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import AddToCartButton from './AddToCartButton';
 
 function ProductCard({ productName, id }) {
-    const [addedToCart, setAddedToCart] = useState(false);
-    const [addToCartButtonValue, setValue] = useState('Lisää koriin');
-
-    const handleClickAddToCartBtn = () => {
-        setAddedToCart(!addedToCart);
-        setValue(addToCartButtonValue === 'Lisätty!' ? 'Lisää koriin' : 'Lisätty!');
-    };
-
     return (
         <Box sx={{ minWidth: 240 }}>
             <Card sx={{ maxWidth: 300 }}>
@@ -34,14 +25,7 @@ function ProductCard({ productName, id }) {
                     >
                         Lisää tietoa
                     </Button>
-                    <Button
-                        color={addedToCart ? 'success' : 'primary'}
-                        size="small"
-                        startIcon={<AddShoppingCartOutlinedIcon />}
-                        onClick={handleClickAddToCartBtn}
-                    >
-                        {addToCartButtonValue}
-                    </Button>
+                    <AddToCartButton size="small"/>
                 </CardActions>
             </Card>
         </Box>

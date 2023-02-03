@@ -11,9 +11,9 @@ import {
     Container,
 } from '@mui/material';
 import { useLoaderData, useParams } from 'react-router-dom';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useContext, useState } from 'react';
 import AuthContext from '../Context/AuthContext';
+import AddToCartButton from './AddToCartButton';
 
 const itemData = [
     {
@@ -100,10 +100,7 @@ function ProductDetails() {
                         </Button>
                     </CardContent>
                     <CardActions>
-                        <Button size="medium" aria-label="add to shopping cart">
-                            <AddShoppingCartIcon />
-                            Lisää koriin
-                        </Button>
+                        <AddToCartButton size="medium"/>
                     </CardActions>
                 </Card>
             </Container>
