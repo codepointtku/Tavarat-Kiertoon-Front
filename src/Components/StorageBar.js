@@ -10,7 +10,7 @@ export default function StorageBar() {
     const [currentPage, setCurrentPage] = useState('Tilaukset');
 
     const pages = [
-        { name: 'Tilaukset', path: '/varasto/0/delivery' },
+        { name: 'Tilaukset', path: '/varasto/0/delivery?page=0&rows=5' },
         { name: 'Lisää tuote', path: '/varasto/luo' },
     ];
 
