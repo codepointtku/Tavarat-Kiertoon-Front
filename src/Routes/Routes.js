@@ -12,6 +12,7 @@ import adminTheme from '../Themes/adminTheme';
 import Base from '../Layouts/Base';
 import Storage from '../Layouts/Storage';
 import Admin from '../Layouts/Admin';
+import BikesLayout from '../Layouts/Bikes';
 
 import OrdersList from '../Components/OrdersList';
 import OrderView from '../Components/OrderView';
@@ -32,6 +33,9 @@ import BackgroundInfo from '../Components/Backgroundinfo';
 
 import StatsPage from '../Components/Stats/StatsPage';
 import Dummy from '../Components/Treeview/DummyDevPage';
+import BikesPage from '../Components/Bikes/BikesPage';
+import BikeDetails from '../Components/Bikes/BikeDetails';
+import BikesView from './BikesView';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -245,6 +249,36 @@ function Routes() {
                 {
                     path: '/admin/hakemukset',
                     element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
+                },
+            ],
+        },
+        {
+            path: '/bikes',
+            element: (
+                <BikesLayout>
+                    <BikesView />
+                </BikesLayout>
+            ),
+            loader: async () => {
+                const { data } = await axios.get('http://localhost:3001/contacts');
+                return data;
+            },
+            children: [
+                {
+                    path: '/bikes',
+                    element: <BikesPage />,
+                    loader: async () => {
+                        const { data } = await axios.get('http://localhost:3001/bikes');
+                        return data;
+                    },
+                },
+                {
+                    path: '/bikes/:id',
+                    element: <BikeDetails />,
+                    loader: async ({ params }) => {
+                        const { data } = await axios.get(`http://localhost:3001/bikes/${params.id}`);
+                        return data ?? null;
+                    },
                 },
             ],
         },
