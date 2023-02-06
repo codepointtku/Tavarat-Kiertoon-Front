@@ -1,12 +1,11 @@
 import { Button, Box, TextField, TableCell, TableContainer, Table, TableHead, TableRow } from '@mui/material';
-import { useState } from 'react';
-import { useLoaderData, useLocation } from 'react-router';
+import { useState, useEffect, generatePath } from 'react';
+import { useLoaderData, useLocation, useNavigate } from 'react-router';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
 
 function OrderEdit() {
     const loader = useLoaderData();
-    const location = useLocation();
     const navigate = useNavigate();
     const location = useLocation();
     const [orderData, setOrderData] = useState(loader);
