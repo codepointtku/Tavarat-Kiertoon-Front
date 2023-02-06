@@ -21,17 +21,27 @@ function UserHeader() {
     return (
         <Box
             sx={{
-                marginTop: 4,
+                mt: 2,
+                mb: 2,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 // backgroundColor: 'green',
             }}
         >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar
+                sx={{
+                    mt: 2,
+                    bgcolor: 'secondary.main',
+                    width: 64,
+                    height: 64,
+                }}
+            >
                 <VpnKeyIcon />
             </Avatar>
-            <Typography variant="h5">Luo uusi käyttäjä</Typography>
+            <Typography mt={2} variant="h5">
+                Luo uusi käyttäjätili
+            </Typography>
         </Box>
     );
 }
