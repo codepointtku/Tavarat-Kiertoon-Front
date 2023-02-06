@@ -32,6 +32,7 @@ import BackgroundInfo from '../Components/Backgroundinfo';
 
 import StatsPage from '../Components/Stats/StatsPage';
 import Dummy from '../Components/Treeview/DummyDevPage';
+import SignupPage from '../Components/Signup/SignupPage';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -102,10 +103,10 @@ function Routes() {
                 {
                     path: '/dummy',
                     element: <Dummy />,
-                    loader: async () => {
-                        const { data } = await axios.get('http://localhost:3001/categories');
-                        return data;
-                    },
+                },
+                {
+                    path: '/superdummy',
+                    element: <SignupPage />,
                 },
             ],
         },
