@@ -17,6 +17,7 @@ function OrderEdit() {
             location.state.returnpath = null;
             // add here apiCall to find item by barCode
             setOrderData(location.state);
+            location.state = null;
         }
     }, []);
 
