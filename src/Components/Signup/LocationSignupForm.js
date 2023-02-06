@@ -16,6 +16,7 @@ import { useState } from 'react';
 import SmokingRoomsIcon from '@mui/icons-material/SmokingRooms';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 function LocationHero() {
@@ -41,6 +42,9 @@ function LocationHero() {
             <Typography variant="body2" paragraph>
                 Tilille on mahdollista kirjautua käyttäjätunnuksella, tai sähköpostiosoitteella.
             </Typography>
+            <Button size="small" variant="outlined" endIcon={<HelpOutlineIcon />}>
+                Lisää ohjeita
+            </Button>
         </Box>
     );
 }

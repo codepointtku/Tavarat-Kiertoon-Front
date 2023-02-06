@@ -9,12 +9,14 @@ import {
     IconButton,
     Avatar,
     Typography,
+    // Link,
 } from '@mui/material';
 
 import { useState } from 'react';
 
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 function UserHeader() {
@@ -42,6 +44,13 @@ function UserHeader() {
             <Typography mt={2} variant="h5">
                 Luo uusi käyttäjätili
             </Typography>
+            {/* <Link
+                variant="body1"
+                mt={2}
+                // variant="outlined" endIcon={<HelpOutlineIcon />}
+            >
+                Henkilökohtainen käyttäjätili
+            </Link> */}
         </Box>
     );
 }
@@ -75,7 +84,7 @@ function UserSignupForm() {
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
-                        width: '100%',
+                        // width: '100%',
                         // backgroundColor: 'red',
                     }}
                 >
@@ -122,8 +131,11 @@ function UserSignupForm() {
                             label="Salasana uudelleen"
                         />
                     </FormControl>
-                    <Button type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>
+                    <Button type="submit" fullWidth sx={{ mt: 3, mb: 3 }}>
                         Rekisteröidy
+                    </Button>
+                    <Button size="small" variant="outlined" endIcon={<HelpOutlineIcon />}>
+                        Lisää tietoa
                     </Button>
                 </Box>
             </Container>

@@ -1,25 +1,42 @@
 import { useState } from 'react';
 
-import { Container, Paper, Button } from '@mui/material';
+import { Container, Paper, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 
 import UserSignupForm from './UserSignupForm';
 import LocationSignupForm from './LocationSignupForm';
 
 function SignupPage() {
-    const [visibleForm, setVisibleForm] = useState(true);
+    const [showLocationForm, setShowLocationForm] = useState(false);
+
+    const handleChange = (event) => {
+        setShowLocationForm(event.target.checked);
+    };
 
     return (
         <Paper>
             <Container
                 id="signupforms-wrapper"
-                // sx={{ backgroundColor: 'pink' }}
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    // backgroundColor: 'pink',
+                }}
             >
                 {/* <Typography variant="body1" paragraph>
                         Hi mom
                     </Typography> */}
-                {visibleForm ? <UserSignupForm /> : <LocationSignupForm />}
+
+                <FormGroup>
+                    <FormControlLabel
+                        control={<Checkbox checked={showLocationForm} onChange={handleChange} />}
+                        label="Luo tili toimipaikalle"
+                    />
+                </FormGroup>
+
+                {showLocationForm ? <LocationSignupForm /> : <UserSignupForm />}
             </Container>
-            <Button onClick={() => setVisibleForm(!visibleForm)}>paina mua</Button>
         </Paper>
     );
 }
