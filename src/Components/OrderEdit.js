@@ -7,6 +7,8 @@ import StyledTableCell from './StyledTableCell';
 function OrderEdit() {
     const loader = useLoaderData();
     const location = useLocation();
+    const navigate = useNavigate();
+    const location = useLocation();
     const [orderData, setOrderData] = useState(loader);
     const [orderItems /* , setOrderItems */] = useState(location.state);
 
@@ -14,8 +16,43 @@ function OrderEdit() {
         setOrderData({ ...orderData, [key]: event.target.value });
     };
 
+    useEffect(() => {
+        if (location.state) {
+            location.state.returnpath = null;
+            // add here apiCall to find item by barCode
+            setOrderData(location.state);
+            location.state = null;
+        }
+    }, []);
+
+    const addItem = () => {
+        // add here apiCall to find item by ID
+        console.log(orderData.newItem);
+    };
+
+    console.log(orderData);
+
     return (
         <>
+            <Button
+                onClick={() =>
+                    navigate(generatePath('/varasto/koodinlukija'), {
+                        state: { ...orderData, returnpath: `/varasto/tilaus/${orderData.id}/muokkaa` },
+                    })
+                }
+            >
+                Lisää esine viivakoodin perusteella
+            </Button>
+            <TextField
+                label="Esine-ID"
+                onChange={(event) => {
+                    handleChange('newItem', event);
+                }}
+                defaultValue={orderData.newItem}
+            />
+
+            <Button onClick={() => addItem()}>Lisää esine ID:n perusteella</Button>
+
             <h1 align="center">Muokkaa Tilausta {orderData.id}</h1>
             <Box align="center">
                 <div>
