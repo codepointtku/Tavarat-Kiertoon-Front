@@ -37,7 +37,6 @@ function AddNewItem({ item, setItem, uploadFile }) {
         const testItem = {
             ...item,
             available: true,
-            group_id: '1',
             price: 999.0,
             shelf_id: 1,
             measurements: 'wrdrqwf',
