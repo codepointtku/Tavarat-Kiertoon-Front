@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import {
     Box,
     Button,
@@ -51,7 +50,8 @@ const itemData = [
 
 function ProductDetails() {
     const { id: productId } = useParams();
-    const { name: productName, free_description, date, category, barcode } = useLoaderData();
+
+    const { name: productName, free_description: description, date, category, barcode } = useLoaderData();
     const [image, setImage] = useState(itemData[0].img);
     const { auth } = useContext(AuthContext);
 
@@ -85,7 +85,7 @@ function ProductDetails() {
                             ) : null}
 
                             <Typography variant="body1" color="text.secondary" gutterBottom>
-                                Description: {free_description}
+                                Description: {description}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
                                 Added on: {new Date(date).toLocaleDateString('fi-FI')}
