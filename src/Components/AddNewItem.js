@@ -40,7 +40,6 @@ function AddNewItem({ item, setItem, uploadFile }) {
             group_id: '1',
             price: 999.0,
             shelf_id: 1,
-            free_description: 'Tonille Kahvia',
             measurements: 'wrdrqwf',
             weight: 3.0,
             category: 1,
@@ -49,7 +48,7 @@ function AddNewItem({ item, setItem, uploadFile }) {
             pictures: [1],
         };
         const response = await axios.post('http://localhost:8000/products/', testItem);
-        console.log(response);
+        console.log(response.data);
     };
 
     return (
@@ -66,13 +65,6 @@ function AddNewItem({ item, setItem, uploadFile }) {
                 autoComplete="off"
             >
                 <CardContent>
-                    <Button
-                        onClick={() => {
-                            productCall();
-                        }}
-                    >
-                        Test
-                    </Button>
                     <TextField
                         required
                         id="outlined-required"
@@ -166,7 +158,14 @@ function AddNewItem({ item, setItem, uploadFile }) {
                     </CardActions>
                     <CardActions>
                         {validProduct ? (
-                            <Button size="large">Lisää tuote</Button>
+                            <Button
+                                size="large"
+                                onClick={() => {
+                                    productCall();
+                                }}
+                            >
+                                Lisää tuote
+                            </Button>
                         ) : (
                             <Button disabled>Lisää tuote</Button>
                         )}
