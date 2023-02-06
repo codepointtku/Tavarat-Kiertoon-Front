@@ -221,7 +221,6 @@ function Routes() {
                         if (data) {
                             return data;
                         }
-                        console.log(data);
                         return null;
                     },
                 },

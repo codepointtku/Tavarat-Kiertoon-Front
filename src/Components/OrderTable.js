@@ -208,7 +208,10 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                     </TableFooter>
                 </Table>
             </TableContainer>
-            <Button sx={{ margin: '2rem' }} onClick={() => navigate(`/varasto/tilaus/${order.id}/muokkaa`)}>
+            <Button
+                sx={{ margin: '2rem' }}
+                onClick={() => navigate(`/varasto/tilaus/${order.id}/muokkaa`, { state: orderList })}
+            >
                 Muokkaa tilausta
             </Button>
         </>
