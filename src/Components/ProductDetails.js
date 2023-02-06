@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import {
     Box,
     Button,
@@ -50,7 +51,7 @@ const itemData = [
 
 function ProductDetails() {
     const { id: productId } = useParams();
-    const { name: productName, description, dateAdded, category, barcode } = useLoaderData();
+    const { name: productName, free_description, date, category, barcode } = useLoaderData();
     const [image, setImage] = useState(itemData[0].img);
     const { auth } = useContext(AuthContext);
 
@@ -77,31 +78,30 @@ function ProductDetails() {
                                 {productName}
                             </Typography>
                             {/* show id if component used in storageview or admin */}
-                            {auth.storage ||
-                                (auth.admin && (
-                                    <Typography variant="body6" color="text.secondary">
-                                        Product id: {productId}
-                                    </Typography>
-                                ))}
+                            {auth.storage || auth.admin ? (
+                                <Typography variant="body6" color="text.secondary">
+                                    Product id: {productId}
+                                </Typography>
+                            ) : null}
 
                             <Typography variant="body1" color="text.secondary" gutterBottom>
-                                Description: {description}
+                                Description: {free_description}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                Added on: {dateAdded}
+                                Added on: {new Date(date).toLocaleDateString('fi-FI')}
                             </Typography>
                             {/* generate barcode if component used in storageview or admin */}
-                            {auth.storage ||
-                                (auth.admin && (
-                                    <Typography variant="body2" color="text.secondary">
-                                        Barcode: {barcode}
-                                    </Typography>
-                                ))}
+                            {auth.storage || auth.admin ? (
+                                <Typography variant="body2" color="text.secondary">
+                                    Barcode: {barcode}
+                                </Typography>
+                            ) : null}
                             {/* miten näyttää kategoriat, buttoneina? */}
                             <Typography variant="body2" color="text.secondary">
                                 Kategoriat:
                             </Typography>
                             <Button variant="contained" size="small" disabled>
+                                {/* to be implemented when backend is ready */}
                                 {category}
                             </Button>
                         </>
