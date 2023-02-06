@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useLoaderData, useNavigate, Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import TablePaginationActions from './TablePaginationActions';
@@ -88,8 +88,8 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
     };
 
     const createPDFButtonHandler = () => {
-        navigate("/varasto/pdf", {state: { data: order }})
-    }
+        navigate('/varasto/pdf', { state: { data: order } });
+    };
 
     useEffect(() => {
         if (page > Math.floor(orderList.length / rowsPerPage)) {
@@ -122,8 +122,8 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                         ? orderList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : orderList
                     ).map((value) => (
-                        <>
-                            <StyledTableRow key={value.id}>
+                        <Fragment key={value.id}>
+                            <StyledTableRow>
                                 <TableCell>
                                     <IconButton
                                         aria-label="expand row"
@@ -181,7 +181,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                                     </Collapse>
                                 </TableCell>
                             </TableRow>
-                        </>
+                        </Fragment>
                     ))}
                     {emptyRows > 0 && (
                         <StyledTableRow style={{ height: 53 * emptyRows }}>
@@ -210,9 +210,11 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                     </TableRow>
                 </TableFooter>
             </Table>
-            <Box sx={{width: "100%", display: "flex", justifyContent: "flex-end"}}>
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
                 <Link to="/varasto/pdf" state={{ data: order }}>
-                    <Button color='error' onClick={createPDFButtonHandler}>Create PDF</Button>
+                    <Button color="error" onClick={createPDFButtonHandler}>
+                        Create PDF
+                    </Button>
                 </Link>
             </Box>
         </TableContainer>

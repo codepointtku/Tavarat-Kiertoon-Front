@@ -1,85 +1,95 @@
-import { Typography, Box, Link } from '@mui/material';
+import { Typography, Box, Link as MuiLink } from '@mui/material';
 import Container from '@mui/material/Container';
+import { Link } from 'react-router-dom';
 
 function FaqView() {
     return (
         <Container>
             <Box sx={{ p: 2 }}>
-                <Typography variant="h3" align="center">
+                <Typography variant="h3" align="center" color="primary.main">
                     UKK-FAQ
                 </Typography>
                 <Typography variant="subtitle2" align="center">
                     Alla on usein kysyttyjä kysymyksiä vastauksineen. Jos etsimäsi tietoa ei löydy tästä tai
-                    <Link
+                    <MuiLink
                         href="https://www.youtube.com/watch?v=VcjzHMhBtf0&ab_channel=journeyVEVO"
                         color="primary"
                         underline="hover"
                     >
                         {' '}
                         Ohje
-                    </Link>
+                    </MuiLink>
                     -sivulta voi olla{' '}
-                    <Link href=" " underline="hover">
-                        {' '}
+                    <Link to=" " underline="hover">
                         meihin yhteydessä täältä.
                     </Link>
                 </Typography>
                 <hr />
             </Box>
             <Box sx={{ p: 2 }}>
-                <Typography variant="h6">Kehen voin olla yhteydessä jos tarvitsen apua?</Typography>
+                <Typography variant="h6" color="primary.main">
+                    Kehen voin olla yhteydessä jos tarvitsen apua?
+                </Typography>
                 <Typography variant="body2">
-                    Voit olla yhteydessä meihin lähettämällä viestin{' '}
-                    <Link href=" " underline="hover">
-                        palaute sivun
-                    </Link>{' '}
-                    kautta. Kuljetusta koskevissa kysymyksissä voit olla yhteydessä suoraan työkeskukseen{' '}
-                    <a href="mailto: tyokeskus.kierratys@turku.fi">tyokeskus.kierratys@turku.fi</a>
+                    Voit olla yhteydessä meihin lähettämällä viestin <Link to="/">palaute sivun</Link> kautta.
+                    Kuljetusta koskevissa kysymyksissä voit olla yhteydessä suoraan työkeskukseen{' '}
+                    <MuiLink href="mailto: tyokeskus.kierratys@turku.fi">tyokeskus.kierratys@turku.fi</MuiLink>
                 </Typography>
             </Box>
             <Box sx={{ p: 2 }}>
-                <Typography variant="h6"> Koska tilatut tuotteet toimitetaan?</Typography>
+                <Typography variant="h6" color="primary.main">
+                    {' '}
+                    Koska tilatut tuotteet toimitetaan?
+                </Typography>
                 <Typography variant="body2">
                     Tuotteiden toimitusaika riippuu toimitusjonon pituudesta. Tuotteet pyritään toimittamaan kahden
                     viikon kuluessa, mutta ruuhkaisina aikoina toimituksessa voi mennä pidempään.
                 </Typography>
             </Box>
             <Box sx={{ p: 2 }}>
-                <Typography variant="h6">Kuka saa tilata tuotteita järjestelmästä?</Typography>
+                <Typography variant="h6" color="primary.main">
+                    Kuka saa tilata tuotteita järjestelmästä?
+                </Typography>
                 <Typography variant="body2">
                     Tilataksesi tuotteita sinun tulee rekisteröityä järjestelmään. Rekisteröityminen on sallittu vain
                     hankintaoikeudet omaaville henkilöille.
                 </Typography>
             </Box>
             <Box sx={{ p: 2 }}>
-                <Typography variant="h6">Kuka tilaa kuljetuksen?</Typography>
+                <Typography variant="h6" color="primary.main">
+                    Kuka tilaa kuljetuksen?
+                </Typography>
                 <Typography variant="body2">
                     Kuljetuksen tilaa tuotteen tilaaja. Tilauksen yhteydessä valitaan kuljetusmuodoksi joko Työkeskuksen
                     kuljetus, nouto varastosta tai sisäinen posti (Vain askartelumateriaalit).
                 </Typography>
             </Box>
             <Box sx={{ p: 2 }}>
-                <Typography variant="h6">Maksaako tuotteiden tilaaminen järjestelmästä?</Typography>
+                <Typography variant="h6" color="primary.main">
+                    Maksaako tuotteiden tilaaminen järjestelmästä?
+                </Typography>
                 <Typography variant="body2">
                     Mistään tuotteista ei peritä maksua järjestelmässä. Myös{' '}
-                    <Link href=" " underline="hover">
+                    <Link to=" " underline="hover">
                         kuljetuksesta
                     </Link>{' '}
                     ei peritä maksua. Kalustekierron kuljetuksia hoitaa Turun Työkeskus.
                 </Typography>
             </Box>
             <Box sx={{ p: 2 }}>
-                <Typography variant="h6">Missä tuotteet ovat?</Typography>
+                <Typography variant="h6" color="primary.main">
+                    Missä tuotteet ovat?
+                </Typography>
                 <Typography variant="body2">
                     Tuotteiden sijaintitiedot löytyvät tuotetiedoista. Lisätietoa varastoista löydät{' '}
-                    <Link href=" " underline="hover">
+                    <Link to=" " underline="hover">
                         varastot
                     </Link>{' '}
                     -sivulta.
                 </Typography>
             </Box>
             <Box sx={{ p: 2 }}>
-                <Typography variant="h6">
+                <Typography variant="h6" color="primary.main">
                     Mistä tiedän että järjestelmästä tilatut tuotteet ovat puhtaita ja ehjiä?
                 </Typography>
                 <Typography variant="body2">
@@ -88,18 +98,22 @@ function FaqView() {
                 </Typography>
             </Box>
             <Box sx={{ p: 2 }}>
-                <Typography variant="h6">Mitä kuljetus maksaa?</Typography>
+                <Typography variant="h6" color="primary.main">
+                    Mitä kuljetus maksaa?
+                </Typography>
                 <Typography variant="body2">
                     Kuljetushinnaston löydät{' '}
-                    <Link href=" " underline="hover">
+                    <Link to=" " underline="hover">
                         Toimitus
                     </Link>{' '}
                     -välilehdeltä. Lisätietoja kuljetuksen hinnoittelusta{' '}
-                    <a href="mailto: tyokeskus.kierratys@turku.fi">tyokeskus.kierratys@turku.fi.</a>
+                    <MuiLink href="mailto:tyokeskus.kierratys@turku.fi">tyokeskus.kierratys@turku.fi.</MuiLink>
                 </Typography>
             </Box>
             <Box sx={{ p: 2 }}>
-                <Typography variant="h6">Miten kuljetus on järjestetty?</Typography>
+                <Typography variant="h6" color="primary.main">
+                    Miten kuljetus on järjestetty?
+                </Typography>
                 <Typography variant="body2">
                     Tuotteiden kuljetuksesta vastaa Turun työkeskus. Lisätietoa kuljetuksesta löydät{' '}
                     <Link href=" " underline="hover">
@@ -109,7 +123,9 @@ function FaqView() {
                 </Typography>
             </Box>
             <Box sx={{ p: 2 }}>
-                <Typography variant="h6">Miten tilaan tuotteita järjestelmästä?</Typography>
+                <Typography variant="h6" color="primary.main">
+                    Miten tilaan tuotteita järjestelmästä?
+                </Typography>
                 <Typography variant="body2">
                     Etsi tarvitsemasi tuote ja lisää se ostoskoriin. Kun olet lisännyt kaikki haluamasi tuotteet mene
                     omaan ostoskoriisi sivuston yläpalkista löytyvästä painikkeesta ja siirry kassalle. Täytä kaikki
@@ -117,7 +133,9 @@ function FaqView() {
                 </Typography>
             </Box>
             <Box sx={{ p: 2 }}>
-                <Typography variant="h6">Miten voin hakea tarvitsemaani tuotetta?</Typography>
+                <Typography variant="h6" color="primary.main">
+                    Miten voin hakea tarvitsemaani tuotetta?
+                </Typography>
                 <Typography variant="body2">
                     Tuotteita voi hakea{' '}
                     <Link href=" " underline="hover">
@@ -127,12 +145,14 @@ function FaqView() {
                 </Typography>
             </Box>
             <Box sx={{ p: 2 }}>
-                <Typography variant="h6">Saako tuotteita mennä katsomaan paikan päälle?</Typography>
+                <Typography variant="h6" color="primary.main">
+                    Saako tuotteita mennä katsomaan paikan päälle?
+                </Typography>
                 <Typography variant="body2">
                     Ensisijaisesti tuotteet tilataan sivustolta löytyvien tietojen perusteella. Sivustolle pyritään
                     tuomaan kaikki tarpeelliset tiedot tuotetta koskien. Mikäli tuotetiedot ovat puutteelliset, niistä
                     voi antaa palautetta tai esittää lisätiedusteluja{' '}
-                    <a href="mailto: tyokeskus.kierratys@turku.fi">tyokeskus.kierratys@turku.fi.</a>
+                    <MuiLink href="mailto: tyokeskus.kierratys@turku.fi">tyokeskus.kierratys@turku.fi.</MuiLink>
                 </Typography>
             </Box>
         </Container>
