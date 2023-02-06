@@ -5,10 +5,13 @@ import PropTypes from 'prop-types';
 import Barcode from 'react-barcode';
 import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent } from '@mui/material';
 import validator from 'validator';
+import axios from 'axios';
 
 function AddNewItem({ item, setItem, uploadFile }) {
     const data = useLoaderData();
     const navigate = useNavigate();
+
+    console.log(item);
 
     const handleChange = (key, event) => {
         setItem({ ...item, [key]: event.target.value });
@@ -30,6 +33,26 @@ function AddNewItem({ item, setItem, uploadFile }) {
         }
     });
 
+    const productCall = async () => {
+        const testItem = {
+            available: true,
+            barcode: '111',
+            group_id: '1',
+            name: 'Kahvikuppi',
+            price: 999.0,
+            shelf_id: 1,
+            free_description: 'Tonille Kahvia',
+            measurements: 'wrdrqwf',
+            weight: 3.0,
+            category: 1,
+            storages: null,
+            color: 1,
+            pictures: [1],
+        };
+        const response = await axios.post('http://localhost:8000/products/', testItem);
+        console.log(response);
+    };
+
     return (
         <Card sx={{ maxWidth: '60vw' }}>
             <h2 align="center" style={{ textDecoration: 'underline' }}>
@@ -44,6 +67,13 @@ function AddNewItem({ item, setItem, uploadFile }) {
                 autoComplete="off"
             >
                 <CardContent>
+                    <Button
+                        onClick={() => {
+                            productCall();
+                        }}
+                    >
+                        Test
+                    </Button>
                     <TextField
                         required
                         id="outlined-required"
