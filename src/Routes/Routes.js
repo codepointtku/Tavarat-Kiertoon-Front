@@ -15,6 +15,7 @@ import Admin from '../Layouts/Admin';
 
 import OrdersList from '../Components/OrdersList';
 import OrderView from '../Components/OrderView';
+import OrderEdit from '../Components/OrderEdit';
 import QrScanner from '../Components/QrScanner';
 
 import UsersList from '../Components/UsersList';
@@ -165,6 +166,10 @@ function Routes() {
                         }
                         return null;
                     },
+                },
+                {
+                    path: '/varasto/tilaus/:id/muokkaa',
+                    element: <OrderEdit />,
                 },
                 {
                     path: '/varasto/luo',

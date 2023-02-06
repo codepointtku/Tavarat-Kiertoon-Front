@@ -12,9 +12,10 @@ import {
     Typography,
     Collapse,
     TablePagination,
+    Button,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useState, useEffect, Fragment } from 'react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -32,6 +33,7 @@ const productFind = (id) => productData[id];
 
 function OrderTable({ page, rowsPerPage, setUsedParams }) {
     const [isOpen, setIsOpen] = useState({});
+    const navigate = useNavigate();
 
     const order = useLoaderData();
     if (order === null) {
@@ -98,113 +100,118 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
     }, []);
 
     return (
-        <TableContainer component={Paper} sx={{ padding: '2rem' }}>
-            <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
-                <TableHead>
-                    <TableRow>
-                        <StyledTableCell> </StyledTableCell>
-                        <StyledTableCell>Tuotenimi</StyledTableCell>
-                        <StyledTableCell align="right">Saldo</StyledTableCell>
-                        <StyledTableCell align="right">Viivakoodi</StyledTableCell>
-                        <StyledTableCell align="right">Tuotenumero</StyledTableCell>
-                        <StyledTableCell align="right">Kategoria</StyledTableCell>
-                        <StyledTableCell align="right">Sijainti</StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {(rowsPerPage > 0
-                        ? orderList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : orderList
-                    ).map((value) => (
-                        <Fragment key={value.id}>
-                            <StyledTableRow>
-                                <TableCell>
-                                    <IconButton
-                                        aria-label="expand row"
-                                        size="small"
-                                        onClick={() => {
-                                            setIsOpen((prev) => ({ ...prev, [value.id]: !isOpen[value.id] }));
-                                        }}
-                                    >
-                                        {isOpen[value.id] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                    </IconButton>
-                                </TableCell>
-                                <TableCell component="th" scope="row">
-                                    {value.name}
-                                </TableCell>
-                                <TableCell align="right">{value.count}</TableCell>
-                                <TableCell align="right">{value.barcode}</TableCell>
-                                <TableCell align="right">{value.id}</TableCell>
-                                <TableCell align="right">{value.category}</TableCell>
-                                <TableCell align="right">{value.location}</TableCell>
-                            </StyledTableRow>
-                            <TableRow>
-                                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                                    <Collapse in={isOpen[value.id]} timeout="auto" unmountOnExit>
-                                        <Box sx={{ margin: 1 }}>
-                                            <Typography variant="h6" gutterBottom component="div">
-                                                Tuotteet
-                                            </Typography>
-                                            <Table size="small">
-                                                <TableHead>
-                                                    <TableRow>
-                                                        <TableCell component="th" scope="row">
-                                                            Tuotenumero
-                                                        </TableCell>
-                                                        <TableCell align="right">Tuotenimi</TableCell>
-                                                        <TableCell align="right">Viivakoodi</TableCell>
-                                                        <TableCell align="right">Kategoria</TableCell>
-                                                        <TableCell align="right">Väri</TableCell>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    {value.items.map((item) => (
-                                                        <TableRow key={item.id}>
+        <>
+            <TableContainer component={Paper} sx={{ padding: '2rem' }}>
+                <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
+                    <TableHead>
+                        <TableRow>
+                            <StyledTableCell> </StyledTableCell>
+                            <StyledTableCell>Tuotenimi</StyledTableCell>
+                            <StyledTableCell align="right">Saldo</StyledTableCell>
+                            <StyledTableCell align="right">Viivakoodi</StyledTableCell>
+                            <StyledTableCell align="right">Tuotenumero</StyledTableCell>
+                            <StyledTableCell align="right">Kategoria</StyledTableCell>
+                            <StyledTableCell align="right">Sijainti</StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {(rowsPerPage > 0
+                            ? orderList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            : orderList
+                        ).map((value) => (
+                            <Fragment key={value.id}>
+                                <StyledTableRow>
+                                    <TableCell>
+                                        <IconButton
+                                            aria-label="expand row"
+                                            size="small"
+                                            onClick={() => {
+                                                setIsOpen((prev) => ({ ...prev, [value.id]: !isOpen[value.id] }));
+                                            }}
+                                        >
+                                            {isOpen[value.id] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                        </IconButton>
+                                    </TableCell>
+                                    <TableCell component="th" scope="row">
+                                        {value.name}
+                                    </TableCell>
+                                    <TableCell align="right">{value.count}</TableCell>
+                                    <TableCell align="right">{value.barcode}</TableCell>
+                                    <TableCell align="right">{value.id}</TableCell>
+                                    <TableCell align="right">{value.category}</TableCell>
+                                    <TableCell align="right">{value.location}</TableCell>
+                                </StyledTableRow>
+                                <TableRow>
+                                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                                        <Collapse in={isOpen[value.id]} timeout="auto" unmountOnExit>
+                                            <Box sx={{ margin: 1 }}>
+                                                <Typography variant="h6" gutterBottom component="div">
+                                                    Tuotteet
+                                                </Typography>
+                                                <Table size="small">
+                                                    <TableHead>
+                                                        <TableRow>
                                                             <TableCell component="th" scope="row">
-                                                                {item.id}
+                                                                Tuotenumero
                                                             </TableCell>
-                                                            <TableCell align="right">{item.name}</TableCell>
-                                                            <TableCell align="right">{item.barcode}</TableCell>
-                                                            <TableCell align="right">{item.category}</TableCell>
-                                                            <TableCell align="right">{item.color}</TableCell>
+                                                            <TableCell align="right">Tuotenimi</TableCell>
+                                                            <TableCell align="right">Viivakoodi</TableCell>
+                                                            <TableCell align="right">Kategoria</TableCell>
+                                                            <TableCell align="right">Väri</TableCell>
                                                         </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                        </Box>
-                                    </Collapse>
-                                </TableCell>
-                            </TableRow>
-                        </Fragment>
-                    ))}
-                    {emptyRows > 0 && (
-                        <StyledTableRow style={{ height: 53 * emptyRows }}>
-                            <StyledTableCell colSpan={6} />
-                        </StyledTableRow>
-                    )}
-                </TableBody>
-                <TableFooter>
-                    <TableRow>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 25, 100]}
-                            colSpan={3}
-                            count={orderList.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            SelectProps={{
-                                inputProps: {
-                                    'aria-label': 'rows per page',
-                                },
-                                native: true,
-                            }}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                            ActionsComponent={TablePaginationActions}
-                        />
-                    </TableRow>
-                </TableFooter>
-            </Table>
-        </TableContainer>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {value.items.map((item) => (
+                                                            <TableRow key={item.id}>
+                                                                <TableCell component="th" scope="row">
+                                                                    {item.id}
+                                                                </TableCell>
+                                                                <TableCell align="right">{item.name}</TableCell>
+                                                                <TableCell align="right">{item.barcode}</TableCell>
+                                                                <TableCell align="right">{item.category}</TableCell>
+                                                                <TableCell align="right">{item.color}</TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </Box>
+                                        </Collapse>
+                                    </TableCell>
+                                </TableRow>
+                            </Fragment>
+                        ))}
+                        {emptyRows > 0 && (
+                            <StyledTableRow style={{ height: 53 * emptyRows }}>
+                                <StyledTableCell colSpan={6} />
+                            </StyledTableRow>
+                        )}
+                    </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25, 100]}
+                                colSpan={3}
+                                count={orderList.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                SelectProps={{
+                                    inputProps: {
+                                        'aria-label': 'rows per page',
+                                    },
+                                    native: true,
+                                }}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                                ActionsComponent={TablePaginationActions}
+                            />
+                        </TableRow>
+                    </TableFooter>
+                </Table>
+            </TableContainer>
+            <Button sx={{ margin: '2rem' }} onClick={() => navigate(`/varasto/tilaus/${order.id}/muokkaa`)}>
+                Muokkaa tilausta
+            </Button>
+        </>
     );
 }
 
