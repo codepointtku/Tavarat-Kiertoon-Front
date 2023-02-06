@@ -25,7 +25,7 @@ function AddNewItem({ item, setItem, uploadFile }) {
             validator.isLength(String(item.barcode), { min: 1 }) &&
             validator.isLength(String(item.location), { min: 1 }) &&
             validator.isLength(String(item.category), { min: 1 }) &&
-            validator.isLength(String(item.info), { min: 5 })
+            validator.isLength(String(item.free_description), { min: 5 })
         ) {
             setValidProduct(true);
         } else {
@@ -35,10 +35,9 @@ function AddNewItem({ item, setItem, uploadFile }) {
 
     const productCall = async () => {
         const testItem = {
+            ...item,
             available: true,
-            barcode: '111',
             group_id: '1',
-            name: 'Kahvikuppi',
             price: 999.0,
             shelf_id: 1,
             free_description: 'Tonille Kahvia',
@@ -144,12 +143,12 @@ function AddNewItem({ item, setItem, uploadFile }) {
                         id="filled-helperText"
                         label="Vapaa Kuvaus"
                         onChange={(event) => {
-                            handleChange('info', event);
+                            handleChange('free_description', event);
                         }}
                         multiline
                         inputProps={{ maxLength: 1000 }}
-                        helperText={`${item.info.length}/1000`}
-                        defaultValue={item.info}
+                        helperText={`${item.free_description.length}/1000`}
+                        defaultValue={item.free_description}
                     />
                     <CardActions>
                         <Button variant="contained" component="label" size="large">
@@ -185,7 +184,7 @@ AddNewItem.propTypes = {
         name: PropTypes.string,
         category: PropTypes.string,
         location: PropTypes.string,
-        info: PropTypes.string,
+        free_description: PropTypes.string,
         isOld: PropTypes.bool,
     }).isRequired,
     setItem: PropTypes.func.isRequired,
