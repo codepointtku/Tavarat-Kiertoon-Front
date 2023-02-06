@@ -1,4 +1,14 @@
-import { Button, Box, TextField, TableCell, TableContainer, Table, TableHead, TableRow } from '@mui/material';
+import {
+    Button,
+    Box,
+    TextField,
+    TableCell,
+    TableContainer,
+    Table,
+    TableHead,
+    TableRow,
+    TableBody,
+} from '@mui/material';
 import { useState, useEffect, generatePath } from 'react';
 import { useLoaderData, useLocation, useNavigate } from 'react-router';
 import StyledTableRow from './StyledTableRow';
@@ -28,8 +38,6 @@ function OrderEdit() {
         // add here apiCall to find item by ID
         console.log(orderData.newItem);
     };
-
-    console.log(orderData);
 
     return (
         <>
@@ -104,17 +112,19 @@ function OrderEdit() {
                             <StyledTableCell> </StyledTableCell>
                         </TableRow>
                     </TableHead>
-                    {orderItems.map((item) => (
-                        <StyledTableRow key={item.id}>
-                            <TableCell>{item.name}</TableCell>
-                            <TableCell>{item.id}</TableCell>
-                            <TableCell>{item.barcode}</TableCell>
-                            <TableCell>{item.count}</TableCell>
-                            <TableCell align="right">
-                                <Button>Poista tuote.</Button>
-                            </TableCell>
-                        </StyledTableRow>
-                    ))}
+                    <TableBody>
+                        {orderItems.map((item) => (
+                            <StyledTableRow key={item.id}>
+                                <TableCell>{item.name}</TableCell>
+                                <TableCell>{item.id}</TableCell>
+                                <TableCell>{item.barcode}</TableCell>
+                                <TableCell>{item.count}</TableCell>
+                                <TableCell align="right">
+                                    <Button>Poista tuote.</Button>
+                                </TableCell>
+                            </StyledTableRow>
+                        ))}
+                    </TableBody>
                 </Table>
             </TableContainer>
 
