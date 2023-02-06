@@ -4,23 +4,26 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate, Link, useLocation, useParams } from 'react-router-dom';
 
 export default function StorageBar() {
     const [currentPage, setCurrentPage] = useState('Tilaukset');
 
     const pages = [
         { name: 'Tilaukset', path: '/varasto/0/delivery?page=0&rows=5' },
-        { name: 'Lisää tuote', path: '/varasto/luo' },
+        { name: 'Luo tuote', path: '/varasto/luo' },
     ];
 
     const navigate = useNavigate();
     const location = useLocation();
+    const { id } = useParams();
 
     useEffect(() => {
         if (location.pathname.startsWith('/varasto/luo')) {
             setCurrentPage('Lisää tuote');
-        } else if (location.pathname.startsWith('/varasto/0')) {
+        } else if (location.pathname.startsWith(`/varasto/tilaus/${id}`)) {
+            setCurrentPage(`Tilaus: ${id}`);
+        } else if (location.pathname.startsWith('/varasto')) {
             setCurrentPage('Tilaukset');
         } else {
             setCurrentPage(null);
