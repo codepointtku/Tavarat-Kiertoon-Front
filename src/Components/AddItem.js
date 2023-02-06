@@ -15,7 +15,9 @@ function AddItem() {
 
     useEffect(() => {
         if (location.state) {
+            location.state.returnpath = null;
             setItem(location.state);
+            location.state = null;
         } else {
             setItem({
                 available: false,

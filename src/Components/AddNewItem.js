@@ -91,7 +91,11 @@ function AddNewItem({ item, setItem, uploadFile }) {
                     <CardActions>
                         <Button
                             size="large"
-                            onClick={() => navigate(generatePath('/varasto/koodinlukija'), { state: { ...item } })}
+                            onClick={() =>
+                                navigate(generatePath('/varasto/koodinlukija'), {
+                                    state: { ...item, returnpath: '/varasto/luo' },
+                                })
+                            }
                         >
                             Koodinlukija
                         </Button>
