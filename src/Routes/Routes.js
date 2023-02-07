@@ -54,7 +54,7 @@ function Routes() {
                     element: <ProductList />,
                     loader: async () => {
                         try {
-                            const { data } = await axios.get('http://localhost:8000/products');
+                            const { data } = await axios.get('http://localhost:8000/products/');
                             return data.results;
                         } catch {
                             return null;
