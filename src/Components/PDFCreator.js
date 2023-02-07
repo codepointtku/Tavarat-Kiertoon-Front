@@ -1,69 +1,122 @@
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
+import logo from '../Assets/turku_pysty_300ppi_viiva_black.png';
 // import PropTypes from 'prop-types';
 
-// JTo: Disable ESLint proptypes for this file for now
+// JTo: Disable ESLint proptypes for this file untill we have proper structure
 /* eslint react/prop-types: 0 */
 
 // Create styles
 const styles = StyleSheet.create({
     orderPage: {
         flexDirection: 'column',
-    },
-    deliveryAddressSection: {
-        margin: 10,
         padding: 10,
-        flexGrow: 1,
+        fontSize: 14,
+    },
+    addressSection: {
         border: '1px solid red',
-        fontSize: 12,
+        padding: 10,
+        marginBottom: 10,
+        flex: 1,
         flexDirection: 'row',
     },
-    deliveryAddressShortSection: {
-        border: '1px solid green',
+    addressLogo: {
         flexDirection: 'column',
-        flexGrow: 1,
+        flex: 1,
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
     },
-    deliveryAddressLongSection: {
-        border: '1px solid green',
+    addressTextLeft: {
         flexDirection: 'column',
-        flexGrow: 2,
+        flex: 1,
     },
-    deliveryListSection: {
-        margin: 10,
-        padding: 10,
-        flexGrow: 9,
+    addressTextRight: {
+        flexDirection: 'column',
+        flex: 2,
+    },
+    freeDescriptionSection: {
         border: '1px solid red',
-        fontSize: 12,
+        flexDirection: 'column',
+        flex: 1,
+        padding: 10,
+        marginBottom: 10,
+    },
+    listSection: {
+        border: '1px solid red',
+        padding: 10,
+        flex: 2,
+        lineHeight: '1.5',
+    },
+    list: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+    },
+    productPage: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        fontSize: 14,
+    },
+    product: {
+        width: '50%', // 2 products / line
+        height: '25%', // 4 lines of products / page
+        fontSize: 14,
+        padding: '20px',
     },
 });
 
 // Create Document Component
 function PDFDocument({ order }) {
-    console.log('PDFCreator', order);
-
     const orderId = order.id;
     const orderRecipient = order.recipient;
     const orderAddress = order.address;
-    const orderProducts = [...order.products];
+    const orderProducts = order.products.map((product) => ({ id: product, imageSrc: '../br.jpg' }));
 
     return (
-        <Document>
+        <Document language="fi">
             <Page size="A4" style={styles.orderPage}>
-                <View style={styles.deliveryAddressSection}>
-                    <View style={styles.deliveryAddressShortSection} />
-                    <View style={styles.deliveryAddressShortSection} />
-
-                    <View style={styles.deliveryAddressLongSection}>
-                        <Text>Tilausnumero: {orderId}</Text>
-                        <Text>Vastaanottaja: {orderRecipient}</Text>
-                        <Text>Toimitusosoite: {orderAddress}</Text>
+                <View style={styles.addressSection}>
+                    <View style={styles.addressLogo}>
+                        <Image src={logo} style={{ width: '60px' }} />
+                    </View>
+                    <View style={styles.addressTextLeft} />
+                    <View style={styles.addressTextLeft}>
+                        <Text style={{ paddingBottom: '10px' }}>Tilausnumero:</Text>
+                        <Text>Vastaanottaja:</Text>
+                        <Text>Toimitusosoite:</Text>
+                    </View>
+                    <View style={styles.addressTextRight}>
+                        <Text style={{ paddingBottom: '10px' }}>{orderId}</Text>
+                        <Text>{orderRecipient}</Text>
+                        <Text>{orderAddress}</Text>
                     </View>
                 </View>
-                <View style={styles.deliveryListSection}>
-                    <Text>Tuotteet</Text>
-                    {orderProducts.map((id) => (
-                        <Text>- {id}</Text>
-                    ))}
+                <View style={styles.freeDescriptionSection}>
+                    <Text>
+                        Tämä on vapaatekstikenttä, johon saa kirjoittaa esim vapaamuotoisen kuvauksen tai lisätietoja
+                        toimituksesta
+                    </Text>
                 </View>
+                <View style={styles.listSection}>
+                    <Text style={{ marginBottom: 10 }}>Tuotteet</Text>
+                    <View style={styles.list}>
+                        {orderProducts.map((product, index) =>
+                            index < orderProducts.length - 1 ? (
+                                <Text key={product.id}>{product.id}, </Text>
+                            ) : (
+                                <Text key={product.id}>{product.id}</Text>
+                            )
+                        )}
+                    </View>
+                </View>
+            </Page>
+
+            <Page style={styles.productPage}>
+                {orderProducts.map((product) => (
+                    <View style={styles.product} key={product.id}>
+                        <Text>Product {product.id}</Text>
+                        <Image src="../br.jpg" style={{ width: '200px' }} />
+                        <Text>Just to fill a page untill we have something to show here</Text>
+                    </View>
+                ))}
             </Page>
         </Document>
     );
@@ -74,3 +127,4 @@ function PDFDocument({ order }) {
 // };
 
 export default PDFDocument;
+//
