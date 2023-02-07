@@ -33,6 +33,7 @@ import BackgroundInfo from '../Components/Backgroundinfo';
 
 import StatsPage from '../Components/Stats/StatsPage';
 import Dummy from '../Components/Treeview/DummyDevPage';
+import ErrorBoundary from '../Components/ErrorBoundary';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -40,6 +41,7 @@ function Routes() {
             path: '/',
             element: <Outlet />,
             id: 'root',
+            errorElement: <ErrorBoundary />,
             loader: async () => {
                 const { data } = await axios.get('http://localhost:3001/contacts');
                 return data;
@@ -56,25 +58,18 @@ function Routes() {
                         {
                             path: '/',
                             element: <ProductList />,
+                            errorElement: <ErrorBoundary />,
                             loader: async () => {
-                                try {
-                                    const { data } = await axios.get('http://localhost:8000/products/');
-                                    return data.results;
-                                } catch {
-                                    return null;
-                                }
+                                const { data } = await axios.get('http://localhost:8000/products/');
+                                return data.results;
                             },
                         },
                         {
                             path: '/tuotteet/:id',
                             element: <ProductDetails />,
                             loader: async ({ params }) => {
-                                try {
-                                    const { data } = await axios.get(`http://localhost:8000/products/${params.id}`);
-                                    return data;
-                                } catch {
-                                    return null;
-                                }
+                                const { data } = await axios.get(`http://localhost:8000/products/${params.id}`);
+                                return data;
                             },
                         },
                         {
