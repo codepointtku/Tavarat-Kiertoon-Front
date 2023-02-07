@@ -15,6 +15,7 @@ import Admin from '../Layouts/Admin';
 
 import OrdersList from '../Components/OrdersList';
 import OrderView from '../Components/OrderView';
+import OrderEdit from '../Components/OrderEdit';
 import QrScanner from '../Components/QrScanner';
 
 import UsersList from '../Components/UsersList';
@@ -168,6 +169,17 @@ function Routes() {
                     },
                 },
                 {
+                    path: '/varasto/tilaus/:id/muokkaa',
+                    element: <OrderEdit />,
+                    loader: async ({ params }) => {
+                        const { data } = await axios.get(`http://localhost:3001/orders/${params.id}`);
+                        if (data) {
+                            return data;
+                        }
+                        return null;
+                    },
+                },
+                {
                     path: '/varasto/luo',
                     element: <AddItem />,
                     loader: async () => {
@@ -210,7 +222,6 @@ function Routes() {
                         if (data) {
                             return data;
                         }
-                        console.log(data);
                         return null;
                     },
                 },
