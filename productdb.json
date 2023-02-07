@@ -399,10 +399,10 @@
             "description": "Hyväkuntone hieno pyörä punainen suoraa 80-luvulta",
             "available": 0,
             "totalCount": 4,
-            "size": 4,
+            "size": 16,
             "dateAdded": "01.06.1999",
             "barcode": "16-1",
-            "category": "city bike",
+            "type": "city",
             "color": "red",
             "location": "varasto_0"
         },
@@ -412,10 +412,10 @@
             "description": "Todella huono pyörä",
             "available": 5,
             "totalCount": 17,
-            "size": 3,
+            "size": 21,
             "dateAdded": "01.06.1999",
             "barcode": "14-2",
-            "category": "bmx bike",
+            "type": "bmx",
             "color": "green",
             "location": "varasto_0"
         }

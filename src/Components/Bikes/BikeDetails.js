@@ -15,6 +15,7 @@ import { useContext, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 
 import AuthContext from '../../Context/AuthContext';
+import { sizeOptions, typeOptions } from './BikesPage';
 
 const itemData = [
     {
@@ -50,8 +51,8 @@ const itemData = [
 ];
 
 export default function BikeDetails() {
-    const { id: productId } = useParams();
-    const { name: productName, description, dateAdded, category, barcode } = useLoaderData();
+    const { id: bikeId } = useParams();
+    const { name, description, dateAdded, type, barcode, available, totalCount, size } = useLoaderData();
     const [image, setImage] = useState(itemData[0].img);
     const { auth } = useContext(AuthContext);
 
@@ -75,13 +76,13 @@ export default function BikeDetails() {
                                 ))}
                             </ImageList>
                             <Typography gutterBottom variant="h5" component="div">
-                                {productName}
+                                {name}
                             </Typography>
                             {/* show id if component used in storageview or admin */}
                             {auth.storage ||
                                 (auth.admin && (
                                     <Typography variant="body6" color="text.secondary">
-                                        Product id: {productId}
+                                        Product id: {bikeId}
                                     </Typography>
                                 ))}
 
@@ -91,6 +92,12 @@ export default function BikeDetails() {
                             <Typography variant="body2" color="text.secondary">
                                 Added on: {dateAdded}
                             </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                Heti vapaana: {available}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                Yhteensä palvelussa: {totalCount}
+                            </Typography>
                             {/* generate barcode if component used in storageview or admin */}
                             {auth.storage ||
                                 (auth.admin && (
@@ -98,19 +105,22 @@ export default function BikeDetails() {
                                         Barcode: {barcode}
                                     </Typography>
                                 ))}
-                            {/* miten näyttää kategoriat, buttoneina? */}
                             <Typography variant="body2" color="text.secondary">
-                                Kategoriat:
+                                Tyyppi: {typeOptions.find((option) => option.value === type).label}
                             </Typography>
-                            <Button variant="contained" size="small" disabled>
-                                {category}
-                            </Button>
+                            <Typography variant="body2" color="text.secondary">
+                                Koko: {sizeOptions.find((option) => option.value === size).label}
+                            </Typography>
                         </>
                     </CardContent>
                     <CardActions>
-                        <Button size="medium" aria-label="add to shopping cart">
+                        <Button
+                            size="medium"
+                            aria-label="add to shopping cart"
+                            color={available ? 'success' : 'primary'}
+                        >
                             <AddShoppingCartIcon />
-                            Lisää koriin
+                            Vuokraa
                         </Button>
                     </CardActions>
                 </Card>
