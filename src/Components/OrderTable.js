@@ -22,14 +22,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import TablePaginationActions from './TablePaginationActions';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
-import productData from '../TestData/tuote.json';
 // import orderData from '../TestData/tilaus.json';
 
 // replace this with apiCall later on
 // const orderFind = (id) => orderData[id];
-
-// replace this with apiCall later on
-const productFind = (id) => productData[id];
 
 function OrderTable({ page, rowsPerPage, setUsedParams }) {
     const [isOpen, setIsOpen] = useState({});
@@ -48,12 +44,12 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
     const sourceStates = {};
     const orderList = [];
 
-    order.products.forEach((entry) => {
+    order.productList.forEach((entry) => {
         try {
-            const newEntry = productFind(entry);
-            sourceStates[entry] = false;
+            const newEntry = entry.data;
+            sourceStates[entry.data.id] = false;
             newEntry.count = 1;
-            newEntry.id = entry;
+            newEntry.id = entry.data.id;
             newEntry.items = [newEntry];
             orderList.forEach((each, key) => {
                 if (each.barcode === newEntry.barcode) {
@@ -66,7 +62,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
         } catch {
             orderList.push({
                 name: 'Tuotetta ei olemassa',
-                id: entry,
+                id: entry.data.id,
                 barcode: '-',
                 count: 0,
                 category: '-',
@@ -111,7 +107,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                             <StyledTableCell align="right">Viivakoodi</StyledTableCell>
                             <StyledTableCell align="right">Tuotenumero</StyledTableCell>
                             <StyledTableCell align="right">Kategoria</StyledTableCell>
-                            <StyledTableCell align="right">Sijainti</StyledTableCell>
+                            <StyledTableCell align="right">Varasto</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -139,7 +135,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                                     <TableCell align="right">{value.barcode}</TableCell>
                                     <TableCell align="right">{value.id}</TableCell>
                                     <TableCell align="right">{value.category}</TableCell>
-                                    <TableCell align="right">{value.location}</TableCell>
+                                    <TableCell align="right">{value.storages}</TableCell>
                                 </StyledTableRow>
                                 <TableRow>
                                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -158,6 +154,9 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                                                             <TableCell align="right">Viivakoodi</TableCell>
                                                             <TableCell align="right">Kategoria</TableCell>
                                                             <TableCell align="right">Väri</TableCell>
+                                                            <TableCell align="right">Mitat</TableCell>
+                                                            <TableCell align="right">Paino</TableCell>
+                                                            <TableCell align="right">Hylly id</TableCell>
                                                         </TableRow>
                                                     </TableHead>
                                                     <TableBody>
@@ -170,6 +169,9 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                                                                 <TableCell align="right">{item.barcode}</TableCell>
                                                                 <TableCell align="right">{item.category}</TableCell>
                                                                 <TableCell align="right">{item.color}</TableCell>
+                                                                <TableCell align="right">{item.measurements}</TableCell>
+                                                                <TableCell align="right">{item.weight}</TableCell>
+                                                                <TableCell align="right">{item.shelf_id}</TableCell>
                                                             </TableRow>
                                                         ))}
                                                     </TableBody>
