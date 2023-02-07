@@ -32,6 +32,7 @@ import BackgroundInfo from '../Components/Backgroundinfo';
 
 import StatsPage from '../Components/Stats/StatsPage';
 import Dummy from '../Components/Treeview/DummyDevPage';
+import ContactPage from '../Components/ContactPage';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -106,6 +107,10 @@ function Routes() {
                         const { data } = await axios.get('http://localhost:3001/categories');
                         return data;
                     },
+                },
+                {
+                    path: '/jaakonkolo',
+                    element: <ContactPage />,
                 },
             ],
         },
