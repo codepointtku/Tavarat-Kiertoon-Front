@@ -28,15 +28,14 @@ function SignupPage() {
                         Hi mom
                     </Typography> */}
 
-                <FormGroup>
-                    <FormControlLabel
-                        control={<Checkbox checked={showLocationForm} onChange={handleChange} />}
-                        label="Luo tili toimipaikalle"
-                    />
-                </FormGroup>
-
                 {showLocationForm ? <LocationSignupForm /> : <UserSignupForm />}
             </Container>
+            <FormGroup>
+                <FormControlLabel
+                    control={<Checkbox checked={showLocationForm} onChange={handleChange} />}
+                    label="Luo tili toimipaikalle"
+                />
+            </FormGroup>
         </Paper>
     );
 }

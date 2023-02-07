@@ -1,17 +1,135 @@
 // import { useState } from 'react';
 
-import { Avatar, Box, Button, Container, Link, Paper, Typography } from '@mui/material';
+import {
+    Avatar,
+    Grid,
+    Button,
+    Card,
+    // CardMedia,
+    CardActionArea,
+    Container,
+    Paper,
+    Typography,
+    Box,
+} from '@mui/material';
+
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
 import GiteIcon from '@mui/icons-material/Gite';
 import Person2Icon from '@mui/icons-material/Person2';
 
+function SignUpCards() {
+    const iconHover = {
+        '&:hover .MuiAvatar-root': {
+            backgroundColor: 'secondary.dark',
+        },
+    };
+
+    return (
+        <Grid container spacing={2}>
+            <Grid item xs={6} marginBottom={6}>
+                <Card sx={[iconHover, { minWidth: 220, padding: 0 }]}>
+                    <CardActionArea>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Avatar
+                                sx={{
+                                    mt: 2,
+                                    mb: 2,
+                                    bgcolor: 'secondary.main',
+                                    width: 64,
+                                    height: 64,
+                                }}
+                            >
+                                <Person2Icon fontSize="large" />
+                            </Avatar>
+
+                            <Typography color="secondary.dark" variant="subtitle1" mb={2}>
+                                Käyttäjätili
+                            </Typography>
+                            <Typography variant="subtitle1" mb={1}>
+                                on tarkoitettu henkilökohtaiseksi
+                            </Typography>
+                            <Typography variant="subtitle1" mb={2}>
+                                hankinta-tiliksi.
+                            </Typography>
+                        </Box>
+                    </CardActionArea>
+                </Card>
+            </Grid>
+
+            <Grid item xs={6} marginBottom={6}>
+                <Card sx={[iconHover, { minWidth: 220, padding: 0 }]}>
+                    <CardActionArea>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Avatar
+                                sx={{
+                                    mt: 2,
+                                    mb: 2,
+                                    bgcolor: 'secondary.main',
+                                    width: 64,
+                                    height: 64,
+                                }}
+                            >
+                                <GiteIcon fontSize="large" />
+                            </Avatar>
+
+                            <Typography color="secondary.dark" variant="subtitle1" mb={2}>
+                                Toimipaikkatili
+                            </Typography>
+                            <Typography variant="subtitle1" mb={1}>
+                                on tarkoitettu yksikön työntekijöille
+                            </Typography>
+                            <Typography variant="subtitle1" mb={2}>
+                                yhteiseksi hankinta-tiliksi.
+                            </Typography>
+                        </Box>
+                    </CardActionArea>
+                </Card>
+            </Grid>
+        </Grid>
+    );
+}
+
+function HeroText() {
+    return (
+        <>
+            <Typography variant="h4" gutterBottom>
+                Tervetuloa rekisteröitymään!
+            </Typography>
+            <Typography variant="subtitle2" mb={2}>
+                Tavarat Kiertoon järjestelmään on mahdollista luoda henkilökohtainen-, tai toimipaikka-kohtainen tili.
+            </Typography>
+
+            <Typography variant="body1" mb={1}>
+                Ole hyvä ja valitse käyttötarkoitukseesi sopivampi tilimuoto.
+            </Typography>
+            <Button sx={{ mt: 1, mb: 1 }} size="small" variant="outlined" endIcon={<HelpOutlineIcon />}>
+                Lisää tietoa
+            </Button>
+        </>
+    );
+}
+
 function SignUpHero() {
     return (
-        <Container
+        <Box
             sx={{
-                mt: 2,
+                mt: 0,
                 mb: 2,
                 display: 'flex',
                 flexDirection: 'column',
@@ -22,9 +140,9 @@ function SignUpHero() {
         >
             <Avatar
                 sx={{
-                    mt: 3,
-                    mb: 3,
-                    bgcolor: 'secondary.main',
+                    mt: 2,
+                    mb: 2,
+                    bgcolor: 'secondary.dark',
                     width: 64,
                     height: 64,
                 }}
@@ -32,86 +150,17 @@ function SignUpHero() {
                 <AppRegistrationIcon />
             </Avatar>
 
-            <Typography variant="h4" gutterBottom>
-                Tervetuloa rekisteröitymään!
-            </Typography>
-            <Typography variant="overline" gutterBottom>
-                Ennen kuin jatkamme, on käytävä syömässä. Sekä luettava tärkeä ohje.
-            </Typography>
-            <Typography variant="subtitle2" mb={3}>
-                Tavarat Kiertoon järjestelmään on mahdollista luoda henkilökohtainen-, tai toimipaikka-kohtainen tili.
-            </Typography>
-
-            <Paper
-                sx={{
-                    padding: '2rem',
-                    mb: '2rem',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    // backgroundColor: 'lightblue',
-                }}
-            >
-                <Typography variant="subtitle1" mb={2}>
-                    <Link href="http://yeah.fi" color="secondary.dark">
-                        Käyttäjä-
-                    </Link>
-                    tili on tarkoitettu henkilökohtaiseksi hankinta-tiliksi.
-                </Typography>
-                <Typography variant="subtitle1">
-                    <Link href="http://yeah.fi" color="secondary.dark">
-                        Toimipaikka-
-                    </Link>
-                    tili on tarkoitettu yksikön työntekijöille yhteiseksi
-                    <Link href="http://yeah.fi" color="secondary.dark">
-                        _Tavarat Kiertoon_
-                    </Link>
-                    hankinta-tiliksi.
-                </Typography>
-            </Paper>
-
-            <Typography variant="body1" mb={3}>
-                Ole hyvä ja valitse käyttötarkoitukseesi sopivampi tilimuoto.
-            </Typography>
-
-            <Box
-                id="signup-btns-wrapper"
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    // backgroundColor: 'blue',
-                }}
-            >
-                <Box
-                    id="signup-choice-btns-center"
-                    sx={{
-                        mb: '2rem',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        // justifyContent: 'flex-end',
-                        // backgroundColor: 'lightblue',
-                    }}
-                >
-                    <Button startIcon={<Person2Icon />} sx={{ marginRight: '2rem' }}>
-                        Käyttäjä
-                    </Button>
-                    <Button startIcon={<GiteIcon />}>Toimipaikka</Button>
-                </Box>
-                <Button sx={{ mb: 3 }} size="small" variant="outlined" endIcon={<HelpOutlineIcon />}>
-                    Lisää tietoa
-                </Button>
-            </Box>
-        </Container>
+            <HeroText />
+        </Box>
     );
 }
 
 function SignupLandingPage() {
     return (
-        <Paper mb={2}>
-            <Container maxWidth="lg">
+        <Paper sx={{ marginBottom: '1rem' }}>
+            <Container maxWidth="md">
                 <SignUpHero />
+                <SignUpCards />
             </Container>
         </Paper>
     );

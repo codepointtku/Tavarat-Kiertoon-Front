@@ -53,7 +53,7 @@ function LocationHeader() {
     return (
         <Box
             sx={{
-                mt: 2,
+                mt: 1,
                 mb: 2,
                 display: 'flex',
                 flexDirection: 'column',
@@ -63,7 +63,7 @@ function LocationHeader() {
         >
             <Avatar
                 sx={{
-                    mt: 2,
+                    mt: 1,
                     bgcolor: 'secondary.main',
                     width: 64,
                     height: 64,

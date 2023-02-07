@@ -33,7 +33,6 @@ function UserHeader() {
         >
             <Avatar
                 sx={{
-                    mt: 2,
                     bgcolor: 'secondary.main',
                     width: 64,
                     height: 64,
