@@ -54,14 +54,17 @@ function Routes() {
                     path: '/',
                     element: <ProductList />,
                     action: async ({ request }) => {
-                        const formData = await request.formData();
-                        // const data = {};
-                        // formData.forEach((value, key) => {
-                        //     data[key] = value;
-                        // });
-                        const id = Number(formData.get('id'));
-                        const productName = formData.get('productName');
-                        await axios.post('http://localhost:3001/shopping-cart', { id, productName });
+                        if (request.method === 'POST') {
+                            const formData = await request.formData();
+                            const id = Number(formData.get('id'));
+                            const productName = formData.get('productName');
+                            await axios.post('http://localhost:3001/shopping-cart', { id, productName });
+                        } else if (request.method === 'DELETE') {
+                            console.log('Method is ', request.method);
+                            await axios.delete('http://localhost:3001/shopping-cart');
+                        } else {
+                            console.log('unidentified');
+                        }
                         return null;
                     },
                     loader: async () => {

@@ -1,28 +1,40 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { useState, useCallback } from 'react';
+import { useSubmit } from 'react-router-dom';
+import { ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton } from '@mui/material';
 import InboxIcon from '@mui/icons-material/Inbox';
-import MailIcon from "@mui/icons-material/Mail"
+import MailIcon from '@mui/icons-material/Mail';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+function ItemButton({ text, index }) {
+    const [hoveredOver, setHoveredOver] = useState(false);
+    const submit = useSubmit();
 
-function ItemButton({text, index}){
-    const [hoveredOver, setHoveredOver] = useState(false)
+    const handleClick = useCallback(() => {
+        submit(null, {
+            method: 'delete',
+            action: '/',
+        });
+    });
 
     return (
-    <ListItem key={text} disablePadding>
-        <ListItemButton onMouseOver={() => setHoveredOver(true)} onMouseOut={() => setHoveredOver(false)}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-            { hoveredOver && <DeleteIcon sx={{color: "red"}} /> }
-        </ListItemButton>
-    </ListItem>
-    )
+        <ListItem key={text} disablePadding>
+            <ListItemButton onMouseOver={() => setHoveredOver(true)} onMouseOut={() => setHoveredOver(false)}>
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemText primary={text} />
+                {hoveredOver && (
+                    <IconButton onClick={handleClick}>
+                        <DeleteIcon sx={{ color: 'red' }} />
+                    </IconButton>
+                )}
+            </ListItemButton>
+        </ListItem>
+    );
 }
 
 ItemButton.propTypes = {
     text: PropTypes.string.isRequired,
-    index: PropTypes.number.isRequired
-} 
+    index: PropTypes.number.isRequired,
+};
 
 export default ItemButton;

@@ -127,10 +127,10 @@ function DefaultAppBar() {
             setCurrentOpenDrawer(drawer);
         }
     };
-    
-    const {cart} = useLoaderData();
 
-    console.log(cart)
+    const { cart } = useLoaderData();
+
+    console.log(cart);
 
     return (
         <Box>
@@ -156,7 +156,7 @@ function DefaultAppBar() {
                         </Search>
                         <IconButton onClick={drawerOpen('shoppingCart')}>
                             <StyledBadge
-                                badgeContent={4}
+                                badgeContent={cart.length}
                                 sx={{ color: 'primary.contrastText' }}
                                 anchorOrigin={{
                                     vertical: 'top',
@@ -186,7 +186,11 @@ function DefaultAppBar() {
                 <Divider />
                 <List>
                     <ListItem>
-                        <Button onClick={() =>  navigate("/ostoskori")} variant="contained" startIcon={<ShoppingCartCheckoutIcon />} > 
+                        <Button
+                            onClick={() => navigate('/ostoskori')}
+                            variant="contained"
+                            startIcon={<ShoppingCartCheckoutIcon />}
+                        >
                             <ListItemText primary="Kassalle" />
                         </Button>
                     </ListItem>

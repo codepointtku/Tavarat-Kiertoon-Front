@@ -514,6 +514,22 @@
     {
       "id": 4321,
       "productName": "Piirtoheitin"
+    },
+    {
+      "id": 4325,
+      "productName": "Kahvinkeitin"
+    },
+    {
+      "id": 4324,
+      "productName": "Vichy-pullo"
+    },
+    {
+      "id": 5679,
+      "productName": "Kahvikuppi"
+    },
+    {
+      "id": 4326,
+      "productName": "Joku missä on överipitkä teksti"
     }
   ]
 }
