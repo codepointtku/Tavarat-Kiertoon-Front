@@ -57,19 +57,24 @@ function Routes() {
                     path: '/',
                     element: <ProductList />,
                     loader: async () => {
-                        const { data } = await axios.get('http://localhost:3001/products');
-                        return data;
+                        try {
+                            const { data } = await axios.get('http://localhost:8000/products/');
+                            return data.results;
+                        } catch {
+                            return null;
+                        }
                     },
                 },
                 {
                     path: '/tuotteet/:id',
                     element: <ProductDetails />,
                     loader: async ({ params }) => {
-                        const { data } = await axios.get(`http://localhost:3001/products/${params.id}`);
-                        if (data) {
+                        try {
+                            const { data } = await axios.get(`http://localhost:8000/products/${params.id}`);
                             return data;
+                        } catch {
+                            return null;
                         }
-                        return null;
                     },
                 },
                 {
