@@ -161,17 +161,17 @@ function Routes() {
                     element: <OrderView />,
                     loader: async ({ params }) => {
                         const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
-                        const orderList = [];
                         const productFind = async (id) => {
                             const product = await axios.get(`http://localhost:8000/products/${id}`);
-                            orderList.push(product);
+                            return product;
                         };
+                        const newProducts = await Promise.all(data.products.map((entry) => productFind(entry)));
 
                         data.products.forEach((entry) => {
                             productFind(entry);
                         });
                         if (data) {
-                            data.productList = orderList;
+                            data.productList = newProducts;
                             return data;
                         }
                         return null;
