@@ -17,8 +17,7 @@ import {
     Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useState } from 'react';
-import { Link, useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData, useSearchParams } from 'react-router-dom';
 
 export const sizeOptions = [
     { label: '3 (14")', value: 14 },
@@ -80,11 +79,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function BikesPage() {
-    const [filters, setFilters] = useState({});
+    const [searchParams, setSearchParams] = useSearchParams();
     const bikes = useLoaderData();
-    const filteredBikes = bikes.filter((bike) =>
-        Object.entries(filters).every(([filterName, filterValue]) => filterValue === bike[filterName])
-    );
+    const filteredBikes =
+        typeof searchParams.get('filters') === 'undefined'
+            ? bikes
+            : bikes.filter((bike) =>
+                  Object.entries(JSON.parse(searchParams.get('filters'))).every(
+                      ([filterName, filterValue]) => filterValue === bike[filterName]
+                  )
+              );
+
+    // const filteredBikes = bikes;
 
     const cards = (
         <Grid container spacing={2}>
@@ -127,15 +133,18 @@ export default function BikesPage() {
     );
 
     const handleFilterChange = (filter, newOption) =>
-        setFilters((prevFilters) => {
+        setSearchParams((prevSearchParams) => {
             if (newOption === null) {
-                const newFilters = prevFilters;
+                const newFilters = JSON.parse(prevSearchParams.get('filters'));
                 delete newFilters[filter];
-                return { ...newFilters };
+                return { filters: JSON.stringify({ ...newFilters }) };
             }
+            const newFilters = JSON.parse(prevSearchParams.get('filters')) ?? {};
             return {
-                ...prevFilters,
-                [filter]: newOption.value,
+                filters: JSON.stringify({
+                    ...newFilters,
+                    [filter]: newOption.value,
+                }),
             };
         });
 
@@ -153,6 +162,13 @@ export default function BikesPage() {
                         options={sizeOptions}
                         sx={{ width: 250 }}
                         onChange={(_, newOption) => handleFilterChange('size', newOption)}
+                        value={
+                            searchParams.get('filters') && JSON.parse(searchParams.get('filters')).size
+                                ? sizeOptions.find(
+                                      (option) => option.value === JSON.parse(searchParams.get('filters')).size
+                                  )
+                                : null
+                        }
                         // eslint-disable-next-line react/jsx-props-no-spreading
                         renderInput={(params) => <TextField {...params} label="Koko" />}
                     />
@@ -162,6 +178,13 @@ export default function BikesPage() {
                         options={brandOptions}
                         sx={{ width: 250 }}
                         onChange={(_, newOption) => handleFilterChange('brand', newOption)}
+                        value={
+                            searchParams.get('filters') && JSON.parse(searchParams.get('filters')).brand
+                                ? brandOptions.find(
+                                      (option) => option.value === JSON.parse(searchParams.get('filters')).brand
+                                  )
+                                : null
+                        }
                         // eslint-disable-next-line react/jsx-props-no-spreading
                         renderInput={(params) => <TextField {...params} label="Merkki" />}
                     />
@@ -171,6 +194,13 @@ export default function BikesPage() {
                         options={typeOptions}
                         sx={{ width: 250 }}
                         onChange={(_, newOption) => handleFilterChange('type', newOption)}
+                        value={
+                            searchParams.get('filters') && JSON.parse(searchParams.get('filters')).type
+                                ? typeOptions.find(
+                                      (option) => option.value === JSON.parse(searchParams.get('filters')).type
+                                  )
+                                : null
+                        }
                         // eslint-disable-next-line react/jsx-props-no-spreading
                         renderInput={(params) => <TextField {...params} label="Tyyppi" />}
                     />
@@ -180,6 +210,13 @@ export default function BikesPage() {
                         options={availabilityOptions}
                         sx={{ width: 250 }}
                         onChange={(_, newOption) => handleFilterChange('availability', newOption)}
+                        value={
+                            searchParams.get('filters') && JSON.parse(searchParams.get('filters')).availability
+                                ? availabilityOptions.find(
+                                      (option) => option.value === JSON.parse(searchParams.get('filters')).availability
+                                  )
+                                : null
+                        }
                         // eslint-disable-next-line react/jsx-props-no-spreading
                         renderInput={(params) => <TextField {...params} label="Vapaus" />}
                     />
