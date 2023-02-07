@@ -404,7 +404,8 @@
             "barcode": "16-1",
             "type": "city",
             "color": "red",
-            "location": "varasto_0"
+            "location": "varasto_0",
+            "brand": "Hieno"
         },
         {
             "id": 2,
@@ -414,10 +415,25 @@
             "totalCount": 17,
             "size": 21,
             "dateAdded": "01.06.1999",
-            "barcode": "14-2",
+            "barcode": "21-5",
             "type": "bmx",
             "color": "green",
-            "location": "varasto_0"
+            "location": "varasto_0",
+            "brand": "Huono"
+        },
+        {
+            "id": 3,
+            "name": "Toinen huono pyörä",
+            "description": "Todella huono pyörä myös",
+            "available": 2,
+            "totalCount": 9,
+            "size": 14,
+            "dateAdded": "01.06.1999",
+            "barcode": "14-2",
+            "type": "city",
+            "color": "green",
+            "location": "varasto_0",
+            "brand": "Huono"
         }
     ]
 }

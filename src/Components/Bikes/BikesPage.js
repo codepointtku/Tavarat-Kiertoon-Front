@@ -13,22 +13,23 @@ import {
     Container,
     Grid,
     InputBase,
+    Modal,
     TextField,
     Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useState } from 'react';
 import { Link, useLoaderData, useSearchParams } from 'react-router-dom';
 
 export const sizeOptions = [
-    { label: '3 (14")', value: 14 },
-    { label: '4 (16")', value: 16 },
-    { label: '5 (21")', value: 21 },
+    { label: '(3) 14"', value: 14 },
+    { label: '(4) 16"', value: 16 },
+    { label: '(5) 21"', value: 21 },
 ];
 
 export const brandOptions = [
-    { label: 'Blabla', value: 1 },
-    { label: 'The Godfather', value: 1972 },
-    { label: 'The Godfather: Part II', value: 1974 },
+    { label: 'Hieno', value: 'Hieno' },
+    { label: 'Huono', value: 'Huono' },
 ];
 
 export const typeOptions = [
@@ -46,14 +47,8 @@ export const availabilityOptions = [
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
     width: '100%',
     border: '1px solid',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-    },
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -89,8 +84,7 @@ export default function BikesPage() {
                       ([filterName, filterValue]) => filterValue === bike[filterName]
                   )
               );
-
-    // const filteredBikes = bikes;
+    const [isRentModalVisible, setIsRentModalVisible] = useState(false);
 
     const cards = (
         <Grid container spacing={2}>
@@ -121,9 +115,95 @@ export default function BikesPage() {
                                     color={item.available ? 'success' : 'primary'}
                                     size="small"
                                     startIcon={<AddShoppingCartOutlinedIcon />}
+                                    onClick={() => setIsRentModalVisible(true)}
                                 >
                                     Vuokraa
                                 </Button>
+                                <Modal
+                                    open={isRentModalVisible}
+                                    onClose={() => setIsRentModalVisible(false)}
+                                    aria-labelledby="modal-modal-title"
+                                    aria-describedby="modal-modal-description"
+                                >
+                                    <Box
+                                        sx={{
+                                            position: 'absolute',
+                                            top: '50%',
+                                            left: '50%',
+                                            transform: 'translate(-50%, -50%)',
+                                            width: 400,
+                                            bgcolor: 'background.paper',
+                                            border: '2px solid #000',
+                                            boxShadow: 24,
+                                            p: 4,
+                                        }}
+                                    >
+                                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                                            Vuokraa {item.name}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            Heti vapaana: {item.available}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            Yhteensä palvelussa: {item.totalCount}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            Tyyppi: {typeOptions.find((option) => option.value === item.type).label}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            Koko: {sizeOptions.find((option) => option.value === item.size).label}
+                                        </Typography>
+                                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                            Bla bla bla?
+                                        </Typography>
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                justifyContent: 'space-evenly',
+                                                flexDirection: 'row',
+                                            }}
+                                        >
+                                            <Box>
+                                                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                                    Start date
+                                                </Typography>
+                                                <input
+                                                    type="date"
+                                                    id="start"
+                                                    name="trip-start"
+                                                    min="2023-01-01"
+                                                    max="2023-12-31"
+                                                />
+                                            </Box>
+                                            <Box>
+                                                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                                    End date
+                                                </Typography>
+                                                <input
+                                                    type="date"
+                                                    id="start"
+                                                    name="trip-start"
+                                                    min="2023-01-01"
+                                                    max="2023-12-31"
+                                                />
+                                            </Box>
+                                        </Box>
+                                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                            Määrä
+                                        </Typography>
+                                        <input type="number" id="amount" name="amount" min="1" max="99" />
+                                        <Box sx={{ display: 'flex', flexDirection: 'row-reverse', mt: 4 }}>
+                                            <Button
+                                                color={item.available ? 'success' : 'primary'}
+                                                size="small"
+                                                startIcon={<AddShoppingCartOutlinedIcon />}
+                                                onClick={() => setIsRentModalVisible(false)}
+                                            >
+                                                Vuokraa
+                                            </Button>
+                                        </Box>
+                                    </Box>
+                                </Modal>
                             </CardActions>
                         </Card>
                     </Box>
@@ -149,13 +229,13 @@ export default function BikesPage() {
         });
 
     return (
-        <Container sx={{ marginBottom: 4 }}>
+        <Container sx={{ mb: 4 }}>
             <Typography variant="h3" align="center" color="primary.main">
                 Polkupyörienvuokraus
             </Typography>
             <hr />
-            <Box sx={{ marginBottom: 1 }}>
-                <Box sx={{ marginBottom: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Box sx={{ mb: 1 }}>
+                <Box sx={{ mb: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Autocomplete
                         disablePortal
                         id="size-filter"
@@ -204,7 +284,7 @@ export default function BikesPage() {
                         // eslint-disable-next-line react/jsx-props-no-spreading
                         renderInput={(params) => <TextField {...params} label="Tyyppi" />}
                     />
-                    <Autocomplete
+                    {/* <Autocomplete
                         disablePortal
                         id="availability-filter"
                         options={availabilityOptions}
@@ -219,7 +299,7 @@ export default function BikesPage() {
                         }
                         // eslint-disable-next-line react/jsx-props-no-spreading
                         renderInput={(params) => <TextField {...params} label="Vapaus" />}
-                    />
+                    /> */}
                 </Box>
                 <Search>
                     <SearchIconWrapper>
