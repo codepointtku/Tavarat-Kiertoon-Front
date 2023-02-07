@@ -137,7 +137,7 @@ function Routes() {
                     path: '/varasto/:num/:view',
                     element: <OrdersList />,
                     loader: async ({ params }) => {
-                        const { data } = await axios.get('http://localhost:3001/orders');
+                        const { data } = await axios.get('http://localhost:8000/orders');
                         // num will tell back-end which entries to bring
                         // view is order status, unless archived can bring all?
                         // or will be replaced into the back-end later?
@@ -169,8 +169,18 @@ function Routes() {
                     path: '/varasto/tilaus/:id',
                     element: <OrderView />,
                     loader: async ({ params }) => {
-                        const { data } = await axios.get(`http://localhost:3001/orders/${params.id}`);
+                        const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
+                        const productFind = async (id) => {
+                            const product = await axios.get(`http://localhost:8000/products/${id}`);
+                            return product;
+                        };
+                        const newProducts = await Promise.all(data.products.map((entry) => productFind(entry)));
+
+                        data.products.forEach((entry) => {
+                            productFind(entry);
+                        });
                         if (data) {
+                            data.productList = newProducts;
                             return data;
                         }
                         return null;
