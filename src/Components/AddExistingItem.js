@@ -13,7 +13,11 @@ function AddExistingItem({ item, setTab }) {
         <>
             <h3>Lisää Esine viivakoodin lukemisen perusteella</h3>
             <Button
-                onClick={() => navigate(generatePath('/varasto/koodinlukija'), { state: { ...item, oldItem: true } })}
+                onClick={() =>
+                    navigate(generatePath('/varasto/koodinlukija'), {
+                        state: { ...item, oldItem: true, returnpath: '/varasto/luo' },
+                    })
+                }
             >
                 Lue Viivakoodi
             </Button>

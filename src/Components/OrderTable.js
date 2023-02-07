@@ -22,14 +22,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import TablePaginationActions from './TablePaginationActions';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
-import productData from '../TestData/tuote.json';
 // import orderData from '../TestData/tilaus.json';
 
 // replace this with apiCall later on
 // const orderFind = (id) => orderData[id];
-
-// replace this with apiCall later on
-const productFind = (id) => productData[id];
 
 function OrderTable({ page, rowsPerPage, setUsedParams }) {
     const [isOpen, setIsOpen] = useState({});
@@ -46,32 +42,36 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
         );
     }
     const sourceStates = {};
-    const orderList = [];
+    let orderList = [];
 
-    order.products.forEach((entry) => {
+    order.productList.forEach((entry) => {
         try {
-            const newEntry = productFind(entry);
-            sourceStates[entry] = false;
+            const newEntry = entry.data;
+            sourceStates[entry.data.id] = false;
             newEntry.count = 1;
-            newEntry.id = entry;
+            newEntry.id = entry.data.id;
             newEntry.items = [newEntry];
-            orderList.forEach((each, key) => {
+            orderList.forEach((each) => {
                 if (each.barcode === newEntry.barcode) {
                     newEntry.count += each.count;
                     newEntry.items = newEntry.items.concat(each.items);
-                    orderList.pop(key);
+                    const index = orderList.findIndex((key) => key.id === each.id);
+                    orderList = [...orderList.slice(0, index), ...orderList.slice(index + 1)];
                 }
             });
             orderList.push(newEntry);
         } catch {
             orderList.push({
                 name: 'Tuotetta ei olemassa',
-                id: entry,
+                id: entry.data.id,
                 barcode: '-',
                 count: 0,
                 category: '-',
-                location: '-',
+                storages: '-',
                 items: [],
+                measurements: '-',
+                weight: '-',
+                shelf_id: '-',
             });
         }
     });
@@ -104,112 +104,126 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
     }, []);
 
     return (
-        <TableContainer component={Paper} sx={{ padding: '2rem' }}>
-            <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
-                <TableHead>
-                    <TableRow>
-                        <StyledTableCell> </StyledTableCell>
-                        <StyledTableCell>Tuotenimi</StyledTableCell>
-                        <StyledTableCell align="right">Saldo</StyledTableCell>
-                        <StyledTableCell align="right">Viivakoodi</StyledTableCell>
-                        <StyledTableCell align="right">Tuotenumero</StyledTableCell>
-                        <StyledTableCell align="right">Kategoria</StyledTableCell>
-                        <StyledTableCell align="right">Sijainti</StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {(rowsPerPage > 0
-                        ? orderList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : orderList
-                    ).map((value) => (
-                        <Fragment key={value.id}>
-                            <StyledTableRow>
-                                <TableCell>
-                                    <IconButton
-                                        aria-label="expand row"
-                                        size="small"
-                                        onClick={() => {
-                                            setIsOpen((prev) => ({ ...prev, [value.id]: !isOpen[value.id] }));
-                                        }}
-                                    >
-                                        {isOpen[value.id] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                    </IconButton>
-                                </TableCell>
-                                <TableCell component="th" scope="row">
-                                    {value.name}
-                                </TableCell>
-                                <TableCell align="right">{value.count}</TableCell>
-                                <TableCell align="right">{value.barcode}</TableCell>
-                                <TableCell align="right">{value.id}</TableCell>
-                                <TableCell align="right">{value.category}</TableCell>
-                                <TableCell align="right">{value.location}</TableCell>
-                            </StyledTableRow>
-                            <TableRow>
-                                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                                    <Collapse in={isOpen[value.id]} timeout="auto" unmountOnExit>
-                                        <Box sx={{ margin: 1 }}>
-                                            <Typography variant="h6" gutterBottom component="div">
-                                                Tuotteet
-                                            </Typography>
-                                            <Table size="small">
-                                                <TableHead>
-                                                    <TableRow>
-                                                        <TableCell component="th" scope="row">
-                                                            Tuotenumero
-                                                        </TableCell>
-                                                        <TableCell align="right">Tuotenimi</TableCell>
-                                                        <TableCell align="right">Viivakoodi</TableCell>
-                                                        <TableCell align="right">Kategoria</TableCell>
-                                                        <TableCell align="right">Väri</TableCell>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    {value.items.map((item) => (
-                                                        <TableRow key={item.id}>
+        <>
+            <TableContainer component={Paper} sx={{ padding: '2rem' }}>
+                <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
+                    <TableHead>
+                        <TableRow>
+                            <StyledTableCell> </StyledTableCell>
+                            <StyledTableCell>Tuotenimi</StyledTableCell>
+                            <StyledTableCell align="right">Saldo</StyledTableCell>
+                            <StyledTableCell align="right">Viivakoodi</StyledTableCell>
+                            <StyledTableCell align="right">Tuotenumero</StyledTableCell>
+                            <StyledTableCell align="right">Kategoria</StyledTableCell>
+                            <StyledTableCell align="right">Varasto</StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {(rowsPerPage > 0
+                            ? orderList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            : orderList
+                        ).map((value) => (
+                            <Fragment key={value.id}>
+                                <StyledTableRow>
+                                    <TableCell>
+                                        <IconButton
+                                            aria-label="expand row"
+                                            size="small"
+                                            onClick={() => {
+                                                setIsOpen((prev) => ({ ...prev, [value.id]: !isOpen[value.id] }));
+                                            }}
+                                        >
+                                            {isOpen[value.id] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                        </IconButton>
+                                    </TableCell>
+                                    <TableCell component="th" scope="row">
+                                        {value.name}
+                                    </TableCell>
+                                    <TableCell align="right">{value.count}</TableCell>
+                                    <TableCell align="right">{value.barcode}</TableCell>
+                                    <TableCell align="right">{value.id}</TableCell>
+                                    <TableCell align="right">{value.category}</TableCell>
+                                    <TableCell align="right">{value.storages}</TableCell>
+                                </StyledTableRow>
+                                <TableRow>
+                                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
+                                        <Collapse in={isOpen[value.id]} timeout="auto" unmountOnExit>
+                                            <Box sx={{ margin: 1 }}>
+                                                <Typography variant="h6" gutterBottom component="div">
+                                                    Tuotteet
+                                                </Typography>
+                                                <Table size="small">
+                                                    <TableHead>
+                                                        <TableRow>
                                                             <TableCell component="th" scope="row">
-                                                                {item.id}
+                                                                Tuotenumero
                                                             </TableCell>
-                                                            <TableCell align="right">{item.name}</TableCell>
-                                                            <TableCell align="right">{item.barcode}</TableCell>
-                                                            <TableCell align="right">{item.category}</TableCell>
-                                                            <TableCell align="right">{item.color}</TableCell>
+                                                            <TableCell align="right">Tuotenimi</TableCell>
+                                                            <TableCell align="right">Viivakoodi</TableCell>
+                                                            <TableCell align="right">Kategoria</TableCell>
+                                                            <TableCell align="right">Väri</TableCell>
+                                                            <TableCell align="right">Mitat</TableCell>
+                                                            <TableCell align="right">Paino</TableCell>
+                                                            <TableCell align="right">Hylly id</TableCell>
                                                         </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                        </Box>
-                                    </Collapse>
-                                </TableCell>
-                            </TableRow>
-                        </Fragment>
-                    ))}
-                    {emptyRows > 0 && (
-                        <StyledTableRow style={{ height: 53 * emptyRows }}>
-                            <StyledTableCell colSpan={6} />
-                        </StyledTableRow>
-                    )}
-                </TableBody>
-                <TableFooter>
-                    <TableRow>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 25, 100]}
-                            colSpan={3}
-                            count={orderList.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            SelectProps={{
-                                inputProps: {
-                                    'aria-label': 'rows per page',
-                                },
-                                native: true,
-                            }}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                            ActionsComponent={TablePaginationActions}
-                        />
-                    </TableRow>
-                </TableFooter>
-            </Table>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {value.items.map((item) => (
+                                                            <TableRow key={item.id}>
+                                                                <TableCell component="th" scope="row">
+                                                                    {item.id}
+                                                                </TableCell>
+                                                                <TableCell align="right">{item.name}</TableCell>
+                                                                <TableCell align="right">{item.barcode}</TableCell>
+                                                                <TableCell align="right">{item.category}</TableCell>
+                                                                <TableCell align="right">{item.color}</TableCell>
+                                                                <TableCell align="right">{item.measurements}</TableCell>
+                                                                <TableCell align="right">{item.weight}</TableCell>
+                                                                <TableCell align="right">{item.shelf_id}</TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </Box>
+                                        </Collapse>
+                                    </TableCell>
+                                </TableRow>
+                            </Fragment>
+                        ))}
+                        {emptyRows > 0 && (
+                            <StyledTableRow style={{ height: 53 * emptyRows }}>
+                                <StyledTableCell colSpan={7} />
+                            </StyledTableRow>
+                        )}
+                    </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25, 100]}
+                                colSpan={3}
+                                count={orderList.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                SelectProps={{
+                                    inputProps: {
+                                        'aria-label': 'rows per page',
+                                    },
+                                    native: true,
+                                }}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                                ActionsComponent={TablePaginationActions}
+                            />
+                        </TableRow>
+                    </TableFooter>
+                </Table>
+            </TableContainer>
+            <Button
+                sx={{ margin: '2rem' }}
+                onClick={() => navigate(`/varasto/tilaus/${order.id}/muokkaa`, { state: orderList })}
+            >
+                Muokkaa tilausta
+            </Button>
             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
                 <Link to="/varasto/pdf" state={{ data: order }}>
                     <Button color="error" onClick={createPDFButtonHandler}>
@@ -217,7 +231,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                     </Button>
                 </Link>
             </Box>
-        </TableContainer>
+        </>
     );
 }
 
