@@ -42,7 +42,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
         );
     }
     const sourceStates = {};
-    const orderList = [];
+    let orderList = [];
 
     order.productList.forEach((entry) => {
         try {
@@ -51,11 +51,12 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
             newEntry.count = 1;
             newEntry.id = entry.data.id;
             newEntry.items = [newEntry];
-            orderList.forEach((each, key) => {
+            orderList.forEach((each) => {
                 if (each.barcode === newEntry.barcode) {
                     newEntry.count += each.count;
                     newEntry.items = newEntry.items.concat(each.items);
-                    orderList.pop(key);
+                    const index = orderList.findIndex((key) => key.id === each.id);
+                    orderList = [...orderList.slice(0, index), ...orderList.slice(index + 1)];
                 }
             });
             orderList.push(newEntry);
@@ -66,8 +67,11 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                 barcode: '-',
                 count: 0,
                 category: '-',
-                location: '-',
+                storages: '-',
                 items: [],
+                measurements: '-',
+                weight: '-',
+                shelf_id: '-',
             });
         }
     });
@@ -138,7 +142,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                                     <TableCell align="right">{value.storages}</TableCell>
                                 </StyledTableRow>
                                 <TableRow>
-                                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
                                         <Collapse in={isOpen[value.id]} timeout="auto" unmountOnExit>
                                             <Box sx={{ margin: 1 }}>
                                                 <Typography variant="h6" gutterBottom component="div">
@@ -184,7 +188,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                         ))}
                         {emptyRows > 0 && (
                             <StyledTableRow style={{ height: 53 * emptyRows }}>
-                                <StyledTableCell colSpan={6} />
+                                <StyledTableCell colSpan={7} />
                             </StyledTableRow>
                         )}
                     </TableBody>
