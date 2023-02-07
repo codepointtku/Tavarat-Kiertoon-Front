@@ -11,20 +11,27 @@ function AddItem() {
     // empty location.state when item is finally added and site navigates away!
     const location = useLocation();
     const [item, setItem] = useState();
-    const [tab, setTab] = useState(1);
+    const [tab, setTab] = useState('1');
 
     useEffect(() => {
         if (location.state) {
+            location.state.returnpath = null;
             setItem(location.state);
         } else {
             setItem({
-                name: '',
-                id: '',
+                available: false,
                 barcode: '',
-                category: '',
-                location: '',
-                info: '',
-                oldItem: false,
+                group_id: '',
+                name: '',
+                price: null,
+                shelf_id: null,
+                free_description: '',
+                measurements: '',
+                weight: null,
+                category: null,
+                storages: null,
+                color: null,
+                pictures: [],
             });
         }
         if (location.state && location.state.oldItem) {
@@ -55,19 +62,19 @@ function AddItem() {
             <TabContext value={tab}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={tabChange} aria-label="lab API tabs example">
-                        <Tab label="Lisää uusi tuote" value={1} />
-                        <Tab label="Lisää olemassaolevaan" value={2} />
+                        <Tab label="Lisää uusi tuote" value="1" />
+                        <Tab label="Lisää olemassaolevaan" value="2" />
                     </TabList>
                 </Box>
-                <TabPanel value={1}>
+                <TabPanel value="1">
                     {item ? (
                         <AddNewItem item={item} setItem={setItem} uploadFile={uploadFile} />
                     ) : (
                         <h1>Tonipal kahville</h1>
                     )}
                 </TabPanel>
-                <TabPanel value={2}>
-                    <AddExistingItem item={item} setTab={setTab} />
+                <TabPanel value="2">
+                    {item ? <AddExistingItem item={item} setTab={setTab} /> : <h1>Tonipal Kahville nyt!</h1>}
                 </TabPanel>
             </TabContext>
         </Box>

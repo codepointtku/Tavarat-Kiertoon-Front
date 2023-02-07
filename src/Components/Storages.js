@@ -19,6 +19,7 @@ function Storages({ storages }) {
                 <TableBody>
                     {storages.map((storage) => (
                         <TableRow
+                            key={storage.id}
                             onClick={() => navigate(`varastot/${storage.id}`)}
                             style={{ cursor: 'pointer' }}
                             hover
@@ -37,7 +38,7 @@ function Storages({ storages }) {
 
 Storages.propTypes = {
     storages: PropTypes.arrayOf(
-        PropTypes.objectOf({
+        PropTypes.shape({
             id: PropTypes.number.isRequired,
             name: PropTypes.string.isRequired,
             address: PropTypes.string.isRequired,

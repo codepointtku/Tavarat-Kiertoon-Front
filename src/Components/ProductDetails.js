@@ -50,7 +50,7 @@ const itemData = [
 
 function ProductDetails() {
     const { id: productId } = useParams();
-    const { name: productName, description, dateAdded, category, barcode} = useLoaderData();
+    const { name: productName, free_description: description, date, category, barcode } = useLoaderData();
     const [image, setImage] = useState(itemData[0].img);
     const { auth } = useContext(AuthContext);
 
@@ -60,44 +60,50 @@ function ProductDetails() {
                 <Card>
                     <CardMedia component="img" alt="product image" height="300" image={image} />
                     <CardContent>
-                        <ImageList cols={6} rowHeight={164}>
-                            {itemData.map((item) => (
-                                <ImageListItem key={item.id} onClick={() => setImage(item.img)}>
-                                    <img src={`${item.img}`} srcSet={`${item.img}`} alt={item.title} loading="lazy" />
-                                </ImageListItem>
-                            ))}
-                        </ImageList>
-                        <Typography gutterBottom variant="h5" component="div">
-                            {productName}
-                        </Typography>
-                        {/* show id if component used in storageview or admin */}
-                        {auth.storage ||
-                            (auth.admin && (
+                        <>
+                            <ImageList cols={6} rowHeight={164}>
+                                {itemData.map((item) => (
+                                    <ImageListItem key={item.id} onClick={() => setImage(item.img)}>
+                                        <img
+                                            src={`${item.img}`}
+                                            srcSet={`${item.img}`}
+                                            alt={item.title}
+                                            loading="lazy"
+                                        />
+                                    </ImageListItem>
+                                ))}
+                            </ImageList>
+                            <Typography gutterBottom variant="h5" component="div">
+                                {productName}
+                            </Typography>
+                            {/* show id if component used in storageview or admin */}
+                            {auth.storage || auth.admin ? (
                                 <Typography variant="body6" color="text.secondary">
                                     Product id: {productId}
                                 </Typography>
-                            ))}
+                            ) : null}
 
-                        <Typography variant="body1" color="text.secondary" gutterBottom>
-                            Description: {description}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Added on: {dateAdded}
-                        </Typography>
-                        {/* generate barcode if component used in storageview or admin */}
-                        {auth.storage ||
-                            (auth.admin && (
+                            <Typography variant="body1" color="text.secondary" gutterBottom>
+                                Description: {description}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                Added on: {new Date(date).toLocaleDateString('fi-FI')}
+                            </Typography>
+                            {/* generate barcode if component used in storageview or admin */}
+                            {auth.storage || auth.admin ? (
                                 <Typography variant="body2" color="text.secondary">
                                     Barcode: {barcode}
                                 </Typography>
-                            ))}
-                        {/* miten näyttää kategoriat, buttoneina? */}
-                        <Typography variant="body2" color="text.secondary">
-                            Kategoriat:
-                        </Typography>
-                        <Button variant="contained" size="small" disabled>
-                            {category}
-                        </Button>
+                            ) : null}
+                            {/* miten näyttää kategoriat, buttoneina? */}
+                            <Typography variant="body2" color="text.secondary">
+                                Kategoriat:
+                            </Typography>
+                            <Button variant="contained" size="small" disabled>
+                                {/* to be implemented when backend is ready */}
+                                {category}
+                            </Button>
+                        </>
                     </CardContent>
                     <CardActions>
                         <AddToCartButton size="medium" productName={productName} />

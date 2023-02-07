@@ -47,7 +47,11 @@ export default function Footer() {
                         </Typography>
                     </Link>
 
-                    <Typography>TEKSTIÄ</Typography>
+                    <Link to="/backgroundinfo" underline="hover">
+                        <Typography variant="subtitle1" gutterBottom color="inherit">
+                            Taustaa
+                        </Typography>
+                    </Link>
                 </Grid>
                 <Grid>
                     <img src={LOGO2} alt="turkulogo" style={{ width: 200 }} />

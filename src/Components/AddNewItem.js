@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Barcode from 'react-barcode';
 import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent } from '@mui/material';
 import validator from 'validator';
+import axios from 'axios';
 
 function AddNewItem({ item, setItem, uploadFile }) {
     const data = useLoaderData();
@@ -22,13 +23,30 @@ function AddNewItem({ item, setItem, uploadFile }) {
             validator.isLength(String(item.barcode), { min: 1 }) &&
             validator.isLength(String(item.location), { min: 1 }) &&
             validator.isLength(String(item.category), { min: 1 }) &&
-            validator.isLength(String(item.info), { min: 5 })
+            validator.isLength(String(item.free_description), { min: 5 })
         ) {
             setValidProduct(true);
         } else {
             setValidProduct(false);
         }
     });
+
+    const productCall = async () => {
+        const testItem = {
+            ...item,
+            available: true,
+            price: 999.0,
+            shelf_id: 1,
+            measurements: 'wrdrqwf',
+            weight: 3.0,
+            category: 1,
+            storages: null,
+            color: 1,
+            pictures: [1],
+        };
+        const response = await axios.post('http://localhost:8000/products/', testItem);
+        console.log(response.data);
+    };
 
     return (
         <Card sx={{ maxWidth: '60vw' }}>
@@ -71,11 +89,15 @@ function AddNewItem({ item, setItem, uploadFile }) {
                     <CardActions>
                         <Button
                             size="large"
-                            onClick={() => navigate(generatePath('/varasto/koodinlukija'), { state: { ...item } })}
+                            onClick={() =>
+                                navigate(generatePath('/varasto/koodinlukija'), {
+                                    state: { ...item, returnpath: '/varasto/luo' },
+                                })
+                            }
                         >
                             Koodinlukija
                         </Button>
-                        {item.barcode.length > 0 && <Barcode value={item.barcode} />}
+                        {item.barcode.length > 0 && <Barcode value={item.barcode} format="CODE39" />}
                     </CardActions>
 
                     <TextField
@@ -86,6 +108,7 @@ function AddNewItem({ item, setItem, uploadFile }) {
                         onChange={(event) => {
                             handleChange('location', event);
                         }}
+                        defaultValue=""
                     >
                         {data[1].map((location) => (
                             <MenuItem key={location.id} value={location.name}>
@@ -101,6 +124,7 @@ function AddNewItem({ item, setItem, uploadFile }) {
                         onChange={(event) => {
                             handleChange('category', event);
                         }}
+                        defaultValue=""
                     >
                         {data[0].map((category) => (
                             <MenuItem key={category.id} value={category.name}>
@@ -112,12 +136,12 @@ function AddNewItem({ item, setItem, uploadFile }) {
                         id="filled-helperText"
                         label="Vapaa Kuvaus"
                         onChange={(event) => {
-                            handleChange('info', event);
+                            handleChange('free_description', event);
                         }}
                         multiline
                         inputProps={{ maxLength: 1000 }}
-                        helperText={`${item.info.length}/1000`}
-                        defaultValue={item.info}
+                        helperText={`${item.free_description.length}/1000`}
+                        defaultValue={item.free_description}
                     />
                     <CardActions>
                         <Button variant="contained" component="label" size="large">
@@ -135,7 +159,14 @@ function AddNewItem({ item, setItem, uploadFile }) {
                     </CardActions>
                     <CardActions>
                         {validProduct ? (
-                            <Button size="large">Lisää tuote</Button>
+                            <Button
+                                size="large"
+                                onClick={() => {
+                                    productCall();
+                                }}
+                            >
+                                Lisää tuote
+                            </Button>
                         ) : (
                             <Button disabled>Lisää tuote</Button>
                         )}
@@ -153,7 +184,7 @@ AddNewItem.propTypes = {
         name: PropTypes.string,
         category: PropTypes.string,
         location: PropTypes.string,
-        info: PropTypes.string,
+        free_description: PropTypes.string,
         isOld: PropTypes.bool,
     }).isRequired,
     setItem: PropTypes.func.isRequired,

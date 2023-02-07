@@ -15,6 +15,7 @@ import Admin from '../Layouts/Admin';
 
 import OrdersList from '../Components/OrdersList';
 import OrderView from '../Components/OrderView';
+import OrderEdit from '../Components/OrderEdit';
 import QrScanner from '../Components/QrScanner';
 
 import UsersList from '../Components/UsersList';
@@ -64,19 +65,24 @@ function Routes() {
                         return null;
                     },
                     loader: async () => {
-                        const { data } = await axios.get('http://localhost:3001/products');
-                        return data;
+                        try {
+                            const { data } = await axios.get('http://localhost:3001/products/');
+                            return data;
+                        } catch {
+                            return null;
+                        }
                     },
                 },
                 {
                     path: '/tuotteet/:id',
                     element: <ProductDetails />,
                     loader: async ({ params }) => {
-                        const { data } = await axios.get(`http://localhost:3001/products/${params.id}`);
-                        if (data) {
+                        try {
+                            const { data } = await axios.get(`http://localhost:8000/products/${params.id}`);
                             return data;
+                        } catch {
+                            return null;
                         }
-                        return null;
                     },
                 },
                 {
@@ -134,6 +140,10 @@ function Routes() {
                     </Storage>
                 </ThemeProvider>
             ),
+            loader: async () => {
+                const { data } = await axios.get('http://localhost:3001/contacts');
+                return data;
+            },
             children: [
                 {
                     path: '/varasto/:num/:view',
@@ -179,6 +189,17 @@ function Routes() {
                     },
                 },
                 {
+                    path: '/varasto/tilaus/:id/muokkaa',
+                    element: <OrderEdit />,
+                    loader: async ({ params }) => {
+                        const { data } = await axios.get(`http://localhost:3001/orders/${params.id}`);
+                        if (data) {
+                            return data;
+                        }
+                        return null;
+                    },
+                },
+                {
                     path: '/varasto/luo',
                     element: <AddItem />,
                     loader: async () => {
@@ -208,6 +229,10 @@ function Routes() {
                     </Admin>
                 </ThemeProvider>
             ),
+            loader: async () => {
+                const { data } = await axios.get('http://localhost:3001/contacts');
+                return data;
+            },
             children: [
                 {
                     path: '/admin',
@@ -217,7 +242,6 @@ function Routes() {
                         if (data) {
                             return data;
                         }
-                        console.log(data);
                         return null;
                     },
                 },
