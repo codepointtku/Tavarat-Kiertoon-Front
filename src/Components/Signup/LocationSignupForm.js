@@ -17,6 +17,7 @@ import SmokingRoomsIcon from '@mui/icons-material/SmokingRooms';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import Person2Icon from '@mui/icons-material/Person2';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 function LocationHero() {
@@ -102,14 +103,30 @@ function LocationSignupForm() {
                     }}
                 >
                     <FormControl variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-location">Toimipaikka</InputLabel>
+                        <InputLabel htmlFor="outlined-adornment-location">Käyttäjätunnus</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-location"
                             type="text"
                             label="Toimipaikka"
+                            placeholder="Käyttäjätunnus yhteiskäyttöön"
                             endAdornment={
                                 <InputAdornment position="end">
                                     <SmokingRoomsIcon />
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="outlined-adornment-password">Vastuuhenkilö</InputLabel>
+                        <OutlinedInput
+                            id="outlined-adornment-password"
+                            type="text"
+                            label="Vastuuhenkilö"
+                            placeholder="Tilin vastuuhenkilön nimi"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <Person2Icon />
                                 </InputAdornment>
                             }
                         />
@@ -121,6 +138,7 @@ function LocationSignupForm() {
                             id="outlined-adornment-password"
                             type="text"
                             label="Sähköpostiosoite"
+                            placeholder="Vastuuhenkilön sähköpostiosoite"
                             endAdornment={
                                 <InputAdornment position="end">
                                     <MailOutlineIcon />
@@ -135,6 +153,7 @@ function LocationSignupForm() {
                             id="outlined-adornment-password"
                             type={showPassword ? 'text' : 'password'}
                             label="Salasana"
+                            placeholder="****"
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
@@ -156,6 +175,7 @@ function LocationSignupForm() {
                             id="outlined-adornment-password"
                             type={showPassword ? 'text' : 'password'}
                             label="Salasana uudelleen"
+                            placeholder="****"
                         />
                     </FormControl>
 

@@ -93,6 +93,7 @@ function UserSignupForm() {
                             id="outlined-adornment-password"
                             type="text"
                             label="Sähköpostiosoite"
+                            placeholder="sinä@turku.fi"
                             endAdornment={
                                 <InputAdornment position="end">
                                     <MailOutlineIcon />
@@ -107,6 +108,7 @@ function UserSignupForm() {
                             id="outlined-adornment-password"
                             type={showPassword ? 'text' : 'password'}
                             label="Salasana"
+                            placeholder="****"
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
@@ -128,6 +130,7 @@ function UserSignupForm() {
                             id="outlined-adornment-password"
                             type={showPassword ? 'text' : 'password'}
                             label="Salasana uudelleen"
+                            placeholder="****"
                         />
                     </FormControl>
                     <Button type="submit" fullWidth sx={{ mt: 3, mb: 3 }}>
