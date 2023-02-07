@@ -129,13 +129,11 @@ function SignUpHero() {
     return (
         <Box
             sx={{
-                mt: 0,
                 mb: 2,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                // backgroundColor: 'lightblue',
             }}
         >
             <Avatar
@@ -157,7 +155,7 @@ function SignUpHero() {
 
 function SignupLandingPage() {
     return (
-        <Paper sx={{ marginBottom: '1rem' }}>
+        <Paper sx={{ marginTop: 1, marginBottom: 1 }}>
             <Container maxWidth="md">
                 <SignUpHero />
                 <SignUpCards />
