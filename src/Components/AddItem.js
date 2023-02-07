@@ -15,16 +15,23 @@ function AddItem() {
 
     useEffect(() => {
         if (location.state) {
+            location.state.returnpath = null;
             setItem(location.state);
         } else {
             setItem({
-                name: '',
-                id: null,
+                available: false,
                 barcode: '',
-                category: '',
-                location: '',
-                info: '',
-                oldItem: false,
+                group_id: '',
+                name: '',
+                price: null,
+                shelf_id: null,
+                free_description: '',
+                measurements: '',
+                weight: null,
+                category: null,
+                storages: null,
+                color: null,
+                pictures: [],
             });
         }
         if (location.state && location.state.oldItem) {
