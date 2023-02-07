@@ -11,8 +11,6 @@ function AddNewItem({ item, setItem, uploadFile }) {
     const data = useLoaderData();
     const navigate = useNavigate();
 
-    console.log(item);
-
     const handleChange = (key, event) => {
         setItem({ ...item, [key]: event.target.value });
     };
