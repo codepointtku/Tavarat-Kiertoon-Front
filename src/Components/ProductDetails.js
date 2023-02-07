@@ -55,7 +55,7 @@ function ProductDetails() {
     const { auth } = useContext(AuthContext);
 
     return (
-        <Box>
+        <Box margin={2}>
             <Container maxWidth="md">
                 <Card>
                     <CardMedia component="img" alt="product image" height="300" image={image} />
