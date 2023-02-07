@@ -23,16 +23,14 @@ function UserHeader() {
     return (
         <Box
             sx={{
-                mt: 2,
-                mb: 2,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                // backgroundColor: 'green',
             }}
         >
             <Avatar
                 sx={{
+                    mt: 1,
                     bgcolor: 'secondary.main',
                     width: 64,
                     height: 64,
@@ -40,16 +38,9 @@ function UserHeader() {
             >
                 <VpnKeyIcon />
             </Avatar>
-            <Typography mt={2} variant="h5">
+            <Typography mt={2} mb={2} variant="h5">
                 Luo uusi käyttäjätili
             </Typography>
-            {/* <Link
-                variant="body1"
-                mt={2}
-                // variant="outlined" endIcon={<HelpOutlineIcon />}
-            >
-                Henkilökohtainen käyttäjätili
-            </Link> */}
         </Box>
     );
 }
@@ -64,27 +55,16 @@ function UserSignupForm() {
     };
 
     return (
-        <Container
-            id="signupform-user-horizontal-sizer"
-            maxWidth="sm"
-            // sx={{ backgroundColor: 'hotpink' }}
-        >
+        <Container id="signupform-user-horizontal-sizer" maxWidth="sm">
             <UserHeader />
-            <Container
-                id="signupform-user-fields-wrapper"
-                maxWidth="md"
-                // sx={{ backgroundColor: 'green' }}
-            >
+            <Container id="signupform-user-fields-wrapper" maxWidth="md">
                 <Box
                     id="signupform-user-fields"
                     sx={{
-                        mt: 2,
-                        mb: 4,
+                        paddingBottom: 4,
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
-                        // width: '100%',
-                        // backgroundColor: 'red',
                     }}
                 >
                     <FormControl variant="outlined" fullWidth required>
@@ -133,11 +113,12 @@ function UserSignupForm() {
                             placeholder="****"
                         />
                     </FormControl>
+
                     <Button type="submit" fullWidth sx={{ mt: 3, mb: 3 }}>
                         Rekisteröidy
                     </Button>
                     <Button size="small" variant="outlined" endIcon={<HelpOutlineIcon />}>
-                        Lisää tietoa
+                        Ohjeet
                     </Button>
                 </Box>
             </Container>

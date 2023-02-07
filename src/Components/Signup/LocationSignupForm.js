@@ -43,7 +43,12 @@ function LocationHero() {
             <Typography variant="body2" paragraph>
                 Tilille on mahdollista kirjautua käyttäjätunnuksella, tai sähköpostiosoitteella.
             </Typography>
-            <Button size="small" variant="outlined" endIcon={<HelpOutlineIcon />}>
+            <Button
+                sx={{ marginTop: 1, marginBottom: 3 }}
+                size="small"
+                variant="outlined"
+                endIcon={<HelpOutlineIcon />}
+            >
                 Lisää ohjeita
             </Button>
         </Box>
@@ -54,12 +59,9 @@ function LocationHeader() {
     return (
         <Box
             sx={{
-                mt: 1,
-                mb: 2,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                // backgroundColor: 'green',
             }}
         >
             <Avatar
@@ -93,13 +95,11 @@ function LocationSignupForm() {
                 <Box
                     id="signupform-location-fields"
                     sx={{
-                        mt: 2,
-                        mb: 4,
+                        paddingBottom: 4,
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
                         width: '100%',
-                        // backgroundColor: 'red',
                     }}
                 >
                     <FormControl variant="outlined" fullWidth required>

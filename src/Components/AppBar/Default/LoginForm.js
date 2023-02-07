@@ -1,15 +1,12 @@
-import {
-    Box,
-    Typography,
-    Container,
-    Button,
-} from '@mui/material';
+import { Link } from 'react-router-dom';
+
+import { Box, Typography, Container, Button } from '@mui/material';
 
 import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+// import MuiLink from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -28,14 +25,9 @@ function LoginForm() {
                 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                     <LockOutlinedIcon />
                 </Avatar>
-                <Typography variant="h5">
-                    Kirjaudu sisään
-                </Typography>
+                <Typography variant="h5">Kirjaudu sisään</Typography>
 
-                <Box
-                    component="form"
-                    sx={{ mt: 1 }}
-                >
+                <Box component="form" sx={{ mt: 1 }}>
                     <TextField
                         margin="normal"
                         required
@@ -56,25 +48,26 @@ function LoginForm() {
                         label="Salasana"
                         autoComplete="current-password"
                     />
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="Muista minut"
-                    />
+                    <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Muista minut" />
                     <Button type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>
                         Sisään
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link variant="body2" href="http://ESLintMeeMuikulle.com/">Unohtunut salasana?</Link>
+                            <Typography variant="body2" component={Link} to="/doesnotexist/">
+                                Unohtunut salasana?
+                            </Typography>
                         </Grid>
                         <Grid item>
-                            <Link variant="body2" href="http://ESLintMeeMuikulle.com/">Rekisteröidy</Link>
+                            <Typography variant="body2" component={Link} to="/signup/">
+                                Rekisteröidy
+                            </Typography>
                         </Grid>
                     </Grid>
                 </Box>
             </Box>
         </Container>
-    )
+    );
 }
 
 export default LoginForm;

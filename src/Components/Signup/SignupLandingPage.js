@@ -1,4 +1,4 @@
-// import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import {
     Avatar,
@@ -30,7 +30,7 @@ function SignUpCards() {
         <Grid container spacing={2}>
             <Grid item xs={6} marginBottom={6}>
                 <Card sx={[iconHover, { minWidth: 220, padding: 0 }]}>
-                    <CardActionArea>
+                    <CardActionArea component={Link} to="/signup/user">
                         <Box
                             sx={{
                                 display: 'flex',
@@ -67,7 +67,7 @@ function SignUpCards() {
 
             <Grid item xs={6} marginBottom={6}>
                 <Card sx={[iconHover, { minWidth: 220, padding: 0 }]}>
-                    <CardActionArea>
+                    <CardActionArea component={Link} to="/signup/location">
                         <Box
                             sx={{
                                 display: 'flex',

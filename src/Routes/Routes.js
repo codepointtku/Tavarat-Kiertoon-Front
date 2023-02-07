@@ -102,12 +102,16 @@ function Routes() {
                     },
                 },
                 {
-                    path: '/dummy',
+                    path: '/signup',
                     element: <Dummy />,
                 },
                 {
-                    path: '/superdummy',
+                    path: '/signup/user',
                     element: <SignupPage />,
+                },
+                {
+                    path: '/signup/location',
+                    element: <SignupPage isLocationForm />,
                 },
             ],
         },
