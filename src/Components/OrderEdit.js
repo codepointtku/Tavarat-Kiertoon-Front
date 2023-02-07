@@ -9,8 +9,8 @@ import {
     TableRow,
     TableBody,
 } from '@mui/material';
-import { useState, useEffect, generatePath } from 'react';
-import { useLoaderData, useLocation, useNavigate } from 'react-router';
+import { useState, useEffect } from 'react';
+import { useLoaderData, useLocation, useNavigate, generatePath } from 'react-router';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
 
