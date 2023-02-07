@@ -1,18 +1,26 @@
 import { useState } from 'react';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import { Button } from '@mui/material';
+import { useSubmit } from 'react-router-dom';
 
-
-function AddToCartButton({size, productName}){
+function AddToCartButton({ size, id, productName }) {
     const [addedToCart, setAddedToCart] = useState(false);
     const [addToCartButtonValue, setValue] = useState('Lisää koriin');
+    const submit = useSubmit();
 
     const handleClickAddToCartBtn = () => {
         setAddedToCart(!addedToCart);
+        // To do: Lisää timer
         setValue(addToCartButtonValue === 'Lisätty!' ? 'Lisää koriin' : 'Lisätty!');
-        console.log(productName);
-    }
+        submit(
+            { id, productName },
+            {
+                method: 'post',
+                action: '/',
+            }
+        );
+    };
 
     return (
         <Button
@@ -22,15 +30,15 @@ function AddToCartButton({size, productName}){
             startIcon={<AddShoppingCartOutlinedIcon />}
             onClick={handleClickAddToCartBtn}
         >
-        {addToCartButtonValue}
+            {addToCartButtonValue}
         </Button>
-    )
-
+    );
 }
 
 AddToCartButton.propTypes = {
     size: PropTypes.string.isRequired,
-    productName: PropTypes.string.isRequired
-}
+    id: PropTypes.string.isRequired,
+    productName: PropTypes.string.isRequired,
+};
 
-export default AddToCartButton
+export default AddToCartButton;

@@ -100,7 +100,7 @@ function ProductDetails() {
                         </Button>
                     </CardContent>
                     <CardActions>
-                        <AddToCartButton size="medium"/>
+                        <AddToCartButton size="medium" productName={productName} />
                     </CardActions>
                 </Card>
             </Container>

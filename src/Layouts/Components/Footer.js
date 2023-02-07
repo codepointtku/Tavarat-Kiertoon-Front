@@ -24,9 +24,9 @@ export default function Footer() {
                         Yhteystiedot{' '}
                     </Typography>
 
-                    <Typography> {data.phoneNumber} </Typography>
+                    <Typography> {data.contacts.phoneNumber} </Typography>
 
-                    <Typography>{data.address}</Typography>
+                    <Typography>{data.contacts.address}</Typography>
 
                     <MuiLink href="https://github.com/codepointtku/Tavarat-Kiertoon-Front" color="#663900">
                         <GitHubIcon />

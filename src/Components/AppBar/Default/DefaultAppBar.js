@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLoaderData } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 
@@ -118,6 +118,7 @@ function Drawer({ currentOpenDrawer, name, children }) {
 
 function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState(null);
+    const navigate = useNavigate();
 
     const drawerOpen = (drawer) => () => {
         if (currentOpenDrawer === drawer) {
@@ -126,7 +127,10 @@ function DefaultAppBar() {
             setCurrentOpenDrawer(drawer);
         }
     };
-    const navigate = useNavigate();
+    
+    const {cart} = useLoaderData();
+
+    console.log(cart)
 
     return (
         <Box>
@@ -175,8 +179,8 @@ function DefaultAppBar() {
             <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart">
                 {/* tähän oma komponentti.. */}
                 <List>
-                    {['Jakkara', 'Nahkasohva', 'Piirtoheitin', 'Chuck Norriksen verkkarit'].map((text, index) => (
-                        <ItemButton text={text} index={index}/>
+                    {cart.map((items) => (
+                        <ItemButton text={items.productName} index={items.id} />
                     ))}
                 </List>
                 <Divider />

@@ -41,15 +41,28 @@ function Routes() {
                 <Base>
                     <DefaultView />
                 </Base>
-            ),loader: async () => {
-                const { data } = await axios.get('http://localhost:3001/contacts');
-                return data;
+            ),
+            loader: async () => {
+                const { data: contacts } = await axios.get('http://localhost:3001/contacts');
+                const { data: cart } = await axios.get('http://localhost:3001/shopping-cart');
+                return { contacts, cart };
             },
-            
+
             children: [
                 {
                     path: '/',
                     element: <ProductList />,
+                    action: async ({ request }) => {
+                        const formData = await request.formData();
+                        // const data = {};
+                        // formData.forEach((value, key) => {
+                        //     data[key] = value;
+                        // });
+                        const id = Number(formData.get('id'));
+                        const productName = formData.get('productName');
+                        await axios.post('http://localhost:3001/shopping-cart', { id, productName });
+                        return null;
+                    },
                     loader: async () => {
                         const { data } = await axios.get('http://localhost:3001/products');
                         return data;
@@ -94,8 +107,8 @@ function Routes() {
                     path: '/tiedotteet',
                     element: <Announcements />,
                     loader: async () => {
-                        const { data } = await axios.get('http://localhost:3001/announcements');
                         try {
+                            const { data } = await axios.get('http://localhost:3001/announcements');
                             return data;
                         } catch {
                             return null;
