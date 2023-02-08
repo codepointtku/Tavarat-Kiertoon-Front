@@ -87,10 +87,6 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
         setUsedParams('page', 0);
     };
 
-    const createPDFButtonHandler = () => {
-        navigate('/varasto/pdf', { state: { data: order } });
-    };
-
     useEffect(() => {
         if (page > Math.floor(orderList.length / rowsPerPage)) {
             setUsedParams('page', Math.floor(orderList.length / rowsPerPage));
@@ -224,11 +220,15 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
             >
                 Muokkaa tilausta
             </Button>
+            <Button
+                sx={{ margin: '2rem' }}
+                onClick={ () => navigate('/varasto/pdf', { state: order })}
+            >
+                test PDF
+            </Button>
             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
                 <Link to="/varasto/pdf" state={{ data: order }}>
-                    <Button color="error" onClick={createPDFButtonHandler}>
                         Create PDF
-                    </Button>
                 </Link>
             </Box>
         </>
