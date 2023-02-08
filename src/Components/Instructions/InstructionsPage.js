@@ -54,24 +54,31 @@ const helpTopics = [
     },
 ];
 
-const HelpTopicCards = helpTopics.map((card) => (
-    <Grid item key={card.topic_id}>
-        <InstructionCard
-            topic={card.topic}
-            subheader={card.subheader}
-            img={card.img}
-            imgAlt={card.imgAlt}
-            contentheader={card.contentheader}
-        />
-    </Grid>
-));
+function HelpTopicCards() {
+    const iconHover = {
+        '&:hover .MuiAvatar-root': {
+            backgroundColor: 'secondary.dark',
+        },
+    };
+    return helpTopics.map((card) => (
+        <Grid item key={card.topic_id} sx={iconHover}>
+            <InstructionCard
+                topic={card.topic}
+                subheader={card.subheader}
+                img={card.img}
+                imgAlt={card.imgAlt}
+                contentheader={card.contentheader}
+            />
+        </Grid>
+    ));
+}
 
 function InstructionsPage() {
     return (
         <Paper>
             <Container maxWidth="lg">
                 <Grid container spacing={2}>
-                    {HelpTopicCards}
+                    <HelpTopicCards />
                 </Grid>
             </Container>
         </Paper>

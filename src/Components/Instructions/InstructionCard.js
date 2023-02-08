@@ -10,7 +10,7 @@ function InstructionCard({ topic, subheader, img, imgAlt, contentheader }) {
         <Card sx={{ maxWidth: 345 }}>
             <CardHeader
                 avatar={
-                    <Avatar sx={{ bgcolor: 'secondary.main' }} aria-label="hi_dad">
+                    <Avatar aria-label="icon" sx={{ bgcolor: 'secondary.main' }}>
                         <ChatBubbleOutlineIcon />
                     </Avatar>
                 }
