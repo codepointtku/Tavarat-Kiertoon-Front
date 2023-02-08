@@ -54,16 +54,15 @@ function Routes() {
                     path: '/',
                     element: <ProductList />,
                     action: async ({ request }) => {
-                        if (request.method === 'POST') {
-                            const formData = await request.formData();
+                        const formData = await request.formData();
+                        if (formData.has('index') === false) {
                             const id = Number(formData.get('id'));
                             const productName = formData.get('productName');
                             await axios.post('http://localhost:3001/shopping-cart', { id, productName });
-                        } else if (request.method === 'DELETE') {
-                            // console.log('Method is ', request.method);
-                            await axios.delete('http://localhost:3001/shopping-cart');
-                        } else {
-                            console.log('unidentified');
+                        } else if (formData.has('index') === true) {
+                            const index = Number(formData.get('index'));
+                            console.log(index);
+                            await axios.delete(`http://localhost:3001/shopping-cart/${index}`);
                         }
                         return null;
                     },

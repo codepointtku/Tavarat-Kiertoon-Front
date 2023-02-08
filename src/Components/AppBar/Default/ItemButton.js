@@ -10,8 +10,13 @@ function ItemButton({ text, index }) {
     const [hoveredOver, setHoveredOver] = useState(false);
     const submit = useSubmit();
 
+    // index = id
+    // id muuttuu 0 routesissa
+
+    console.log(index)
+
     const handleClick = useCallback(() => {
-        submit(null, {
+        submit({ index }, {
             method: 'delete',
             action: '/',
         });
