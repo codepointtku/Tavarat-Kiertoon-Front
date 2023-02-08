@@ -61,7 +61,6 @@ function Routes() {
                             await axios.post('http://localhost:3001/shopping-cart', { id, productName });
                         } else if (formData.has('index') === true) {
                             const index = Number(formData.get('index'));
-                            console.log(index);
                             await axios.delete(`http://localhost:3001/shopping-cart/${index}`);
                         }
                         return null;
