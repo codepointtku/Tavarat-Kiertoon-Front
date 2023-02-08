@@ -1,17 +1,6 @@
-import {
-    Avatar,
-    Card,
-    CardHeader,
-    CardMedia,
-    CardActionArea,
-    Container,
-    Grid,
-    Paper,
-    Typography,
-    CardContent,
-} from '@mui/material';
+import { Container, Grid, Paper } from '@mui/material';
 
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import InstructionCard from './InstructionCard';
 
 //
 
@@ -19,94 +8,70 @@ const contents = ['ohje1', 'ohje2', 'ohje3'];
 
 const helpTopics = [
     {
+        topic_id: 1,
         topic: 'Yleiset ohjeet',
         subheader: 'Vastauksia yleisimpiin aiheisiin',
         img: 'common_help.jpg',
-        img_alt: 'alt text yleiset',
+        imgAlt: 'alt text yleiset',
         contentheader: 'Napauta korttia avataksesi',
         content: contents,
     },
     {
+        topic_id: 2,
         topic: 'Käyttäjätili',
         subheader: 'Tilien tarkemmat käyttöohjeet',
-        img: 'common_help.jpg',
-        img_alt: 'alt text tilit',
+        img: 'account_help.jpg',
+        imgAlt: 'alt text tilit',
         contentheader: 'Napauta korttia avataksesi',
         content: contents,
     },
     {
+        topic_id: 3,
         topic: 'Tilaaminen',
         subheader: 'Tilaamisen tarkemmat ohjeet',
-        img: 'common_help.jpg',
-        img_alt: 'alt text tilaaminen',
+        img: 'ordering_help.jpg',
+        imgAlt: 'alt text tilaaminen',
         contentheader: 'Napauta korttia avataksesi',
         content: contents,
     },
     {
+        topic_id: 4,
         topic: 'Tavaran nouto',
         subheader: 'Ohjeet noutokuljetuksen tilaamiseen',
-        img: 'common_help.jpg',
-        img_alt: 'alt text nouto',
+        img: 'nouto_help.jpg',
+        imgAlt: 'alt text nouto',
         contentheader: 'Napauta korttia avataksesi',
         content: contents,
     },
     {
+        topic_id: 5,
         topic: 'Pyörävuokraamo',
         subheader: 'Polkupyöriin liittyvät säännöt & ohjeet',
-        img: 'common_help.jpg',
-        img_alt: 'alt text nouto',
+        img: 'bikes_help.jpg',
+        imgAlt: 'alt text nouto',
         contentheader: 'Napauta korttia avataksesi',
         content: contents,
     },
 ];
 
-const HelpTopicCards = helpTopics.map((card) => card);
-
-console.log(HelpTopicCards);
-
-function HelpTopicCard() {
-    return (
-        <Card sx={{ maxWidth: 345 }}>
-            <CardHeader
-                avatar={
-                    <Avatar sx={{ bgcolor: 'secondary.main' }} aria-label="hi_dad">
-                        <ChatBubbleOutlineIcon />
-                    </Avatar>
-                }
-                title="Shrimp and Chorizo Paella"
-                subheader="September 14, 2016"
-            />
-            <CardActionArea>
-                <CardMedia
-                    component="img"
-                    height="200"
-                    image="/static/images/cards/paella.jpg"
-                    alt="dads_favourite_food"
-                />
-                <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                        Tähän teksti muuttujasta
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-        </Card>
-    );
-}
+const HelpTopicCards = helpTopics.map((card) => (
+    <Grid item key={card.topic_id}>
+        <InstructionCard
+            topic={card.topic}
+            subheader={card.subheader}
+            img={card.img}
+            imgAlt={card.imgAlt}
+            contentheader={card.contentheader}
+        />
+    </Grid>
+));
 
 function InstructionsPage() {
     return (
         <Paper>
             <Container maxWidth="lg">
                 <Grid container spacing={2}>
-                    <Grid item>
-                        <HelpTopicCard />
-                    </Grid>
-                    <Grid item>
-                        <HelpTopicCard />
-                    </Grid>
-                    <Grid item>
-                        <HelpTopicCard />
-                    </Grid>
+                    {HelpTopicCards}
                 </Grid>
             </Container>
         </Paper>
