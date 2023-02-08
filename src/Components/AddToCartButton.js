@@ -37,7 +37,7 @@ function AddToCartButton({ size, id, productName }) {
 
 AddToCartButton.propTypes = {
     size: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     productName: PropTypes.string.isRequired,
 };
 

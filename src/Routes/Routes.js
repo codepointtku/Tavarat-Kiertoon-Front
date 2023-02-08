@@ -60,7 +60,7 @@ function Routes() {
                             const productName = formData.get('productName');
                             await axios.post('http://localhost:3001/shopping-cart', { id, productName });
                         } else if (request.method === 'DELETE') {
-                            console.log('Method is ', request.method);
+                            // console.log('Method is ', request.method);
                             await axios.delete('http://localhost:3001/shopping-cart');
                         } else {
                             console.log('unidentified');
