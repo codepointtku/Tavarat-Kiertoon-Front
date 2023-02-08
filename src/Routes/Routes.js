@@ -186,7 +186,7 @@ function Routes() {
                     path: '/varasto/tilaus/:id/muokkaa',
                     element: <OrderEdit />,
                     loader: async ({ params }) => {
-                        const { data } = await axios.get(`http://localhost:3001/orders/${params.id}`);
+                        const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
                         if (data) {
                             return data;
                         }

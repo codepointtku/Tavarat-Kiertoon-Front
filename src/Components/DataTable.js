@@ -49,6 +49,7 @@ function OrderListTable({ page, rowsPerPage, setUsedParams }) {
                         <StyledTableCell align="right">Status</StyledTableCell>
                         <StyledTableCell align="right">Toimitusosoite</StyledTableCell>
                         <StyledTableCell align="right">Tilaaja</StyledTableCell>
+                        <StyledTableCell align="right">Yhteystiedot</StyledTableCell>
                         <StyledTableCell align="right">Päivämäärä</StyledTableCell>
                     </TableRow>
                 </TableHead>
@@ -63,6 +64,7 @@ function OrderListTable({ page, rowsPerPage, setUsedParams }) {
                             </StyledTableCell>
                             <StyledTableCell align="right">{row.status}</StyledTableCell>
                             <StyledTableCell align="right">{row.delivery_address}</StyledTableCell>
+                            <StyledTableCell align="right">{row.user}</StyledTableCell>
                             <StyledTableCell align="right">{row.contact}</StyledTableCell>
                             <StyledTableCell align="right">{row.delivery_date}</StyledTableCell>
                         </StyledTableRow>

@@ -13,6 +13,7 @@ import {
     Collapse,
     TablePagination,
     Button,
+    Card,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useLoaderData, useNavigate } from 'react-router-dom';
@@ -101,6 +102,11 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
 
     return (
         <>
+            <Card>
+                <h2 align="center">Tilauksen lisätieto</h2>
+                <p align="center">{order.order_info}</p>
+            </Card>
+            <h2 align="center">Tilauksen tuotteet</h2>
             <TableContainer component={Paper} sx={{ padding: '2rem' }}>
                 <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
                     <TableHead>
