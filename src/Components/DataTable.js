@@ -59,9 +59,9 @@ function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
                                     <Link to={`/varasto/tilaus/${row.id}?page=0&rows=5`}>{row.id}</Link>
                                 </StyledTableCell>
                                 <StyledTableCell align="right">{row.status}</StyledTableCell>
-                                <StyledTableCell align="right">{row.address}</StyledTableCell>
-                                <StyledTableCell align="right">{row.recipient}</StyledTableCell>
-                                <StyledTableCell align="right">{row.date}</StyledTableCell>
+                                <StyledTableCell align="right">{row.delivery_address}</StyledTableCell>
+                                <StyledTableCell align="right">{row.contact}</StyledTableCell>
+                                <StyledTableCell align="right">{row.delivery_date}</StyledTableCell>
                             </StyledTableRow>
                         )
                     )}
