@@ -24,6 +24,7 @@ import UserEdit from '../Components/UserEdit';
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
 import Announcements from '../Components/Announcements';
+import InstructionsPage from '../Components/Instructions/InstructionsPage';
 import FaqView from '../Components/FaqView';
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
@@ -81,6 +82,10 @@ function Routes() {
                         const { data } = await axios.get('http://localhost:3001/contacts');
                         return data;
                     },
+                },
+                {
+                    path: '/help',
+                    element: <InstructionsPage />,
                 },
                 {
                     path: '/faq',
