@@ -15,7 +15,7 @@ import { useContext, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 
 import AuthContext from '../../Context/AuthContext';
-import { sizeOptions, typeOptions } from './BikesPage';
+import { sizeOptions, typeOptions } from './BikeCard';
 
 const itemData = [
     {
