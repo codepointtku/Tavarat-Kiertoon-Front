@@ -1,4 +1,4 @@
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
 import axios from 'axios';
@@ -65,8 +65,14 @@ function Routes() {
                             },
                         },
                         {
+                            // Redirect if no id is given
+                            path: '/tuotteet',
+                            element: <Navigate to="/" />,
+                        },
+                        {
                             path: '/tuotteet/:id',
                             element: <ProductDetails />,
+                            errorElement: <ErrorBoundary />,
                             loader: async ({ params }) => {
                                 const { data } = await axios.get(`http://localhost:8000/products/${params.id}`);
                                 return data;
