@@ -30,12 +30,11 @@ import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
 import DeliveryView from '../Components/DeliveryView';
 import BackgroundInfo from '../Components/Backgroundinfo';
-
 import StatsPage from '../Components/Stats/StatsPage';
 import ErrorBoundary from '../Components/ErrorBoundary';
 
-// import SignupLandingPage from '../Components/Signup/SignupLandingPage';
-// import SignupPage from '../Components/Signup/SignupPage';
+import SignupLandingPage from '../Components/Signup/SignupLandingPage';
+import SignupPage from '../Components/Signup/SignupPage';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -111,18 +110,18 @@ function Routes() {
                                 }
                             },
                         },
-                        // {
-                        //     path: '/signup',
-                        //     element: <SignupLandingPage />,
-                        // },
-                        // {
-                        //     path: '/signup/user',
-                        //     element: <SignupPage isLocationForm={false} />,
-                        // },
-                        // {
-                        //     path: '/signup/location',
-                        //     element: <SignupPage isLocationForm />,
-                        // },
+                        {
+                            path: '/signup',
+                            element: <SignupLandingPage />,
+                        },
+                        {
+                            path: '/signup/user',
+                            element: <SignupPage isLocationForm={false} />,
+                        },
+                        {
+                            path: '/signup/location',
+                            element: <SignupPage isLocationForm />,
+                        },
                     ],
                 },
                 {

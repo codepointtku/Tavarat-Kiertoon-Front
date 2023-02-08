@@ -1,4 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { devices } from '@playwright/test';
 
 /**
@@ -12,6 +13,11 @@ import { devices } from '@playwright/test';
  * @type {import('@playwright/test').PlaywrightTestConfig}
  */
 const config = {
+    webServer: {
+        command: 'react-scripts start',
+        port: 3000,
+    },
+
     testDir: './tests',
     /* Maximum time one test can run for. */
     timeout: 30 * 1000,
@@ -37,7 +43,7 @@ const config = {
         /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
         actionTimeout: 0,
         /* Base URL to use in actions like `await page.goto('/')`. */
-        baseURL: 'http://localhost/',
+        baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:3000',
 
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
         trace: 'on',
@@ -58,7 +64,6 @@ const config = {
                 ...devices['Desktop Firefox'],
             },
         },
-
         {
             name: 'webkit',
             use: {
