@@ -1,14 +1,33 @@
-import { useRouteError } from 'react-router';
+import { Alert, AlertTitle, Box, Button, Typography } from '@mui/material';
+import { useLocation, useRouteError } from 'react-router';
+import { Link } from 'react-router-dom';
 
-function ErrorElement() {
+function ErrorBoundary() {
     const error = useRouteError();
-    console.error(error);
+    const location = useLocation();
     return (
-        <div>
-            <h4>Onko serveri päällä?</h4>
-            <h4>Onko tonipal kahvilla??</h4>
-        </div>
+        <Box height={320}>
+            <Alert severity="warning">
+                <AlertTitle>Jokin meni pieleen</AlertTitle>
+                {error?.response?.status === 404 ? (
+                    // 404 page for product or page not found
+                    <Typography variant="h6">
+                        Etsimääsi {location.pathname.includes('/tuotteet/') ? 'tuotetta' : 'sivua'} ei valitettavasti
+                        löydy.
+                    </Typography>
+                ) : (
+                    // Generic error page
+                    <>
+                        <Typography>Onko serveri päällä?</Typography>
+                        <Typography>Onko tonipal kahvilla??</Typography>
+                    </>
+                )}
+                <Button component={Link} to="/" sx={{ marginTop: '1em' }}>
+                    Takaisin etusivulle
+                </Button>
+            </Alert>
+        </Box>
     );
 }
 
-export default ErrorElement;
+export default ErrorBoundary;
