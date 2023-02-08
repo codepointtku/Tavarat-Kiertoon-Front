@@ -112,7 +112,7 @@ function Routes() {
                 },
                 {
                     path: '/signup/user',
-                    element: <SignupPage />,
+                    element: <SignupPage isLocationForm={false} />,
                 },
                 {
                     path: '/signup/location',
