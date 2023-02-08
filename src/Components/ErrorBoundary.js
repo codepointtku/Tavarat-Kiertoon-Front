@@ -1,12 +1,31 @@
 import { Alert, AlertTitle, Box, Button, Typography } from '@mui/material';
-import { useLocation, useRouteError } from 'react-router';
-import { Link } from 'react-router-dom';
+import { useLocation, useNavigate, useRouteError, Link } from 'react-router-dom';
 
 function ErrorBoundary() {
     const error = useRouteError();
     const location = useLocation();
+    const navigate = useNavigate();
+
+    // //Conditional navigation for returning to admin and varasto pages
+    // let path = '/';
+    // let title = 'etusivulle';
+    // if (location.pathname.includes('/varasto/')) {
+    //     path = '/varasto';
+    //     title = 'varastoon';
+    // } else if (location.pathname.includes('/admin/')) {
+    //     path = '/admin';
+    //     title = 'hallintaan';
+    // } else {
+    //     path = '/';
+    // title = 'etusivulle';
+    // }
+
+    const handleGoBack = () => {
+        navigate(-1);
+    };
+
     return (
-        <Box height={320}>
+        <Box minHeight={320}>
             <Alert severity="warning">
                 <AlertTitle>Jokin meni pieleen</AlertTitle>
                 {error?.response?.status === 404 ? (
@@ -16,15 +35,20 @@ function ErrorBoundary() {
                         löydy.
                     </Typography>
                 ) : (
-                    // Generic error page
+                    // Generic error page, to be refined
                     <>
                         <Typography>Onko serveri päällä?</Typography>
                         <Typography>Onko tonipal kahvilla??</Typography>
                     </>
                 )}
-                <Button component={Link} to="/" sx={{ marginTop: '1em' }}>
-                    Takaisin etusivulle
-                </Button>
+                <Box>
+                    <Button onClick={handleGoBack} sx={{ margin: '1em' }}>
+                        Takaisin
+                    </Button>
+                    <Button component={Link} to="/" sx={{ margin: '1em' }}>
+                        Takaisin etusivulle
+                    </Button>
+                </Box>
             </Alert>
         </Box>
     );
