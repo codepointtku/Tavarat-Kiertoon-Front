@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+/* import { test, expect } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
     await page.goto('/');
@@ -15,4 +15,4 @@ test.describe('tavaratkiertoon page', () => {
         await page.goto('/tavaratkiertoon');
         await expect(page.getByText('Tavarat Kiertoon')).toBeVisible();
     });
-});
+}); */

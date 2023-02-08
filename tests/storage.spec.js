@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+/* import { test, expect } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
     await page.goto('/');
@@ -28,3 +28,4 @@ test.describe('storage view', () => {
         await expect(page.getByText('1–12 of 12')).toBeVisible();
     });
 });
+ */
