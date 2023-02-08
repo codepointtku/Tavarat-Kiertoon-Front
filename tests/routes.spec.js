@@ -105,3 +105,24 @@ test.describe('hakemukset', () => {
         await expect(page.getByText('404 Not Found')).not.toBeVisible();
     });
 });
+
+test.describe('signup', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/signup');
+        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+    });
+});
+
+test.describe('signupuser', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/signup/user');
+        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+    });
+});
+
+test.describe('signuplocation', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/signup/location');
+        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+    });
+});
