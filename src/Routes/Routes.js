@@ -54,11 +54,15 @@ function Routes() {
                             <DefaultView />
                         </Base>
                     ),
+                    errorElement: (
+                        <Base>
+                            <ErrorBoundary />
+                        </Base>
+                    ),
                     children: [
                         {
                             path: '/',
                             element: <ProductList />,
-                            errorElement: <ErrorBoundary />,
                             loader: async () => {
                                 const { data } = await axios.get('http://localhost:8000/products/');
                                 return data.results;
@@ -72,7 +76,6 @@ function Routes() {
                         {
                             path: '/tuotteet/:id',
                             element: <ProductDetails />,
-                            errorElement: <ErrorBoundary />,
                             loader: async ({ params }) => {
                                 const { data } = await axios.get(`http://localhost:8000/products/${params.id}`);
                                 return data;
@@ -122,6 +125,13 @@ function Routes() {
                         <ThemeProvider theme={storageTheme}>
                             <Storage>
                                 <StorageView />
+                            </Storage>
+                        </ThemeProvider>
+                    ),
+                    errorElement: (
+                        <ThemeProvider theme={storageTheme}>
+                            <Storage>
+                                <ErrorBoundary />
                             </Storage>
                         </ThemeProvider>
                     ),
@@ -207,6 +217,13 @@ function Routes() {
                         <ThemeProvider theme={adminTheme}>
                             <Admin>
                                 <AdminView />
+                            </Admin>
+                        </ThemeProvider>
+                    ),
+                    errorElement: (
+                        <ThemeProvider theme={adminTheme}>
+                            <Admin>
+                                <ErrorBoundary />
                             </Admin>
                         </ThemeProvider>
                     ),
