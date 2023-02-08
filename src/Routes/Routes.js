@@ -28,12 +28,14 @@ import FaqView from '../Components/FaqView';
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
-import Delivery from '../Components/DeliveryView';
+import DeliveryView from '../Components/DeliveryView';
 import BackgroundInfo from '../Components/Backgroundinfo';
 
 import StatsPage from '../Components/Stats/StatsPage';
-import Dummy from '../Components/Treeview/DummyDevPage';
 import ErrorBoundary from '../Components/ErrorBoundary';
+
+// import SignupLandingPage from '../Components/Signup/SignupLandingPage';
+// import SignupPage from '../Components/Signup/SignupPage';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -86,8 +88,8 @@ function Routes() {
                             element: <FaqView />,
                         },
                         {
-                            path: '/delivery',
-                            element: <Delivery />,
+                            path: '/toimitus',
+                            element: <DeliveryView />,
                         },
                         {
                             path: '/backgroundinfo',
@@ -109,14 +111,18 @@ function Routes() {
                                 }
                             },
                         },
-                        {
-                            path: '/dummy',
-                            element: <Dummy />,
-                            loader: async () => {
-                                const { data } = await axios.get('http://localhost:3001/categories');
-                                return data;
-                            },
-                        },
+                        // {
+                        //     path: '/signup',
+                        //     element: <SignupLandingPage />,
+                        // },
+                        // {
+                        //     path: '/signup/user',
+                        //     element: <SignupPage isLocationForm={false} />,
+                        // },
+                        // {
+                        //     path: '/signup/location',
+                        //     element: <SignupPage isLocationForm />,
+                        // },
                     ],
                 },
                 {
@@ -140,7 +146,7 @@ function Routes() {
                             path: '/varasto/:num/:view',
                             element: <OrdersList />,
                             loader: async ({ params }) => {
-                                const { data } = await axios.get('http://localhost:3001/orders');
+                                const { data } = await axios.get('http://localhost:8000/orders');
                                 // num will tell back-end which entries to bring
                                 // view is order status, unless archived can bring all?
                                 // or will be replaced into the back-end later?
@@ -172,8 +178,18 @@ function Routes() {
                             path: '/varasto/tilaus/:id',
                             element: <OrderView />,
                             loader: async ({ params }) => {
-                                const { data } = await axios.get(`http://localhost:3001/orders/${params.id}`);
+                                const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
+                                const productFind = async (id) => {
+                                    const product = await axios.get(`http://localhost:8000/products/${id}`);
+                                    return product;
+                                };
+                                const newProducts = await Promise.all(data.products.map((entry) => productFind(entry)));
+
+                                data.products.forEach((entry) => {
+                                    productFind(entry);
+                                });
                                 if (data) {
+                                    data.productList = newProducts;
                                     return data;
                                 }
                                 return null;
