@@ -28,7 +28,7 @@ import FaqView from '../Components/FaqView';
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
-import Delivery from '../toimitus';
+import Delivery from '../Components/DeliveryView';
 import BackgroundInfo from '../Components/Backgroundinfo';
 
 import StatsPage from '../Components/Stats/StatsPage';
@@ -79,10 +79,6 @@ function Routes() {
                         {
                             path: '/delivery',
                             element: <Delivery />,
-                            // loader: async () => {
-                            //     const { data } = await axios.get('http://localhost:3001/contacts');
-                            //     return data;
-                            // },
                         },
                         {
                             path: '/backgroundinfo',
