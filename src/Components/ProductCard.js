@@ -19,7 +19,7 @@ function ProductCard({ productName, id }) {
         <Box sx={{ minWidth: 240 }}>
             <Card sx={{ maxWidth: 300 }}>
                 <CardActionArea component={Link} to={`/tuotteet/${id}`}>
-                    <CardMedia component="img" alt="kuva" height="200" image="br.jpg" />
+                    <CardMedia component="img" alt="kuva" height="200" image="tonipal_kahville.jpg" />
                     <CardContent>
                         <Typography variant="h6">{productName}</Typography>
                     </CardContent>

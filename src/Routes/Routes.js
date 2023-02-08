@@ -30,9 +30,10 @@ import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
 import Delivery from '../toimitus';
 import BackgroundInfo from '../Components/Backgroundinfo';
-
 import StatsPage from '../Components/Stats/StatsPage';
-import Dummy from '../Components/Treeview/DummyDevPage';
+
+import SignupLandingPage from '../Components/Signup/SignupLandingPage';
+import SignupPage from '../Components/Signup/SignupPage';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -74,16 +75,16 @@ function Routes() {
                     },
                 },
                 {
-                    path: '/faq',
-                    element: <FaqView />,
-                },
-                {
                     path: '/delivery',
                     element: <Delivery />,
                     loader: async () => {
                         const { data } = await axios.get('http://localhost:3001/contacts');
                         return data;
                     },
+                },
+                {
+                    path: '/faq',
+                    element: <FaqView />,
                 },
                 {
                     path: '/backgroundinfo',
@@ -106,12 +107,16 @@ function Routes() {
                     },
                 },
                 {
-                    path: '/dummy',
-                    element: <Dummy />,
-                    loader: async () => {
-                        const { data } = await axios.get('http://localhost:3001/categories');
-                        return data;
-                    },
+                    path: '/signup',
+                    element: <SignupLandingPage />,
+                },
+                {
+                    path: '/signup/user',
+                    element: <SignupPage isLocationForm={false} />,
+                },
+                {
+                    path: '/signup/location',
+                    element: <SignupPage isLocationForm />,
                 },
             ],
         },
