@@ -119,6 +119,7 @@ function Drawer({ currentOpenDrawer, name, children }) {
 function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState(null);
     const navigate = useNavigate();
+    const { cart } = useLoaderData();
 
     const drawerOpen = (drawer) => () => {
         if (currentOpenDrawer === drawer) {
@@ -127,8 +128,6 @@ function DefaultAppBar() {
             setCurrentOpenDrawer(drawer);
         }
     };
-
-    const { cart } = useLoaderData();
 
     console.log(cart);
 

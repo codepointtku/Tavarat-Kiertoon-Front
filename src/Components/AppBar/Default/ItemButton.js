@@ -11,15 +11,17 @@ function ItemButton({ text, index }) {
     const submit = useSubmit();
 
     // index = id
-    // id muuttuu 0 routesissa
 
-    console.log(index)
+    console.log(index);
 
     const handleClick = useCallback(() => {
-        submit({ index }, {
-            method: 'delete',
-            action: '/',
-        });
+        submit(
+            { index },
+            {
+                method: 'delete',
+                action: '/',
+            }
+        );
     });
 
     return (

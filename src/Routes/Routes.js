@@ -45,6 +45,7 @@ function Routes() {
                     <DefaultView />
                 </Base>
             ),
+            id: 'base',
             loader: async () => {
                 const { data: contacts } = await axios.get('http://localhost:3001/contacts');
                 const { data: cart } = await axios.get('http://localhost:3001/shopping-cart');
@@ -68,8 +69,8 @@ function Routes() {
                     },
                     loader: async () => {
                         try {
-                            const { data } = await axios.get('http://localhost:3001/products/');
-                            return data;
+                            const { data: products } = await axios.get('http://localhost:3001/products/');
+                            return { products };
                         } catch {
                             return null;
                         }

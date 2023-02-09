@@ -1,18 +1,14 @@
-import { useState } from 'react';
+import { useSubmit, useRouteLoaderData } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import { Button } from '@mui/material';
-import { useSubmit } from 'react-router-dom';
 
 function AddToCartButton({ size, id, productName }) {
-    const [addedToCart, setAddedToCart] = useState(false);
-    const [itemCount, setItemCount] = useState(null);
+    const { cart } = useRouteLoaderData('base');
     const submit = useSubmit();
+    const cartItems = cart.map((item) => item.productName).filter((name) => name === productName);
 
     const handleClickAddToCartBtn = () => {
-        setAddedToCart(!addedToCart);
-        // To do: Lisää timer
-        setItemCount((prevCount) => `(${prevCount + 1} kpl)`);
         submit(
             { id, productName },
             {
@@ -24,13 +20,13 @@ function AddToCartButton({ size, id, productName }) {
 
     return (
         <Button
-            color={addedToCart ? 'success' : 'primary'}
+            color={cartItems.length > 0 ? 'success' : 'primary'}
             size={size}
             aria-label="add to shopping cart"
             startIcon={<AddShoppingCartOutlinedIcon />}
             onClick={handleClickAddToCartBtn}
         >
-            Lisää koriin <br /> {itemCount}
+            Lisää koriin <br /> {cartItems.length > 0 && `(${cartItems.length}) kpl`}
         </Button>
     );
 }
