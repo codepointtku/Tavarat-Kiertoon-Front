@@ -18,7 +18,7 @@ function TilausNro() {
 }
 
 function ContactPage() {
-    const [subject, setSubject] = useState('Yleinen palaute');
+    const [subject, setSubject] = useState();
     const { register, handleSubmit } = useForm();
 
     const handleChange = (event) => {
