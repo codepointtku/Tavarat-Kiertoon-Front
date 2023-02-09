@@ -63,25 +63,25 @@ function OrderEdit() {
             <Box align="center">
                 <div>
                     <h5>
-                        <TextField disabled defaultValue={orderData.recipient} label="Alkuperäinen nimi" />
+                        <TextField disabled defaultValue={orderData.contact} label="Alkuperäinen yhteystieto" />
                         <TextField
-                            label="Muokkaa tilaajan nimeä"
+                            label="Muokkaa yhteystietoa"
                             onChange={(event) => {
-                                handleChange('recipient', event);
+                                handleChange('contact', event);
                             }}
-                            defaultValue={orderData.recipient}
+                            defaultValue={orderData.contact}
                         />
                     </h5>
                 </div>
                 <div>
                     <h5>
-                        <TextField disabled defaultValue={orderData.address} label="Alkuperäinen osoite" />
+                        <TextField disabled defaultValue={orderData.delivery_address} label="Alkuperäinen osoite" />
                         <TextField
                             label="Muokkaa toimitusosoitetta"
                             onChange={(event) => {
-                                handleChange('address', event);
+                                handleChange('delivery_address', event);
                             }}
-                            defaultValue={orderData.address}
+                            defaultValue={orderData.delivery_address}
                         />
                     </h5>
                 </div>
@@ -94,6 +94,18 @@ function OrderEdit() {
                                 handleChange('status', event);
                             }}
                             defaultValue={orderData.status}
+                        />
+                    </h5>
+                </div>
+                <div>
+                    <h5>
+                        <TextField disabled defaultValue={orderData.order_info} label="Alkuperäinen lisätieto" />
+                        <TextField
+                            label="Muokkaa lisätietoa"
+                            onChange={(event) => {
+                                handleChange('order_info', event);
+                            }}
+                            defaultValue={orderData.order_info}
                         />
                     </h5>
                 </div>

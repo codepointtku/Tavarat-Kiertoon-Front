@@ -10,15 +10,16 @@ import {
     TableRow,
     Paper,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 import TablePaginationActions from './TablePaginationActions';
 import StyledTableCell from './StyledTableCell';
 import StyledTableRow from './StyledTableRow';
 import SortByMenu from './SortByMenu';
 
-function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
+function OrderListTable({ page, rowsPerPage, setUsedParams }) {
+    const orders = useLoaderData();
     // Avoid a layout jump when reaching the last page with empty rows.
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - orders.length) : 0;
 
     const handleChangePage = (event, newPage) => {
         setUsedParams('page', newPage);
@@ -30,8 +31,8 @@ function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
     };
 
     useEffect(() => {
-        if (page > Math.floor(rows.length / rowsPerPage)) {
-            setUsedParams('page', Math.floor(rows.length / rowsPerPage));
+        if (page > Math.floor(orders.length / rowsPerPage)) {
+            setUsedParams('page', Math.floor(orders.length / rowsPerPage));
         } else if (page < 0) {
             setUsedParams('page', 0);
         }
@@ -48,23 +49,26 @@ function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
                         <StyledTableCell align="right">Status</StyledTableCell>
                         <StyledTableCell align="right">Toimitusosoite</StyledTableCell>
                         <StyledTableCell align="right">Tilaaja</StyledTableCell>
+                        <StyledTableCell align="right">Yhteystiedot</StyledTableCell>
                         <StyledTableCell align="right">Päivämäärä</StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows).map(
-                        (row) => (
-                            <StyledTableRow key={row.id}>
-                                <StyledTableCell component="th" scope="row">
-                                    <Link to={`/varasto/tilaus/${row.id}?page=0&rows=5`}>{row.id}</Link>
-                                </StyledTableCell>
-                                <StyledTableCell align="right">{row.status}</StyledTableCell>
-                                <StyledTableCell align="right">{row.address}</StyledTableCell>
-                                <StyledTableCell align="right">{row.recipient}</StyledTableCell>
-                                <StyledTableCell align="right">{row.date}</StyledTableCell>
-                            </StyledTableRow>
-                        )
-                    )}
+                    {(rowsPerPage > 0
+                        ? orders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : orders
+                    ).map((row) => (
+                        <StyledTableRow key={row.id}>
+                            <StyledTableCell component="th" scope="row">
+                                <Link to={`/varasto/tilaus/${row.id}?page=0&rows=5`}>{row.id}</Link>
+                            </StyledTableCell>
+                            <StyledTableCell align="right">{row.status}</StyledTableCell>
+                            <StyledTableCell align="right">{row.delivery_address}</StyledTableCell>
+                            <StyledTableCell align="right">{row.user}</StyledTableCell>
+                            <StyledTableCell align="right">{row.contact}</StyledTableCell>
+                            <StyledTableCell align="right">{row.delivery_date}</StyledTableCell>
+                        </StyledTableRow>
+                    ))}
 
                     {emptyRows > 0 && (
                         <StyledTableRow style={{ height: 53 * emptyRows }}>
@@ -77,7 +81,7 @@ function OrderListTable({ page, rowsPerPage, setUsedParams, rows }) {
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25, 100]}
                             colSpan={3}
-                            count={rows.length}
+                            count={orders.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             SelectProps={{
@@ -101,16 +105,6 @@ OrderListTable.propTypes = {
     page: PropTypes.number.isRequired,
     setUsedParams: PropTypes.func.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
-    rows: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number,
-            status: PropTypes.string,
-            address: PropTypes.string,
-            recipient: PropTypes.string,
-            date: PropTypes.string,
-            products: PropTypes.arrayOf(PropTypes.string),
-        })
-    ).isRequired,
 };
 
 export default OrderListTable;

@@ -1,8 +1,8 @@
 import { Container, Grid, Typography, Link } from '@mui/material';
-import { useLoaderData } from 'react-router-dom';
+import { useRouteLoaderData } from 'react-router-dom';
 
-function Delivery() {
-    const data = useLoaderData();
+function DeliveryView() {
+    const data = useRouteLoaderData('root');
     const url = `mailto:${data.email}`;
     // console.log(data, data.name);
     return (
@@ -65,4 +65,4 @@ function Delivery() {
     );
 }
 
-export default Delivery;
+export default DeliveryView;

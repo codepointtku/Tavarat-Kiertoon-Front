@@ -1,10 +1,10 @@
 import { Grid, Link as MuiLink, Typography } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import { useLoaderData, Link } from 'react-router-dom';
+import { Link, useRouteLoaderData } from 'react-router-dom';
 import LOGO2 from '../../Assets/LOGO2.png';
 
 export default function Footer() {
-    const data = useLoaderData();
+    const data = useRouteLoaderData('root');
     // const url = `mailto:${data.email}`;
     return (
         <Grid
@@ -24,9 +24,9 @@ export default function Footer() {
                         Yhteystiedot{' '}
                     </Typography>
 
-                    <Typography> {data.phoneNumber} </Typography>
+                    <Typography> {data?.phoneNumber} </Typography>
 
-                    <Typography>{data.address}</Typography>
+                    <Typography>{data?.address}</Typography>
 
                     <MuiLink href="https://github.com/codepointtku/Tavarat-Kiertoon-Front" color="#663900">
                         <GitHubIcon />
