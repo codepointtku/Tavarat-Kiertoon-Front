@@ -83,6 +83,7 @@ function ContactPage() {
                             labelId="select-label"
                             id="simple-select"
                             // value={subject}
+                            defaultValue=""
                             label="Aihe"
                             onChange={handleChange}
                         >
