@@ -9,7 +9,7 @@ import TestButtons from '../../Components/TestButtons';
 
 function Header() {
     return (
-        <header style={{ marginBottom: 20 }}>
+        <header>
             <Box sx={{ backgroundColor: 'primary.main' }}>
                 <Container sx={{ display: 'flex', flexDirection: 'row' }}>
                     <Link to="/">
