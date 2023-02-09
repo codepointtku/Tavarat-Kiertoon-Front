@@ -1,11 +1,11 @@
-import { Avatar, Card, CardActionArea, CardContent, CardHeader, CardMedia, Typography } from '@mui/material';
+import { Avatar, Card, CardActionArea, CardHeader, CardMedia } from '@mui/material';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 import PropTypes from 'prop-types';
 
 //
 
-function InstructionCard({ topic, subheader, img, imgAlt, contentheader }) {
+function InstructionCard({ topic, subheader, img, imgAlt }) {
     return (
         <Card sx={{ maxWidth: 300 }}>
             <CardActionArea>
@@ -21,11 +21,13 @@ function InstructionCard({ topic, subheader, img, imgAlt, contentheader }) {
                     subheaderTypographyProps={{ variant: 'body1' }}
                 />
                 <CardMedia component="img" height="200" image={img} alt={imgAlt} />
-                <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                        {contentheader}
-                    </Typography>
-                </CardContent>
+                {/* <CardContent>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <Typography variant="body2" color="text.secondary">
+                            {contentheader}
+                        </Typography>
+                    </Box>
+                </CardContent> */}
             </CardActionArea>
         </Card>
     );
@@ -38,5 +40,5 @@ InstructionCard.propTypes = {
     subheader: PropTypes.string.isRequired,
     img: PropTypes.string.isRequired,
     imgAlt: PropTypes.string.isRequired,
-    contentheader: PropTypes.string.isRequired,
+    // contentheader: PropTypes.string.isRequired,
 };

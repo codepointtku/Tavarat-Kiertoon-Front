@@ -1,4 +1,4 @@
-import { Container, Grid, Paper } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 
 import InstructionCard from './InstructionCard';
 
@@ -75,13 +75,11 @@ function HelpTopicCards() {
 
 function InstructionsPage() {
     return (
-        <Paper>
-            <Container maxWidth="lg">
-                <Grid container spacing={2}>
-                    <HelpTopicCards />
-                </Grid>
-            </Container>
-        </Paper>
+        <Container sx={{ marginTop: 2, marginBottom: 2 }}>
+            <Grid container spacing={4} sx={{ justifyContent: 'center' }}>
+                <HelpTopicCards />
+            </Grid>
+        </Container>
     );
 }
 
