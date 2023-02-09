@@ -64,9 +64,11 @@ function ContactPage() {
                         maxRows={2}
                     />
                     <TextField
+                        // eslint-disable-next-line react/jsx-props-no-spreading
+                        {...register('Sähköpostisi')}
                         sx={{ mt: 2 }}
                         id="sender-email"
-                        label="sähköpostisi"
+                        label="Sähköpostisi"
                         multiline
                         fullWidth
                         required
@@ -76,9 +78,11 @@ function ContactPage() {
                     <FormControl fullWidth required sx={{ mt: 2 }}>
                         <InputLabel id="select-label">Aihe</InputLabel>
                         <Select
+                            // eslint-disable-next-line react/jsx-props-no-spreading
+                            {...register('Aihe')}
                             labelId="select-label"
                             id="simple-select"
-                            value={subject}
+                            // value={subject}
                             label="Aihe"
                             onChange={handleChange}
                         >
@@ -94,6 +98,8 @@ function ContactPage() {
                     {/* {subject === 'Tilaukset' ? <TilausNro /> : <Kakka />} */}
 
                     <TextField
+                        // eslint-disable-next-line react/jsx-props-no-spreading
+                        {...register('Viesti')}
                         sx={{ mt: 2 }}
                         placeholder="kerro mikä mieltä painaa"
                         id="form-message"
