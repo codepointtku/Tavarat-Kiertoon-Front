@@ -30,9 +30,10 @@ import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
 import Delivery from '../toimitus';
 import BackgroundInfo from '../Components/Backgroundinfo';
-
 import StatsPage from '../Components/Stats/StatsPage';
-import Dummy from '../Components/Treeview/DummyDevPage';
+
+import SignupLandingPage from '../Components/Signup/SignupLandingPage';
+import SignupPage from '../Components/Signup/SignupPage';
 import ContactPage from '../Components/ContactPage';
 
 function Routes() {
@@ -75,16 +76,16 @@ function Routes() {
                     },
                 },
                 {
-                    path: '/faq',
-                    element: <FaqView />,
-                },
-                {
                     path: '/delivery',
                     element: <Delivery />,
                     loader: async () => {
                         const { data } = await axios.get('http://localhost:3001/contacts');
                         return data;
                     },
+                },
+                {
+                    path: '/faq',
+                    element: <FaqView />,
                 },
                 {
                     path: '/backgroundinfo',
@@ -107,12 +108,16 @@ function Routes() {
                     },
                 },
                 {
-                    path: '/dummy',
-                    element: <Dummy />,
-                    loader: async () => {
-                        const { data } = await axios.get('http://localhost:3001/categories');
-                        return data;
-                    },
+                    path: '/signup',
+                    element: <SignupLandingPage />,
+                },
+                {
+                    path: '/signup/user',
+                    element: <SignupPage isLocationForm={false} />,
+                },
+                {
+                    path: '/signup/location',
+                    element: <SignupPage isLocationForm />,
                 },
                 {
                     path: '/jaakonkolo',
@@ -138,7 +143,7 @@ function Routes() {
                     path: '/varasto/:num/:view',
                     element: <OrdersList />,
                     loader: async ({ params }) => {
-                        const { data } = await axios.get('http://localhost:3001/orders');
+                        const { data } = await axios.get('http://localhost:8000/orders');
                         // num will tell back-end which entries to bring
                         // view is order status, unless archived can bring all?
                         // or will be replaced into the back-end later?
@@ -170,8 +175,18 @@ function Routes() {
                     path: '/varasto/tilaus/:id',
                     element: <OrderView />,
                     loader: async ({ params }) => {
-                        const { data } = await axios.get(`http://localhost:3001/orders/${params.id}`);
+                        const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
+                        const productFind = async (id) => {
+                            const product = await axios.get(`http://localhost:8000/products/${id}`);
+                            return product;
+                        };
+                        const newProducts = await Promise.all(data.products.map((entry) => productFind(entry)));
+
+                        data.products.forEach((entry) => {
+                            productFind(entry);
+                        });
                         if (data) {
+                            data.productList = newProducts;
                             return data;
                         }
                         return null;
