@@ -120,7 +120,7 @@ function Routes() {
                     element: <SignupPage isLocationForm />,
                 },
                 {
-                    path: '/jaakonkolo',
+                    path: '/contactpage',
                     element: <ContactPage />,
                 },
             ],
