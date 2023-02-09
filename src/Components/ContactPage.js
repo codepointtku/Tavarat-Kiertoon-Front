@@ -82,7 +82,6 @@ function ContactPage() {
                             {...register('Aihe')}
                             labelId="select-label"
                             id="simple-select"
-                            // value={subject}
                             defaultValue=""
                             label="Aihe"
                             onChange={handleChange}
@@ -95,8 +94,6 @@ function ContactPage() {
                     </FormControl>
 
                     {subject === 'Tilaukset' && <TilausNro />}
-
-                    {/* {subject === 'Tilaukset' ? <TilausNro /> : <Kakka />} */}
 
                     <TextField
                         // eslint-disable-next-line react/jsx-props-no-spreading
