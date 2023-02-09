@@ -398,13 +398,10 @@
             "name": "Punainen hieno pyörä",
             "description": "Hyväkuntone hieno pyörä punainen suoraa 80-luvulta",
             "available": 0,
-            "totalCount": 4,
-            "size": 16,
-            "dateAdded": "01.06.1999",
-            "barcode": "16-1",
-            "type": "city",
+            "total_count": 4,
+            "size": "(3) 14\"",
+            "type": "City",
             "color": "red",
-            "location": "varasto_0",
             "brand": "Hieno"
         },
         {
@@ -412,13 +409,10 @@
             "name": "Vihreä huono pyörä",
             "description": "Todella huono pyörä",
             "available": 5,
-            "totalCount": 17,
-            "size": 21,
-            "dateAdded": "01.06.1999",
-            "barcode": "21-5",
-            "type": "bmx",
+            "total_count": 17,
+            "size": "(5) 21\"",
+            "type": "BMX",
             "color": "green",
-            "location": "varasto_0",
             "brand": "Huono"
         },
         {
@@ -426,13 +420,10 @@
             "name": "Toinen huono pyörä",
             "description": "Todella huono pyörä myös",
             "available": 2,
-            "totalCount": 9,
-            "size": 14,
-            "dateAdded": "01.06.1999",
-            "barcode": "14-2",
-            "type": "city",
+            "total_count": 9,
+            "size": "(4) 16\"",
+            "type": "City",
             "color": "green",
-            "location": "varasto_0",
             "brand": "Huono"
         }
     ]

@@ -3,29 +3,6 @@ import { Box, Button, Card, CardActions, CardContent, CardMedia, Modal, Typograp
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
-export const sizeOptions = [
-    { label: '(3) 14"', value: 14 },
-    { label: '(4) 16"', value: 16 },
-    { label: '(5) 21"', value: 21 },
-];
-
-export const brandOptions = [
-    { label: 'Hieno', value: 'Hieno' },
-    { label: 'Huono', value: 'Huono' },
-];
-
-export const typeOptions = [
-    { label: 'City', value: 'city' },
-    { label: 'BMX', value: 'bmx' },
-    { label: 'Sähkö', value: 'electric' },
-];
-
-export const availabilityOptions = [
-    { label: 'Heti', value: 'now' },
-    { label: 'Tällä viikolla', value: 'this week' },
-    { label: 'Tiettynä aikana', value: 'specific' },
-];
-
 export default function BikeCard({ bike, selectedBikes, setSelectedBikes }) {
     const [isRentModalVisible, setIsRentModalVisible] = useState(false);
 
@@ -42,17 +19,19 @@ export default function BikeCard({ bike, selectedBikes, setSelectedBikes }) {
                 <Typography variant="h6">{bike.name}</Typography>
                 <Typography>{bike.description}</Typography>
                 <Typography variant="body2" color="text.secondary">
-                    Tyyppi: {typeOptions.find((option) => option.value === bike.type).label}
+                    Tyyppi: {bike.type}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    Koko: {sizeOptions.find((option) => option.value === bike.size).label}
+                    Koko: {bike.size}
                 </Typography>
             </CardContent>
-            <CardActions sx={{ justifyContent: 'space-evenly', display: 'flex', flexDirection: 'column' }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    {!!bike.available && (
-                        <>
-                            <Typography id="modal-modal-description" align="center" sx={{ mb: 1 }}>
+            <CardActions
+                sx={{ justifyContent: 'space-between', display: 'flex', flexDirection: 'column', alignItems: 'end' }}
+            >
+                {bike.available ? (
+                    <>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Typography id="modal-modal-description" sx={{ mr: 1 }}>
                                 Määrä
                             </Typography>
                             {/* <Button size="small" sx={{ p: 0, minWidth: 30 }}>
@@ -84,22 +63,39 @@ export default function BikeCard({ bike, selectedBikes, setSelectedBikes }) {
                             }>
                                 +
                             </Button> */}
-                        </>
-                    )}
-                    <Typography
-                        color={bike.available ? 'black' : 'error'}
-                    >{`Vapaana ${bike.available}/${bike.totalCount}`}</Typography>
-                    <Box sx={{ mt: 1 }}>
-                        <Button
-                            variant="outlined"
-                            size="small"
-                            startIcon={<InfoOutlinedIcon />}
-                            onClick={() => setIsRentModalVisible(true)}
-                        >
-                            Lisää tietoa
-                        </Button>
-                    </Box>
-                </Box>
+                        </Box>
+                        <Typography
+                            color={bike.available ? 'black' : 'error'}
+                        >{`Vapaana ${bike.available}/${bike.total_count}`}</Typography>
+                        <Box>
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                startIcon={<InfoOutlinedIcon />}
+                                onClick={() => setIsRentModalVisible(true)}
+                            >
+                                Lisää tietoa
+                            </Button>
+                        </Box>
+                    </>
+                ) : (
+                    <>
+                        <Box sx={{ flex: 1 }} />
+                        <Typography
+                            color={bike.available ? 'black' : 'error'}
+                        >{`Vapaana ${bike.available}/${bike.total_count}`}</Typography>
+                        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column-reverse' }}>
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                startIcon={<InfoOutlinedIcon />}
+                                onClick={() => setIsRentModalVisible(true)}
+                            >
+                                Lisää tietoa
+                            </Button>
+                        </Box>
+                    </>
+                )}
             </CardActions>
             <Modal
                 open={isRentModalVisible}
@@ -127,13 +123,13 @@ export default function BikeCard({ bike, selectedBikes, setSelectedBikes }) {
                         Heti vapaana: {bike.available}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Yhteensä palvelussa: {bike.totalCount}
+                        Yhteensä palvelussa: {bike.total_count}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Tyyppi: {typeOptions.find((option) => option.value === bike.type).label}
+                        Tyyppi: {bike.type}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Koko: {sizeOptions.find((option) => option.value === bike.size).label}
+                        Koko: {bike.size}
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         Valitset vuokrauksen ajankohdan tilauksessa
@@ -159,8 +155,8 @@ BikeCard.propTypes = {
         name: PropTypes.string,
         description: PropTypes.string,
         available: PropTypes.number,
-        totalCount: PropTypes.number,
-        size: PropTypes.number,
+        total_count: PropTypes.number,
+        size: PropTypes.string,
         dateAdded: PropTypes.string,
         barcode: PropTypes.string,
         type: PropTypes.string,

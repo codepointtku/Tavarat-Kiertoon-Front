@@ -2,7 +2,7 @@ import { Autocomplete, Box, Button, Card, Container, TextField, Typography } fro
 import { useState } from 'react';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 
-import BikeCard, { brandOptions, sizeOptions, typeOptions } from './BikeCard';
+import BikeCard from './BikeCard';
 
 export default function BikesPage() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -14,6 +14,16 @@ export default function BikesPage() {
               )
           )
         : bikes;
+
+    const sizeOptionsSet = new Set();
+    const brandOptionsSet = new Set();
+    const typeOptionsSet = new Set();
+
+    bikes.forEach((bike) => {
+        sizeOptionsSet.add(bike.size);
+        brandOptionsSet.add(bike.brand);
+        typeOptionsSet.add(bike.type);
+    });
 
     const [selectedBikes, setSelectedBikes] = useState({});
 
@@ -28,14 +38,14 @@ export default function BikesPage() {
             return {
                 filters: JSON.stringify({
                     ...newFilters,
-                    [filter]: newOption.value,
+                    [filter]: newOption,
                 }),
             };
         });
 
     return (
         <Container sx={{ mb: 4 }}>
-            <Typography variant="h3" align="center" color="primary.main">
+            <Typography variant="h3" align="center" color="primary.main" sx={{ my: 1 }}>
                 Polkupyörienvuokraus
             </Typography>
             <hr />
@@ -55,7 +65,7 @@ export default function BikesPage() {
                             <Typography id="modal-modal-description">Aloituspäivä</Typography>
                             <input type="date" id="start" name="trip-start" min="2023-01-01" max="2023-12-31" />
                         </Box>
-                        <Box>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
                             <Typography id="modal-modal-description">Palautuspäivä</Typography>
                             <input type="date" id="start" name="trip-start" min="2023-01-01" max="2023-12-31" />
                         </Box>
@@ -67,14 +77,12 @@ export default function BikesPage() {
                             <Autocomplete
                                 disablePortal
                                 id="size-filter"
-                                options={sizeOptions}
+                                options={Array.from(sizeOptionsSet).sort()}
                                 sx={{ width: 200 }}
                                 onChange={(_, newOption) => handleFilterChange('size', newOption)}
                                 value={
                                     searchParams.get('filters') && JSON.parse(searchParams.get('filters')).size
-                                        ? sizeOptions.find(
-                                              (option) => option.value === JSON.parse(searchParams.get('filters')).size
-                                          )
+                                        ? JSON.parse(searchParams.get('filters')).size
                                         : null
                                 }
                                 // eslint-disable-next-line react/jsx-props-no-spreading
@@ -84,14 +92,12 @@ export default function BikesPage() {
                             <Autocomplete
                                 disablePortal
                                 id="brand-filter"
-                                options={brandOptions}
+                                options={Array.from(brandOptionsSet).sort()}
                                 sx={{ width: 200 }}
                                 onChange={(_, newOption) => handleFilterChange('brand', newOption)}
                                 value={
                                     searchParams.get('filters') && JSON.parse(searchParams.get('filters')).brand
-                                        ? brandOptions.find(
-                                              (option) => option.value === JSON.parse(searchParams.get('filters')).brand
-                                          )
+                                        ? JSON.parse(searchParams.get('filters')).brand
                                         : null
                                 }
                                 // eslint-disable-next-line react/jsx-props-no-spreading
@@ -101,36 +107,18 @@ export default function BikesPage() {
                             <Autocomplete
                                 disablePortal
                                 id="type-filter"
-                                options={typeOptions}
+                                options={Array.from(typeOptionsSet).sort()}
                                 sx={{ width: 200 }}
                                 onChange={(_, newOption) => handleFilterChange('type', newOption)}
                                 value={
                                     searchParams.get('filters') && JSON.parse(searchParams.get('filters')).type
-                                        ? typeOptions.find(
-                                              (option) => option.value === JSON.parse(searchParams.get('filters')).type
-                                          )
+                                        ? JSON.parse(searchParams.get('filters')).type
                                         : null
                                 }
                                 // eslint-disable-next-line react/jsx-props-no-spreading
                                 renderInput={(params) => <TextField {...params} label="Tyyppi" />}
                                 size="small"
                             />
-                            {/* <Autocomplete
-                        disablePortal
-                        id="availability-filter"
-                        options={availabilityOptions}
-                        sx={{ width: 250 }}
-                        onChange={(_, newOption) => handleFilterChange('availability', newOption)}
-                        value={
-                            searchParams.get('filters') && JSON.parse(searchParams.get('filters')).availability
-                                ? availabilityOptions.find(
-                                      (option) => option.value === JSON.parse(searchParams.get('filters')).availability
-                                  )
-                                : null
-                        }
-                        // eslint-disable-next-line react/jsx-props-no-spreading
-                        renderInput={(params) => <TextField {...params} label="Vapaus" />}
-                    /> */}
                         </Box>
                     </Box>
                     {filteredBikes

@@ -22,9 +22,8 @@ import QrScanner from '../Components/QrScanner';
 import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
 
-import BikesPage from '../Components/Bikes/BikesPage';
-import BikeDetails from '../Components/Bikes/BikeDetails';
 import BikesView from './BikesView';
+import BikesPage from '../Components/Bikes/BikesPage';
 
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
@@ -301,14 +300,6 @@ function Routes() {
                     loader: async () => {
                         const { data } = await axios.get('http://localhost:3001/bikes');
                         return data;
-                    },
-                },
-                {
-                    path: '/bikes/:id',
-                    element: <BikeDetails />,
-                    loader: async ({ params }) => {
-                        const { data } = await axios.get(`http://localhost:3001/bikes/${params.id}`);
-                        return data ?? null;
                     },
                 },
             ],
