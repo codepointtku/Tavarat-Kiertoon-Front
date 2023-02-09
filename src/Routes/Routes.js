@@ -35,6 +35,7 @@ import ErrorBoundary from '../Components/ErrorBoundary';
 
 import SignupLandingPage from '../Components/Signup/SignupLandingPage';
 import SignupPage from '../Components/Signup/SignupPage';
+import ContactPage from '../Components/ContactPage';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -123,6 +124,10 @@ function Routes() {
                             element: <SignupPage isLocationForm />,
                         },
                     ],
+                },
+                {
+                    path: '/contactpage',
+                    element: <ContactPage />,
                 },
                 {
                     path: '/varasto',
