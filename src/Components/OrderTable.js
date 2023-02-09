@@ -1,12 +1,10 @@
 import {
     Table,
     TableBody,
-    TableContainer,
     TableHead,
     TableCell,
     TableRow,
     TableFooter,
-    Paper,
     IconButton,
     Box,
     Typography,
@@ -103,9 +101,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
         <>
             <Box
                 sx={{
-                    /* display: 'flex', */
                     gap: 2,
-                    /* justifyContent: 'space-between', */
                     margin: '2rem',
                     backgroundColor: '#fdfdfd',
                     boxShadow:
@@ -219,8 +215,19 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                 <br />
             </Box>
 
-            <h2 align="center">Tilauksen tuotteet</h2>
-            <TableContainer component={Paper} sx={{ padding: '2rem' }}>
+            <Box
+                sx={{
+                    pb: '2rem',
+                    pr: '2rem',
+                    pl: '2rem',
+                    gap: 2,
+                    margin: '2rem',
+                    backgroundColor: '#fdfdfd',
+                    boxShadow:
+                        '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
+                }}
+            >
+                <h2 align="center">Tilauksen tuotteet</h2>
                 <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
@@ -315,7 +322,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                         <TableRow>
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25, 100]}
-                                colSpan={3}
+                                colSpan={7}
                                 count={orderList.length}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
@@ -332,7 +339,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                         </TableRow>
                     </TableFooter>
                 </Table>
-            </TableContainer>
+            </Box>
             <Button
                 sx={{ margin: '2rem' }}
                 onClick={() => navigate(`/varasto/tilaus/${order.id}/muokkaa`, { state: orderList })}
