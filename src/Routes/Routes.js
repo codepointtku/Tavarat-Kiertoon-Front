@@ -57,13 +57,12 @@ function Routes() {
                     element: <ProductList />,
                     action: async ({ request }) => {
                         const formData = await request.formData();
-                        if (formData.has('index') === false) {
-                            const id = Number(formData.get('id'));
-                            const productName = formData.get('productName');
+                        const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+                        const productName = formData.get('productName');
+                        if (request.method === 'POST') {
                             await axios.post('http://localhost:3001/shopping-cart', { id, productName });
-                        } else if (formData.has('index') === true) {
-                            const index = Number(formData.get('index'));
-                            await axios.delete(`http://localhost:3001/shopping-cart/${index}`);
+                        } else if (request.method === 'DELETE') {
+                            await axios.delete(`http://localhost:3001/shopping-cart/${id}`);
                         }
                         return null;
                     },

@@ -510,5 +510,10 @@
     "email": "tyokeskus.kierratys@turku.fi",
     "phoneNumber": "+358 40 531 8689"
   },
-  "shopping-cart": []
+  "shopping-cart": [
+    {
+      "id": 4322,
+      "productName": "Jakkara"
+    }
+  ]
 }
