@@ -6,20 +6,6 @@ function ErrorBoundary() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // //Conditional navigation for returning to admin and varasto pages
-    // let path = '/';
-    // let title = 'etusivulle';
-    // if (location.pathname.includes('/varasto/')) {
-    //     path = '/varasto';
-    //     title = 'varastoon';
-    // } else if (location.pathname.includes('/admin/')) {
-    //     path = '/admin';
-    //     title = 'hallintaan';
-    // } else {
-    //     path = '/';
-    // title = 'etusivulle';
-    // }
-
     const handleGoBack = () => {
         navigate(-1);
     };
