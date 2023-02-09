@@ -512,8 +512,16 @@
   },
   "shopping-cart": [
     {
-      "id": 4322,
-      "productName": "Jakkara"
+      "id": 1234,
+      "productName": "Työtuoli"
+    },
+    {
+      "id": 5671,
+      "productName": "Kahvinkeitin"
+    },
+    {
+      "id": 4321,
+      "productName": "Piirtoheitin"
     }
   ]
 }

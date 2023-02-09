@@ -6,13 +6,13 @@ import { useSubmit } from 'react-router-dom';
 
 function AddToCartButton({ size, id, productName }) {
     const [addedToCart, setAddedToCart] = useState(false);
-    const [addToCartButtonValue, setValue] = useState('Lisää koriin');
+    const [itemCount, setItemCount] = useState(null);
     const submit = useSubmit();
 
     const handleClickAddToCartBtn = () => {
         setAddedToCart(!addedToCart);
         // To do: Lisää timer
-        setValue(addToCartButtonValue === 'Lisätty!' ? 'Lisää koriin' : 'Lisätty!');
+        setItemCount((prevCount) => `(${prevCount + 1} kpl)`);
         submit(
             { id, productName },
             {
@@ -30,7 +30,7 @@ function AddToCartButton({ size, id, productName }) {
             startIcon={<AddShoppingCartOutlinedIcon />}
             onClick={handleClickAddToCartBtn}
         >
-            {addToCartButtonValue}
+            Lisää koriin <br /> {itemCount}
         </Button>
     );
 }

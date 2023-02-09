@@ -21,6 +21,7 @@ function ProductCard({ productName, id }) {
                         component={Link}
                         to={`/tuotteet/${id}`}
                         size="small"
+                        sx={{ marginRight: 1 }}
                         startIcon={<InfoOutlinedIcon />}
                     >
                         Lisää tietoa
