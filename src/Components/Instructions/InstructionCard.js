@@ -1,18 +1,23 @@
 import { Avatar, Card, CardActionArea, CardHeader, CardMedia } from '@mui/material';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+
+// import ChatIcon from '@mui/icons-material/Chat';
+// import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
+// import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+// import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+// import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 
 import PropTypes from 'prop-types';
 
 //
 
-function InstructionCard({ topic, subheader, img, imgAlt }) {
+function InstructionCard({ icon, topic, subheader, img, imgAlt }) {
     return (
         <Card sx={{ maxWidth: 300 }}>
             <CardActionArea>
                 <CardHeader
                     avatar={
                         <Avatar aria-label="icon" sx={{ bgcolor: 'secondary.main' }}>
-                            <ChatBubbleOutlineIcon />
+                            {icon}
                         </Avatar>
                     }
                     title={topic}
@@ -21,13 +26,6 @@ function InstructionCard({ topic, subheader, img, imgAlt }) {
                     subheaderTypographyProps={{ variant: 'body1' }}
                 />
                 <CardMedia component="img" height="200" image={img} alt={imgAlt} />
-                {/* <CardContent>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <Typography variant="body2" color="text.secondary">
-                            {contentheader}
-                        </Typography>
-                    </Box>
-                </CardContent> */}
             </CardActionArea>
         </Card>
     );
@@ -36,9 +34,9 @@ function InstructionCard({ topic, subheader, img, imgAlt }) {
 export default InstructionCard;
 
 InstructionCard.propTypes = {
+    icon: PropTypes.string.isRequired,
     topic: PropTypes.string.isRequired,
     subheader: PropTypes.string.isRequired,
     img: PropTypes.string.isRequired,
     imgAlt: PropTypes.string.isRequired,
-    // contentheader: PropTypes.string.isRequired,
 };
