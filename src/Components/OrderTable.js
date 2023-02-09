@@ -13,7 +13,6 @@ import {
     Collapse,
     TablePagination,
     Button,
-    Card,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useLoaderData, useNavigate } from 'react-router-dom';
@@ -102,10 +101,124 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
 
     return (
         <>
-            <Card>
-                <h2 align="center">Tilauksen lisätieto</h2>
-                <p align="center">{order.order_info}</p>
-            </Card>
+            <Box
+                sx={{
+                    /* display: 'flex', */
+                    gap: 2,
+                    /* justifyContent: 'space-between', */
+                    margin: '2rem',
+                    backgroundColor: '#fdfdfd',
+                    boxShadow:
+                        '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
+                }}
+            >
+                <h2 align="center">{`Tilauksen ${order.id} tiedot`}</h2>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <h4>Toimitusosoite</h4>
+                    <h4>Status</h4>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        mb: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <Typography>{order.delivery_address}</Typography>
+                    <Typography>{order.status}</Typography>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <h4>Yhteystiedot</h4>
+                    <h4>Päivämäärä</h4>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        mb: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <Typography>{order.contact}</Typography>
+                    <Typography>{order.delivery_date}</Typography>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <h4>Tilaajan nimi</h4>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        mb: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <Typography>{order.user}</Typography>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <h4>Lisätiedot</h4>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <Typography>{order.order_info}</Typography>
+                </Box>
+                <br />
+            </Box>
+
             <h2 align="center">Tilauksen tuotteet</h2>
             <TableContainer component={Paper} sx={{ padding: '2rem' }}>
                 <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
