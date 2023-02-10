@@ -50,6 +50,34 @@ test.describe('tiedotteet', () => {
     });
 });
 
+test.describe('signup', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/signup');
+        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+    });
+});
+
+test.describe('signupuser', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/signup/user');
+        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+    });
+});
+
+test.describe('signuplocation', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/signup/location');
+        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+    });
+});
+
+test.describe('contactpage', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/contactpage');
+        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+    });
+});
+
 test.describe('varasto', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/varasto');
@@ -106,23 +134,9 @@ test.describe('hakemukset', () => {
     });
 });
 
-test.describe('signup', () => {
+test.describe('testi', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/signup');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
-    });
-});
-
-test.describe('signupuser', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/signup/user');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
-    });
-});
-
-test.describe('signuplocation', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/signup/location');
+        await page.goto('/palalalalala');
         await expect(page.getByText('404 Not Found')).not.toBeVisible();
     });
 });
