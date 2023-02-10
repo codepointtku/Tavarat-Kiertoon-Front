@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 // import { useState } from 'react';
 
-import { Container, Box, Stepper, Step, StepLabel, Grid, Typography, IconButton } from '@mui/material';
+import { Container, Box, Stepper, Step, StepLabel, Grid, Typography, Button, IconButton } from '@mui/material';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import { Form } from 'react-router-dom';
@@ -63,6 +63,8 @@ function ShoppingCart() {
                     <Typography variant="h6">Hinta</Typography>
                 </Grid>
                 <hr />
+                <Button variant="contained">Jatka ostoksia</Button>
+                <Button variant="contained">Seuraava</Button>
             </Form>
         </Container>
     );
