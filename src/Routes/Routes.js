@@ -94,6 +94,10 @@ function Routes() {
                             element: <FaqView />,
                         },
                         {
+                            path: '/ohjeet',
+                            element: <InstructionsPage />,
+                        },
+                        {
                             path: '/toimitus',
                             element: <DeliveryView />,
                         },
