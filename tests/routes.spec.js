@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('mainpage', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
     });
 });
 
@@ -11,118 +11,125 @@ test.describe('mainpage', () => {
 test.describe('tuotteet', () => {
     test('no errors', async ({ page }) => {
         await page.goto('tuotteet/4321');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
     });
 });
 
 test.describe('faq', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/faq');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
     });
 });
 
-test.describe('delivery', () => {
+test.describe('toimitus', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/delivery');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+        await page.goto('/toimitus');
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
     });
 });
 
 test.describe('backgroundinfo', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/backgroundinfo');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
     });
 });
 
 test.describe('stats', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/stats');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
     });
 });
 
 test.describe('tiedotteet', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/tiedotteet');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
-    });
-});
-
-test.describe('varasto', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/varasto');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
-    });
-});
-
-test.describe('tilaus', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/varasto/tilaus/4127?page=0&rows=5');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
-    });
-});
-
-test.describe('luo', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('varasto/luo');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
-    });
-});
-
-test.describe('koodinlukija', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('varasto/koodinlukija');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
-    });
-});
-
-test.describe('admin', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('admin');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
-    });
-});
-
-test.describe('users', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('admin/users');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
-    });
-});
-
-test.describe('user', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('admin/users/0');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
-    });
-});
-
-test.describe('hakemukset', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/admin/hakemukset');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
     });
 });
 
 test.describe('signup', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/signup');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
     });
 });
 
 test.describe('signupuser', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/signup/user');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
     });
 });
 
 test.describe('signuplocation', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/signup/location');
-        await expect(page.getByText('404 Not Found')).not.toBeVisible();
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
+    });
+});
+
+test.describe('contactpage', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/contactpage');
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
+    });
+});
+
+test.describe('varasto', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/varasto');
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
+    });
+});
+
+test.describe('tilaus', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/varasto/tilaus/4127?page=0&rows=5');
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
+    });
+});
+
+test.describe('luo', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('varasto/luo');
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
+    });
+});
+
+test.describe('koodinlukija', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('varasto/koodinlukija');
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
+    });
+});
+
+test.describe('admin', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('admin');
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
+    });
+});
+
+test.describe('users', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('admin/users');
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
+    });
+});
+
+test.describe('user', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('admin/users/0');
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
+    });
+});
+
+test.describe('hakemukset', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/hakemukset');
+        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
     });
 });

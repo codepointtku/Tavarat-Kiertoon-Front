@@ -55,10 +55,10 @@ On the next start Docker will rebuild the images using the new code.
 
 ## Testing
 
-Test configuration is set to 'localhost/'.
-
-If you want to run tests outside of Docker, change the url to 'localhost:3000'
+Test configuration is set to 'localhost:3000/'.
 
 Run playwright tests from the terminal with the command: `npm test`
 
-start json server with productdb.json with command `npm run server`
+Testing performs automatical ci, no need to start separately.
+
+Tests run automatically when there is a pull request on develop-branch.
