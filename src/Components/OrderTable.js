@@ -348,10 +348,10 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                 Muokkaa tilausta
             </Button>
             <Button color="error" onClick={() => navigate(`/varasto/pdf/${order.id}`, { state: order })}>
-                Create PDF (Loader)
+                Create PDF
             </Button>
             {/* <Button color="error" onClick={() => navigate('/varasto/pdf', { state: { data: order } })}>
-                Create PDF (Location)
+                Create PDF
             </Button> */}
         </>
     );
