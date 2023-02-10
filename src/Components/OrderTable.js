@@ -13,6 +13,7 @@ import {
     Button,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+// import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useState, useEffect, Fragment } from 'react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -346,6 +347,12 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
             >
                 Muokkaa tilausta
             </Button>
+            <Button color="error" onClick={() => navigate(`/varasto/pdf/${order.id}`, { state: order })}>
+                Create PDF
+            </Button>
+            {/* <Button color="error" onClick={() => navigate('/varasto/pdf', { state: { data: order } })}>
+                Create PDF
+            </Button> */}
         </>
     );
 }
