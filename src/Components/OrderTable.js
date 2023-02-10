@@ -64,8 +64,8 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                 id: entry.data.id,
                 barcode: '-',
                 count: 0,
-                category: '-',
-                storages: '-',
+                category_name: '-',
+                storage_name: '-',
                 items: [],
                 measurements: '-',
                 weight: '-',
@@ -264,8 +264,8 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                                     <TableCell align="right">{value.count}</TableCell>
                                     <TableCell align="right">{value.barcode}</TableCell>
                                     <TableCell align="right">{value.id}</TableCell>
-                                    <TableCell align="right">{value.category}</TableCell>
-                                    <TableCell align="right">{value.storages}</TableCell>
+                                    <TableCell align="right">{value.category_name}</TableCell>
+                                    <TableCell align="right">{value.storage_name}</TableCell>
                                 </StyledTableRow>
                                 <TableRow>
                                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
@@ -297,8 +297,10 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                                                                 </TableCell>
                                                                 <TableCell align="right">{item.name}</TableCell>
                                                                 <TableCell align="right">{item.barcode}</TableCell>
-                                                                <TableCell align="right">{item.category}</TableCell>
-                                                                <TableCell align="right">{item.color}</TableCell>
+                                                                <TableCell align="right">
+                                                                    {item.category_name}
+                                                                </TableCell>
+                                                                <TableCell align="right">{item.color_name}</TableCell>
                                                                 <TableCell align="right">{item.measurements}</TableCell>
                                                                 <TableCell align="right">{item.weight}</TableCell>
                                                                 <TableCell align="right">{item.shelf_id}</TableCell>
