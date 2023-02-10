@@ -8,8 +8,6 @@ function PDFView() {
     // const { data } = location.state ? location.state : {}
     const loader = useLoaderData();
 
-    console.log('### PDFView', loader);
-
     return (
         <PDFViewer style={{ width: '100%', height: '1500px', border: '1px solid blue' }}>
             <PDFDocument order={loader} />

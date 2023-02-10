@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     addressSection: {
-        border: '1px solid red',
+        border: '1px solid black',
         padding: 10,
         marginBottom: 10,
         flex: 1,
@@ -34,14 +34,14 @@ const styles = StyleSheet.create({
         flex: 2,
     },
     freeDescriptionSection: {
-        border: '1px solid red',
+        border: '1px solid black',
         flexDirection: 'column',
         flex: 1,
         padding: 10,
         marginBottom: 10,
     },
     listSection: {
-        border: '1px solid red',
+        border: '1px solid black',
         padding: 10,
         flex: 2,
         lineHeight: '1.5',
