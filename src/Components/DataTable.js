@@ -80,7 +80,7 @@ function OrderListTable({ page, rowsPerPage, setUsedParams }) {
                     <TableRow>
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25, 100]}
-                            colSpan={3}
+                            colSpan={7}
                             count={orders.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
