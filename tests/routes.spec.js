@@ -22,9 +22,9 @@ test.describe('faq', () => {
     });
 });
 
-test.describe('delivery', () => {
+test.describe('toimitus', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/delivery');
+        await page.goto('/toimitus');
         await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
     });
 });
