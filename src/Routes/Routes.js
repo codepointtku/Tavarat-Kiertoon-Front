@@ -41,6 +41,8 @@ import SignupLandingPage from '../Components/Signup/SignupLandingPage';
 import SignupPage from '../Components/Signup/SignupPage';
 import ContactPage from '../Components/ContactPage';
 
+import PDFView from '../Components/PDFView';
+
 function Routes() {
     const router = createBrowserRouter([
         {
@@ -237,6 +239,18 @@ function Routes() {
                         {
                             path: '/varasto/koodinlukija',
                             element: <QrScanner />,
+                        },
+                        // {
+                        //     path: '/varasto/pdf',
+                        //     element: <PDFView />,
+                        // },
+                        {
+                            path: '/varasto/pdf/:id',
+                            element: <PDFView />,
+                            loader: async ({ params }) => {
+                                const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
+                                return data || null;
+                            },
                         },
                     ],
                 },
