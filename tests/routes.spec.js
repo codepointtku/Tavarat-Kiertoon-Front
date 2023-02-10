@@ -133,10 +133,3 @@ test.describe('hakemukset', () => {
         await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
     });
 });
-
-test.describe('testi', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/palalalalala');
-        await expect(page.getByText('Jokin meni pieleen')).not.toBeVisible();
-    });
-});
