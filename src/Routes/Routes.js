@@ -45,8 +45,13 @@ function Routes() {
             id: 'root',
             errorElement: <ErrorBoundary />,
             loader: async () => {
-                const { data } = await axios.get('http://localhost:3001/contacts');
-                return data;
+                try {
+                    const { data } = await axios.get('http://localhost:3001/contacts');
+
+                    return data;
+                } catch {
+                    return null;
+                }
             },
             children: [
                 {
@@ -58,7 +63,7 @@ function Routes() {
                     ),
                     errorElement: (
                         <Base>
-                            <ErrorBoundary />
+                            <div>Ei yhteyttä serveriin.</div>
                         </Base>
                     ),
                     children: [
@@ -141,7 +146,7 @@ function Routes() {
                     errorElement: (
                         <ThemeProvider theme={storageTheme}>
                             <Storage>
-                                <ErrorBoundary />
+                                <div>Ei yhteyttä serveriin.</div>
                             </Storage>
                         </ThemeProvider>
                     ),
@@ -243,7 +248,7 @@ function Routes() {
                     errorElement: (
                         <ThemeProvider theme={adminTheme}>
                             <Admin>
-                                <ErrorBoundary />
+                                <div>Ei yhteyttä serveriin.</div>
                             </Admin>
                         </ThemeProvider>
                     ),
