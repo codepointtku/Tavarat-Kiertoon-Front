@@ -73,7 +73,14 @@ export default function BikesPage() {
                     <hr />
                     <Typography variant="h6">Valitse vuokraukseen haluamasi pyörät</Typography>
                     <Box sx={{ mb: 1 }}>
-                        <Box sx={{ my: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <Box
+                            sx={{
+                                my: 1,
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                            }}
+                        >
                             <Autocomplete
                                 disablePortal
                                 id="size-filter"
@@ -143,8 +150,10 @@ export default function BikesPage() {
                             width: '100%',
                         }}
                     >
-                        <Typography align="center">Vuokraus</Typography>
-                        <Box sx={{ my: 2 }}>
+                        <Typography align="center" variant="h6">
+                            Vuokraustiedot
+                        </Typography>
+                        <Box sx={{ my: 3 }}>
                             {Object.entries(selectedBikes).map(
                                 ([key, value]) =>
                                     !!value && (
@@ -154,6 +163,10 @@ export default function BikesPage() {
                                     )
                             )}
                         </Box>
+                        <Typography variant="caption" sx={{ mb: 1 }}>
+                            Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä, tuomme
+                            ne lukittavassa kärryssä.
+                        </Typography>
                         <Autocomplete
                             disablePortal
                             id="storage"
@@ -165,7 +178,7 @@ export default function BikesPage() {
                             renderInput={(params) => <TextField {...params} label="Säilytystapa" />}
                             size="small"
                         />
-                        <Box sx={{ display: 'flex', justifyContent: 'end', mt: 1 }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'end', mt: 3 }}>
                             <Button color="success">Seuraava</Button>
                         </Box>
                     </Card>
