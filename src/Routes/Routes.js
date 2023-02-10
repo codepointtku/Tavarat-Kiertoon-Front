@@ -38,6 +38,8 @@ import SignupLandingPage from '../Components/Signup/SignupLandingPage';
 import SignupPage from '../Components/Signup/SignupPage';
 import ContactPage from '../Components/ContactPage';
 
+import DevPage from '../Components/Instructions/DevPage';
+
 function Routes() {
     const router = createBrowserRouter([
         {
@@ -98,6 +100,10 @@ function Routes() {
                             element: <InstructionsPage />,
                         },
                         {
+                            path: '/ohjeet/devi',
+                            element: <DevPage />,
+                        },
+                        {
                             path: '/toimitus',
                             element: <DeliveryView />,
                         },
@@ -133,11 +139,11 @@ function Routes() {
                             path: '/signup/location',
                             element: <SignupPage isLocationForm />,
                         },
+                        {
+                            path: '/contactpage',
+                            element: <ContactPage />,
+                        },
                     ],
-                },
-                {
-                    path: '/contactpage',
-                    element: <ContactPage />,
                 },
                 {
                     path: '/varasto',
