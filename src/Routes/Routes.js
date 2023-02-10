@@ -24,6 +24,7 @@ import UserEdit from '../Components/UserEdit';
 
 import BikesView from './BikesView';
 import BikesPage from '../Components/Bikes/BikesPage';
+import IndividualBikesPage from '../Components/Bikes/IndividualBikesPage';
 
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
@@ -334,6 +335,14 @@ function Routes() {
                 {
                     path: '/bikes',
                     element: <BikesPage />,
+                    loader: async () => {
+                        const { data } = await axios.get('http://localhost:3001/bikes');
+                        return data;
+                    },
+                },
+                {
+                    path: '/bikes/individual',
+                    element: <IndividualBikesPage />,
                     loader: async () => {
                         const { data } = await axios.get('http://localhost:3001/bikes');
                         return data;

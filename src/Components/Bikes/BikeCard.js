@@ -10,20 +10,32 @@ export default function BikeCard({ bike, selectedBikes, setSelectedBikes }) {
         <Card
             sx={
                 bike.available
-                    ? { my: 1, display: 'flex', flexDirection: 'row' }
-                    : { my: 1, display: 'flex', flexDirection: 'row', backgroundColor: 'lightgrey' }
+                    ? { my: 1, display: 'flex', flexDirection: 'row', height: '200px' }
+                    : { my: 1, display: 'flex', flexDirection: 'row', height: '200px', backgroundColor: 'lightgrey' }
             }
         >
-            <CardMedia sx={{ width: '200px' }} component="img" alt="kuva" image="br.jpg" />
+            <CardMedia sx={{ width: '200px', height: '200px' }} component="img" alt="kuva" image="br.jpg" />
             <CardContent sx={{ flex: 1 }}>
                 <Typography variant="h6">{bike.name}</Typography>
-                <Typography>{bike.description}</Typography>
+                <Typography variant="caption" sx={{ letterSpacing: 0 }}>
+                    {bike.description}
+                </Typography>
                 <Typography variant="body2" color="text.secondary">
                     Tyyppi: {bike.type}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     Koko: {bike.size}
                 </Typography>
+                <Box>
+                    <Button
+                        variant="outlined"
+                        size="small"
+                        startIcon={<InfoOutlinedIcon />}
+                        onClick={() => setIsRentModalVisible(true)}
+                    >
+                        Lisää tietoa
+                    </Button>
+                </Box>
             </CardContent>
             <CardActions
                 sx={{ justifyContent: 'space-between', display: 'flex', flexDirection: 'column', alignItems: 'end' }}
@@ -74,7 +86,7 @@ export default function BikeCard({ bike, selectedBikes, setSelectedBikes }) {
                                 startIcon={<InfoOutlinedIcon />}
                                 onClick={() => setIsRentModalVisible(true)}
                             >
-                                Lisää tietoa
+                                Katso vapaus
                             </Button>
                         </Box>
                     </>
@@ -91,7 +103,7 @@ export default function BikeCard({ bike, selectedBikes, setSelectedBikes }) {
                                 startIcon={<InfoOutlinedIcon />}
                                 onClick={() => setIsRentModalVisible(true)}
                             >
-                                Lisää tietoa
+                                Katso vapaus
                             </Button>
                         </Box>
                     </>
@@ -124,6 +136,9 @@ export default function BikeCard({ bike, selectedBikes, setSelectedBikes }) {
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                         Yhteensä palvelussa: {bike.total_count}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Kuvaus: {bike.description}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                         Tyyppi: {bike.type}

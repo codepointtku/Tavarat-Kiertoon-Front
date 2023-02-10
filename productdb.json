@@ -425,6 +425,28 @@
             "type": "City",
             "color": "green",
             "brand": "Huono"
+        },
+        {
+            "id": 4,
+            "name": "Päiväkoti -paketti",
+            "description": "16\" pyöriä 7 kpl, 14\" pyöriä 3 kpl, potkupyöriä 10 kpl, pyöräilykypäriä 20 kpl, käsipumppu, jalkapumppu, monitoimityökalu",
+            "available": 1,
+            "total_count": 1,
+            "size": "14\" & 16\"",
+            "type": "Paketti",
+            "color": "green",
+            "brand": "Huono"
+        },
+        {
+            "id": 5,
+            "name": "Koulu -paketti",
+            "description": "20\" pyöriä 6 kpl, 24\" pyöriä 6 kpl, pyöräilykypäriä 13 kpl, käsipumppu, jalkapumppu, monitoimityökalu, molempia pyöriä olemassa 7 kpl, mutta tällä määrällä peräkärry on helppo lastata",
+            "available": 1,
+            "total_count": 1,
+            "size": "20\" & 24\"",
+            "type": "Paketti",
+            "color": "green",
+            "brand": "Huono"
         }
     ]
 }
