@@ -66,8 +66,9 @@ const styles = StyleSheet.create({
 // Create Document Component
 function PDFDocument({ order }) {
     const orderId = order.id;
-    const orderRecipient = order.recipient;
-    const orderAddress = order.address;
+    const orderRecipient = order.contact;
+    const orderAddress = order.delivery_address;
+    const orderInfo = order.order_info;
     const orderProducts = order.products.map((product) => ({ id: product, imageSrc: '../br.jpg' }));
 
     return (
@@ -90,10 +91,7 @@ function PDFDocument({ order }) {
                     </View>
                 </View>
                 <View style={styles.freeDescriptionSection}>
-                    <Text>
-                        Tämä on vapaatekstikenttä, johon saa kirjoittaa esim vapaamuotoisen kuvauksen tai lisätietoja
-                        toimituksesta
-                    </Text>
+                    <Text>{orderInfo}</Text>
                 </View>
                 <View style={styles.listSection}>
                     <Text style={{ marginBottom: 10 }}>Tuotteet</Text>
