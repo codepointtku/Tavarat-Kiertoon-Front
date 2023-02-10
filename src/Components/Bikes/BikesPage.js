@@ -154,6 +154,17 @@ export default function BikesPage() {
                                     )
                             )}
                         </Box>
+                        <Autocomplete
+                            disablePortal
+                            id="storage"
+                            options={[
+                                { value: 'inside', label: 'Sisällä' },
+                                { value: 'outside', label: 'Kärryssä' },
+                            ]}
+                            // eslint-disable-next-line react/jsx-props-no-spreading
+                            renderInput={(params) => <TextField {...params} label="Säilytystapa" />}
+                            size="small"
+                        />
                         <Box sx={{ display: 'flex', justifyContent: 'end', mt: 1 }}>
                             <Button color="success">Seuraava</Button>
                         </Box>
