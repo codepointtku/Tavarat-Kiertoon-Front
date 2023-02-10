@@ -40,16 +40,18 @@ const defaultTheme = createTheme({
             main: '#81C784',
             light: '#81C784',
             dark: '#388E3C',
-            stashmain: '#4CAF50',
-            monookkeli: '#1f8278'
         },
     },
     typography: {
         fontSize: 16,
+        fontSizeSmall: 12,
+        // fontWeight: "choice", (default=fontWeightRegular)
+        fontWeightThin: 100,
         fontWeightLight: 200,
         fontWeightRegular: 300,
         fontWeightMedium: 400,
-        fontWeightBold: 800,
+        fontWeightBold: 600,
+        fontWeightHeavy: 800,
         button: { textTransform: 'initial' },
     },
     breakpoints: {
