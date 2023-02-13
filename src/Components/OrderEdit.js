@@ -40,10 +40,7 @@ function OrderEdit() {
 
     const deleteItem = (id, items) => {
         if (items.length > 1) {
-            console.log(items);
-            /* -- UNDER CONSTRUCTION. DO NOT TOUCH! --
-            setOrderItems(orderItems.filter((item) => item.id !== id));
-            setOrderItems({...orderItems, asd[0].items.pop()}); */
+            items.pop();
         } else {
             setOrderItems(orderItems.filter((item) => item.id !== id));
         }
