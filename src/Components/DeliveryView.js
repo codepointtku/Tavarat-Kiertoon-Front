@@ -3,6 +3,10 @@ import { useRouteLoaderData } from 'react-router-dom';
 
 function DeliveryView() {
     const data = useRouteLoaderData('root');
+    if (!data) {
+        return <>Toimitustietoja ei voitu ladata</>;
+    }
+
     const url = `mailto:${data.email}`;
     // console.log(data, data.name);
     return (
