@@ -4,6 +4,8 @@
 import { Container, Box, Stepper, Step, StepLabel, Grid, Typography, Button, IconButton } from '@mui/material';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Form } from 'react-router-dom';
 
 function ShoppingCart() {
@@ -12,7 +14,9 @@ function ShoppingCart() {
 
     // const isStepSkipped = (step) => skipped.has(step);
     return (
-        <Container sx={{ border: 3, borderStyle: 'solid', borderRadius: 3, padding: 20, margin: '3.125rem 0rem' }}>
+        <Container
+            sx={{ border: 3, borderStyle: 'solid', borderRadius: 3, p: 20, paddingBottom: 5, margin: '3.125rem 0rem' }}
+        >
             <Form>
                 <Box
                     sx={{
@@ -63,8 +67,14 @@ function ShoppingCart() {
                     <Typography variant="h6">Hinta</Typography>
                 </Grid>
                 <hr />
-                <Button variant="contained">Jatka ostoksia</Button>
-                <Button variant="contained">Seuraava</Button>
+                <Grid container justifyContent="space-between" sx={{ marginTop: 5 }}>
+                    <Button variant="contained" startIcon={<ArrowBackIcon />}>
+                        Jatka ostoksia
+                    </Button>
+                    <Button variant="contained" endIcon={<ArrowForwardIcon />}>
+                        Seuraava
+                    </Button>
+                </Grid>
             </Form>
         </Container>
     );
