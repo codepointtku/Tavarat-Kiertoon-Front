@@ -4,6 +4,9 @@ import useCustomSearchParams from '../Hooks/useCustomSearchParams';
 
 function UsersList() {
     const data = useLoaderData();
+    if (!data) {
+        return <>Käyttäjiä ei löydy</>;
+    }
     const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });
 
     return (

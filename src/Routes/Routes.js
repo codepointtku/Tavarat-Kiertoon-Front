@@ -49,7 +49,6 @@ function Routes() {
             loader: async () => {
                 try {
                     const { data } = await axios.get('http://localhost:3001/contacts');
-
                     return data;
                 } catch {
                     return null;
@@ -73,8 +72,12 @@ function Routes() {
                             path: '/',
                             element: <ProductList />,
                             loader: async () => {
-                                const { data } = await axios.get('http://localhost:8000/products/');
-                                return data.results;
+                                try {
+                                    const { data } = await axios.get('http://localhost:8000/products/');
+                                    return data.results;
+                                } catch {
+                                    return null;
+                                }
                             },
                         },
                         {

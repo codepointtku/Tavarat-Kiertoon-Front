@@ -4,6 +4,10 @@ import ArticleCard from './ArticleCard';
 
 function Announcements() {
     const testData = useLoaderData();
+    if (!testData) {
+        return <>Ilmoituksia ei voitu ladata</>;
+    }
+
     const cards = testData.map((item) => (
         <ArticleCard key={item.title} title={item.title} date={item.date} content={item.content} />
     ));
