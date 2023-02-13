@@ -1,5 +1,19 @@
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Modal, Typography } from '@mui/material';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import {
+    Box,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardMedia,
+    Grid,
+    Modal,
+    Paper,
+    Stack,
+    Typography,
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
@@ -15,17 +29,19 @@ export default function BikeCard({ bike, selectedBikes, setSelectedBikes }) {
             }
         >
             <CardMedia sx={{ width: '200px', height: '200px' }} component="img" alt="kuva" image="br.jpg" />
-            <CardContent sx={{ flex: 1 }}>
+            <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Typography variant="h6">{bike.name}</Typography>
-                <Typography variant="caption" sx={{ letterSpacing: 0 }}>
+                {/* <Typography variant="caption" sx={{ letterSpacing: 0 }}>
                     {bike.description}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Tyyppi: {bike.type}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Koko: {bike.size}
-                </Typography>
+                </Typography> */}
+                <Box sx={{ mb: 1 }}>
+                    <Typography variant="body2" color="text.secondary">
+                        Tyyppi: {bike.type}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Koko: {bike.size}
+                    </Typography>
+                </Box>
                 <Box>
                     <Button
                         variant="outlined"
@@ -41,8 +57,8 @@ export default function BikeCard({ bike, selectedBikes, setSelectedBikes }) {
                 sx={{ justifyContent: 'space-between', display: 'flex', flexDirection: 'column', alignItems: 'end' }}
             >
                 {bike.available ? (
-                    <>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Stack justifyContent="space-between" height="100%">
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mr: 1 }}>
                             <Typography id="modal-modal-description" sx={{ mr: 1 }}>
                                 Määrä
                             </Typography>
@@ -56,7 +72,13 @@ export default function BikeCard({ bike, selectedBikes, setSelectedBikes }) {
                                 value={selectedBikes[bike.id] ?? 0}
                                 onChange={(event) => {
                                     const newValue = event.target.value;
-                                    if (newValue >= 0 && newValue <= bike.available && !Number.isNaN(newValue))
+                                    if (Number.isNaN(newValue) || !Number(newValue)) {
+                                        setSelectedBikes((prevSelectedBikes) => {
+                                            const newSelectedBikes = { ...prevSelectedBikes };
+                                            delete newSelectedBikes[bike.id];
+                                            return newSelectedBikes;
+                                        });
+                                    } else if (newValue >= 0 && newValue <= bike.available)
                                         setSelectedBikes((prevSelectedBikes) => ({
                                             ...prevSelectedBikes,
                                             [bike.id]: Number(event.target.value),
@@ -76,20 +98,155 @@ export default function BikeCard({ bike, selectedBikes, setSelectedBikes }) {
                                 +
                             </Button> */}
                         </Box>
-                        <Typography
+                        {/* <Typography
                             color={bike.available ? 'black' : 'error'}
-                        >{`Vapaana ${bike.available}/${bike.total_count}`}</Typography>
-                        <Box>
-                            <Button
+                        >{`Vapaana ${bike.available}/${bike.total_count}`}</Typography> */}
+                        <Box sx={{ mb: 1 }}>
+                            <Typography sx={{ mb: 1 }} align="center">
+                                Saatavuus
+                            </Typography>
+                            <Stack direction="row" justifyContent="space-between" alignItems="center" gap={1}>
+                                <NavigateBeforeIcon />
+
+                                <Box>
+                                    <Grid container spacing={1}>
+                                        <Grid item>
+                                            <Typography variant="body2">14.2</Typography>
+                                            <Paper
+                                                elevation={3}
+                                                sx={{ width: '20px', height: '20px', backgroundColor: 'green' }}
+                                            >
+                                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
+                                                    2
+                                                </Typography>
+                                            </Paper>
+                                            {/* <Box>2</Box> */}
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body2">15.2</Typography>
+                                            <Paper
+                                                elevation={3}
+                                                sx={{ width: '20px', height: '20px', backgroundColor: 'green' }}
+                                            >
+                                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
+                                                    1
+                                                </Typography>
+                                            </Paper>
+                                            {/* <Box>2</Box> */}
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body2">16.2</Typography>
+                                            <Paper
+                                                elevation={3}
+                                                sx={{ width: '20px', height: '20px', backgroundColor: 'red' }}
+                                            >
+                                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
+                                                    0
+                                                </Typography>
+                                            </Paper>
+                                            {/* <Box>2</Box> */}
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body2">17.2</Typography>
+                                            <Paper
+                                                elevation={3}
+                                                sx={{ width: '20px', height: '20px', backgroundColor: 'green' }}
+                                            >
+                                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
+                                                    2
+                                                </Typography>
+                                            </Paper>
+                                            {/* <Box>2</Box> */}
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body2">18.2</Typography>
+                                            <Paper
+                                                elevation={3}
+                                                sx={{ width: '20px', height: '20px', backgroundColor: 'green' }}
+                                            >
+                                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
+                                                    2
+                                                </Typography>
+                                            </Paper>
+                                            {/* <Box>2</Box> */}
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid container spacing={1}>
+                                        <Grid item>
+                                            <Typography variant="body2">19.2</Typography>
+                                            <Paper
+                                                elevation={3}
+                                                sx={{ width: '20px', height: '20px', backgroundColor: 'green' }}
+                                            >
+                                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
+                                                    2
+                                                </Typography>
+                                            </Paper>
+                                            {/* <Box>2</Box> */}
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body2">20.2</Typography>
+                                            <Paper
+                                                elevation={3}
+                                                sx={{ width: '20px', height: '20px', backgroundColor: 'green' }}
+                                            >
+                                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
+                                                    1
+                                                </Typography>
+                                            </Paper>
+                                            {/* <Box>2</Box> */}
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body2">21.2</Typography>
+                                            <Paper
+                                                elevation={3}
+                                                sx={{ width: '20px', height: '20px', backgroundColor: 'green' }}
+                                            >
+                                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
+                                                    3
+                                                </Typography>
+                                            </Paper>
+                                            {/* <Box>2</Box> */}
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body2">22.2</Typography>
+                                            <Paper
+                                                elevation={3}
+                                                sx={{ width: '20px', height: '20px', backgroundColor: 'green' }}
+                                            >
+                                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
+                                                    2
+                                                </Typography>
+                                            </Paper>
+                                            {/* <Box>2</Box> */}
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body2">23.2</Typography>
+                                            <Paper
+                                                elevation={3}
+                                                sx={{ width: '20px', height: '20px', backgroundColor: 'green' }}
+                                            >
+                                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
+                                                    2
+                                                </Typography>
+                                            </Paper>
+                                            {/* <Box>2</Box> */}
+                                        </Grid>
+                                    </Grid>
+                                </Box>
+                                <NavigateNextIcon />
+                            </Stack>
+                            {/* <Button
                                 variant="outlined"
                                 size="small"
                                 startIcon={<InfoOutlinedIcon />}
                                 onClick={() => setIsRentModalVisible(true)}
                             >
                                 Katso vapaus
-                            </Button>
+                            </Button> */}
                         </Box>
-                    </>
+                    </Stack>
                 ) : (
                     <>
                         <Box sx={{ flex: 1 }} />

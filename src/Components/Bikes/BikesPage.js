@@ -51,7 +51,7 @@ export default function BikesPage() {
             <hr />
             <Box sx={{ display: 'flex', gap: 2, justifyContent: 'space-between' }}>
                 <Box sx={{ flex: 1 }}>
-                    <Typography variant="h6">Vuokrauksen alkamis- ja loppumispäivä</Typography>
+                    {/* <Typography variant="h6">Valitse vuokrauksen alkamis- ja loppumispäivä</Typography>
                     <Box
                         sx={{
                             display: 'flex',
@@ -66,11 +66,11 @@ export default function BikesPage() {
                             <input type="date" id="start" name="trip-start" min="2023-01-01" max="2023-12-31" />
                         </Box>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
-                            <Typography id="modal-modal-description">Palautuspäivä</Typography>
+                            <Typography id="modal-modal-description">Loppumispäivä</Typography>
                             <input type="date" id="start" name="trip-start" min="2023-01-01" max="2023-12-31" />
                         </Box>
                     </Box>
-                    <hr />
+                    <hr /> */}
                     <Typography variant="h6">Valitse vuokraukseen haluamasi pyörät</Typography>
                     <Box sx={{ mb: 1 }}>
                         <Box
@@ -148,11 +148,31 @@ export default function BikesPage() {
                             flexDirection: 'column',
                             justifyContent: 'space-between',
                             width: '100%',
+                            position: 'sticky',
+                            top: '20px',
                         }}
                     >
                         <Typography align="center" variant="h6">
                             Vuokraustiedot
                         </Typography>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                mt: 2,
+                            }}
+                        >
+                            <Box>
+                                <Typography id="modal-modal-description">Aloituspäivä</Typography>
+                                <input type="date" id="start" name="trip-start" min="2023-01-01" max="2023-12-31" />
+                            </Box>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
+                                <Typography id="modal-modal-description">Loppumispäivä</Typography>
+                                <input type="date" id="start" name="trip-start" min="2023-01-01" max="2023-12-31" />
+                            </Box>
+                        </Box>
                         <Box sx={{ my: 3 }}>
                             {Object.entries(selectedBikes).map(
                                 ([key, value]) =>
@@ -162,6 +182,7 @@ export default function BikesPage() {
                                         </Typography>
                                     )
                             )}
+                            {!!Object.keys(selectedBikes).length || <Typography>Valitse pyörä</Typography>}
                         </Box>
                         <Typography variant="caption" sx={{ mb: 1 }}>
                             Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä, tuomme
