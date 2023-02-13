@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('mainpage', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/');
-        await expect(page.getByText('Etsimääsi sijaintia /').not.toBeVisible();
+        await expect(page.getByText('Etsimääsi sijaintia /')).not.toBeVisible();
     });
 });
 
@@ -131,5 +131,12 @@ test.describe('hakemukset', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/admin/hakemukset');
         await expect(page.getByText('Etsimääsi sijaintia /admin/hakemukset')).not.toBeVisible();
+    });
+});
+
+test.describe('pdf', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/varasto/pdf/0');
+        await expect(page.getByText('Etsimääsi sijaintia /varasto/pdf/0')).not.toBeVisible();
     });
 });
