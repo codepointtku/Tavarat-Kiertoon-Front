@@ -118,11 +118,10 @@ function Routes() {
                             element: <Announcements />,
                             loader: async () => {
                                 const { data } = await axios.get('http://localhost:3001/announcements');
-                                try {
+                                if (data) {
                                     return data;
-                                } catch {
-                                    return null;
                                 }
+                                return null;
                             },
                         },
                         {
