@@ -19,7 +19,7 @@ function OrderEdit() {
     const navigate = useNavigate();
     const location = useLocation();
     const [orderData, setOrderData] = useState(loader);
-    const [orderItems /* , setOrderItems */] = useState(location.state);
+    const [orderItems, setOrderItems] = useState(location.state);
 
     const handleChange = (key, event) => {
         setOrderData({ ...orderData, [key]: event.target.value });
@@ -36,6 +36,17 @@ function OrderEdit() {
     const addItem = () => {
         // add here apiCall to find item by ID
         console.log(orderData.newItem);
+    };
+
+    const deleteItem = (id, items) => {
+        if (items.length > 1) {
+            console.log(items);
+            /* -- UNDER CONSTRUCTION. DO NOT TOUCH! --
+            setOrderItems(orderItems.filter((item) => item.id !== id));
+            setOrderItems({...orderItems, asd[0].items.pop()}); */
+        } else {
+            setOrderItems(orderItems.filter((item) => item.id !== id));
+        }
     };
 
     return (
@@ -131,7 +142,13 @@ function OrderEdit() {
                                 <TableCell>{item.barcode}</TableCell>
                                 <TableCell>{item.count}</TableCell>
                                 <TableCell align="right">
-                                    <Button>Poista tuote.</Button>
+                                    <Button
+                                        onClick={() => {
+                                            deleteItem(item.id, item.items);
+                                        }}
+                                    >
+                                        Poista tuote.
+                                    </Button>
                                 </TableCell>
                             </StyledTableRow>
                         ))}
