@@ -40,7 +40,13 @@ function OrderEdit() {
 
     const deleteItem = (id, items) => {
         if (items.length > 1) {
-            items.pop();
+            const reducedItems = orderItems.map((item) => {
+                if (item.id === id) {
+                    item.items.pop();
+                }
+                return item;
+            });
+            setOrderItems(reducedItems);
         } else {
             setOrderItems(orderItems.filter((item) => item.id !== id));
         }
@@ -137,7 +143,7 @@ function OrderEdit() {
                                 <TableCell>{item.name}</TableCell>
                                 <TableCell>{item.id}</TableCell>
                                 <TableCell>{item.barcode}</TableCell>
-                                <TableCell>{item.count}</TableCell>
+                                <TableCell>{item.items.length}</TableCell>
                                 <TableCell align="right">
                                     <Button
                                         onClick={() => {
