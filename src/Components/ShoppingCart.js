@@ -2,22 +2,48 @@
 // import { useState } from 'react';
 
 import { Container, Box, Stepper, Step, StepLabel, Grid, Typography, Button, IconButton } from '@mui/material';
+
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
+import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
+
 import { Form } from 'react-router-dom';
 
 function ShoppingCart() {
     // const [skipped] = useState(new Set());
     const steps = ['Ostoskori', 'Yhteystiedot & toimitus', 'Vahvistus'];
 
+    function iconDecider(index) {
+        const icons = [<ShoppingCartIcon />, <PermContactCalendarIcon />, <DomainVerificationIcon />];
+        console.log(icons);
+        return (
+            <Box
+                sx={{
+                    borderRadius: '50%',
+                    backgroundColor: 'primary.main',
+                    width: 50,
+                    height: 50,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: 'white',
+                }}
+            >
+                {icons[index]}
+            </Box>
+        );
+    }
     // const isStepSkipped = (step) => skipped.has(step);
+    // useLoaderData tuotenimen, tuotemäärän ja hinnan hakuun
     return (
         <Container
             sx={{ border: 3, borderStyle: 'solid', borderRadius: 3, p: 20, paddingBottom: 5, margin: '3.125rem 0rem' }}
         >
-            <Form>
+            <Form method="put">
                 <Box
                     sx={{
                         border: 1,
@@ -44,7 +70,7 @@ function ShoppingCart() {
                             // }
                             return (
                                 <Step key={label} {...stepProps}>
-                                    <StepLabel>{label}</StepLabel>
+                                    <StepLabel StepIconComponent={() => iconDecider(index)}>{label}</StepLabel>
                                 </Step>
                             );
                         })}
@@ -68,10 +94,10 @@ function ShoppingCart() {
                 </Grid>
                 <hr />
                 <Grid container justifyContent="space-between" sx={{ marginTop: 5 }}>
-                    <Button variant="contained" startIcon={<ArrowBackIcon />}>
+                    <Button type="submit" variant="contained" startIcon={<ArrowBackIcon />}>
                         Jatka ostoksia
                     </Button>
-                    <Button variant="contained" endIcon={<ArrowForwardIcon />}>
+                    <Button type="submit" variant="contained" endIcon={<ArrowForwardIcon />}>
                         Seuraava
                     </Button>
                 </Grid>
