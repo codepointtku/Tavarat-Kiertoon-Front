@@ -7,7 +7,6 @@ test.describe('mainpage', () => {
     });
 });
 
-// needs to be changed when errorelement is present
 test.describe('tuotteet', () => {
     test('no errors', async ({ page }) => {
         await page.goto('tuotteet/4321');
