@@ -28,7 +28,7 @@ import FaqView from '../Components/FaqView';
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
-import ShoppingCart from '../Components/ShoppingCart';
+import ShoppingCart from '../Components/ShoppingCart/ShoppingCart';
 import Delivery from '../toimitus';
 import BackgroundInfo from '../Components/Backgroundinfo';
 import StatsPage from '../Components/Stats/StatsPage';
