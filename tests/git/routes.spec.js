@@ -140,3 +140,10 @@ test.describe('pdf', () => {
         await expect(page.getByText('Etsimääsi sijaintia /varasto/pdf/0')).not.toBeVisible();
     });
 });
+
+test.describe('fail-test', () => {
+    test('fail-test', async ({ page }) => {
+        await page.goto('/test/failing');
+        await expect(page.getByText('Etsimääsi sijaintia /test/failing')).toBeVisible();
+    });
+});
