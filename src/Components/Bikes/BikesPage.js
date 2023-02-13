@@ -156,15 +156,7 @@ export default function BikesPage() {
                         <Typography align="center" variant="h6">
                             Vuokraustiedot
                         </Typography>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                                mt: 2,
-                            }}
-                        >
+                        <Stack justifyContent="space-between" alignItems="center" flexDirection="row" mt={2}>
                             <Box>
                                 <Typography id="modal-modal-description">Aloituspäivä</Typography>
                                 <input
@@ -185,7 +177,7 @@ export default function BikesPage() {
                                     max={loaderData.date_info.available_to}
                                 />
                             </Stack>
-                        </Box>
+                        </Stack>
                         <Box sx={{ my: 3 }}>
                             {Object.entries(selectedBikes).map(
                                 ([key, value]) =>
