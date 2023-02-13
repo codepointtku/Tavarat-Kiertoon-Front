@@ -9,6 +9,9 @@ import axios from 'axios';
 
 function AddNewItem({ item, setItem, uploadFile }) {
     const data = useLoaderData();
+    if (!data) {
+        return <>Esinetietojen lataus ei toimi.</>;
+    }
     const navigate = useNavigate();
 
     const handleChange = (key, event) => {

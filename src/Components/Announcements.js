@@ -3,8 +3,12 @@ import { useLoaderData } from 'react-router-dom';
 import ArticleCard from './ArticleCard';
 
 function Announcements() {
-    const testData = useLoaderData();
-    const cards = testData.map((item) => (
+    const data = useLoaderData();
+    if (!data) {
+        return <>Ilmoituksia ei voitu ladata</>;
+    }
+
+    const cards = data.map((item) => (
         <ArticleCard key={item.title} title={item.title} date={item.date} content={item.content} />
     ));
 

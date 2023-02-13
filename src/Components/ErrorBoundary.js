@@ -14,18 +14,9 @@ function ErrorBoundary() {
         <Box minHeight={320}>
             <Alert severity="warning">
                 <AlertTitle>Jokin meni pieleen</AlertTitle>
-                {error?.response?.status === 404 ? (
-                    // 404 page for product or page not found
-                    <Typography variant="h6">
-                        Etsimääsi {location.pathname.includes('/tuotteet/') ? 'tuotetta' : 'sivua'} ei valitettavasti
-                        löydy.
-                    </Typography>
-                ) : (
-                    // Generic error page, to be refined
-                    <>
-                        <Typography>Onko serveri päällä?</Typography>
-                        <Typography>Onko tonipal kahvilla??</Typography>
-                    </>
+                <Typography variant="h6">Etsimääsi sijaintia {location.pathname} ei valitettavasti löydy.</Typography>
+                {error?.response?.status === 404 && location.pathname.includes('/tuotteet/') && (
+                    <Typography>Etsimääsi tuotetta ei löydy</Typography>
                 )}
                 <Box>
                     <Button onClick={handleGoBack} sx={{ margin: '1em' }}>
