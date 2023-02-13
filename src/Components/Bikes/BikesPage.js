@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, Card, Container, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Button, Card, Container, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 
@@ -6,20 +6,20 @@ import BikeCard from './BikeCard';
 
 export default function BikesPage() {
     const [searchParams, setSearchParams] = useSearchParams();
-    const bikes = useLoaderData();
+    const loaderData = useLoaderData();
     const filteredBikes = searchParams.get('filters')
-        ? bikes.filter((bike) =>
+        ? loaderData.bikes.filter((bike) =>
               Object.entries(JSON.parse(searchParams.get('filters'))).every(
                   ([filterName, filterValue]) => filterValue === bike[filterName]
               )
           )
-        : bikes;
+        : loaderData.bikes;
 
     const sizeOptionsSet = new Set();
     const brandOptionsSet = new Set();
     const typeOptionsSet = new Set();
 
-    bikes.forEach((bike) => {
+    loaderData.bikes.forEach((bike) => {
         sizeOptionsSet.add(bike.size);
         brandOptionsSet.add(bike.brand);
         typeOptionsSet.add(bike.type);
@@ -49,7 +49,7 @@ export default function BikesPage() {
                 Polkupyörienvuokraus
             </Typography>
             <hr />
-            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'space-between' }}>
+            <Stack gap={2} flexDirection="row" justifyContent="space-between">
                 <Box sx={{ flex: 1 }}>
                     {/* <Typography variant="h6">Valitse vuokrauksen alkamis- ja loppumispäivä</Typography>
                     <Box
@@ -134,6 +134,7 @@ export default function BikesPage() {
                             <BikeCard
                                 key={bike.id}
                                 bike={bike}
+                                dateInfo={loaderData.date_info}
                                 selectedBikes={selectedBikes}
                                 setSelectedBikes={setSelectedBikes}
                             />
@@ -166,19 +167,31 @@ export default function BikesPage() {
                         >
                             <Box>
                                 <Typography id="modal-modal-description">Aloituspäivä</Typography>
-                                <input type="date" id="start" name="trip-start" min="2023-01-01" max="2023-12-31" />
+                                <input
+                                    type="date"
+                                    id="start"
+                                    name="trip-start"
+                                    min={loaderData.date_info.available_from}
+                                    max={loaderData.date_info.available_to}
+                                />
                             </Box>
-                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
+                            <Stack alignItems="end">
                                 <Typography id="modal-modal-description">Loppumispäivä</Typography>
-                                <input type="date" id="start" name="trip-start" min="2023-01-01" max="2023-12-31" />
-                            </Box>
+                                <input
+                                    type="date"
+                                    id="start"
+                                    name="trip-start"
+                                    min={loaderData.date_info.available_from}
+                                    max={loaderData.date_info.available_to}
+                                />
+                            </Stack>
                         </Box>
                         <Box sx={{ my: 3 }}>
                             {Object.entries(selectedBikes).map(
                                 ([key, value]) =>
                                     !!value && (
                                         <Typography key={key}>
-                                            {value}x {bikes.find((bike) => bike.id === Number(key)).name}
+                                            {value}x {loaderData.bikes.find((bike) => bike.id === Number(key)).name}
                                         </Typography>
                                     )
                             )}
@@ -204,7 +217,7 @@ export default function BikesPage() {
                         </Box>
                     </Card>
                 </Box>
-            </Box>
+            </Stack>
         </Container>
     );
 }
