@@ -3,7 +3,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Grid, Box, Link as MuiLink } from '@mui/material';
+import { Grid, Box, Link as MuiLink, Divider } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 function FAQHero() {
@@ -27,7 +27,7 @@ function FAQHero() {
                     meihin yhteydessä täältä.
                 </Link>
             </Typography>
-            <hr />
+            <Divider />
         </Box>
     );
 }
