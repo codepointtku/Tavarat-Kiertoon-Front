@@ -1,20 +1,20 @@
 /* eslint-disable react/jsx-props-no-spreading */
 // import { useState } from 'react';
+import { Form } from 'react-router-dom';
+import { styled } from '@mui/system';
 
-import { Container, Box, Stepper, Step, StepLabel, Grid, Typography, Button, IconButton } from '@mui/material';
-
+import { Container, Box, Stepper, Step, StepLabel, Grid, Button } from '@mui/material';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 
-import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
-import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 
-import { styled } from '@mui/system';
-import { Form } from 'react-router-dom';
+import CartView from './CartView';
+// import ContactsAndDelivery from './ContactsAndDelivery';
+// import Confirmation from './Confirmation';
 
 function iconDecider(index) {
     const icons = [<ShoppingCartIcon />, <PermContactCalendarIcon />, <DomainVerificationIcon />];
@@ -45,22 +45,6 @@ const CartStepConnector = styled(StepConnector)(({ theme }) => ({
         borderRadius: 20,
     },
 }));
-
-// function cartStepConnector() {
-//     return (
-//         <StepConnector
-//             sx={{
-//                 [`& .${stepConnectorClasses.line}`]: {
-//                     display: 'flex',
-//                     alignSelf: 'center',
-//                     borderColor: 'primary.main',
-//                     borderWidth: 'thick',
-//                     borderRadius: 1,
-//                 },
-//             }}
-//         />
-//     );
-// }
 
 function ShoppingCart() {
     // const [skipped] = useState(new Set());
@@ -107,22 +91,7 @@ function ShoppingCart() {
                     </Stepper>
                 </Box>
                 {/* map tähän myös */}
-                <Grid container direction="row" justifyContent="space-between">
-                    <Grid item>
-                        <Typography variant="h6">Tuotenimi</Typography>
-                    </Grid>
-                    <Box display="inline-flex">
-                        <IconButton color="primary">
-                            <RemoveCircleRoundedIcon />
-                        </IconButton>
-                        <Typography variant="h6">Tuotemäärä</Typography>
-                        <IconButton color="primary">
-                            <AddCircleRoundedIcon />
-                        </IconButton>
-                    </Box>
-                    <Typography variant="h6">Hinta</Typography>
-                </Grid>
-                <hr />
+                <CartView />
                 <Grid container justifyContent="space-between" sx={{ marginTop: 5 }}>
                     <Button type="submit" variant="contained" startIcon={<ArrowBackIcon />}>
                         Jatka ostoksia
