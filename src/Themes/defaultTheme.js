@@ -83,6 +83,21 @@ const defaultTheme = createTheme({
                 variant: 'contained',
             },
         },
+        MuiLink: {
+            defaultProps: {
+                underline: 'hover',
+                color: 'primary.dark',
+                fontWeight: 'fontWeightMedium',
+            },
+        },
+        // MuiGrid: {
+        //     styleOverrides: {
+        //         root: {
+        //             // backgroundColor: 'lightgoldenrodyellow',
+        //             border: '1px solid green',
+        //         },
+        //     },
+        // },
     },
 });
 

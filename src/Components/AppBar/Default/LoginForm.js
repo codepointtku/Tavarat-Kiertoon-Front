@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { Box, Typography, Container, Button } from '@mui/material';
+import { Box, Typography, Container, Button, Link as MuiLink } from '@mui/material';
 
 import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
@@ -54,14 +54,14 @@ function LoginForm() {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Typography variant="body2" component={Link} to="/doesnotexist/">
+                            <MuiLink variant="body2" component={Link} to="/doesnotexist/">
                                 Unohtunut salasana?
-                            </Typography>
+                            </MuiLink>
                         </Grid>
                         <Grid item>
-                            <Typography variant="body2" component={Link} to="/signup/">
+                            <MuiLink variant="body2" component={Link} to="/signup/">
                                 Rekisteröidy
-                            </Typography>
+                            </MuiLink>
                         </Grid>
                     </Grid>
                 </Box>

@@ -8,7 +8,7 @@ import LocationSignupForm from './LocationSignupForm';
 function SignupPage({ isLocationForm }) {
     return (
         <Paper>
-            <Container sx={{ marginTop: 2, marginBottom: 2 }}>
+            <Container sx={{ marginTop: 1, marginBottom: 1 }}>
                 {isLocationForm ? <LocationSignupForm /> : <UserSignupForm />}
             </Container>
         </Paper>
