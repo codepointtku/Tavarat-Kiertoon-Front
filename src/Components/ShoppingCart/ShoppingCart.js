@@ -8,8 +8,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 
-import CartView from './CartView';
-// import ContactsAndDelivery from './ContactsAndDelivery';
+// import CartView from './CartView';
+import ContactsAndDelivery from './ContactsAndDelivery';
 // import Confirmation from './Confirmation';
 
 function iconDecider(index) {
@@ -87,7 +87,8 @@ function ShoppingCart() {
                 </Stepper>
             </Box>
             {/* map tähän myös */}
-            <CartView />
+            {/* <CartView /> */}
+            <ContactsAndDelivery />
         </Container>
     );
 }
