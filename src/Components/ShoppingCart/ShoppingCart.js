@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
-// import { useState } from 'react';
-
 import { styled } from '@mui/system';
+
 import { Container, Box, Stepper, Step, StepLabel } from '@mui/material';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 
@@ -49,6 +48,7 @@ function ShoppingCart() {
 
     // const isStepSkipped = (step) => skipped.has(step);
     // useLoaderData tuotenimen, tuotemäärän ja hinnan hakuun
+
     return (
         <Container
             sx={{ border: 3, borderStyle: 'solid', borderRadius: 3, p: 20, paddingBottom: 5, margin: '3.125rem 0rem' }}
@@ -67,7 +67,7 @@ function ShoppingCart() {
                     sx={{
                         '& .Mui-disabled': { opacity: 0.5 },
                     }}
-                    activeStep={1}
+                    activeStep={0}
                     connector={<CartStepConnector />}
                     alternativeLabel
                 >
