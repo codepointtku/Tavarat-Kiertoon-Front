@@ -211,7 +211,14 @@ function Routes() {
                             element: <OrderEdit />,
                             loader: async ({ params }) => {
                                 const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
+                                const productFind = async (id) => {
+                                    const product = await axios.get(`http://localhost:8000/products/${id}`);
+                                    return product.data;
+                                };
+                                const newProducts = await Promise.all(data.products.map((entry) => productFind(entry)));
+
                                 if (data) {
+                                    data.products = newProducts;
                                     return data;
                                 }
                                 return null;

@@ -9,21 +9,22 @@ import {
     TableRow,
     TableBody,
 } from '@mui/material';
-import { useState, useEffect } from 'react';
-import { useLoaderData, useLocation, useNavigate, generatePath } from 'react-router';
+import { useEffect, useState } from 'react';
+import { useLoaderData, /* useLocation */ useNavigate, generatePath } from 'react-router';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
 
 function OrderEdit() {
     const loader = useLoaderData();
     const navigate = useNavigate();
-    const location = useLocation();
+    // const location = useLocation();
     const [orderData, setOrderData] = useState(loader);
-    const [orderItems, setOrderItems] = useState(location.state);
 
     const handleChange = (key, event) => {
         setOrderData({ ...orderData, [key]: event.target.value });
     };
+
+    /*
 
     useEffect(() => {
         if (location.state) {
@@ -33,6 +34,45 @@ function OrderEdit() {
         }
     }, []);
 
+    */
+
+    let orderList = [];
+
+    orderData.products.forEach((entry) => {
+        try {
+            const newEntry = entry;
+            newEntry.count = 1;
+            newEntry.id = entry.id;
+            newEntry.items = [newEntry];
+            orderList.forEach((each) => {
+                if (each.barcode === newEntry.barcode) {
+                    newEntry.count += each.count;
+                    newEntry.items = newEntry.items.concat(each.items);
+                    const index = orderList.findIndex((key) => key.id === each.id);
+                    orderList = [...orderList.slice(0, index), ...orderList.slice(index + 1)];
+                }
+            });
+            orderList.push(newEntry);
+        } catch {
+            orderList.push({
+                name: 'Tuotetta ei olemassa',
+                id: entry.id,
+                barcode: '-',
+                count: 0,
+                category_name: '-',
+                storage_name: '-',
+                items: [],
+                measurements: '-',
+                weight: '-',
+                shelf_id: '-',
+            });
+        }
+    });
+
+    useEffect(() => {
+        setOrderData({ ...orderData, products: orderList });
+    }, []);
+
     const addItem = () => {
         // add here apiCall to find item by ID
         console.log(orderData.newItem);
@@ -40,15 +80,15 @@ function OrderEdit() {
 
     const deleteItem = (id, items) => {
         if (items.length > 1) {
-            const reducedItems = orderItems.map((item) => {
+            const reducedItems = orderList.map((item) => {
                 if (item.id === id) {
                     item.items.pop();
                 }
                 return item;
             });
-            setOrderItems(reducedItems);
+            setOrderData({ ...orderData, items: reducedItems });
         } else {
-            setOrderItems(orderItems.filter((item) => item.id !== id));
+            setOrderData({ ...orderData, items: orderData.items.filter((item) => item.id !== id) });
         }
     };
 
@@ -73,7 +113,7 @@ function OrderEdit() {
 
             <Button onClick={() => addItem()}>Lisää esine ID:n perusteella</Button>
 
-            <h1 align="center">Muokkaa Tilausta {orderData.id}</h1>
+            <h1 align="center">Muokkaa Tilausta {loader.id}</h1>
             <Box align="center">
                 <div>
                     <h5>
@@ -138,7 +178,7 @@ function OrderEdit() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {orderItems.map((item) => (
+                        {orderData.products.map((item) => (
                             <StyledTableRow key={item.id}>
                                 <TableCell>{item.name}</TableCell>
                                 <TableCell>{item.id}</TableCell>
