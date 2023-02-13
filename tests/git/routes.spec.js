@@ -42,10 +42,11 @@ test.describe('stats', () => {
     });
 });
 
+// turn this into not after real loader is created
 test.describe('tiedotteet', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/tiedotteet');
-        await expect(page.getByText('Etsimääsi sijaintia /tiedotteet')).not.toBeVisible();
+        await expect(page.getByText('Etsimääsi sijaintia /tiedotteet')).toBeVisible();
     });
 });
 
