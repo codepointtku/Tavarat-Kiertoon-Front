@@ -10,11 +10,13 @@ function ErrorBoundary() {
         navigate(-1);
     };
 
+    console.log(error);
+
     return (
         <Box minHeight={320}>
             <Alert severity="warning">
                 <AlertTitle>Jokin meni pieleen</AlertTitle>
-                {error?.response?.status === 500 ? (
+                {error?.name === 'AxiosError' ? (
                     <Typography variant="h6">
                         Yhteysongelma sijainnissa {location.pathname}, yritä uudelleen.
                     </Typography>
