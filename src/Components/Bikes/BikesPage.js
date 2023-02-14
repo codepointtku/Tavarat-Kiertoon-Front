@@ -45,44 +45,17 @@ export default function BikesPage() {
 
     return (
         <Container sx={{ mb: 5 }}>
-            <Typography variant="h3" align="center" color="primary.main" sx={{ my: 2 }}>
+            <Typography variant="h3" align="center" color="primary.main" my={2}>
                 Polkupyörienvuokraus
             </Typography>
             <hr />
             <Stack gap={2} flexDirection="row" justifyContent="space-between">
                 <Box sx={{ flex: 1 }}>
-                    {/* <Typography variant="h6">Valitse vuokrauksen alkamis- ja loppumispäivä</Typography>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            flexDirection: 'row',
-                            my: 2,
-                        }}
-                    >
-                        <Box>
-                            <Typography id="modal-modal-description">Aloituspäivä</Typography>
-                            <input type="date" id="start" name="trip-start" min="2023-01-01" max="2023-12-31" />
-                        </Box>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
-                            <Typography id="modal-modal-description">Loppumispäivä</Typography>
-                            <input type="date" id="start" name="trip-start" min="2023-01-01" max="2023-12-31" />
-                        </Box>
-                    </Box>
-                    <hr /> */}
-                    <Typography sx={{ my: 1 }} variant="h6">
+                    <Typography my={1} variant="h6">
                         Valitse vuokraukseen haluamasi pyörät
                     </Typography>
-                    <Box sx={{ mb: 2, mt: 1 }}>
-                        <Box
-                            sx={{
-                                my: 1,
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                            }}
-                        >
+                    <Box mb={2} mt={1}>
+                        <Stack my={1} flexDirection="row" justifyContent="space-between">
                             <Autocomplete
                                 disablePortal
                                 id="size-filter"
@@ -128,7 +101,7 @@ export default function BikesPage() {
                                 renderInput={(params) => <TextField {...params} label="Tyyppi" />}
                                 size="small"
                             />
-                        </Box>
+                        </Stack>
                     </Box>
                     {filteredBikes
                         .sort((a, b) => b.available - a.available)
@@ -182,7 +155,7 @@ export default function BikesPage() {
                                 />
                             </Stack>
                         </Stack>
-                        <Box sx={{ my: 3 }}>
+                        <Box my={3}>
                             {Object.entries(selectedBikes).map(
                                 ([key, value]) =>
                                     !!value && (
@@ -193,7 +166,7 @@ export default function BikesPage() {
                             )}
                             {!!Object.keys(selectedBikes).length || <Typography>Valitse pyörä</Typography>}
                         </Box>
-                        <Typography variant="caption" sx={{ mb: 1 }}>
+                        <Typography variant="caption" mb={1}>
                             Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä, tuomme
                             ne lukittavassa kärryssä.
                         </Typography>
