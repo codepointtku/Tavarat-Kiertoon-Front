@@ -1,6 +1,6 @@
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { Box, Grid, IconButton, Paper, Stack, Typography } from '@mui/material';
+import { Box, Grid, IconButton, Stack, Typography } from '@mui/material';
 import {
     addDays,
     addWeeks,
@@ -103,28 +103,25 @@ export default function BikeAvailability({ dateInfo, rows, taken, maxAvailable, 
                                                 isBefore(day.date, selectedEndDate)) ||
                                             isSameDay(day.date, selectedStartDate) ||
                                             isSameDay(day.date, selectedEndDate)
-                                                ? { backgroundColor: 'lightblue', boxShadow: 1 }
+                                                ? { backgroundColor: '#ffff8d', boxShadow: 1 }
                                                 : {}
                                         }
                                     >
                                         <Typography variant="body2" align="center">
                                             {day.dateString}
                                         </Typography>
+
                                         {isBefore(day.date, parseISO(dateInfo.available_from)) ||
                                         isAfter(day.date, parseISO(dateInfo.available_to)) ? (
-                                            <Paper
-                                                elevation={3}
-                                                sx={{
-                                                    backgroundColor: 'grey',
-                                                }}
-                                            >
+                                            <Box borderRadius={1} boxShadow={1} backgroundColor="grey">
                                                 <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
                                                     X
                                                 </Typography>
-                                            </Paper>
+                                            </Box>
                                         ) : (
-                                            <Paper
-                                                elevation={3}
+                                            <Box
+                                                borderRadius={1}
+                                                boxShadow={1}
                                                 sx={
                                                     day.available
                                                         ? {
@@ -142,7 +139,7 @@ export default function BikeAvailability({ dateInfo, rows, taken, maxAvailable, 
                                                 <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
                                                     {day.available}
                                                 </Typography>
-                                            </Paper>
+                                            </Box>
                                         )}
                                     </Box>
                                 </Grid>

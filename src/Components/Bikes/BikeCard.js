@@ -46,7 +46,7 @@ export default function BikeCard({
             >
                 <Stack justifyContent="space-between" height="100%">
                     {bike.available ? (
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mr: 1 }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mr: 5 }}>
                             <Typography id="modal-modal-description" sx={{ mr: 1 }}>
                                 Määrä
                             </Typography>
