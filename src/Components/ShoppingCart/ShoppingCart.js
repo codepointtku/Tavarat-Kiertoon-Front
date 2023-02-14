@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useState } from 'react';
+import { Form, Link } from 'react-router-dom';
 import { styled } from '@mui/system';
 
 import { Container, Box, Stepper, Step, StepLabel, Button, Grid } from '@mui/material';
@@ -48,6 +49,7 @@ const CartStepConnector = styled(StepConnector)(({ theme }) => ({
 function ShoppingCart() {
     // const [skipped] = useState(new Set());
     const [activeStep, setActiveStep] = useState(0);
+    // const navigate = useNavigate();
     const steps = ['Ostoskori', 'Yhteystiedot & toimitus', 'Vahvistus'];
     console.log(activeStep);
 
@@ -90,38 +92,51 @@ function ShoppingCart() {
                 </Stepper>
             </Box>
             {/* map tähän myös */}
-            {(() => {
-                switch (activeStep) {
-                    case 0:
-                        return <CartView />;
-                    case 1:
-                        return <ContactsAndDelivery />;
+            <Form method="post">
+                {(() => {
+                    switch (activeStep) {
+                        case 0:
+                            return <CartView />;
+                        case 1:
+                            return <ContactsAndDelivery />;
 
-                    case 2:
-                        return <Confirmation />;
+                        case 2:
+                            return <Confirmation />;
 
-                    default:
-                        return <CartView />;
-                }
-            })()}
-            <Grid container justifyContent="space-between" sx={{ marginTop: 5 }}>
-                <Button
-                    // type="submit"
-                    variant="contained"
-                    onClick={() => setActiveStep((PrevStep) => PrevStep - 1)}
-                    startIcon={<ArrowBackIcon />}
-                >
-                    Jatka ostoksia
-                </Button>
-                <Button
-                    // type="submit"
-                    variant="contained"
-                    onClick={() => setActiveStep((PrevStep) => PrevStep + 1)}
-                    endIcon={<ArrowForwardIcon />}
-                >
-                    Seuraava
-                </Button>
-            </Grid>
+                        default:
+                            return <CartView />;
+                    }
+                })()}
+                <Grid container justifyContent="space-between" sx={{ marginTop: 5 }}>
+                    {activeStep === 0 ? (
+                        <Button
+                            component={Link}
+                            to="/"
+                            variant="contained"
+                            onClick={() => setActiveStep((PrevStep) => PrevStep - 1)}
+                            startIcon={<ArrowBackIcon />}
+                        >
+                            Jatka ostoksia
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="contained"
+                            onClick={() => setActiveStep((PrevStep) => PrevStep - 1)}
+                            startIcon={<ArrowBackIcon />}
+                        >
+                            Takaisin
+                        </Button>
+                    )}
+                    <Button
+                        type={activeStep === 3 ? 'submit' : undefined}
+                        variant="contained"
+                        onClick={() => setActiveStep((PrevStep) => PrevStep + 1)}
+                        endIcon={<ArrowForwardIcon />}
+                    >
+                        {activeStep === 2 ? 'Vahvistus' : 'Seuraava'}
+                    </Button>
+                </Grid>
+            </Form>
         </Container>
     );
 }
