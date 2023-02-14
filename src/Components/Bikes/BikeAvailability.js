@@ -97,14 +97,13 @@ export default function BikeAvailability({ dateInfo, rows, taken, maxAvailable, 
                             {week.map((day) => (
                                 <Grid item key={day.dateString} width="50px" mt={1}>
                                     <Box
-                                        borderRadius={2}
-                                        border="1px solid grey"
+                                        borderRadius={1}
                                         sx={
                                             (isAfter(day.date, selectedStartDate) &&
                                                 isBefore(day.date, selectedEndDate)) ||
                                             isSameDay(day.date, selectedStartDate) ||
                                             isSameDay(day.date, selectedEndDate)
-                                                ? { backgroundColor: 'lightblue' }
+                                                ? { backgroundColor: 'lightblue', boxShadow: 1 }
                                                 : {}
                                         }
                                     >
