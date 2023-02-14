@@ -1,16 +1,19 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import { useState } from 'react';
 import { styled } from '@mui/system';
 
-import { Container, Box, Stepper, Step, StepLabel } from '@mui/material';
+import { Container, Box, Stepper, Step, StepLabel, Button, Grid } from '@mui/material';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-// import CartView from './CartView';
+import CartView from './CartView';
 import ContactsAndDelivery from './ContactsAndDelivery';
-// import Confirmation from './Confirmation';
+import Confirmation from './Confirmation';
 
 function iconDecider(index) {
     const icons = [<ShoppingCartIcon />, <PermContactCalendarIcon />, <DomainVerificationIcon />];
@@ -44,11 +47,12 @@ const CartStepConnector = styled(StepConnector)(({ theme }) => ({
 
 function ShoppingCart() {
     // const [skipped] = useState(new Set());
+    const [activeStep, setActiveStep] = useState(0);
     const steps = ['Ostoskori', 'Yhteystiedot & toimitus', 'Vahvistus'];
+    console.log(activeStep);
 
     // const isStepSkipped = (step) => skipped.has(step);
     // useLoaderData tuotenimen, tuotemäärän ja hinnan hakuun
-
     return (
         <Container
             sx={{ border: 3, borderStyle: 'solid', borderRadius: 3, p: 20, paddingBottom: 5, margin: '3.125rem 0rem' }}
@@ -67,13 +71,12 @@ function ShoppingCart() {
                     sx={{
                         '& .Mui-disabled': { opacity: 0.5 },
                     }}
-                    activeStep={0}
+                    activeStep={activeStep}
                     connector={<CartStepConnector />}
                     alternativeLabel
                 >
                     {steps.map((label, index) => {
                         const stepProps = {};
-                        console.log(index);
                         // const disabled = index === 0 && true;
                         // if (isStepSkipped(index)) {
                         //     stepProps.completed = false;
@@ -87,8 +90,38 @@ function ShoppingCart() {
                 </Stepper>
             </Box>
             {/* map tähän myös */}
-            {/* <CartView /> */}
-            <ContactsAndDelivery />
+            {(() => {
+                switch (activeStep) {
+                    case 0:
+                        return <CartView />;
+                    case 1:
+                        return <ContactsAndDelivery />;
+
+                    case 2:
+                        return <Confirmation />;
+
+                    default:
+                        return <CartView />;
+                }
+            })()}
+            <Grid container justifyContent="space-between" sx={{ marginTop: 5 }}>
+                <Button
+                    // type="submit"
+                    variant="contained"
+                    onClick={() => setActiveStep((PrevStep) => PrevStep - 1)}
+                    startIcon={<ArrowBackIcon />}
+                >
+                    Jatka ostoksia
+                </Button>
+                <Button
+                    // type="submit"
+                    variant="contained"
+                    onClick={() => setActiveStep((PrevStep) => PrevStep + 1)}
+                    endIcon={<ArrowForwardIcon />}
+                >
+                    Seuraava
+                </Button>
+            </Grid>
         </Container>
     );
 }
