@@ -44,8 +44,8 @@ export default function BikesPage() {
         });
 
     return (
-        <Container sx={{ mb: 4 }}>
-            <Typography variant="h3" align="center" color="primary.main" sx={{ my: 1 }}>
+        <Container sx={{ mb: 5 }}>
+            <Typography variant="h3" align="center" color="primary.main" sx={{ my: 2 }}>
                 Polkupyörienvuokraus
             </Typography>
             <hr />
@@ -71,8 +71,10 @@ export default function BikesPage() {
                         </Box>
                     </Box>
                     <hr /> */}
-                    <Typography variant="h6">Valitse vuokraukseen haluamasi pyörät</Typography>
-                    <Box sx={{ mb: 1 }}>
+                    <Typography sx={{ my: 1 }} variant="h6">
+                        Valitse vuokraukseen haluamasi pyörät
+                    </Typography>
+                    <Box sx={{ mb: 2, mt: 1 }}>
                         <Box
                             sx={{
                                 my: 1,
@@ -145,12 +147,14 @@ export default function BikesPage() {
                         sx={{
                             flex: 1,
                             p: 1,
+                            px: 2,
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'space-between',
                             width: '100%',
                             position: 'sticky',
                             top: '20px',
+                            mt: 1,
                         }}
                     >
                         <Typography align="center" variant="h6">
@@ -204,7 +208,7 @@ export default function BikesPage() {
                             renderInput={(params) => <TextField {...params} label="Säilytystapa" />}
                             size="small"
                         />
-                        <Box sx={{ display: 'flex', justifyContent: 'end', mt: 3 }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'end', mt: 3, mb: 1 }}>
                             <Button color="success">Seuraava</Button>
                         </Box>
                     </Card>

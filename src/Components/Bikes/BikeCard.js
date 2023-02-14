@@ -5,7 +5,7 @@ import { useState } from 'react';
 import BikeAvailability from './BikeAvailability';
 
 export default function BikeCard({ bike, dateInfo, selectedBikes, setSelectedBikes }) {
-    const [isRentModalVisible, setIsRentModalVisible] = useState(false);
+    const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
 
     return (
         <Card
@@ -34,7 +34,7 @@ export default function BikeCard({ bike, dateInfo, selectedBikes, setSelectedBik
                         variant="outlined"
                         size="small"
                         startIcon={<InfoOutlinedIcon />}
-                        onClick={() => setIsRentModalVisible(true)}
+                        onClick={() => setIsDetailsModalVisible(true)}
                     >
                         Lisää tietoa
                     </Button>
@@ -87,22 +87,20 @@ export default function BikeCard({ bike, dateInfo, selectedBikes, setSelectedBik
                         </Box>
                         {/* <Typography
                             color={bike.available ? 'black' : 'error'}
-                        >{`Vapaana ${bike.available}/${bike.total_count}`}</Typography> */}
-                        <BikeAvailability dateInfo={dateInfo} />
+                        >{`Vapaana ${bike.available}/${bike.max_available}`}</Typography> */}
+                        <BikeAvailability dateInfo={dateInfo} maxAvailable={bike.max_available} taken={bike.taken} />
                     </Stack>
                 ) : (
                     <>
                         <Box sx={{ flex: 1 }} />
-                        <Typography
-                            color={bike.available ? 'black' : 'error'}
-                        >{`Vapaana ${bike.available}/${bike.total_count}`}</Typography>
+                        <BikeAvailability dateInfo={dateInfo} maxAvailable={bike.max_available} taken={bike.taken} />
                         <Box sx={{ flex: 1 }} />
                     </>
                 )}
             </CardActions>
             <Modal
-                open={isRentModalVisible}
-                onClose={() => setIsRentModalVisible(false)}
+                open={isDetailsModalVisible}
+                onClose={() => setIsDetailsModalVisible(false)}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
@@ -132,7 +130,7 @@ export default function BikeCard({ bike, dateInfo, selectedBikes, setSelectedBik
                         Koko: {bike.size}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Yhteensä palvelussa: {bike.total_count}
+                        Yhteensä palvelussa: {bike.max_available}
                     </Typography>
                 </Box>
             </Modal>
@@ -146,7 +144,8 @@ BikeCard.propTypes = {
         name: PropTypes.string,
         description: PropTypes.string,
         available: PropTypes.number,
-        total_count: PropTypes.number,
+        max_available: PropTypes.number,
+        taken: PropTypes.objectOf(PropTypes.number),
         size: PropTypes.string,
         dateAdded: PropTypes.string,
         barcode: PropTypes.string,

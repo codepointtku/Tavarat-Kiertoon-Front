@@ -1,197 +1,115 @@
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { Box, Grid, Paper, Stack, Typography, IconButton } from '@mui/material';
+import { Box, Grid, IconButton, Paper, Stack, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
+import { useReducer } from 'react';
 
-export default function BikeAvailability({ dateInfo }) {
-    const today = new Date(dateInfo.today);
+function createDates(startDate, rows, taken, maxAvailable) {
+    const startDateObject = new Date(startDate);
+    const weeks = [];
+    for (let row = 0; row < rows; row += 1) {
+        const week = [];
+        for (let day = 0; day < 5; day += 1) {
+            const date = new Date(startDate);
+            date.setDate(startDateObject.getDate() + day + row * 7);
+            const dateString = `${date.getDate()}.${date.getMonth() + 1}`;
+            // week.push({ date, dateString, available: taken[dateString] ?? maxAvailable });
+            week.push({ date, dateString, available: maxAvailable });
+        }
+        weeks.push(week);
+    }
+    return weeks;
+}
+
+function createInitialState({ dateInfo, rows, taken, maxAvailable }) {
+    return {
+        rows,
+        taken: dateInfo.taken,
+        maxAvailable,
+        availableFrom: dateInfo.available_from,
+        availableTo: dateInfo.available_to,
+        dates: createDates(dateInfo.monday, rows, taken, maxAvailable), // [[week],[week]] and week is day[] and day is {date, dateString, available} f.e. {dateObject, 13.2, 4}
+        // TODO: Add these?
+        // selectedStartDate: state.selectedStartDate,
+        // selectedEndDate: state.selectedEndDate,
+    };
+}
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'navigate_forward': {
+            const newDate = new Date();
+            newDate.setDate(state.dates[0][0].date.getDate() + 7 * state.rows);
+            return {
+                ...state,
+                dates: createDates(newDate, state.rows, state.taken, state.maxAvailable),
+            };
+        }
+        case 'navigate_back': {
+            const newDate = new Date();
+            newDate.setDate(state.dates[0][0].date.getDate() - 7 * state.rows);
+            return {
+                ...state,
+                dates: createDates(newDate, state.rows, state.taken, state.maxAvailable),
+            };
+        }
+        default: {
+            throw Error(`Unknown action: ${action.type}`);
+        }
+    }
+}
+
+export default function BikeAvailability({ dateInfo, rows, taken, maxAvailable }) {
+    const [state, dispatch] = useReducer(reducer, { dateInfo, rows, taken, maxAvailable }, createInitialState);
+
+    console.log(state.dates[0][0].date.getDate());
 
     return (
-        <Box sx={{ mb: 1 }}>
-            <Typography sx={{ mb: 1 }} align="center">
-                Saatavuus {today.toDateString()}
+        <Box>
+            <Typography my={1} align="center">
+                Saatavuus
             </Typography>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" gap={1}>
-                <IconButton aria-label="takaisin">
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <IconButton aria-label="takaisin" onClick={() => dispatch({ type: 'navigate_back' })}>
                     <NavigateBeforeIcon />
                 </IconButton>
-
-                <Box>
-                    <Grid container spacing={1}>
-                        <Grid item>
-                            <Typography variant="body2">14.2</Typography>
-                            <Paper
-                                elevation={3}
-                                sx={{
-                                    width: '20px',
-                                    height: '20px',
-                                    backgroundColor: 'grey',
-                                    margin: 'auto',
-                                }}
-                            />
+                <Box mb={1}>
+                    {state.dates.map((week) => (
+                        <Grid container spacing={1} key={`week-${week[0].dateString}`}>
+                            {week.map((day) => (
+                                <Grid item key={day.dateString} width="40px">
+                                    <Typography variant="body2" align="center">
+                                        {day.dateString}
+                                    </Typography>
+                                    <Paper
+                                        elevation={3}
+                                        sx={
+                                            day.available
+                                                ? {
+                                                      //   width: '20px',
+                                                      //   height: '20px',
+                                                      backgroundColor: 'green',
+                                                  }
+                                                : {
+                                                      //   width: '20px',
+                                                      //   height: '20px',
+                                                      backgroundColor: 'red',
+                                                  }
+                                        }
+                                    >
+                                        <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
+                                            {day.available}
+                                        </Typography>
+                                    </Paper>
+                                </Grid>
+                            ))}
                         </Grid>
-                        <Grid item>
-                            <Typography variant="body2">15.2</Typography>
-                            <Paper
-                                elevation={3}
-                                sx={{
-                                    width: '20px',
-                                    height: '20px',
-                                    backgroundColor: 'green',
-                                    margin: 'auto',
-                                }}
-                            >
-                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
-                                    1
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body2">16.2</Typography>
-                            <Paper
-                                elevation={3}
-                                sx={{
-                                    width: '20px',
-                                    height: '20px',
-                                    backgroundColor: 'red',
-                                    margin: 'auto',
-                                }}
-                            >
-                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
-                                    0
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body2">17.2</Typography>
-                            <Paper
-                                elevation={3}
-                                sx={{
-                                    width: '20px',
-                                    height: '20px',
-                                    backgroundColor: 'green',
-                                    margin: 'auto',
-                                }}
-                            >
-                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
-                                    2
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body2">18.2</Typography>
-                            <Paper
-                                elevation={3}
-                                sx={{
-                                    width: '20px',
-                                    height: '20px',
-                                    backgroundColor: 'green',
-                                    margin: 'auto',
-                                }}
-                            >
-                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
-                                    2
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                    </Grid>
-
-                    <Grid container spacing={1}>
-                        <Grid item>
-                            <Typography variant="body2">19.2</Typography>
-                            <Paper
-                                elevation={3}
-                                sx={{
-                                    width: '20px',
-                                    height: '20px',
-                                    backgroundColor: 'green',
-                                    margin: 'auto',
-                                }}
-                            >
-                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
-                                    2
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body2">20.2</Typography>
-                            <Paper
-                                elevation={3}
-                                sx={{
-                                    width: '20px',
-                                    height: '20px',
-                                    backgroundColor: 'green',
-                                    margin: 'auto',
-                                }}
-                            >
-                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
-                                    1
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body2">21.2</Typography>
-                            <Paper
-                                elevation={3}
-                                sx={{
-                                    width: '20px',
-                                    height: '20px',
-                                    backgroundColor: 'green',
-                                    margin: 'auto',
-                                }}
-                            >
-                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
-                                    3
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body2">22.2</Typography>
-                            <Paper
-                                elevation={3}
-                                sx={{
-                                    width: '20px',
-                                    height: '20px',
-                                    backgroundColor: 'green',
-                                    margin: 'auto',
-                                }}
-                            >
-                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
-                                    2
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body2">23.2</Typography>
-                            <Paper
-                                elevation={3}
-                                sx={{
-                                    width: '20px',
-                                    height: '20px',
-                                    backgroundColor: 'green',
-                                    margin: 'auto',
-                                }}
-                            >
-                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
-                                    2
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                    </Grid>
+                    ))}
                 </Box>
-
-                <IconButton aria-label="eteenpäin">
+                <IconButton aria-label="eteenpäin" onClick={() => dispatch({ type: 'navigate_forward' })}>
                     <NavigateNextIcon />
                 </IconButton>
             </Stack>
-            {/* <Button
-                                variant="outlined"
-                                size="small"
-                                startIcon={<InfoOutlinedIcon />}
-                                onClick={() => setIsRentModalVisible(true)}
-                            >
-                                Katso vapaus
-                            </Button> */}
         </Box>
     );
 }
@@ -203,4 +121,11 @@ BikeAvailability.propTypes = {
         available_to: PropTypes.string,
         monday: PropTypes.string,
     }).isRequired,
+    maxAvailable: PropTypes.number.isRequired,
+    taken: PropTypes.objectOf(PropTypes.number).isRequired,
+    rows: PropTypes.number,
+};
+
+BikeAvailability.defaultProps = {
+    rows: 2,
 };
