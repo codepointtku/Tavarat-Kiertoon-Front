@@ -1,7 +1,7 @@
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { Box, Grid, IconButton, Paper, Stack, Typography } from '@mui/material';
-import { addDays, addWeeks, isAfter, isBefore, isMonday, parseISO, previousMonday, subWeeks } from 'date-fns';
+import { addDays, addWeeks, format, isAfter, isBefore, isMonday, parseISO, previousMonday, subWeeks } from 'date-fns';
 import PropTypes from 'prop-types';
 import { useReducer } from 'react';
 
@@ -16,8 +16,8 @@ function createDates(availableFrom, rows, taken, maxAvailable) {
         for (let day = 0; day < 5; day += 1) {
             const date = addDays(startDateObject, day + row * 7);
             const dateString = `${date.getDate()}.${date.getMonth() + 1}`;
-            // week.push({ date, dateString, available: taken[dateString] ?? maxAvailable });
-            week.push({ date, dateString, available: maxAvailable });
+            const unitsInUse = taken[format(date, 'd.M.yyyy')] ?? 0;
+            week.push({ date, dateString, available: maxAvailable - unitsInUse });
         }
         weeks.push(week);
     }
@@ -27,7 +27,7 @@ function createDates(availableFrom, rows, taken, maxAvailable) {
 function createInitialState({ dateInfo, rows, taken, maxAvailable }) {
     return {
         rows,
-        taken: dateInfo.taken,
+        taken,
         maxAvailable,
         availableFrom: dateInfo.available_from,
         availableTo: dateInfo.available_to,
