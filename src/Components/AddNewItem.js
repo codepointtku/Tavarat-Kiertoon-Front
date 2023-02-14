@@ -45,8 +45,9 @@ function AddNewItem({ item, setItem, uploadFile }) {
             category: 1,
             storages: 1,
             color: 1,
+            pictures: [1]
         };
-        const response = await axios.post('http://localhost:8000/products/', testItem);
+        const response = await axios.post('http://localhost:8000/products/', [testItem, 1]);
         console.log(response.data);
     };
 
