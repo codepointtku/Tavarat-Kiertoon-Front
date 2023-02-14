@@ -10,8 +10,6 @@ function ErrorBoundary() {
         navigate(-1);
     };
 
-    console.log(error);
-
     const errorType = (err) => {
         if (err?.name === 'AxiosError') {
             return 'axios';
