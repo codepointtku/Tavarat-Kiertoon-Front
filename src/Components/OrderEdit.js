@@ -9,20 +9,20 @@ import {
     TableRow,
     TableBody,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useLoaderData, /* useLocation */ useNavigate, generatePath } from 'react-router';
+// import { useEffect, useState } from 'react';
+import { useLoaderData, useNavigate, generatePath } from 'react-router';
+import { useSubmit } from 'react-router-dom';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
 
 function OrderEdit() {
-    const loader = useLoaderData();
+    const orderData = useLoaderData();
     const navigate = useNavigate();
-    // const location = useLocation();
-    const [orderData, setOrderData] = useState(loader);
+    // const [orderData, setOrderData] = useState(loader);
 
-    const handleChange = (key, event) => {
-        setOrderData({ ...orderData, [key]: event.target.value });
-    };
+    // const handleChange = (key, event) => {
+    //     setOrderData({ ...orderData, [key]: event.target.value });
+    // };
 
     /*
 
@@ -69,26 +69,27 @@ function OrderEdit() {
         }
     });
 
-    useEffect(() => {
-        setOrderData({ ...orderData, products: orderList });
-    }, []);
-
     const addItem = () => {
         // add here apiCall to find item by ID
         console.log(orderData.newItem);
     };
 
+    const submit = useSubmit();
+
     const deleteItem = (id, items) => {
         if (items.length > 1) {
-            const reducedItems = orderList.map((item) => {
-                if (item.id === id) {
-                    item.items.pop();
-                }
-                return item;
-            });
-            setOrderData({ ...orderData, items: reducedItems });
+            submit({ type: 'delete', product: items.at(-1).id }, { method: 'post' });
+
+            // const reducedItems = orderList.map((item) => {
+            //     if (item.id === id) {
+            //         item.items.pop();
+            //     }
+            //     return item;
+            // });
+            // console.log(reducedItems);
+            // setOrderData({ ...orderData, products: items });
         } else {
-            setOrderData({ ...orderData, items: orderData.items.filter((item) => item.id !== id) });
+            // setOrderData({ ...orderData, products: orderData.products.filter((item) => item.id !== id) });
         }
     };
 
@@ -105,24 +106,24 @@ function OrderEdit() {
             </Button>
             <TextField
                 label="Esine-ID"
-                onChange={(event) => {
-                    handleChange('newItem', event);
-                }}
+                // onChange={(event) => {
+                //     handleChange('newItem', event);
+                // }}
                 defaultValue={orderData.newItem}
             />
 
             <Button onClick={() => addItem()}>Lisää esine ID:n perusteella</Button>
 
-            <h1 align="center">Muokkaa Tilausta {loader.id}</h1>
+            <h1 align="center">Muokkaa Tilausta {orderData.id}</h1>
             <Box align="center">
                 <div>
                     <h5>
                         <TextField disabled defaultValue={orderData.contact} label="Alkuperäinen yhteystieto" />
                         <TextField
                             label="Muokkaa yhteystietoa"
-                            onChange={(event) => {
-                                handleChange('contact', event);
-                            }}
+                            // onChange={(event) => {
+                            //     handleChange('contact', event);
+                            // }}
                             defaultValue={orderData.contact}
                         />
                     </h5>
@@ -132,9 +133,9 @@ function OrderEdit() {
                         <TextField disabled defaultValue={orderData.delivery_address} label="Alkuperäinen osoite" />
                         <TextField
                             label="Muokkaa toimitusosoitetta"
-                            onChange={(event) => {
-                                handleChange('delivery_address', event);
-                            }}
+                            // onChange={(event) => {
+                            //     handleChange('delivery_address', event);
+                            // }}
                             defaultValue={orderData.delivery_address}
                         />
                     </h5>
@@ -144,9 +145,9 @@ function OrderEdit() {
                         <TextField disabled defaultValue={orderData.status} label="Alkuperäinen status" />
                         <TextField
                             label="Muokkaa statusta"
-                            onChange={(event) => {
-                                handleChange('status', event);
-                            }}
+                            // onChange={(event) => {
+                            //     handleChange('status', event);
+                            // }}
                             defaultValue={orderData.status}
                         />
                     </h5>
@@ -156,9 +157,9 @@ function OrderEdit() {
                         <TextField disabled defaultValue={orderData.order_info} label="Alkuperäinen lisätieto" />
                         <TextField
                             label="Muokkaa lisätietoa"
-                            onChange={(event) => {
-                                handleChange('order_info', event);
-                            }}
+                            // onChange={(event) => {
+                            //     handleChange('order_info', event);
+                            // }}
                             defaultValue={orderData.order_info}
                         />
                     </h5>
@@ -178,7 +179,7 @@ function OrderEdit() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {orderData.products.map((item) => (
+                        {orderList.map((item) => (
                             <StyledTableRow key={item.id}>
                                 <TableCell>{item.name}</TableCell>
                                 <TableCell>{item.id}</TableCell>

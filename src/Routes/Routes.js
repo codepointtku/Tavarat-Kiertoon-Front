@@ -215,6 +215,22 @@ function Routes() {
                         {
                             path: '/varasto/tilaus/:id/muokkaa',
                             element: <OrderEdit />,
+                            action: async ({ params, request }) => {
+                                const formData = await request.formData();
+                                // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+                                // const productName = formData.get('productName');
+                                if (request.method === 'POST') {
+                                    if (formData.get('type') === 'delete') {
+                                        await axios.delete(`http://localhost:8000/orders/${params.id}`, {
+                                            data: {
+                                                product: Number(formData.get('product')),
+                                            },
+                                        });
+                                    }
+                                }
+
+                                return null;
+                            },
                             loader: async ({ params }) => {
                                 const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
                                 const productFind = async (id) => {
