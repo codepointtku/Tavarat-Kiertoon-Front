@@ -43,9 +43,8 @@ function AddNewItem({ item, setItem, uploadFile }) {
             measurements: 'wrdrqwf',
             weight: 3.0,
             category: 1,
-            storages: null,
+            storages: 1,
             color: 1,
-            pictures: [1],
         };
         const response = await axios.post('http://localhost:8000/products/', testItem);
         console.log(response.data);
@@ -79,7 +78,6 @@ function AddNewItem({ item, setItem, uploadFile }) {
                     />
                     <TextField
                         required
-                        disabled
                         id="outlined-disabled"
                         label="Viivakoodi"
                         onChange={(event) => {
