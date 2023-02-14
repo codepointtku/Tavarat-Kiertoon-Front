@@ -2,9 +2,7 @@ name: 'Tests: tests'
 
 on:
     pull_request:
-        branches: [develop, 199-testit]
-    push:
-        branches: [199-testit]
+        branches: [develop]
 
 env:
     GITHUB_PR_NUMBER: ${{github.event.pull_request.number}}
