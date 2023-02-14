@@ -51,7 +51,11 @@ const itemData = [
 function ProductDetails() {
     const { id: productId } = useParams();
 
-    const { name: productName, free_description: description, date, category, barcode } = useLoaderData();
+    const data = useLoaderData();
+    if (!data) {
+        return <>ToniPal Kahville</>;
+    }
+    const { name: productName, free_description: description, date, category, barcode } = data;
     const [image, setImage] = useState(itemData[0].img);
     const { auth } = useContext(AuthContext);
 
