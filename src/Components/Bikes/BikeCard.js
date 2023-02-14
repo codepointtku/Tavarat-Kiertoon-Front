@@ -4,17 +4,18 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import BikeAvailability from './BikeAvailability';
 
-export default function BikeCard({ bike, dateInfo, selectedBikes, setSelectedBikes }) {
+export default function BikeCard({
+    bike,
+    dateInfo,
+    selectedBikes,
+    setSelectedBikes,
+    startDate: selectedStartDate,
+    endDate: selectedEndDate,
+}) {
     const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
 
     return (
-        <Card
-            sx={
-                bike.available
-                    ? { my: 1, display: 'flex', flexDirection: 'row', height: '200px' }
-                    : { my: 1, display: 'flex', flexDirection: 'row', height: '200px', backgroundColor: 'lightgrey' }
-            }
-        >
+        <Card sx={{ my: 1, display: 'flex', flexDirection: 'row', height: '200px' }}>
             <CardMedia sx={{ width: '200px', height: '200px' }} component="img" alt="kuva" image="br.jpg" />
             <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Typography variant="h6">{bike.name}</Typography>
@@ -43,8 +44,8 @@ export default function BikeCard({ bike, dateInfo, selectedBikes, setSelectedBik
             <CardActions
                 sx={{ justifyContent: 'space-between', display: 'flex', flexDirection: 'column', alignItems: 'end' }}
             >
-                {bike.available ? (
-                    <Stack justifyContent="space-between" height="100%">
+                <Stack justifyContent="space-between" height="100%">
+                    {bike.available ? (
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mr: 1 }}>
                             <Typography id="modal-modal-description" sx={{ mr: 1 }}>
                                 Määrä
@@ -77,26 +78,25 @@ export default function BikeCard({ bike, dateInfo, selectedBikes, setSelectedBik
                             {/* <TextField inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} /> */}
                             {/* <Button size="small" sx={{ p: 0, minWidth: 30 }} onClick={()=>
                                     if ( < bike.available)
-                                        setSelectedBikes((prevSelectedBikes) => ({
-                                            ...prevSelectedBikes,
-                                            [bike.id]: ,
-                                        }));
+                                    setSelectedBikes((prevSelectedBikes) => ({
+                                        ...prevSelectedBikes,
+                                        [bike.id]: ,
+                                    }));
                             }>
-                                +
+                            +
                             </Button> */}
                         </Box>
-                        {/* <Typography
-                            color={bike.available ? 'black' : 'error'}
-                        >{`Vapaana ${bike.available}/${bike.max_available}`}</Typography> */}
-                        <BikeAvailability dateInfo={dateInfo} maxAvailable={bike.max_available} taken={bike.taken} />
-                    </Stack>
-                ) : (
-                    <>
+                    ) : (
                         <Box sx={{ flex: 1 }} />
-                        <BikeAvailability dateInfo={dateInfo} maxAvailable={bike.max_available} taken={bike.taken} />
-                        <Box sx={{ flex: 1 }} />
-                    </>
-                )}
+                    )}
+                    <BikeAvailability
+                        dateInfo={dateInfo}
+                        maxAvailable={bike.max_available}
+                        taken={bike.taken}
+                        selectedStartDate={selectedStartDate}
+                        selectedEndDate={selectedEndDate}
+                    />
+                </Stack>
             </CardActions>
             <Modal
                 open={isDetailsModalVisible}
@@ -162,4 +162,11 @@ BikeCard.propTypes = {
     }).isRequired,
     selectedBikes: PropTypes.objectOf(PropTypes.number).isRequired,
     setSelectedBikes: PropTypes.func.isRequired,
+    startDate: PropTypes.instanceOf(Date),
+    endDate: PropTypes.instanceOf(Date),
+};
+
+BikeCard.defaultProps = {
+    startDate: null,
+    endDate: null,
 };

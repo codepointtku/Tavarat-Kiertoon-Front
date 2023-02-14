@@ -1,6 +1,7 @@
 import { Autocomplete, Box, Button, Card, Container, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
+import BasicDatePicker from '../BasicDatePicker';
 
 import BikeCard from './BikeCard';
 
@@ -26,6 +27,8 @@ export default function BikesPage() {
     });
 
     const [selectedBikes, setSelectedBikes] = useState({});
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
 
     const handleFilterChange = (filter, newOption) =>
         setSearchParams((prevSearchParams) => {
@@ -104,7 +107,7 @@ export default function BikesPage() {
                         </Stack>
                     </Box>
                     {filteredBikes
-                        .sort((a, b) => b.available - a.available)
+                        .sort((a, b) => b.max_available - a.max_available)
                         .map((bike) => (
                             <BikeCard
                                 key={bike.id}
@@ -112,6 +115,8 @@ export default function BikesPage() {
                                 dateInfo={loaderData.date_info}
                                 selectedBikes={selectedBikes}
                                 setSelectedBikes={setSelectedBikes}
+                                startDate={startDate}
+                                endDate={endDate}
                             />
                         ))}
                 </Box>
@@ -133,27 +138,16 @@ export default function BikesPage() {
                         <Typography align="center" variant="h6">
                             Vuokraustiedot
                         </Typography>
-                        <Stack justifyContent="space-between" alignItems="center" flexDirection="row" mt={2}>
-                            <Box>
-                                <Typography id="modal-modal-description">Aloituspäivä</Typography>
-                                <input
+                        <Stack my={2} gap={2}>
+                            <BasicDatePicker label="Aloituspäivä" state={startDate} setState={setStartDate} />
+                            {/* <input
                                     type="date"
                                     id="start"
                                     name="trip-start"
                                     min={loaderData.date_info.available_from}
                                     max={loaderData.date_info.available_to}
-                                />
-                            </Box>
-                            <Stack alignItems="end">
-                                <Typography id="modal-modal-description">Loppumispäivä</Typography>
-                                <input
-                                    type="date"
-                                    id="start"
-                                    name="trip-start"
-                                    min={loaderData.date_info.available_from}
-                                    max={loaderData.date_info.available_to}
-                                />
-                            </Stack>
+                                /> */}
+                            <BasicDatePicker label="Loppumispäivä" state={endDate} setState={setEndDate} />
                         </Stack>
                         <Box my={3}>
                             {Object.entries(selectedBikes).map(
