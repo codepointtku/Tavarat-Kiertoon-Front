@@ -52,7 +52,6 @@ function Routes() {
             loader: async () => {
                 try {
                     const { data } = await axios.get('http://localhost:3001/contacts');
-
                     return data;
                 } catch {
                     return null;
@@ -68,7 +67,7 @@ function Routes() {
                     ),
                     errorElement: (
                         <Base>
-                            <div>Ei yhteyttä serveriin.</div>
+                            <ErrorBoundary />
                         </Base>
                     ),
                     children: [
@@ -76,8 +75,12 @@ function Routes() {
                             path: '/',
                             element: <ProductList />,
                             loader: async () => {
-                                const { data } = await axios.get('http://localhost:8000/products/');
-                                return data.results;
+                                try {
+                                    const { data } = await axios.get('http://localhost:8000/products/');
+                                    return data.results;
+                                } catch {
+                                    return null;
+                                }
                             },
                         },
                         {
@@ -89,8 +92,12 @@ function Routes() {
                             path: '/tuotteet/:id',
                             element: <ProductDetails />,
                             loader: async ({ params }) => {
-                                const { data } = await axios.get(`http://localhost:8000/products/${params.id}`);
-                                return data;
+                                try {
+                                    const { data } = await axios.get(`http://localhost:8000/products/${params.id}`);
+                                    return data;
+                                } catch {
+                                    return null;
+                                }
                             },
                         },
                         {
@@ -122,11 +129,10 @@ function Routes() {
                             element: <Announcements />,
                             loader: async () => {
                                 const { data } = await axios.get('http://localhost:3001/announcements');
-                                try {
+                                if (data) {
                                     return data;
-                                } catch {
-                                    return null;
                                 }
+                                return null;
                             },
                         },
                         {
@@ -159,7 +165,7 @@ function Routes() {
                     errorElement: (
                         <ThemeProvider theme={storageTheme}>
                             <Storage>
-                                <div>Ei yhteyttä serveriin.</div>
+                                <ErrorBoundary />
                             </Storage>
                         </ThemeProvider>
                     ),
@@ -273,7 +279,7 @@ function Routes() {
                     errorElement: (
                         <ThemeProvider theme={adminTheme}>
                             <Admin>
-                                <div>Ei yhteyttä serveriin.</div>
+                                <ErrorBoundary />
                             </Admin>
                         </ThemeProvider>
                     ),
@@ -300,7 +306,7 @@ function Routes() {
                                 if (data) {
                                     return data;
                                 }
-                                return data;
+                                return null;
                             },
                         },
                         {
@@ -311,7 +317,7 @@ function Routes() {
                                 if (data) {
                                     return data;
                                 }
-                                return data;
+                                return null;
                             },
                         },
                         {
