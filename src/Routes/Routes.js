@@ -29,6 +29,9 @@ import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
 import ShoppingCart from '../Components/ShoppingCart/ShoppingCart';
+import CartView from '../Components/ShoppingCart/CartView';
+import ContactsAndDelivery from '../Components/ShoppingCart/ContactsAndDelivery';
+import Confirmation from '../Components/ShoppingCart/Confirmation';
 import Delivery from '../toimitus';
 import BackgroundInfo from '../Components/Backgroundinfo';
 import StatsPage from '../Components/Stats/StatsPage';
@@ -111,7 +114,13 @@ function Routes() {
                 {
                     path: '/ostoskori',
                     element: <ShoppingCart />,
+                    children: [
+                        { path: '/ostoskori/vaihe1', element: <CartView /> },
+                        { path: '/ostoskori/vaihe2', element: <ContactsAndDelivery /> },
+                        { path: '/ostoskori/vaihe3', element: <Confirmation /> },
+                    ],
                 },
+
                 {
                     path: '/tiedotteet',
                     element: <Announcements />,

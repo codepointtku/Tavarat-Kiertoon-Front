@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useState } from 'react';
-import { Form, Link } from 'react-router-dom';
+import { Outlet } from 'react-router';
+import { Link } from 'react-router-dom';
 import { styled } from '@mui/system';
 
 import { Container, Box, Stepper, Step, StepLabel, Button, Grid } from '@mui/material';
@@ -12,9 +13,9 @@ import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-import CartView from './CartView';
-import ContactsAndDelivery from './ContactsAndDelivery';
-import Confirmation from './Confirmation';
+// import CartView from './CartView';
+// import ContactsAndDelivery from './ContactsAndDelivery';
+// import Confirmation from './Confirmation';
 
 function iconDecider(index) {
     const icons = [<ShoppingCartIcon />, <PermContactCalendarIcon />, <DomainVerificationIcon />];
@@ -92,8 +93,7 @@ function ShoppingCart() {
                 </Stepper>
             </Box>
             {/* map tähän myös */}
-            <Form method="post">
-                {(() => {
+            {/* {(() => {
                     switch (activeStep) {
                         case 0:
                             return <CartView />;
@@ -106,37 +106,37 @@ function ShoppingCart() {
                         default:
                             return <CartView />;
                     }
-                })()}
-                <Grid container justifyContent="space-between" sx={{ marginTop: 5 }}>
-                    {activeStep === 0 ? (
-                        <Button
-                            component={Link}
-                            to="/"
-                            variant="contained"
-                            onClick={() => setActiveStep((PrevStep) => PrevStep - 1)}
-                            startIcon={<ArrowBackIcon />}
-                        >
-                            Jatka ostoksia
-                        </Button>
-                    ) : (
-                        <Button
-                            variant="contained"
-                            onClick={() => setActiveStep((PrevStep) => PrevStep - 1)}
-                            startIcon={<ArrowBackIcon />}
-                        >
-                            Takaisin
-                        </Button>
-                    )}
+                })()} */}
+            <Outlet />
+            <Grid container justifyContent="space-between" sx={{ marginTop: 5 }}>
+                {activeStep === 0 ? (
                     <Button
-                        type={activeStep === 3 ? 'submit' : undefined}
+                        component={Link}
+                        to="/vaihe2"
                         variant="contained"
-                        onClick={() => setActiveStep((PrevStep) => PrevStep + 1)}
-                        endIcon={<ArrowForwardIcon />}
+                        onClick={() => setActiveStep((PrevStep) => PrevStep - 1)}
+                        startIcon={<ArrowBackIcon />}
                     >
-                        {activeStep === 2 ? 'Vahvistus' : 'Seuraava'}
+                        Jatka ostoksia
                     </Button>
-                </Grid>
-            </Form>
+                ) : (
+                    <Button
+                        variant="contained"
+                        onClick={() => setActiveStep((PrevStep) => PrevStep - 1)}
+                        startIcon={<ArrowBackIcon />}
+                    >
+                        Takaisin
+                    </Button>
+                )}
+                <Button
+                    type={activeStep === 3 ? 'submit' : undefined}
+                    variant="contained"
+                    onClick={() => setActiveStep((PrevStep) => PrevStep + 1)}
+                    endIcon={<ArrowForwardIcon />}
+                >
+                    {activeStep === 2 ? 'Vahvistus' : 'Seuraava'}
+                </Button>
+            </Grid>
         </Container>
     );
 }
