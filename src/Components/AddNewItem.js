@@ -7,7 +7,7 @@ import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent } from
 import validator from 'validator';
 import axios from 'axios';
 
-function AddNewItem({ item, setItem, uploadFile }) {
+function AddNewItem({ item, setItem, uploadFile, uploadPicture }) {
     const data = useLoaderData();
     if (!data) {
         return <>Esinetietojen lataus ei toimi.</>;
@@ -45,7 +45,7 @@ function AddNewItem({ item, setItem, uploadFile }) {
             category: 1,
             storages: 1,
             color: 1,
-            pictures: [1]
+            pictures: [1],
         };
         const response = await axios.post('http://localhost:8000/products/', [testItem, 1]);
         console.log(response.data);
@@ -158,6 +158,18 @@ function AddNewItem({ item, setItem, uploadFile }) {
                                 type="file"
                             />
                         </Button>
+                        <Button variant="contained" component="label" size="large">
+                            Lisää kuva testinappi
+                            <input
+                                onChange={(event) => {
+                                    uploadPicture(event.target.files);
+                                }}
+                                hidden
+                                accept="image/*"
+                                multiple
+                                type="file"
+                            />
+                        </Button>
                     </CardActions>
                     <CardActions>
                         {validProduct ? (
@@ -191,6 +203,7 @@ AddNewItem.propTypes = {
     }).isRequired,
     setItem: PropTypes.func.isRequired,
     uploadFile: PropTypes.func.isRequired,
+    uploadPicture: PropTypes.func.isRequired,
 };
 
 export default AddNewItem;

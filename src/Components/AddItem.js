@@ -3,6 +3,7 @@ import { useLocation } from 'react-router';
 import { Box, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import imageCompression from 'browser-image-compression';
+import axios from 'axios';
 
 import AddExistingItem from './AddExistingItem';
 import AddNewItem from './AddNewItem';
@@ -56,6 +57,18 @@ function AddItem() {
         setItem({ ...item, pictures: uploads });
     };
 
+    const uploadPicture = async (files) => {
+        const options = {
+            maxSizeMB: 1,
+            useWebWorker: true,
+        };
+
+        const uploads = await Promise.all(Object.values(files).map(async (file) => imageCompression(file, options)));
+
+        const response = await axios.post('http://localhost:8000/pictures/', uploads);
+        console.log(response.data);
+    };
+
     return (
         <Box sx={{ width: '100%', typography: 'body1' }}>
             <TabContext value={tab}>
@@ -67,7 +80,12 @@ function AddItem() {
                 </Box>
                 <TabPanel value="1">
                     {item ? (
-                        <AddNewItem item={item} setItem={setItem} uploadFile={uploadFile} />
+                        <AddNewItem
+                            item={item}
+                            setItem={setItem}
+                            uploadFile={uploadFile}
+                            uploadPicture={uploadPicture}
+                        />
                     ) : (
                         <h1>Tonipal kahville</h1>
                     )}
