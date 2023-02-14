@@ -2,7 +2,9 @@ name: 'Tests: tests'
 
 on:
     pull_request:
-        branches: [develop]
+        branches: [develop, 199-testit]
+    push:
+        branches: [199-testit]
 
 env:
     GITHUB_PR_NUMBER: ${{github.event.pull_request.number}}
@@ -14,6 +16,8 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - uses: actions/setup-node@v3
+              with:
+                  node-version: '16'
             - name: install dependencies
               run: npm ci
             - name: install playwright browsers

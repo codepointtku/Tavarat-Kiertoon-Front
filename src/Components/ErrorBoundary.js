@@ -14,9 +14,14 @@ function ErrorBoundary() {
         <Box minHeight={320}>
             <Alert severity="warning">
                 <AlertTitle>Jokin meni pieleen</AlertTitle>
-                <Typography variant="h6">Etsimääsi sijaintia {location.pathname} ei valitettavasti löydy.</Typography>
-                {error?.response?.status === 404 && location.pathname.includes('/tuotteet/') && (
-                    <Typography>Etsimääsi tuotetta ei löydy</Typography>
+                {error?.response?.status === 500 ? (
+                    <Typography variant="h6">
+                        Yhteysongelma sijainnissa {location.pathname}, yritä uudelleen.
+                    </Typography>
+                ) : (
+                    <Typography variant="h6">
+                        Etsimääsi sijaintia {location.pathname} ei valitettavasti löydy.
+                    </Typography>
                 )}
                 <Box>
                     <Button onClick={handleGoBack} sx={{ margin: '1em' }}>
