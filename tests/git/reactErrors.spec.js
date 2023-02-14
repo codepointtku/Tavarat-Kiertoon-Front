@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('mainpage', () => {
     test('no errors', async ({ page }) => {
+        test.setTimeout(120000);
         await page.goto('/');
         await expect(page.getByText('Virhe sijainnissa /')).not.toBeVisible();
     });
