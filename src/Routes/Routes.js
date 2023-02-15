@@ -152,6 +152,18 @@ function Routes() {
                             </Storage>
                         </ThemeProvider>
                     ),
+                    id: 'storage',
+                    loader: async () => {
+                        const dataList = [];
+                        let { data } = await axios.get('http://localhost:3001/categories/');
+                        dataList.push(data);
+                        data = await axios.get('http://localhost:3001/storages/');
+                        dataList.push(data.data);
+                        if (dataList) {
+                            return dataList;
+                        }
+                        return null;
+                    },
                     children: [
                         {
                             path: '/varasto/:num/:view',
@@ -220,16 +232,22 @@ function Routes() {
                         {
                             path: '/varasto/luo',
                             element: <AddItem />,
-                            loader: async () => {
-                                const dataList = [];
-                                let { data } = await axios.get('http://localhost:3001/categories/');
-                                dataList.push(data);
-                                data = await axios.get('http://localhost:3001/storages/');
-                                dataList.push(data.data);
-                                if (dataList) {
-                                    return dataList;
+                            action: async ({ request }) => {
+                                const formData = await request.formData();
+                                // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+                                // const productName = formData.get('productName');
+                                // if (request.method === 'POST') {
+                                const response = await axios.post('http://localhost:8000/products/', formData);
+                                console.log(response);
+                                if (response.status === 201) {
+                                    return 'Tuote lisätty';
                                 }
-                                return null;
+                                return 'Virhe lisättäessä tuotetta';
+
+                                // } else if (request.method === 'DELETE') {
+                                //     await axios.delete(`http://localhost:3001/products/${id}`);
+                                // }
+                                // return null;
                             },
                         },
                         {

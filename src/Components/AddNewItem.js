@@ -1,51 +1,88 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, generatePath } from 'react-router';
-import { useLoaderData } from 'react-router-dom';
+/* eslint-disable react/jsx-props-no-spreading */
+// import { useEffect, useState } from 'react';
+// import { useNavigate, generatePath } from 'react-router';
+import { useRouteLoaderData, useSubmit } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Barcode from 'react-barcode';
+// import Barcode from 'react-barcode';
 import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent } from '@mui/material';
-import validator from 'validator';
-import axios from 'axios';
 
-function AddNewItem({ item, setItem, uploadFile }) {
-    const data = useLoaderData();
-    const navigate = useNavigate();
+import { useForm } from 'react-hook-form';
 
-    const handleChange = (key, event) => {
-        setItem({ ...item, [key]: event.target.value });
-    };
+function AddNewItem({
+    item,
+    // uploadFile
+}) {
+    const data = useRouteLoaderData('storage');
+    // const navigate = useNavigate();
+    const submit = useSubmit();
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors, isValid },
+    } = useForm();
+    // const onSubmit = (postData) => console.log(postData);
 
-    const [validProduct, setValidProduct] = useState(false);
+    // const handleChange = (key, event) => {
+    //     setItem({ ...item, [key]: event.target.value });
+    // };
 
-    useEffect(() => {
-        if (
-            validator.isLength(String(item.name), { min: 3, max: 255 }) &&
-            validator.isLength(String(item.barcode), { min: 1 }) &&
-            validator.isLength(String(item.location), { min: 1 }) &&
-            validator.isLength(String(item.category), { min: 1 }) &&
-            validator.isLength(String(item.free_description), { min: 5 })
-        ) {
-            setValidProduct(true);
-        } else {
-            setValidProduct(false);
-        }
-    });
+    // const [validProduct, setValidProduct] = useState(false);
 
-    const productCall = async () => {
-        const testItem = {
-            ...item,
+    // useEffect(() => {
+    //     if (
+    //         validator.isLength(String(item.name), { min: 3, max: 255 }) &&
+    //         validator.isLength(String(item.barcode), { min: 1 }) &&
+    //         validator.isLength(String(item.location), { min: 1 }) &&
+    //         validator.isLength(String(item.category), { min: 1 }) &&
+    //         validator.isLength(String(item.free_description), { min: 5 })
+    //     ) {
+    //         setValidProduct(true);
+    //     } else {
+    //         setValidProduct(false);
+    //     }
+    // });
+
+    // const productCall = async () => {
+    //     const testItem = {
+    //         ...item,
+    //         available: true,
+    //         price: 999.0,
+    //         shelf_id: 1,
+    //         measurements: 'wrdrqwf',
+    //         weight: 3.0,
+    //         category: 1,
+    //         storages: null,
+    //         color: 1,
+    //         pictures: [1],
+    //     };
+    //     const response = await axios.post('http://localhost:8000/products/', testItem);
+    //     console.log(response.data);
+    // };
+
+    const description = watch('description');
+    const name = watch('name');
+
+    const onSubmit = (postData) => {
+        console.log(errors);
+        console.log(postData);
+
+        const formData = {
+            ...postData,
             available: true,
             price: 999.0,
             shelf_id: 1,
             measurements: 'wrdrqwf',
             weight: 3.0,
             category: 1,
-            storages: null,
+            storages: 1,
             color: 1,
             pictures: [1],
         };
-        const response = await axios.post('http://localhost:8000/products/', testItem);
-        console.log(response.data);
+        submit(formData, {
+            method: 'post',
+            action: '/varasto/luo',
+        });
     };
 
     return (
@@ -56,6 +93,7 @@ function AddNewItem({ item, setItem, uploadFile }) {
             <Box
                 align="center"
                 component="form"
+                onSubmit={handleSubmit(onSubmit)}
                 sx={{
                     '& .MuiTextField-root': { m: 1, width: '40ch' },
                 }}
@@ -63,30 +101,29 @@ function AddNewItem({ item, setItem, uploadFile }) {
             >
                 <CardContent>
                     <TextField
+                        // eslint-disable-next-line react/jsx-props-no-spreading
+                        type="text"
+                        placeholder="name"
+                        {...register('name', { required: true, max: 255, min: 3 })}
                         required
-                        id="outlined-required"
                         label="Nimi"
-                        onChange={(event) => {
-                            handleChange('name', event);
-                        }}
                         multiline
-                        inputProps={{ maxLength: 255 }}
-                        helperText={`${item.name.length}/255`}
+                        helperText={`${name?.length || 0}/255`}
                         defaultValue={item.name}
                     />
                     <TextField
+                        type="text"
+                        placeholder="barcode"
+                        {...register('barcode', { required: true, max: 12, min: 1 })}
                         required
-                        disabled
-                        id="outlined-disabled"
+                        // disabled
+                        // id="outlined-disabled"
                         label="Viivakoodi"
-                        onChange={(event) => {
-                            handleChange('barcode', event);
-                        }}
                         defaultValue={item.barcode}
                     >
                         {item.barcode}
                     </TextField>
-                    <CardActions>
+                    {/* <CardActions>
                         <Button
                             size="large"
                             onClick={() =>
@@ -98,16 +135,14 @@ function AddNewItem({ item, setItem, uploadFile }) {
                             Koodinlukija
                         </Button>
                         {item.barcode.length > 0 && <Barcode value={item.barcode} format="CODE39" />}
-                    </CardActions>
+                    </CardActions> */}
 
                     <TextField
-                        required
+                        // required
                         id="outlined-select"
                         select
                         label="Sijainti"
-                        onChange={(event) => {
-                            handleChange('location', event);
-                        }}
+                        {...register('location', { required: true })}
                         defaultValue=""
                     >
                         {data[1].map((location) => (
@@ -121,9 +156,7 @@ function AddNewItem({ item, setItem, uploadFile }) {
                         id="outlined-select"
                         select
                         label="Kategoria"
-                        onChange={(event) => {
-                            handleChange('category', event);
-                        }}
+                        {...register('category', { required: true })}
                         defaultValue=""
                     >
                         {data[0].map((category) => (
@@ -135,16 +168,13 @@ function AddNewItem({ item, setItem, uploadFile }) {
                     <TextField
                         id="filled-helperText"
                         label="Vapaa Kuvaus"
-                        onChange={(event) => {
-                            handleChange('free_description', event);
-                        }}
+                        {...register('description', { required: true, max: 1000, min: 6 })}
                         multiline
-                        inputProps={{ maxLength: 1000 }}
-                        helperText={`${item.free_description.length}/1000`}
+                        helperText={`${description?.length || 0}/1000`}
                         defaultValue={item.free_description}
                     />
                     <CardActions>
-                        <Button variant="contained" component="label" size="large">
+                        {/* <Button variant="contained" component="label" size="large">
                             Lisää kuvat
                             <input
                                 onChange={(event) => {
@@ -155,21 +185,12 @@ function AddNewItem({ item, setItem, uploadFile }) {
                                 multiple
                                 type="file"
                             />
-                        </Button>
+                        </Button> */}
                     </CardActions>
                     <CardActions>
-                        {validProduct ? (
-                            <Button
-                                size="large"
-                                onClick={() => {
-                                    productCall();
-                                }}
-                            >
-                                Lisää tuote
-                            </Button>
-                        ) : (
-                            <Button disabled>Lisää tuote</Button>
-                        )}
+                        <Button size="large" type="submit" disabled={!isValid}>
+                            Lisää tuote
+                        </Button>
                     </CardActions>
                 </CardContent>
             </Box>
@@ -187,7 +208,7 @@ AddNewItem.propTypes = {
         free_description: PropTypes.string,
         isOld: PropTypes.bool,
     }).isRequired,
-    setItem: PropTypes.func.isRequired,
+    // setItem: PropTypes.func.isRequired,
     uploadFile: PropTypes.func.isRequired,
 };
 
