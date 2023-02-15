@@ -12,45 +12,50 @@ const contents = ['ohje1', 'ohje2', 'ohje3'];
 const helpTopics = [
     {
         topic_id: 1,
-        icon: ChatIcon,
         topic: 'Yleiset ohjeet',
         subheader: 'Vastauksia yleisimpiin aiheisiin',
+        linkURL: 'ohjeet/devi/yleiset',
+        icon: ChatIcon,
         img: 'common_help.jpg',
         imgAlt: 'alt text yleiset',
         content: contents,
     },
     {
         topic_id: 2,
-        icon: EmojiPeopleIcon,
         topic: 'Käyttäjätili',
         subheader: 'Tilien tarkemmat käyttöohjeet',
+        linkURL: '/ohjeet/devi/',
+        icon: EmojiPeopleIcon,
         img: 'account_help.jpg',
         imgAlt: 'alt text tilit',
         content: contents,
     },
     {
         topic_id: 3,
-        icon: ShoppingCartCheckoutIcon,
         topic: 'Tilaaminen',
         subheader: 'Tilaamisen tarkemmat ohjeet',
+        linkURL: 'ohjeet/devi/tilaus',
+        icon: ShoppingCartCheckoutIcon,
         img: 'ordering_help.jpg',
         imgAlt: 'alt text tilaaminen',
         content: contents,
     },
     {
         topic_id: 4,
-        icon: LocalShippingIcon,
         topic: 'Tavaran nouto',
         subheader: 'Ohjeet noutokuljetuksen tilaamiseen',
+        linkURL: '/ohjeet/devi/nouto',
+        icon: LocalShippingIcon,
         img: 'nouto_help.jpg',
         imgAlt: 'alt text nouto',
         content: contents,
     },
     {
         topic_id: 5,
-        icon: DirectionsBikeIcon,
         topic: 'Pyörävuokraamo',
         subheader: 'Polkupyöriin liittyvät säännöt & ohjeet',
+        linkURL: '/ohjeet/devi/pyorat',
+        icon: DirectionsBikeIcon,
         img: 'bikes_help.jpg',
         imgAlt: 'alt text nouto',
         content: contents,
@@ -67,9 +72,10 @@ function HelpTopicCards() {
     return helpTopics.map((card) => (
         <Grid item key={card.topic_id} sx={iconHover}>
             <InstructionCard
-                icon={card.icon}
                 topic={card.topic}
                 subheader={card.subheader}
+                linkURL={card.linkURL}
+                icon={card.icon}
                 img={card.img}
                 imgAlt={card.imgAlt}
             />

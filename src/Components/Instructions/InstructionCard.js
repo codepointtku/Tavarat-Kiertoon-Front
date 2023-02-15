@@ -1,11 +1,13 @@
+import { Link } from 'react-router-dom';
+
 import { Avatar, Card, CardActionArea, CardHeader, CardMedia } from '@mui/material';
 
 import PropTypes from 'prop-types';
 
-function InstructionCard({ icon: Icon, topic, subheader, img, imgAlt }) {
+function InstructionCard({ topic, subheader, linkURL, icon: Icon, img, imgAlt }) {
     return (
         <Card sx={{ maxWidth: 300 }}>
-            <CardActionArea>
+            <CardActionArea component={Link} to={linkURL}>
                 <CardHeader
                     avatar={
                         <Avatar aria-label="icon" sx={{ bgcolor: 'secondary.main' }}>
@@ -26,9 +28,10 @@ function InstructionCard({ icon: Icon, topic, subheader, img, imgAlt }) {
 export default InstructionCard;
 
 InstructionCard.propTypes = {
-    icon: PropTypes.node.isRequired,
     topic: PropTypes.string.isRequired,
     subheader: PropTypes.string.isRequired,
+    linkURL: PropTypes.string.isRequired,
+    icon: PropTypes.node.isRequired,
     img: PropTypes.string.isRequired,
     imgAlt: PropTypes.string.isRequired,
 };
