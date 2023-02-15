@@ -109,7 +109,11 @@ function Routes() {
                             element: <InstructionsPage />,
                         },
                         {
-                            path: '/ohjeet/devi',
+                            path: '/ohjeet/devi/',
+                            element: <DevPage />,
+                        },
+                        {
+                            path: '/ohjeet/devi/:value',
                             element: <DevPage />,
                         },
                         {
@@ -148,7 +152,7 @@ function Routes() {
                             element: <SignupPage isLocationForm />,
                         },
                         {
-                            path: '/contactpage',
+                            path: '/otayhteytta',
                             element: <ContactPage />,
                         },
                     ],
