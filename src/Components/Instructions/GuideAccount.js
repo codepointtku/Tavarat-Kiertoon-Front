@@ -106,35 +106,41 @@ function LocationAccountHelp() {
                 Toimipaikkatilin luominen
             </Typography>
             <Typography gutterBottom>Tilin luonti on kaksi-vaiheinen.</Typography>
+            <MuiLink component={Link} to="/signup/location">
+                Avaa rekisteröinti-lomake
+            </MuiLink>
             <Typography gutterBottom>
                 Syötä ensimmäiseen kenttään käyttäjätunnus; esimerkiksi "KanakadunPäiväkoti" tai
                 "TurunKaupunginHallitus".
             </Typography>
-            <Typography gutterBottom>Huomioi, tunnus ei saa sisältää välilyöntejä.</Typography>
+            <Typography gutterBottom variant="body2">
+                Huomioi, tunnus ei saa sisältää välilyöntejä.
+            </Typography>
             <Typography gutterBottom>
                 Tilillä on oltava vastuuhenkilö. Syötä seuraaviin kenttiin vastuuhenkilön yhteystiedot.
             </Typography>
-            <Typography gutterBottom>
+            <Typography gutterBottom variant="body2">
                 Vastuuhenkilö on tilin ensisijainen omistaja. Vastuuhenkilö on vastuussa toimipaikkatilillään tehtävistä
                 tilauksista.
             </Typography>
-            <Typography gutterBottom>
+            <Typography gutterBottom variant="body2">
                 Vastuuhenkilö voi kirjautua jatkossa sähköpostiosoitteellaan sisään järjestelmään.
             </Typography>
-            <Typography gutterBottom>
+            <Typography gutterBottom variant="body2">
                 Toimipaikan käyttäjät kirjautuvat jatkossa käyttäjätunnuksella sisään järjestelmään.
             </Typography>
             <Typography gutterBottom>
                 Syötä seuraaviin kenttiin salasanasi, minkä saat iha itte keksiä kuule.
             </Typography>
-            <Typography gutterBottom>
+            <Typography gutterBottom variant="body2">
                 Salasanan on oltava 666 merkkiä pitkä, ja siinä on oltava vähintään kyrillisiä kirjaimia, roomalaisia
                 numeroita, sekä se on kirjoitettava oikealta vasemmalle ruotsiksi arabialaisella slangilla.
             </Typography>
             <Typography variant="subtitle2" gutterBottom>
                 Kun olet syöttänyt tiedot, napauta lomakkeen päätteenä olevaa "Rekisteröidy"-painiketta.
             </Typography>
-            <Typography gutterBottom>
+            <Typography gutterBottom>Mitä tapahtuu seuraavaksi?</Typography>
+            <Typography gutterBottom variant="body2">
                 Lehtopöllömme nappaavat tiedot, ja toimittavat ne Liedon logistiikkakeskukseen odottamaan
                 jatkokäsittelyä. Sieltä ne kulkevat joenvartta pitkin Rieskalähteentien pankkiin, missä maahisemme
                 arvioivat tilisi, ja henkilökohtaisen ihmisarvosi. Konsultoimme ylijumalia joka täydenkuun aikaan ison
