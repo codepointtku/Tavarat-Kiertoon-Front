@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { Avatar, Box, Container, Link as MuiLink, Paper, Typography, Tabs, Tab } from '@mui/material';
+import { Avatar, Box, Container, Link as MuiLink, Typography, Tabs, Tab } from '@mui/material';
 
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
@@ -17,11 +17,15 @@ function SignupHelp() {
             <Typography variant="h5" color="primary.main" gutterBottom>
                 Tilin hallinta
             </Typography>
-            <Typography>Nopea hallintapaneeli oikeassa ylälaidassa sisältää tiliin liittyvät toiminnot.</Typography>
             <Typography>
-                Napauttaessa Käyttäjä <Person2Icon fontSize="24" /> -ikonia aukeavasta vetolaatikosta pääset
-                kirjautumaan sisään, tai luomaan uuden tilin. Sisäänkirjautuneena voit tarkastella tilisi tietoja
-                samassa ikkunassa.
+                Nopea hallintapaneeli oikeassa ylälaidassa sisältää myös tiliin liittyvät toiminnot.
+            </Typography>
+            <Typography>
+                Napauttaessa Käyttäjä <Person2Icon fontSize="24" /> -ikonia, aukeavasta vetolaatikosta pääset
+                kirjautumaan sisään, tai luomaan uuden tilin.
+            </Typography>
+            <Typography>
+                Sisäänkirjautuneena samassa paikassa voit tarkastella tilisi, ja tilauksiesi tietoja.
             </Typography>
             <Typography gutterBottom>
                 Halutessasi päivittää, tai muuttaa tilisi tietoja,
@@ -31,7 +35,8 @@ function SignupHelp() {
                 </MuiLink>
                 toimistoon.
             </Typography>
-            <Typography variant="h5" color="primary.main" gutterBottom>
+
+            <Typography variant="h5" color="primary.main" mt={2} gutterBottom>
                 Uuden tilin luominen
             </Typography>
             <Typography gutterBottom>
@@ -46,30 +51,37 @@ function UserAccountHelp() {
     return (
         <>
             <Typography variant="subtitle2" align="center" mb={2}>
-                Käyttäjätilillä tarkoitetaan henkilökohtaista hankintatiliä Tavarat Kiertoon-järjestelmässä.
+                Käyttäjätili on henkilökohtainen hankintatili Tavarat Kiertoon-järjestelmässä.
             </Typography>
+            {/* <Typography variant="subtitle2" align="center" mb={2}>
+                Käyttäjätilillä tarkoitetaan henkilökohtaista hankintatiliä Tavarat Kiertoon-järjestelmässä.
+            </Typography> */}
             <Typography variant="h5" color="primary.main" gutterBottom>
                 Käyttäjätilin luominen
             </Typography>
             <Typography gutterBottom>Tilin luonti on kaksi-vaiheinen.</Typography>
+            <MuiLink component={Link} to="/signup/user">
+                Avaa rekisteröinti-lomake
+            </MuiLink>
             <Typography gutterBottom>
-                Syötä ensimmäiseen kenttään turku.fi -päätteinen työ-sähköpostiosoitteesi.
+                Syötä ensimmäiseen kenttään @turku.fi -päätteinen työ-sähköpostiosoitteesi.
             </Typography>
-            <Typography gutterBottom>
+            <Typography gutterBottom variant="body2">
                 Kirjaudut jatkossa tällä sähköpostiosoitteella sisään järjestelmään. Tämä sähköpostiosoite on samalla
                 käyttäjätunnuksesi.
             </Typography>
             <Typography gutterBottom>
                 Syötä seuraaviin kenttiin salasanasi, minkä saat iha itte keksiä kuule.
             </Typography>
-            <Typography gutterBottom>
+            <Typography gutterBottom variant="body2">
                 Salasanan on oltava 666 merkkiä pitkä, ja siinä on oltava vähintään kyrillisiä kirjaimia, roomalaisia
                 numeroita, sekä se on kirjoitettava oikealta vasemmalle ruotsiksi arabialaisella slangilla.
             </Typography>
             <Typography variant="subtitle2" gutterBottom>
                 Kun olet syöttänyt tiedot, napauta lomakkeen päätteenä olevaa "Rekisteröidy"-painiketta.
             </Typography>
-            <Typography gutterBottom>
+            <Typography gutterBottom>Mitä tapahtuu seuraavaksi?</Typography>
+            <Typography gutterBottom variant="body2">
                 Lehtopöllömme nappaavat tiedot, ja toimittavat ne Liedon logistiikkakeskukseen odottamaan
                 jatkokäsittelyä. Sieltä ne kulkevat joenvartta pitkin Rieskalähteentien pankkiin, missä maahisemme
                 arvioivat tilisi, ja henkilökohtaisen ihmisarvosi. Konsultoimme ylijumalia joka täydenkuun aikaan ison
@@ -166,24 +178,17 @@ function Hero() {
         </Box>
     );
 }
-function TabPanel(props) {
+function TabPage(props) {
     const { children, value, name, ...other } = props;
 
     return (
-        <Box
-            mt={2}
-            role="tabpanel"
-            hidden={value !== name}
-            id={`tabpanel-${name}`}
-            aria-labelledby={`tab-${name}`}
-            {...other}
-        >
+        <Box mt={2} hidden={value !== name} id={`tabpage-${name}`} aria-labelledby={`tab-${name}`} {...other}>
             {value === name && children}
         </Box>
     );
 }
 
-TabPanel.propTypes = {
+TabPage.propTypes = {
     children: PropTypes.node,
     name: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
@@ -213,27 +218,25 @@ function TitleTabs() {
                     <Tab label="Toimipaikkatili" {...tabProps('toimipaikka')} icon={<GiteIcon />} />
                 </Tabs>
             </Box>
-            <TabPanel value={value} name="tilit">
+            <TabPage value={value} name="tilit">
                 <SignupHelp />
-            </TabPanel>
-            <TabPanel value={value} name="kayttaja">
+            </TabPage>
+            <TabPage value={value} name="kayttaja">
                 <UserAccountHelp />
-            </TabPanel>
-            <TabPanel value={value} name="toimipaikka">
+            </TabPage>
+            <TabPage value={value} name="toimipaikka">
                 <LocationAccountHelp />
-            </TabPanel>
+            </TabPage>
         </Box>
     );
 }
 
 function GuideAccount() {
     return (
-        <Paper>
-            <Container maxWidth="md">
-                <Hero />
-                <TitleTabs />
-            </Container>
-        </Paper>
+        <Container maxWidth="md">
+            <Hero />
+            <TitleTabs />
+        </Container>
     );
 }
 
