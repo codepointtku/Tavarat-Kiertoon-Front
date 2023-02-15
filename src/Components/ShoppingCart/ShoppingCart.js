@@ -53,6 +53,8 @@ function ShoppingCart() {
     // const navigate = useNavigate();
     const steps = ['Ostoskori', 'Yhteystiedot & toimitus', 'Vahvistus'];
     console.log(activeStep);
+
+    // muuta yhdeksi funktioksi jossain vaihessa
     function moveBack(){
         switch(activeStep){
             case 2: 
@@ -63,7 +65,7 @@ function ShoppingCart() {
                 return "/"
         }
     }
-    function  moveForward(){
+    function moveForward(){
         switch(activeStep){
             case 0:
                 return "/ostoskori/vaihe2"
