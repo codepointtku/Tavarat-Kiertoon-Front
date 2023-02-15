@@ -53,6 +53,26 @@ function ShoppingCart() {
     // const navigate = useNavigate();
     const steps = ['Ostoskori', 'Yhteystiedot & toimitus', 'Vahvistus'];
     console.log(activeStep);
+    function moveBack(){
+        switch(activeStep){
+            case 2: 
+                return "/ostoskori/vaihe2" 
+            case 1:
+                return "/ostoskori/vaihe1"
+            default:
+                return "/"
+        }
+    }
+    function  moveForward(){
+        switch(activeStep){
+            case 0:
+                return "/ostoskori/vaihe2"
+            case 1:
+                return "/ostoskori/vaihe3"
+            default: 
+                return "/"
+        }
+    }
 
     // const isStepSkipped = (step) => skipped.has(step);
     // useLoaderData tuotenimen, tuotemäärän ja hinnan hakuun
@@ -112,7 +132,7 @@ function ShoppingCart() {
                 {activeStep === 0 ? (
                     <Button
                         component={Link}
-                        to="/vaihe2"
+                        to="/"
                         variant="contained"
                         onClick={() => setActiveStep((PrevStep) => PrevStep - 1)}
                         startIcon={<ArrowBackIcon />}
@@ -121,6 +141,8 @@ function ShoppingCart() {
                     </Button>
                 ) : (
                     <Button
+                        component={Link}
+                        to={moveBack()}
                         variant="contained"
                         onClick={() => setActiveStep((PrevStep) => PrevStep - 1)}
                         startIcon={<ArrowBackIcon />}
@@ -129,6 +151,8 @@ function ShoppingCart() {
                     </Button>
                 )}
                 <Button
+                    component={Link}
+                    to={moveForward()}
                     type={activeStep === 3 ? 'submit' : undefined}
                     variant="contained"
                     onClick={() => setActiveStep((PrevStep) => PrevStep + 1)}
