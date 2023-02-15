@@ -1,5 +1,6 @@
 import { Typography, Box, Grid, Button } from '@mui/material';
 import PaymentIcon from '@mui/icons-material/Payment';
+import SmartphoneIcon from '@mui/icons-material/Smartphone';
 import { Form } from 'react-router-dom';
 
 function Confirmation() {
@@ -14,20 +15,29 @@ function Confirmation() {
                 <Button variant="text">
                     <Box
                         sx={{
-                            p: '100px 200px',
+                            p: '75px 150px',
                             borderStyle: 'solid',
                             borderWidth: 5,
                             fontWeight: 'bold',
                             display: 'flex',
-                            alignContent: 'center',
+                            alignItems: 'center',
                         }}
                     >
-                        Maksukortti <PaymentIcon sx={{ marginLeft: 3 }} />
+                        Maksukortti <PaymentIcon sx={{ marginLeft: 3 }} fontSize="large" />
                     </Box>
                 </Button>
                 <Button variant="text">
-                    <Box sx={{ p: '100px 200px', borderStyle: 'solid', borderWidth: 5, fontWeight: 'bold' }}>
-                        MobilePay
+                    <Box
+                        sx={{
+                            p: '75px 150px',
+                            borderStyle: 'solid',
+                            borderWidth: 5,
+                            fontWeight: 'bold',
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                    >
+                        MobilePay <SmartphoneIcon sx={{ marginLeft: 3 }} fontSize="large" />
                     </Box>
                 </Button>
             </Grid>
