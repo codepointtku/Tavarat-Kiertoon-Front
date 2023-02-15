@@ -1,11 +1,11 @@
 import { PDFViewer } from '@react-pdf/renderer';
-// import { useLocation } from 'react-router-dom';
 import { useLoaderData } from 'react-router-dom';
 import PDFDocument from './PDFCreator';
 
+/**
+ * View for creating PDF document
+ */
 function PDFView() {
-    // const location = useLocation();
-    // const { data } = location.state ? location.state : {}
     const loader = useLoaderData();
 
     return (
