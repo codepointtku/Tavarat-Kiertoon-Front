@@ -129,6 +129,11 @@ function DefaultAppBar() {
         }
     };
 
+    function navigateToCart() {
+        navigate('/ostoskori');
+        setCurrentOpenDrawer(null);
+    }
+
     console.log(cart);
 
     return (
@@ -186,7 +191,7 @@ function DefaultAppBar() {
                 <List>
                     <ListItem>
                         <Button
-                            onClick={() => navigate('/ostoskori')}
+                            onClick={() => navigateToCart()}
                             variant="contained"
                             startIcon={<ShoppingCartCheckoutIcon />}
                         >
