@@ -53,7 +53,7 @@ function FAQAccordions() {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography gutterBottom aling="center" color="primary.main">
+                        <Typography gutterBottom align="center" color="primary.main">
                             Kehen voin olla yhteydessä jos tarvitsen apua?
                         </Typography>
                     </AccordionSummary>
@@ -71,7 +71,7 @@ function FAQAccordions() {
                         aria-controls="panel2a-content"
                         id="panel2a-header"
                     >
-                        <Typography gutterBottom aling="center" color="primary.main">
+                        <Typography gutterBottom align="center" color="primary.main">
                             Koska tilatut tuotteet toimitetaan?
                         </Typography>
                     </AccordionSummary>
@@ -89,7 +89,7 @@ function FAQAccordions() {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography gutterBottom aling="center" color="primary.main">
+                        <Typography gutterBottom align="center" color="primary.main">
                             Kuka saa tilata tuotteita järjestelmästä?
                         </Typography>
                     </AccordionSummary>
@@ -106,7 +106,7 @@ function FAQAccordions() {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography gutterBottom aling="center" color="primary.main">
+                        <Typography gutterBottom align="center" color="primary.main">
                             Kuka tilaa kuljetuksen?
                         </Typography>
                     </AccordionSummary>
@@ -123,7 +123,7 @@ function FAQAccordions() {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography gutterBottom aling="center" color="primary.main">
+                        <Typography gutterBottom align="center" color="primary.main">
                             Maksaako tuotteiden tilaaminen järjestelmästä?
                         </Typography>
                     </AccordionSummary>
@@ -143,7 +143,7 @@ function FAQAccordions() {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography gutterBottom aling="center" color="primary.main">
+                        <Typography gutterBottom="true" color="primary.main">
                             Missä tuotteet ovat?
                         </Typography>
                     </AccordionSummary>
@@ -165,7 +165,7 @@ function FAQAccordions() {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography gutterBottom aling="center" color="primary.main">
+                        <Typography gutterBottom align="center" color="primary.main">
                             Mitä kuljetus maksaa?
                         </Typography>
                     </AccordionSummary>
@@ -186,7 +186,7 @@ function FAQAccordions() {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography gutterBottom aling="center" color="primary.main">
+                        <Typography gutterBottom align="center" color="primary.main">
                             Miten kuljetus on järjestetty?
                         </Typography>
                     </AccordionSummary>
@@ -206,7 +206,7 @@ function FAQAccordions() {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography aling="center" color="primary.main">
+                        <Typography align="center" color="primary.main">
                             Miten tilaan tuotteita järjestelmästä?
                         </Typography>
                     </AccordionSummary>
@@ -225,7 +225,7 @@ function FAQAccordions() {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography gutterBottom aling="center" color="primary.main">
+                        <Typography gutterBottom align="center" color="primary.main">
                             {' '}
                             Miten voin hakea tarvitsemaani tuotetta?
                         </Typography>
@@ -246,7 +246,7 @@ function FAQAccordions() {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography gutterBottom aling="center" color="primary.main">
+                        <Typography gutterBottom align="center" color="primary.main">
                             Saako tuotteita mennä katsomaan paikan päälle?
                         </Typography>
                     </AccordionSummary>
@@ -265,7 +265,7 @@ function FAQAccordions() {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography aling="center" color="primary.main">
+                        <Typography align="center" color="primary.main">
                             Mistä tiedän että järjestelmästä tilatut tuotteet ovat puhtaita ja ehjiä?
                         </Typography>
                     </AccordionSummary>
