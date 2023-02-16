@@ -37,9 +37,6 @@ function Confirmation() {
                 <Grid item>
                     <Typography variant="subtitle1">Tuotemäärä</Typography>
                 </Grid>
-                <Grid item>
-                    <Typography variant="subtitle1">Hinta</Typography>
-                </Grid>
             </Grid>
         </Form>
     );

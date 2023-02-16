@@ -49,9 +49,8 @@ const CartStepConnector = styled(StepConnector)(({ theme }) => ({
 function ShoppingCart() {
     // const [skipped] = useState(new Set());
     const [activeStep, setActiveStep] = useState(0);
-    // const navigate = useNavigate();
     const steps = ['Ostoskori', 'Yhteystiedot & toimitus', 'Vahvistus'];
-    console.log(activeStep);
+    // console.log(activeStep);
 
     // muuta yhdeksi funktioksi jossain vaihessa
     function moveBack() {
