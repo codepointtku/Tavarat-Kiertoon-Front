@@ -86,7 +86,7 @@ function ContactPage() {
                         fullWidth
                         required
                         maxRows={1}
-                        placeholder="@turku.com"
+                        placeholder="@turku.fi"
                     />
                     <Grid container>
                         <Grid item xs={12}>
