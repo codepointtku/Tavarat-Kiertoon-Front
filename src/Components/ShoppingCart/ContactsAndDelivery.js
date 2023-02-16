@@ -1,6 +1,8 @@
 import { Form } from 'react-router-dom';
 import { Typography, TextField, Grid } from '@mui/material';
 
+import CartButton from './CartButton';
+
 function ContactsAndDelivery() {
     return (
         <Form method="post">
@@ -35,6 +37,12 @@ function ContactsAndDelivery() {
                     <TextField label="Toimitustapa" variant="outlined" />
                 </Grid>
             </Grid>
+            <CartButton
+                backUrl="/ostoskori"
+                forwardUrl="/ostoskori/vaihe3"
+                backText="Takaisin"
+                forwardText="Seuraava"
+            />
         </Form>
     );
 }

@@ -1,6 +1,8 @@
 import { Typography, Grid } from '@mui/material';
 import { Form } from 'react-router-dom';
 
+import CartButton from './CartButton';
+
 function Confirmation() {
     return (
         <Form method="post">
@@ -38,6 +40,7 @@ function Confirmation() {
                     <Typography variant="subtitle1">Tuotemäärä</Typography>
                 </Grid>
             </Grid>
+            <CartButton backUrl="/ostoskori/vaihe2" forwardUrl="/" backText="Takaisin" forwardText="Vahvista" />
         </Form>
     );
 }

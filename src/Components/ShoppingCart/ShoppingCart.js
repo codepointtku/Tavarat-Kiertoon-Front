@@ -1,17 +1,17 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useState } from 'react';
+// import { useRoute } from '@react-navigation/native';
 import { Outlet } from 'react-router';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { styled } from '@mui/system';
 
-import { Container, Box, Stepper, Step, StepLabel, Button, Grid } from '@mui/material';
+import { Container, Box, Stepper, Step, StepLabel } from '@mui/material';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+// import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+// import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 // import CartView from './CartView';
 // import ContactsAndDelivery from './ContactsAndDelivery';
@@ -48,31 +48,31 @@ const CartStepConnector = styled(StepConnector)(({ theme }) => ({
 
 function ShoppingCart() {
     // const [skipped] = useState(new Set());
-    const [activeStep, setActiveStep] = useState(0);
+    // const [activeStep, setActiveStep] = useState(0);
     const steps = ['Ostoskori', 'Yhteystiedot & toimitus', 'Vahvistus'];
     // console.log(activeStep);
 
     // muuta yhdeksi funktioksi jossain vaihessa
-    function moveBack() {
-        switch (activeStep) {
-            case 2:
-                return '/ostoskori/vaihe2';
-            case 1:
-                return '/ostoskori';
-            default:
-                return '/';
-        }
-    }
-    function moveForward() {
-        switch (activeStep) {
-            case 0:
-                return '/ostoskori/vaihe2';
-            case 1:
-                return '/ostoskori/vaihe3';
-            default:
-                return '/';
-        }
-    }
+    // function moveBack() {
+    //     switch (activeStep) {
+    //         case 2:
+    //             return '/ostoskori/vaihe2';
+    //         case 1:
+    //             return '/ostoskori';
+    //         default:
+    //             return '/';
+    //     }
+    // }
+    // function moveForward() {
+    //     switch (activeStep) {
+    //         case 0:
+    //             return '/ostoskori/vaihe2';
+    //         case 1:
+    //             return '/ostoskori/vaihe3';
+    //         default:
+    //             return '/';
+    //     }
+    // }
 
     // const isStepSkipped = (step) => skipped.has(step);
     // useLoaderData tuotenimen, tuotemäärän ja hinnan hakuun
@@ -94,7 +94,7 @@ function ShoppingCart() {
                     sx={{
                         '& .Mui-disabled': { opacity: 0.5 },
                     }}
-                    activeStep={activeStep}
+                    activeStep={0}
                     connector={<CartStepConnector />}
                     alternativeLabel
                 >
@@ -128,7 +128,7 @@ function ShoppingCart() {
                     }
                 })()} */}
             <Outlet />
-            <Grid container justifyContent="space-between" sx={{ marginTop: 5 }}>
+            {/* <Grid container justifyContent="space-between" sx={{ marginTop: 5 }}>
                 {activeStep === 0 ? (
                     <Button
                         component={Link}
@@ -160,7 +160,7 @@ function ShoppingCart() {
                 >
                     {activeStep === 2 ? 'Vahvistus' : 'Seuraava'}
                 </Button>
-            </Grid>
+            </Grid> */}
         </Container>
     );
 }

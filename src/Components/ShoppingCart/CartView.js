@@ -4,6 +4,8 @@ import { Box, Grid, Typography, IconButton } from '@mui/material';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 
+import CartButton from './CartButton';
+
 function CartView() {
     const { cart } = useRouteLoaderData('base');
     console.log(cart);
@@ -25,6 +27,7 @@ function CartView() {
                 </Grid>
             ))}
             <hr />
+            <CartButton backUrl="/" forwardUrl="/ostoskori/vaihe2" backText="Jatka ostoksia" forwardText="Seuraava" />
         </Form>
     );
 }
