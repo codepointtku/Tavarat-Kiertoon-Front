@@ -243,10 +243,6 @@ function Routes() {
                             path: '/varasto/koodinlukija',
                             element: <QrScanner />,
                         },
-                        // {
-                        //     path: '/varasto/pdf',
-                        //     element: <PDFView />,
-                        // },
                         {
                             path: '/varasto/pdf/:id',
                             element: <PDFView />,

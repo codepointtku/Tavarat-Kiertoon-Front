@@ -10,14 +10,36 @@ function ErrorBoundary() {
         navigate(-1);
     };
 
+    const errorType = (err) => {
+        if (err?.name === 'AxiosError') {
+            return 'axios';
+        }
+        if (err?.status === 404) {
+            return 'noroute';
+        }
+        return 'else';
+    };
+
     return (
         <Box minHeight={320}>
             <Alert severity="warning">
                 <AlertTitle>Jokin meni pieleen</AlertTitle>
-                <Typography variant="h6">Etsimääsi sijaintia {location.pathname} ei valitettavasti löydy.</Typography>
-                {error?.response?.status === 404 && location.pathname.includes('/tuotteet/') && (
-                    <Typography>Etsimääsi tuotetta ei löydy</Typography>
-                )}
+                {
+                    {
+                        axios: (
+                            <Typography variant="h6">
+                                Yhteysongelma sijainnissa {location.pathname}, yritä uudelleen.
+                            </Typography>
+                        ),
+
+                        noroute: (
+                            <Typography variant="h6">
+                                Etsimääsi sijaintia {location.pathname} ei valitettavasti löydy.
+                            </Typography>
+                        ),
+                        else: <Typography variant="h6">Virhe sijainnissa {location.pathname}.</Typography>,
+                    }[errorType(error)]
+                }
                 <Box>
                     <Button onClick={handleGoBack} sx={{ margin: '1em' }}>
                         Takaisin
