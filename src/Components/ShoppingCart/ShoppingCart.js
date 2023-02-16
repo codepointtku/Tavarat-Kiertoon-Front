@@ -88,7 +88,6 @@ function ShoppingCart() {
                     })}
                 </Stepper>
             </Box>
-            {/* map tähän myös */}
             <Outlet />
         </Container>
     );
