@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Outlet } from 'react-router';
 import { useLocation } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
 import { styled } from '@mui/system';
 
 import { Container, Box, Stepper, Step, StepLabel } from '@mui/material';
@@ -10,12 +9,6 @@ import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
-// import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-// import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
-// import CartView from './CartView';
-// import ContactsAndDelivery from './ContactsAndDelivery';
-// import Confirmation from './Confirmation';
 
 function iconDecider(index) {
     const icons = [<ShoppingCartIcon />, <PermContactCalendarIcon />, <DomainVerificationIcon />];
@@ -47,8 +40,6 @@ const CartStepConnector = styled(StepConnector)(({ theme }) => ({
 }));
 
 function ShoppingCart() {
-    // const [skipped] = useState(new Set());
-    // const [activeStep, setActiveStep] = useState(0);
     const { pathname } = useLocation();
     console.log(pathname);
     const steps = ['Ostoskori', 'Yhteystiedot & toimitus', 'Vahvistus'];
@@ -64,32 +55,7 @@ function ShoppingCart() {
                 return 0;
         }
     }
-    // console.log(activeStep);
-
-    // muuta yhdeksi funktioksi jossain vaihessa
-    // function moveBack() {
-    //     switch (activeStep) {
-    //         case 2:
-    //             return '/ostoskori/vaihe2';
-    //         case 1:
-    //             return '/ostoskori';
-    //         default:
-    //             return '/';
-    //     }
-    // }
-    // function moveForward() {
-    //     switch (activeStep) {
-    //         case 0:
-    //             return '/ostoskori/vaihe2';
-    //         case 1:
-    //             return '/ostoskori/vaihe3';
-    //         default:
-    //             return '/';
-    //     }
-    // }
-
-    // const isStepSkipped = (step) => skipped.has(step);
-    // useLoaderData tuotenimen, tuotemäärän ja hinnan hakuun
+    // useLoaderData tuotenimi ja tuotemäärä
     return (
         <Container
             sx={{ border: 3, borderStyle: 'solid', borderRadius: 3, p: 20, paddingBottom: 5, margin: '3.125rem 0rem' }}
@@ -114,10 +80,6 @@ function ShoppingCart() {
                 >
                     {steps.map((label, index) => {
                         const stepProps = {};
-                        // const disabled = index === 0 && true;
-                        // if (isStepSkipped(index)) {
-                        //     stepProps.completed = false;
-                        // }
                         return (
                             <Step key={label} {...stepProps}>
                                 <StepLabel StepIconComponent={() => iconDecider(index)}>{label}</StepLabel>
@@ -127,54 +89,7 @@ function ShoppingCart() {
                 </Stepper>
             </Box>
             {/* map tähän myös */}
-            {/* {(() => {
-                    switch (activeStep) {
-                        case 0:
-                            return <CartView />;
-                        case 1:
-                            return <ContactsAndDelivery />;
-
-                        case 2:
-                            return <Confirmation />;
-
-                        default:
-                            return <CartView />;
-                    }
-                })()} */}
             <Outlet />
-            {/* <Grid container justifyContent="space-between" sx={{ marginTop: 5 }}>
-                {activeStep === 0 ? (
-                    <Button
-                        component={Link}
-                        to="/"
-                        variant="contained"
-                        onClick={() => setActiveStep((PrevStep) => PrevStep - 1)}
-                        startIcon={<ArrowBackIcon />}
-                    >
-                        Jatka ostoksia
-                    </Button>
-                ) : (
-                    <Button
-                        component={Link}
-                        to={moveBack()}
-                        variant="contained"
-                        onClick={() => setActiveStep((PrevStep) => PrevStep - 1)}
-                        startIcon={<ArrowBackIcon />}
-                    >
-                        Takaisin
-                    </Button>
-                )}
-                <Button
-                    component={Link}
-                    to={moveForward()}
-                    type={activeStep === 3 ? 'submit' : undefined}
-                    variant="contained"
-                    onClick={() => setActiveStep((PrevStep) => PrevStep + 1)}
-                    endIcon={<ArrowForwardIcon />}
-                >
-                    {activeStep === 2 ? 'Vahvistus' : 'Seuraava'}
-                </Button>
-            </Grid> */}
         </Container>
     );
 }
