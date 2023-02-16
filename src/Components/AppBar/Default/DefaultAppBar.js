@@ -28,8 +28,9 @@ import MailIcon from '@mui/icons-material/Mail';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import PhishingIcon from '@mui/icons-material/Phishing';
 
+import { Link } from 'react-router-dom';
 import LoginForm from './LoginForm';
-import ContactForm from './ContactForm';
+// import ContactForm from './ContactForm';
 
 //
 
@@ -166,7 +167,7 @@ function DefaultAppBar() {
                         <IconButton onClick={drawerOpen('account')}>
                             <AccountCircleOutlinedIcon sx={{ fontSize: 30, color: '#fff' }} />
                         </IconButton>
-                        <IconButton onClick={drawerOpen('contact')}>
+                        <IconButton component={Link} to="/otayhteytta">
                             <CallIcon sx={{ fontSize: 30, color: '#fff' }} />
                         </IconButton>
                     </Stack>
@@ -204,9 +205,9 @@ function DefaultAppBar() {
                 <LoginForm />
             </Drawer>
 
-            <Drawer currentOpenDrawer={currentOpenDrawer} name="contact">
+            {/* <Drawer currentOpenDrawer={currentOpenDrawer} name="contact">
                 <ContactForm />
-            </Drawer>
+            </Drawer> */}
         </Box>
     );
 }

@@ -136,12 +136,13 @@ function Routes() {
                             path: '/signup/location',
                             element: <SignupPage isLocationForm />,
                         },
+                        {
+                            path: '/otayhteytta',
+                            element: <ContactPage />,
+                        },
                     ],
                 },
-                {
-                    path: '/contactpage',
-                    element: <ContactPage />,
-                },
+
                 {
                     path: '/varasto',
                     element: (
