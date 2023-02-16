@@ -9,24 +9,19 @@ function ContactsAndDelivery() {
             </Typography>
             <Grid container spacing={4}>
                 <Grid item>
-                    <TextField label="Etunimi" variant="outlined">
-                        *
-                    </TextField>
+                    <TextField label="Etunimi" variant="outlined" />
                 </Grid>
                 <Grid item>
-                    <TextField label="Sukunimi" variant="outlined">
-                        *
-                    </TextField>
+                    <TextField label="Sukunimi" variant="outlined" />
                 </Grid>
                 <Grid item>
-                    <TextField label="Sähköposti" variant="outlined">
-                        *
-                    </TextField>
+                    <TextField label="Sähköposti" variant="outlined" />
                 </Grid>
                 <Grid item>
-                    <TextField label="Puh. numero" variant="outlined">
-                        *
-                    </TextField>
+                    <TextField label="Puh. numero" variant="outlined" />
+                </Grid>
+                <Grid item>
+                    <TextField label="Toimipaikkakoodi" variant="outlined" />
                 </Grid>
             </Grid>
             <Typography variant="h4" sx={{ marginTop: 5, marginBottom: 2, color: 'primary.main' }}>
@@ -34,14 +29,10 @@ function ContactsAndDelivery() {
             </Typography>
             <Grid container spacing={4}>
                 <Grid item>
-                    <TextField label="Toimitusosoite" variant="outlined">
-                        *
-                    </TextField>
+                    <TextField label="Toimitusosoite" variant="outlined" />
                 </Grid>
                 <Grid item>
-                    <TextField label="Toimitustapa" variant="outlined">
-                        *
-                    </TextField>
+                    <TextField label="Toimitustapa" variant="outlined" />
                 </Grid>
             </Grid>
         </Form>

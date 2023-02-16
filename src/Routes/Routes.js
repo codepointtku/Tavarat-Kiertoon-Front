@@ -115,7 +115,7 @@ function Routes() {
                     path: '/ostoskori',
                     element: <ShoppingCart />,
                     children: [
-                        { path: '/ostoskori/vaihe1', element: <CartView /> },
+                        { path: '/ostoskori', element: <CartView /> },
                         { path: '/ostoskori/vaihe2', element: <ContactsAndDelivery /> },
                         { path: '/ostoskori/vaihe3', element: <Confirmation /> },
                     ],

@@ -1,45 +1,45 @@
-import { Typography, Box, Grid, Button } from '@mui/material';
-import PaymentIcon from '@mui/icons-material/Payment';
-import SmartphoneIcon from '@mui/icons-material/Smartphone';
+import { Typography, Grid } from '@mui/material';
 import { Form } from 'react-router-dom';
 
 function Confirmation() {
     return (
         <Form method="post">
-            <Typography variant="h6">Ostosten yhteenveto</Typography>
-            <hr />
-            <Typography variant="h4" sx={{ marginTop: 5, marginBottom: 2, color: 'primary.main' }}>
-                Valitse maksutapa
+            <Typography variant="h4" color="primary.main">
+                Ostosten yhteenveto
             </Typography>
-            <Grid container direction="row" justifyContent="space-around">
-                <Button variant="text">
-                    <Box
-                        sx={{
-                            p: '75px 150px',
-                            borderStyle: 'solid',
-                            borderWidth: 5,
-                            fontWeight: 'bold',
-                            display: 'flex',
-                            alignItems: 'center',
-                        }}
-                    >
-                        Maksukortti <PaymentIcon sx={{ marginLeft: 3 }} fontSize="large" />
-                    </Box>
-                </Button>
-                <Button variant="text">
-                    <Box
-                        sx={{
-                            p: '75px 150px',
-                            borderStyle: 'solid',
-                            borderWidth: 5,
-                            fontWeight: 'bold',
-                            display: 'flex',
-                            alignItems: 'center',
-                        }}
-                    >
-                        MobilePay <SmartphoneIcon sx={{ marginLeft: 3 }} fontSize="large" />
-                    </Box>
-                </Button>
+            <hr />
+            <Typography variant="h6">Yhteystiedot</Typography>
+            <Grid container spacing={4}>
+                <Grid item>
+                    <Typography variant="subtitle1">Sähköposti</Typography>
+                </Grid>
+                <Grid item>
+                    <Typography variant="subtitle1">Puh. numero</Typography>
+                </Grid>
+                <Grid item>
+                    <Typography variant="subtitle1">Toimipaikkakoodi</Typography>
+                </Grid>
+            </Grid>
+            <Typography variant="h6">Toimitustiedot</Typography>
+            <Grid container spacing={4}>
+                <Grid item>
+                    <Typography variant="subtitle1">Toimitusosoite</Typography>
+                </Grid>
+                <Grid item>
+                    <Typography variant="subtitle1">Toimitustapa</Typography>
+                </Grid>
+            </Grid>
+            <Typography variant="h6">Tilaustiedot</Typography>
+            <Grid container spacing={4}>
+                <Grid item>
+                    <Typography variant="subtitle1">Tuotenimi</Typography>
+                </Grid>
+                <Grid item>
+                    <Typography variant="subtitle1">Tuotemäärä</Typography>
+                </Grid>
+                <Grid item>
+                    <Typography variant="subtitle1">Hinta</Typography>
+                </Grid>
             </Grid>
         </Form>
     );

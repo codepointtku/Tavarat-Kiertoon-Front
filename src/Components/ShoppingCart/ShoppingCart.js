@@ -39,11 +39,10 @@ function iconDecider(index) {
 
 const CartStepConnector = styled(StepConnector)(({ theme }) => ({
     [`& .${stepConnectorClasses.line}`]: {
-        display: 'flex',
-        alignSelf: 'center',
         borderColor: theme.palette.primary.main,
         borderWidth: 'thick',
         borderRadius: 20,
+        marginTop: 10,
     },
 }));
 
@@ -55,24 +54,24 @@ function ShoppingCart() {
     console.log(activeStep);
 
     // muuta yhdeksi funktioksi jossain vaihessa
-    function moveBack(){
-        switch(activeStep){
-            case 2: 
-                return "/ostoskori/vaihe2" 
+    function moveBack() {
+        switch (activeStep) {
+            case 2:
+                return '/ostoskori/vaihe2';
             case 1:
-                return "/ostoskori/vaihe1"
+                return '/ostoskori';
             default:
-                return "/"
+                return '/';
         }
     }
-    function moveForward(){
-        switch(activeStep){
+    function moveForward() {
+        switch (activeStep) {
             case 0:
-                return "/ostoskori/vaihe2"
+                return '/ostoskori/vaihe2';
             case 1:
-                return "/ostoskori/vaihe3"
-            default: 
-                return "/"
+                return '/ostoskori/vaihe3';
+            default:
+                return '/';
         }
     }
 
