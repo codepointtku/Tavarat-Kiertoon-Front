@@ -21,7 +21,6 @@ function TilausNro() {
             label="Tilausnumero"
             placeholder="1234"
             multiline
-            maxWidth
             required
             maxRows={2}
         />
