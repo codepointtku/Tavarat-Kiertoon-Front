@@ -1,7 +1,17 @@
-import { Container, TextField, Typography, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import {
+    Container,
+    TextField,
+    Typography,
+    Button,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    Grid,
+} from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import LOGO4 from '../Assets/LOGO4.png';
+// import background from '../Assets/LOGO6.png';
 
 function TilausNro() {
     return (
@@ -11,6 +21,7 @@ function TilausNro() {
             label="Tilausnumero"
             placeholder="1234"
             multiline
+            maxWidth
             required
             maxRows={2}
         />
@@ -30,13 +41,16 @@ function ContactPage() {
             component="form"
             autoComplete="off"
             sx={{
+                // backgroundImage: `url(${background})`,
+                // backgroundRepeat: 'no-repeat',
+                width: 1000,
                 marginTop: 4,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
             }}
         >
-            <img src={LOGO4} alt="turkulogo" style={{ width: 200 }} />
+            {/* <img src={background} alt="turkulogo" style={{ backgroundImage, width: 1000 }} /> */}
 
             <Typography variant="h3" color="primary.main">
                 Ota yhteyttä
@@ -57,7 +71,7 @@ function ContactPage() {
                         sx={{ mt: 2 }}
                         id="sender-name"
                         label="Nimesi"
-                        placeholder="Chuck Norris"
+                        placeholder="Etunimi Sukunimi"
                         multiline
                         fullWidth
                         required
@@ -73,27 +87,32 @@ function ContactPage() {
                         fullWidth
                         required
                         maxRows={1}
-                        placeholder="chuck.norris@joku.com"
+                        placeholder="@turku.com"
                     />
-                    <FormControl fullWidth required sx={{ mt: 2 }}>
-                        <InputLabel id="select-label">Aihe</InputLabel>
-                        <Select
-                            // eslint-disable-next-line react/jsx-props-no-spreading
-                            {...register('Aihe')}
-                            labelId="select-label"
-                            id="simple-select"
-                            defaultValue=""
-                            label="Aihe"
-                            onChange={handleChange}
-                        >
-                            <MenuItem value="Yleinen palaute">Yleinen palaute</MenuItem>
-                            <MenuItem value="Tilaukset">Tilaukset</MenuItem>
-                            <MenuItem value="Tekninen ongelma">Tekninen ongelma</MenuItem>
-                            <MenuItem value="Kehitysehdotukset">Kehitysehdotukset</MenuItem>
-                        </Select>
-                    </FormControl>
-
-                    {subject === 'Tilaukset' && <TilausNro />}
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <FormControl fullWidth required sx={{ mt: 2 }}>
+                                <InputLabel id="select-label">Aihe</InputLabel>
+                                <Select
+                                    // eslint-disable-next-line react/jsx-props-no-spreading
+                                    {...register('Aihe')}
+                                    labelId="select-label"
+                                    id="simple-select"
+                                    defaultValue=""
+                                    label="Aihe"
+                                    onChange={handleChange}
+                                >
+                                    <MenuItem value="Yleinen palaute">Yleinen palaute</MenuItem>
+                                    <MenuItem value="Tilaukset">Tilaukset</MenuItem>
+                                    <MenuItem value="Tekninen ongelma">Tekninen ongelma</MenuItem>
+                                    <MenuItem value="Kehitysehdotukset">Kehitysehdotukset</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            {subject === 'Tilaukset' && <TilausNro />}
+                        </Grid>
+                    </Grid>
 
                     <TextField
                         // eslint-disable-next-line react/jsx-props-no-spreading
