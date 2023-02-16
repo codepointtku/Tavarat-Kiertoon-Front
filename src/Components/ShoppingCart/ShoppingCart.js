@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
-// import { useRoute } from '@react-navigation/native';
 import { Outlet } from 'react-router';
+import { useLocation } from 'react-router-dom';
 // import { Link } from 'react-router-dom';
 import { styled } from '@mui/system';
 
@@ -49,7 +49,21 @@ const CartStepConnector = styled(StepConnector)(({ theme }) => ({
 function ShoppingCart() {
     // const [skipped] = useState(new Set());
     // const [activeStep, setActiveStep] = useState(0);
+    const { pathname } = useLocation();
+    console.log(pathname);
     const steps = ['Ostoskori', 'Yhteystiedot & toimitus', 'Vahvistus'];
+    function setStep() {
+        switch (pathname) {
+            case '/ostoskori':
+                return 0;
+            case '/ostoskori/vaihe2':
+                return 1;
+            case '/ostoskori/vaihe3':
+                return 2;
+            default:
+                return 0;
+        }
+    }
     // console.log(activeStep);
 
     // muuta yhdeksi funktioksi jossain vaihessa
@@ -94,7 +108,7 @@ function ShoppingCart() {
                     sx={{
                         '& .Mui-disabled': { opacity: 0.5 },
                     }}
-                    activeStep={0}
+                    activeStep={setStep()}
                     connector={<CartStepConnector />}
                     alternativeLabel
                 >
@@ -166,5 +180,3 @@ function ShoppingCart() {
 }
 
 export default ShoppingCart;
-
-// return <div style={{ textAlign: 'center', margin: 40 }}>Shopping Cart page</div>;
