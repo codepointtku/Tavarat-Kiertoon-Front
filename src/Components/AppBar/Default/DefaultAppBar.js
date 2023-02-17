@@ -117,9 +117,15 @@ function Drawer({ currentOpenDrawer, name, children }) {
 }
 
 function DefaultAppBar() {
+    let cartItems;
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState(null);
     const navigate = useNavigate();
-    const { cart } = useLoaderData();
+    const { cart, products } = useLoaderData();
+
+    cart.map((items) => {
+        cartItems = products.results.filter((result) => items.products.map((productId) => productId === result.id));
+        return cartItems;
+    });
 
     const drawerOpen = (drawer) => () => {
         if (currentOpenDrawer === drawer) {
@@ -134,7 +140,8 @@ function DefaultAppBar() {
         setCurrentOpenDrawer(null);
     }
 
-    console.log(cart);
+    // console.log(cart);
+    // results on taulukko objekteja
 
     return (
         <Box>
@@ -183,8 +190,8 @@ function DefaultAppBar() {
             <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart">
                 {/* tähän oma komponentti.. */}
                 <List>
-                    {cart.map((items) => (
-                        <ItemButton text={items.productName} index={items.id} />
+                    {cartItems.map((cartItem) => (
+                        <ItemButton text={cartItem.name} index={cartItems.id} />
                     ))}
                 </List>
                 <Divider />

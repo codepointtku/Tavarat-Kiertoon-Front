@@ -51,8 +51,9 @@ function Routes() {
             id: 'base',
             loader: async () => {
                 const { data: contacts } = await axios.get('http://localhost:3001/contacts');
-                const { data: cart } = await axios.get('http://localhost:3001/shopping-cart');
-                return { contacts, cart };
+                const { data: products } = await axios.get('http://localhost:8000/products');
+                const { data: cart } = await axios.get('http://localhost:8000/shopping_carts');
+                return { contacts, cart, products };
             },
 
             children: [
@@ -62,11 +63,11 @@ function Routes() {
                     action: async ({ request }) => {
                         const formData = await request.formData();
                         const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
-                        const productName = formData.get('productName');
+                        const products = formData.get('products');
                         if (request.method === 'POST') {
-                            await axios.post('http://localhost:3001/shopping-cart', { id, productName });
+                            await axios.post('http://localhost:8000/shopping_carts', { id, products });
                         } else if (request.method === 'DELETE') {
-                            await axios.delete(`http://localhost:3001/shopping-cart/${id}`);
+                            await axios.delete(`http://localhost:8000/shopping_carts/${id}`);
                         }
                         return null;
                     },
