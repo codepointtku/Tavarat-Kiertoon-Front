@@ -157,6 +157,7 @@ function Routes() {
                         },
                     ],
                 },
+
                 {
                     path: '/varasto',
                     element: (
