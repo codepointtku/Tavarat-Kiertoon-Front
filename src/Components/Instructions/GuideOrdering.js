@@ -146,7 +146,7 @@ function tabProps(value) {
         'aria-controls': `tabpanel-${value}`,
         value,
         component: Link,
-        to: `/ohjeet/devi/${value}`,
+        to: `/ohjeet/tilaus/${value}`,
         replace: true,
     };
 }

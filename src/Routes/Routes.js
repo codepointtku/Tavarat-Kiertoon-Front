@@ -31,7 +31,6 @@ import AddItem from '../Components/AddItem';
 import DeliveryView from '../Components/DeliveryView';
 import BackgroundInfo from '../Components/Backgroundinfo';
 import StatsPage from '../Components/Stats/StatsPage';
-import InstructionsPage from '../Components/Instructions/InstructionsPage';
 import ErrorBoundary from '../Components/ErrorBoundary';
 
 import SignupLandingPage from '../Components/Signup/SignupLandingPage';
@@ -40,7 +39,12 @@ import ContactPage from '../Components/ContactPage';
 
 import PDFView from '../Components/PDFView';
 
-import DevPage from '../Components/Instructions/DevPage';
+import InstructionsPage from '../Components/Instructions/InstructionsPage';
+import GuideCommon from '../Components/Instructions/GuideCommon';
+import GuideAccount from '../Components/Instructions/GuideAccount';
+import GuideOrdering from '../Components/Instructions/GuideOrdering';
+import GuideShipping from '../Components/Instructions/GuideShipping';
+import GuideBikes from '../Components/Instructions/GuideBikes';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -105,12 +109,36 @@ function Routes() {
                             element: <InstructionsPage />,
                         },
                         {
-                            path: '/ohjeet/devi/',
-                            element: <DevPage />,
+                            path: '/ohjeet/ukk',
+                            element: <GuideCommon />,
                         },
                         {
-                            path: '/ohjeet/devi/:value',
-                            element: <DevPage />,
+                            path: '/ohjeet/tili',
+                            element: <GuideAccount />,
+                        },
+                        {
+                            path: '/ohjeet/tili/:value',
+                            element: <GuideAccount />,
+                        },
+                        {
+                            path: '/ohjeet/tilaus',
+                            element: <GuideOrdering />,
+                        },
+                        {
+                            path: '/ohjeet/tilaus/:value',
+                            element: <GuideOrdering />,
+                        },
+                        {
+                            path: '/ohjeet/nouto',
+                            element: <GuideShipping />,
+                        },
+                        {
+                            path: '/ohjeet/pyorat',
+                            element: <GuideBikes />,
+                        },
+                        {
+                            path: '/ohjeet/pyorat/:value',
+                            element: <GuideBikes />,
                         },
                         {
                             path: '/toimitus',
