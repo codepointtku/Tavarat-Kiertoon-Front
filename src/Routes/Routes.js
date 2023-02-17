@@ -24,14 +24,14 @@ import UserEdit from '../Components/UserEdit';
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
 import Announcements from '../Components/Announcements';
-import InstructionsPage from '../Components/Instructions/InstructionsPage';
-import FaqView from '../Components/FaqView';
+
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
 import DeliveryView from '../Components/DeliveryView';
 import BackgroundInfo from '../Components/Backgroundinfo';
 import StatsPage from '../Components/Stats/StatsPage';
+import InstructionsPage from '../Components/Instructions/InstructionsPage';
 import ErrorBoundary from '../Components/ErrorBoundary';
 
 import SignupLandingPage from '../Components/Signup/SignupLandingPage';
@@ -99,10 +99,6 @@ function Routes() {
                                     return null;
                                 }
                             },
-                        },
-                        {
-                            path: '/faq',
-                            element: <FaqView />,
                         },
                         {
                             path: '/ohjeet',

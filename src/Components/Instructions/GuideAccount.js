@@ -169,7 +169,7 @@ function Hero() {
             <Avatar
                 sx={{
                     mt: 2,
-                    mb: 2,
+                    mb: 1,
                     bgcolor: 'secondary.dark',
                     width: 48,
                     height: 48,
@@ -239,7 +239,7 @@ function TitleTabs() {
 
 function GuideAccount() {
     return (
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
             <Hero />
             <TitleTabs />
         </Container>
