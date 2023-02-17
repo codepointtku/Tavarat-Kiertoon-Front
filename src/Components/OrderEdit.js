@@ -31,6 +31,10 @@ function OrderEdit() {
         return true;
     };
 
+    const revertChange = (key) => {
+        setOrderState({ ...orderState, [key]: orderData[key] });
+    };
+
     let orderList = [];
 
     orderData.products.forEach((entry) => {
@@ -106,52 +110,80 @@ function OrderEdit() {
                     <h5>
                         <TextField disabled defaultValue={orderData.contact} label="Alkuperäinen yhteystieto" />
                         <TextField
+                            focused={checkChange('contact')}
                             label="Muokkaa yhteystietoa"
                             onChange={(event) => {
                                 handleChange('contact', event);
                             }}
-                            defaultValue={orderState.contact}
-                            sx={{ backgroundColor: checkChange('contact') ? 'purple' : '' }}
+                            value={orderState.contact}
                         />
+                        <Button
+                            onClick={() => {
+                                revertChange('contact');
+                            }}
+                        >
+                            Tonipalkahville
+                        </Button>
                     </h5>
                 </div>
                 <div>
                     <h5>
                         <TextField disabled defaultValue={orderData.delivery_address} label="Alkuperäinen osoite" />
                         <TextField
+                            focused={checkChange('delivery_address')}
                             label="Muokkaa toimitusosoitetta"
                             onChange={(event) => {
                                 handleChange('delivery_address', event);
                             }}
-                            defaultValue={orderState.delivery_address}
-                            sx={{ backgroundColor: checkChange('delivery_address') ? 'purple' : '' }}
+                            value={orderState.delivery_address}
                         />
+                        <Button
+                            onClick={() => {
+                                revertChange('delivery_address');
+                            }}
+                        >
+                            Tonipalkahville
+                        </Button>
                     </h5>
                 </div>
                 <div>
                     <h5>
                         <TextField disabled defaultValue={orderData.status} label="Alkuperäinen status" />
                         <TextField
+                            focused={checkChange('status')}
                             label="Muokkaa statusta"
                             onChange={(event) => {
                                 handleChange('status', event);
                             }}
-                            defaultValue={orderState.status}
-                            sx={{ backgroundColor: checkChange('status') ? 'purple' : '' }}
+                            value={orderState.status}
                         />
+                        <Button
+                            onClick={() => {
+                                revertChange('status');
+                            }}
+                        >
+                            Tonipalkahville
+                        </Button>
                     </h5>
                 </div>
                 <div>
                     <h5>
                         <TextField disabled defaultValue={orderData.order_info} label="Alkuperäinen lisätieto" />
                         <TextField
+                            focused={checkChange('order_info')}
                             label="Muokkaa lisätietoa"
                             onChange={(event) => {
                                 handleChange('order_info', event);
                             }}
-                            defaultValue={orderState.order_info}
-                            sx={{ backgroundColor: checkChange('order_info') ? 'purple' : '' }}
+                            value={orderState.order_info}
                         />
+                        <Button
+                            onClick={() => {
+                                revertChange('order_info');
+                            }}
+                        >
+                            Tonipalkahville
+                        </Button>
                     </h5>
                 </div>
             </Box>
