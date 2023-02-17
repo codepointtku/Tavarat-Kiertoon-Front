@@ -202,6 +202,7 @@ function OrderEdit() {
                             <StyledTableCell>Tuotenumero</StyledTableCell>
                             <StyledTableCell>Viivakoodi</StyledTableCell>
                             <StyledTableCell>Saldo</StyledTableCell>
+                            <StyledTableCell align="right">Poistettavat tuotteet</StyledTableCell>
                             <StyledTableCell> </StyledTableCell>
                         </TableRow>
                     </TableHead>
@@ -212,6 +213,26 @@ function OrderEdit() {
                                 <TableCell>{item.id}</TableCell>
                                 <TableCell>{item.barcode}</TableCell>
                                 <TableCell>{item.items.length}</TableCell>
+                                {item.items.length > 1 ? (
+                                    <TableCell align="right">
+                                        <TextField
+                                            type="number"
+                                            size="small"
+                                            defaultValue={1}
+                                            InputProps={{ inputProps: { min: 1, max: item.items.length } }}
+                                        />
+                                    </TableCell>
+                                ) : (
+                                    <TableCell align="right">
+                                        <TextField
+                                            disabled
+                                            type="number"
+                                            size="small"
+                                            defaultValue={1}
+                                            InputProps={{ inputProps: { min: 1, max: item.items.length } }}
+                                        />
+                                    </TableCell>
+                                )}
                                 <TableCell align="right">
                                     <Button
                                         onClick={() => {
