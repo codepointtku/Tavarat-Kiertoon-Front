@@ -118,11 +118,12 @@ function OrderEdit() {
                             value={orderState.contact}
                         />
                         <Button
+                            sx={{ mt: '8px', ml: '1rem' }}
                             onClick={() => {
                                 revertChange('contact');
                             }}
                         >
-                            Tonipalkahville
+                            Peruuta muutokset
                         </Button>
                     </h5>
                 </div>
@@ -138,11 +139,12 @@ function OrderEdit() {
                             value={orderState.delivery_address}
                         />
                         <Button
+                            sx={{ mt: '8px', ml: '1rem' }}
                             onClick={() => {
                                 revertChange('delivery_address');
                             }}
                         >
-                            Tonipalkahville
+                            Peruuta muutokset
                         </Button>
                     </h5>
                 </div>
@@ -158,11 +160,12 @@ function OrderEdit() {
                             value={orderState.status}
                         />
                         <Button
+                            sx={{ mt: '8px', ml: '1rem' }}
                             onClick={() => {
                                 revertChange('status');
                             }}
                         >
-                            Tonipalkahville
+                            Peruuta muutokset
                         </Button>
                     </h5>
                 </div>
@@ -178,11 +181,12 @@ function OrderEdit() {
                             value={orderState.order_info}
                         />
                         <Button
+                            sx={{ mt: '8px', ml: '1rem' }}
                             onClick={() => {
                                 revertChange('order_info');
                             }}
                         >
-                            Tonipalkahville
+                            Peruuta muutokset
                         </Button>
                     </h5>
                 </div>
