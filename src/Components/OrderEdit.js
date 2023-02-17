@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useLoaderData, useNavigate, generatePath } from 'react-router';
-import { useSubmit } from 'react-router-dom';
+// import { useSubmit } from 'react-router-dom';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
 
@@ -73,12 +73,14 @@ function OrderEdit() {
         console.log(orderData.newItem);
     };
 
-    const submit = useSubmit();
+    // const submit = useSubmit();
 
     const deleteItem = (id, items) => {
         if (items.length > 1) {
-            submit({ type: 'delete', product: items.at(-1).id }, { method: 'post' });
+            console.log('Item removed.');
+            // submit({ type: 'delete', product: items.at(-1).id }, { method: 'post' });
         } else {
+            console.log('Item removed!');
             // setOrderData({ ...orderData, products: orderData.products.filter((item) => item.id !== id) });
         }
     };
