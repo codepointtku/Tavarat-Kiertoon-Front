@@ -71,10 +71,10 @@ test.describe('signuplocation', () => {
     });
 });
 
-test.describe('contactpage', () => {
+test.describe('otayhteytta', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/contactpage');
-        await expect(page.getByText('Virhe sijainnissa /contactpage')).not.toBeVisible();
+        await page.goto('/otayhteytta');
+        await expect(page.getByText('Virhe sijainnissa /otayhteytta')).not.toBeVisible();
     });
 });
 
