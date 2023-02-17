@@ -65,7 +65,11 @@ function AddItem() {
 
         const uploads = await Promise.all(Object.values(files).map(async (file) => imageCompression(file, options)));
 
-        const response = await axios.post('http://localhost:8000/pictures/', uploads, { headers: { 'content-type': 'multipart/form-data' } });
+        console.log(uploads);
+
+        const response = await axios.post('http://localhost:8000/pictures/', uploads, {
+            headers: { 'content-type': 'multipart/form-data' },
+        });
         console.log(response.data);
     };
 
