@@ -9,33 +9,80 @@ import {
     TableRow,
     TableBody,
 } from '@mui/material';
-import { useState, useEffect } from 'react';
-import { useLoaderData, useLocation, useNavigate, generatePath } from 'react-router';
+import { useState } from 'react';
+import { useLoaderData, useNavigate, generatePath } from 'react-router';
+// import { useSubmit } from 'react-router-dom';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
 
 function OrderEdit() {
-    const loader = useLoaderData();
+    const orderData = useLoaderData();
     const navigate = useNavigate();
-    const location = useLocation();
-    const [orderData, setOrderData] = useState(loader);
-    const [orderItems /* , setOrderItems */] = useState(location.state);
+    const [orderState, setOrderState] = useState(orderData);
 
     const handleChange = (key, event) => {
-        setOrderData({ ...orderData, [key]: event.target.value });
+        setOrderState({ ...orderState, [key]: event.target.value });
     };
 
-    useEffect(() => {
-        if (location.state) {
-            location.state.returnpath = null;
-            // add here apiCall to find item by barCode
-            setOrderData(location.state);
+    const checkChange = (key) => {
+        if (orderData[key] === orderState[key]) {
+            return false;
         }
-    }, []);
+        return true;
+    };
+
+    const revertChange = (key) => {
+        setOrderState({ ...orderState, [key]: orderData[key] });
+    };
+
+    let orderList = [];
+
+    orderData.products.forEach((entry) => {
+        try {
+            const newEntry = entry;
+            newEntry.count = 1;
+            newEntry.id = entry.id;
+            newEntry.items = [newEntry];
+            orderList.forEach((each) => {
+                if (each.barcode === newEntry.barcode) {
+                    newEntry.count += each.count;
+                    newEntry.items = newEntry.items.concat(each.items);
+                    const index = orderList.findIndex((key) => key.id === each.id);
+                    orderList = [...orderList.slice(0, index), ...orderList.slice(index + 1)];
+                }
+            });
+            orderList.push(newEntry);
+        } catch {
+            orderList.push({
+                name: 'Tuotetta ei olemassa',
+                id: entry.id,
+                barcode: '-',
+                count: 0,
+                category_name: '-',
+                storage_name: '-',
+                items: [],
+                measurements: '-',
+                weight: '-',
+                shelf_id: '-',
+            });
+        }
+    });
 
     const addItem = () => {
         // add here apiCall to find item by ID
         console.log(orderData.newItem);
+    };
+
+    // const submit = useSubmit();
+
+    const deleteItem = (id, items) => {
+        if (items.length > 1) {
+            console.log('Item removed.');
+            // submit({ type: 'delete', product: items.at(-1).id }, { method: 'post' });
+        } else {
+            console.log('Item removed!');
+            // setOrderData({ ...orderData, products: orderData.products.filter((item) => item.id !== id) });
+        }
     };
 
     return (
@@ -51,66 +98,101 @@ function OrderEdit() {
             </Button>
             <TextField
                 label="Esine-ID"
-                onChange={(event) => {
-                    handleChange('newItem', event);
-                }}
+                // onChange={(event) => {
+                //     handleChange('newItem', event);
+                // }}
                 defaultValue={orderData.newItem}
             />
 
             <Button onClick={() => addItem()}>Lisää esine ID:n perusteella</Button>
 
-            <h1 align="center">Muokkaa Tilausta {orderData.id}</h1>
+            <h1 align="center">Muokkaa Tilausta {orderState.id}</h1>
             <Box align="center">
                 <div>
                     <h5>
                         <TextField disabled defaultValue={orderData.contact} label="Alkuperäinen yhteystieto" />
                         <TextField
+                            focused={checkChange('contact')}
                             label="Muokkaa yhteystietoa"
                             onChange={(event) => {
                                 handleChange('contact', event);
                             }}
-                            defaultValue={orderData.contact}
+                            value={orderState.contact}
                         />
+                        <Button
+                            sx={{ mt: '8px', ml: '1rem' }}
+                            onClick={() => {
+                                revertChange('contact');
+                            }}
+                        >
+                            Peruuta muutokset
+                        </Button>
                     </h5>
                 </div>
                 <div>
                     <h5>
                         <TextField disabled defaultValue={orderData.delivery_address} label="Alkuperäinen osoite" />
                         <TextField
+                            focused={checkChange('delivery_address')}
                             label="Muokkaa toimitusosoitetta"
                             onChange={(event) => {
                                 handleChange('delivery_address', event);
                             }}
-                            defaultValue={orderData.delivery_address}
+                            value={orderState.delivery_address}
                         />
+                        <Button
+                            sx={{ mt: '8px', ml: '1rem' }}
+                            onClick={() => {
+                                revertChange('delivery_address');
+                            }}
+                        >
+                            Peruuta muutokset
+                        </Button>
                     </h5>
                 </div>
                 <div>
                     <h5>
                         <TextField disabled defaultValue={orderData.status} label="Alkuperäinen status" />
                         <TextField
+                            focused={checkChange('status')}
                             label="Muokkaa statusta"
                             onChange={(event) => {
                                 handleChange('status', event);
                             }}
-                            defaultValue={orderData.status}
+                            value={orderState.status}
                         />
+                        <Button
+                            sx={{ mt: '8px', ml: '1rem' }}
+                            onClick={() => {
+                                revertChange('status');
+                            }}
+                        >
+                            Peruuta muutokset
+                        </Button>
                     </h5>
                 </div>
                 <div>
                     <h5>
                         <TextField disabled defaultValue={orderData.order_info} label="Alkuperäinen lisätieto" />
                         <TextField
+                            focused={checkChange('order_info')}
                             label="Muokkaa lisätietoa"
                             onChange={(event) => {
                                 handleChange('order_info', event);
                             }}
-                            defaultValue={orderData.order_info}
+                            value={orderState.order_info}
                         />
+                        <Button
+                            sx={{ mt: '8px', ml: '1rem' }}
+                            onClick={() => {
+                                revertChange('order_info');
+                            }}
+                        >
+                            Peruuta muutokset
+                        </Button>
                     </h5>
                 </div>
             </Box>
-            {/* Items will be added here somewhere? */}
             <h2 align="center">Poista tilauksen tuotteita.</h2>
             <TableContainer sx={{ padding: '2rem' }}>
                 <Table>
@@ -120,18 +202,45 @@ function OrderEdit() {
                             <StyledTableCell>Tuotenumero</StyledTableCell>
                             <StyledTableCell>Viivakoodi</StyledTableCell>
                             <StyledTableCell>Saldo</StyledTableCell>
+                            <StyledTableCell align="right">Poistettavat tuotteet</StyledTableCell>
                             <StyledTableCell> </StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {orderItems.map((item) => (
+                        {orderList.map((item) => (
                             <StyledTableRow key={item.id}>
                                 <TableCell>{item.name}</TableCell>
                                 <TableCell>{item.id}</TableCell>
                                 <TableCell>{item.barcode}</TableCell>
-                                <TableCell>{item.count}</TableCell>
+                                <TableCell>{item.items.length}</TableCell>
+                                {item.items.length > 1 ? (
+                                    <TableCell align="right">
+                                        <TextField
+                                            type="number"
+                                            size="small"
+                                            defaultValue={1}
+                                            InputProps={{ inputProps: { min: 1, max: item.items.length } }}
+                                        />
+                                    </TableCell>
+                                ) : (
+                                    <TableCell align="right">
+                                        <TextField
+                                            disabled
+                                            type="number"
+                                            size="small"
+                                            defaultValue={1}
+                                            InputProps={{ inputProps: { min: 1, max: item.items.length } }}
+                                        />
+                                    </TableCell>
+                                )}
                                 <TableCell align="right">
-                                    <Button>Poista tuote.</Button>
+                                    <Button
+                                        onClick={() => {
+                                            deleteItem(item.id, item.items);
+                                        }}
+                                    >
+                                        Poista tuote.
+                                    </Button>
                                 </TableCell>
                             </StyledTableRow>
                         ))}
