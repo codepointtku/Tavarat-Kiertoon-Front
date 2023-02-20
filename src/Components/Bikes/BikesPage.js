@@ -1,11 +1,20 @@
-import { Autocomplete, Box, Button, Card, Container, Stack, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Button, Card, Container, Modal, Stack, TextField, Typography } from '@mui/material';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { format, isWeekend, parseISO } from 'date-fns';
+import { fi } from 'date-fns/locale';
 import { useState } from 'react';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
-import BasicDatePicker from '../BasicDatePicker';
 
 import BikeCard from './BikeCard';
 
 export default function BikesPage() {
+    const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
+    const [selectedBikes, setSelectedBikes] = useState({});
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+
     const [searchParams, setSearchParams] = useSearchParams();
     const loaderData = useLoaderData();
     const filteredBikes = searchParams.get('filters')
@@ -26,9 +35,8 @@ export default function BikesPage() {
         typeOptionsSet.add(bike.type);
     });
 
-    const [selectedBikes, setSelectedBikes] = useState({});
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+    const minDate = parseISO(loaderData.date_info.available_from);
+    const maxDate = parseISO(loaderData.date_info.available_to);
 
     const handleFilterChange = (filter, newOption) =>
         setSearchParams((prevSearchParams) => {
@@ -47,14 +55,14 @@ export default function BikesPage() {
         });
 
     return (
-        <Container sx={{ mb: 5 }}>
-            <Typography variant="h3" align="center" color="primary.main" my={2}>
+        <Container sx={{ mb: 6 }}>
+            <Typography variant="h3" align="center" color="primary.main" my={3}>
                 Polkupyörienvuokraus
             </Typography>
             <hr />
             <Stack gap={2} flexDirection="row" justifyContent="space-between">
                 <Box sx={{ flex: 1 }}>
-                    <Typography my={1} variant="h6">
+                    <Typography my={2} variant="h6">
                         Valitse vuokraukseen haluamasi pyörät
                     </Typography>
                     <Box mb={2} mt={1}>
@@ -106,50 +114,74 @@ export default function BikesPage() {
                             />
                         </Stack>
                     </Box>
-                    {filteredBikes
-                        .sort((a, b) => b.max_available - a.max_available)
-                        .map((bike) => (
-                            <BikeCard
-                                key={bike.id}
-                                bike={bike}
-                                dateInfo={loaderData.date_info}
-                                selectedBikes={selectedBikes}
-                                setSelectedBikes={setSelectedBikes}
-                                startDate={startDate}
-                                endDate={endDate}
-                            />
-                        ))}
+                    <Stack gap={1}>
+                        {filteredBikes
+                            .sort((a, b) => b.max_available - a.max_available)
+                            .map((bike) => (
+                                <BikeCard
+                                    key={bike.id}
+                                    bike={bike}
+                                    dateInfo={loaderData.date_info}
+                                    selectedBikes={selectedBikes}
+                                    setSelectedBikes={setSelectedBikes}
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                />
+                            ))}
+                    </Stack>
                 </Box>
                 <Box sx={{ width: '300px' }}>
                     <Card
                         sx={{
                             flex: 1,
-                            p: 1,
+                            pt: 1,
+                            pb: 2,
                             px: 2,
                             display: 'flex',
+                            gap: 3,
                             flexDirection: 'column',
                             justifyContent: 'space-between',
                             width: '100%',
                             position: 'sticky',
                             top: '20px',
-                            mt: 1,
+                            mt: 2,
+                            mb: 1,
                         }}
                     >
                         <Typography align="center" variant="h6">
                             Vuokraustiedot
                         </Typography>
-                        <Stack my={2} gap={2}>
-                            <BasicDatePicker label="Aloituspäivä" state={startDate} setState={setStartDate} />
-                            {/* <input
-                                    type="date"
-                                    id="start"
-                                    name="trip-start"
-                                    min={loaderData.date_info.available_from}
-                                    max={loaderData.date_info.available_to}
-                                /> */}
-                            <BasicDatePicker label="Loppumispäivä" state={endDate} setState={setEndDate} />
+                        <Stack gap={2}>
+                            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
+                                <DatePicker
+                                    label="Aloituspäivä"
+                                    value={startDate}
+                                    onChange={(newValue) => setStartDate(newValue)}
+                                    // eslint-disable-next-line react/jsx-props-no-spreading
+                                    renderInput={(params) => <TextField {...params} />}
+                                    disableMaskedInput
+                                    shouldDisableDate={(day) => isWeekend(day)}
+                                    minDate={minDate}
+                                    maxDate={maxDate}
+                                />
+                            </LocalizationProvider>
+                            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
+                                <DatePicker
+                                    label="Loppumispäivä"
+                                    value={endDate}
+                                    onChange={(newValue) => setEndDate(newValue)}
+                                    // eslint-disable-next-line react/jsx-props-no-spreading
+                                    renderInput={(params) => <TextField {...params} />}
+                                    disableMaskedInput
+                                    shouldDisableDate={(day) => isWeekend(day)}
+                                    minDate={minDate}
+                                    maxDate={maxDate}
+                                    //                         {isBefore(day.date, parseISO(dateInfo.available_from)) ||
+                                    //                         isAfter(day.date, parseISO(dateInfo.available_to)) ? (
+                                />
+                            </LocalizationProvider>
                         </Stack>
-                        <Box my={3}>
+                        <Box>
                             {Object.entries(selectedBikes).map(
                                 ([key, value]) =>
                                     !!value && (
@@ -160,26 +192,87 @@ export default function BikesPage() {
                             )}
                             {!!Object.keys(selectedBikes).length || <Typography>Valitse pyörä</Typography>}
                         </Box>
-                        <Typography variant="caption" mb={1}>
-                            Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä, tuomme
-                            ne lukittavassa kärryssä.
-                        </Typography>
-                        <Autocomplete
-                            disablePortal
-                            id="storage"
-                            options={[
-                                { value: 'inside', label: 'Sisällä' },
-                                { value: 'outside', label: 'Kärryssä' },
-                            ]}
-                            // eslint-disable-next-line react/jsx-props-no-spreading
-                            renderInput={(params) => <TextField {...params} label="Säilytystapa" />}
-                            size="small"
-                        />
-                        <Box sx={{ display: 'flex', justifyContent: 'end', mt: 3, mb: 1 }}>
-                            <Button color="success">Seuraava</Button>
+                        <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+                            <Button color="success" onClick={() => setIsConfirmationVisible(true)}>
+                                Vahvistus
+                            </Button>
                         </Box>
                     </Card>
                 </Box>
+                <Modal
+                    open={isConfirmationVisible}
+                    onClose={() => setIsConfirmationVisible(false)}
+                    aria-labelledby="varauksen vahvistus"
+                >
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            // width: 600,
+                            bgcolor: 'background.paper',
+                            border: '2px solid #000',
+                            boxShadow: 24,
+                            p: 3,
+                        }}
+                    >
+                        <Stack gap={4}>
+                            <Typography variant="h6" align="center">
+                                Vuokrausvahvistus
+                            </Typography>
+                            {!!startDate && !!endDate && (
+                                <Stack gap={2}>
+                                    <Typography>{`${format(startDate, 'd.M.yyyy')} - ${format(
+                                        endDate,
+                                        'd.M.yyyy'
+                                    )}`}</Typography>
+                                </Stack>
+                            )}
+                            <Box>
+                                {Object.entries(selectedBikes).map(
+                                    ([key, value]) =>
+                                        !!value && (
+                                            <Typography key={key}>
+                                                {value}x {loaderData.bikes.find((bike) => bike.id === Number(key)).name}
+                                            </Typography>
+                                        )
+                                )}
+                                {!!Object.keys(selectedBikes).length || <Typography>Ei valittuja pyöriä</Typography>}
+                            </Box>
+                            <TextField label="Toimitusosoite" sx={{ width: 250 }} />
+                            <Stack gap={1}>
+                                <Typography variant="caption">
+                                    Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä,
+                                    tuomme ne lukittavassa kärryssä.
+                                </Typography>
+                                <Autocomplete
+                                    disablePortal
+                                    id="storage"
+                                    options={[
+                                        { value: 'inside', label: 'Sisällä' },
+                                        { value: 'outside', label: 'Kärryssä' },
+                                    ]}
+                                    // eslint-disable-next-line react/jsx-props-no-spreading
+                                    renderInput={(params) => <TextField {...params} label="Säilytystapa" />}
+                                    sx={{ width: 250 }}
+                                />
+                            </Stack>
+                            <Stack gap={1}>
+                                <Typography variant="caption">
+                                    Jos sinulla on mitään muuta mitä meidän pitäisi tietää, voit kirjoittaa sen tähän.
+                                </Typography>
+                                <TextField label="Lisätiedot" sx={{ width: 250 }} />
+                            </Stack>
+                            <Stack flexDirection="row" justifyContent="space-between" mt={1}>
+                                <Button color="error" onClick={() => setIsConfirmationVisible(false)}>
+                                    Takaisin
+                                </Button>
+                                <Button color="success">Lähetä</Button>
+                            </Stack>
+                        </Stack>
+                    </Box>
+                </Modal>
             </Stack>
         </Container>
     );

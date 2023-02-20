@@ -2,6 +2,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Modal, Stack, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+
 import BikeAvailability from './BikeAvailability';
 
 export default function BikeCard({
@@ -19,9 +20,6 @@ export default function BikeCard({
             <CardMedia sx={{ width: '200px', height: '200px' }} component="img" alt="kuva" image="br.jpg" />
             <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Typography variant="h6">{bike.name}</Typography>
-                {/* <Typography variant="caption" sx={{ letterSpacing: 0 }}>
-                    {bike.description}
-                </Typography> */}
                 <Box sx={{ mb: 1 }}>
                     <Typography variant="body2" color="text.secondary">
                         Tyyppi: {bike.type}
@@ -47,9 +45,9 @@ export default function BikeCard({
                 <Stack justifyContent="space-between" height="100%">
                     {bike.available ? (
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mr: 5 }}>
-                            <Typography id="modal-modal-description" sx={{ mr: 1 }}>
+                            {/* <Typography id="modal-modal-description" sx={{ mr: 1 }}>
                                 Määrä
-                            </Typography>
+                            </Typography> */}
                             {/* <Button size="small" sx={{ p: 0, minWidth: 30 }}>
                                 -
                             </Button> */}
@@ -75,15 +73,13 @@ export default function BikeCard({
                                 min={0}
                                 max={bike.available}
                             />
-                            {/* <TextField inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} /> */}
-                            {/* <Button size="small" sx={{ p: 0, minWidth: 30 }} onClick={()=>
-                                    if ( < bike.available)
-                                    setSelectedBikes((prevSelectedBikes) => ({
-                                        ...prevSelectedBikes,
-                                        [bike.id]: ,
-                                    }));
-                            }>
-                            +
+                            {/* <TextField
+                                size="small"
+                                sx={{ height: 30 }}
+                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                            />
+                            <Button size="small" sx={{ p: 0, minWidth: 30 }}>
+                                +
                             </Button> */}
                         </Box>
                     ) : (
@@ -101,8 +97,7 @@ export default function BikeCard({
             <Modal
                 open={isDetailsModalVisible}
                 onClose={() => setIsDetailsModalVisible(false)}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
+                aria-labelledby="pyörän lisätiedot"
             >
                 <Box
                     sx={{
@@ -114,7 +109,7 @@ export default function BikeCard({
                         bgcolor: 'background.paper',
                         border: '2px solid #000',
                         boxShadow: 24,
-                        p: 4,
+                        p: 3,
                     }}
                 >
                     <Typography id="modal-modal-title" variant="h6" component="h2">
