@@ -1,24 +1,42 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Box, Typography, Container, Button, Link as MuiLink } from '@mui/material';
-
-import Avatar from '@mui/material/Avatar';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-// import MuiLink from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
+import {
+    Avatar,
+    Box,
+    Button,
+    Container,
+    Checkbox,
+    FormControlLabel,
+    IconButton,
+    Typography,
+    Link as MuiLink,
+    FormControl,
+    InputLabel,
+    OutlinedInput,
+    InputAdornment,
+} from '@mui/material';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 function LoginForm() {
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
     return (
         <Container maxWidth="xs">
             <Box
                 sx={{
-                    marginTop: 4,
+                    marginTop: 2,
                     display: 'flex',
                     flexDirection: 'column',
+                    justifyContent: 'center',
                     alignItems: 'center',
                 }}
             >
@@ -27,44 +45,54 @@ function LoginForm() {
                 </Avatar>
                 <Typography variant="h5">Kirjaudu sisään</Typography>
 
-                <Box component="form" sx={{ mt: 1 }}>
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        name="email"
-                        label="Sähköpostiosoite"
-                        autoComplete="email"
-                        autoFocus
+                <Box>
+                    <FormControl sx={{ mt: 2 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="user-email-field">Käyttäjätunnus</InputLabel>
+                        <OutlinedInput
+                            id="user-email-field"
+                            type="text"
+                            label="Sähköpostiosoite"
+                            placeholder="sinä@turku.fi"
+                        />
+                    </FormControl>
+
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="user-password-field">Salasana</InputLabel>
+                        <OutlinedInput
+                            id="user-password-field"
+                            type={showPassword ? 'text' : 'password'}
+                            label="Salasana"
+                            placeholder="****"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+                    <FormControlLabel
+                        sx={{ mt: 1 }}
+                        control={<Checkbox value="remember" color="primary" />}
+                        label="Muista minut"
                     />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="password"
-                        name="password"
-                        type="password"
-                        label="Salasana"
-                        autoComplete="current-password"
-                    />
-                    <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Muista minut" />
-                    <Button type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>
+                    <Button sx={{ mt: 1 }} fullWidth>
                         Sisään
                     </Button>
-                    <Grid container>
-                        <Grid item xs>
-                            <MuiLink variant="body2" component={Link} to="/doesnotexist/">
-                                Unohtunut salasana?
-                            </MuiLink>
-                        </Grid>
-                        <Grid item>
-                            <MuiLink variant="body2" component={Link} to="/rekisteroidy">
-                                Rekisteröidy
-                            </MuiLink>
-                        </Grid>
-                    </Grid>
                 </Box>
+                <MuiLink variant="body2" component={Link} to="/doesnotexist/" sx={{ display: 'block', mt: 6 }}>
+                    Unohtunut salasana?
+                </MuiLink>
+
+                <Button sx={{ mt: 2 }} variant="outlined" component={Link} to="/rekisteroidy">
+                    Luo uusi tunnus
+                </Button>
             </Box>
         </Container>
     );
