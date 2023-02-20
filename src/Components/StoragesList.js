@@ -3,9 +3,7 @@ import Storages from './Storages';
 
 function StoragesList() {
     const data = useLoaderData();
-    if (!data) {
-        return <>Varastoja ei löydy</>;
-    }
+    console.log(data);
 
     return <Storages storages={data} />;
 }
