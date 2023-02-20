@@ -1,14 +1,11 @@
 import { Container, Typography } from '@mui/material';
-import { useLoaderData } from 'react-router-dom';
+import { useRouteLoaderData } from 'react-router-dom';
 import ArticleCard from './ArticleCard';
 
 function Announcements() {
-    const data = useLoaderData();
-    if (!data) {
-        return <>Ilmoituksia ei voitu ladata</>;
-    }
+    const { bulletins } = useRouteLoaderData('root');
 
-    const cards = data.map((item) => (
+    const cards = bulletins.map((item) => (
         <ArticleCard key={item.title} title={item.title} date={item.date} content={item.content} />
     ));
 
