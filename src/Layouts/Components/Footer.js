@@ -4,7 +4,7 @@ import { Link, useRouteLoaderData } from 'react-router-dom';
 import LOGO2 from '../../Assets/LOGO2.png';
 
 export default function Footer() {
-    const data = useRouteLoaderData('root');
+    const { contacts: data } = useRouteLoaderData('root');
     // const url = `mailto:${data.email}`;
     return (
         <Grid
