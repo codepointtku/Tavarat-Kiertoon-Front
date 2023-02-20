@@ -1,7 +1,7 @@
+import { Link, useRouteLoaderData } from 'react-router-dom';
+
 import { Box, Grid, Link as MuiLink, Typography } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import { Link, useRouteLoaderData } from 'react-router-dom';
-import LOGO2 from '../../Assets/LOGO2.png';
 
 function Footer() {
     const data = useRouteLoaderData('root');
@@ -35,8 +35,8 @@ function Footer() {
                     </MuiLink>
                 </Grid>
 
-                <Grid item xs={12} md={6} lg={4}>
-                    <img src={LOGO2} alt="turkulogo" style={{ width: 'auto', maxWidth: '100%', height: 'auto' }} />
+                <Grid item xs={12} md={6} lg={4} color="primary.contrastText" flexDirection="column" textAlign="center">
+                    xxxx
                 </Grid>
             </Grid>
         </Box>
