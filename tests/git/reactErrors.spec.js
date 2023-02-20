@@ -147,3 +147,10 @@ test.describe('fail-test', () => {
         await expect(page.getByText('Virhe sijainnissa /test/failing')).not.toBeVisible();
     });
 });
+
+test.describe('bikes', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/bikes');
+        await expect(page.getByText('Virhe sijainnissa /bikes')).not.toBeVisible();
+    });
+});
