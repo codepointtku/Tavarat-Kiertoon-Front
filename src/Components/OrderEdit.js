@@ -84,7 +84,7 @@ function OrderEdit() {
     const deleteItem = (id, items) => {
         if (items.length > 1) {
             for (let index = 0; index < orderItems[id]; index += 1) {
-                submit({ type: 'delete', product: items.at(index).id }, { method: 'post' });
+                submit({ type: 'delete', product: items.at(index).id, productId: orderData.id }, { method: 'post' });
             }
         } else {
             console.log('Item removed!');

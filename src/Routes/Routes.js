@@ -225,6 +225,7 @@ function Routes() {
                                         await axios.delete(`http://localhost:8000/orders/${params.id}`, {
                                             data: {
                                                 product: Number(formData.get('product')),
+                                                productId: Number(formData.get('productId')),
                                             },
                                         });
                                     }
