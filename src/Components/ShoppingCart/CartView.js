@@ -14,12 +14,11 @@ function CartView() {
         formState: { errors },
     } = useForm();
     console.log(errors);
-
     return (
         <form onSubmit={handleSubmit()}>
-            {cart.map((item) => (
+            {cart?.products?.map((item) => (
                 <Grid container direction="row" justifyContent="space-around">
-                    <Typography variant="h6">{item.productName}</Typography>
+                    <Typography variant="h6">{item.name}</Typography>
                     <Box display="inline-flex">
                         <IconButton color="primary">
                             <RemoveCircleRoundedIcon />

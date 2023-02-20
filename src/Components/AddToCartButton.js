@@ -6,7 +6,7 @@ import { Button } from '@mui/material';
 function AddToCartButton({ size, id, productName }) {
     const { cart } = useRouteLoaderData('base');
     const submit = useSubmit();
-    const cartItems = cart.map((item) => item.productName).filter((name) => name === productName);
+    const cartItems = cart?.products?.map((item) => item.productName).filter((name) => name === productName);
 
     const handleClickAddToCartBtn = () => {
         submit(

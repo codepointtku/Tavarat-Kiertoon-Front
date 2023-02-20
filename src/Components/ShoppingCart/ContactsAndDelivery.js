@@ -6,44 +6,44 @@ import { Typography, TextField, Grid } from '@mui/material';
 import CartButtons from './CartButtons';
 
 function ContactsAndDelivery() {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    const { register, handleSubmit, formState } = useForm({
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+            email: '',
+            phoneNumber: '',
+            locationCode: '',
+            deliveryAddress: '',
+            deliveryMethod: '',
+        },
+    });
 
-    console.log(errors);
+    const onSubmit = (data, e) => console.log(data, e);
+    // console.log(errors);
+    console.log(formState);
+
+    // const values = getValues(['firstName', 'lastName', 'email', 'phoneNumber', 'locationCode']);
 
     return (
-        <form onSubmit={handleSubmit()}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <Typography variant="h4" sx={{ marginBottom: 2, color: 'primary.main' }}>
                 Yhteystiedot
             </Typography>
             <Grid container spacing={4}>
                 <Grid item>
-                    <TextField label="Etunimi" variant="outlined">
-                        <input {...register('firstName')} />
-                    </TextField>
+                    <TextField label="Etunimi" variant="outlined" {...register('firstName')} />
                 </Grid>
                 <Grid item>
-                    <TextField label="Sukunimi" variant="outlined">
-                        <input {...register('lastName')} />
-                    </TextField>
+                    <TextField label="Sukunimi" variant="outlined" {...register('lastName')} />
                 </Grid>
                 <Grid item>
-                    <TextField label="Sähköposti" variant="outlined">
-                        <input {...register('email')} />
-                    </TextField>
+                    <TextField label="Sähköposti" variant="outlined" {...register('email')} />
                 </Grid>
                 <Grid item>
-                    <TextField label="Puh. numero" variant="outlined">
-                        <input {...register('phoneNumber')} />
-                    </TextField>
+                    <TextField label="Puh. numero" variant="outlined" {...register('phoneNumber')} />
                 </Grid>
                 <Grid item>
-                    <TextField label="Toimipaikkakoodi" variant="outlined">
-                        <input {...register('locationCode')} />
-                    </TextField>
+                    <TextField label="Toimipaikkakoodi" variant="outlined" {...register('locationCode')} />
                 </Grid>
             </Grid>
             <Typography variant="h4" sx={{ marginTop: 5, marginBottom: 2, color: 'primary.main' }}>
@@ -51,14 +51,10 @@ function ContactsAndDelivery() {
             </Typography>
             <Grid container spacing={4}>
                 <Grid item>
-                    <TextField label="Toimitusosoite" variant="outlined">
-                        <input {...register('deliveryAddress')} />
-                    </TextField>
+                    <TextField label="Toimitusosoite" variant="outlined" {...register('deliveryAddress')} />
                 </Grid>
                 <Grid item>
-                    <TextField label="Toimitustapa" variant="outlined">
-                        <input {...register('deliveryMethod')} />
-                    </TextField>
+                    <TextField label="Toimitustapa" variant="outlined" {...register('deliveryMethod')} />
                 </Grid>
             </Grid>
             <CartButtons

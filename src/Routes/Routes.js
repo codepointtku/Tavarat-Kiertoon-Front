@@ -51,8 +51,8 @@ function Routes() {
             id: 'base',
             loader: async () => {
                 const { data: contacts } = await axios.get('http://localhost:3001/contacts');
-                const { data: products } = await axios.get('http://localhost:8000/products');
-                const { data: cart } = await axios.get('http://localhost:8000/shopping_carts');
+                const { data: products } = await axios.get('http://localhost:8000/products/');
+                const { data: cart } = await axios.get('http://localhost:8000/shopping_carts/3');
                 return { contacts, cart, products };
             },
 
@@ -115,8 +115,16 @@ function Routes() {
                 {
                     path: '/ostoskori',
                     element: <ShoppingCart />,
+                    // loader: async ({ params }) => {
+                    //     try {
+                    //         const { data: cart } = await axios.get(`http://localhost:8000/shopping_carts/${params.id}`);
+                    //         return cart;
+                    //     } catch (error) {
+                    //         return error;
+                    //     }
+                    // },
                     children: [
-                        { path: '/ostoskori', element: <CartView /> },
+                        { path: '/ostoskori/', element: <CartView /> },
                         { path: '/ostoskori/vaihe2', element: <ContactsAndDelivery /> },
                         { path: '/ostoskori/vaihe3', element: <Confirmation /> },
                     ],

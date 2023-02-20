@@ -117,15 +117,14 @@ function Drawer({ currentOpenDrawer, name, children }) {
 }
 
 function DefaultAppBar() {
-    let cartItems;
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState(null);
     const navigate = useNavigate();
-    const { cart, products } = useLoaderData();
+    const { cart } = useLoaderData();
 
-    cart.map((items) => {
-        cartItems = products.results.filter((result) => items.products.map((productId) => productId === result.id));
-        return cartItems;
-    });
+    // cart?.products?.map((items) => {
+    //     cartItems = products.results.filter((result) => items.products.map((productId) => productId === result.id));
+    //     return cartItems;
+    // });
 
     const drawerOpen = (drawer) => () => {
         if (currentOpenDrawer === drawer) {
@@ -167,7 +166,7 @@ function DefaultAppBar() {
                         </Search>
                         <IconButton onClick={drawerOpen('shoppingCart')}>
                             <StyledBadge
-                                badgeContent={cart.length}
+                                badgeContent={cart.products.length}
                                 sx={{ color: 'primary.contrastText' }}
                                 anchorOrigin={{
                                     vertical: 'top',
@@ -190,8 +189,8 @@ function DefaultAppBar() {
             <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart">
                 {/* tähän oma komponentti.. */}
                 <List>
-                    {cartItems.map((cartItem) => (
-                        <ItemButton text={cartItem.name} index={cartItems.id} />
+                    {cart.products.map((product) => (
+                        <ItemButton text={product.name} index={product.id} />
                     ))}
 
                     {/* // products.results.map((result) => {
