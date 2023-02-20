@@ -5,6 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { format, isWeekend, parseISO } from 'date-fns';
 import { fi } from 'date-fns/locale';
 import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 
 import BikeCard from './BikeCard';
@@ -12,8 +13,6 @@ import BikeCard from './BikeCard';
 export default function BikesPage() {
     const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
     const [selectedBikes, setSelectedBikes] = useState({});
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
 
     const [searchParams, setSearchParams] = useSearchParams();
     const loaderData = useLoaderData();
@@ -37,6 +36,17 @@ export default function BikesPage() {
 
     const minDate = parseISO(loaderData.date_info.available_from);
     const maxDate = parseISO(loaderData.date_info.available_to);
+
+    const { control, watch } = useForm({
+        defaultValues: {
+            startDate: null,
+            endDate: null,
+            selectedBikes: {},
+            deliveryAddress: '',
+            storageType: null,
+            extraInfo: '',
+        },
+    });
 
     const handleFilterChange = (filter, newOption) =>
         setSearchParams((prevSearchParams) => {
@@ -124,8 +134,8 @@ export default function BikesPage() {
                                     dateInfo={loaderData.date_info}
                                     selectedBikes={selectedBikes}
                                     setSelectedBikes={setSelectedBikes}
-                                    startDate={startDate}
-                                    endDate={endDate}
+                                    startDate={watch('startDate')}
+                                    endDate={watch('endDate')}
                                 />
                             ))}
                     </Stack>
@@ -146,40 +156,57 @@ export default function BikesPage() {
                             top: '20px',
                             mt: 2,
                             mb: 1,
+                            // backgroundColor: 'primary.main',
                         }}
                     >
                         <Typography align="center" variant="h6">
                             Vuokraustiedot
                         </Typography>
                         <Stack gap={2}>
-                            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
-                                <DatePicker
-                                    label="Aloituspäivä"
-                                    value={startDate}
-                                    onChange={(newValue) => setStartDate(newValue)}
-                                    // eslint-disable-next-line react/jsx-props-no-spreading
-                                    renderInput={(params) => <TextField {...params} />}
-                                    disableMaskedInput
-                                    shouldDisableDate={(day) => isWeekend(day)}
-                                    minDate={minDate}
-                                    maxDate={maxDate}
-                                />
-                            </LocalizationProvider>
-                            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
-                                <DatePicker
-                                    label="Loppumispäivä"
-                                    value={endDate}
-                                    onChange={(newValue) => setEndDate(newValue)}
-                                    // eslint-disable-next-line react/jsx-props-no-spreading
-                                    renderInput={(params) => <TextField {...params} />}
-                                    disableMaskedInput
-                                    shouldDisableDate={(day) => isWeekend(day)}
-                                    minDate={minDate}
-                                    maxDate={maxDate}
-                                    //                         {isBefore(day.date, parseISO(dateInfo.available_from)) ||
-                                    //                         isAfter(day.date, parseISO(dateInfo.available_to)) ? (
-                                />
-                            </LocalizationProvider>
+                            <Controller
+                                name="startDate"
+                                control={control}
+                                rules={{ required: true }}
+                                render={({ field: { onChange, onBlur, value } }) => (
+                                    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
+                                        <DatePicker
+                                            label="Aloituspäivä"
+                                            value={value}
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                            // eslint-disable-next-line react/jsx-props-no-spreading
+                                            renderInput={(params) => <TextField {...params} />}
+                                            disableMaskedInput
+                                            shouldDisableDate={(day) => isWeekend(day)}
+                                            minDate={minDate}
+                                            maxDate={maxDate}
+                                        />
+                                    </LocalizationProvider>
+                                )}
+                            />
+                            <Controller
+                                name="endDate"
+                                control={control}
+                                rules={{ required: true }}
+                                render={({ field: { onChange, onBlur, value } }) => (
+                                    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
+                                        <DatePicker
+                                            label="Loppumispäivä"
+                                            value={value}
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                            // eslint-disable-next-line react/jsx-props-no-spreading
+                                            renderInput={(params) => <TextField {...params} />}
+                                            disableMaskedInput
+                                            shouldDisableDate={(day) => isWeekend(day)}
+                                            minDate={minDate}
+                                            maxDate={maxDate}
+                                            //                         {isBefore(day.date, parseISO(dateInfo.available_from)) ||
+                                            //                         isAfter(day.date, parseISO(dateInfo.available_to)) ? (
+                                        />
+                                    </LocalizationProvider>
+                                )}
+                            />
                         </Stack>
                         <Box>
                             {Object.entries(selectedBikes).map(
@@ -193,7 +220,11 @@ export default function BikesPage() {
                             {!!Object.keys(selectedBikes).length || <Typography>Valitse pyörä</Typography>}
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-                            <Button color="success" onClick={() => setIsConfirmationVisible(true)}>
+                            <Button
+                                color="success"
+                                onClick={() => setIsConfirmationVisible(true)}
+                                disabled={!watch('startDate') && !watch('endDate')}
+                            >
                                 Vahvistus
                             </Button>
                         </Box>
@@ -221,10 +252,10 @@ export default function BikesPage() {
                             <Typography variant="h6" align="center">
                                 Vuokrausvahvistus
                             </Typography>
-                            {!!startDate && !!endDate && (
+                            {!!watch('startDate') && !!watch('endDate') && (
                                 <Stack gap={2}>
-                                    <Typography>{`${format(startDate, 'd.M.yyyy')} - ${format(
-                                        endDate,
+                                    <Typography>{`${format(watch('startDate'), 'd.M.yyyy')} - ${format(
+                                        watch('endDate'),
                                         'd.M.yyyy'
                                     )}`}</Typography>
                                 </Stack>
@@ -246,16 +277,27 @@ export default function BikesPage() {
                                     Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä,
                                     tuomme ne lukittavassa kärryssä.
                                 </Typography>
-                                <Autocomplete
-                                    disablePortal
-                                    id="storage"
-                                    options={[
-                                        { value: 'inside', label: 'Sisällä' },
-                                        { value: 'outside', label: 'Kärryssä' },
-                                    ]}
-                                    // eslint-disable-next-line react/jsx-props-no-spreading
-                                    renderInput={(params) => <TextField {...params} label="Säilytystapa" />}
-                                    sx={{ width: 250 }}
+                                <Controller
+                                    name="storageType"
+                                    control={control}
+                                    rules={{ required: true }}
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <Autocomplete
+                                            // TODO: Fix all of this
+                                            disablePortal
+                                            id="storage"
+                                            options={[
+                                                { value: 'inside', label: 'Sisällä' },
+                                                { value: 'outside', label: 'Kärryssä' },
+                                            ]}
+                                            // eslint-disable-next-line react/jsx-props-no-spreading
+                                            renderInput={(params) => <TextField {...params} label="Säilytystapa" />}
+                                            sx={{ width: 250 }}
+                                            value={value}
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                        />
+                                    )}
                                 />
                             </Stack>
                             <Stack gap={1}>
