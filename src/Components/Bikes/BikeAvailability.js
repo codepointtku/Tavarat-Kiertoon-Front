@@ -9,6 +9,8 @@ import {
     isBefore,
     isMonday,
     isSameDay,
+    isWeekend,
+    nextMonday,
     parseISO,
     previousMonday,
     subWeeks,
@@ -16,11 +18,15 @@ import {
 import PropTypes from 'prop-types';
 import { useReducer } from 'react';
 
+const calendarStartDate = (availableFromDateObject) =>
+    isWeekend(availableFromDateObject) ? nextMonday(availableFromDateObject) : previousMonday(availableFromDateObject);
+
 function createDates(availableFrom, rows, taken, maxAvailable) {
     const availableFromDateObject = new Date(availableFrom);
+    // We want to start the calendar from the first Monday in the week that the bike is starting to be available in
     const startDateObject = isMonday(availableFromDateObject)
         ? availableFromDateObject
-        : previousMonday(availableFromDateObject);
+        : calendarStartDate(availableFromDateObject);
     const weeks = [];
     for (let row = 0; row < rows; row += 1) {
         const week = [];
@@ -84,9 +90,7 @@ export default function BikeAvailability({ dateInfo, rows, taken, maxAvailable, 
 
     return (
         <Box>
-            <Typography my={1} align="center">
-                Saatavuus
-            </Typography>
+            <Typography align="center">Saatavuus</Typography>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <IconButton aria-label="takaisin" onClick={() => dispatch({ type: 'navigate_back' })}>
                     <NavigateBeforeIcon />
@@ -112,7 +116,7 @@ export default function BikeAvailability({ dateInfo, rows, taken, maxAvailable, 
                                         </Typography>
 
                                         {isBefore(day.date, parseISO(dateInfo.available_from)) ||
-                                        isAfter(day.date, parseISO(dateInfo.available_to)) ? (
+                                        isAfter(day.date, addDays(parseISO(dateInfo.available_to), 1)) ? (
                                             <Box borderRadius={1} boxShadow={1} backgroundColor="grey">
                                                 <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
                                                     X
