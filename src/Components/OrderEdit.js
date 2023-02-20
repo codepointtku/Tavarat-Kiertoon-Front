@@ -87,8 +87,7 @@ function OrderEdit() {
                 submit({ type: 'delete', product: items.at(index).id, productId: orderData.id }, { method: 'post' });
             }
         } else {
-            console.log('Item removed!');
-            // setOrderData({ ...orderData, products: orderData.products.filter((item) => item.id !== id) });
+            submit({ type: 'delete', product: items.at(-1).id, productId: orderData.id }, { method: 'post' });
         }
     };
 
