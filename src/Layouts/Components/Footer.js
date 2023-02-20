@@ -4,7 +4,7 @@ import { Link, useRouteLoaderData } from 'react-router-dom';
 import LOGO2 from '../../Assets/LOGO2.png';
 
 export default function Footer() {
-    const { contacts: data } = useRouteLoaderData('root');
+    const { contacts } = useRouteLoaderData('root');
     // const url = `mailto:${data.email}`;
     return (
         <Grid
@@ -24,9 +24,9 @@ export default function Footer() {
                         Yhteystiedot{' '}
                     </Typography>
 
-                    <Typography> {data?.phoneNumber} </Typography>
+                    <Typography> {contacts?.phoneNumber} </Typography>
 
-                    <Typography>{data?.address}</Typography>
+                    <Typography>{contacts?.address}</Typography>
 
                     <MuiLink href="https://github.com/codepointtku/Tavarat-Kiertoon-Front" color="#663900">
                         <GitHubIcon />
