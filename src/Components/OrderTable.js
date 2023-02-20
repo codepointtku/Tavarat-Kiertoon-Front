@@ -342,10 +342,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                     </TableFooter>
                 </Table>
             </Box>
-            <Button
-                sx={{ margin: '2rem' }}
-                onClick={() => navigate(`/varasto/tilaus/${order.id}/muokkaa`, { state: orderList })}
-            >
+            <Button sx={{ margin: '2rem' }} onClick={() => navigate(`/varasto/tilaus/${order.id}/muokkaa`)}>
                 Muokkaa tilausta
             </Button>
             <Button color="error" to={`/varasto/pdf/${order.id}`} component={Link}>
