@@ -4,7 +4,6 @@ import { Box, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import imageCompression from 'browser-image-compression';
 import axios from 'axios';
-
 import AddExistingItem from './AddExistingItem';
 import AddNewItem from './AddNewItem';
 
@@ -62,20 +61,15 @@ function AddItem() {
             maxSizeMB: 1,
             useWebWorker: true,
         };
+        const fd = new FormData();
 
-        console.log(files);
-
-        const uploads = await Promise.all(
+        await Promise.all(
             Object.values(files).map(async (file) => {
-                const iniDict = {};
-                iniDict[file.name] = await imageCompression(file, options);
-                return iniDict;
+                const compfile = await imageCompression(file, options);
+                fd.append(file.name, compfile, file.name);
             })
         );
-
-        console.log(uploads);
-
-        const response = await axios.post('http://localhost:8000/pictures/', uploads, {
+        const response = await axios.post('http://localhost:8000/pictures/', fd, {
             headers: { 'content-type': 'multipart/form-data' },
         });
         console.log(response.data);
