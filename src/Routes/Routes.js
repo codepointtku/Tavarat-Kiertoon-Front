@@ -47,12 +47,12 @@ function Routes() {
             id: 'root',
             errorElement: <ErrorBoundary />,
             loader: async () => {
-                try {
-                    const { data } = await axios.get('http://localhost:3001/contacts');
-                    return data;
-                } catch {
-                    return null;
-                }
+                const { data: contacts } = await axios.get('http://localhost:8000/contacts/');
+                const { data: colors } = await axios.get('http://localhost:8000/colors/');
+                const { data: categories } = await axios.get('http://localhost:8000/categories/');
+                const { data: bulletins } = await axios.get('http://localhost:8000/bulletins/');
+
+                return { contacts, colors, categories, bulletins };
             },
             children: [
                 {
