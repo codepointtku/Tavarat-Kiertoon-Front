@@ -125,15 +125,15 @@ function Routes() {
                             },
                         },
                         {
-                            path: '/signup',
+                            path: '/rekisteroidy',
                             element: <SignupLandingPage />,
                         },
                         {
-                            path: '/signup/user',
+                            path: '/rekisteroidy/kayttaja',
                             element: <SignupPage isLocationForm={false} />,
                         },
                         {
-                            path: '/signup/location',
+                            path: '/rekisteroidy/toimipaikka',
                             element: <SignupPage isLocationForm />,
                         },
                         {

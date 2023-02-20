@@ -19,7 +19,7 @@ function SignUpCards() {
         <Grid container spacing={2}>
             <Grid item xs={6} marginBottom={6}>
                 <Card sx={[iconHover, { minWidth: 220, padding: 0 }]}>
-                    <CardActionArea component={Link} to="/signup/user">
+                    <CardActionArea component={Link} to="/rekisteroidy/kayttaja">
                         <Box
                             sx={{
                                 display: 'flex',
@@ -56,7 +56,7 @@ function SignUpCards() {
 
             <Grid item xs={6} marginBottom={6}>
                 <Card sx={[iconHover, { minWidth: 220, padding: 0 }]}>
-                    <CardActionArea component={Link} to="/signup/location">
+                    <CardActionArea component={Link} to="/rekisteroidy/toimipaikka">
                         <Box
                             sx={{
                                 display: 'flex',

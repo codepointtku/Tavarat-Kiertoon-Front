@@ -59,7 +59,7 @@ function LoginForm() {
                             </MuiLink>
                         </Grid>
                         <Grid item>
-                            <MuiLink variant="body2" component={Link} to="/signup/">
+                            <MuiLink variant="body2" component={Link} to="/rekisteroidy">
                                 Rekisteröidy
                             </MuiLink>
                         </Grid>
