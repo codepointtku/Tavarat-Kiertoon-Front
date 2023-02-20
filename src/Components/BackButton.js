@@ -1,4 +1,6 @@
-import { Avatar } from '@mui/material';
+import { Link } from 'react-router-dom';
+
+import { Avatar, IconButton, Tooltip, Zoom } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 function BackButton() {
@@ -9,16 +11,19 @@ function BackButton() {
     };
 
     return (
-        <Avatar>
-            <ArrowBackIcon
-                sx={[
-                    iconHover,
-                    {
+        <Tooltip title="Takaisin" arrow TransitionComponent={Zoom}>
+            <IconButton component={Link} to={-1} sx={[iconHover, { p: '0' }]}>
+                <Avatar
+                    sx={{
                         bgcolor: 'primary.main',
-                    },
-                ]}
-            />
-        </Avatar>
+                        width: 48,
+                        height: 48,
+                    }}
+                >
+                    <ArrowBackIcon />
+                </Avatar>
+            </IconButton>
+        </Tooltip>
     );
 }
 

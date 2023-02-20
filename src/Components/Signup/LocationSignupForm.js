@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import {
     Box,
     Container,
@@ -11,8 +14,6 @@ import {
     Typography,
 } from '@mui/material';
 
-import { useState } from 'react';
-
 import SmokingRoomsIcon from '@mui/icons-material/SmokingRooms';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
@@ -20,17 +21,18 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import Person2Icon from '@mui/icons-material/Person2';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-function LocationHero() {
+import BackButton from '../BackButton';
+
+function HeroText() {
     return (
         <Box
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                // backgroundColor: 'green',
             }}
         >
-            <Typography variant="h4" gutterBottom>
+            <Typography mt={1} mb={2} variant="h4" gutterBottom>
                 Luo uusi tili toimipaikalle
             </Typography>
             <Typography variant="body1" paragraph>
@@ -43,7 +45,9 @@ function LocationHero() {
                 Tilille on mahdollista kirjautua käyttäjätunnuksella, tai sähköpostiosoitteella.
             </Typography>
             <Button
-                sx={{ marginTop: 1, marginBottom: 3 }}
+                component={Link}
+                to="/ohjeet/tili/toimipaikka"
+                sx={{ mb: 3 }}
                 size="small"
                 variant="outlined"
                 endIcon={<HelpOutlineIcon />}
@@ -54,7 +58,7 @@ function LocationHero() {
     );
 }
 
-function LocationHeader() {
+function Hero() {
     return (
         <Box
             sx={{
@@ -73,12 +77,12 @@ function LocationHeader() {
             >
                 <VpnKeyIcon />
             </Avatar>
-            <LocationHero />
+            <HeroText />
         </Box>
     );
 }
 
-function LocationSignupForm() {
+function Form() {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -88,102 +92,109 @@ function LocationSignupForm() {
     };
 
     return (
-        <Container id="signupform-location-horizontal-sizer" maxWidth="md">
-            <LocationHeader />
-            <Container id="signupform-location-fields-wrapper" maxWidth="md">
-                <Box
-                    id="signupform-location-fields"
-                    sx={{
-                        paddingBottom: 4,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        width: '100%',
-                    }}
-                >
-                    <FormControl variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-location">Käyttäjätunnus</InputLabel>
-                        <OutlinedInput
-                            id="outlined-adornment-location"
-                            type="text"
-                            label="Toimipaikka"
-                            placeholder="Käyttäjätunnus yhteiskäyttöön"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <SmokingRoomsIcon />
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
+        <Container id="signupform-location-fields-wrapper" maxWidth="md">
+            <Box
+                id="signupform-location-fields"
+                sx={{
+                    paddingBottom: 4,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <FormControl variant="outlined" fullWidth required>
+                    <InputLabel htmlFor="outlined-adornment-location">Käyttäjätunnus</InputLabel>
+                    <OutlinedInput
+                        id="outlined-adornment-location"
+                        type="text"
+                        label="Toimipaikka"
+                        placeholder="Käyttäjätunnus yhteiskäyttöön"
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <SmokingRoomsIcon />
+                            </InputAdornment>
+                        }
+                    />
+                </FormControl>
 
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-password">Vastuuhenkilö</InputLabel>
-                        <OutlinedInput
-                            id="outlined-adornment-password"
-                            type="text"
-                            label="Vastuuhenkilö"
-                            placeholder="Tilin vastuuhenkilön nimi"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <Person2Icon />
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
+                <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                    <InputLabel htmlFor="outlined-adornment-password">Vastuuhenkilö</InputLabel>
+                    <OutlinedInput
+                        id="outlined-adornment-password"
+                        type="text"
+                        label="Vastuuhenkilö"
+                        placeholder="Tilin vastuuhenkilön nimi"
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <Person2Icon />
+                            </InputAdornment>
+                        }
+                    />
+                </FormControl>
 
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-password">Sähköpostiosoite</InputLabel>
-                        <OutlinedInput
-                            id="outlined-adornment-password"
-                            type="text"
-                            label="Sähköpostiosoite"
-                            placeholder="Vastuuhenkilön sähköpostiosoite"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <MailOutlineIcon />
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
+                <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                    <InputLabel htmlFor="outlined-adornment-password">Sähköpostiosoite</InputLabel>
+                    <OutlinedInput
+                        id="outlined-adornment-password"
+                        type="text"
+                        label="Sähköpostiosoite"
+                        placeholder="Vastuuhenkilön sähköpostiosoite"
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <MailOutlineIcon />
+                            </InputAdornment>
+                        }
+                    />
+                </FormControl>
 
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-password">Salasana</InputLabel>
-                        <OutlinedInput
-                            id="outlined-adornment-password"
-                            type={showPassword ? 'text' : 'password'}
-                            label="Salasana"
-                            placeholder="****"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
-                                        edge="end"
-                                    >
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
+                <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                    <InputLabel htmlFor="outlined-adornment-password">Salasana</InputLabel>
+                    <OutlinedInput
+                        id="outlined-adornment-password"
+                        type={showPassword ? 'text' : 'password'}
+                        label="Salasana"
+                        placeholder="****"
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                    />
+                </FormControl>
 
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-password">Salasana uudelleen</InputLabel>
-                        <OutlinedInput
-                            id="outlined-adornment-password"
-                            type={showPassword ? 'text' : 'password'}
-                            label="Salasana uudelleen"
-                            placeholder="****"
-                        />
-                    </FormControl>
+                <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                    <InputLabel htmlFor="outlined-adornment-password">Salasana uudelleen</InputLabel>
+                    <OutlinedInput
+                        id="outlined-adornment-password"
+                        type={showPassword ? 'text' : 'password'}
+                        label="Salasana uudelleen"
+                        placeholder="****"
+                    />
+                </FormControl>
 
-                    <Button type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>
-                        Rekisteröidy
-                    </Button>
-                </Box>
-            </Container>
+                <Button sx={{ mt: 3, mb: 3 }} fullWidth>
+                    Rekisteröidy
+                </Button>
+                <BackButton />
+            </Box>
         </Container>
+    );
+}
+
+function LocationSignupForm() {
+    return (
+        <>
+            <Hero />
+            <Form />
+        </>
     );
 }
 

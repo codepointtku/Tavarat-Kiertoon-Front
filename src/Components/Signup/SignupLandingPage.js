@@ -1,17 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import {
-    Avatar,
-    Grid,
-    Button,
-    Card,
-    // CardMedia,
-    CardActionArea,
-    Container,
-    Paper,
-    Typography,
-    Box,
-} from '@mui/material';
+import { Avatar, Grid, Button, Card, CardActionArea, Container, Paper, Typography, Box } from '@mui/material';
 
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
@@ -111,14 +100,21 @@ function HeroText() {
             <Typography variant="h4" gutterBottom>
                 Tervetuloa rekisteröitymään!
             </Typography>
-            <Typography variant="subtitle2" mb={2}>
+            <Typography variant="subtitle2" mb={1}>
                 Tavarat Kiertoon järjestelmään on mahdollista luoda henkilökohtainen-, tai toimipaikka-kohtainen tili.
             </Typography>
 
             <Typography variant="body1" mb={1}>
                 Ole hyvä ja valitse käyttötarkoitukseesi sopivampi tilimuoto.
             </Typography>
-            <Button sx={{ mt: 1, mb: 1 }} size="small" variant="outlined" endIcon={<HelpOutlineIcon />}>
+            <Button
+                component={Link}
+                to="/ohjeet/tili"
+                sx={{ mt: 1, mb: 1 }}
+                size="small"
+                variant="outlined"
+                endIcon={<HelpOutlineIcon />}
+            >
                 Lisää tietoa
             </Button>
         </>
@@ -147,7 +143,6 @@ function SignUpHero() {
             >
                 <AppRegistrationIcon />
             </Avatar>
-
             <HeroText />
         </Box>
     );
