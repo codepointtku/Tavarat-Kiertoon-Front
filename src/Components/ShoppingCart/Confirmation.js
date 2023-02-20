@@ -1,11 +1,18 @@
 import { Typography, Grid } from '@mui/material';
-import { Form } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
-import CartButton from './CartButton';
+import CartButtons from './CartButtons';
 
 function Confirmation() {
+    const {
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+
+    console.log(errors);
+
     return (
-        <Form method="post">
+        <form onSubmit={handleSubmit()}>
             <Typography variant="h4" color="primary.main">
                 Ostosten yhteenveto
             </Typography>
@@ -40,8 +47,8 @@ function Confirmation() {
                     <Typography variant="subtitle1">Tuotemäärä</Typography>
                 </Grid>
             </Grid>
-            <CartButton backUrl="/ostoskori/vaihe2" forwardUrl="/" backText="Takaisin" forwardText="Vahvista" />
-        </Form>
+            <CartButtons backUrl="/ostoskori/vaihe2" forwardUrl="/" backText="Takaisin" forwardText="Vahvista" />
+        </form>
     );
 }
 

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-function CartButton({ backUrl, forwardUrl, backText, forwardText }) {
+function CartButtons({ backUrl, forwardUrl, backText, forwardText }) {
     return (
         <Grid container justifyContent="space-between" sx={{ marginTop: 5 }}>
             <Button component={Link} to={backUrl} variant="contained" startIcon={<ArrowBackIcon />}>
@@ -18,11 +18,11 @@ function CartButton({ backUrl, forwardUrl, backText, forwardText }) {
     );
 }
 
-CartButton.propTypes = {
+CartButtons.propTypes = {
     backUrl: PropTypes.string.isRequired,
     forwardUrl: PropTypes.string.isRequired,
     backText: PropTypes.string.isRequired,
     forwardText: PropTypes.string.isRequired,
 };
 
-export default CartButton;
+export default CartButtons;

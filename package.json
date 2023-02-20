@@ -26,6 +26,7 @@
         "react-barcode": "^1.4.6",
         "react-chartjs-2": "^5.2.0",
         "react-dom": "^18.2.0",
+        "react-hook-form": "^7.43.1",
         "react-native": "^0.71.3",
         "react-native-web": "^0.18.12",
         "react-router": "^6.4.5",

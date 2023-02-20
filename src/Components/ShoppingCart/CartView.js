@@ -1,17 +1,22 @@
-import { Form, useRouteLoaderData } from 'react-router-dom';
+import { useRouteLoaderData } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { Box, Grid, Typography, IconButton } from '@mui/material';
 
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 
-import CartButton from './CartButton';
+import CartButtons from './CartButtons';
 
 function CartView() {
     const { cart } = useRouteLoaderData('base');
-    console.log(cart);
+    const {
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+    console.log(errors);
 
     return (
-        <Form method="put">
+        <form onSubmit={handleSubmit()}>
             {cart.map((item) => (
                 <Grid container direction="row" justifyContent="space-around">
                     <Typography variant="h6">{item.productName}</Typography>
@@ -27,8 +32,8 @@ function CartView() {
                 </Grid>
             ))}
             <hr />
-            <CartButton backUrl="/" forwardUrl="/ostoskori/vaihe2" backText="Jatka ostoksia" forwardText="Seuraava" />
-        </Form>
+            <CartButtons backUrl="/" forwardUrl="/ostoskori/vaihe2" backText="Jatka ostoksia" forwardText="Seuraava" />
+        </form>
     );
 }
 

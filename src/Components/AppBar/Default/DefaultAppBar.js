@@ -193,6 +193,12 @@ function DefaultAppBar() {
                     {cartItems.map((cartItem) => (
                         <ItemButton text={cartItem.name} index={cartItems.id} />
                     ))}
+
+                    {/* // products.results.map((result) => {
+                        //     if (result.id === item.id) {
+                        //         return <ItemButton text={result.name} index={item.id} />;
+                        //     }
+                        // }) */}
                 </List>
                 <Divider />
                 <List>
