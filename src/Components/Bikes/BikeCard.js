@@ -45,12 +45,6 @@ export default function BikeCard({
                 <Stack justifyContent="space-between" height="100%">
                     {bike.available ? (
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mr: 5 }}>
-                            {/* <Typography id="modal-modal-description" sx={{ mr: 1 }}>
-                                Määrä
-                            </Typography> */}
-                            {/* <Button size="small" sx={{ p: 0, minWidth: 30 }}>
-                                -
-                            </Button> */}
                             <input
                                 type="number"
                                 id="amount"
@@ -73,14 +67,6 @@ export default function BikeCard({
                                 min={0}
                                 max={bike.available}
                             />
-                            {/* <TextField
-                                size="small"
-                                sx={{ height: 30 }}
-                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                            />
-                            <Button size="small" sx={{ p: 0, minWidth: 30 }}>
-                                +
-                            </Button> */}
                         </Box>
                     ) : (
                         <Box sx={{ flex: 1 }} />

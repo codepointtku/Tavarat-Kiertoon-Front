@@ -201,8 +201,6 @@ export default function BikesPage() {
                                             shouldDisableDate={(day) => isWeekend(day)}
                                             minDate={minDate}
                                             maxDate={maxDate}
-                                            //                         {isBefore(day.date, parseISO(dateInfo.available_from)) ||
-                                            //                         isAfter(day.date, parseISO(dateInfo.available_to)) ? (
                                         />
                                     </LocalizationProvider>
                                 )}
@@ -246,7 +244,7 @@ export default function BikesPage() {
                             top: '50%',
                             left: '50%',
                             transform: 'translate(-50%, -50%)',
-                            // width: 600,
+                            width: 600,
                             bgcolor: 'background.paper',
                             border: '2px solid #000',
                             boxShadow: 24,
