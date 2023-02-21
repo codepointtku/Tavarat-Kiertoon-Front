@@ -8,9 +8,10 @@ import {
     TableHead,
     TableRow,
     TableBody,
+    Alert,
 } from '@mui/material';
 import { useState } from 'react';
-import { useLoaderData, useNavigate, generatePath } from 'react-router';
+import { useLoaderData, useNavigate, generatePath, useActionData } from 'react-router';
 import { useSubmit } from 'react-router-dom';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
@@ -18,6 +19,7 @@ import StyledTableCell from './StyledTableCell';
 function OrderEdit() {
     const orderData = useLoaderData();
     const navigate = useNavigate();
+    const responseStatus = useActionData();
     const [orderState, setOrderState] = useState(orderData);
     const [orderItems, setOrderItems] = useState({});
 
@@ -199,6 +201,18 @@ function OrderEdit() {
                 </div>
             </Box>
             <h2 align="center">Poista tilauksen tuotteita.</h2>
+            {responseStatus?.type === 'delete' && !responseStatus?.status && (
+                <Alert severity="error">Esineen poistaminen epäonnistui</Alert>
+            )}
+            {responseStatus?.type === 'delete' && responseStatus?.status && (
+                <Alert severity="success">Esineen poistaminen onnistui</Alert>
+            )}
+            {responseStatus?.type === 'update' && !responseStatus?.status && (
+                <Alert severity="error">Tilauksen tallennus epäonnistui! Lataa sivu uudestaan.</Alert>
+            )}
+            {responseStatus?.type === 'update' && responseStatus?.status && (
+                <Alert severity="success">Tilauksen tallennus onnistui</Alert>
+            )}
             <TableContainer sx={{ padding: '2rem' }}>
                 <Table>
                     <TableHead>
