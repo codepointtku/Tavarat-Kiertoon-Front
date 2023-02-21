@@ -191,17 +191,8 @@ function Routes() {
                             element: <OrderView />,
                             loader: async ({ params }) => {
                                 const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
-                                const productFind = async (id) => {
-                                    const product = await axios.get(`http://localhost:8000/products/${id}`);
-                                    return product;
-                                };
-                                const newProducts = await Promise.all(data.products.map((entry) => productFind(entry)));
-
-                                data.products.forEach((entry) => {
-                                    productFind(entry);
-                                });
                                 if (data) {
-                                    data.productList = newProducts;
+                                    data.productList = data.products;
                                     return data;
                                 }
                                 return null;
@@ -228,14 +219,7 @@ function Routes() {
                             },
                             loader: async ({ params }) => {
                                 const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
-                                const productFind = async (id) => {
-                                    const product = await axios.get(`http://localhost:8000/products/${id}`);
-                                    return product.data;
-                                };
-                                const newProducts = await Promise.all(data.products.map((entry) => productFind(entry)));
-
                                 if (data) {
-                                    data.products = newProducts;
                                     return data;
                                 }
                                 return null;
@@ -307,8 +291,8 @@ function Routes() {
                             path: '/admin/users/:id',
                             element: <UserEdit />,
                             loader: async ({ params }) => {
-                              const { data } = await axios.get(`http://localhost:8000/users/${params.id}`);
-                              return data;
+                                const { data } = await axios.get(`http://localhost:8000/users/${params.id}`);
+                                return data;
                             },
                         },
                         {
