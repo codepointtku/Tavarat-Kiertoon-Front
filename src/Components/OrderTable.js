@@ -44,10 +44,10 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
 
     order.productList.forEach((entry) => {
         try {
-            const newEntry = entry.data;
-            sourceStates[entry.data.id] = false;
+            const newEntry = entry;
+            sourceStates[entry.id] = false;
             newEntry.count = 1;
-            newEntry.id = entry.data.id;
+            newEntry.id = entry.id;
             newEntry.items = [newEntry];
             orderList.forEach((each) => {
                 if (each.barcode === newEntry.barcode) {
@@ -61,7 +61,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
         } catch {
             orderList.push({
                 name: 'Tuotetta ei olemassa',
-                id: entry.data.id,
+                id: entry.id,
                 barcode: '-',
                 count: 0,
                 category_name: '-',
