@@ -54,12 +54,13 @@ function Routes() {
             id: 'root',
             errorElement: <ErrorBoundary />,
             loader: async () => {
-                try {
-                    const { data } = await axios.get('http://localhost:3001/contacts');
-                    return data;
-                } catch {
-                    return null;
-                }
+                const { data: contacts } = await axios.get('http://localhost:8000/contacts/');
+                const { data: colors } = await axios.get('http://localhost:8000/colors/');
+                const { data: categories } = await axios.get('http://localhost:8000/categories/');
+                const { data: bulletins } = await axios.get('http://localhost:8000/bulletins/');
+                const { data: shoppingCart } = await axios.get('http://localhost:8000/shopping_carts/');
+
+                return { contacts, colors, categories, bulletins, shoppingCart };
             },
             children: [
                 {
@@ -145,7 +146,7 @@ function Routes() {
                             element: <DeliveryView />,
                         },
                         {
-                            path: '/backgroundinfo',
+                            path: '/taustatietoa',
                             element: <BackgroundInfo />,
                         },
                         {
@@ -155,24 +156,17 @@ function Routes() {
                         {
                             path: '/tiedotteet',
                             element: <Announcements />,
-                            loader: async () => {
-                                const { data } = await axios.get('http://localhost:3001/announcements');
-                                if (data) {
-                                    return data;
-                                }
-                                return null;
-                            },
                         },
                         {
-                            path: '/signup',
+                            path: '/rekisteroidy',
                             element: <SignupLandingPage />,
                         },
                         {
-                            path: '/signup/user',
+                            path: '/rekisteroidy/kayttaja',
                             element: <SignupPage isLocationForm={false} />,
                         },
                         {
-                            path: '/signup/location',
+                            path: '/rekisteroidy/toimipaikka',
                             element: <SignupPage isLocationForm />,
                         },
                         {
@@ -336,36 +330,24 @@ function Routes() {
                             path: '/admin',
                             element: <StoragesList />,
                             loader: async () => {
-                                const { data } = await axios.get('http://localhost:3001/storages');
-                                if (data) {
-                                    return data;
-                                }
-                                return null;
+                                const { data } = await axios.get('http://localhost:8000/storages');
+                                return data;
                             },
                         },
                         {
                             path: '/admin/users',
                             element: <UsersList />,
                             loader: async () => {
-                                // num will tell back-end which entries to bring
-                                const { data } = await axios.get('http://localhost:3001/users');
-                                // view is order status, unless archived can bring all?
-                                // or will be replaced into the back-end later?
-                                if (data) {
-                                    return data;
-                                }
-                                return null;
+                                const { data } = await axios.get('http://localhost:8000/users');
+                                return data;
                             },
                         },
                         {
                             path: '/admin/users/:id',
                             element: <UserEdit />,
                             loader: async ({ params }) => {
-                                const { data } = await axios.get(`http://localhost:3001/users/${params.id}`);
-                                if (data) {
-                                    return data;
-                                }
-                                return null;
+                              const { data } = await axios.get(`http://localhost:8000/users/${params.id}`);
+                              return data;
                             },
                         },
                         {
