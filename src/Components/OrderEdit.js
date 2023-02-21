@@ -20,7 +20,6 @@ function OrderEdit() {
     const orderData = useLoaderData();
     const navigate = useNavigate();
     const responseStatus = useActionData();
-    console.log(responseStatus);
     const [orderState, setOrderState] = useState(orderData);
     const [orderItems, setOrderItems] = useState({});
 
@@ -95,12 +94,6 @@ function OrderEdit() {
 
     return (
         <>
-            {responseStatus?.type === 'delete' && !responseStatus?.status && (
-                <Alert severity="error">Esineen poistaminen epäonnistui</Alert>
-            )}
-            {responseStatus?.type === 'delete' && responseStatus?.status && (
-                <Alert severity="success">Esineen poistaminen onnistui</Alert>
-            )}
             <Button
                 onClick={() =>
                     navigate(generatePath('/varasto/koodinlukija'), {
@@ -208,6 +201,12 @@ function OrderEdit() {
                 </div>
             </Box>
             <h2 align="center">Poista tilauksen tuotteita.</h2>
+            {responseStatus?.type === 'delete' && !responseStatus?.status && (
+                <Alert severity="error">Esineen poistaminen epäonnistui</Alert>
+            )}
+            {responseStatus?.type === 'delete' && responseStatus?.status && (
+                <Alert severity="success">Esineen poistaminen onnistui</Alert>
+            )}
             <TableContainer sx={{ padding: '2rem' }}>
                 <Table>
                     <TableHead>
