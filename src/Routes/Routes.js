@@ -311,8 +311,8 @@ function Routes() {
                             path: '/admin/users/:id',
                             element: <UserEdit />,
                             loader: async ({ params }) => {
-                              const { data } = await axios.get(`http://localhost:8000/users/${params.id}`);
-                              return data;
+                                const { data } = await axios.get(`http://localhost:8000/users/${params.id}`);
+                                return data;
                             },
                         },
                         {
@@ -325,27 +325,23 @@ function Routes() {
                         },
                     ],
                 },
-            ],
-        },
-        {
-            path: '/bikes',
-            element: (
-                <BikesLayout>
-                    <BikesView />
-                </BikesLayout>
-            ),
-            loader: async () => {
-                const { data } = await axios.get('http://localhost:3001/contacts');
-                return data;
-            },
-            children: [
                 {
                     path: '/bikes',
-                    element: <BikesPage />,
-                    loader: async () => {
-                        const { data } = await axios.get('http://localhost:3001/bikes');
-                        return data;
-                    },
+                    element: (
+                        <BikesLayout>
+                            <BikesView />
+                        </BikesLayout>
+                    ),
+                    children: [
+                        {
+                            path: '/bikes',
+                            element: <BikesPage />,
+                            loader: async () => {
+                                const { data } = await axios.get('http://localhost:3001/bikes');
+                                return data;
+                            },
+                        },
+                    ],
                 },
             ],
         },
