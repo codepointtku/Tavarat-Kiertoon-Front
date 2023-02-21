@@ -45,7 +45,7 @@ export default function BikesPage() {
             selectedBikes: {},
             deliveryAddress: '',
             storageType: null,
-            extraInfo: '',
+            rentalInfo: '',
         },
     });
 
@@ -354,9 +354,8 @@ export default function BikesPage() {
                                 <Typography variant="caption">
                                     Jos sinulla on mitään muuta mitä meidän pitäisi tietää, voit kirjoittaa sen tähän.
                                 </Typography>
-
                                 <Controller
-                                    name="extraInfo"
+                                    name="rentalInfo"
                                     control={control}
                                     rules={{ required: true }}
                                     render={({ field: { onChange, onBlur, value } }) => (
