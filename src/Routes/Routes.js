@@ -328,6 +328,23 @@ function Routes() {
                         {
                             path: '/admin/varastot/:id',
                             element: <StorageEdit />,
+                            action: async ({ params, request }) => {
+                                const formData = await request.formData();
+                                if (request.method === 'POST') {
+                                    if (formData.get('type') === 'put') {
+                                        await axios.put(`http://localhost:8000/storages/${params.id}`, {
+                                            address: formData.get('address'),
+                                            name: formData.get('name'),
+                                            in_use: formData.get('in_use'),
+                                        });
+                                    }
+                                }
+                                return null;
+                            },
+                            loader: async ({ params }) => {
+                                const { data } = await axios.get(`http://localhost:8000/storages/${params.id}`);
+                                return data;
+                            },
                         },
                         {
                             path: '/admin/hakemukset',
