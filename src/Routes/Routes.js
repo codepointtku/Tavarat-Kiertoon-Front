@@ -197,17 +197,8 @@ function Routes() {
                             element: <OrderView />,
                             loader: async ({ params }) => {
                                 const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
-                                const productFind = async (id) => {
-                                    const product = await axios.get(`http://localhost:8000/products/${id}`);
-                                    return product;
-                                };
-                                const newProducts = await Promise.all(data.products.map((entry) => productFind(entry)));
-
-                                data.products.forEach((entry) => {
-                                    productFind(entry);
-                                });
                                 if (data) {
-                                    data.productList = newProducts;
+                                    data.productList = data.products;
                                     return data;
                                 }
                                 return null;
@@ -222,19 +213,31 @@ function Routes() {
                                 // const productName = formData.get('productName');
                                 if (request.method === 'POST') {
                                     if (formData.get('type') === 'delete') {
-                                        await axios.delete(`http://localhost:8000/orders/${params.id}`, {
-                                            data: {
-                                                product: Number(formData.get('product')),
-                                                productId: Number(formData.get('productId')),
-                                            },
-                                        });
-                                    } else if (formData.get('type') === 'put') {
-                                        await axios.put(`http://localhost:8000/orders/${params.id}`, {
+                                        const response = await axios.delete(
+                                            `http://localhost:8000/orders/${params.id}`,
+                                            {
+                                                data: {
+                                                    product: Number(formData.get('product')),
+                                                    productId: Number(formData.get('productId')),
+                                                },
+                                            }
+                                        );
+                                        if (response.status === 202) {
+                                            return { type: 'delete', status: true };
+                                        }
+                                        return { type: 'delete', status: false };
+                                    }
+                                    if (formData.get('type') === 'put') {
+                                        const response = await axios.put(`http://localhost:8000/orders/${params.id}`, {
                                             contact: formData.get('contact'),
                                             delivery_address: formData.get('delivery_address'),
                                             status: formData.get('status'),
                                             order_info: formData.get('order_info'),
                                         });
+                                        if (response.status === 200) {
+                                            return { type: 'update', status: true };
+                                        }
+                                        return { type: 'update', status: false };
                                     }
                                 }
 
@@ -242,14 +245,7 @@ function Routes() {
                             },
                             loader: async ({ params }) => {
                                 const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
-                                const productFind = async (id) => {
-                                    const product = await axios.get(`http://localhost:8000/products/${id}`);
-                                    return product.data;
-                                };
-                                const newProducts = await Promise.all(data.products.map((entry) => productFind(entry)));
-
                                 if (data) {
-                                    data.products = newProducts;
                                     return data;
                                 }
                                 return null;
