@@ -1,62 +1,49 @@
-import { Grid, Link as MuiLink, Typography } from '@mui/material';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import { useLoaderData, Link } from 'react-router-dom';
-import LOGO2 from '../../Assets/LOGO2.png';
+import { Link, useRouteLoaderData } from 'react-router-dom';
 
-export default function Footer() {
-    const data = useLoaderData();
+import { Box, Grid, Link as MuiLink, Typography } from '@mui/material';
+import GitHubIcon from '@mui/icons-material/GitHub';
+
+function Footer() {
+    const { contacts } = useRouteLoaderData('root');
     // const url = `mailto:${data.email}`;
     return (
-        <Grid
-            component="footer"
-            sx={{
-                py: 5,
-                px: 3,
-                mt: 'auto',
-                //   Miten teemasta backgroundColor primary tms?
-                backgroundColor: 'primary.main',
-            }}
-        >
-            <Grid sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', textAlign: 'center', gridGap: 30 }}>
-                <Grid>
+        <Box sx={{ backgroundColor: 'primary.main' }}>
+            <Grid container justifyContent="space-around" alignItems="center" flexGrow="1" padding="1rem">
+                <Grid item xs={12} md={6} lg={4} color="primary.contrastText" flexDirection="column" textAlign="center">
                     <Typography variant="subtitle2" gutterBottom>
-                        {' '}
-                        Yhteystiedot{' '}
+                        Yhteystiedot
                     </Typography>
 
-                    <Typography> {data.contacts.phoneNumber} </Typography>
+                    <Typography> {contacts?.phoneNumber} </Typography>
 
-                    <Typography>{data.contacts.address}</Typography>
+                    <Typography>{contacts?.address}</Typography>
 
                     <MuiLink href="https://github.com/codepointtku/Tavarat-Kiertoon-Front" color="#663900">
                         <GitHubIcon />
                     </MuiLink>
                 </Grid>
-                <Grid>
-                    <Typography variant="subtitle2">Tietoa</Typography>
-                    <Link to="/faq" underline="hover">
-                        {' '}
-                        <Typography variant="subtitle1" gutterBottom color="inherit">
-                            {' '}
-                            UKK - FAQ{' '}
-                        </Typography>
-                    </Link>
-                    <Link to="/tiedotteet" underline="hover">
-                        <Typography variant="subtitle1" gutterBottom color="inherit">
-                            Tiedotteet
-                        </Typography>
-                    </Link>
 
-                    <Link to="/backgroundinfo" underline="hover">
-                        <Typography variant="subtitle1" gutterBottom color="inherit">
-                            Taustaa
-                        </Typography>
-                    </Link>
+                <Grid item xs={12} md={6} lg={4} color="primary.contrastText" flexDirection="column" textAlign="center">
+                    <Typography variant="subtitle2" color="primary.contrastText">
+                        Tietoa
+                    </Typography>
+                    <MuiLink component={Link} to="/faq" sx={{ display: 'block' }}>
+                        UKK
+                    </MuiLink>
+                    <MuiLink component={Link} to="/tiedotteet" sx={{ display: 'block' }}>
+                        Tiedotteet
+                    </MuiLink>
+                    <MuiLink component={Link} to="/taustatietoa" sx={{ display: 'block' }}>
+                        Taustaa
+                    </MuiLink>
                 </Grid>
-                <Grid>
-                    <img src={LOGO2} alt="turkulogo" style={{ width: 200 }} />
+
+                <Grid item xs={12} md={6} lg={4} color="primary.contrastText" flexDirection="column" textAlign="center">
+                    xxxx
                 </Grid>
             </Grid>
-        </Grid>
+        </Box>
     );
 }
+
+export default Footer;

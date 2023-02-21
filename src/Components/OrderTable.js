@@ -1,12 +1,10 @@
 import {
     Table,
     TableBody,
-    TableContainer,
     TableHead,
     TableCell,
     TableRow,
     TableFooter,
-    Paper,
     IconButton,
     Box,
     Typography,
@@ -15,7 +13,7 @@ import {
     Button,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import { useState, useEffect, Fragment } from 'react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -66,8 +64,8 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                 id: entry.data.id,
                 barcode: '-',
                 count: 0,
-                category: '-',
-                storages: '-',
+                category_name: '-',
+                storage_name: '-',
                 items: [],
                 measurements: '-',
                 weight: '-',
@@ -101,7 +99,135 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
 
     return (
         <>
-            <TableContainer component={Paper} sx={{ padding: '2rem' }}>
+            <Box
+                sx={{
+                    gap: 2,
+                    margin: '2rem',
+                    backgroundColor: '#fdfdfd',
+                    boxShadow:
+                        '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
+                }}
+            >
+                <h2 align="center">{`Tilauksen ${order.id} tiedot`}</h2>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <h4>Toimitusosoite</h4>
+                    <h4>Status</h4>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        mb: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <Typography>{order.delivery_address}</Typography>
+                    <Typography>{order.status}</Typography>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <h4>Yhteystiedot</h4>
+                    <h4>Päivämäärä</h4>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        mb: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <Typography>{order.contact}</Typography>
+                    <Typography>{order.delivery_date}</Typography>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <h4>Tilaajan nimi</h4>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        mb: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <Typography>{order.user}</Typography>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <h4>Lisätiedot</h4>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        ml: '2rem',
+                        mr: '2rem',
+                        backgroundColor: '#fdfdfd',
+                    }}
+                >
+                    <Typography>{order.order_info}</Typography>
+                </Box>
+                <br />
+            </Box>
+
+            <Box
+                sx={{
+                    pb: '2rem',
+                    pr: '2rem',
+                    pl: '2rem',
+                    gap: 2,
+                    margin: '2rem',
+                    backgroundColor: '#fdfdfd',
+                    boxShadow:
+                        '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
+                }}
+            >
+                <h2 align="center">Tilauksen tuotteet</h2>
                 <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
@@ -138,8 +264,8 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                                     <TableCell align="right">{value.count}</TableCell>
                                     <TableCell align="right">{value.barcode}</TableCell>
                                     <TableCell align="right">{value.id}</TableCell>
-                                    <TableCell align="right">{value.category}</TableCell>
-                                    <TableCell align="right">{value.storages}</TableCell>
+                                    <TableCell align="right">{value.category_name}</TableCell>
+                                    <TableCell align="right">{value.storage_name}</TableCell>
                                 </StyledTableRow>
                                 <TableRow>
                                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
@@ -171,8 +297,10 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                                                                 </TableCell>
                                                                 <TableCell align="right">{item.name}</TableCell>
                                                                 <TableCell align="right">{item.barcode}</TableCell>
-                                                                <TableCell align="right">{item.category}</TableCell>
-                                                                <TableCell align="right">{item.color}</TableCell>
+                                                                <TableCell align="right">
+                                                                    {item.category_name}
+                                                                </TableCell>
+                                                                <TableCell align="right">{item.color_name}</TableCell>
                                                                 <TableCell align="right">{item.measurements}</TableCell>
                                                                 <TableCell align="right">{item.weight}</TableCell>
                                                                 <TableCell align="right">{item.shelf_id}</TableCell>
@@ -196,7 +324,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                         <TableRow>
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25, 100]}
-                                colSpan={3}
+                                colSpan={7}
                                 count={orderList.length}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
@@ -213,12 +341,12 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                         </TableRow>
                     </TableFooter>
                 </Table>
-            </TableContainer>
-            <Button
-                sx={{ margin: '2rem' }}
-                onClick={() => navigate(`/varasto/tilaus/${order.id}/muokkaa`, { state: orderList })}
-            >
+            </Box>
+            <Button sx={{ margin: '2rem' }} onClick={() => navigate(`/varasto/tilaus/${order.id}/muokkaa`)}>
                 Muokkaa tilausta
+            </Button>
+            <Button color="error" to={`/varasto/pdf/${order.id}`} component={Link}>
+                Create PDF
             </Button>
         </>
     );
