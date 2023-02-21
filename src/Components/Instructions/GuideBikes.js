@@ -4,11 +4,13 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { Avatar, Box, Container, Tabs, Tab, Typography } from '@mui/material';
+import { Avatar, Box, Container, Grid, Tabs, Tab, Typography } from '@mui/material';
 
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import InfoIcon from '@mui/icons-material/Info';
 import RuleIcon from '@mui/icons-material/Rule';
+
+import BackButton from '../BackButton';
 
 function BikesHelp() {
     return (
@@ -36,31 +38,27 @@ function BikesRules() {
 
 function Hero() {
     return (
-        <Box
-            sx={{
-                mb: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            <Avatar
-                sx={{
-                    mt: 2,
-                    mb: 1,
-                    bgcolor: 'secondary.dark',
-                    width: 48,
-                    height: 48,
-                }}
-            >
-                <DirectionsBikeIcon fontSize="large" />
-            </Avatar>
-
-            <Typography variant="h4" color="primary.main">
+        <>
+            <Grid container>
+                <Grid item xs={6} md={6} mt={2} mb={2}>
+                    <BackButton />
+                </Grid>
+                <Grid item xs={6} md={6} mt={2} mb={2}>
+                    <Avatar
+                        sx={{
+                            bgcolor: 'secondary.dark',
+                            width: 48,
+                            height: 48,
+                        }}
+                    >
+                        <DirectionsBikeIcon fontSize="large" />
+                    </Avatar>
+                </Grid>
+            </Grid>
+            <Typography variant="h4" color="primary.main" textAlign="center">
                 Pyörät Kiertoon
             </Typography>
-        </Box>
+        </>
     );
 }
 

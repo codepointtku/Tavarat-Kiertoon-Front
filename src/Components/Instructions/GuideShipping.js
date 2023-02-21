@@ -1,34 +1,32 @@
-import { Avatar, Box, Container, Typography } from '@mui/material';
+import { Avatar, Container, Grid, Typography } from '@mui/material';
 
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
+import BackButton from '../BackButton';
+
 function Hero() {
     return (
-        <Box
-            sx={{
-                mb: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            <Avatar
-                sx={{
-                    mt: 2,
-                    mb: 1,
-                    bgcolor: 'secondary.dark',
-                    width: 48,
-                    height: 48,
-                }}
-            >
-                <LocalShippingIcon fontSize="large" />
-            </Avatar>
-
-            <Typography variant="h4" color="primary.main">
+        <>
+            <Grid container>
+                <Grid item xs={6} md={6} mt={2} mb={2}>
+                    <BackButton />
+                </Grid>
+                <Grid item xs={6} md={6} mt={2} mb={2}>
+                    <Avatar
+                        sx={{
+                            bgcolor: 'secondary.dark',
+                            width: 48,
+                            height: 48,
+                        }}
+                    >
+                        <LocalShippingIcon fontSize="large" />
+                    </Avatar>
+                </Grid>
+            </Grid>
+            <Typography variant="h4" color="primary.main" textAlign="center">
                 Noutokuljetuksen ohjeet
             </Typography>
-        </Box>
+        </>
     );
 }
 

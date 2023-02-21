@@ -8,7 +8,6 @@ import {
     Avatar,
     Box,
     Container,
-    // Divider,
     Grid,
     Link as MuiLink,
     Typography,
@@ -17,46 +16,53 @@ import {
 import ChatIcon from '@mui/icons-material/Chat';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
+import BackButton from '../BackButton';
+
 function Hero() {
     return (
-        <Box
-            sx={{
-                mb: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            <Avatar
+        <>
+            <Grid container>
+                <Grid item xs={6} md={6} mt={2} mb={2}>
+                    <BackButton />
+                </Grid>
+                <Grid item xs={6} md={6} mt={2} mb={2}>
+                    <Avatar
+                        sx={{
+                            bgcolor: 'secondary.dark',
+                            width: 48,
+                            height: 48,
+                        }}
+                    >
+                        <ChatIcon fontSize="large" />
+                    </Avatar>
+                </Grid>
+            </Grid>
+
+            <Box
                 sx={{
-                    mt: 2,
-                    mb: 1,
-                    bgcolor: 'secondary.dark',
-                    width: 48,
-                    height: 48,
+                    mb: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                 }}
             >
-                <ChatIcon fontSize="large" />
-            </Avatar>
+                <Typography variant="h4" color="primary.main" mb={2}>
+                    Yleiset ohjeet
+                </Typography>
 
-            <Typography variant="h4" color="primary.main" mb={2}>
-                Yleiset ohjeet
-            </Typography>
-
-            <Typography variant="subtitle2" mb={2}>
-                Alla on usein kysyttyjä kysymyksiä vastauksineen. Jos etsimäsi tietoa ei löydy tästä tai
-                <MuiLink component={Link} to="/ohjeet">
-                    {' '}
-                    Ohje
-                </MuiLink>
-                -sivulta voi olla meihin yhteydessä
-                <MuiLink component={Link} to="/otayhteytta">
-                    {' '}
-                    täältä.
-                </MuiLink>
-            </Typography>
-        </Box>
+                <Typography variant="subtitle2" mb={2}>
+                    Alla on usein kysyttyjä kysymyksiä vastauksineen. Jos etsimäsi tietoa ei löydy tästä tai{' '}
+                    <MuiLink component={Link} to="/ohjeet">
+                        Ohje
+                    </MuiLink>
+                    -sivulta, voit olla meihin yhteydessä{' '}
+                    <MuiLink component={Link} to="/otayhteytta">
+                        täältä.
+                    </MuiLink>
+                </Typography>
+            </Box>
+        </>
     );
 }
 
@@ -67,7 +73,7 @@ function FAQAccordions() {
         setExpanded(isExpanded ? panel : false);
     };
     return (
-        <Grid container spacing={2} mb={4}>
+        <Grid container spacing={2} mb={2}>
             <Grid item xs>
                 <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                     <AccordionSummary

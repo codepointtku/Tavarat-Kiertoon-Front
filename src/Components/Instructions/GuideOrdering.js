@@ -4,11 +4,13 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { Avatar, Box, Container, Link as MuiLink, Tab, Tabs, Typography } from '@mui/material';
+import { Avatar, Box, Container, Grid, Link as MuiLink, Tab, Tabs, Typography } from '@mui/material';
 
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+
+import BackButton from '../BackButton';
 
 function Ordering() {
     return (
@@ -83,44 +85,49 @@ function Shipping() {
 
 function Hero() {
     return (
-        <Box
-            sx={{
-                mb: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            <Avatar
+        <>
+            <Grid container>
+                <Grid item xs={6} md={6} mt={2} mb={2}>
+                    <BackButton />
+                </Grid>
+                <Grid item xs={6} md={6} mt={2} mb={2}>
+                    <Avatar
+                        sx={{
+                            bgcolor: 'secondary.dark',
+                            width: 48,
+                            height: 48,
+                        }}
+                    >
+                        <ShoppingCartCheckoutIcon fontSize="large" />
+                    </Avatar>
+                </Grid>
+            </Grid>
+            <Box
                 sx={{
-                    mt: 2,
-                    mb: 1,
-                    bgcolor: 'secondary.dark',
-                    width: 48,
-                    height: 48,
+                    mb: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                 }}
             >
-                <ShoppingCartCheckoutIcon fontSize="large" />
-            </Avatar>
+                <Typography variant="h4" color="primary.main" mb={2}>
+                    Tilaaminen & Kuljetus
+                </Typography>
 
-            <Typography variant="h4" color="primary.main" mb={2}>
-                Tilaaminen & Kuljetus
-            </Typography>
-
-            <Typography variant="subtitle2">
-                Alla on ohjeet tilaamiseen, sekä tietoa kuljetuksesta. Jos etsimäsi tietoa ei löydy tästä tai
-                <MuiLink component={Link} to="/ohjeet">
-                    {' '}
-                    Ohje
-                </MuiLink>
-                -sivulta voi olla meihin yhteydessä
-                <MuiLink component={Link} to="/otayhteytta">
-                    {' '}
-                    täältä.
-                </MuiLink>
-            </Typography>
-        </Box>
+                <Typography variant="subtitle2">
+                    Alla on ohjeet tilaamiseen, sekä tietoa kuljetuksesta. Jos etsimäsi tietoa ei löydy tästä tai{' '}
+                    <MuiLink component={Link} to="/ohjeet">
+                        Ohje
+                    </MuiLink>
+                    -sivulta, voit olla meihin yhteydessä{' '}
+                    <MuiLink component={Link} to="/otayhteytta">
+                        täältä
+                    </MuiLink>
+                    .
+                </Typography>
+            </Box>
+        </>
     );
 }
 

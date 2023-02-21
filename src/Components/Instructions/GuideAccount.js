@@ -4,12 +4,14 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { Avatar, Box, Container, Link as MuiLink, Typography, Tabs, Tab } from '@mui/material';
+import { Avatar, Box, Container, Grid, Link as MuiLink, Typography, Tabs, Tab } from '@mui/material';
 
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import GiteIcon from '@mui/icons-material/Gite';
 import Person2Icon from '@mui/icons-material/Person2';
+
+import BackButton from '../BackButton';
 
 function SignupHelp() {
     return (
@@ -157,31 +159,27 @@ function LocationAccountHelp() {
 
 function Hero() {
     return (
-        <Box
-            sx={{
-                mb: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            <Avatar
-                sx={{
-                    mt: 2,
-                    mb: 1,
-                    bgcolor: 'secondary.dark',
-                    width: 48,
-                    height: 48,
-                }}
-            >
-                <HelpOutlineIcon fontSize="large" />
-            </Avatar>
-
-            <Typography variant="h4" color="primary.main">
+        <>
+            <Grid container>
+                <Grid item xs={6} md={6} mt={2} mb={2}>
+                    <BackButton />
+                </Grid>
+                <Grid item xs={6} md={6} mt={2} mb={2}>
+                    <Avatar
+                        sx={{
+                            bgcolor: 'secondary.dark',
+                            width: 48,
+                            height: 48,
+                        }}
+                    >
+                        <HelpOutlineIcon fontSize="large" />
+                    </Avatar>
+                </Grid>
+            </Grid>
+            <Typography variant="h4" color="primary.main" textAlign="center">
                 Rekisteröitymisen ja tilien ohjeet
             </Typography>
-        </Box>
+        </>
     );
 }
 function TabPage(props) {
