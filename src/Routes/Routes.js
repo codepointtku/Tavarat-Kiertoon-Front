@@ -47,12 +47,13 @@ function Routes() {
             id: 'root',
             errorElement: <ErrorBoundary />,
             loader: async () => {
-                try {
-                    const { data } = await axios.get('http://localhost:3001/contacts');
-                    return data;
-                } catch {
-                    return null;
-                }
+                const { data: contacts } = await axios.get('http://localhost:8000/contacts/');
+                const { data: colors } = await axios.get('http://localhost:8000/colors/');
+                const { data: categories } = await axios.get('http://localhost:8000/categories/');
+                const { data: bulletins } = await axios.get('http://localhost:8000/bulletins/');
+                const { data: shoppingCart } = await axios.get('http://localhost:8000/shopping_carts/');
+
+                return { contacts, colors, categories, bulletins, shoppingCart };
             },
             children: [
                 {
@@ -106,7 +107,7 @@ function Routes() {
                             element: <DeliveryView />,
                         },
                         {
-                            path: '/backgroundinfo',
+                            path: '/taustatietoa',
                             element: <BackgroundInfo />,
                         },
                         {
@@ -116,24 +117,17 @@ function Routes() {
                         {
                             path: '/tiedotteet',
                             element: <Announcements />,
-                            loader: async () => {
-                                const { data } = await axios.get('http://localhost:3001/announcements');
-                                if (data) {
-                                    return data;
-                                }
-                                return null;
-                            },
                         },
                         {
-                            path: '/signup',
+                            path: '/rekisteroidy',
                             element: <SignupLandingPage />,
                         },
                         {
-                            path: '/signup/user',
+                            path: '/rekisteroidy/kayttaja',
                             element: <SignupPage isLocationForm={false} />,
                         },
                         {
-                            path: '/signup/location',
+                            path: '/rekisteroidy/toimipaikka',
                             element: <SignupPage isLocationForm />,
                         },
                         {
@@ -222,9 +216,40 @@ function Routes() {
                         {
                             path: '/varasto/tilaus/:id/muokkaa',
                             element: <OrderEdit />,
+                            action: async ({ params, request }) => {
+                                const formData = await request.formData();
+                                // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+                                // const productName = formData.get('productName');
+                                if (request.method === 'POST') {
+                                    if (formData.get('type') === 'delete') {
+                                        await axios.delete(`http://localhost:8000/orders/${params.id}`, {
+                                            data: {
+                                                product: Number(formData.get('product')),
+                                                productId: Number(formData.get('productId')),
+                                            },
+                                        });
+                                    } else if (formData.get('type') === 'put') {
+                                        await axios.put(`http://localhost:8000/orders/${params.id}`, {
+                                            contact: formData.get('contact'),
+                                            delivery_address: formData.get('delivery_address'),
+                                            status: formData.get('status'),
+                                            order_info: formData.get('order_info'),
+                                        });
+                                    }
+                                }
+
+                                return null;
+                            },
                             loader: async ({ params }) => {
                                 const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
+                                const productFind = async (id) => {
+                                    const product = await axios.get(`http://localhost:8000/products/${id}`);
+                                    return product.data;
+                                };
+                                const newProducts = await Promise.all(data.products.map((entry) => productFind(entry)));
+
                                 if (data) {
+                                    data.products = newProducts;
                                     return data;
                                 }
                                 return null;
@@ -280,36 +305,24 @@ function Routes() {
                             path: '/admin',
                             element: <StoragesList />,
                             loader: async () => {
-                                const { data } = await axios.get('http://localhost:3001/storages');
-                                if (data) {
-                                    return data;
-                                }
-                                return null;
+                                const { data } = await axios.get('http://localhost:8000/storages');
+                                return data;
                             },
                         },
                         {
                             path: '/admin/users',
                             element: <UsersList />,
                             loader: async () => {
-                                // num will tell back-end which entries to bring
-                                const { data } = await axios.get('http://localhost:3001/users');
-                                // view is order status, unless archived can bring all?
-                                // or will be replaced into the back-end later?
-                                if (data) {
-                                    return data;
-                                }
-                                return null;
+                                const { data } = await axios.get('http://localhost:8000/users');
+                                return data;
                             },
                         },
                         {
                             path: '/admin/users/:id',
                             element: <UserEdit />,
                             loader: async ({ params }) => {
-                                const { data } = await axios.get(`http://localhost:3001/users/${params.id}`);
-                                if (data) {
-                                    return data;
-                                }
-                                return null;
+                                const { data } = await axios.get(`http://localhost:8000/users/${params.id}`);
+                                return data;
                             },
                         },
                         {

@@ -27,7 +27,7 @@ function Storages({ storages }) {
                             <TableCell>{storage.id}</TableCell>
                             <TableCell align="right">{storage.name}</TableCell>
                             <TableCell align="right">{storage.address}</TableCell>
-                            <TableCell align="right">{storage.inUse.toString()}</TableCell>
+                            <TableCell align="right">{storage.in_use.toString()}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -42,7 +42,7 @@ Storages.propTypes = {
             id: PropTypes.number.isRequired,
             name: PropTypes.string.isRequired,
             address: PropTypes.string.isRequired,
-            inUse: PropTypes.bool.isRequired,
+            in_use: PropTypes.bool.isRequired,
         })
     ).isRequired,
 };
