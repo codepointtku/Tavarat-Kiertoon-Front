@@ -221,6 +221,14 @@ function Routes() {
                                         }
                                         return { type: 'delete', status: false };
                                     }
+                                    if (formData.get('type') === 'put') {
+                                        await axios.put(`http://localhost:8000/orders/${params.id}`, {
+                                            contact: formData.get('contact'),
+                                            delivery_address: formData.get('delivery_address'),
+                                            status: formData.get('status'),
+                                            order_info: formData.get('order_info'),
+                                        });
+                                    }
                                 }
 
                                 return null;
