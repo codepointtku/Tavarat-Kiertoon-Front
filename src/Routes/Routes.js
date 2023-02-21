@@ -111,7 +111,7 @@ function Routes() {
                             element: <DeliveryView />,
                         },
                         {
-                            path: '/backgroundinfo',
+                            path: '/taustatietoa',
                             element: <BackgroundInfo />,
                         },
                         {
@@ -123,15 +123,15 @@ function Routes() {
                             element: <Announcements />,
                         },
                         {
-                            path: '/signup',
+                            path: '/rekisteroidy',
                             element: <SignupLandingPage />,
                         },
                         {
-                            path: '/signup/user',
+                            path: '/rekisteroidy/kayttaja',
                             element: <SignupPage isLocationForm={false} />,
                         },
                         {
-                            path: '/signup/location',
+                            path: '/rekisteroidy/toimipaikka',
                             element: <SignupPage isLocationForm />,
                         },
                         {
