@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useLoaderData, useNavigate, generatePath } from 'react-router';
-// import { useSubmit } from 'react-router-dom';
+import { useSubmit } from 'react-router-dom';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
 
@@ -19,9 +19,15 @@ function OrderEdit() {
     const orderData = useLoaderData();
     const navigate = useNavigate();
     const [orderState, setOrderState] = useState(orderData);
+    const [orderItems, setOrderItems] = useState({});
 
     const handleChange = (key, event) => {
         setOrderState({ ...orderState, [key]: event.target.value });
+    };
+
+    const handleItems = (id, event) => {
+        setOrderItems({ ...orderItems, [id]: event.target.value });
+        console.log(orderItems);
     };
 
     const checkChange = (key) => {
@@ -73,15 +79,15 @@ function OrderEdit() {
         console.log(orderData.newItem);
     };
 
-    // const submit = useSubmit();
+    const submit = useSubmit();
 
     const deleteItem = (id, items) => {
         if (items.length > 1) {
-            console.log('Item removed.');
-            // submit({ type: 'delete', product: items.at(-1).id }, { method: 'post' });
+            for (let index = 0; index < orderItems[id]; index += 1) {
+                submit({ type: 'delete', product: items.at(index).id, productId: orderData.id }, { method: 'post' });
+            }
         } else {
-            console.log('Item removed!');
-            // setOrderData({ ...orderData, products: orderData.products.filter((item) => item.id !== id) });
+            submit({ type: 'delete', product: items.at(-1).id, productId: orderData.id }, { method: 'post' });
         }
     };
 
@@ -220,6 +226,9 @@ function OrderEdit() {
                                             size="small"
                                             defaultValue={1}
                                             InputProps={{ inputProps: { min: 1, max: item.items.length } }}
+                                            onChange={(event) => {
+                                                handleItems(item.id, event);
+                                            }}
                                         />
                                     </TableCell>
                                 ) : (
