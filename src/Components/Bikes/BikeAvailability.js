@@ -18,15 +18,19 @@ import {
 import PropTypes from 'prop-types';
 import { useReducer } from 'react';
 
-const calendarStartDate = (availableFromDateObject) =>
-    isWeekend(availableFromDateObject) ? nextMonday(availableFromDateObject) : previousMonday(availableFromDateObject);
+const firstMondayOfValidWeek = (availableFromDateObject) => {
+    if (isMonday(availableFromDateObject)) {
+        return availableFromDateObject;
+    }
+    if (isWeekend(availableFromDateObject)) {
+        return nextMonday(availableFromDateObject);
+    }
+    return previousMonday(availableFromDateObject);
+};
 
 function createDates(availableFrom, rows, taken, maxAvailable) {
     const availableFromDateObject = new Date(availableFrom);
-    // We want to start the calendar from the first Monday in the week that the bike is starting to be available in
-    const startDateObject = isMonday(availableFromDateObject)
-        ? availableFromDateObject
-        : calendarStartDate(availableFromDateObject);
+    const startDateObject = firstMondayOfValidWeek(availableFromDateObject);
     const weeks = [];
     for (let row = 0; row < rows; row += 1) {
         const week = [];
@@ -49,6 +53,11 @@ function createInitialState({ dateInfo, rows, taken, maxAvailable }) {
         availableFrom: dateInfo.available_from,
         availableTo: dateInfo.available_to,
         dates: createDates(dateInfo.available_from, rows, taken, maxAvailable),
+        isForwardDisabled: false,
+        isBackwardDisabled: isBefore(
+            firstMondayOfValidWeek(parseISO(dateInfo.available_from)),
+            parseISO(dateInfo.available_from)
+        ),
     };
 }
 
@@ -63,9 +72,14 @@ function reducer(state, action) {
                     state.taken,
                     state.maxAvailable
                 ),
+                isForwardDisabled: !isBefore(
+                    addWeeks(state.dates[0][0].date, state.rows * 2),
+                    parseISO(state.availableTo)
+                ),
+                isBackwardDisabled: false,
             };
         }
-        case 'navigate_back': {
+        case 'navigate_backward': {
             return {
                 ...state,
                 dates: createDates(
@@ -73,6 +87,11 @@ function reducer(state, action) {
                     state.rows,
                     state.taken,
                     state.maxAvailable
+                ),
+                isForwardDisabled: false,
+                isBackwardDisabled: isBefore(
+                    subWeeks(state.dates[0][0].date, state.rows),
+                    parseISO(state.availableFrom)
                 ),
             };
         }
@@ -89,7 +108,11 @@ export default function BikeAvailability({ dateInfo, rows, taken, maxAvailable, 
         <Box>
             <Typography align="center">Saatavuus</Typography>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <IconButton aria-label="takaisin" onClick={() => dispatch({ type: 'navigate_back' })}>
+                <IconButton
+                    aria-label="takaisin"
+                    onClick={() => dispatch({ type: 'navigate_backward' })}
+                    disabled={state.isBackwardDisabled}
+                >
                     <NavigateBeforeIcon />
                 </IconButton>
                 <Box mb={1}>
@@ -148,7 +171,11 @@ export default function BikeAvailability({ dateInfo, rows, taken, maxAvailable, 
                         </Grid>
                     ))}
                 </Box>
-                <IconButton aria-label="eteenpäin" onClick={() => dispatch({ type: 'navigate_forward' })}>
+                <IconButton
+                    aria-label="eteenpäin"
+                    onClick={() => dispatch({ type: 'navigate_forward' })}
+                    disabled={state.isForwardDisabled}
+                >
                     <NavigateNextIcon />
                 </IconButton>
             </Stack>
