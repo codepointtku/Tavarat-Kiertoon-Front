@@ -219,7 +219,15 @@ function Routes() {
                                         await axios.delete(`http://localhost:8000/orders/${params.id}`, {
                                             data: {
                                                 product: Number(formData.get('product')),
+                                                productId: Number(formData.get('productId')),
                                             },
+                                        });
+                                    } else if (formData.get('type') === 'put') {
+                                        await axios.put(`http://localhost:8000/orders/${params.id}`, {
+                                            contact: formData.get('contact'),
+                                            delivery_address: formData.get('delivery_address'),
+                                            status: formData.get('status'),
+                                            order_info: formData.get('order_info'),
                                         });
                                     }
                                 }
@@ -307,8 +315,8 @@ function Routes() {
                             path: '/admin/users/:id',
                             element: <UserEdit />,
                             loader: async ({ params }) => {
-                              const { data } = await axios.get(`http://localhost:8000/users/${params.id}`);
-                              return data;
+                                const { data } = await axios.get(`http://localhost:8000/users/${params.id}`);
+                                return data;
                             },
                         },
                         {
