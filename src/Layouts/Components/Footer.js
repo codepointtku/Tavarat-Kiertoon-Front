@@ -30,7 +30,7 @@ function Footer() {
                     <MuiLink component={Link} to="/tiedotteet" sx={{ display: 'block' }}>
                         Tiedotteet
                     </MuiLink>
-                    <MuiLink component={Link} to="/backgroundinfo" sx={{ display: 'block' }}>
+                    <MuiLink component={Link} to="/taustatietoa" sx={{ display: 'block' }}>
                         Taustaa
                     </MuiLink>
                 </Grid>

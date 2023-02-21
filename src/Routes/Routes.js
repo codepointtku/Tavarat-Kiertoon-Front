@@ -106,7 +106,7 @@ function Routes() {
                             element: <DeliveryView />,
                         },
                         {
-                            path: '/backgroundinfo',
+                            path: '/taustatietoa',
                             element: <BackgroundInfo />,
                         },
                         {
