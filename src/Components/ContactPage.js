@@ -61,7 +61,7 @@ function ContactPage() {
                         label="Nimesi"
                         placeholder="Etunimi Sukunimi"
                         fullWidth
-                        inputProps={{ title: 'Etu ja Sukunimi', minlength: '4', maxlength: '50' }}
+                        inputProps={{ title: 'Etu ja Sukunimi', minLength: '4', maxLength: '50' }}
                         required
                     />
 
@@ -111,7 +111,7 @@ function ContactPage() {
                         label="Viesti"
                         required
                         multiline
-                        inputProps={{ minlenght: '5' }}
+                        inputProps={{ minLength: '5' }}
                         fullWidth
                         rows={6}
                     />
