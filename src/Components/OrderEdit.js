@@ -27,7 +27,6 @@ function OrderEdit() {
 
     const handleItems = (id, event) => {
         setOrderItems({ ...orderItems, [id]: event.target.value });
-        console.log(orderItems);
     };
 
     const checkChange = (key) => {
@@ -258,7 +257,19 @@ function OrderEdit() {
             </TableContainer>
 
             <h5 align="center">
-                <Button>Tallenna tilauksen tiedot</Button>
+                <Button
+                    onClick={() => {
+                        submit(
+                            {
+                                type: 'put',
+                                ...orderState,
+                            },
+                            { method: 'post' }
+                        );
+                    }}
+                >
+                    Tallenna tilauksen tiedot
+                </Button>
             </h5>
         </>
     );
