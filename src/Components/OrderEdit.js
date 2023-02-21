@@ -265,6 +265,12 @@ function OrderEdit() {
             </TableContainer>
 
             <h5 align="center">
+                {responseStatus?.type === 'update' && !responseStatus?.status && (
+                    <Alert severity="error">Tilauksen tallennus epäonnistui! Lataa sivu uudestaan.</Alert>
+                )}
+                {responseStatus?.type === 'update' && responseStatus?.status && (
+                    <Alert severity="success">Tilauksen tallennus onnistui</Alert>
+                )}
                 <Button
                     onClick={() => {
                         submit(

@@ -216,18 +216,22 @@ function Routes() {
                                                 },
                                             }
                                         );
-                                        if (response.status === 204) {
+                                        if (response.status === 202) {
                                             return { type: 'delete', status: true };
                                         }
                                         return { type: 'delete', status: false };
                                     }
                                     if (formData.get('type') === 'put') {
-                                        await axios.put(`http://localhost:8000/orders/${params.id}`, {
+                                        const response = await axios.put(`http://localhost:8000/orders/${params.id}`, {
                                             contact: formData.get('contact'),
                                             delivery_address: formData.get('delivery_address'),
                                             status: formData.get('status'),
                                             order_info: formData.get('order_info'),
                                         });
+                                        if (response.status === 202) {
+                                            return { type: 'update', status: true };
+                                        }
+                                        return { type: 'update', status: false };
                                     }
                                 }
 
