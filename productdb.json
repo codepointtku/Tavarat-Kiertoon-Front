@@ -412,27 +412,27 @@
             },
             {
                 "id": 2,
-                "name": "Vihreä huono pyörä",
-                "description": "Todella huono pyörä",
+                "name": "Vihreä hyvä pyörä",
+                "description": "Todella hyvä pyörä",
                 "available": 5,
                 "max_available": 17,
                 "taken": { "15.3.2023": 1, "16.3.2023": 2, "20.3.2023": 1 },
                 "size": "21″",
                 "type": "BMX",
                 "color": "green",
-                "brand": "Huono"
+                "brand": "Hyvä"
             },
             {
                 "id": 3,
-                "name": "Toinen huono pyörä",
-                "description": "Todella huono pyörä myös",
+                "name": "Toinen hyvä pyörä",
+                "description": "Todella hyvä pyörä myös",
                 "available": 2,
                 "max_available": 9,
                 "taken": { "15.3.2023": 1, "16.3.2023": 2, "20.3.2023": 1 },
                 "size": "16″",
                 "type": "City",
                 "color": "green",
-                "brand": "Huono"
+                "brand": "Hyvä"
             },
             {
                 "id": 4,
@@ -444,7 +444,7 @@
                 "size": "14″ & 16″",
                 "type": "Paketti",
                 "color": "green",
-                "brand": "Huono"
+                "brand": "Hyvä"
             },
             {
                 "id": 5,
@@ -456,7 +456,7 @@
                 "size": "20″ & 24″",
                 "type": "Paketti",
                 "color": "green",
-                "brand": "Huono"
+                "brand": "Hyvä"
             }
         ]
     }

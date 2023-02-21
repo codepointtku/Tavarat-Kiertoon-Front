@@ -209,21 +209,26 @@ export default function BikesPage() {
                             />
                         </Stack>
                         <Box>
-                            {Object.entries(selectedBikes).map(
-                                ([key, value]) =>
-                                    !!value && (
-                                        <Typography key={key}>
-                                            {value}x {loaderData.bikes.find((bike) => bike.id === Number(key)).name}
-                                        </Typography>
-                                    )
+                            {Object.keys(selectedBikes).length ? (
+                                Object.entries(selectedBikes).map(
+                                    ([key, value]) =>
+                                        !!value && (
+                                            <Typography key={key}>
+                                                {value}x {loaderData.bikes.find((bike) => bike.id === Number(key)).name}
+                                            </Typography>
+                                        )
+                                )
+                            ) : (
+                                <Typography>Valitse pyörä</Typography>
                             )}
-                            {!!Object.keys(selectedBikes).length || <Typography>Valitse pyörä</Typography>}
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
                             <Button
                                 color="success"
                                 onClick={() => setIsConfirmationVisible(true)}
-                                disabled={!watch('startDate') && !watch('endDate')}
+                                disabled={
+                                    !Object.keys(selectedBikes).length || !watch('startDate') || !watch('endDate')
+                                }
                             >
                                 Vahvistus
                             </Button>
@@ -269,9 +274,21 @@ export default function BikesPage() {
                                             </Typography>
                                         )
                                 )}
-                                {!!Object.keys(selectedBikes).length || <Typography>Ei valittuja pyöriä</Typography>}
                             </Box>
-                            <TextField label="Toimitusosoite" sx={{ width: 250 }} />
+                            <Controller
+                                name="deliveryAddress"
+                                control={control}
+                                rules={{ required: true }}
+                                render={({ field: { onChange, onBlur, value } }) => (
+                                    <TextField
+                                        label="Toimitusosoite"
+                                        onChange={onChange}
+                                        value={value}
+                                        onBlur={onBlur}
+                                        sx={{ width: 250 }}
+                                    />
+                                )}
+                            />
                             <Stack gap={1}>
                                 <Typography variant="caption">
                                     Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä,
@@ -283,18 +300,19 @@ export default function BikesPage() {
                                     rules={{ required: true }}
                                     render={({ field: { onChange, onBlur, value } }) => (
                                         <Autocomplete
-                                            // TODO: Fix all of this
                                             disablePortal
                                             id="storage"
                                             options={[
                                                 { value: 'inside', label: 'Sisällä' },
                                                 { value: 'outside', label: 'Kärryssä' },
                                             ]}
+                                            getOptionLabel={(option) => option.label}
+                                            isOptionEqualToValue={(option) => option.value === value.value}
                                             // eslint-disable-next-line react/jsx-props-no-spreading
                                             renderInput={(params) => <TextField {...params} label="Säilytystapa" />}
                                             sx={{ width: 250 }}
                                             value={value}
-                                            onChange={onChange}
+                                            onChange={(_, option) => onChange(option)}
                                             onBlur={onBlur}
                                         />
                                     )}
@@ -304,7 +322,21 @@ export default function BikesPage() {
                                 <Typography variant="caption">
                                     Jos sinulla on mitään muuta mitä meidän pitäisi tietää, voit kirjoittaa sen tähän.
                                 </Typography>
-                                <TextField label="Lisätiedot" sx={{ width: 250 }} />
+
+                                <Controller
+                                    name="extraInfo"
+                                    control={control}
+                                    rules={{ required: true }}
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <TextField
+                                            label="Lisätiedot"
+                                            onChange={onChange}
+                                            value={value}
+                                            onBlur={onBlur}
+                                            sx={{ width: 250 }}
+                                        />
+                                    )}
+                                />
                             </Stack>
                             <Stack flexDirection="row" justifyContent="space-between" mt={1}>
                                 <Button color="error" onClick={() => setIsConfirmationVisible(false)}>

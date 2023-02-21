@@ -49,9 +49,6 @@ function createInitialState({ dateInfo, rows, taken, maxAvailable }) {
         availableFrom: dateInfo.available_from,
         availableTo: dateInfo.available_to,
         dates: createDates(dateInfo.available_from, rows, taken, maxAvailable), // [[week],[week]] and week is day[] and day is {date, dateString, available} f.e. {dateObject, 13.2, 4}
-        // TODO: Add these?
-        // selectedStartDate: state.selectedStartDate,
-        // selectedEndDate: state.selectedEndDate,
     };
 }
 
