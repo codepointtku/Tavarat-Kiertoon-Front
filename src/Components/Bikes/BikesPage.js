@@ -12,7 +12,6 @@ import BikeCard from './BikeCard';
 
 export default function BikesPage() {
     const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
-    const [selectedBikes, setSelectedBikes] = useState({});
 
     const [searchParams, setSearchParams] = useSearchParams();
     const loaderData = useLoaderData();
@@ -128,14 +127,31 @@ export default function BikesPage() {
                         {filteredBikes
                             .sort((a, b) => b.max_available - a.max_available)
                             .map((bike) => (
-                                <BikeCard
+                                <Controller
                                     key={bike.id}
-                                    bike={bike}
-                                    dateInfo={loaderData.date_info}
-                                    selectedBikes={selectedBikes}
-                                    setSelectedBikes={setSelectedBikes}
-                                    startDate={watch('startDate')}
-                                    endDate={watch('endDate')}
+                                    control={control}
+                                    name="selectedBikes"
+                                    render={({ field: { onChange, value } }) => (
+                                        <BikeCard
+                                            bike={bike}
+                                            dateInfo={loaderData.date_info}
+                                            amountSelected={value[bike.id] ?? 0}
+                                            onChange={(event) => {
+                                                const newValue = event.target.value;
+                                                if (Number.isNaN(newValue) || !Number(newValue)) {
+                                                    const newSelectedBikes = { ...value };
+                                                    delete newSelectedBikes[bike.id];
+                                                    onChange(newSelectedBikes);
+                                                } else if (newValue >= 0 && newValue <= bike.available)
+                                                    onChange({
+                                                        ...value,
+                                                        [bike.id]: Number(newValue),
+                                                    });
+                                            }}
+                                            startDate={watch('startDate')}
+                                            endDate={watch('endDate')}
+                                        />
+                                    )}
                                 />
                             ))}
                     </Stack>
@@ -207,8 +223,8 @@ export default function BikesPage() {
                             />
                         </Stack>
                         <Box>
-                            {Object.keys(selectedBikes).length ? (
-                                Object.entries(selectedBikes).map(
+                            {Object.keys(watch('selectedBikes')).length ? (
+                                Object.entries(watch('selectedBikes')).map(
                                     ([key, value]) =>
                                         !!value && (
                                             <Typography key={key}>
@@ -225,7 +241,9 @@ export default function BikesPage() {
                                 color="success"
                                 onClick={() => setIsConfirmationVisible(true)}
                                 disabled={
-                                    !Object.keys(selectedBikes).length || !watch('startDate') || !watch('endDate')
+                                    !Object.keys(watch('selectedBikes')).length ||
+                                    !watch('startDate') ||
+                                    !watch('endDate')
                                 }
                             >
                                 Vahvistus
@@ -264,7 +282,7 @@ export default function BikesPage() {
                                 </Stack>
                             )}
                             <Box>
-                                {Object.entries(selectedBikes).map(
+                                {Object.entries(watch('selectedBikes')).map(
                                     ([key, value]) =>
                                         !!value && (
                                             <Typography key={key}>

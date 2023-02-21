@@ -8,8 +8,8 @@ import BikeAvailability from './BikeAvailability';
 export default function BikeCard({
     bike,
     dateInfo,
-    selectedBikes,
-    setSelectedBikes,
+    amountSelected,
+    onChange,
     startDate: selectedStartDate,
     endDate: selectedEndDate,
 }) {
@@ -49,21 +49,8 @@ export default function BikeCard({
                                 type="number"
                                 id="amount"
                                 name="amount"
-                                value={selectedBikes[bike.id] ?? 0}
-                                onChange={(event) => {
-                                    const newValue = event.target.value;
-                                    if (Number.isNaN(newValue) || !Number(newValue)) {
-                                        setSelectedBikes((prevSelectedBikes) => {
-                                            const newSelectedBikes = { ...prevSelectedBikes };
-                                            delete newSelectedBikes[bike.id];
-                                            return newSelectedBikes;
-                                        });
-                                    } else if (newValue >= 0 && newValue <= bike.available)
-                                        setSelectedBikes((prevSelectedBikes) => ({
-                                            ...prevSelectedBikes,
-                                            [bike.id]: Number(event.target.value),
-                                        }));
-                                }}
+                                value={amountSelected}
+                                onChange={onChange}
                                 min={0}
                                 max={bike.available}
                             />
@@ -141,8 +128,8 @@ BikeCard.propTypes = {
         available_to: PropTypes.string,
         monday: PropTypes.string,
     }).isRequired,
-    selectedBikes: PropTypes.objectOf(PropTypes.number).isRequired,
-    setSelectedBikes: PropTypes.func.isRequired,
+    amountSelected: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired,
     startDate: PropTypes.instanceOf(Date),
     endDate: PropTypes.instanceOf(Date),
 };
