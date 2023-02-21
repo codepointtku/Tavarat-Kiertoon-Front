@@ -8,6 +8,7 @@ import {
     TableHead,
     TableRow,
     TableBody,
+    Alert,
 } from '@mui/material';
 import { useState } from 'react';
 import { useLoaderData, useNavigate, generatePath, useActionData } from 'react-router';
@@ -95,6 +96,12 @@ function OrderEdit() {
 
     return (
         <>
+            {responseStatus?.type === 'delete' && !responseStatus?.status && (
+                <Alert severity="error">Esineen poistaminen epäonnistui</Alert>
+            )}
+            {responseStatus?.type === 'delete' && responseStatus?.status && (
+                <Alert severity="success">Esineen poistaminen onnistui</Alert>
+            )}
             <Button
                 onClick={() =>
                     navigate(generatePath('/varasto/koodinlukija'), {
