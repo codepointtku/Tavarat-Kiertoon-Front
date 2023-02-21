@@ -20,8 +20,6 @@ module.exports = {
     },
     plugins: ['react'],
     rules: {
-        'no-shadow': 'off',
-        '@typescript-eslint/no-shadow': 'warn',
         'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     },
 };

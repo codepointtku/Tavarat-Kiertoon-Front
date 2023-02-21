@@ -72,7 +72,7 @@ function Routes() {
 
                     return cartItems;
                 }, []);
-                return { contacts, cart, colors, categories, bulletins, cartItems, products };
+                return { contacts, cart, colors, categories, bulletins, cartItems };
             },
             children: [
                 {
@@ -143,6 +143,15 @@ function Routes() {
                         {
                             path: '/stats',
                             element: <StatsPage />,
+                        },
+                        {
+                            path: '/ostoskori',
+                            element: <ShoppingCart />,
+                            children: [
+                                { path: '/ostoskori/', element: <CartView /> },
+                                { path: '/ostoskori/vaihe2', element: <ContactsAndDelivery /> },
+                                { path: '/ostoskori/vaihe3', element: <Confirmation /> },
+                            ],
                         },
                         {
                             path: '/tiedotteet',
