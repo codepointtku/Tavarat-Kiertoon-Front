@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-props-no-spreading */
+
 import {
     Container,
     TextField,
@@ -9,39 +11,31 @@ import {
     MenuItem,
     Grid,
 } from '@mui/material';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-// import background from '../Assets/LOGO6.png';
-
-function TilausNro() {
-    return (
-        <TextField
-            sx={{ mt: 2 }}
-            id="sender-name"
-            label="Tilausnumero"
-            placeholder="1234"
-            multiline
-            required
-            maxRows={2}
-        />
-    );
-}
+import { Form, useSubmit } from 'react-router-dom';
 
 function ContactPage() {
-    const [subject, setSubject] = useState();
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, watch } = useForm();
+    const submit = useSubmit();
 
-    const handleChange = (event) => {
-        setSubject(event.target.value);
+    const subject = watch('subject');
+
+    const onSubmit = (data) => {
+        const formData = { ...data, category: 'category', status: 'abc' };
+        console.log(formData);
+        submit(formData, {
+            method: 'post',
+            action: '/otayhteytta',
+        });
     };
 
     return (
-        <Container
-            component="form"
+        <Grid
+            container
+            component={Form}
+            onSubmit={handleSubmit(onSubmit)}
             autoComplete="off"
             sx={{
-                // backgroundImage: `url(${background})`,
-                // backgroundRepeat: 'no-repeat',
                 width: 1000,
                 marginTop: 4,
                 display: 'flex',
@@ -49,14 +43,11 @@ function ContactPage() {
                 alignItems: 'center',
             }}
         >
-            {/* <img src={background} alt="turkulogo" style={{ backgroundImage, width: 1000 }} /> */}
-
             <Typography variant="h3" color="primary.main">
                 Ota yhteyttä
             </Typography>
             <Container sx={{ alignItems: 'center' }} maxWidth="md">
                 <FormControl
-                    onSubmit={handleSubmit}
                     sx={{
                         marginTop: 4,
                         display: 'flex',
@@ -65,42 +56,33 @@ function ContactPage() {
                     }}
                 >
                     <TextField
-                        // eslint-disable-next-line react/jsx-props-no-spreading
-                        {...register('Nimesi')}
+                        {...register('name')}
                         sx={{ mt: 2 }}
-                        id="sender-name"
                         label="Nimesi"
                         placeholder="Etunimi Sukunimi"
-                        multiline
                         fullWidth
+                        inputProps={{ title: 'Etu ja Sukunimi', minlength: '4', maxlength: '50' }}
                         required
-                        maxRows={2}
                     />
+
                     <TextField
-                        // eslint-disable-next-line react/jsx-props-no-spreading
-                        {...register('Sähköpostisi')}
+                        {...register('email')}
                         sx={{ mt: 2 }}
-                        id="sender-email"
                         label="Sähköpostisi"
-                        multiline
                         fullWidth
+                        inputProps={{
+                            title: 'vaatii @turku.fi päätteen',
+                            pattern: '.+@turku\\.fi$',
+                        }}
                         required
-                        maxRows={1}
                         placeholder="@turku.fi"
                     />
+
                     <Grid container>
                         <Grid item xs={12}>
                             <FormControl fullWidth required sx={{ mt: 2 }}>
-                                <InputLabel id="select-label">Aihe</InputLabel>
-                                <Select
-                                    // eslint-disable-next-line react/jsx-props-no-spreading
-                                    {...register('Aihe')}
-                                    labelId="select-label"
-                                    id="simple-select"
-                                    defaultValue=""
-                                    label="Aihe"
-                                    onChange={handleChange}
-                                >
+                                <InputLabel>Aihe</InputLabel>
+                                <Select {...register('subject')} labelId="select-label" defaultValue="" label="Aihe">
                                     <MenuItem value="Yleinen palaute">Yleinen palaute</MenuItem>
                                     <MenuItem value="Tilaukset">Tilaukset</MenuItem>
                                     <MenuItem value="Tekninen ongelma">Tekninen ongelma</MenuItem>
@@ -109,19 +91,27 @@ function ContactPage() {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>
-                            {subject === 'Tilaukset' && <TilausNro />}
+                            {subject === 'Tilaukset' && (
+                                <TextField
+                                    {...register('order_id')}
+                                    sx={{ mt: 2 }}
+                                    label="Tilausnumero"
+                                    placeholder="1234"
+                                    required
+                                    type="number"
+                                />
+                            )}
                         </Grid>
                     </Grid>
 
                     <TextField
-                        // eslint-disable-next-line react/jsx-props-no-spreading
-                        {...register('Viesti')}
+                        {...register('message')}
                         sx={{ mt: 2 }}
-                        placeholder="kerro mikä mieltä painaa"
-                        id="form-message"
+                        placeholder="Viesti"
                         label="Viesti"
-                        multiline
                         required
+                        multiline
+                        inputProps={{ minlenght: '5' }}
                         fullWidth
                         rows={6}
                     />
@@ -137,7 +127,7 @@ function ContactPage() {
                     </Button>
                 </FormControl>
             </Container>
-        </Container>
+        </Grid>
     );
 }
 

@@ -139,6 +139,12 @@ function Routes() {
                         {
                             path: '/otayhteytta',
                             element: <ContactPage />,
+                            action: async ({ request }) => {
+                                const formData = await request.formData();
+                                const response = await axios.post('http://localhost:8000/contact_forms/', formData);
+                                console.log(response);
+                                return response.data || null;
+                            },
                         },
                     ],
                 },
