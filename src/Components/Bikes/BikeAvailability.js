@@ -16,7 +16,7 @@ import {
     subWeeks,
 } from 'date-fns';
 import PropTypes from 'prop-types';
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 
 const firstMondayOfValidWeek = (availableFromDateObject) => {
     if (isMonday(availableFromDateObject)) {
@@ -95,6 +95,17 @@ function reducer(state, action) {
                 ),
             };
         }
+        case 'jump_to_date': {
+            return {
+                ...state,
+                dates: createDates(action.date, state.rows, state.taken, state.maxAvailable),
+                isForwardDisabled: !isBefore(
+                    addWeeks(firstMondayOfValidWeek(action.date), state.rows),
+                    parseISO(state.availableTo)
+                ),
+                isBackwardDisabled: isBefore(firstMondayOfValidWeek(action.date), parseISO(state.availableFrom)),
+            };
+        }
         default: {
             throw Error(`Unknown action: ${action.type}`);
         }
@@ -103,6 +114,10 @@ function reducer(state, action) {
 
 export default function BikeAvailability({ dateInfo, rows, taken, maxAvailable, selectedStartDate, selectedEndDate }) {
     const [state, dispatch] = useReducer(reducer, { dateInfo, rows, taken, maxAvailable }, createInitialState);
+
+    useEffect(() => {
+        if (selectedStartDate) dispatch({ type: 'jump_to_date', date: selectedStartDate });
+    }, [selectedStartDate]);
 
     return (
         <Box>
@@ -136,7 +151,7 @@ export default function BikeAvailability({ dateInfo, rows, taken, maxAvailable, 
                                         </Typography>
 
                                         {isBefore(day.date, parseISO(dateInfo.available_from)) ||
-                                        isAfter(day.date, addDays(parseISO(dateInfo.available_to), 1)) ? (
+                                        isAfter(day.date, parseISO(dateInfo.available_to)) ? (
                                             <Box borderRadius={1} boxShadow={1} backgroundColor="grey">
                                                 <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
                                                     X

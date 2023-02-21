@@ -2,7 +2,7 @@ import { Autocomplete, Box, Button, Card, Container, Modal, Stack, TextField, Ty
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { format, isWeekend, parseISO } from 'date-fns';
+import { format, isWeekend, max, min, parseISO } from 'date-fns';
 import { fi } from 'date-fns/locale';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -206,12 +206,17 @@ export default function BikesPage() {
                                             value={value}
                                             onChange={onChange}
                                             onBlur={onBlur}
+                                            inputProps={{
+                                                placeholder: 'pv.kk.v',
+                                            }}
                                             // eslint-disable-next-line react/jsx-props-no-spreading
                                             renderInput={(params) => <TextField {...params} />}
                                             disableMaskedInput
                                             shouldDisableDate={(day) => isWeekend(day)}
                                             minDate={minDate}
-                                            maxDate={maxDate}
+                                            maxDate={watch('endDate') ? min([maxDate, watch('endDate')]) : maxDate}
+                                            views={['month', 'day']}
+                                            openTo="month"
                                         />
                                     </LocalizationProvider>
                                 )}
@@ -227,12 +232,17 @@ export default function BikesPage() {
                                             value={value}
                                             onChange={onChange}
                                             onBlur={onBlur}
+                                            inputProps={{
+                                                placeholder: 'pv.kk.v',
+                                            }}
                                             // eslint-disable-next-line react/jsx-props-no-spreading
                                             renderInput={(params) => <TextField {...params} />}
                                             disableMaskedInput
                                             shouldDisableDate={(day) => isWeekend(day)}
-                                            minDate={minDate}
+                                            minDate={watch('startDate') ? max([minDate, watch('startDate')]) : minDate}
                                             maxDate={maxDate}
+                                            views={['month', 'day']}
+                                            openTo="month"
                                         />
                                     </LocalizationProvider>
                                 )}
