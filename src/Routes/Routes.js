@@ -228,7 +228,6 @@ function Routes() {
                                             status: formData.get('status'),
                                             order_info: formData.get('order_info'),
                                         });
-                                        console.log(response);
                                         if (response.status === 200) {
                                             return { type: 'update', status: true };
                                         }
