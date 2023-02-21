@@ -18,24 +18,24 @@ import {
 import PropTypes from 'prop-types';
 import { useEffect, useReducer } from 'react';
 
-const firstMondayOfValidWeek = (availableFromDateObject) => {
-    if (isMonday(availableFromDateObject)) {
-        return availableFromDateObject;
+const firstMondayOfValidWeek = (startDateObject) => {
+    if (isMonday(startDateObject)) {
+        return startDateObject;
     }
-    if (isWeekend(availableFromDateObject)) {
-        return nextMonday(availableFromDateObject);
+    if (isWeekend(startDateObject)) {
+        return nextMonday(startDateObject);
     }
-    return previousMonday(availableFromDateObject);
+    return previousMonday(startDateObject);
 };
 
-function createDates(availableFrom, rows, taken, maxAvailable) {
-    const availableFromDateObject = new Date(availableFrom);
-    const startDateObject = firstMondayOfValidWeek(availableFromDateObject);
+function createDates(startDate, rows, taken, maxAvailable) {
+    const startDateObject = new Date(startDate);
+    const monday = firstMondayOfValidWeek(startDateObject);
     const weeks = [];
     for (let row = 0; row < rows; row += 1) {
         const week = [];
         for (let day = 0; day < 5; day += 1) {
-            const date = addDays(startDateObject, day + row * 7);
+            const date = addDays(monday, day + row * 7);
             const dateString = `${date.getDate()}.${date.getMonth() + 1}`;
             const unitsInUse = taken[format(date, 'd.M.yyyy')] ?? 0;
             week.push({ date, dateString, available: maxAvailable - unitsInUse });
