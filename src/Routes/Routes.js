@@ -52,8 +52,24 @@ function Routes() {
             loader: async () => {
                 const { data: contacts } = await axios.get('http://localhost:3001/contacts');
                 const { data: products } = await axios.get('http://localhost:8000/products/');
-                const { data: cart } = await axios.get('http://localhost:8000/shopping_carts/3');
-                return { contacts, cart, products };
+                const { data: cart } = await axios.get('http://localhost:8000/shopping_carts/8');
+                /* eslint-disable no-shadow */
+                const cartItems = cart.products.reduce((cartItems, product) => {
+                    let cartItem = cartItems.find((cartItem) => cartItem.group_id === product.group_id);
+
+                    if (!cartItem) {
+                        cartItem = {
+                            ...product,
+                            count: 0,
+                        };
+                        cartItems.push(cartItem);
+                    }
+
+                    cartItem.count += 1;
+
+                    return cartItems;
+                }, []);
+                return { contacts, cart, cartItems, products };
             },
 
             children: [
