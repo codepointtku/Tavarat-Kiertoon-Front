@@ -207,6 +207,12 @@ function OrderEdit() {
             {responseStatus?.type === 'delete' && responseStatus?.status && (
                 <Alert severity="success">Esineen poistaminen onnistui</Alert>
             )}
+            {responseStatus?.type === 'update' && !responseStatus?.status && (
+                <Alert severity="error">Tilauksen tallennus epäonnistui! Lataa sivu uudestaan.</Alert>
+            )}
+            {responseStatus?.type === 'update' && responseStatus?.status && (
+                <Alert severity="success">Tilauksen tallennus onnistui</Alert>
+            )}
             <TableContainer sx={{ padding: '2rem' }}>
                 <Table>
                     <TableHead>
@@ -265,12 +271,6 @@ function OrderEdit() {
             </TableContainer>
 
             <h5 align="center">
-                {responseStatus?.type === 'update' && !responseStatus?.status && (
-                    <Alert severity="error">Tilauksen tallennus epäonnistui! Lataa sivu uudestaan.</Alert>
-                )}
-                {responseStatus?.type === 'update' && responseStatus?.status && (
-                    <Alert severity="success">Tilauksen tallennus onnistui</Alert>
-                )}
                 <Button
                     onClick={() => {
                         submit(
