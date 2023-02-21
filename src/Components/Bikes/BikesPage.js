@@ -24,11 +24,13 @@ export default function BikesPage() {
         : loaderData.bikes;
 
     const sizeOptionsSet = new Set();
+    const colorOptionsSet = new Set();
     const brandOptionsSet = new Set();
     const typeOptionsSet = new Set();
 
     loaderData.bikes.forEach((bike) => {
         sizeOptionsSet.add(bike.size);
+        colorOptionsSet.add(bike.color);
         brandOptionsSet.add(bike.brand);
         typeOptionsSet.add(bike.type);
     });
@@ -80,7 +82,7 @@ export default function BikesPage() {
                                 disablePortal
                                 id="size-filter"
                                 options={Array.from(sizeOptionsSet).sort()}
-                                sx={{ width: 200 }}
+                                sx={{ width: 170 }}
                                 onChange={(_, newOption) => handleFilterChange('size', newOption)}
                                 value={
                                     searchParams.get('filters') && JSON.parse(searchParams.get('filters')).size
@@ -93,9 +95,24 @@ export default function BikesPage() {
                             />
                             <Autocomplete
                                 disablePortal
+                                id="color-filter"
+                                options={Array.from(colorOptionsSet).sort()}
+                                sx={{ width: 170 }}
+                                onChange={(_, newOption) => handleFilterChange('color', newOption)}
+                                value={
+                                    searchParams.get('filters') && JSON.parse(searchParams.get('filters')).color
+                                        ? JSON.parse(searchParams.get('filters')).color
+                                        : null
+                                }
+                                // eslint-disable-next-line react/jsx-props-no-spreading
+                                renderInput={(params) => <TextField {...params} label="Väri" />}
+                                size="small"
+                            />
+                            <Autocomplete
+                                disablePortal
                                 id="brand-filter"
                                 options={Array.from(brandOptionsSet).sort()}
-                                sx={{ width: 200 }}
+                                sx={{ width: 170 }}
                                 onChange={(_, newOption) => handleFilterChange('brand', newOption)}
                                 value={
                                     searchParams.get('filters') && JSON.parse(searchParams.get('filters')).brand
@@ -110,7 +127,7 @@ export default function BikesPage() {
                                 disablePortal
                                 id="type-filter"
                                 options={Array.from(typeOptionsSet).sort()}
-                                sx={{ width: 200 }}
+                                sx={{ width: 170 }}
                                 onChange={(_, newOption) => handleFilterChange('type', newOption)}
                                 value={
                                     searchParams.get('filters') && JSON.parse(searchParams.get('filters')).type
@@ -160,9 +177,8 @@ export default function BikesPage() {
                     <Card
                         sx={{
                             flex: 1,
+                            p: 2,
                             pt: 1,
-                            pb: 2,
-                            px: 2,
                             display: 'flex',
                             gap: 3,
                             flexDirection: 'column',
