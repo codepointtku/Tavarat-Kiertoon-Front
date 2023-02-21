@@ -29,9 +29,9 @@ test.describe('toimitus', () => {
     });
 });
 
-test.describe('backgroundinfo', () => {
+test.describe('taustatietoa', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/backgroundinfo');
+        await page.goto('/taustatietoa');
         await expect(page.getByText('Etsimääsi sijaintia /backgroundinfo')).not.toBeVisible();
     });
 });
@@ -50,23 +50,23 @@ test.describe('tiedotteet', () => {
     });
 });
 
-test.describe('signup', () => {
+test.describe('rekisteroidy', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/signup');
+        await page.goto('/rekisteroidy');
         await expect(page.getByText('Etsimääsi sijaintia /signup')).not.toBeVisible();
     });
 });
 
-test.describe('signupuser', () => {
+test.describe('rekisteroidykayttaja', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/signup/user');
+        await page.goto('/rekisteroidy/kayttaja');
         await expect(page.getByText('Etsimääsi sijaintia /signup/user')).not.toBeVisible();
     });
 });
 
-test.describe('signuplocation', () => {
+test.describe('rekisteroidytoimipaikka', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/signup/location');
+        await page.goto('/rekisteroidy/toimipaikka');
         await expect(page.getByText('Etsimääsi sijaintia /signup/location')).not.toBeVisible();
     });
 });

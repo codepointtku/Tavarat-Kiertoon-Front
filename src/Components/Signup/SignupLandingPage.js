@@ -1,17 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import {
-    Avatar,
-    Grid,
-    Button,
-    Card,
-    // CardMedia,
-    CardActionArea,
-    Container,
-    Paper,
-    Typography,
-    Box,
-} from '@mui/material';
+import { Avatar, Grid, Button, Card, CardActionArea, Container, Paper, Typography, Box } from '@mui/material';
 
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
@@ -30,7 +19,7 @@ function SignUpCards() {
         <Grid container spacing={2}>
             <Grid item xs={6} marginBottom={6}>
                 <Card sx={[iconHover, { minWidth: 220, padding: 0 }]}>
-                    <CardActionArea component={Link} to="/signup/user">
+                    <CardActionArea component={Link} to="/rekisteroidy/kayttaja">
                         <Box
                             sx={{
                                 display: 'flex',
@@ -67,7 +56,7 @@ function SignUpCards() {
 
             <Grid item xs={6} marginBottom={6}>
                 <Card sx={[iconHover, { minWidth: 220, padding: 0 }]}>
-                    <CardActionArea component={Link} to="/signup/location">
+                    <CardActionArea component={Link} to="/rekisteroidy/toimipaikka">
                         <Box
                             sx={{
                                 display: 'flex',
@@ -111,14 +100,21 @@ function HeroText() {
             <Typography variant="h4" gutterBottom>
                 Tervetuloa rekisteröitymään!
             </Typography>
-            <Typography variant="subtitle2" mb={2}>
+            <Typography variant="subtitle2" mb={1}>
                 Tavarat Kiertoon järjestelmään on mahdollista luoda henkilökohtainen-, tai toimipaikka-kohtainen tili.
             </Typography>
 
             <Typography variant="body1" mb={1}>
                 Ole hyvä ja valitse käyttötarkoitukseesi sopivampi tilimuoto.
             </Typography>
-            <Button sx={{ mt: 1, mb: 1 }} size="small" variant="outlined" endIcon={<HelpOutlineIcon />}>
+            <Button
+                component={Link}
+                to="/ohjeet/tili"
+                sx={{ mt: 1, mb: 1 }}
+                size="small"
+                variant="outlined"
+                endIcon={<HelpOutlineIcon />}
+            >
                 Lisää tietoa
             </Button>
         </>
@@ -147,7 +143,6 @@ function SignUpHero() {
             >
                 <AppRegistrationIcon />
             </Avatar>
-
             <HeroText />
         </Box>
     );

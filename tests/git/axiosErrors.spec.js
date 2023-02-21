@@ -31,10 +31,10 @@ test.describe('toimitus', () => {
     });
 });
 
-test.describe('backgroundinfo', () => {
+test.describe('taustatietoa', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/backgroundinfo');
-        await expect(page.getByText('Yhteysongelma sijainnissa /backgroundinfo')).not.toBeVisible();
+        await page.goto('/taustatietoa');
+        await expect(page.getByText('Yhteysongelma sijainnissa /taustatietoa')).not.toBeVisible();
     });
 });
 
@@ -52,24 +52,24 @@ test.describe('tiedotteet', () => {
     });
 });
 
-test.describe('signup', () => {
+test.describe('rekisteroidy', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/signup');
-        await expect(page.getByText('Yhteysongelma sijainnissa /signup')).not.toBeVisible();
+        await page.goto('/rekisteroidy');
+        await expect(page.getByText('Yhteysongelma sijainnissa /rekisteroidy')).not.toBeVisible();
     });
 });
 
-test.describe('signupuser', () => {
+test.describe('rekisteroidykayttaja', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/signup/user');
-        await expect(page.getByText('Yhteysongelma sijainnissa /signup/user')).not.toBeVisible();
+        await page.goto('/rekisteroidy/kayttaja');
+        await expect(page.getByText('Yhteysongelma sijainnissa /rekisteroidy/kayttaja')).not.toBeVisible();
     });
 });
 
-test.describe('signuplocation', () => {
+test.describe('rekisteroidylocation', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/signup/location');
-        await expect(page.getByText('Yhteysongelma sijainnissa /signup/location')).not.toBeVisible();
+        await page.goto('/rekisteroidy/toimipaikka');
+        await expect(page.getByText('Yhteysongelma sijainnissa /rekisteroidy/toimipaikka')).not.toBeVisible();
     });
 });
 
