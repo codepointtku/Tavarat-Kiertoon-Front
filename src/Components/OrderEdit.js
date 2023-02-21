@@ -10,7 +10,7 @@ import {
     TableBody,
 } from '@mui/material';
 import { useState } from 'react';
-import { useLoaderData, useNavigate, generatePath } from 'react-router';
+import { useLoaderData, useNavigate, generatePath, useActionData } from 'react-router';
 import { useSubmit } from 'react-router-dom';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
@@ -18,6 +18,8 @@ import StyledTableCell from './StyledTableCell';
 function OrderEdit() {
     const orderData = useLoaderData();
     const navigate = useNavigate();
+    const responseStatus = useActionData();
+    console.log(responseStatus);
     const [orderState, setOrderState] = useState(orderData);
     const [orderItems, setOrderItems] = useState({});
 

@@ -207,12 +207,19 @@ function Routes() {
                                 // const productName = formData.get('productName');
                                 if (request.method === 'POST') {
                                     if (formData.get('type') === 'delete') {
-                                        await axios.delete(`http://localhost:8000/orders/${params.id}`, {
-                                            data: {
-                                                product: Number(formData.get('product')),
-                                                productId: Number(formData.get('productId')),
-                                            },
-                                        });
+                                        const response = await axios.delete(
+                                            `http://localhost:8000/orders/${params.id}`,
+                                            {
+                                                data: {
+                                                    product: Number(formData.get('product')),
+                                                    productId: Number(formData.get('productId')),
+                                                },
+                                            }
+                                        );
+                                        if (response.status === 204) {
+                                            return 'success';
+                                        }
+                                        return 'failure';
                                     }
                                 }
 
