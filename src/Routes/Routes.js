@@ -217,9 +217,9 @@ function Routes() {
                                             }
                                         );
                                         if (response.status === 204) {
-                                            return 'success';
+                                            return { type: 'delete', status: true };
                                         }
-                                        return 'failure';
+                                        return { type: 'delete', status: false };
                                     }
                                 }
 
