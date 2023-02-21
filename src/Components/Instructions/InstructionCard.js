@@ -31,7 +31,7 @@ InstructionCard.propTypes = {
     topic: PropTypes.string.isRequired,
     subheader: PropTypes.string.isRequired,
     linkURL: PropTypes.string.isRequired,
-    icon: PropTypes.node.isRequired,
+    icon: PropTypes.elementType.isRequired,
     img: PropTypes.string.isRequired,
     imgAlt: PropTypes.string.isRequired,
 };
