@@ -4,7 +4,7 @@ import { Box, Grid, Link as MuiLink, Typography } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 function Footer() {
-    const data = useRouteLoaderData('root');
+    const { contacts } = useRouteLoaderData('root');
     // const url = `mailto:${data.email}`;
     return (
         <Box sx={{ backgroundColor: 'primary.main' }}>
@@ -13,9 +13,12 @@ function Footer() {
                     <Typography variant="subtitle2" gutterBottom>
                         Yhteystiedot
                     </Typography>
-                    <Typography>{data?.phoneNumber}</Typography>
-                    <Typography>{data?.address}</Typography>
-                    <MuiLink href="https://github.com/codepointtku/Tavarat-Kiertoon-Front">
+
+                    <Typography> {contacts?.phoneNumber} </Typography>
+
+                    <Typography>{contacts?.address}</Typography>
+
+                    <MuiLink href="https://github.com/codepointtku/Tavarat-Kiertoon-Front" color="#663900">
                         <GitHubIcon />
                     </MuiLink>
                 </Grid>
