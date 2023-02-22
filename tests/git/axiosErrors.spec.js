@@ -17,13 +17,6 @@ test.describe('tuotteet', () => {
     });
 });
 
-test.describe('faq', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/faq');
-        await expect(page.getByText('Yhteysongelma sijainnissa /faq')).not.toBeVisible();
-    });
-});
-
 test.describe('toimitus', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/toimitus');
