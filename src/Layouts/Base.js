@@ -12,7 +12,7 @@ function Base({ children }) {
         <Stack sx={{ minHeight: ['100vh', '100svh'] }}>
             <Header />
             <DefaultAppBar />
-            <Container maxWidth="xl" sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
+            <Container maxWidth="lg" sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
                 <main>{children}</main>
             </Container>
             <Footer />
