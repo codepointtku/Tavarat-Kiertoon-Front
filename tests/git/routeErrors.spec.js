@@ -71,6 +71,48 @@ test.describe('rekisteroidytoimipaikka', () => {
     });
 });
 
+test.describe('ohjeet', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/ohjeet');
+        await expect(page.getByText('Etsimääsi sijaintia /ohjeet')).not.toBeVisible();
+    });
+});
+
+test.describe('ohjeetukk', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/ohjeet/ukk');
+        await expect(page.getByText('Etsimääsi sijaintia /ohjeet/ukk')).not.toBeVisible();
+    });
+});
+
+test.describe('ohjeettili', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/ohjeet/tili');
+        await expect(page.getByText('Etsimääsi sijaintia /ohjeet/tili')).not.toBeVisible();
+    });
+});
+
+test.describe('ohjeettilaus', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/ohjeet/tilaus');
+        await expect(page.getByText('Etsimääsi sijaintia /ohjeet/tilaus')).not.toBeVisible();
+    });
+});
+
+test.describe('ohjeetnouto', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/ohjeet/nouto');
+        await expect(page.getByText('Etsimääsi sijaintia /ohjeet/nouto')).not.toBeVisible();
+    });
+});
+
+test.describe('ohjeetpyorat', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/ohjeet/pyorat');
+        await expect(page.getByText('Etsimääsi sijaintia /ohjeet/pyorat')).not.toBeVisible();
+    });
+});
+
 test.describe('otayhteytta', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/otayhteytta');
