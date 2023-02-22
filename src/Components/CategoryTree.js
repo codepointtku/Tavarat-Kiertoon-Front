@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router-dom';
+import { useRouteLoaderData } from 'react-router-dom';
 
 import { TreeView, TreeItem } from '@mui/lab';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -7,7 +7,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import arrayToTree from 'array-to-tree';
 
 function CategoryTree() {
-    const categories = useLoaderData();
+    const { categories } = useRouteLoaderData('root');
 
     const categoryTreeMain = arrayToTree(categories, {
         parentProperty: 'parent',
