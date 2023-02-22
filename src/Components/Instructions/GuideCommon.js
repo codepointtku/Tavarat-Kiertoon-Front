@@ -171,7 +171,7 @@ function FAQAccordions() {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography gutterBottom="true" color="primary.main">
+                        <Typography gutterBottom color="primary.main">
                             Missä tuotteet ovat?
                         </Typography>
                     </AccordionSummary>
