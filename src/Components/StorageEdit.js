@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { useLoaderData } from 'react-router';
+import { useLoaderData, useActionData } from 'react-router';
 import { useSubmit } from 'react-router-dom';
-import { TextField, Box, Button, MenuItem, Grid, Container } from '@mui/material';
+import { TextField, Box, Button, MenuItem, Grid, Container, Alert } from '@mui/material';
 
 function StorageEdit() {
     const storageData = useLoaderData();
     const [storageState, setStorageState] = useState(storageData);
     const submit = useSubmit();
+    const responseStatus = useActionData();
 
     const handleChange = (key, event) => {
         if (key === 'in_use') {
@@ -133,6 +134,13 @@ function StorageEdit() {
                     </Grid>
                 </Container>
             </Box>
+
+            {responseStatus?.type === 'update' && !responseStatus?.status && (
+                <Alert severity="error">Varaston tallennus epäonnistui! Lataa sivu uudestaan.</Alert>
+            )}
+            {responseStatus?.type === 'update' && responseStatus?.status && (
+                <Alert severity="success">Varaston tallennus onnistui</Alert>
+            )}
 
             <h5 align="center">
                 <Button
