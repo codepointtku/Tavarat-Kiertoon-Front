@@ -49,7 +49,7 @@ import {
     rootLoader,
     storagesListLoader,
     userEditLoader,
-    usersListLoader
+    usersListLoader,
 } from './Loaders';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
@@ -84,7 +84,7 @@ function Routes() {
                         {
                             path: '/',
                             element: <ProductList />,
-                            loader: productListLoader
+                            loader: productListLoader,
                         },
                         {
                             // Redirect if no id is given
