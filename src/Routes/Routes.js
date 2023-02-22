@@ -48,6 +48,7 @@ import {
     productListLoader,
     rootLoader,
     storagesListLoader,
+    storageEditLoader,
     userEditLoader,
     usersListLoader,
 } from './Loaders';
@@ -292,6 +293,27 @@ function Routes() {
                         {
                             path: '/admin/varastot/:id',
                             element: <StorageEdit />,
+                            action: async ({ params, request }) => {
+                                const formData = await request.formData();
+                                if (request.method === 'POST') {
+                                    if (formData.get('type') === 'put') {
+                                        const response = await axios.put(
+                                            `http://localhost:8000/storages/${params.id}`,
+                                            {
+                                                address: formData.get('address'),
+                                                name: formData.get('name'),
+                                                in_use: formData.get('in_use'),
+                                            }
+                                        );
+                                        if (response.status === 200) {
+                                            return { type: 'update', status: true };
+                                        }
+                                        return { type: 'update', status: false };
+                                    }
+                                }
+                                return null;
+                            },
+                            loader: storageEditLoader,
                         },
                         {
                             path: '/admin/hakemukset',
