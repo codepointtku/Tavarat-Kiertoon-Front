@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { Table, TableBody, TableContainer, TableHead, TableRow, TableCell } from '@mui/material';
+import { Table, TableBody, TableContainer, TableHead, TableRow, TableCell, Button } from '@mui/material';
 import StyledTableCell from './StyledTableCell';
 
 function Storages({ storages }) {
@@ -32,6 +32,9 @@ function Storages({ storages }) {
                     ))}
                 </TableBody>
             </Table>
+            <h5>
+                <Button onClick={() => navigate('varastot/luo')}>Luo varasto</Button>
+            </h5>
         </TableContainer>
     );
 }

@@ -32,6 +32,7 @@ import DeliveryView from '../Components/DeliveryView';
 import BackgroundInfo from '../Components/Backgroundinfo';
 import StatsPage from '../Components/Stats/StatsPage';
 import ErrorBoundary from '../Components/ErrorBoundary';
+import AddStorage from '../Components/AddStorage';
 
 import SignupLandingPage from '../Components/Signup/SignupLandingPage';
 import SignupPage from '../Components/Signup/SignupPage';
@@ -275,6 +276,22 @@ function Routes() {
                                 return null;
                             },
                             loader: storageEditLoader,
+                        },
+                        {
+                            path: '/admin/varastot/luo',
+                            element: <AddStorage />,
+                            action: async ({ request }) => {
+                                const formData = await request.formData();
+                                const response = await axios.post('http://localhost:8000/storages/', {
+                                    address: formData.get('address'),
+                                    name: formData.get('name'),
+                                    in_use: formData.get('in_use'),
+                                });
+                                if (response.status === 201) {
+                                    return { type: 'post', status: true };
+                                }
+                                return { type: 'post', status: false };
+                            },
                         },
                         {
                             path: '/admin/hakemukset',
