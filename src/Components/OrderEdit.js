@@ -8,20 +8,27 @@ import {
     TableHead,
     TableRow,
     TableBody,
+    Alert,
 } from '@mui/material';
 import { useState } from 'react';
-import { useLoaderData, useNavigate, generatePath } from 'react-router';
-// import { useSubmit } from 'react-router-dom';
+import { useLoaderData, useNavigate, generatePath, useActionData } from 'react-router';
+import { useSubmit } from 'react-router-dom';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
 
 function OrderEdit() {
     const orderData = useLoaderData();
     const navigate = useNavigate();
+    const responseStatus = useActionData();
     const [orderState, setOrderState] = useState(orderData);
+    const [orderItems, setOrderItems] = useState({});
 
     const handleChange = (key, event) => {
         setOrderState({ ...orderState, [key]: event.target.value });
+    };
+
+    const handleItems = (id, event) => {
+        setOrderItems({ ...orderItems, [id]: event.target.value });
     };
 
     const checkChange = (key) => {
@@ -73,15 +80,15 @@ function OrderEdit() {
         console.log(orderData.newItem);
     };
 
-    // const submit = useSubmit();
+    const submit = useSubmit();
 
     const deleteItem = (id, items) => {
         if (items.length > 1) {
-            console.log('Item removed.');
-            // submit({ type: 'delete', product: items.at(-1).id }, { method: 'post' });
+            for (let index = 0; index < orderItems[id]; index += 1) {
+                submit({ type: 'delete', product: items.at(index).id, productId: orderData.id }, { method: 'post' });
+            }
         } else {
-            console.log('Item removed!');
-            // setOrderData({ ...orderData, products: orderData.products.filter((item) => item.id !== id) });
+            submit({ type: 'delete', product: items.at(-1).id, productId: orderData.id }, { method: 'post' });
         }
     };
 
@@ -194,6 +201,18 @@ function OrderEdit() {
                 </div>
             </Box>
             <h2 align="center">Poista tilauksen tuotteita.</h2>
+            {responseStatus?.type === 'delete' && !responseStatus?.status && (
+                <Alert severity="error">Esineen poistaminen epäonnistui</Alert>
+            )}
+            {responseStatus?.type === 'delete' && responseStatus?.status && (
+                <Alert severity="success">Esineen poistaminen onnistui</Alert>
+            )}
+            {responseStatus?.type === 'update' && !responseStatus?.status && (
+                <Alert severity="error">Tilauksen tallennus epäonnistui! Lataa sivu uudestaan.</Alert>
+            )}
+            {responseStatus?.type === 'update' && responseStatus?.status && (
+                <Alert severity="success">Tilauksen tallennus onnistui</Alert>
+            )}
             <TableContainer sx={{ padding: '2rem' }}>
                 <Table>
                     <TableHead>
@@ -220,6 +239,9 @@ function OrderEdit() {
                                             size="small"
                                             defaultValue={1}
                                             InputProps={{ inputProps: { min: 1, max: item.items.length } }}
+                                            onChange={(event) => {
+                                                handleItems(item.id, event);
+                                            }}
                                         />
                                     </TableCell>
                                 ) : (
@@ -249,7 +271,19 @@ function OrderEdit() {
             </TableContainer>
 
             <h5 align="center">
-                <Button>Tallenna tilauksen tiedot</Button>
+                <Button
+                    onClick={() => {
+                        submit(
+                            {
+                                type: 'put',
+                                ...orderState,
+                            },
+                            { method: 'post' }
+                        );
+                    }}
+                >
+                    Tallenna tilauksen tiedot
+                </Button>
             </h5>
         </>
     );
