@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 /**
  * Get different defaults for the site
@@ -11,7 +11,7 @@ export const rootLoader = async () => {
     const { data: shoppingCart } = await axios.get('http://localhost:8000/shopping_carts/');
 
     return { contacts, colors, categories, bulletins, shoppingCart };
-}
+};
 
 /**
  * Get all products
@@ -23,7 +23,7 @@ export const productListLoader = async () => {
     } catch {
         return null;
     }
-}
+};
 
 /**
  * Get one product
@@ -35,12 +35,12 @@ export const productDetailsLoader = async ({ params }) => {
     } catch {
         return null;
     }
-}
+};
 
 /**
  * Get all orders.
  */
-export const  ordersListLoader = async ({ params }) => {
+export const ordersListLoader = async ({ params }) => {
     const { data } = await axios.get('http://localhost:8000/orders');
     // num will tell back-end which entries to bring
     // view is order status, unless archived can bring all?
@@ -67,7 +67,7 @@ export const  ordersListLoader = async ({ params }) => {
         return data;
     }
     return null;
-}
+};
 
 /**
  * Get one order
@@ -79,7 +79,7 @@ export const orderViewLoader = async ({ params }) => {
         return data;
     }
     return null;
-}
+};
 
 /**
  * Get one order
@@ -90,7 +90,7 @@ export const orderEditLoader = async ({ params }) => {
         return data;
     }
     return null;
-}
+};
 
 /**
  * Get all categories and storages
@@ -105,7 +105,7 @@ export const addItemLoader = async () => {
         return dataList;
     }
     return null;
-}
+};
 
 /**
  * Get one order
@@ -113,7 +113,7 @@ export const addItemLoader = async () => {
 export const pdfViewLoader = async ({ params }) => {
     const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
     return data || null;
-}
+};
 
 /**
  * Get all storages
@@ -121,7 +121,12 @@ export const pdfViewLoader = async ({ params }) => {
 export const storagesListLoader = async () => {
     const { data } = await axios.get('http://localhost:8000/storages');
     return data;
-}
+};
+
+export const storageEditLoader = async ({ params }) => {
+    const { data } = await axios.get(`http://localhost:8000/storages/${params.id}`);
+    return data;
+};
 
 /**
  * Get all users
@@ -129,7 +134,7 @@ export const storagesListLoader = async () => {
 export const usersListLoader = async () => {
     const { data } = await axios.get('http://localhost:8000/users');
     return data;
-}
+};
 
 /**
  * Get one user
@@ -137,5 +142,4 @@ export const usersListLoader = async () => {
 export const userEditLoader = async ({ params }) => {
     const { data } = await axios.get(`http://localhost:8000/users/${params.id}`);
     return data;
-}
-
+};

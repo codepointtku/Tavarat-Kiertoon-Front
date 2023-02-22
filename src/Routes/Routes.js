@@ -48,8 +48,9 @@ import {
     productListLoader,
     rootLoader,
     storagesListLoader,
+    storageEditLoader,
     userEditLoader,
-    usersListLoader
+    usersListLoader,
 } from './Loaders';
 
 function Routes() {
@@ -77,7 +78,7 @@ function Routes() {
                         {
                             path: '/',
                             element: <ProductList />,
-                            loader: productListLoader
+                            loader: productListLoader,
                         },
                         {
                             // Redirect if no id is given
@@ -273,10 +274,7 @@ function Routes() {
                                 }
                                 return null;
                             },
-                            loader: async ({ params }) => {
-                                const { data } = await axios.get(`http://localhost:8000/storages/${params.id}`);
-                                return data;
-                            },
+                            loader: storageEditLoader,
                         },
                         {
                             path: '/admin/hakemukset',
