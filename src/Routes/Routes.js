@@ -28,7 +28,7 @@ import BikesPage from '../Components/Bikes/BikesPage';
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
 import Announcements from '../Components/Announcements';
-import FaqView from '../Components/FaqView';
+
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
@@ -42,6 +42,27 @@ import SignupPage from '../Components/Signup/SignupPage';
 import ContactPage from '../Components/ContactPage';
 
 import PDFView from '../Components/PDFView';
+import {
+    addItemLoader,
+    orderEditLoader,
+    ordersListLoader,
+    orderViewLoader,
+    pdfViewLoader,
+    productDetailsLoader,
+    productListLoader,
+    rootLoader,
+    storagesListLoader,
+    storageEditLoader,
+    userEditLoader,
+    usersListLoader,
+} from './Loaders';
+
+import InstructionsPage from '../Components/Instructions/InstructionsPage';
+import GuideCommon from '../Components/Instructions/GuideCommon';
+import GuideAccount from '../Components/Instructions/GuideAccount';
+import GuideOrdering from '../Components/Instructions/GuideOrdering';
+import GuideShipping from '../Components/Instructions/GuideShipping';
+import GuideBikes from '../Components/Instructions/GuideBikes';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -50,22 +71,7 @@ function Routes() {
             element: <Outlet />,
             id: 'root',
             errorElement: <ErrorBoundary />,
-            loader: async () => {
-                const [
-                    { data: contacts },
-                    { data: colors },
-                    { data: categories },
-                    { data: bulletins },
-                    { data: shoppingCart },
-                ] = await Promise.all([
-                    axios.get('http://localhost:8000/contacts/'),
-                    axios.get('http://localhost:8000/colors/'),
-                    axios.get('http://localhost:8000/categories/'),
-                    axios.get('http://localhost:8000/bulletins/'),
-                    axios.get('http://localhost:8000/shopping_carts/'),
-                ]);
-                return { contacts, colors, categories, bulletins, shoppingCart };
-            },
+            loader: rootLoader,
             children: [
                 {
                     path: '/',
@@ -83,14 +89,7 @@ function Routes() {
                         {
                             path: '/',
                             element: <ProductList />,
-                            loader: async () => {
-                                try {
-                                    const { data } = await axios.get('http://localhost:8000/products/');
-                                    return data.results;
-                                } catch {
-                                    return null;
-                                }
-                            },
+                            loader: productListLoader,
                         },
                         {
                             // Redirect if no id is given
@@ -100,18 +99,43 @@ function Routes() {
                         {
                             path: '/tuotteet/:id',
                             element: <ProductDetails />,
-                            loader: async ({ params }) => {
-                                try {
-                                    const { data } = await axios.get(`http://localhost:8000/products/${params.id}`);
-                                    return data;
-                                } catch {
-                                    return null;
-                                }
-                            },
+                            loader: productDetailsLoader,
                         },
                         {
-                            path: '/faq',
-                            element: <FaqView />,
+                            path: '/ohjeet',
+                            element: <InstructionsPage />,
+                        },
+                        {
+                            path: '/ohjeet/ukk',
+                            element: <GuideCommon />,
+                        },
+                        {
+                            path: '/ohjeet/tili',
+                            element: <GuideAccount />,
+                        },
+                        {
+                            path: '/ohjeet/tili/:value',
+                            element: <GuideAccount />,
+                        },
+                        {
+                            path: '/ohjeet/tilaus',
+                            element: <GuideOrdering />,
+                        },
+                        {
+                            path: '/ohjeet/tilaus/:value',
+                            element: <GuideOrdering />,
+                        },
+                        {
+                            path: '/ohjeet/nouto',
+                            element: <GuideShipping />,
+                        },
+                        {
+                            path: '/ohjeet/pyorat',
+                            element: <GuideBikes />,
+                        },
+                        {
+                            path: '/ohjeet/pyorat/:value',
+                            element: <GuideBikes />,
                         },
                         {
                             path: '/toimitus',
@@ -174,46 +198,12 @@ function Routes() {
                         {
                             path: '/varasto/:num/:view',
                             element: <OrdersList />,
-                            loader: async ({ params }) => {
-                                const { data } = await axios.get('http://localhost:8000/orders');
-                                // num will tell back-end which entries to bring
-                                // view is order status, unless archived can bring all?
-                                // or will be replaced into the back-end later?
-                                const statuses = {
-                                    waiting: 2,
-                                    delivery: 1,
-                                    finished: 0,
-                                };
-                                statuses[params.view] = 10;
-                                data.sort((a, b) => {
-                                    if (statuses[a.status] > statuses[b.status]) {
-                                        return -1;
-                                    }
-                                    if (a.status === b.status) {
-                                        if (a.id > b.id) {
-                                            return -1;
-                                        }
-                                    }
-                                    return 1;
-                                });
-
-                                if (data) {
-                                    return data;
-                                }
-                                return null;
-                            },
+                            loader: ordersListLoader,
                         },
                         {
                             path: '/varasto/tilaus/:id',
                             element: <OrderView />,
-                            loader: async ({ params }) => {
-                                const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
-                                if (data) {
-                                    data.productList = data.products;
-                                    return data;
-                                }
-                                return null;
-                            },
+                            loader: orderViewLoader,
                         },
                         {
                             path: '/varasto/tilaus/:id/muokkaa',
@@ -254,28 +244,12 @@ function Routes() {
 
                                 return null;
                             },
-                            loader: async ({ params }) => {
-                                const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
-                                if (data) {
-                                    return data;
-                                }
-                                return null;
-                            },
+                            loader: orderEditLoader,
                         },
                         {
                             path: '/varasto/luo',
                             element: <AddItem />,
-                            loader: async () => {
-                                const dataList = [];
-                                let { data } = await axios.get('http://localhost:3001/categories/');
-                                dataList.push(data);
-                                data = await axios.get('http://localhost:3001/storages/');
-                                dataList.push(data.data);
-                                if (dataList) {
-                                    return dataList;
-                                }
-                                return null;
-                            },
+                            loader: addItemLoader,
                         },
                         {
                             path: '/varasto/koodinlukija',
@@ -284,10 +258,7 @@ function Routes() {
                         {
                             path: '/varasto/pdf/:id',
                             element: <PDFView />,
-                            loader: async ({ params }) => {
-                                const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
-                                return data || null;
-                            },
+                            loader: pdfViewLoader,
                         },
                     ],
                 },
@@ -311,30 +282,42 @@ function Routes() {
                         {
                             path: '/admin',
                             element: <StoragesList />,
-                            loader: async () => {
-                                const { data } = await axios.get('http://localhost:8000/storages');
-                                return data;
-                            },
+                            loader: storagesListLoader,
                         },
                         {
                             path: '/admin/users',
                             element: <UsersList />,
-                            loader: async () => {
-                                const { data } = await axios.get('http://localhost:8000/users');
-                                return data;
-                            },
+                            loader: usersListLoader,
                         },
                         {
                             path: '/admin/users/:id',
                             element: <UserEdit />,
-                            loader: async ({ params }) => {
-                                const { data } = await axios.get(`http://localhost:8000/users/${params.id}`);
-                                return data;
-                            },
+                            loader: userEditLoader,
                         },
                         {
                             path: '/admin/varastot/:id',
                             element: <StorageEdit />,
+                            action: async ({ params, request }) => {
+                                const formData = await request.formData();
+                                if (request.method === 'POST') {
+                                    if (formData.get('type') === 'put') {
+                                        const response = await axios.put(
+                                            `http://localhost:8000/storages/${params.id}`,
+                                            {
+                                                address: formData.get('address'),
+                                                name: formData.get('name'),
+                                                in_use: formData.get('in_use'),
+                                            }
+                                        );
+                                        if (response.status === 200) {
+                                            return { type: 'update', status: true };
+                                        }
+                                        return { type: 'update', status: false };
+                                    }
+                                }
+                                return null;
+                            },
+                            loader: storageEditLoader,
                         },
                         {
                             path: '/admin/hakemukset',
