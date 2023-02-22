@@ -30,11 +30,10 @@ function SignupHelp() {
                 Sisäänkirjautuneena samassa paikassa voit tarkastella tilisi, ja tilauksiesi tietoja.
             </Typography>
             <Typography gutterBottom>
-                Halutessasi päivittää, tai muuttaa tilisi tietoja,
+                Halutessasi päivittää, tai muuttaa tilisi tietoja,{' '}
                 <MuiLink component={Link} to="/otayhteytta">
-                    {' '}
-                    Ota Yhteyttä{' '}
-                </MuiLink>
+                    Ota Yhteyttä
+                </MuiLink>{' '}
                 toimistoon.
             </Typography>
 
