@@ -27,6 +27,7 @@ import DeliveryView from '../Components/DeliveryView';
 import BackgroundInfo from '../Components/Backgroundinfo';
 import StatsPage from '../Components/Stats/StatsPage';
 import ErrorBoundary from '../Components/ErrorBoundary';
+import AddStorage from '../Components/AddStorage';
 
 import SignupLandingPage from '../Components/Signup/SignupLandingPage';
 import SignupPage from '../Components/Signup/SignupPage';
@@ -49,7 +50,7 @@ import {
     userSignupLoader,
 } from './loaders';
 
-import { userSignupAction, contactAction, orderEditAction, storageEditAction } from './actions';
+import { userSignupAction, contactAction, orderEditAction, storageCreateAction, storageEditAction } from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
 import GuideCommon from '../Components/Instructions/GuideCommon';
@@ -239,6 +240,11 @@ function Routes() {
                             element: <StorageEdit />,
                             action: storageEditAction,
                             loader: storageEditLoader,
+                        },
+                        {
+                            path: 'varastot/luo',
+                            element: <AddStorage />,
+                            action: storageCreateAction,
                         },
                         {
                             path: 'hakemukset',
