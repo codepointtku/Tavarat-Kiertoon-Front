@@ -4,7 +4,6 @@ import { Box, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import imageCompression from 'browser-image-compression';
 import axios from 'axios';
-
 import AddExistingItem from './AddExistingItem';
 import AddNewItem from './AddNewItem';
 
@@ -62,6 +61,7 @@ function AddItem() {
             maxSizeMB: 1,
             useWebWorker: true,
         };
+        const fd = new FormData();
 
         console.log(files);
 
