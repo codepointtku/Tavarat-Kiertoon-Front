@@ -53,7 +53,7 @@ import {
     userSignupLoader,
 } from './loaders';
 
-import { userSignupAction, contactAction, orderEditAction, storageEditAction } from './actions';
+import { userSignupAction, contactAction, orderEditAction, storageCreateAction, storageEditAction } from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
 import GuideCommon from '../Components/Instructions/GuideCommon';
@@ -265,18 +265,7 @@ function Routes() {
                         {
                             path: '/admin/varastot/luo',
                             element: <AddStorage />,
-                            action: async ({ request }) => {
-                                const formData = await request.formData();
-                                const response = await axios.post('http://localhost:8000/storages/', {
-                                    address: formData.get('address'),
-                                    name: formData.get('name'),
-                                    in_use: formData.get('in_use'),
-                                });
-                                if (response.status === 201) {
-                                    return { type: 'post', status: true };
-                                }
-                                return { type: 'post', status: false };
-                            },
+                            action: storageCreateAction,
                         },
                         {
                             path: '/admin/hakemukset',

@@ -68,6 +68,22 @@ const orderEditAction = async ({ params, request }) => {
     return null;
 };
 
+/*
+creates new storage
+*/
+const storageCreateAction = async ({ request }) => {
+    const formData = await request.formData();
+    const response = await axios.post('http://localhost:8000/storages/', {
+        address: formData.get('address'),
+        name: formData.get('name'),
+        in_use: formData.get('in_use'),
+    });
+    if (response.status === 201) {
+        return { type: 'post', status: true };
+    }
+    return { type: 'post', status: false };
+};
+
 /**
  * edits storage information
  */
@@ -106,4 +122,4 @@ const userLoginAction = async ({ request }) => {
     return { type: 'login', status: false };
 };
 
-export { userSignupAction, contactAction, orderEditAction, storageEditAction, userLoginAction };
+export { userSignupAction, contactAction, orderEditAction, storageCreateAction, storageEditAction, userLoginAction };
