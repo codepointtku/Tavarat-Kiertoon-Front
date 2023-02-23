@@ -7,13 +7,15 @@ function Storages({ storages }) {
     const navigate = useNavigate();
     return (
         <TableContainer align="center" sx={{ padding: '2rem' }}>
-            <Table style={{ width: 300 }} aria-label="customized table">
+            <Table style={{ width: 1200 }} aria-label="customized table">
                 <TableHead>
                     <TableRow>
                         <StyledTableCell>Varasto ID </StyledTableCell>
                         <StyledTableCell align="right">Nimi</StyledTableCell>
                         <StyledTableCell align="right">Osoite</StyledTableCell>
-                        <StyledTableCell align="right">Käytössä</StyledTableCell>
+                        <StyledTableCell style={{ minWidth: 130 }} align="right">
+                            Käyttötila
+                        </StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
