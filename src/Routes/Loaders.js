@@ -5,13 +5,13 @@ import axios from 'axios';
  */
 const rootLoader = async () => {
     const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: shoppingCart }] =
-        await Promise.all(
+        await Promise.all([
             axios.get('http://localhost:8000/contacts/'),
             axios.get('http://localhost:8000/colors/'),
             axios.get('http://localhost:8000/categories/'),
             axios.get('http://localhost:8000/bulletins/'),
-            axios.get('http://localhost:8000/shopping_carts/')
-        );
+            axios.get('http://localhost:8000/shopping_carts/'),
+        ]);
     return { contacts, colors, categories, bulletins, shoppingCart };
 };
 
