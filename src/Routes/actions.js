@@ -6,6 +6,7 @@ import axios from 'axios';
 const userSignupAction = async ({ request }) => {
     const formData = await request.formData();
     const response = await axios.post('http://localhost:8000/users/create/', {
+        user_name: formData.get('firstname'),
         first_name: formData.get('firstname'),
         last_name: formData.get('lastname'),
         email: formData.get('email'),
@@ -14,8 +15,10 @@ const userSignupAction = async ({ request }) => {
         joint_user: formData.get('jointuser'),
         contact_person: formData.get('contactperson'),
     });
-    console.log(response);
-    return null;
+    if (response.status === 201) {
+        return { type: 'create', status: true };
+    }
+    return { type: 'create', status: false };
 };
 
 /**
