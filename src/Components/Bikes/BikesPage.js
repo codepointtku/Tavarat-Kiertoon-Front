@@ -1,6 +1,6 @@
 import { Autocomplete, Box, Button, Card, Container, Modal, Stack, TextField, Typography } from '@mui/material';
+import { DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { format, isWeekend, max, min, parseISO } from 'date-fns';
 import { fi } from 'date-fns/locale';
@@ -43,6 +43,8 @@ export default function BikesPage() {
             startDate: null,
             endDate: null,
             selectedBikes: {},
+            contactPersonName: '',
+            contactPersonPhoneNumber: '',
             deliveryAddress: '',
             storageType: null,
             rentalInfo: '',
@@ -159,7 +161,7 @@ export default function BikesPage() {
                                                     const newSelectedBikes = { ...value };
                                                     delete newSelectedBikes[bike.id];
                                                     onChange(newSelectedBikes);
-                                                } else if (newValue >= 0 && newValue <= bike.available)
+                                                } else if (newValue >= 0 && newValue <= bike.max_available)
                                                     onChange({
                                                         ...value,
                                                         [bike.id]: Number(newValue),
@@ -195,13 +197,14 @@ export default function BikesPage() {
                             Vuokraustiedot
                         </Typography>
                         <Stack gap={2}>
+                            <Typography variant="caption">8-13 välissä toimitus ja nouto, saa valita</Typography>
                             <Controller
                                 name="startDate"
                                 control={control}
                                 rules={{ required: true }}
                                 render={({ field: { onChange, onBlur, value } }) => (
                                     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
-                                        <DatePicker
+                                        <DateTimePicker
                                             label="Aloituspäivä"
                                             value={value}
                                             onChange={onChange}
@@ -215,8 +218,11 @@ export default function BikesPage() {
                                             shouldDisableDate={(day) => isWeekend(day)}
                                             minDate={minDate}
                                             maxDate={watch('endDate') ? min([maxDate, watch('endDate')]) : maxDate}
-                                            views={['month', 'day']}
+                                            views={['month', 'day', 'hours', 'minutes']}
                                             openTo="month"
+                                            minutesStep={5}
+                                            minTime={new Date(0, 0, 0, 8)}
+                                            maxTime={new Date(0, 0, 0, 13)}
                                         />
                                     </LocalizationProvider>
                                 )}
@@ -227,7 +233,7 @@ export default function BikesPage() {
                                 rules={{ required: true }}
                                 render={({ field: { onChange, onBlur, value } }) => (
                                     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
-                                        <DatePicker
+                                        <DateTimePicker
                                             label="Loppumispäivä"
                                             value={value}
                                             onChange={onChange}
@@ -241,8 +247,11 @@ export default function BikesPage() {
                                             shouldDisableDate={(day) => isWeekend(day)}
                                             minDate={watch('startDate') ? max([minDate, watch('startDate')]) : minDate}
                                             maxDate={maxDate}
-                                            views={['month', 'day']}
+                                            views={['month', 'day', 'hours', 'minutes']}
                                             openTo="month"
+                                            minutesStep={5}
+                                            minTime={new Date(0, 0, 0, 8)}
+                                            maxTime={new Date(0, 0, 0, 13)}
                                         />
                                     </LocalizationProvider>
                                 )}
@@ -295,17 +304,15 @@ export default function BikesPage() {
                             p: 3,
                         }}
                     >
-                        <Stack gap={4}>
+                        <Stack gap={3}>
                             <Typography variant="h6" align="center">
                                 Vuokrausvahvistus
                             </Typography>
                             {!!watch('startDate') && !!watch('endDate') && (
-                                <Stack gap={2}>
-                                    <Typography>{`${format(watch('startDate'), 'd.M.yyyy')} - ${format(
-                                        watch('endDate'),
-                                        'd.M.yyyy'
-                                    )}`}</Typography>
-                                </Stack>
+                                <Typography>{`${format(watch('startDate'), 'd.M.yyyy')} - ${format(
+                                    watch('endDate'),
+                                    'd.M.yyyy'
+                                )}`}</Typography>
                             )}
                             <Box>
                                 {Object.entries(watch('selectedBikes')).map(
@@ -317,6 +324,41 @@ export default function BikesPage() {
                                         )
                                 )}
                             </Box>
+                            <Stack gap={1}>
+                                <Typography variant="caption">Vastaanottajan yhteystiedot</Typography>
+                                <Stack flexDirection="row">
+                                    <Controller
+                                        name="contactPersonName"
+                                        control={control}
+                                        rules={{ required: true }}
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <TextField
+                                                label="Nimi"
+                                                onChange={onChange}
+                                                value={value}
+                                                onBlur={onBlur}
+                                                sx={{ width: 250 }}
+                                                size="small"
+                                            />
+                                        )}
+                                    />
+                                    <Controller
+                                        name="contactPersonPhoneNumber"
+                                        control={control}
+                                        rules={{ required: true }}
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <TextField
+                                                label="Puhelinnumero"
+                                                onChange={onChange}
+                                                value={value}
+                                                onBlur={onBlur}
+                                                sx={{ width: 250 }}
+                                                size="small"
+                                            />
+                                        )}
+                                    />
+                                </Stack>
+                            </Stack>
                             <Controller
                                 name="deliveryAddress"
                                 control={control}
@@ -328,6 +370,7 @@ export default function BikesPage() {
                                         value={value}
                                         onBlur={onBlur}
                                         sx={{ width: 250 }}
+                                        size="small"
                                     />
                                 )}
                             />
@@ -356,6 +399,7 @@ export default function BikesPage() {
                                             value={value}
                                             onChange={(_, option) => onChange(option)}
                                             onBlur={onBlur}
+                                            size="small"
                                         />
                                     )}
                                 />
@@ -375,6 +419,7 @@ export default function BikesPage() {
                                             value={value}
                                             onBlur={onBlur}
                                             sx={{ width: 250 }}
+                                            size="small"
                                         />
                                     )}
                                 />

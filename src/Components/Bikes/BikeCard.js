@@ -43,21 +43,17 @@ export default function BikeCard({
                 sx={{ justifyContent: 'space-between', display: 'flex', flexDirection: 'column', alignItems: 'end' }}
             >
                 <Stack justifyContent="space-between" height="100%">
-                    {bike.available ? (
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mr: 5 }}>
-                            <input
-                                type="number"
-                                id="amount"
-                                name="amount"
-                                value={amountSelected}
-                                onChange={onChange}
-                                min={0}
-                                max={bike.available}
-                            />
-                        </Box>
-                    ) : (
-                        <Box sx={{ flex: 1 }} />
-                    )}
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mr: 5 }}>
+                        <input
+                            type="number"
+                            id="amount"
+                            name="amount"
+                            value={amountSelected}
+                            onChange={onChange}
+                            min={0}
+                            max={bike.max_available}
+                        />
+                    </Box>
                     <BikeAvailability
                         dateInfo={dateInfo}
                         maxAvailable={bike.max_available}
@@ -111,7 +107,6 @@ BikeCard.propTypes = {
         id: PropTypes.number,
         name: PropTypes.string,
         description: PropTypes.string,
-        available: PropTypes.number,
         max_available: PropTypes.number,
         taken: PropTypes.objectOf(PropTypes.number),
         size: PropTypes.string,

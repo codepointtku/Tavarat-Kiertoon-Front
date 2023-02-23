@@ -337,7 +337,7 @@ function Routes() {
                             path: '/bikes',
                             element: <BikesPage />,
                             loader: async () => {
-                                const { data } = await axios.get('http://localhost:8000/bikes');
+                                const { data } = await axios.get('http://localhost:3001/bikes');
                                 return data;
                             },
                         },
