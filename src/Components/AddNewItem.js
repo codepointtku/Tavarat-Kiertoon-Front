@@ -40,14 +40,15 @@ function AddNewItem({ item, setItem, uploadFile, uploadPicture }) {
             available: true,
             price: 999.0,
             shelf_id: 1,
+            group_id: 1,
             measurements: 'wrdrqwf',
             weight: 3.0,
             category: 1,
             storages: 1,
-            color: 1,
-            pictures: [1],
+            color: 5,
+            amount: 2,
         };
-        const response = await axios.post('http://localhost:8000/products/', [testItem, 1]);
+        const response = await axios.post('http://localhost:8000/products/', testItem, { headers: { 'content-type': 'multipart/form-data' } });
         console.log(response.data);
     };
 

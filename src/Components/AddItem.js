@@ -65,13 +65,7 @@ function AddItem() {
 
         console.log(files);
 
-        const uploads = await Promise.all(
-            Object.values(files).map(async (file) => {
-                const iniDict = {};
-                iniDict[file.name] = await imageCompression(file, options);
-                return iniDict;
-            })
-        );
+        const uploads = await Promise.all(Object.values(files).map(async (file) => imageCompression(file, options)));
 
         console.log(uploads);
 
