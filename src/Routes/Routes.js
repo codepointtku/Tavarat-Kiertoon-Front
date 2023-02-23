@@ -49,7 +49,7 @@ import {
     userSignupLoader,
 } from './loaders';
 
-import { userSignupAction, contactAction, orderEditAction, storageEditAction } from './actions';
+import { userSignupAction, contactAction, orderEditAction, storageEditAction, userLoginAction } from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
 import GuideCommon from '../Components/Instructions/GuideCommon';
@@ -66,6 +66,7 @@ function Routes() {
             errorElement: <ErrorBoundary />,
             id: 'root',
             loader: rootLoader,
+            action: userLoginAction,
             children: [
                 {
                     path: '/',
