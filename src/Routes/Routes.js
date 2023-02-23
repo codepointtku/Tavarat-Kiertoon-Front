@@ -51,7 +51,8 @@ import {
     storageEditLoader,
     userEditLoader,
     usersListLoader,
-} from './Loaders';
+    userSignupLoader,
+} from './loaders';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
 import GuideCommon from '../Components/Instructions/GuideCommon';
@@ -156,10 +157,30 @@ function Routes() {
                         {
                             path: '/rekisteroidy/kayttaja',
                             element: <SignupPage isLocationForm={false} />,
+                            loader: userSignupLoader,
+                            action: async ({ request }) => {
+                                const formData = await request.formData();
+                                const response = await axios.post('http://localhost:8000/users/create/', {
+                                    password: formData.get('password'),
+                                    email: formData.get('email'),
+                                });
+                                console.log(response);
+                                return null;
+                            },
                         },
                         {
                             path: '/rekisteroidy/toimipaikka',
                             element: <SignupPage isLocationForm />,
+                            loader: userSignupLoader,
+                            action: async ({ request }) => {
+                                const formData = await request.formData();
+                                const response = await axios.post('http://localhost:8000/users/create/', {
+                                    password: formData.get('password'),
+                                    email: formData.get('email'),
+                                });
+                                console.log(response);
+                                return null;
+                            },
                         },
                         {
                             path: '/otayhteytta',
