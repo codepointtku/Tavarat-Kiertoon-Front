@@ -27,7 +27,7 @@ function Storages({ storages }) {
                             <TableCell>{storage.id}</TableCell>
                             <TableCell align="right">{storage.name}</TableCell>
                             <TableCell align="right">{storage.address}</TableCell>
-                            <TableCell align="right">{storage.in_use.toString()}</TableCell>
+                            <TableCell align="right">{storage.in_use ? 'käytössä' : 'ei käytössä'}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
