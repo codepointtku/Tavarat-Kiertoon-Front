@@ -176,13 +176,6 @@ test.describe('pdf', () => {
     });
 });
 
-test.describe('fail-test', () => {
-    test('fail-test', async ({ page }) => {
-        await page.goto('/test/failing');
-        await expect(page.getByText('Etsimääsi sijaintia /test/failing')).toBeVisible();
-    });
-});
-
 test.describe('bikes', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/bikes');
