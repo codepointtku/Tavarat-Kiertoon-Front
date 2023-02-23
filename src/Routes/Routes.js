@@ -49,7 +49,7 @@ import {
     rootLoader,
     storagesListLoader,
     userEditLoader,
-    usersListLoader
+    usersListLoader,
 } from './Loaders';
 
 function Routes() {
@@ -68,7 +68,7 @@ function Routes() {
                         {
                             index: true,
                             element: <ProductList />,
-                            loader: productListLoader
+                            loader: productListLoader,
                         },
                         {
                             // Redirect if no id is given
@@ -122,7 +122,7 @@ function Routes() {
                                 return response.data || null;
                             },
                         },
-                    ]
+                    ],
                 },
                 {
                     path: 'varasto',
