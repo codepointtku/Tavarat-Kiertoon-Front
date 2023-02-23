@@ -1,15 +1,12 @@
-import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
-
-import DefaultView from './DefaultView';
-import StorageView from './StorageView';
-import AdminView from './AdminView';
 
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
-import Base from '../Layouts/Base';
-import Storage from '../Layouts/Storage';
-import Admin from '../Layouts/Admin';
+import BaseLayout from '../Layouts/BaseLayout';
+import StorageLayout from '../Layouts/StorageLayout';
+import AdminLayout from '../Layouts/AdminLayout';
+import RootLayout from '../Layouts/RootLayout';
 
 import OrdersList from '../Components/OrdersList';
 import OrderView from '../Components/OrderView';
@@ -65,32 +62,23 @@ function Routes() {
     const router = createBrowserRouter([
         {
             path: '/',
-            element: <Outlet />,
-            id: 'root',
+            element: <RootLayout />,
             errorElement: <ErrorBoundary />,
+            id: 'root',
             loader: rootLoader,
             children: [
                 {
                     path: '/',
-                    element: (
-                        <Base>
-                            <DefaultView />
-                        </Base>
-                    ),
-                    errorElement: (
-                        <Base>
-                            <ErrorBoundary />
-                        </Base>
-                    ),
+                    element: <BaseLayout />,
                     children: [
                         {
-                            path: '/',
+                            index: true,
                             element: <ProductList />,
                             loader: productListLoader,
                         },
                         {
                             // Redirect if no id is given
-                            path: '/tuotteet',
+                            path: 'tuotteet',
                             element: <Navigate to="/" />,
                         },
                         {
@@ -135,23 +123,23 @@ function Routes() {
                             element: <GuideBikes />,
                         },
                         {
-                            path: '/toimitus',
+                            path: 'toimitus',
                             element: <DeliveryView />,
                         },
                         {
-                            path: '/taustatietoa',
+                            path: 'taustatietoa',
                             element: <BackgroundInfo />,
                         },
                         {
-                            path: '/stats',
+                            path: 'stats',
                             element: <StatsPage />,
                         },
                         {
-                            path: '/tiedotteet',
+                            path: 'tiedotteet',
                             element: <Announcements />,
                         },
                         {
-                            path: '/rekisteroidy',
+                            path: 'rekisteroidy',
                             element: <SignupLandingPage />,
                         },
                         {
@@ -167,57 +155,52 @@ function Routes() {
                             action: userSignupAction,
                         },
                         {
-                            path: '/otayhteytta',
+                            path: 'otayhteytta',
                             element: <ContactPage />,
                             action: contactAction,
                         },
                     ],
                 },
-
                 {
-                    path: '/varasto',
+                    path: 'varasto',
                     element: (
                         <ThemeProvider theme={storageTheme}>
-                            <Storage>
-                                <StorageView />
-                            </Storage>
+                            <StorageLayout />
                         </ThemeProvider>
                     ),
                     errorElement: (
                         <ThemeProvider theme={storageTheme}>
-                            <Storage>
-                                <ErrorBoundary />
-                            </Storage>
+                            <StorageLayout />
                         </ThemeProvider>
                     ),
                     children: [
                         {
-                            path: '/varasto/:num/:view',
+                            path: ':num/:view',
                             element: <OrdersList />,
                             loader: ordersListLoader,
                         },
                         {
-                            path: '/varasto/tilaus/:id',
+                            path: 'tilaus/:id',
                             element: <OrderView />,
                             loader: orderViewLoader,
                         },
                         {
-                            path: '/varasto/tilaus/:id/muokkaa',
+                            path: 'tilaus/:id/muokkaa',
                             element: <OrderEdit />,
                             action: orderEditAction,
                             loader: orderEditLoader,
                         },
                         {
-                            path: '/varasto/luo',
+                            path: 'luo',
                             element: <AddItem />,
                             loader: addItemLoader,
                         },
                         {
-                            path: '/varasto/koodinlukija',
+                            path: 'koodinlukija',
                             element: <QrScanner />,
                         },
                         {
-                            path: '/varasto/pdf/:id',
+                            path: 'pdf/:id',
                             element: <PDFView />,
                             loader: pdfViewLoader,
                         },
@@ -227,42 +210,38 @@ function Routes() {
                     path: '/admin',
                     element: (
                         <ThemeProvider theme={adminTheme}>
-                            <Admin>
-                                <AdminView />
-                            </Admin>
+                            <AdminLayout />
                         </ThemeProvider>
                     ),
                     errorElement: (
                         <ThemeProvider theme={adminTheme}>
-                            <Admin>
-                                <ErrorBoundary />
-                            </Admin>
+                            <AdminLayout />
                         </ThemeProvider>
                     ),
                     children: [
                         {
-                            path: '/admin',
+                            index: true,
                             element: <StoragesList />,
                             loader: storagesListLoader,
                         },
                         {
-                            path: '/admin/users',
+                            path: 'users',
                             element: <UsersList />,
                             loader: usersListLoader,
                         },
                         {
-                            path: '/admin/users/:id',
+                            path: 'users/:id',
                             element: <UserEdit />,
                             loader: userEditLoader,
                         },
                         {
-                            path: '/admin/varastot/:id',
+                            path: 'varastot/:id',
                             element: <StorageEdit />,
                             action: storageEditAction,
                             loader: storageEditLoader,
                         },
                         {
-                            path: '/admin/hakemukset',
+                            path: 'hakemukset',
                             element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
                         },
                     ],
