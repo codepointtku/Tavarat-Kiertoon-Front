@@ -147,6 +147,14 @@ const userEditLoader = async ({ params }) => {
 };
 
 /**
+ * Get all bikes
+ */
+const bikesListLoader = async () => {
+    const { data } = await axios.get('http://localhost:8000/bikes');
+    return data;
+};
+
+/**
  * returns null load
  */
 const userSignupLoader = async () => null;
@@ -165,4 +173,5 @@ export {
     usersListLoader,
     userEditLoader,
     userSignupLoader,
+    bikesListLoader,
 };
