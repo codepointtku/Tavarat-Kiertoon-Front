@@ -3,20 +3,21 @@ import PropTypes from 'prop-types';
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import { Button } from '@mui/material';
 
-function AddToCartButton({ size, id, productName }) {
-    const { cart } = useRouteLoaderData('base');
+function AddToCartButton({ size, id, name }) {
+    const { cartItems } = useRouteLoaderData('root');
     const submit = useSubmit();
-    const cartItems = cart?.products?.map((item) => item.productName).filter((name) => name === productName);
 
     const handleClickAddToCartBtn = () => {
         submit(
-            { id, productName },
+            { id, name },
             {
                 method: 'post',
                 action: '/',
             }
         );
     };
+
+    console.log(id, name);
 
     return (
         <Button
@@ -34,7 +35,7 @@ function AddToCartButton({ size, id, productName }) {
 AddToCartButton.propTypes = {
     size: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
-    productName: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
 };
 
 export default AddToCartButton;

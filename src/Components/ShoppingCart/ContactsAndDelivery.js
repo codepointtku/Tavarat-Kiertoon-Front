@@ -18,7 +18,7 @@ function ContactsAndDelivery() {
         },
     });
 
-    const onSubmit = (data, e) => console.log(data, e);
+    const onSubmit = (data) => console.log(data);
     // console.log(errors);
     console.log(formState);
 
@@ -42,9 +42,6 @@ function ContactsAndDelivery() {
                 <Grid item>
                     <TextField label="Puh. numero" variant="outlined" {...register('phoneNumber')} />
                 </Grid>
-                <Grid item>
-                    <TextField label="Toimipaikkakoodi" variant="outlined" {...register('locationCode')} />
-                </Grid>
             </Grid>
             <Typography variant="h4" sx={{ marginTop: 5, marginBottom: 2, color: 'primary.main' }}>
                 Toimitus
@@ -57,6 +54,7 @@ function ContactsAndDelivery() {
                     <TextField label="Toimitustapa" variant="outlined" {...register('deliveryMethod')} />
                 </Grid>
             </Grid>
+            <button type="submit">SUBMIT</button>
             <CartButtons
                 backUrl="/ostoskori"
                 forwardUrl="/ostoskori/vaihe3"

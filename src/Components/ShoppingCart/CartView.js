@@ -8,7 +8,7 @@ import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import CartButtons from './CartButtons';
 
 function CartView() {
-    const { cartItems } = useRouteLoaderData('base');
+    const { cartItems } = useRouteLoaderData('root');
     const {
         handleSubmit,
         formState: { errors },

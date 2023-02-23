@@ -8,9 +8,27 @@ export const rootLoader = async () => {
     const { data: colors } = await axios.get('http://localhost:8000/colors/');
     const { data: categories } = await axios.get('http://localhost:8000/categories/');
     const { data: bulletins } = await axios.get('http://localhost:8000/bulletins/');
-    const { data: shoppingCart } = await axios.get('http://localhost:8000/shopping_carts/');
+    const { data: cart } = await axios.get('http://localhost:8000/shopping_carts/8');
 
-    return { contacts, colors, categories, bulletins, shoppingCart };
+    /* eslint-disable no-shadow */
+
+    const cartItems = cart.products.reduce((cartItems, product) => {
+        let cartItem = cartItems.find((cartItem) => cartItem.group_id === product.group_id);
+
+        if (!cartItem) {
+            cartItem = {
+                ...product,
+                count: 0,
+            };
+            cartItems.push(cartItem);
+        }
+
+        cartItem.count += 1;
+
+        return cartItems;
+    }, []);
+
+    return { contacts, colors, categories, bulletins, cart, cartItems };
 };
 
 /**
@@ -18,8 +36,8 @@ export const rootLoader = async () => {
  */
 export const productListLoader = async () => {
     try {
-        const { data } = await axios.get('http://localhost:8000/products/');
-        return data.results;
+        const { data: products } = await axios.get('http://localhost:8000/products/');
+        return { products };
     } catch {
         return null;
     }

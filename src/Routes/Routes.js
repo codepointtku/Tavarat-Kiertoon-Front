@@ -89,8 +89,10 @@ function Routes() {
                         {
                             path: '/',
                             element: <ProductList />,
+                            loader: productListLoader,
                             action: async ({ request }) => {
                                 const formData = await request.formData();
+                                console.log(request.formData);
                                 const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
                                 const products = formData.get('products');
                                 if (request.method === 'POST') {
@@ -100,7 +102,6 @@ function Routes() {
                                 }
                                 return null;
                             },
-                            loader: productListLoader,
                         },
                         {
                             // Redirect if no id is given

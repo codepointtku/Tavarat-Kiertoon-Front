@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useLoaderData, Link } from 'react-router-dom';
+import { useNavigate, useRouteLoaderData, Link } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 
@@ -119,7 +119,7 @@ function Drawer({ currentOpenDrawer, name, children }) {
 function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState(null);
     const navigate = useNavigate();
-    const { cart } = useLoaderData();
+    const { cart } = useRouteLoaderData('root');
 
     // cart?.products?.map((items) => {
     //     cartItems = products.results.filter((result) => items.products.map((productId) => productId === result.id));

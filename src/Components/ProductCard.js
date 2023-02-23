@@ -26,7 +26,7 @@ function ProductCard({ productName, id }) {
                     >
                         Lisää tietoa
                     </Button>
-                    <AddToCartButton size="small" id={id} productName={productName} />
+                    <AddToCartButton size="small" id={id} name={productName} />
                 </CardActions>
             </Card>
         </Box>
