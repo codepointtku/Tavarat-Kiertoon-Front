@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useLoaderData, useActionData } from 'react-router';
 import { useSubmit } from 'react-router-dom';
-import { TextField, Box, Button, MenuItem, Grid, Container, Alert } from '@mui/material';
+import { TextField, Box, Button, MenuItem, Grid, Container } from '@mui/material';
+import AlertBox from './AlertBox';
 
 function StorageEdit() {
     const storageData = useLoaderData();
@@ -136,10 +137,10 @@ function StorageEdit() {
             </Box>
 
             {responseStatus?.type === 'update' && !responseStatus?.status && (
-                <Alert severity="error">Varaston tallennus epäonnistui! Lataa sivu uudestaan.</Alert>
+                <AlertBox text="Varaston tallennus epäonnistui! Lataa sivu uudestaan." status="error" />
             )}
             {responseStatus?.type === 'update' && responseStatus?.status && (
-                <Alert severity="success">Varaston tallennus onnistui</Alert>
+                <AlertBox text="Varaston tallennus onnistui" status="success" />
             )}
 
             <h5 align="center">
