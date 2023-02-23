@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 /**
- * create new user
+ * creates new user
  */
 const userSignupAction = async ({ request }) => {
     const formData = await request.formData();
@@ -18,6 +18,9 @@ const userSignupAction = async ({ request }) => {
     return null;
 };
 
+/**
+ * sends contact form to back-end
+ */
 const contactAction = async ({ request }) => {
     const formData = await request.formData();
     const response = await axios.post('http://localhost:8000/contact_forms/', formData);
@@ -25,6 +28,9 @@ const contactAction = async ({ request }) => {
     return response.data || null;
 };
 
+/**
+ * removes items from the order and edits order data
+ */
 const orderEditAction = async ({ params, request }) => {
     const formData = await request.formData();
     // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
@@ -59,6 +65,9 @@ const orderEditAction = async ({ params, request }) => {
     return null;
 };
 
+/**
+ * edits storage information
+ */
 const storageEditAction = async ({ params, request }) => {
     const formData = await request.formData();
     if (request.method === 'POST') {
