@@ -4,12 +4,14 @@ import axios from 'axios';
  * Get different defaults for the site
  */
 const rootLoader = async () => {
-    const { data: contacts } = await axios.get('http://localhost:8000/contacts/');
-    const { data: colors } = await axios.get('http://localhost:8000/colors/');
-    const { data: categories } = await axios.get('http://localhost:8000/categories/');
-    const { data: bulletins } = await axios.get('http://localhost:8000/bulletins/');
-    const { data: shoppingCart } = await axios.get('http://localhost:8000/shopping_carts/');
-
+    const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: shoppingCart }] =
+        await Promise.all(
+            axios.get('http://localhost:8000/contacts/'),
+            axios.get('http://localhost:8000/colors/'),
+            axios.get('http://localhost:8000/categories/'),
+            axios.get('http://localhost:8000/bulletins/'),
+            axios.get('http://localhost:8000/shopping_carts/')
+        );
     return { contacts, colors, categories, bulletins, shoppingCart };
 };
 
