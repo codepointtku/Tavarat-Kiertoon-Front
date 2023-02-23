@@ -24,7 +24,7 @@ import UserEdit from '../Components/UserEdit';
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
 import Announcements from '../Components/Announcements';
-import FaqView from '../Components/FaqView';
+
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
@@ -48,9 +48,17 @@ import {
     productListLoader,
     rootLoader,
     storagesListLoader,
+    storageEditLoader,
     userEditLoader,
     usersListLoader,
 } from './Loaders';
+
+import InstructionsPage from '../Components/Instructions/InstructionsPage';
+import GuideCommon from '../Components/Instructions/GuideCommon';
+import GuideAccount from '../Components/Instructions/GuideAccount';
+import GuideOrdering from '../Components/Instructions/GuideOrdering';
+import GuideShipping from '../Components/Instructions/GuideShipping';
+import GuideBikes from '../Components/Instructions/GuideBikes';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -81,8 +89,40 @@ function Routes() {
                             loader: productDetailsLoader,
                         },
                         {
-                            path: 'faq',
-                            element: <FaqView />,
+                            path: '/ohjeet',
+                            element: <InstructionsPage />,
+                        },
+                        {
+                            path: '/ohjeet/ukk',
+                            element: <GuideCommon />,
+                        },
+                        {
+                            path: '/ohjeet/tili',
+                            element: <GuideAccount />,
+                        },
+                        {
+                            path: '/ohjeet/tili/:value',
+                            element: <GuideAccount />,
+                        },
+                        {
+                            path: '/ohjeet/tilaus',
+                            element: <GuideOrdering />,
+                        },
+                        {
+                            path: '/ohjeet/tilaus/:value',
+                            element: <GuideOrdering />,
+                        },
+                        {
+                            path: '/ohjeet/nouto',
+                            element: <GuideShipping />,
+                        },
+                        {
+                            path: '/ohjeet/pyorat',
+                            element: <GuideBikes />,
+                        },
+                        {
+                            path: '/ohjeet/pyorat/:value',
+                            element: <GuideBikes />,
                         },
                         {
                             path: 'toimitus',
@@ -235,6 +275,27 @@ function Routes() {
                         {
                             path: 'varastot/:id',
                             element: <StorageEdit />,
+                            action: async ({ params, request }) => {
+                                const formData = await request.formData();
+                                if (request.method === 'POST') {
+                                    if (formData.get('type') === 'put') {
+                                        const response = await axios.put(
+                                            `http://localhost:8000/storages/${params.id}`,
+                                            {
+                                                address: formData.get('address'),
+                                                name: formData.get('name'),
+                                                in_use: formData.get('in_use'),
+                                            }
+                                        );
+                                        if (response.status === 200) {
+                                            return { type: 'update', status: true };
+                                        }
+                                        return { type: 'update', status: false };
+                                    }
+                                }
+                                return null;
+                            },
+                            loader: storageEditLoader,
                         },
                         {
                             path: 'hakemukset',
