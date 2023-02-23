@@ -89,4 +89,21 @@ const storageEditAction = async ({ params, request }) => {
     return null;
 };
 
-export { userSignupAction, contactAction, orderEditAction, storageEditAction };
+/**
+ * logins user
+ */
+const userLoginAction = async ({ request }) => {
+    const formData = await request.formData();
+    const response = await axios.post('http://localhost:8000/api/jwt-token/', {
+        email: formData.get('email'),
+        password: formData.get('password'),
+    });
+    if (response.status === 201) {
+        localStorage.setItem('access_token', response.data.access);
+        localStorage.setItem('refresh_token', response.data.refresh);
+        return { type: 'login', status: true };
+    }
+    return { type: 'login', status: false };
+};
+
+export { userSignupAction, contactAction, orderEditAction, storageEditAction, userLoginAction };
