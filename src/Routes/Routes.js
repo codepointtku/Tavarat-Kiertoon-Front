@@ -24,7 +24,7 @@ import UserEdit from '../Components/UserEdit';
 import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
 import Announcements from '../Components/Announcements';
-import FaqView from '../Components/FaqView';
+
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
@@ -42,6 +42,27 @@ import SignupPage from '../Components/Signup/SignupPage';
 import ContactPage from '../Components/ContactPage';
 
 import PDFView from '../Components/PDFView';
+import {
+    addItemLoader,
+    orderEditLoader,
+    ordersListLoader,
+    orderViewLoader,
+    pdfViewLoader,
+    productDetailsLoader,
+    productListLoader,
+    rootLoader,
+    storagesListLoader,
+    storageEditLoader,
+    userEditLoader,
+    usersListLoader,
+} from './Loaders';
+
+import InstructionsPage from '../Components/Instructions/InstructionsPage';
+import GuideCommon from '../Components/Instructions/GuideCommon';
+import GuideAccount from '../Components/Instructions/GuideAccount';
+import GuideOrdering from '../Components/Instructions/GuideOrdering';
+import GuideShipping from '../Components/Instructions/GuideShipping';
+import GuideBikes from '../Components/Instructions/GuideBikes';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -50,30 +71,7 @@ function Routes() {
             element: <Outlet />,
             id: 'root',
             errorElement: <ErrorBoundary />,
-            loader: async () => {
-                const { data: contacts } = await axios.get('http://localhost:8000/contacts/');
-                const { data: colors } = await axios.get('http://localhost:8000/colors/');
-                const { data: categories } = await axios.get('http://localhost:8000/categories/');
-                const { data: bulletins } = await axios.get('http://localhost:8000/bulletins/');
-                const { data: cart } = await axios.get('http://localhost:8000/shopping_carts/8');
-                /* eslint-disable no-shadow */
-                const cartItems = cart.products.reduce((cartItems, product) => {
-                    let cartItem = cartItems.find((cartItem) => cartItem.group_id === product.group_id);
-
-                    if (!cartItem) {
-                        cartItem = {
-                            ...product,
-                            count: 0,
-                        };
-                        cartItems.push(cartItem);
-                    }
-
-                    cartItem.count += 1;
-
-                    return cartItems;
-                }, []);
-                return { contacts, cart, colors, categories, bulletins, cartItems };
-            },
+            loader: rootLoader,
             children: [
                 {
                     path: '/',
@@ -102,14 +100,7 @@ function Routes() {
                                 }
                                 return null;
                             },
-                            loader: async () => {
-                                try {
-                                    const { data } = await axios.get('http://localhost:8000/products/');
-                                    return data.results;
-                                } catch {
-                                    return null;
-                                }
-                            },
+                            loader: productListLoader,
                         },
                         {
                             // Redirect if no id is given
@@ -119,18 +110,43 @@ function Routes() {
                         {
                             path: '/tuotteet/:id',
                             element: <ProductDetails />,
-                            loader: async ({ params }) => {
-                                try {
-                                    const { data } = await axios.get(`http://localhost:8000/products/${params.id}`);
-                                    return data;
-                                } catch {
-                                    return null;
-                                }
-                            },
+                            loader: productDetailsLoader,
                         },
                         {
-                            path: '/faq',
-                            element: <FaqView />,
+                            path: '/ohjeet',
+                            element: <InstructionsPage />,
+                        },
+                        {
+                            path: '/ohjeet/ukk',
+                            element: <GuideCommon />,
+                        },
+                        {
+                            path: '/ohjeet/tili',
+                            element: <GuideAccount />,
+                        },
+                        {
+                            path: '/ohjeet/tili/:value',
+                            element: <GuideAccount />,
+                        },
+                        {
+                            path: '/ohjeet/tilaus',
+                            element: <GuideOrdering />,
+                        },
+                        {
+                            path: '/ohjeet/tilaus/:value',
+                            element: <GuideOrdering />,
+                        },
+                        {
+                            path: '/ohjeet/nouto',
+                            element: <GuideShipping />,
+                        },
+                        {
+                            path: '/ohjeet/pyorat',
+                            element: <GuideBikes />,
+                        },
+                        {
+                            path: '/ohjeet/pyorat/:value',
+                            element: <GuideBikes />,
                         },
                         {
                             path: '/toimitus',
@@ -202,55 +218,12 @@ function Routes() {
                         {
                             path: '/varasto/:num/:view',
                             element: <OrdersList />,
-                            loader: async ({ params }) => {
-                                const { data } = await axios.get('http://localhost:8000/orders');
-                                // num will tell back-end which entries to bring
-                                // view is order status, unless archived can bring all?
-                                // or will be replaced into the back-end later?
-                                const statuses = {
-                                    waiting: 2,
-                                    delivery: 1,
-                                    finished: 0,
-                                };
-                                statuses[params.view] = 10;
-                                data.sort((a, b) => {
-                                    if (statuses[a.status] > statuses[b.status]) {
-                                        return -1;
-                                    }
-                                    if (a.status === b.status) {
-                                        if (a.id > b.id) {
-                                            return -1;
-                                        }
-                                    }
-                                    return 1;
-                                });
-
-                                if (data) {
-                                    return data;
-                                }
-                                return null;
-                            },
+                            loader: ordersListLoader,
                         },
                         {
                             path: '/varasto/tilaus/:id',
                             element: <OrderView />,
-                            loader: async ({ params }) => {
-                                const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
-                                const productFind = async (id) => {
-                                    const product = await axios.get(`http://localhost:8000/products/${id}`);
-                                    return product;
-                                };
-                                const newProducts = await Promise.all(data.products.map((entry) => productFind(entry)));
-
-                                data.products.forEach((entry) => {
-                                    productFind(entry);
-                                });
-                                if (data) {
-                                    data.productList = newProducts;
-                                    return data;
-                                }
-                                return null;
-                            },
+                            loader: orderViewLoader,
                         },
                         {
                             path: '/varasto/tilaus/:id/muokkaa',
@@ -261,53 +234,42 @@ function Routes() {
                                 // const productName = formData.get('productName');
                                 if (request.method === 'POST') {
                                     if (formData.get('type') === 'delete') {
-                                        await axios.delete(`http://localhost:8000/orders/${params.id}`, {
-                                            data: {
-                                                product: Number(formData.get('product')),
-                                                productId: Number(formData.get('productId')),
-                                            },
-                                        });
-                                    } else if (formData.get('type') === 'put') {
-                                        await axios.put(`http://localhost:8000/orders/${params.id}`, {
+                                        const response = await axios.delete(
+                                            `http://localhost:8000/orders/${params.id}`,
+                                            {
+                                                data: {
+                                                    product: Number(formData.get('product')),
+                                                    productId: Number(formData.get('productId')),
+                                                },
+                                            }
+                                        );
+                                        if (response.status === 202) {
+                                            return { type: 'delete', status: true };
+                                        }
+                                        return { type: 'delete', status: false };
+                                    }
+                                    if (formData.get('type') === 'put') {
+                                        const response = await axios.put(`http://localhost:8000/orders/${params.id}`, {
                                             contact: formData.get('contact'),
                                             delivery_address: formData.get('delivery_address'),
                                             status: formData.get('status'),
                                             order_info: formData.get('order_info'),
                                         });
+                                        if (response.status === 200) {
+                                            return { type: 'update', status: true };
+                                        }
+                                        return { type: 'update', status: false };
                                     }
                                 }
 
                                 return null;
                             },
-                            loader: async ({ params }) => {
-                                const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
-                                const productFind = async (id) => {
-                                    const product = await axios.get(`http://localhost:8000/products/${id}`);
-                                    return product.data;
-                                };
-                                const newProducts = await Promise.all(data.products.map((entry) => productFind(entry)));
-
-                                if (data) {
-                                    data.products = newProducts;
-                                    return data;
-                                }
-                                return null;
-                            },
+                            loader: orderEditLoader,
                         },
                         {
                             path: '/varasto/luo',
                             element: <AddItem />,
-                            loader: async () => {
-                                const dataList = [];
-                                let { data } = await axios.get('http://localhost:3001/categories/');
-                                dataList.push(data);
-                                data = await axios.get('http://localhost:3001/storages/');
-                                dataList.push(data.data);
-                                if (dataList) {
-                                    return dataList;
-                                }
-                                return null;
-                            },
+                            loader: addItemLoader,
                         },
                         {
                             path: '/varasto/koodinlukija',
@@ -316,10 +278,7 @@ function Routes() {
                         {
                             path: '/varasto/pdf/:id',
                             element: <PDFView />,
-                            loader: async ({ params }) => {
-                                const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
-                                return data || null;
-                            },
+                            loader: pdfViewLoader,
                         },
                     ],
                 },
@@ -343,30 +302,42 @@ function Routes() {
                         {
                             path: '/admin',
                             element: <StoragesList />,
-                            loader: async () => {
-                                const { data } = await axios.get('http://localhost:8000/storages');
-                                return data;
-                            },
+                            loader: storagesListLoader,
                         },
                         {
                             path: '/admin/users',
                             element: <UsersList />,
-                            loader: async () => {
-                                const { data } = await axios.get('http://localhost:8000/users');
-                                return data;
-                            },
+                            loader: usersListLoader,
                         },
                         {
                             path: '/admin/users/:id',
                             element: <UserEdit />,
-                            loader: async ({ params }) => {
-                                const { data } = await axios.get(`http://localhost:8000/users/${params.id}`);
-                                return data;
-                            },
+                            loader: userEditLoader,
                         },
                         {
                             path: '/admin/varastot/:id',
                             element: <StorageEdit />,
+                            action: async ({ params, request }) => {
+                                const formData = await request.formData();
+                                if (request.method === 'POST') {
+                                    if (formData.get('type') === 'put') {
+                                        const response = await axios.put(
+                                            `http://localhost:8000/storages/${params.id}`,
+                                            {
+                                                address: formData.get('address'),
+                                                name: formData.get('name'),
+                                                in_use: formData.get('in_use'),
+                                            }
+                                        );
+                                        if (response.status === 200) {
+                                            return { type: 'update', status: true };
+                                        }
+                                        return { type: 'update', status: false };
+                                    }
+                                }
+                                return null;
+                            },
+                            loader: storageEditLoader,
                         },
                         {
                             path: '/admin/hakemukset',
