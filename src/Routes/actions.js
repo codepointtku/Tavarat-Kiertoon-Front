@@ -111,7 +111,7 @@ const storageEditAction = async ({ params, request }) => {
  */
 const userLoginAction = async ({ request }) => {
     const formData = await request.formData();
-    const response = await axios.post('http://localhost:8000/api/jwt-token/', {
+    const response = await axios.post('http://localhost:8000/users/login', {
         email: formData.get('email'),
         password: formData.get('password'),
     });
