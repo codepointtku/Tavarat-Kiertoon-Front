@@ -118,6 +118,7 @@ function Drawer({ currentOpenDrawer, name, onClose, children }) {
             onClose={handleClose}
             variant="temporary"
             disableScrollLock
+            slotProps={{ backdrop: { invisible: true } }}
         >
             <DrawerHeader />
             <Divider />
