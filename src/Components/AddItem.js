@@ -61,7 +61,6 @@ function AddItem() {
             maxSizeMB: 1,
             useWebWorker: true,
         };
-        const fd = new FormData();
 
         console.log(files);
 
