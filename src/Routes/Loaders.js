@@ -3,7 +3,7 @@ import axios from 'axios';
 /**
  * Get different defaults for the site
  */
-export const rootLoader = async () => {
+const rootLoader = async () => {
     const { data: contacts } = await axios.get('http://localhost:8000/contacts/');
     const { data: colors } = await axios.get('http://localhost:8000/colors/');
     const { data: categories } = await axios.get('http://localhost:8000/categories/');
@@ -16,7 +16,7 @@ export const rootLoader = async () => {
 /**
  * Get all products
  */
-export const productListLoader = async () => {
+const productListLoader = async () => {
     try {
         const { data } = await axios.get('http://localhost:8000/products/');
         return data.results;
@@ -28,7 +28,7 @@ export const productListLoader = async () => {
 /**
  * Get one product
  */
-export const productDetailsLoader = async ({ params }) => {
+const productDetailsLoader = async ({ params }) => {
     try {
         const { data } = await axios.get(`http://localhost:8000/products/${params.id}`);
         return data;
@@ -40,7 +40,7 @@ export const productDetailsLoader = async ({ params }) => {
 /**
  * Get all orders.
  */
-export const ordersListLoader = async ({ params }) => {
+const ordersListLoader = async ({ params }) => {
     const { data } = await axios.get('http://localhost:8000/orders');
     // num will tell back-end which entries to bring
     // view is order status, unless archived can bring all?
@@ -72,7 +72,7 @@ export const ordersListLoader = async ({ params }) => {
 /**
  * Get one order
  */
-export const orderViewLoader = async ({ params }) => {
+const orderViewLoader = async ({ params }) => {
     const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
     if (data) {
         data.productList = data.products;
@@ -84,7 +84,7 @@ export const orderViewLoader = async ({ params }) => {
 /**
  * Get one order
  */
-export const orderEditLoader = async ({ params }) => {
+const orderEditLoader = async ({ params }) => {
     const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
     if (data) {
         return data;
@@ -95,7 +95,7 @@ export const orderEditLoader = async ({ params }) => {
 /**
  * Get all categories and storages
  */
-export const addItemLoader = async () => {
+const addItemLoader = async () => {
     const dataList = [];
     let { data } = await axios.get('http://localhost:3001/categories/');
     dataList.push(data);
@@ -110,7 +110,7 @@ export const addItemLoader = async () => {
 /**
  * Get one order
  */
-export const pdfViewLoader = async ({ params }) => {
+const pdfViewLoader = async ({ params }) => {
     const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
     return data || null;
 };
@@ -118,12 +118,12 @@ export const pdfViewLoader = async ({ params }) => {
 /**
  * Get all storages
  */
-export const storagesListLoader = async () => {
+const storagesListLoader = async () => {
     const { data } = await axios.get('http://localhost:8000/storages');
     return data;
 };
 
-export const storageEditLoader = async ({ params }) => {
+const storageEditLoader = async ({ params }) => {
     const { data } = await axios.get(`http://localhost:8000/storages/${params.id}`);
     return data;
 };
@@ -131,7 +131,7 @@ export const storageEditLoader = async ({ params }) => {
 /**
  * Get all users
  */
-export const usersListLoader = async () => {
+const usersListLoader = async () => {
     const { data } = await axios.get('http://localhost:8000/users');
     return data;
 };
@@ -139,7 +139,28 @@ export const usersListLoader = async () => {
 /**
  * Get one user
  */
-export const userEditLoader = async ({ params }) => {
+const userEditLoader = async ({ params }) => {
     const { data } = await axios.get(`http://localhost:8000/users/${params.id}`);
     return data;
+};
+
+/**
+ * returns null load
+ */
+const userSignupLoader = async () => null;
+
+export {
+    rootLoader,
+    productListLoader,
+    productDetailsLoader,
+    ordersListLoader,
+    orderViewLoader,
+    orderEditLoader,
+    addItemLoader,
+    pdfViewLoader,
+    storagesListLoader,
+    storageEditLoader,
+    usersListLoader,
+    userEditLoader,
+    userSignupLoader,
 };
