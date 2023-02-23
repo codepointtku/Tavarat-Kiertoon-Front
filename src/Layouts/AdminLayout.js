@@ -1,5 +1,4 @@
 import { Outlet } from 'react-router';
-import Container from '@mui/material/Container';
 import AdminBar from '../Components/AdminBar';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
@@ -14,9 +13,7 @@ function AdminLayout() {
                 <AdminBar />
             </header>
             <main>
-                <Container maxWidth="lg">
-                    <Outlet />
-                </Container>
+                <Outlet />
             </main>
             <footer>
                 <Footer />
