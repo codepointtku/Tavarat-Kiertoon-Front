@@ -197,7 +197,7 @@ export default function BikesPage() {
                             Vuokraustiedot
                         </Typography>
                         <Stack gap={2}>
-                            <Typography variant="caption">8-13 välissä toimitus ja nouto, saa valita</Typography>
+                            <Typography variant="caption">8-13 välissä toimitus ja nouto</Typography>
                             <Controller
                                 name="startDate"
                                 control={control}
