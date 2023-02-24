@@ -47,13 +47,13 @@ function LoginForm() {
         <>
             {responseStatus?.type === 'login' && !responseStatus?.status && (
                 <>
-                    <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" />
+                    <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" timer={3000} />
                     <br />
                 </>
             )}
             {responseStatus?.type === 'login' && responseStatus?.status && (
                 <>
-                    <AlertBox text="Sisäänkirjautuminen onnistui" status="success" />
+                    <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={3000} />
                     <br />
                 </>
             )}
