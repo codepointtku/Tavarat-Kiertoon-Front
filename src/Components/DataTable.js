@@ -38,6 +38,12 @@ function OrderListTable({ page, rowsPerPage, setUsedParams }) {
         }
     }, [page]);
 
+    const dateParse = (value) => {
+        const date = new Date(value);
+        const dateString = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+        return dateString;
+    };
+
     return (
         <TableContainer component={Paper} sx={{ padding: '2rem' }}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -66,7 +72,7 @@ function OrderListTable({ page, rowsPerPage, setUsedParams }) {
                             <StyledTableCell align="right">{row.delivery_address}</StyledTableCell>
                             <StyledTableCell align="right">{row.user}</StyledTableCell>
                             <StyledTableCell align="right">{row.contact}</StyledTableCell>
-                            <StyledTableCell align="right">{row.delivery_date}</StyledTableCell>
+                            <StyledTableCell align="right">{dateParse(row.delivery_date)}</StyledTableCell>
                         </StyledTableRow>
                     ))}
 
