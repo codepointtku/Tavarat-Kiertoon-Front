@@ -36,12 +36,11 @@
     },
     "scripts": {
         "start": "npm ci && react-scripts start",
-        "dev": "npm install && concurrently \"json-server -p3001 --watch productdb.json\" \"react-scripts start\"",
+        "dev": "npm install && react-scripts start",
         "build": "react-scripts build",
         "test": "playwright test",
         "eject": "react-scripts eject",
-        "pretty": "prettier --write .",
-        "server": "npm install && json-server -p3001 --watch productdb.json"
+        "pretty": "prettier --write ."
     },
     "eslintConfig": {
         "extends": [
