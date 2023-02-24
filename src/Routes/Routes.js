@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
 import storageTheme from '../Themes/storageTheme';
@@ -86,50 +86,68 @@ function Routes() {
                             loader: productListLoader,
                         },
                         {
-                            // Redirect if no id is given
                             path: 'tuotteet',
-                            element: <Navigate to="/" />,
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    // Redirect if no id is given
+                                    index: true,
+                                    element: <Navigate to="/" />,
+                                },
+                                {
+                                    path: ':id',
+                                    element: <ProductDetails />,
+                                    loader: productDetailsLoader,
+                                },
+                            ],
                         },
                         {
-                            path: '/tuotteet/:id',
-                            element: <ProductDetails />,
-                            loader: productDetailsLoader,
-                        },
-                        {
-                            path: '/ohjeet',
-                            element: <InstructionsPage />,
-                        },
-                        {
-                            path: '/ohjeet/ukk',
-                            element: <GuideCommon />,
-                        },
-                        {
-                            path: '/ohjeet/tili',
-                            element: <GuideAccount />,
-                        },
-                        {
-                            path: '/ohjeet/tili/:value',
-                            element: <GuideAccount />,
-                        },
-                        {
-                            path: '/ohjeet/tilaus',
-                            element: <GuideOrdering />,
-                        },
-                        {
-                            path: '/ohjeet/tilaus/:value',
-                            element: <GuideOrdering />,
-                        },
-                        {
-                            path: '/ohjeet/nouto',
-                            element: <GuideShipping />,
-                        },
-                        {
-                            path: '/ohjeet/pyorat',
-                            element: <GuideBikes />,
-                        },
-                        {
-                            path: '/ohjeet/pyorat/:value',
-                            element: <GuideBikes />,
+                            path: 'ohjeet',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <InstructionsPage />,
+                                },
+                                {
+                                    path: 'ukk',
+                                    element: <GuideCommon />,
+                                },
+                                {
+                                    path: 'tili',
+                                    element: <GuideAccount />,
+                                    children: [
+                                        {
+                                            path: ':value',
+                                            element: <GuideAccount />,
+                                        },
+                                    ],
+                                },
+                                {
+                                    path: 'tilaus',
+                                    element: <GuideOrdering />,
+                                    children: [
+                                        {
+                                            path: ':value',
+                                            element: <GuideOrdering />,
+                                        },
+                                    ],
+                                },
+                                {
+                                    path: 'nouto',
+                                    element: <GuideShipping />,
+                                },
+                                {
+                                    path: 'pyorat',
+                                    element: <GuideBikes />,
+                                    children: [
+                                        {
+                                            path: ':value',
+                                            element: <GuideBikes />,
+                                        },
+                                    ],
+                                },
+                            ],
                         },
                         {
                             path: 'toimitus',
@@ -149,19 +167,25 @@ function Routes() {
                         },
                         {
                             path: 'rekisteroidy',
-                            element: <SignupLandingPage />,
-                        },
-                        {
-                            path: '/rekisteroidy/kayttaja',
-                            element: <SignupPage isLocationForm={false} />,
-                            loader: userSignupLoader,
-                            action: userSignupAction,
-                        },
-                        {
-                            path: '/rekisteroidy/toimipaikka',
-                            element: <SignupPage isLocationForm />,
-                            loader: userSignupLoader,
-                            action: userSignupAction,
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <SignupLandingPage />,
+                                },
+                                {
+                                    path: 'kayttaja',
+                                    element: <SignupPage isLocationForm={false} />,
+                                    loader: userSignupLoader,
+                                    action: userSignupAction,
+                                },
+                                {
+                                    path: 'toimipaikka',
+                                    element: <SignupPage isLocationForm />,
+                                    loader: userSignupLoader,
+                                    action: userSignupAction,
+                                },
+                            ],
                         },
                         {
                             path: 'otayhteytta',
@@ -189,15 +213,31 @@ function Routes() {
                             loader: ordersListLoader,
                         },
                         {
-                            path: 'tilaus/:id',
-                            element: <OrderView />,
-                            loader: orderViewLoader,
-                        },
-                        {
-                            path: 'tilaus/:id/muokkaa',
-                            element: <OrderEdit />,
-                            action: orderEditAction,
-                            loader: orderEditLoader,
+                            path: 'tilaus',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <Navigate to="/varasto" />,
+                                },
+                                {
+                                    path: ':id',
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <OrderView />,
+                                            loader: orderViewLoader,
+                                        },
+                                        {
+                                            path: 'muokkaa',
+                                            element: <OrderEdit />,
+                                            action: orderEditAction,
+                                            loader: orderEditLoader,
+                                        },
+                                    ],
+                                },
+                            ],
                         },
                         {
                             path: 'luo',
@@ -209,14 +249,24 @@ function Routes() {
                             element: <QrScanner />,
                         },
                         {
-                            path: 'pdf/:id',
-                            element: <PDFView />,
-                            loader: pdfViewLoader,
+                            path: 'pdf',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <Navigate to="/varasto" />,
+                                },
+                                {
+                                    path: ':id',
+                                    element: <PDFView />,
+                                    loader: pdfViewLoader,
+                                },
+                            ],
                         },
                     ],
                 },
                 {
-                    path: '/admin',
+                    path: 'admin',
                     element: (
                         <ThemeProvider theme={adminTheme}>
                             <AdminLayout />
@@ -230,24 +280,41 @@ function Routes() {
                     children: [
                         {
                             index: true,
-                            element: <StoragesList />,
-                            loader: storagesListLoader,
+                            element: <Navigate to="varastot" />,
                         },
+                        {
+                            path: 'varastot',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <StoragesList />,
+                                    loader: storagesListLoader,
+                                },
+                                {
+                                    path: ':id',
+                                    element: <StorageEdit />,
+                                    loader: storageEditLoader,
+                                    action: storageEditAction,
+                                },
+                            ],
+                        },
+                        // NOTE : JTo : 'users' paths need to be checked once users are enabled in back-end
                         {
                             path: 'users',
                             element: <UsersList />,
-                            loader: usersListLoader,
-                        },
-                        {
-                            path: 'users/:id',
-                            element: <UserEdit />,
-                            loader: userEditLoader,
-                        },
-                        {
-                            path: 'varastot/:id',
-                            element: <StorageEdit />,
-                            action: storageEditAction,
-                            loader: storageEditLoader,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <UsersList />,
+                                    loader: usersListLoader,
+                                },
+                                {
+                                    path: ':id',
+                                    element: <UserEdit />,
+                                    loader: userEditLoader,
+                                },
+                            ],
                         },
                         {
                             path: 'varastot/luo',
