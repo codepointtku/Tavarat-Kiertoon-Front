@@ -20,7 +20,7 @@ function Storages({ storages }) {
                     {storages.map((storage) => (
                         <TableRow
                             key={storage.id}
-                            onClick={() => navigate(`varastot/${storage.id}`)}
+                            onClick={() => navigate(`${storage.id}`)}
                             style={{ cursor: 'pointer' }}
                             hover
                         >
