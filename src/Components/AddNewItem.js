@@ -79,7 +79,6 @@ function AddNewItem({ item, setItem, uploadFile }) {
                     />
                     <TextField
                         required
-                        disabled
                         id="outlined-disabled"
                         label="Viivakoodi"
                         onChange={(event) => {
@@ -100,7 +99,7 @@ function AddNewItem({ item, setItem, uploadFile }) {
                         >
                             Koodinlukija
                         </Button>
-                        {item.barcode.length > 0 && <Barcode value={item.barcode} format="CODE39" />}
+                        {item.barcode.length > 0 && <Barcode value={item.barcode} format="CODE128" />}
                     </CardActions>
 
                     <TextField

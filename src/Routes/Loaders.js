@@ -99,9 +99,9 @@ const orderEditLoader = async ({ params }) => {
  */
 const addItemLoader = async () => {
     const dataList = [];
-    let { data } = await axios.get('http://localhost:3001/categories/');
+    let { data } = await axios.get('http://localhost:8000/categories/');
     dataList.push(data);
-    data = await axios.get('http://localhost:3001/storages/');
+    data = await axios.get('http://localhost:8000/storages/');
     dataList.push(data.data);
     if (dataList) {
         return dataList;
