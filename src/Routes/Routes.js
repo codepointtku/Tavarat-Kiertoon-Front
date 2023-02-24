@@ -92,13 +92,13 @@ function Routes() {
                             loader: productListLoader,
                             action: async ({ request }) => {
                                 const formData = await request.formData();
-                                console.log(request.formData);
                                 const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
-                                const products = formData.get('products');
+                                const product = formData.get('name');
+                                console.log(product);
                                 if (request.method === 'POST') {
-                                    await axios.post('http://localhost:8000/shopping_carts', { id, products });
+                                    await axios.post('http://localhost:8000/shopping_carts/8', { id, product });
                                 } else if (request.method === 'DELETE') {
-                                    await axios.delete(`http://localhost:8000/shopping_carts/${id}`);
+                                    await axios.delete(`http://localhost:8000/shopping_carts/8/products/${id}`);
                                 }
                                 return null;
                             },
@@ -165,9 +165,18 @@ function Routes() {
                             path: '/ostoskori',
                             element: <ShoppingCart />,
                             children: [
-                                { path: '/ostoskori/', element: <CartView /> },
-                                { path: '/ostoskori/vaihe2', element: <ContactsAndDelivery /> },
-                                { path: '/ostoskori/vaihe3', element: <Confirmation /> },
+                                {
+                                    path: '/ostoskori/',
+                                    element: <CartView />,
+                                },
+                                {
+                                    path: '/ostoskori/vaihe2',
+                                    element: <ContactsAndDelivery />,
+                                },
+                                {
+                                    path: '/ostoskori/vaihe3',
+                                    element: <Confirmation />,
+                                },
                             ],
                         },
                         {

@@ -18,8 +18,15 @@ function ContactsAndDelivery() {
         },
     });
 
-    const onSubmit = (data) => console.log(data);
+    // const navigate = useNavigate();
+    // function onSubmit(data) {
+    //     const onSubmit = (data) => {
+    //         navigate(forwardUrl);
+    //         return data;
+    //     };
+    // }
     // console.log(errors);
+    const onSubmit = (data) => console.log(data);
     console.log(formState);
 
     // const values = getValues(['firstName', 'lastName', 'email', 'phoneNumber', 'locationCode']);
@@ -54,7 +61,6 @@ function ContactsAndDelivery() {
                     <TextField label="Toimitustapa" variant="outlined" {...register('deliveryMethod')} />
                 </Grid>
             </Grid>
-            <button type="submit">SUBMIT</button>
             <CartButtons
                 backUrl="/ostoskori"
                 forwardUrl="/ostoskori/vaihe3"

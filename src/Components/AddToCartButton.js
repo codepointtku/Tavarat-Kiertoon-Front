@@ -17,17 +17,21 @@ function AddToCartButton({ size, id, name }) {
         );
     };
 
-    console.log(id, name);
+    const itemsInCart = cartItems.filter((item) => item.id === id);
+    console.log(itemsInCart);
+
+    // cartItems.map((item) => console.log(Object.values(item).includes()));
+    // console.log(cartItems);
 
     return (
         <Button
-            color={cartItems.length > 0 ? 'success' : 'primary'}
+            color={itemsInCart.length > 0 ? 'success' : 'primary'}
             size={size}
             aria-label="add to shopping cart"
             startIcon={<AddShoppingCartOutlinedIcon />}
             onClick={handleClickAddToCartBtn}
         >
-            Lisää koriin <br /> {cartItems.length > 0 && `(${cartItems.length}) kpl`}
+            Lisää koriin <br /> {cartItems.map((item) => item.id === id && `(${item.count}) kpl`)}
         </Button>
     );
 }
