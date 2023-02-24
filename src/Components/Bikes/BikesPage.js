@@ -1,7 +1,5 @@
-import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import {
     Autocomplete,
-    Avatar,
     Box,
     Button,
     Card,
@@ -13,11 +11,10 @@ import {
     InputLabel,
     List,
     ListItem,
-    ListItemAvatar,
     ListItemText,
     MenuItem,
-    Modal,
     Select,
+    Slide,
     Stack,
     TextField,
     Typography,
@@ -27,7 +24,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { format, isWeekend, max, min, parseISO } from 'date-fns';
 import { fi } from 'date-fns/locale';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 import { TransitionGroup } from 'react-transition-group';
@@ -36,6 +33,7 @@ import BikeCard from './BikeCard';
 
 export default function BikesPage() {
     const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
+    const containerRef = useRef(null);
 
     const [searchParams, setSearchParams] = useSearchParams();
     const loaderData = useLoaderData();
@@ -94,257 +92,262 @@ export default function BikesPage() {
         });
 
     return (
-        <Container sx={{ mb: 6 }}>
+        <Container sx={{ mb: 6, overflowX: 'hidden' }} ref={containerRef}>
             <Typography variant="h3" align="center" color="primary.main" my={3}>
                 Polkupyörienvuokraus
             </Typography>
             <hr />
-            <Stack gap={2} flexDirection="row" justifyContent="space-between">
-                <Box sx={{ flex: 1 }}>
-                    <Typography my={2} variant="h6">
-                        Valitse vuokraukseen haluamasi pyörät
-                    </Typography>
-                    <Box mb={2} mt={1}>
-                        <Stack my={1} flexDirection="row" justifyContent="space-between">
-                            <Autocomplete
-                                disablePortal
-                                id="size-filter"
-                                options={Array.from(sizeOptionsSet).sort()}
-                                sx={{ width: 170 }}
-                                onChange={(_, newOption) => handleFilterChange('size', newOption)}
-                                value={
-                                    searchParams.get('filters') && JSON.parse(searchParams.get('filters')).size
-                                        ? JSON.parse(searchParams.get('filters')).size
-                                        : null
-                                }
-                                // eslint-disable-next-line react/jsx-props-no-spreading
-                                renderInput={(params) => <TextField {...params} label="Koko" />}
-                                size="small"
-                            />
-                            <Autocomplete
-                                disablePortal
-                                id="color-filter"
-                                options={Array.from(colorOptionsSet).sort()}
-                                sx={{ width: 170 }}
-                                onChange={(_, newOption) => handleFilterChange('color', newOption)}
-                                value={
-                                    searchParams.get('filters') && JSON.parse(searchParams.get('filters')).color
-                                        ? JSON.parse(searchParams.get('filters')).color
-                                        : null
-                                }
-                                // eslint-disable-next-line react/jsx-props-no-spreading
-                                renderInput={(params) => <TextField {...params} label="Väri" />}
-                                size="small"
-                            />
-                            <Autocomplete
-                                disablePortal
-                                id="brand-filter"
-                                options={Array.from(brandOptionsSet).sort()}
-                                sx={{ width: 170 }}
-                                onChange={(_, newOption) => handleFilterChange('brand', newOption)}
-                                value={
-                                    searchParams.get('filters') && JSON.parse(searchParams.get('filters')).brand
-                                        ? JSON.parse(searchParams.get('filters')).brand
-                                        : null
-                                }
-                                // eslint-disable-next-line react/jsx-props-no-spreading
-                                renderInput={(params) => <TextField {...params} label="Merkki" />}
-                                size="small"
-                            />
-                            <Autocomplete
-                                disablePortal
-                                id="type-filter"
-                                options={Array.from(typeOptionsSet).sort()}
-                                sx={{ width: 170 }}
-                                onChange={(_, newOption) => handleFilterChange('type', newOption)}
-                                value={
-                                    searchParams.get('filters') && JSON.parse(searchParams.get('filters')).type
-                                        ? JSON.parse(searchParams.get('filters')).type
-                                        : null
-                                }
-                                // eslint-disable-next-line react/jsx-props-no-spreading
-                                renderInput={(params) => <TextField {...params} label="Tyyppi" />}
-                                size="small"
-                            />
-                        </Stack>
-                    </Box>
-                    <Stack gap={1}>
-                        <TransitionGroup>
-                            {filteredBikes
-                                .sort((a, b) => b.max_available - a.max_available)
-                                .map((bike) => (
-                                    <Collapse key={bike.id}>
+            <TransitionGroup>
+                {!isConfirmationVisible ? (
+                    <Slide direction="right" key="main-page" container={containerRef.current} appear={false}>
+                        <Stack gap={2} flexDirection="row" justifyContent="space-between">
+                            <Box sx={{ flex: 1 }}>
+                                <Typography my={2} variant="h6">
+                                    Valitse vuokraukseen haluamasi pyörät
+                                </Typography>
+                                <Box mb={2} mt={1}>
+                                    <Stack my={1} flexDirection="row" justifyContent="space-between">
+                                        <Autocomplete
+                                            disablePortal
+                                            id="size-filter"
+                                            options={Array.from(sizeOptionsSet).sort()}
+                                            sx={{ width: 170 }}
+                                            onChange={(_, newOption) => handleFilterChange('size', newOption)}
+                                            value={
+                                                searchParams.get('filters') &&
+                                                JSON.parse(searchParams.get('filters')).size
+                                                    ? JSON.parse(searchParams.get('filters')).size
+                                                    : null
+                                            }
+                                            // eslint-disable-next-line react/jsx-props-no-spreading
+                                            renderInput={(params) => <TextField {...params} label="Koko" />}
+                                            size="small"
+                                        />
+                                        <Autocomplete
+                                            disablePortal
+                                            id="color-filter"
+                                            options={Array.from(colorOptionsSet).sort()}
+                                            sx={{ width: 170 }}
+                                            onChange={(_, newOption) => handleFilterChange('color', newOption)}
+                                            value={
+                                                searchParams.get('filters') &&
+                                                JSON.parse(searchParams.get('filters')).color
+                                                    ? JSON.parse(searchParams.get('filters')).color
+                                                    : null
+                                            }
+                                            // eslint-disable-next-line react/jsx-props-no-spreading
+                                            renderInput={(params) => <TextField {...params} label="Väri" />}
+                                            size="small"
+                                        />
+                                        <Autocomplete
+                                            disablePortal
+                                            id="brand-filter"
+                                            options={Array.from(brandOptionsSet).sort()}
+                                            sx={{ width: 170 }}
+                                            onChange={(_, newOption) => handleFilterChange('brand', newOption)}
+                                            value={
+                                                searchParams.get('filters') &&
+                                                JSON.parse(searchParams.get('filters')).brand
+                                                    ? JSON.parse(searchParams.get('filters')).brand
+                                                    : null
+                                            }
+                                            // eslint-disable-next-line react/jsx-props-no-spreading
+                                            renderInput={(params) => <TextField {...params} label="Merkki" />}
+                                            size="small"
+                                        />
+                                        <Autocomplete
+                                            disablePortal
+                                            id="type-filter"
+                                            options={Array.from(typeOptionsSet).sort()}
+                                            sx={{ width: 170 }}
+                                            onChange={(_, newOption) => handleFilterChange('type', newOption)}
+                                            value={
+                                                searchParams.get('filters') &&
+                                                JSON.parse(searchParams.get('filters')).type
+                                                    ? JSON.parse(searchParams.get('filters')).type
+                                                    : null
+                                            }
+                                            // eslint-disable-next-line react/jsx-props-no-spreading
+                                            renderInput={(params) => <TextField {...params} label="Tyyppi" />}
+                                            size="small"
+                                        />
+                                    </Stack>
+                                </Box>
+                                <Stack gap={1}>
+                                    <TransitionGroup>
+                                        {filteredBikes
+                                            .sort((a, b) => b.max_available - a.max_available)
+                                            .map((bike) => (
+                                                <Collapse key={bike.id}>
+                                                    <Controller
+                                                        control={control}
+                                                        name="selectedBikes"
+                                                        render={({ field: { onChange, value } }) => (
+                                                            <BikeCard
+                                                                bike={bike}
+                                                                dateInfo={loaderData.date_info}
+                                                                amountSelected={value[bike.id] ?? 0}
+                                                                onChange={(event) => {
+                                                                    const newValue = event.target.value;
+                                                                    if (Number.isNaN(newValue) || !Number(newValue)) {
+                                                                        const newSelectedBikes = { ...value };
+                                                                        delete newSelectedBikes[bike.id];
+                                                                        onChange(newSelectedBikes);
+                                                                    } else if (
+                                                                        newValue >= 0 &&
+                                                                        newValue <= bike.max_available
+                                                                    )
+                                                                        onChange({
+                                                                            ...value,
+                                                                            [bike.id]: Number(newValue),
+                                                                        });
+                                                                }}
+                                                                startDate={watch('startDate')}
+                                                                endDate={watch('endDate')}
+                                                            />
+                                                        )}
+                                                    />
+                                                </Collapse>
+                                            ))}
+                                    </TransitionGroup>
+                                </Stack>
+                            </Box>
+                            <Box sx={{ width: '300px' }}>
+                                <Card
+                                    sx={{
+                                        flex: 1,
+                                        p: 2,
+                                        pt: 1,
+                                        display: 'flex',
+                                        gap: 3,
+                                        flexDirection: 'column',
+                                        justifyContent: 'space-between',
+                                        width: '100%',
+                                        position: 'sticky',
+                                        top: '20px',
+                                        mt: 2,
+                                        mb: 1,
+                                        // backgroundColor: 'primary.main',
+                                    }}
+                                >
+                                    <Typography align="center" variant="h6">
+                                        Vuokraustiedot
+                                    </Typography>
+                                    <Stack gap={2}>
                                         <Controller
+                                            name="startDate"
                                             control={control}
-                                            name="selectedBikes"
-                                            render={({ field: { onChange, value } }) => (
-                                                <BikeCard
-                                                    bike={bike}
-                                                    dateInfo={loaderData.date_info}
-                                                    amountSelected={value[bike.id] ?? 0}
-                                                    onChange={(event) => {
-                                                        const newValue = event.target.value;
-                                                        if (Number.isNaN(newValue) || !Number(newValue)) {
-                                                            const newSelectedBikes = { ...value };
-                                                            delete newSelectedBikes[bike.id];
-                                                            onChange(newSelectedBikes);
-                                                        } else if (newValue >= 0 && newValue <= bike.max_available)
-                                                            onChange({
-                                                                ...value,
-                                                                [bike.id]: Number(newValue),
-                                                            });
-                                                    }}
-                                                    startDate={watch('startDate')}
-                                                    endDate={watch('endDate')}
-                                                />
+                                            rules={{ required: true }}
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
+                                                    <DatePicker
+                                                        label="Aloituspäivä"
+                                                        value={value}
+                                                        onChange={onChange}
+                                                        onBlur={onBlur}
+                                                        inputProps={{
+                                                            placeholder: 'pv.kk.v',
+                                                        }}
+                                                        // eslint-disable-next-line react/jsx-props-no-spreading
+                                                        renderInput={(params) => <TextField {...params} />}
+                                                        disableMaskedInput
+                                                        shouldDisableDate={(day) => isWeekend(day)}
+                                                        minDate={minDate}
+                                                        maxDate={
+                                                            watch('endDate')
+                                                                ? min([maxDate, watch('endDate')])
+                                                                : maxDate
+                                                        }
+                                                        sx={{ '& .Mui-disabled': { backgroundColor: 'black' } }}
+                                                        views={['month', 'day']}
+                                                        openTo="month"
+                                                    />
+                                                </LocalizationProvider>
                                             )}
                                         />
-                                    </Collapse>
-                                ))}
-                        </TransitionGroup>
-                    </Stack>
-                </Box>
-                <Box sx={{ width: '300px' }}>
-                    <Card
-                        sx={{
-                            flex: 1,
-                            p: 2,
-                            pt: 1,
-                            display: 'flex',
-                            gap: 3,
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
-                            width: '100%',
-                            position: 'sticky',
-                            top: '20px',
-                            mt: 2,
-                            mb: 1,
-                            // backgroundColor: 'primary.main',
-                        }}
-                    >
-                        <Typography align="center" variant="h6">
-                            Vuokraustiedot
-                        </Typography>
-                        <Stack gap={2}>
-                            <Controller
-                                name="startDate"
-                                control={control}
-                                rules={{ required: true }}
-                                render={({ field: { onChange, onBlur, value } }) => (
-                                    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
-                                        <DatePicker
-                                            label="Aloituspäivä"
-                                            value={value}
-                                            onChange={onChange}
-                                            onBlur={onBlur}
-                                            inputProps={{
-                                                placeholder: 'pv.kk.v',
-                                            }}
-                                            // eslint-disable-next-line react/jsx-props-no-spreading
-                                            renderInput={(params) => <TextField {...params} />}
-                                            disableMaskedInput
-                                            shouldDisableDate={(day) => isWeekend(day)}
-                                            minDate={minDate}
-                                            maxDate={watch('endDate') ? min([maxDate, watch('endDate')]) : maxDate}
-                                            sx={{ '& .Mui-disabled': { backgroundColor: 'black' } }}
-                                            views={['month', 'day']}
-                                            openTo="month"
+                                        <Controller
+                                            name="endDate"
+                                            control={control}
+                                            rules={{ required: true }}
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
+                                                    <DatePicker
+                                                        label="Loppumispäivä"
+                                                        value={value}
+                                                        onChange={onChange}
+                                                        onBlur={onBlur}
+                                                        inputProps={{
+                                                            placeholder: 'pv.kk.v',
+                                                        }}
+                                                        // eslint-disable-next-line react/jsx-props-no-spreading
+                                                        renderInput={(params) => <TextField {...params} />}
+                                                        disableMaskedInput
+                                                        shouldDisableDate={(day) => isWeekend(day)}
+                                                        minDate={
+                                                            watch('startDate')
+                                                                ? max([minDate, watch('startDate')])
+                                                                : minDate
+                                                        }
+                                                        maxDate={maxDate}
+                                                        views={['month', 'day']}
+                                                        openTo="month"
+                                                    />
+                                                </LocalizationProvider>
+                                            )}
                                         />
-                                    </LocalizationProvider>
-                                )}
-                            />
-                            <Controller
-                                name="endDate"
-                                control={control}
-                                rules={{ required: true }}
-                                render={({ field: { onChange, onBlur, value } }) => (
-                                    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
-                                        <DatePicker
-                                            label="Loppumispäivä"
-                                            value={value}
-                                            onChange={onChange}
-                                            onBlur={onBlur}
-                                            inputProps={{
-                                                placeholder: 'pv.kk.v',
-                                            }}
-                                            // eslint-disable-next-line react/jsx-props-no-spreading
-                                            renderInput={(params) => <TextField {...params} />}
-                                            disableMaskedInput
-                                            shouldDisableDate={(day) => isWeekend(day)}
-                                            minDate={watch('startDate') ? max([minDate, watch('startDate')]) : minDate}
-                                            maxDate={maxDate}
-                                            views={['month', 'day']}
-                                            openTo="month"
-                                        />
-                                    </LocalizationProvider>
-                                )}
-                            />
-                        </Stack>
-                        <Box minHeight={44}>
-                            <List>
-                                <TransitionGroup>
-                                    {Object.keys(watch('selectedBikes')).length ? (
-                                        Object.entries(watch('selectedBikes')).map(
-                                            ([key, value]) =>
-                                                !!value && (
-                                                    <Collapse key={key}>
-                                                        <Typography>
-                                                            {`${value}x ${
-                                                                loaderData.bikes.find((bike) => bike.id === Number(key))
-                                                                    .name
-                                                            }`}
-                                                        </Typography>
+                                    </Stack>
+                                    <Box minHeight={44}>
+                                        <List>
+                                            <TransitionGroup>
+                                                {Object.keys(watch('selectedBikes')).length ? (
+                                                    Object.entries(watch('selectedBikes')).map(
+                                                        ([key, value]) =>
+                                                            !!value && (
+                                                                <Collapse key={key}>
+                                                                    <Typography>
+                                                                        {`${value}x ${
+                                                                            loaderData.bikes.find(
+                                                                                (bike) => bike.id === Number(key)
+                                                                            ).name
+                                                                        }`}
+                                                                    </Typography>
+                                                                </Collapse>
+                                                            )
+                                                    )
+                                                ) : (
+                                                    <Collapse>
+                                                        <Typography>Valitse pyörä</Typography>
                                                     </Collapse>
-                                                )
-                                        )
-                                    ) : (
-                                        <Collapse>
-                                            <Typography>Valitse pyörä</Typography>
-                                        </Collapse>
-                                    )}
-                                </TransitionGroup>
-                            </List>
-                        </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-                            <Button
-                                color="success"
-                                onClick={() => setIsConfirmationVisible(true)}
-                                disabled={
-                                    !Object.keys(watch('selectedBikes')).length ||
-                                    !watch('startDate') ||
-                                    !watch('endDate')
-                                }
-                            >
-                                Vahvistus
-                            </Button>
-                        </Box>
-                    </Card>
-                </Box>
-                <Modal
-                    open={isConfirmationVisible}
-                    onClose={() => setIsConfirmationVisible(false)}
-                    aria-labelledby="varauksen vahvistus"
-                >
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            width: 600,
-                            bgcolor: 'background.paper',
-                            border: '2px solid #000',
-                            boxShadow: 24,
-                            p: 3,
-                        }}
-                    >
-                        <Stack gap={3}>
+                                                )}
+                                            </TransitionGroup>
+                                        </List>
+                                    </Box>
+                                    <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+                                        <Button
+                                            color="success"
+                                            onClick={() => setIsConfirmationVisible(true)}
+                                            disabled={
+                                                !Object.keys(watch('selectedBikes')).length ||
+                                                !watch('startDate') ||
+                                                !watch('endDate')
+                                            }
+                                        >
+                                            Vahvistus
+                                        </Button>
+                                    </Box>
+                                </Card>
+                            </Box>
+                        </Stack>
+                    </Slide>
+                ) : (
+                    <Slide direction="left" key="confirm-page" container={containerRef.current} appear={false}>
+                        <Stack gap={3} mt={2}>
                             <Typography variant="h6" align="center">
                                 Vuokrausvahvistus
                             </Typography>
                             <List>
                                 <ListItem>
-                                    <ListItemText primary="Ajankohta" secondary="Jan 9, 2014" />
+                                    <ListItemText primary="Ajankohta" />
                                     {!!watch('startDate') && !!watch('endDate') && (
                                         <Typography>{`${format(watch('startDate'), 'd.M.yyyy')} - ${format(
                                             watch('endDate'),
@@ -353,38 +356,10 @@ export default function BikesPage() {
                                     )}
                                 </ListItem>
                                 <Divider component="li" />
-                                <li>
-                                    <Typography
-                                        sx={{ mt: 0.5, ml: 2 }}
-                                        color="text.secondary"
-                                        display="block"
-                                        variant="caption"
-                                    >
-                                        Divider
-                                    </Typography>
-                                </li>
                                 <ListItem>
                                     <ListItemText primary="Work" secondary="Jan 7, 2014" />
                                 </ListItem>
-                                <Divider component="li" variant="inset" />
-                                <li>
-                                    <Typography
-                                        sx={{ mt: 0.5, ml: 9 }}
-                                        color="text.secondary"
-                                        display="block"
-                                        variant="caption"
-                                    >
-                                        Leisure
-                                    </Typography>
-                                </li>
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <BeachAccessIcon />
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText primary="Vacation" secondary="July 20, 2014" />
-                                </ListItem>
+                                <Divider component="li" />
                             </List>
                             <Box>
                                 <Typography variant="caption">Ajat ovat suuntaanantavia</Typography>
@@ -572,9 +547,9 @@ export default function BikesPage() {
                                 <Button color="success">Lähetä</Button>
                             </Stack>
                         </Stack>
-                    </Box>
-                </Modal>
-            </Stack>
+                    </Slide>
+                )}
+            </TransitionGroup>
         </Container>
     );
 }
