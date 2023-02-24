@@ -112,7 +112,7 @@ const storageEditAction = async ({ params, request }) => {
 const userLoginAction = async ({ request }) => {
     console.log(request);
     const formData = await request.formData();
-    const response = await axios.post('http://localhost:8000/users/login', {
+    const response = await axios.post('http://localhost:8000/users/login/', {
         email: formData.get('email'),
         password: formData.get('password'),
     });
