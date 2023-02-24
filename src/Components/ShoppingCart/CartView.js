@@ -15,6 +15,8 @@ function CartView() {
     } = useForm();
     console.log({ errors, cartItems });
 
+    // const onSubmit = (data) => console.log(data)
+
     // const cartItems = [];
     // cart.products.forEach((i) => {
     //     cartItems[i.name] = (cartItems[i.name] || 0) + 1;

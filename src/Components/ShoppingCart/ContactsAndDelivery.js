@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
 import { useForm } from 'react-hook-form';
-import { Typography, TextField, Grid } from '@mui/material';
+import { Typography, TextField, Grid, MenuItem, Box } from '@mui/material';
 
 import CartButtons from './CartButtons';
 
@@ -18,6 +18,10 @@ function ContactsAndDelivery() {
         },
     });
 
+    const addresses = ['Osoite 1', 'Osoite 2', 'Osoite 3', 'Osoite 4'];
+    // const handleChange = (SelectChangeEvent) => {
+    //     setSelectedAddress(SelectChangeEvent.target.value);
+    // };
     // const navigate = useNavigate();
     // function onSubmit(data) {
     //     const onSubmit = (data) => {
@@ -26,7 +30,7 @@ function ContactsAndDelivery() {
     //     };
     // }
     // console.log(errors);
-    const onSubmit = (data) => console.log(data);
+    const onSubmit = (data) => alert(JSON.stringify(data));
     console.log(formState);
 
     // const values = getValues(['firstName', 'lastName', 'email', 'phoneNumber', 'locationCode']);
@@ -55,12 +59,35 @@ function ContactsAndDelivery() {
             </Typography>
             <Grid container spacing={4}>
                 <Grid item>
-                    <TextField label="Toimitusosoite" variant="outlined" {...register('deliveryAddress')} />
+                    <TextField
+                        label="Toimitusosoitteet"
+                        variant="outlined"
+                        value="Osoite 1"
+                        {...register('deliveryAddress')}
+                        select
+                    >
+                        {addresses.map((address) => (
+                            <MenuItem value={address}>{address}</MenuItem>
+                        ))}
+                    </TextField>
                 </Grid>
                 <Grid item>
                     <TextField label="Toimitustapa" variant="outlined" {...register('deliveryMethod')} />
                 </Grid>
             </Grid>
+            <Box
+                sx={{
+                    p: 5,
+                    fontWeight: 'bold',
+                    fontSize: '22px',
+                    marginTop: 5,
+                    borderStyle: 'solid',
+                    borderColor: 'primary.main',
+                    backgroundColor: 'primary.light',
+                }}
+            >
+                Toimituksessa voi kestää 1-2 viikkoa.
+            </Box>
             <CartButtons
                 backUrl="/ostoskori"
                 forwardUrl="/ostoskori/vaihe3"
