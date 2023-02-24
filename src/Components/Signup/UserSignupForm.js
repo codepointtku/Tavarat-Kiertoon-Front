@@ -65,7 +65,6 @@ function UserForm() {
 
     const onSubmit = (data) => {
         const formData = { ...data, jointuser: false };
-        console.log(formData);
         submit(formData, {
             method: 'post',
             action: '/rekisteroidy/kayttaja',

@@ -101,7 +101,6 @@ function LocationForm() {
 
     const onSubmit = (data) => {
         const formData = { ...data, jointuser: true };
-        console.log(formData);
         submit(formData, {
             method: 'post',
             action: '/rekisteroidy/toimipaikka',

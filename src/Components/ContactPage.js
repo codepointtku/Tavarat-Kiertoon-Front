@@ -22,7 +22,6 @@ function ContactPage() {
 
     const onSubmit = (data) => {
         const formData = { ...data, category: 'category', status: 'abc' };
-        console.log(formData);
         submit(formData, {
             method: 'post',
             action: '/otayhteytta',
