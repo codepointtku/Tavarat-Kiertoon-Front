@@ -1,5 +1,7 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { useState } from 'react';
-import { Link, useSubmit } from 'react-router-dom';
+import { Link, useSubmit, Form } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import {
     Avatar,
@@ -21,18 +23,26 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 function LoginForm() {
-    const [showPassword, setShowPassword] = useState(false);
-
+    const { register, handleSubmit } = useForm();
     const submit = useSubmit();
 
+    const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
-
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
 
+    const onSubmit = (data) => {
+        const formData = { ...data };
+        console.log(formData);
+        submit(formData, {
+            method: 'post',
+            action: '/',
+        });
+    };
+
     return (
-        <Container maxWidth="xs">
+        <Container maxWidth="xs" component={Form} onSubmit={handleSubmit(onSubmit)}>
             <Box
                 sx={{
                     marginTop: 2,
@@ -51,6 +61,7 @@ function LoginForm() {
                     <FormControl sx={{ mt: 2 }} variant="outlined" fullWidth required>
                         <InputLabel htmlFor="user-email-field">Käyttäjätunnus</InputLabel>
                         <OutlinedInput
+                            {...register('email')}
                             id="user-email-field"
                             type="text"
                             label="Sähköpostiosoite"
@@ -61,6 +72,7 @@ function LoginForm() {
                     <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
                         <InputLabel htmlFor="user-password-field">Salasana</InputLabel>
                         <OutlinedInput
+                            {...register('password')}
                             id="user-password-field"
                             type={showPassword ? 'text' : 'password'}
                             label="Salasana"
@@ -84,16 +96,7 @@ function LoginForm() {
                         control={<Checkbox value="remember" color="primary" />}
                         label="Muista minut"
                     />
-                    <Button
-                        sx={{ mt: 1 }}
-                        fullWidth
-                        onClick={() => {
-                            const formData = new FormData();
-                            formData.append('email', 'admin');
-                            formData.append('password', 'admin');
-                            submit(formData, { method: 'post', action: '' });
-                        }}
-                    >
+                    <Button sx={{ mt: 1 }} fullWidth type="submit">
                         Sisään
                     </Button>
                 </Box>
