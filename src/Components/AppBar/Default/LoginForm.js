@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSubmit } from 'react-router-dom';
 
 import {
     Avatar,
@@ -22,6 +22,8 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 function LoginForm() {
     const [showPassword, setShowPassword] = useState(false);
+
+    const submit = useSubmit();
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -82,7 +84,16 @@ function LoginForm() {
                         control={<Checkbox value="remember" color="primary" />}
                         label="Muista minut"
                     />
-                    <Button sx={{ mt: 1 }} fullWidth>
+                    <Button
+                        sx={{ mt: 1 }}
+                        fullWidth
+                        onClick={() => {
+                            const formData = new FormData();
+                            formData.append('email', 'admin');
+                            formData.append('password', 'admin');
+                            submit(formData, { method: 'post', action: '' });
+                        }}
+                    >
                         Sisään
                     </Button>
                 </Box>

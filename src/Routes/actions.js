@@ -110,11 +110,13 @@ const storageEditAction = async ({ params, request }) => {
  * logins user
  */
 const userLoginAction = async ({ request }) => {
+    console.log(request);
     const formData = await request.formData();
     const response = await axios.post('http://localhost:8000/users/login', {
         email: formData.get('email'),
         password: formData.get('password'),
     });
+    console.log(response);
     if (response.status === 200) {
         localStorage.setItem('access_token', response.data.access);
         localStorage.setItem('refresh_token', response.data.refresh);

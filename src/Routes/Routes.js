@@ -74,11 +74,11 @@ function Routes() {
             errorElement: <ErrorBoundary />,
             id: 'root',
             loader: rootLoader,
-            action: userLoginAction,
             children: [
                 {
                     path: '/',
                     element: <BaseLayout />,
+                    action: userLoginAction,
                     children: [
                         {
                             index: true,
