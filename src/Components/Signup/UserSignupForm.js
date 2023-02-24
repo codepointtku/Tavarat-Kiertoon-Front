@@ -19,6 +19,8 @@ import {
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import Person2Icon from '@mui/icons-material/Person2';
+import PhoneIcon from '@mui/icons-material/Phone';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import BackButton from '../BackButton';
@@ -62,7 +64,7 @@ function UserForm() {
     };
 
     const onSubmit = (data) => {
-        const formData = { ...data, joint_user: false };
+        const formData = { ...data, jointuser: false };
         console.log(formData);
         submit(formData, {
             method: 'post',
@@ -100,17 +102,62 @@ function UserForm() {
                         alignItems: 'center',
                     }}
                 >
-                    <FormControl variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-password">Sähköpostiosoite</InputLabel>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="outlined-adornment-email">Sähköpostiosoite</InputLabel>
                         <OutlinedInput
                             {...register('email')}
-                            id="outlined-adornment-password"
+                            id="outlined-adornment-email"
                             type="text"
                             label="Sähköpostiosoite"
                             placeholder="sinä@turku.fi"
                             endAdornment={
                                 <InputAdornment position="end">
                                     <MailOutlineIcon />
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="outlined-adornment-firstname">Etunimi</InputLabel>
+                        <OutlinedInput
+                            {...register('firstname')}
+                            id="outlined-adornment-firstname"
+                            type="text"
+                            label="Etunimi"
+                            placeholder="Tonipal"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <Person2Icon />
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="outlined-adornment-lastname">Sukunimi</InputLabel>
+                        <OutlinedInput
+                            {...register('lastname')}
+                            id="outlined-adornment-lastname"
+                            type="text"
+                            label="Sukunimi"
+                            placeholder="Kahville"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <Person2Icon />
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="outlined-adornment-phonenumber">Puhelinnumero</InputLabel>
+                        <OutlinedInput
+                            {...register('phonenumber')}
+                            id="outlined-adornment-phonenumber"
+                            type="text"
+                            label="Puhelinnumero"
+                            placeholder="010 111 1111"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <PhoneIcon />
                                 </InputAdornment>
                             }
                         />
@@ -138,10 +185,10 @@ function UserForm() {
                         />
                     </FormControl>
                     <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-password">Salasana uudelleen</InputLabel>
+                        <InputLabel htmlFor="outlined-adornment-passwordrepeat">Salasana uudelleen</InputLabel>
                         <OutlinedInput
                             {...register('passwordCheck')}
-                            id="outlined-adornment-password"
+                            id="outlined-adornment-passwordrepeat"
                             type={showPassword ? 'text' : 'password'}
                             label="Salasana uudelleen"
                             placeholder="****"

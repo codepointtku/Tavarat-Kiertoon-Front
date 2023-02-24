@@ -6,7 +6,7 @@ import axios from 'axios';
 const userSignupAction = async ({ request }) => {
     const formData = await request.formData();
     const response = await axios.post('http://localhost:8000/users/create/', {
-        user_name: formData.get('firstname'),
+        user_name: formData.get('username'),
         first_name: formData.get('firstname'),
         last_name: formData.get('lastname'),
         email: formData.get('email'),
