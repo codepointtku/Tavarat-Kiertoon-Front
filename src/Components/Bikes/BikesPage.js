@@ -234,7 +234,7 @@ export default function BikesPage() {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
                                                     <DatePicker
-                                                        label="Aloituspäivä"
+                                                        label="Aloituspäivä *"
                                                         value={value}
                                                         onChange={onChange}
                                                         onBlur={onBlur}
@@ -265,7 +265,7 @@ export default function BikesPage() {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
                                                     <DatePicker
-                                                        label="Loppumispäivä"
+                                                        label="Loppumispäivä *"
                                                         value={value}
                                                         onChange={onChange}
                                                         onBlur={onBlur}
@@ -309,7 +309,7 @@ export default function BikesPage() {
                                                     )
                                                 ) : (
                                                     <Collapse>
-                                                        <Typography>Valitse pyörä</Typography>
+                                                        <Typography>Valitse pyörä *</Typography>
                                                     </Collapse>
                                                 )}
                                             </TransitionGroup>

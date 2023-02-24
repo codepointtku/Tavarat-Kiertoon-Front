@@ -1,12 +1,17 @@
 import {
+    // eslint-disable-next-line no-unused-vars
     Autocomplete,
     Box,
     Button,
     FormControl,
+    FormControlLabel,
     FormHelperText,
+    FormLabel,
     InputLabel,
     MenuItem,
     Paper,
+    Radio,
+    RadioGroup,
     Select,
     Stack,
     TextField,
@@ -31,30 +36,32 @@ export default function BikeConfirmation({ watch, control, bikes, setIsConfirmat
                 <Typography variant="h6" align="center">
                     Vuokrausvahvistus
                 </Typography>
-                <Stack gap={1} align="center">
-                    {!!watch('startDate') && !!watch('endDate') && (
-                        <Typography>{`${format(watch('startDate'), 'd.M.yyyy')} - ${format(
-                            watch('endDate'),
-                            'd.M.yyyy'
-                        )}`}</Typography>
-                    )}
-                    <Box>
-                        {Object.entries(watch('selectedBikes')).map(
-                            ([key, value]) =>
-                                !!value && (
-                                    <Typography key={key}>
-                                        {value}x {bikes.find((bike) => bike.id === Number(key)).name}
-                                    </Typography>
-                                )
+                <Stack gap={2} flexDirection="row" justifyContent="space-between">
+                    <Stack gap={2}>
+                        {!!watch('startDate') && !!watch('endDate') && (
+                            <Typography>{`${format(watch('startDate'), 'd.M.yyyy')} - ${format(
+                                watch('endDate'),
+                                'd.M.yyyy'
+                            )}`}</Typography>
                         )}
-                    </Box>
-                    <Stack flexDirection="row" gap={2} justifyContent="space-between">
+                        <Box>
+                            {Object.entries(watch('selectedBikes')).map(
+                                ([key, value]) =>
+                                    !!value && (
+                                        <Typography key={key}>
+                                            {value}x {bikes.find((bike) => bike.id === Number(key)).name}
+                                        </Typography>
+                                    )
+                            )}
+                        </Box>
+                    </Stack>
+                    <Stack>
                         <Controller
                             name="startTime"
                             control={control}
                             rules={{ required: true }}
                             render={({ field: { onChange, onBlur, value } }) => (
-                                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                                <FormControl sx={{ m: 1, minWidth: 120 }} required>
                                     <InputLabel id="deliveryTime-label">Toimitusaika</InputLabel>
                                     <Select
                                         value={value}
@@ -85,7 +92,7 @@ export default function BikeConfirmation({ watch, control, bikes, setIsConfirmat
                             control={control}
                             rules={{ required: true }}
                             render={({ field: { onChange, onBlur, value } }) => (
-                                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                                <FormControl sx={{ m: 1, minWidth: 120 }} required>
                                     <InputLabel id="returnTime-label">Noutoaika</InputLabel>
                                     <Select
                                         value={value}
@@ -118,10 +125,10 @@ export default function BikeConfirmation({ watch, control, bikes, setIsConfirmat
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { onChange, onBlur, value } }) => (
-                        <TextField label="Toimitusosoite" onChange={onChange} value={value} onBlur={onBlur} />
+                        <TextField label="Toimitusosoite" onChange={onChange} value={value} onBlur={onBlur} required />
                     )}
                 />
-                <Stack flexDirection="row">
+                <Stack flexDirection="row" gap={2}>
                     <Controller
                         name="contactPersonName"
                         control={control}
@@ -133,6 +140,7 @@ export default function BikeConfirmation({ watch, control, bikes, setIsConfirmat
                                 value={value}
                                 onBlur={onBlur}
                                 sx={{ flex: 1 }}
+                                required
                             />
                         )}
                     />
@@ -147,35 +155,50 @@ export default function BikeConfirmation({ watch, control, bikes, setIsConfirmat
                                 value={value}
                                 onBlur={onBlur}
                                 sx={{ flex: 1 }}
+                                required
                             />
                         )}
                     />
                 </Stack>
                 <Stack gap={1}>
-                    <Typography variant="caption">
-                        Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä, tuomme ne
-                        lukittavassa kärryssä.
-                    </Typography>
                     <Controller
                         name="storageType"
                         control={control}
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
-                            <Autocomplete
-                                disablePortal
-                                id="storage"
-                                options={[
-                                    { value: 'inside', label: 'Sisällä' },
-                                    { value: 'outside', label: 'Kärryssä' },
-                                ]}
-                                getOptionLabel={(option) => option.label}
-                                isOptionEqualToValue={(option) => option.value === value.value}
-                                // eslint-disable-next-line react/jsx-props-no-spreading
-                                renderInput={(params) => <TextField {...params} label="Säilytystapa" />}
-                                value={value}
-                                onChange={(_, option) => onChange(option)}
-                                onBlur={onBlur}
-                            />
+                            <FormControl required>
+                                <FormLabel id="storage-label">Säilytystapa</FormLabel>
+                                <RadioGroup
+                                    row
+                                    aria-labelledby="storage-label"
+                                    name="storage"
+                                    value={value}
+                                    onChange={(_, option) => onChange(option)}
+                                    onBlur={onBlur}
+                                >
+                                    <FormControlLabel value="inside" control={<Radio />} label="Sisällä" />
+                                    <FormControlLabel value="outside" control={<Radio />} label="Kärryssä" />
+                                </RadioGroup>
+                                <Typography variant="caption">
+                                    Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä,
+                                    tuomme ne lukittavassa kärryssä.
+                                </Typography>
+                            </FormControl>
+                            // <Autocomplete
+                            //     disablePortal
+                            //     id="storage"
+                            //     options={[
+                            //         { value: 'inside', label: 'Sisällä' },
+                            //         { value: 'outside', label: 'Kärryssä' },
+                            //     ]}
+                            //     getOptionLabel={(option) => option.label}
+                            //     isOptionEqualToValue={(option) => option.value === value.value}
+                            //     // eslint-disable-next-line react/jsx-props-no-spreading
+                            //     renderInput={(params) => <TextField {...params} label="Säilytystapa" />}
+                            //     value={value}
+                            //     onChange={(_, option) => onChange(option)}
+                            //     onBlur={onBlur}
+                            // />
                         )}
                     />
                 </Stack>
@@ -183,7 +206,7 @@ export default function BikeConfirmation({ watch, control, bikes, setIsConfirmat
                     name="extraInfo"
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                        <TextField label="Lisätiedot" onChange={onChange} value={value} onBlur={onBlur} />
+                        <TextField label="Lisätiedot" onChange={onChange} value={value} onBlur={onBlur} multiline />
                     )}
                 />
                 <Stack flexDirection="row" justifyContent="space-between" mt={2}>
