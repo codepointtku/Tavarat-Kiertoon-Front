@@ -50,7 +50,14 @@ import {
     userSignupLoader,
 } from './loaders';
 
-import { userSignupAction, contactAction, orderEditAction, storageCreateAction, storageEditAction } from './actions';
+import {
+    userSignupAction,
+    contactAction,
+    orderEditAction,
+    storageEditAction,
+    userLoginAction,
+    storageCreateAction,
+} from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
 import GuideCommon from '../Components/Instructions/GuideCommon';
@@ -71,6 +78,7 @@ function Routes() {
                 {
                     path: '/',
                     element: <BaseLayout />,
+                    action: userLoginAction,
                     children: [
                         {
                             index: true,

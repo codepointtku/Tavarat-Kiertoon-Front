@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useSubmit, useActionData } from 'react-router-dom';
-import { Alert, Box, Button, Card, CardActions, CardContent, MenuItem, TextField } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, MenuItem, TextField } from '@mui/material';
 import validator from 'validator';
+import AlertBox from './AlertBox';
 
 function AddStorage() {
     const initialState = { name: '', address: '', in_use: false };
@@ -39,13 +40,13 @@ function AddStorage() {
         <Box sx={{ padding: '24px' }}>
             {responseStatus?.type === 'post' && !responseStatus?.status && (
                 <>
-                    <Alert severity="error">Varaston luominen epäonnistui! Lataa sivu uudestaan.</Alert>
+                    <AlertBox text="Varaston luominen epäonnistui! Lataa sivu uudestaan." status="error" />
                     <br />
                 </>
             )}
             {responseStatus?.type === 'post' && responseStatus?.status && (
                 <>
-                    <Alert severity="success">Varaston luominen onnistui</Alert>
+                    <AlertBox text="Varaston luominen onnistui" status="success" />
                     <br />
                 </>
             )}

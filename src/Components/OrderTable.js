@@ -97,6 +97,12 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
         setIsOpen({ sourceStates });
     }, []);
 
+    const dateParse = (value) => {
+        const date = new Date(value);
+        const dateString = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+        return dateString;
+    };
+
     return (
         <>
             <Box
@@ -161,7 +167,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                     }}
                 >
                     <Typography>{order.contact}</Typography>
-                    <Typography>{order.delivery_date}</Typography>
+                    <Typography>{dateParse(order.delivery_date)}</Typography>
                 </Box>
                 <Box
                     sx={{
