@@ -2,11 +2,11 @@ import {
     Autocomplete,
     Box,
     Button,
-    Divider,
     FormControl,
     FormHelperText,
     InputLabel,
     MenuItem,
+    Paper,
     Select,
     Stack,
     TextField,
@@ -18,97 +18,109 @@ import { Controller } from 'react-hook-form';
 
 export default function BikeConfirmation({ watch, control, bikes, setIsConfirmationVisible }) {
     return (
-        <Stack gap={3} mt={3}>
-            <Typography variant="h6">Vuokrausvahvistus</Typography>
-            <Stack gap={1}>
-                {!!watch('startDate') && !!watch('endDate') && (
-                    <Typography>{`${format(watch('startDate'), 'd.M.yyyy')} - ${format(
-                        watch('endDate'),
-                        'd.M.yyyy'
-                    )}`}</Typography>
-                )}
-                <Box>
-                    {Object.entries(watch('selectedBikes')).map(
-                        ([key, value]) =>
-                            !!value && (
-                                <Typography key={key}>
-                                    {value}x {bikes.find((bike) => bike.id === Number(key)).name}
-                                </Typography>
-                            )
-                    )}
-                </Box>
-            </Stack>
-            <Stack flexDirection="row" gap={2}>
-                <Controller
-                    name="startTime"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <FormControl sx={{ m: 1, minWidth: 120 }}>
-                            <InputLabel id="deliveryTime-label">Toimitusaika</InputLabel>
-                            <Select
-                                value={value}
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                size="small"
-                                label="Toimitusaika"
-                                labelId="deliveryTime-label"
-                                id="deliveryTime"
-                            >
-                                <MenuItem value={8}>08:00</MenuItem>
-                                <MenuItem value={8.5}>08:30</MenuItem>
-                                <MenuItem value={9}>09:00</MenuItem>
-                                <MenuItem value={9.5}>09:30</MenuItem>
-                                <MenuItem value={10}>10:00</MenuItem>
-                                <MenuItem value={10.5}>10:30</MenuItem>
-                                <MenuItem value={11}>11:00</MenuItem>
-                                <MenuItem value={11.5}>11:30</MenuItem>
-                                <MenuItem value={12}>12:00</MenuItem>
-                                <MenuItem value={12.5}>12:30</MenuItem>
-                                <MenuItem value={13}>13:00</MenuItem>
-                            </Select>
-                            <FormHelperText>{format(watch('startDate'), 'd.M.yyyy')}</FormHelperText>
-                        </FormControl>
-                    )}
-                />
-                <Controller
-                    name="endTime"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <FormControl sx={{ m: 1, minWidth: 120 }}>
-                            <InputLabel id="returnTime-label">Noutoaika</InputLabel>
-                            <Select
-                                value={value}
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                size="small"
-                                label="Noutoaika"
-                                labelId="returnTime-label"
-                                id="returnTime"
-                            >
-                                <MenuItem value={8}>08:00</MenuItem>
-                                <MenuItem value={8.5}>08:30</MenuItem>
-                                <MenuItem value={9}>09:00</MenuItem>
-                                <MenuItem value={9.5}>09:30</MenuItem>
-                                <MenuItem value={10}>10:00</MenuItem>
-                                <MenuItem value={10.5}>10:30</MenuItem>
-                                <MenuItem value={11}>11:00</MenuItem>
-                                <MenuItem value={11.5}>11:30</MenuItem>
-                                <MenuItem value={12}>12:00</MenuItem>
-                                <MenuItem value={12.5}>12:30</MenuItem>
-                                <MenuItem value={13}>13:00</MenuItem>
-                            </Select>
-                            <FormHelperText>{format(watch('endDate'), 'd.M.yyyy')}</FormHelperText>
-                        </FormControl>
-                    )}
-                />
-            </Stack>
-            <Divider />
-            <Stack gap={1}>
-                <Typography variant="caption">
-                    Vastaanottajan yhteystiedot. Henkilön on oltava paikalla vastaanottamassa.
+        <Paper
+            sx={{
+                mt: 3,
+                mx: 'auto',
+                maxWidth: 700,
+                p: 2,
+                pt: 1,
+            }}
+        >
+            <Stack gap={3}>
+                <Typography variant="h6" align="center">
+                    Vuokrausvahvistus
                 </Typography>
+                <Stack gap={1} align="center">
+                    {!!watch('startDate') && !!watch('endDate') && (
+                        <Typography>{`${format(watch('startDate'), 'd.M.yyyy')} - ${format(
+                            watch('endDate'),
+                            'd.M.yyyy'
+                        )}`}</Typography>
+                    )}
+                    <Box>
+                        {Object.entries(watch('selectedBikes')).map(
+                            ([key, value]) =>
+                                !!value && (
+                                    <Typography key={key}>
+                                        {value}x {bikes.find((bike) => bike.id === Number(key)).name}
+                                    </Typography>
+                                )
+                        )}
+                    </Box>
+                    <Stack flexDirection="row" gap={2} justifyContent="space-between">
+                        <Controller
+                            name="startTime"
+                            control={control}
+                            rules={{ required: true }}
+                            render={({ field: { onChange, onBlur, value } }) => (
+                                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                                    <InputLabel id="deliveryTime-label">Toimitusaika</InputLabel>
+                                    <Select
+                                        value={value}
+                                        onChange={onChange}
+                                        onBlur={onBlur}
+                                        label="Toimitusaika"
+                                        labelId="deliveryTime-label"
+                                        id="deliveryTime"
+                                    >
+                                        <MenuItem value={8}>08:00</MenuItem>
+                                        <MenuItem value={8.5}>08:30</MenuItem>
+                                        <MenuItem value={9}>09:00</MenuItem>
+                                        <MenuItem value={9.5}>09:30</MenuItem>
+                                        <MenuItem value={10}>10:00</MenuItem>
+                                        <MenuItem value={10.5}>10:30</MenuItem>
+                                        <MenuItem value={11}>11:00</MenuItem>
+                                        <MenuItem value={11.5}>11:30</MenuItem>
+                                        <MenuItem value={12}>12:00</MenuItem>
+                                        <MenuItem value={12.5}>12:30</MenuItem>
+                                        <MenuItem value={13}>13:00</MenuItem>
+                                    </Select>
+                                    <FormHelperText>{format(watch('startDate'), 'd.M.yyyy')}</FormHelperText>
+                                </FormControl>
+                            )}
+                        />
+                        <Controller
+                            name="endTime"
+                            control={control}
+                            rules={{ required: true }}
+                            render={({ field: { onChange, onBlur, value } }) => (
+                                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                                    <InputLabel id="returnTime-label">Noutoaika</InputLabel>
+                                    <Select
+                                        value={value}
+                                        onChange={onChange}
+                                        onBlur={onBlur}
+                                        label="Noutoaika"
+                                        labelId="returnTime-label"
+                                        id="returnTime"
+                                    >
+                                        <MenuItem value={8}>08:00</MenuItem>
+                                        <MenuItem value={8.5}>08:30</MenuItem>
+                                        <MenuItem value={9}>09:00</MenuItem>
+                                        <MenuItem value={9.5}>09:30</MenuItem>
+                                        <MenuItem value={10}>10:00</MenuItem>
+                                        <MenuItem value={10.5}>10:30</MenuItem>
+                                        <MenuItem value={11}>11:00</MenuItem>
+                                        <MenuItem value={11.5}>11:30</MenuItem>
+                                        <MenuItem value={12}>12:00</MenuItem>
+                                        <MenuItem value={12.5}>12:30</MenuItem>
+                                        <MenuItem value={13}>13:00</MenuItem>
+                                    </Select>
+                                    <FormHelperText>{format(watch('endDate'), 'd.M.yyyy')}</FormHelperText>
+                                </FormControl>
+                            )}
+                        />
+                    </Stack>
+                </Stack>
+                <Controller
+                    name="deliveryAddress"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <TextField label="Toimitusosoite" onChange={onChange} value={value} onBlur={onBlur} />
+                    )}
+                />
                 <Stack flexDirection="row">
                     <Controller
                         name="contactPersonName"
@@ -116,12 +128,11 @@ export default function BikeConfirmation({ watch, control, bikes, setIsConfirmat
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
-                                label="Nimi"
+                                label="Vastaanottajan nimi"
                                 onChange={onChange}
                                 value={value}
                                 onBlur={onBlur}
-                                sx={{ width: 250 }}
-                                size="small"
+                                sx={{ flex: 1 }}
                             />
                         )}
                     />
@@ -131,95 +142,58 @@ export default function BikeConfirmation({ watch, control, bikes, setIsConfirmat
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
-                                label="Puhelinnumero"
+                                label="Vastaanottajan puhelinnumero"
                                 onChange={onChange}
                                 value={value}
                                 onBlur={onBlur}
-                                sx={{ width: 250 }}
-                                size="small"
+                                sx={{ flex: 1 }}
                             />
                         )}
                     />
                 </Stack>
-            </Stack>
-            <Divider />
-            <Stack gap={1}>
-                <Typography variant="caption">Osoite johon tuomme pyörät.</Typography>
-                <Controller
-                    name="deliveryAddress"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextField
-                            label="Toimitusosoite"
-                            onChange={onChange}
-                            value={value}
-                            onBlur={onBlur}
-                            sx={{ width: 250 }}
-                            size="small"
-                        />
-                    )}
-                />
-            </Stack>
-            <Divider />
-            <Stack gap={1}>
-                <Typography variant="caption">
-                    Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä, tuomme ne
-                    lukittavassa kärryssä.
-                </Typography>
-                <Controller
-                    name="storageType"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <Autocomplete
-                            disablePortal
-                            id="storage"
-                            options={[
-                                { value: 'inside', label: 'Sisällä' },
-                                { value: 'outside', label: 'Kärryssä' },
-                            ]}
-                            getOptionLabel={(option) => option.label}
-                            isOptionEqualToValue={(option) => option.value === value.value}
-                            // eslint-disable-next-line react/jsx-props-no-spreading
-                            renderInput={(params) => <TextField {...params} label="Säilytystapa" />}
-                            sx={{ width: 250 }}
-                            value={value}
-                            onChange={(_, option) => onChange(option)}
-                            onBlur={onBlur}
-                            size="small"
-                        />
-                    )}
-                />
-            </Stack>
-            <Divider />
-            <Stack gap={1}>
-                <Typography variant="caption">
-                    Jos sinulla on mitään muuta mitä meidän pitäisi tietää, voit kirjoittaa sen tähän.
-                </Typography>
+                <Stack gap={1}>
+                    <Typography variant="caption">
+                        Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä, tuomme ne
+                        lukittavassa kärryssä.
+                    </Typography>
+                    <Controller
+                        name="storageType"
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <Autocomplete
+                                disablePortal
+                                id="storage"
+                                options={[
+                                    { value: 'inside', label: 'Sisällä' },
+                                    { value: 'outside', label: 'Kärryssä' },
+                                ]}
+                                getOptionLabel={(option) => option.label}
+                                isOptionEqualToValue={(option) => option.value === value.value}
+                                // eslint-disable-next-line react/jsx-props-no-spreading
+                                renderInput={(params) => <TextField {...params} label="Säilytystapa" />}
+                                value={value}
+                                onChange={(_, option) => onChange(option)}
+                                onBlur={onBlur}
+                            />
+                        )}
+                    />
+                </Stack>
                 <Controller
                     name="extraInfo"
                     control={control}
-                    rules={{ required: true }}
                     render={({ field: { onChange, onBlur, value } }) => (
-                        <TextField
-                            label="Lisätiedot"
-                            onChange={onChange}
-                            value={value}
-                            onBlur={onBlur}
-                            sx={{ width: 250 }}
-                            size="small"
-                        />
+                        <TextField label="Lisätiedot" onChange={onChange} value={value} onBlur={onBlur} />
                     )}
                 />
+                <Stack flexDirection="row" justifyContent="space-between" mt={2}>
+                    <Button color="error" onClick={() => setIsConfirmationVisible(false)}>
+                        Takaisin
+                    </Button>
+                    <Button color="success">Lähetä</Button>
+                </Stack>
             </Stack>
-            <Stack flexDirection="row" justifyContent="space-between" mt={2}>
-                <Button color="error" onClick={() => setIsConfirmationVisible(false)}>
-                    Takaisin
-                </Button>
-                <Button color="success">Lähetä</Button>
-            </Stack>
-        </Stack>
+        </Paper>
     );
 }
 
