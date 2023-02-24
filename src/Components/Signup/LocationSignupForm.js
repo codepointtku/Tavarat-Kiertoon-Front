@@ -1,5 +1,7 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSubmit, Form, useActionData } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import {
     Box,
@@ -22,6 +24,7 @@ import Person2Icon from '@mui/icons-material/Person2';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import BackButton from '../BackButton';
+import AlertBox from '../AlertBox';
 
 function HeroText() {
     return (
@@ -82,7 +85,11 @@ function Hero() {
     );
 }
 
-function Form() {
+function LocationForm() {
+    const { register, handleSubmit } = useForm();
+    const submit = useSubmit();
+    const responseStatus = useActionData();
+
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -91,101 +98,134 @@ function Form() {
         event.preventDefault();
     };
 
+    const onSubmit = (data) => {
+        const formData = { ...data, joint_user: true };
+        console.log(formData);
+        submit(formData, {
+            method: 'post',
+            action: '/rekisteroidy/toimipaikka',
+        });
+    };
+
     return (
-        <Container id="signupform-location-fields-wrapper" maxWidth="md">
-            <Box
-                id="signupform-location-fields"
-                sx={{
-                    paddingBottom: 4,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
+        <>
+            {responseStatus?.type === 'create' && !responseStatus?.status && (
+                <>
+                    <AlertBox text="Tunnuksen luominen epäonnistui" status="error" />
+                    <br />
+                </>
+            )}
+            {responseStatus?.type === 'create' && responseStatus?.status && (
+                <>
+                    <AlertBox text="Tunnuksen luominen onnistui" status="success" />
+                    <br />
+                </>
+            )}
+            <Container
+                id="signupform-location-fields-wrapper"
+                maxWidth="md"
+                component={Form}
+                onSubmit={handleSubmit(onSubmit)}
             >
-                <FormControl variant="outlined" fullWidth required>
-                    <InputLabel htmlFor="outlined-adornment-location">Käyttäjätunnus</InputLabel>
-                    <OutlinedInput
-                        id="outlined-adornment-location"
-                        type="text"
-                        label="Toimipaikka"
-                        placeholder="Käyttäjätunnus yhteiskäyttöön"
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <SmokingRoomsIcon />
-                            </InputAdornment>
-                        }
-                    />
-                </FormControl>
+                <Box
+                    id="signupform-location-fields"
+                    sx={{
+                        paddingBottom: 4,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <FormControl variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="outlined-adornment-location">Käyttäjätunnus</InputLabel>
+                        <OutlinedInput
+                            {...register('username')}
+                            id="outlined-adornment-location"
+                            type="text"
+                            label="Toimipaikka"
+                            placeholder="Käyttäjätunnus yhteiskäyttöön"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <SmokingRoomsIcon />
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
 
-                <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                    <InputLabel htmlFor="outlined-adornment-password">Vastuuhenkilö</InputLabel>
-                    <OutlinedInput
-                        id="outlined-adornment-password"
-                        type="text"
-                        label="Vastuuhenkilö"
-                        placeholder="Tilin vastuuhenkilön nimi"
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <Person2Icon />
-                            </InputAdornment>
-                        }
-                    />
-                </FormControl>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="outlined-adornment-password">Vastuuhenkilö</InputLabel>
+                        <OutlinedInput
+                            {...register('contactperson')}
+                            id="outlined-adornment-password"
+                            type="text"
+                            label="Vastuuhenkilö"
+                            placeholder="Tilin vastuuhenkilön nimi"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <Person2Icon />
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
 
-                <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                    <InputLabel htmlFor="outlined-adornment-password">Sähköpostiosoite</InputLabel>
-                    <OutlinedInput
-                        id="outlined-adornment-password"
-                        type="text"
-                        label="Sähköpostiosoite"
-                        placeholder="Vastuuhenkilön sähköpostiosoite"
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <MailOutlineIcon />
-                            </InputAdornment>
-                        }
-                    />
-                </FormControl>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="outlined-adornment-password">Sähköpostiosoite</InputLabel>
+                        <OutlinedInput
+                            {...register('email')}
+                            id="outlined-adornment-password"
+                            type="text"
+                            label="Sähköpostiosoite"
+                            placeholder="Vastuuhenkilön sähköpostiosoite"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <MailOutlineIcon />
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
 
-                <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                    <InputLabel htmlFor="outlined-adornment-password">Salasana</InputLabel>
-                    <OutlinedInput
-                        id="outlined-adornment-password"
-                        type={showPassword ? 'text' : 'password'}
-                        label="Salasana"
-                        placeholder="****"
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
-                                >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                    />
-                </FormControl>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="outlined-adornment-password">Salasana</InputLabel>
+                        <OutlinedInput
+                            {...register('password')}
+                            id="outlined-adornment-password"
+                            type={showPassword ? 'text' : 'password'}
+                            label="Salasana"
+                            placeholder="****"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
 
-                <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                    <InputLabel htmlFor="outlined-adornment-password">Salasana uudelleen</InputLabel>
-                    <OutlinedInput
-                        id="outlined-adornment-password"
-                        type={showPassword ? 'text' : 'password'}
-                        label="Salasana uudelleen"
-                        placeholder="****"
-                    />
-                </FormControl>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="outlined-adornment-password">Salasana uudelleen</InputLabel>
+                        <OutlinedInput
+                            {...register('passwordCheck')}
+                            id="outlined-adornment-password"
+                            type={showPassword ? 'text' : 'password'}
+                            label="Salasana uudelleen"
+                            placeholder="****"
+                        />
+                    </FormControl>
 
-                <Button sx={{ mt: 3, mb: 3 }} fullWidth>
-                    Rekisteröidy
-                </Button>
-                <BackButton />
-            </Box>
-        </Container>
+                    <Button sx={{ mt: 3, mb: 3 }} fullWidth type="submit">
+                        Rekisteröidy
+                    </Button>
+                    <BackButton />
+                </Box>
+            </Container>
+        </>
     );
 }
 
@@ -193,7 +233,7 @@ function LocationSignupForm() {
     return (
         <>
             <Hero />
-            <Form />
+            <LocationForm />
         </>
     );
 }
