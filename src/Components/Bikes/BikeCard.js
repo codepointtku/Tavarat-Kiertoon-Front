@@ -82,7 +82,7 @@ export default function BikeCard({
                     }}
                 >
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Lisää vuokraukseen {bike.name}
+                        {bike.name}
                     </Typography>
                     <Typography sx={{ mt: 1 }} variant="body2" color="text.secondary">
                         Kuvaus: {bike.description}

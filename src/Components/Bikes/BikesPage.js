@@ -1,5 +1,28 @@
-import { Autocomplete, Box, Button, Card, Container, Modal, Stack, TextField, Typography } from '@mui/material';
-import { DateTimePicker } from '@mui/x-date-pickers';
+import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+import {
+    Autocomplete,
+    Avatar,
+    Box,
+    Button,
+    Card,
+    Collapse,
+    Container,
+    Divider,
+    FormControl,
+    FormHelperText,
+    InputLabel,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    MenuItem,
+    Modal,
+    Select,
+    Stack,
+    TextField,
+    Typography,
+} from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { format, isWeekend, max, min, parseISO } from 'date-fns';
@@ -7,6 +30,7 @@ import { fi } from 'date-fns/locale';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
+import { TransitionGroup } from 'react-transition-group';
 
 import BikeCard from './BikeCard';
 
@@ -41,13 +65,15 @@ export default function BikesPage() {
     const { control, watch } = useForm({
         defaultValues: {
             startDate: null,
+            startTime: 8,
             endDate: null,
+            endTime: 13,
             selectedBikes: {},
             contactPersonName: '',
             contactPersonPhoneNumber: '',
             deliveryAddress: '',
             storageType: null,
-            rentalInfo: '',
+            extraInfo: '',
         },
     });
 
@@ -143,36 +169,39 @@ export default function BikesPage() {
                         </Stack>
                     </Box>
                     <Stack gap={1}>
-                        {filteredBikes
-                            .sort((a, b) => b.max_available - a.max_available)
-                            .map((bike) => (
-                                <Controller
-                                    key={bike.id}
-                                    control={control}
-                                    name="selectedBikes"
-                                    render={({ field: { onChange, value } }) => (
-                                        <BikeCard
-                                            bike={bike}
-                                            dateInfo={loaderData.date_info}
-                                            amountSelected={value[bike.id] ?? 0}
-                                            onChange={(event) => {
-                                                const newValue = event.target.value;
-                                                if (Number.isNaN(newValue) || !Number(newValue)) {
-                                                    const newSelectedBikes = { ...value };
-                                                    delete newSelectedBikes[bike.id];
-                                                    onChange(newSelectedBikes);
-                                                } else if (newValue >= 0 && newValue <= bike.max_available)
-                                                    onChange({
-                                                        ...value,
-                                                        [bike.id]: Number(newValue),
-                                                    });
-                                            }}
-                                            startDate={watch('startDate')}
-                                            endDate={watch('endDate')}
+                        <TransitionGroup>
+                            {filteredBikes
+                                .sort((a, b) => b.max_available - a.max_available)
+                                .map((bike) => (
+                                    <Collapse key={bike.id}>
+                                        <Controller
+                                            control={control}
+                                            name="selectedBikes"
+                                            render={({ field: { onChange, value } }) => (
+                                                <BikeCard
+                                                    bike={bike}
+                                                    dateInfo={loaderData.date_info}
+                                                    amountSelected={value[bike.id] ?? 0}
+                                                    onChange={(event) => {
+                                                        const newValue = event.target.value;
+                                                        if (Number.isNaN(newValue) || !Number(newValue)) {
+                                                            const newSelectedBikes = { ...value };
+                                                            delete newSelectedBikes[bike.id];
+                                                            onChange(newSelectedBikes);
+                                                        } else if (newValue >= 0 && newValue <= bike.max_available)
+                                                            onChange({
+                                                                ...value,
+                                                                [bike.id]: Number(newValue),
+                                                            });
+                                                    }}
+                                                    startDate={watch('startDate')}
+                                                    endDate={watch('endDate')}
+                                                />
+                                            )}
                                         />
-                                    )}
-                                />
-                            ))}
+                                    </Collapse>
+                                ))}
+                        </TransitionGroup>
                     </Stack>
                 </Box>
                 <Box sx={{ width: '300px' }}>
@@ -197,14 +226,13 @@ export default function BikesPage() {
                             Vuokraustiedot
                         </Typography>
                         <Stack gap={2}>
-                            <Typography variant="caption">8-13 välissä toimitus ja nouto</Typography>
                             <Controller
                                 name="startDate"
                                 control={control}
                                 rules={{ required: true }}
                                 render={({ field: { onChange, onBlur, value } }) => (
                                     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
-                                        <DateTimePicker
+                                        <DatePicker
                                             label="Aloituspäivä"
                                             value={value}
                                             onChange={onChange}
@@ -218,11 +246,9 @@ export default function BikesPage() {
                                             shouldDisableDate={(day) => isWeekend(day)}
                                             minDate={minDate}
                                             maxDate={watch('endDate') ? min([maxDate, watch('endDate')]) : maxDate}
-                                            views={['month', 'day', 'hours', 'minutes']}
+                                            sx={{ '& .Mui-disabled': { backgroundColor: 'black' } }}
+                                            views={['month', 'day']}
                                             openTo="month"
-                                            minutesStep={5}
-                                            minTime={new Date(0, 0, 0, 8)}
-                                            maxTime={new Date(0, 0, 0, 13)}
                                         />
                                     </LocalizationProvider>
                                 )}
@@ -233,7 +259,7 @@ export default function BikesPage() {
                                 rules={{ required: true }}
                                 render={({ field: { onChange, onBlur, value } }) => (
                                     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
-                                        <DateTimePicker
+                                        <DatePicker
                                             label="Loppumispäivä"
                                             value={value}
                                             onChange={onChange}
@@ -247,29 +273,37 @@ export default function BikesPage() {
                                             shouldDisableDate={(day) => isWeekend(day)}
                                             minDate={watch('startDate') ? max([minDate, watch('startDate')]) : minDate}
                                             maxDate={maxDate}
-                                            views={['month', 'day', 'hours', 'minutes']}
+                                            views={['month', 'day']}
                                             openTo="month"
-                                            minutesStep={5}
-                                            minTime={new Date(0, 0, 0, 8)}
-                                            maxTime={new Date(0, 0, 0, 13)}
                                         />
                                     </LocalizationProvider>
                                 )}
                             />
                         </Stack>
-                        <Box>
-                            {Object.keys(watch('selectedBikes')).length ? (
-                                Object.entries(watch('selectedBikes')).map(
-                                    ([key, value]) =>
-                                        !!value && (
-                                            <Typography key={key}>
-                                                {value}x {loaderData.bikes.find((bike) => bike.id === Number(key)).name}
-                                            </Typography>
+                        <Box minHeight={44}>
+                            <List>
+                                <TransitionGroup>
+                                    {Object.keys(watch('selectedBikes')).length ? (
+                                        Object.entries(watch('selectedBikes')).map(
+                                            ([key, value]) =>
+                                                !!value && (
+                                                    <Collapse key={key}>
+                                                        <Typography>
+                                                            {`${value}x ${
+                                                                loaderData.bikes.find((bike) => bike.id === Number(key))
+                                                                    .name
+                                                            }`}
+                                                        </Typography>
+                                                    </Collapse>
+                                                )
                                         )
-                                )
-                            ) : (
-                                <Typography>Valitse pyörä</Typography>
-                            )}
+                                    ) : (
+                                        <Collapse>
+                                            <Typography>Valitse pyörä</Typography>
+                                        </Collapse>
+                                    )}
+                                </TransitionGroup>
+                            </List>
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
                             <Button
@@ -308,12 +342,119 @@ export default function BikesPage() {
                             <Typography variant="h6" align="center">
                                 Vuokrausvahvistus
                             </Typography>
-                            {!!watch('startDate') && !!watch('endDate') && (
-                                <Typography>{`${format(watch('startDate'), 'd.M.yyyy')} - ${format(
-                                    watch('endDate'),
-                                    'd.M.yyyy'
-                                )}`}</Typography>
-                            )}
+                            <List>
+                                <ListItem>
+                                    <ListItemText primary="Ajankohta" secondary="Jan 9, 2014" />
+                                    {!!watch('startDate') && !!watch('endDate') && (
+                                        <Typography>{`${format(watch('startDate'), 'd.M.yyyy')} - ${format(
+                                            watch('endDate'),
+                                            'd.M.yyyy'
+                                        )}`}</Typography>
+                                    )}
+                                </ListItem>
+                                <Divider component="li" />
+                                <li>
+                                    <Typography
+                                        sx={{ mt: 0.5, ml: 2 }}
+                                        color="text.secondary"
+                                        display="block"
+                                        variant="caption"
+                                    >
+                                        Divider
+                                    </Typography>
+                                </li>
+                                <ListItem>
+                                    <ListItemText primary="Work" secondary="Jan 7, 2014" />
+                                </ListItem>
+                                <Divider component="li" variant="inset" />
+                                <li>
+                                    <Typography
+                                        sx={{ mt: 0.5, ml: 9 }}
+                                        color="text.secondary"
+                                        display="block"
+                                        variant="caption"
+                                    >
+                                        Leisure
+                                    </Typography>
+                                </li>
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            <BeachAccessIcon />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Vacation" secondary="July 20, 2014" />
+                                </ListItem>
+                            </List>
+                            <Box>
+                                <Typography variant="caption">Ajat ovat suuntaanantavia</Typography>
+                                <Stack flexDirection="row" gap={2}>
+                                    <Controller
+                                        name="startTime"
+                                        control={control}
+                                        rules={{ required: true }}
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <FormControl sx={{ m: 1, minWidth: 120 }}>
+                                                <InputLabel id="deliveryTime-label">Toimitusaika</InputLabel>
+                                                <Select
+                                                    value={value}
+                                                    onChange={onChange}
+                                                    onBlur={onBlur}
+                                                    // size="small"
+                                                    label="Toimitusaika"
+                                                    labelId="deliveryTime-label"
+                                                    id="deliveryTime"
+                                                >
+                                                    <MenuItem value={8}>08:00</MenuItem>
+                                                    <MenuItem value={8.5}>08:30</MenuItem>
+                                                    <MenuItem value={9}>09:00</MenuItem>
+                                                    <MenuItem value={9.5}>09:30</MenuItem>
+                                                    <MenuItem value={10}>10:00</MenuItem>
+                                                    <MenuItem value={10.5}>10:30</MenuItem>
+                                                    <MenuItem value={11}>11:00</MenuItem>
+                                                    <MenuItem value={11.5}>11:30</MenuItem>
+                                                    <MenuItem value={12}>12:00</MenuItem>
+                                                    <MenuItem value={12.5}>12:30</MenuItem>
+                                                    <MenuItem value={13}>13:00</MenuItem>
+                                                </Select>
+                                                <FormHelperText>With label + helper text</FormHelperText>
+                                            </FormControl>
+                                        )}
+                                    />
+                                    <Controller
+                                        name="endTime"
+                                        control={control}
+                                        rules={{ required: true }}
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <FormControl sx={{ m: 1, minWidth: 120 }}>
+                                                <InputLabel id="returnTime-label">Noutoaika</InputLabel>
+                                                <Select
+                                                    value={value}
+                                                    onChange={onChange}
+                                                    onBlur={onBlur}
+                                                    // size="small"
+                                                    label="Noutoaika"
+                                                    labelId="returnTime-label"
+                                                    id="returnTime"
+                                                >
+                                                    <MenuItem value={8}>08:00</MenuItem>
+                                                    <MenuItem value={8.5}>08:30</MenuItem>
+                                                    <MenuItem value={9}>09:00</MenuItem>
+                                                    <MenuItem value={9.5}>09:30</MenuItem>
+                                                    <MenuItem value={10}>10:00</MenuItem>
+                                                    <MenuItem value={10.5}>10:30</MenuItem>
+                                                    <MenuItem value={11}>11:00</MenuItem>
+                                                    <MenuItem value={11.5}>11:30</MenuItem>
+                                                    <MenuItem value={12}>12:00</MenuItem>
+                                                    <MenuItem value={12.5}>12:30</MenuItem>
+                                                    <MenuItem value={13}>13:00</MenuItem>
+                                                </Select>
+                                                <FormHelperText>With label + helper text</FormHelperText>
+                                            </FormControl>
+                                        )}
+                                    />
+                                </Stack>
+                            </Box>
                             <Box>
                                 {Object.entries(watch('selectedBikes')).map(
                                     ([key, value]) =>
@@ -409,7 +550,7 @@ export default function BikesPage() {
                                     Jos sinulla on mitään muuta mitä meidän pitäisi tietää, voit kirjoittaa sen tähän.
                                 </Typography>
                                 <Controller
-                                    name="rentalInfo"
+                                    name="extraInfo"
                                     control={control}
                                     rules={{ required: true }}
                                     render={({ field: { onChange, onBlur, value } }) => (
