@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Alert, Snackbar } from '@mui/material';
 
@@ -14,8 +14,16 @@ import DangerousIcon from '@mui/icons-material/Dangerous';
 // example:
 // <AlertBox text="asia pihvi" status="success" />
 
-function AlertBox({ text, status }) {
+function AlertBox({ text, status, timer }) {
     const [open, setOpen] = useState(true);
+
+    useEffect(() => {
+        if (timer > 0) {
+            setTimeout(() => {
+                setOpen(false);
+            }, timer);
+        }
+    }, []);
 
     return (
         <div>
@@ -46,6 +54,11 @@ function AlertBox({ text, status }) {
 AlertBox.propTypes = {
     text: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
+    timer: PropTypes.number,
+};
+
+AlertBox.defaultProps = {
+    timer: 0,
 };
 
 export default AlertBox;

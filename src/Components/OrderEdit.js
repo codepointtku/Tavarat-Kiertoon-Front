@@ -8,11 +8,11 @@ import {
     TableHead,
     TableRow,
     TableBody,
-    Alert,
 } from '@mui/material';
 import { useState } from 'react';
 import { useLoaderData, useNavigate, generatePath, useActionData } from 'react-router';
 import { useSubmit } from 'react-router-dom';
+import AlertBox from './AlertBox';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
 
@@ -202,16 +202,16 @@ function OrderEdit() {
             </Box>
             <h2 align="center">Poista tilauksen tuotteita.</h2>
             {responseStatus?.type === 'delete' && !responseStatus?.status && (
-                <Alert severity="error">Esineen poistaminen epäonnistui</Alert>
+                <AlertBox text="Esineen poistaminen epäonnistui" status="error" />
             )}
             {responseStatus?.type === 'delete' && responseStatus?.status && (
-                <Alert severity="success">Esineen poistaminen onnistui</Alert>
+                <AlertBox text="Esineen poistaminen onnistui" status="success" />
             )}
             {responseStatus?.type === 'update' && !responseStatus?.status && (
-                <Alert severity="error">Tilauksen tallennus epäonnistui! Lataa sivu uudestaan.</Alert>
+                <AlertBox text="Tilauksen tallennus epäonnistui! Lataa sivu uudestaan." status="error" />
             )}
             {responseStatus?.type === 'update' && responseStatus?.status && (
-                <Alert severity="success">Tilauksen tallennus onnistui</Alert>
+                <AlertBox text="Tilauksen tallennus onnistui" status="success" />
             )}
             <TableContainer sx={{ padding: '2rem' }}>
                 <Table>
