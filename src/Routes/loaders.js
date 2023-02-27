@@ -1,6 +1,8 @@
 import axios from 'axios';
 import apiCall from '../Utils/apiCall';
 
+// just a comment for file-rename commit to work. remove this
+
 /**
  * Get different defaults for the site
  */
