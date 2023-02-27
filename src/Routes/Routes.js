@@ -8,7 +8,7 @@ import BaseLayout from '../Layouts/BaseLayout';
 import StorageLayout from '../Layouts/StorageLayout';
 import AdminLayout from '../Layouts/AdminLayout';
 import RootLayout from '../Layouts/RootLayout';
-import BikesLayout from '../Layouts/Bikes';
+import BikesLayout from '../Layouts/BikesLayout';
 
 import OrdersList from '../Components/OrdersList';
 import OrderView from '../Components/OrderView';
