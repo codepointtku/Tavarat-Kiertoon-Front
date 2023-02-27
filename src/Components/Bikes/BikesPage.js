@@ -180,8 +180,7 @@ export default function BikesPage() {
                                                                 bike={bike}
                                                                 dateInfo={loaderData.date_info}
                                                                 amountSelected={value[bike.id] ?? 0}
-                                                                onChange={(event) => {
-                                                                    const newValue = event.target.value;
+                                                                onChange={(newValue) => {
                                                                     if (Number.isNaN(newValue) || !Number(newValue)) {
                                                                         const newSelectedBikes = { ...value };
                                                                         delete newSelectedBikes[bike.id];

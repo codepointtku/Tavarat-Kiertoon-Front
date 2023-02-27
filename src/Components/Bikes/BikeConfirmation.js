@@ -156,6 +156,7 @@ export default function BikeConfirmation({ watch, control, bikes, setIsConfirmat
                                 onBlur={onBlur}
                                 sx={{ flex: 1 }}
                                 required
+                                placeholder="040 123 4567"
                             />
                         )}
                     />
@@ -168,6 +169,10 @@ export default function BikeConfirmation({ watch, control, bikes, setIsConfirmat
                         render={({ field: { onChange, onBlur, value } }) => (
                             <FormControl required>
                                 <FormLabel id="storage-label">Säilytystapa</FormLabel>
+                                <Typography variant="caption">
+                                    Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä,
+                                    tuomme ne lukittavassa kärryssä.
+                                </Typography>
                                 <RadioGroup
                                     row
                                     aria-labelledby="storage-label"
@@ -179,10 +184,6 @@ export default function BikeConfirmation({ watch, control, bikes, setIsConfirmat
                                     <FormControlLabel value="inside" control={<Radio />} label="Sisällä" />
                                     <FormControlLabel value="outside" control={<Radio />} label="Kärryssä" />
                                 </RadioGroup>
-                                <Typography variant="caption">
-                                    Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä,
-                                    tuomme ne lukittavassa kärryssä.
-                                </Typography>
                             </FormControl>
                             // <Autocomplete
                             //     disablePortal

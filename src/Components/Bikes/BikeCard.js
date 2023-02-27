@@ -1,5 +1,18 @@
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Modal, Stack, Typography } from '@mui/material';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import {
+    Box,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardMedia,
+    IconButton,
+    Modal,
+    Stack,
+    Typography,
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
@@ -16,8 +29,8 @@ export default function BikeCard({
     const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
 
     return (
-        <Card sx={{ my: 1, display: 'flex', flexDirection: 'row', height: '200px' }}>
-            <CardMedia sx={{ width: '200px', height: '200px' }} component="img" alt="kuva" image="br.jpg" />
+        <Card sx={{ my: 1, display: 'flex', flexDirection: 'row', height: '220px' }}>
+            <CardMedia sx={{ width: '220px', height: '220px' }} component="img" alt="kuva" image="br.jpg" />
             <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Typography variant="h6">{bike.name}</Typography>
                 <Box sx={{ mb: 1 }}>
@@ -42,17 +55,29 @@ export default function BikeCard({
             <CardActions
                 sx={{ justifyContent: 'space-between', display: 'flex', flexDirection: 'column', alignItems: 'end' }}
             >
-                <Stack justifyContent="space-between" height="100%">
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mr: 5 }}>
-                        <input
-                            type="number"
-                            id="amount"
-                            name="amount"
-                            value={amountSelected}
-                            onChange={onChange}
-                            min={0}
-                            max={bike.max_available}
-                        />
+                <Stack justifyContent="space-between" height="100%" pt={1}>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mr: 5, alignItems: 'center' }}>
+                        <IconButton
+                            aria-label="vähennä yksi"
+                            size="small"
+                            color="primary"
+                            disabled={!amountSelected}
+                            onClick={() => onChange(amountSelected - 1)}
+                        >
+                            <RemoveCircleIcon fontSize="inherit" />
+                        </IconButton>
+                        <Typography align="center" minWidth={20}>
+                            {amountSelected}
+                        </Typography>
+                        <IconButton
+                            aria-label="lisää yksi"
+                            size="small"
+                            color="primary"
+                            disabled={amountSelected >= bike.max_available}
+                            onClick={() => onChange(amountSelected + 1)}
+                        >
+                            <AddCircleIcon fontSize="inherit" />
+                        </IconButton>
                     </Box>
                     <BikeAvailability
                         dateInfo={dateInfo}
