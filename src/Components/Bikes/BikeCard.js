@@ -99,28 +99,30 @@ export default function BikeCard({
                         top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
-                        width: 400,
+                        width: 500,
                         bgcolor: 'background.paper',
-                        border: '2px solid #000',
                         boxShadow: 24,
                         p: 3,
+                        borderRadius: 4,
                     }}
                 >
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        {bike.name}
-                    </Typography>
-                    <Typography sx={{ mt: 1 }} variant="body2" color="text.secondary">
-                        Kuvaus: {bike.description}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        Tyyppi: {bike.type}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        Koko: {bike.size}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        Yhteensä palvelussa: {bike.max_available}
-                    </Typography>
+                    <Stack gap={1}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                            {bike.name}
+                        </Typography>
+                        <Typography sx={{ mt: 1 }} variant="body2" color="text.secondary">
+                            Kuvaus: {bike.description}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            Tyyppi: {bike.type}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            Koko: {bike.size}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            Yhteensä palvelussa: {bike.max_available}
+                        </Typography>
+                    </Stack>
                 </Box>
             </Modal>
         </Card>
