@@ -114,37 +114,37 @@ const addItemLoader = async () => {
 /**
  * Get one order
  */
-const pdfViewLoader = async ({ params }) => {
-    const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
+const pdfViewLoader = async (auth, setAuth, params) => {
+    const data = await apiCall(auth, setAuth, `/orders/${params.id}`);
     return data || null;
 };
 
 /**
  * Get all storages
  */
-const storagesListLoader = async () => {
-    const { data } = await axios.get('http://localhost:8000/storages');
+const storagesListLoader = async (auth, setAuth) => {
+    const data = await apiCall(auth, setAuth, '/storages');
     return data;
 };
 
-const storageEditLoader = async ({ params }) => {
-    const { data } = await axios.get(`http://localhost:8000/storages/${params.id}`);
+const storageEditLoader = async (auth, setAuth, params) => {
+    const data = await apiCall(auth, setAuth, `/storages/${params.id}`);
     return data;
 };
 
 /**
  * Get all users
  */
-const usersListLoader = async () => {
-    const { data } = await axios.get('http://localhost:8000/users');
+const usersListLoader = async (auth, setAuth) => {
+    const data = await apiCall(auth, setAuth, '/users');
     return data;
 };
 
 /**
  * Get one user
  */
-const userEditLoader = async ({ params }) => {
-    const { data } = await axios.get(`http://localhost:8000/users/${params.id}`);
+const userEditLoader = async (auth, setAuth, params) => {
+    const data = await apiCall(auth, setAuth, `/users/${params.id}`);
     return data;
 };
 

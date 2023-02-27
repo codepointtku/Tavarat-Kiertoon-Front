@@ -263,7 +263,7 @@ function Routes() {
                                 {
                                     path: ':id',
                                     element: <PDFView />,
-                                    loader: pdfViewLoader,
+                                    loader: ({ params }) => pdfViewLoader(auth, setAuth, params),
                                 },
                             ],
                         },
@@ -293,12 +293,12 @@ function Routes() {
                                 {
                                     index: true,
                                     element: <StoragesList />,
-                                    loader: storagesListLoader,
+                                    loader: async () => storagesListLoader(auth, setAuth),
                                 },
                                 {
                                     path: ':id',
                                     element: <StorageEdit />,
-                                    loader: storageEditLoader,
+                                    loader: async ({ params }) => storageEditLoader(auth, setAuth, params),
                                     action: storageEditAction,
                                 },
                             ],
@@ -311,12 +311,12 @@ function Routes() {
                                 {
                                     index: true,
                                     element: <UsersList />,
-                                    loader: usersListLoader,
+                                    loader: async () => usersListLoader(auth, setAuth),
                                 },
                                 {
                                     path: ':id',
                                     element: <UserEdit />,
-                                    loader: userEditLoader,
+                                    loader: async ({ params }) => userEditLoader(auth, setAuth, params),
                                 },
                             ],
                         },
