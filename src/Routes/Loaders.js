@@ -44,8 +44,8 @@ const productDetailsLoader = async (auth, setAuth, params) => {
 /**
  * Get all orders.
  */
-const ordersListLoader = async ({ params }) => {
-    const { data } = await axios.get('http://localhost:8000/orders');
+const ordersListLoader = async (auth, setAuth, params) => {
+    const data = await apiCall(auth, setAuth, '/orders');
     // num will tell back-end which entries to bring
     // view is order status, unless archived can bring all?
     // or will be replaced into the back-end later?
@@ -76,8 +76,8 @@ const ordersListLoader = async ({ params }) => {
 /**
  * Get one order
  */
-const orderViewLoader = async ({ params }) => {
-    const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
+const orderViewLoader = async (auth, setAuth, params) => {
+    const data = await apiCall(auth, setAuth, `/orders/${params.id}`);
     if (data) {
         data.productList = data.products;
         return data;
@@ -88,8 +88,8 @@ const orderViewLoader = async ({ params }) => {
 /**
  * Get one order
  */
-const orderEditLoader = async ({ params }) => {
-    const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
+const orderEditLoader = async (auth, setAuth, params) => {
+    const data = await apiCall(auth, setAuth, `/orders/${params.id}`);
     if (data) {
         return data;
     }

@@ -214,7 +214,7 @@ function Routes() {
                         {
                             path: ':num/:view',
                             element: <OrdersList />,
-                            loader: async () => ordersListLoader(auth, setAuth),
+                            loader: async ({ params }) => ordersListLoader(auth, setAuth, params),
                         },
                         {
                             path: 'tilaus',
@@ -231,13 +231,13 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <OrderView />,
-                                            loader: orderViewLoader,
+                                            loader: async ({ params }) => orderViewLoader(auth, setAuth, params),
                                         },
                                         {
                                             path: 'muokkaa',
                                             element: <OrderEdit />,
                                             action: orderEditAction,
-                                            loader: orderEditLoader,
+                                            loader: async ({ params }) => orderEditLoader(auth, setAuth, params),
                                         },
                                     ],
                                 },
