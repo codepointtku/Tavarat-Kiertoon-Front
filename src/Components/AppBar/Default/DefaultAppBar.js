@@ -99,7 +99,6 @@ const drawerWidth = 490;
 
 function Drawer({ currentOpenDrawer, name, onClose, children }) {
     const handleClose = () => {
-        console.log('jee');
         onClose();
     };
 
