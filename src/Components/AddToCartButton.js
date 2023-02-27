@@ -23,6 +23,11 @@ function AddToCartButton({ size, id, name }) {
     // cartItems.map((item) => console.log(Object.values(item).includes()));
     // console.log(cartItems);
 
+    // Tehtävät muutokset
+    // ｜｜ Ostosprosessin navigaation parantaminen jos mahdollista
+    // ｜｜ Pudotusvalikon toimintaan saaminen ostosprosessin toisessa vaiheessa
+    // ｜｜ Tuotteiden lisääminen backendistä ostoskoriin toimintaan saanti
+
     return (
         <Button
             color={itemsInCart.length > 0 ? 'success' : 'primary'}
