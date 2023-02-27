@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+// just a comment for file-rename commit to work. remove this
+
 /**
  * Get different defaults for the site
  */
