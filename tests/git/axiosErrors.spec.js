@@ -129,10 +129,10 @@ test.describe('tilaus', () => {
     });
 });
 
-test.describe('luo', () => {
+test.describe('tuotteet', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('varasto/luo');
-        await expect(page.getByText('Yhteysongelma sijainnissa /varasto/luo')).not.toBeVisible();
+        await page.goto('varasto/tuotteet');
+        await expect(page.getByText('Yhteysongelma sijainnissa /varasto/tuotteet')).not.toBeVisible();
     });
 });
 

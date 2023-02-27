@@ -35,7 +35,6 @@ import ContactPage from '../Components/ContactPage';
 
 import PDFView from '../Components/PDFView';
 import {
-    addItemLoader,
     orderEditLoader,
     ordersListLoader,
     orderViewLoader,
@@ -48,6 +47,7 @@ import {
     userEditLoader,
     usersListLoader,
     userSignupLoader,
+    storageProductsLoader,
 } from './loaders';
 
 import { userSignupAction, contactAction, orderEditAction, storageCreateAction, storageEditAction } from './actions';
@@ -58,6 +58,7 @@ import GuideAccount from '../Components/Instructions/GuideAccount';
 import GuideOrdering from '../Components/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
+import StorageProducts from '../Components/StorageProducts';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -232,9 +233,10 @@ function Routes() {
                             ],
                         },
                         {
-                            path: 'luo',
-                            element: <AddItem />,
-                            loader: addItemLoader,
+                            path: 'tuotteet',
+                            id: 'storageProducts',
+                            element: <StorageProducts />,
+                            loader: storageProductsLoader,
                         },
                         {
                             path: 'koodinlukija',
