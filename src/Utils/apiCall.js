@@ -7,8 +7,6 @@ const apiCall = async (auth, setAuth, path, method, data) => {
         data,
         options: { withCredentials: true },
     });
-    console.log(result);
-
     Object.keys(auth).forEach((each) => {
         if (result.data.authorization?.contains(each)) {
             if (auth[each] === false) {

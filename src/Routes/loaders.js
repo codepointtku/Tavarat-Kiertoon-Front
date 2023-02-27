@@ -15,8 +15,6 @@ const rootLoader = async (auth, setAuth) => {
             apiCall(auth, setAuth, '/bulletins/', 'get'),
             apiCall(auth, setAuth, '/shopping_carts/', 'get'),
         ]);
-
-    console.log(categories);
     return { contacts, colors, categories, bulletins, shoppingCart };
 };
 
@@ -24,24 +22,16 @@ const rootLoader = async (auth, setAuth) => {
  * Get all products
  */
 const productListLoader = async (auth, setAuth) => {
-    try {
-        const { data } = await apiCall(auth, setAuth, '/products/', 'get');
-        return data.results;
-    } catch (err) {
-        return null;
-    }
+    const { data } = await apiCall(auth, setAuth, '/products/', 'get');
+    return data.results;
 };
 
 /**
  * Get one product
  */
 const productDetailsLoader = async (auth, setAuth, params) => {
-    try {
-        const { data } = await apiCall(auth, setAuth, `/products/${params.id}`, 'get');
-        return data;
-    } catch {
-        return null;
-    }
+    const { data } = await apiCall(auth, setAuth, `/products/${params.id}`, 'get');
+    return data;
 };
 
 /**
@@ -70,22 +60,16 @@ const ordersListLoader = async (auth, setAuth, params) => {
         return 1;
     });
 
-    if (data) {
-        return data;
-    }
-    return null;
+    return data;
 };
 
 /**
  * Get one order
  */
 const orderViewLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
-    if (data) {
-        data.productList = data.products;
-        return data;
-    }
-    return null;
+    const response = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
+    response.data.productList = response.data.products;
+    return response.data;
 };
 
 /**
@@ -93,10 +77,7 @@ const orderViewLoader = async (auth, setAuth, params) => {
  */
 const orderEditLoader = async (auth, setAuth, params) => {
     const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
-    if (data) {
-        return data;
-    }
-    return null;
+    return data;
 };
 
 /**
@@ -119,7 +100,7 @@ const addItemLoader = async () => {
  */
 const pdfViewLoader = async (auth, setAuth, params) => {
     const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
-    return data || null;
+    return data;
 };
 
 /**

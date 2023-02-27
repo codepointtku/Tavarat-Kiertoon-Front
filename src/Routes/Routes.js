@@ -207,7 +207,7 @@ function Routes() {
                     ),
                     errorElement: (
                         <ThemeProvider theme={storageTheme}>
-                            <StorageLayout />
+                            <ErrorBoundary />,
                         </ThemeProvider>
                     ),
                     children: [
@@ -231,6 +231,7 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <OrderView />,
+
                                             loader: async ({ params }) => orderViewLoader(auth, setAuth, params),
                                         },
                                         {
@@ -279,7 +280,7 @@ function Routes() {
                     ),
                     errorElement: (
                         <ThemeProvider theme={adminTheme}>
-                            <AdminLayout />
+                            <ErrorBoundary />,
                         </ThemeProvider>
                     ),
                     children: [

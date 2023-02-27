@@ -90,7 +90,7 @@ creates new storage
 */
 const storageCreateAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, 'http://localhost:8000/storages/', 'post', {
+    const response = await apiCall(auth, setAuth, '/storages/', 'post', {
         address: formData.get('address'),
         name: formData.get('name'),
         in_use: formData.get('in_use'),
@@ -108,7 +108,7 @@ const storageEditAction = async (auth, setAuth, request, params) => {
     const formData = await request.formData();
     if (request.method === 'POST') {
         if (formData.get('type') === 'put') {
-            const response = await apiCall(auth, setAuth, `http://localhost:8000/storages/${params.id}`, 'put', {
+            const response = await apiCall(auth, setAuth, `/storages/${params.id}`, 'put', {
                 address: formData.get('address'),
                 name: formData.get('name'),
                 in_use: formData.get('in_use'),
