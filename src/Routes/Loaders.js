@@ -4,14 +4,14 @@ import apiCall from '../Utils/apiCall';
 /**
  * Get different defaults for the site
  */
-const rootLoader = async () => {
+const rootLoader = async (auth, setAuth) => {
     const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: shoppingCart }] =
         await Promise.all([
-            axios.get('http://localhost:8000/contacts/'),
-            axios.get('http://localhost:8000/colors/'),
-            axios.get('http://localhost:8000/categories/'),
-            axios.get('http://localhost:8000/bulletins/'),
-            axios.get('http://localhost:8000/shopping_carts/'),
+            apiCall(auth, setAuth, '/contacts/'),
+            apiCall(auth, setAuth, '/colors/'),
+            apiCall(auth, setAuth, '/categories/'),
+            apiCall(auth, setAuth, '/bulletins/'),
+            apiCall(auth, setAuth, '/shopping_carts/'),
         ]);
 
     return { contacts, colors, categories, bulletins, shoppingCart };
@@ -32,9 +32,9 @@ const productListLoader = async (auth, setAuth) => {
 /**
  * Get one product
  */
-const productDetailsLoader = async ({ params }) => {
+const productDetailsLoader = async (auth, setAuth, params) => {
     try {
-        const { data } = await axios.get(`http://localhost:8000/products/${params.id}`);
+        const data = await apiCall(auth, setAuth, `/products/${params.id}`);
         return data;
     } catch {
         return null;

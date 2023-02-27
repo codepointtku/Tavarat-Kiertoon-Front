@@ -77,7 +77,7 @@ function Routes() {
             element: <RootLayout />,
             errorElement: <ErrorBoundary />,
             id: 'root',
-            loader: rootLoader,
+            loader: async () => rootLoader(auth, setAuth),
             children: [
                 {
                     path: '/',
@@ -101,7 +101,7 @@ function Routes() {
                                 {
                                     path: ':id',
                                     element: <ProductDetails />,
-                                    loader: productDetailsLoader,
+                                    loader: async ({ params }) => productDetailsLoader(auth, setAuth, params),
                                 },
                             ],
                         },
@@ -214,7 +214,7 @@ function Routes() {
                         {
                             path: ':num/:view',
                             element: <OrdersList />,
-                            loader: ordersListLoader,
+                            loader: async () => ordersListLoader(auth, setAuth),
                         },
                         {
                             path: 'tilaus',
