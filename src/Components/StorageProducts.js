@@ -1,5 +1,7 @@
 import { useLoaderData, useRouteLoaderData } from 'react-router-dom';
 
+import { IconButton, Typography } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import StorageProductsTable from './StorageProductsTable';
 import useCustomSearchParams from '../Hooks/useCustomSearchParams';
 
@@ -25,7 +27,13 @@ function StorageProducts() {
     return (
         <div>
             {/* todo: add new item link  */}
-
+            <IconButton variant="contained" color="primary" fontSize="large" aria-label="lisää uusi tuote">
+                <SearchIcon sx={{ color: 'white' }} />
+                Lisää uusi tuote
+            </IconButton>
+            <Typography variant="h6" component="h1" color="primary">
+                Hae olemassaolevia tuotteita lisätäksesi saldoa tai muokataksesi tuotetta
+            </Typography>
             <StorageProductsTable
             // page={usedParams.page} rowsPerPage={usedParams.rows} setUsedParams={setUsedParams}
             />

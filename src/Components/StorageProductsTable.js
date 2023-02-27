@@ -46,16 +46,16 @@ function StorageProductsTable() {
                                 {/* todo: näytä vain hakuikoni kunnes painetaan, jolloin tekstikenttä laajenee/aktivoituu */}
                                 <TextField
                                     {...register('barcodeSearch')}
-                                    placeholder="Viivakoodi"
+                                    placeholder="Viivakoodi / tuoteID"
                                     sx={{ backgroundColor: 'white' }}
                                 />
                                 <Button type="submit" variant="contained" color="primary">
                                     Hae
                                 </Button>
                                 {/* todo:linkki viivakoodiskanneriin */}
-                                <IconButton fontSize="large" aria-label="barcode search">
+                                <IconButton fontSize="large" variant="contained" aria-label="barcode search">
                                     {/* todo: custom viivakoodi-ikoni? */}
-                                    <QrCodeScannerIcon />
+                                    <QrCodeScannerIcon sx={{ color: 'white' }} />
                                 </IconButton>
                             </Form>
                         </StyledTableCell>
