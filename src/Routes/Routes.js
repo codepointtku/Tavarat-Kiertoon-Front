@@ -54,7 +54,7 @@ import {
     usersListLoader,
     userSignupLoader,
     bikesListLoader,
-} from './Loaders';
+} from './loaders';
 
 import {
     userSignupAction,
