@@ -1,8 +1,9 @@
 import { Outlet } from 'react-router';
+import { Container, Stack } from '@mui/material';
+
 import AdminBar from '../Components/AdminBar';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
-import { Container, Stack } from '@mui/material';
 
 // admin Layout
 
