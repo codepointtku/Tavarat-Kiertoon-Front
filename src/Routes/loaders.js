@@ -9,11 +9,11 @@ import apiCall from '../Utils/apiCall';
 const rootLoader = async (auth, setAuth) => {
     const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: shoppingCart }] =
         await Promise.all([
-            apiCall(auth, setAuth, '/contacts/'),
-            apiCall(auth, setAuth, '/colors/'),
-            apiCall(auth, setAuth, '/categories/'),
-            apiCall(auth, setAuth, '/bulletins/'),
-            apiCall(auth, setAuth, '/shopping_carts/'),
+            apiCall(auth, setAuth, '/contacts/', 'get'),
+            apiCall(auth, setAuth, '/colors/', 'get'),
+            apiCall(auth, setAuth, '/categories/', 'get'),
+            apiCall(auth, setAuth, '/bulletins/', 'get'),
+            apiCall(auth, setAuth, '/shopping_carts/', 'get'),
         ]);
 
     console.log(categories);
@@ -25,7 +25,7 @@ const rootLoader = async (auth, setAuth) => {
  */
 const productListLoader = async (auth, setAuth) => {
     try {
-        const { data } = await apiCall(auth, setAuth, '/products/');
+        const { data } = await apiCall(auth, setAuth, '/products/', 'get');
         return data.results;
     } catch (err) {
         return null;
@@ -37,7 +37,7 @@ const productListLoader = async (auth, setAuth) => {
  */
 const productDetailsLoader = async (auth, setAuth, params) => {
     try {
-        const { data } = await apiCall(auth, setAuth, `/products/${params.id}`);
+        const { data } = await apiCall(auth, setAuth, `/products/${params.id}`, 'get');
         return data;
     } catch {
         return null;
@@ -48,7 +48,7 @@ const productDetailsLoader = async (auth, setAuth, params) => {
  * Get all orders.
  */
 const ordersListLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, '/orders');
+    const { data } = await apiCall(auth, setAuth, '/orders', 'get');
     // num will tell back-end which entries to bring
     // view is order status, unless archived can bring all?
     // or will be replaced into the back-end later?
@@ -80,7 +80,7 @@ const ordersListLoader = async (auth, setAuth, params) => {
  * Get one order
  */
 const orderViewLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`);
+    const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
     if (data) {
         data.productList = data.products;
         return data;
@@ -92,7 +92,7 @@ const orderViewLoader = async (auth, setAuth, params) => {
  * Get one order
  */
 const orderEditLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`);
+    const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
     if (data) {
         return data;
     }
@@ -118,7 +118,7 @@ const addItemLoader = async () => {
  * Get one order
  */
 const pdfViewLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`);
+    const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
     return data || null;
 };
 
@@ -126,12 +126,12 @@ const pdfViewLoader = async (auth, setAuth, params) => {
  * Get all storages
  */
 const storagesListLoader = async (auth, setAuth) => {
-    const { data } = await apiCall(auth, setAuth, '/storages');
+    const { data } = await apiCall(auth, setAuth, '/storages', 'get');
     return data;
 };
 
 const storageEditLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, `/storages/${params.id}`);
+    const { data } = await apiCall(auth, setAuth, `/storages/${params.id}`, 'get');
     return data;
 };
 
@@ -139,7 +139,7 @@ const storageEditLoader = async (auth, setAuth, params) => {
  * Get all users
  */
 const usersListLoader = async (auth, setAuth) => {
-    const { data } = await apiCall(auth, setAuth, '/users');
+    const { data } = await apiCall(auth, setAuth, '/users', 'get');
     return data;
 };
 
@@ -147,7 +147,7 @@ const usersListLoader = async (auth, setAuth) => {
  * Get one user
  */
 const userEditLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, `/users/${params.id}`);
+    const { data } = await apiCall(auth, setAuth, `/users/${params.id}`, 'get');
     return data;
 };
 

@@ -1,7 +1,12 @@
 import axios from 'axios';
 
-const apiCall = async (auth, setAuth, path, data) => {
-    const result = await axios.get(`http://localhost:8000${path}`, data, { withCredentials: true });
+const apiCall = async (auth, setAuth, path, method, data) => {
+    const result = await axios({
+        method,
+        url: `http://localhost:8000${path}`,
+        data,
+        options: { withCredentials: true },
+    });
     console.log(result);
 
     Object.keys(auth).forEach((each) => {
