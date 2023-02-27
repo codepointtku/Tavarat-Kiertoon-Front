@@ -252,7 +252,7 @@ export default function BikesPage() {
                                                         }
                                                         sx={{ '& .Mui-disabled': { backgroundColor: 'black' } }}
                                                         views={['month', 'day']}
-                                                        openTo="day"
+                                                        openTo="month"
                                                     />
                                                 </LocalizationProvider>
                                             )}
@@ -282,7 +282,7 @@ export default function BikesPage() {
                                                         }
                                                         maxDate={maxDate}
                                                         views={['month', 'day']}
-                                                        openTo="day"
+                                                        openTo="month"
                                                     />
                                                 </LocalizationProvider>
                                             )}
