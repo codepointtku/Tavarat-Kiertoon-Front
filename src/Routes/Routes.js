@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
@@ -33,6 +34,8 @@ import SignupLandingPage from '../Components/Signup/SignupLandingPage';
 import SignupPage from '../Components/Signup/SignupPage';
 import ContactPage from '../Components/ContactPage';
 
+import AuthContext from '../Context/AuthContext';
+
 import PDFView from '../Components/PDFView';
 import {
     addItemLoader,
@@ -67,6 +70,7 @@ import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
 
 function Routes() {
+    const { auth, setAuth } = useContext(AuthContext);
     const router = createBrowserRouter([
         {
             path: '/',
@@ -83,7 +87,7 @@ function Routes() {
                         {
                             index: true,
                             element: <ProductList />,
-                            loader: productListLoader,
+                            loader: async () => productListLoader(auth, setAuth),
                         },
                         {
                             path: 'tuotteet',

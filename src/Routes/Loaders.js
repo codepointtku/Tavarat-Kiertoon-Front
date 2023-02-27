@@ -1,4 +1,5 @@
 import axios from 'axios';
+import apiCall from '../Utils/apiCall';
 
 /**
  * Get different defaults for the site
@@ -12,17 +13,18 @@ const rootLoader = async () => {
             axios.get('http://localhost:8000/bulletins/'),
             axios.get('http://localhost:8000/shopping_carts/'),
         ]);
+
     return { contacts, colors, categories, bulletins, shoppingCart };
 };
 
 /**
  * Get all products
  */
-const productListLoader = async () => {
+const productListLoader = async (auth, setAuth) => {
     try {
-        const { data } = await axios.get('http://localhost:8000/products/');
-        return data.results;
-    } catch {
+        const { results } = await apiCall(auth, setAuth, '/products/');
+        return results;
+    } catch (err) {
         return null;
     }
 };
