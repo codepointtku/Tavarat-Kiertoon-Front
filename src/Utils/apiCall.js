@@ -14,7 +14,7 @@ const apiCall = async (auth, setAuth, path, data) => {
         }
     });
 
-    return result.data;
+    return result;
 };
 
 export default apiCall;

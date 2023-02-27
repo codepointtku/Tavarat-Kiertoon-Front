@@ -1,4 +1,22 @@
 import axios from 'axios';
+import apiCall from '../Utils/apiCall';
+
+/**
+ * logins user
+ */
+const userLoginAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/users/login/', {
+        email: formData.get('email'),
+        password: formData.get('password'),
+    });
+    if (response.status === 200) {
+        localStorage.setItem('access_token', response.data.access);
+        localStorage.setItem('refresh_token', response.data.refresh);
+        return { type: 'login', status: true };
+    }
+    return { type: 'login', status: false };
+};
 
 /**
  * creates new user
@@ -103,23 +121,6 @@ const storageEditAction = async ({ params, request }) => {
         }
     }
     return null;
-};
-
-/**
- * logins user
- */
-const userLoginAction = async ({ request }) => {
-    const formData = await request.formData();
-    const response = await axios.post('http://localhost:8000/users/login/', {
-        email: formData.get('email'),
-        password: formData.get('password'),
-    });
-    if (response.status === 200) {
-        localStorage.setItem('access_token', response.data.access);
-        localStorage.setItem('refresh_token', response.data.refresh);
-        return { type: 'login', status: true };
-    }
-    return { type: 'login', status: false };
 };
 
 export { userSignupAction, contactAction, orderEditAction, storageCreateAction, storageEditAction, userLoginAction };

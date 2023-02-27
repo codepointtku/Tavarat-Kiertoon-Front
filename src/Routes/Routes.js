@@ -82,7 +82,7 @@ function Routes() {
                 {
                     path: '/',
                     element: <BaseLayout />,
-                    action: userLoginAction,
+                    action: async ({ request }) => userLoginAction(auth, setAuth, request),
                     children: [
                         {
                             index: true,
