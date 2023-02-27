@@ -97,16 +97,12 @@ const orderEditLoader = async ({ params }) => {
 /**
  * Get all categories and storages
  */
-const addItemLoader = async () => {
-    const dataList = [];
-    let { data } = await axios.get('http://localhost:3001/categories/');
-    dataList.push(data);
-    data = await axios.get('http://localhost:3001/storages/');
-    dataList.push(data.data);
-    if (dataList) {
-        return dataList;
-    }
-    return null;
+const storageProductsLoader = async () => {
+    const [{ data: storages }, { data: products }] = await Promise.all([
+        axios.get('http://localhost:8000/storages/'),
+        axios.get('http://localhost:8000/products/'),
+    ]);
+    return { storages, products };
 };
 
 /**
@@ -158,7 +154,7 @@ export {
     ordersListLoader,
     orderViewLoader,
     orderEditLoader,
-    addItemLoader,
+    storageProductsLoader,
     pdfViewLoader,
     storagesListLoader,
     storageEditLoader,
