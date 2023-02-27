@@ -181,20 +181,20 @@ function Routes() {
                                     path: 'kayttaja',
                                     element: <SignupPage isLocationForm={false} />,
                                     loader: userSignupLoader,
-                                    action: userSignupAction,
+                                    action: async ({ request }) => userSignupAction(auth, setAuth, request),
                                 },
                                 {
                                     path: 'toimipaikka',
                                     element: <SignupPage isLocationForm />,
                                     loader: userSignupLoader,
-                                    action: userSignupAction,
+                                    action: async ({ request }) => userSignupAction(auth, setAuth, request),
                                 },
                             ],
                         },
                         {
                             path: 'otayhteytta',
                             element: <ContactPage />,
-                            action: contactAction,
+                            action: async ({ request }) => contactAction(auth, setAuth, request),
                         },
                     ],
                 },
@@ -236,7 +236,8 @@ function Routes() {
                                         {
                                             path: 'muokkaa',
                                             element: <OrderEdit />,
-                                            action: orderEditAction,
+                                            action: async ({ request, params }) =>
+                                                orderEditAction(auth, setAuth, request, params),
                                             loader: async ({ params }) => orderEditLoader(auth, setAuth, params),
                                         },
                                     ],
@@ -299,7 +300,8 @@ function Routes() {
                                     path: ':id',
                                     element: <StorageEdit />,
                                     loader: async ({ params }) => storageEditLoader(auth, setAuth, params),
-                                    action: storageEditAction,
+                                    action: async ({ request, params }) =>
+                                        storageEditAction(auth, setAuth, request, params),
                                 },
                             ],
                         },
@@ -323,7 +325,7 @@ function Routes() {
                         {
                             path: 'varastot/luo',
                             element: <AddStorage />,
-                            action: storageCreateAction,
+                            action: async ({ request }) => storageCreateAction(auth, setAuth, request),
                         },
                         {
                             path: 'hakemukset',
