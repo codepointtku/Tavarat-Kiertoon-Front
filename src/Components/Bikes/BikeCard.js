@@ -107,7 +107,7 @@ export default function BikeCard({
                     }}
                 >
                     <Stack gap={1}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                        <Typography variant="h6" component="h2">
                             {bike.name}
                         </Typography>
                         <Typography sx={{ mt: 1 }} variant="body2" color="text.secondary">
