@@ -1,4 +1,6 @@
-import { Form, Link, useLoaderData, useRouteLoaderData } from 'react-router-dom';
+/* eslint-disable react/jsx-props-no-spreading */
+import { Form, Link, useLoaderData, useRouteLoaderData, useSearchParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import {
     Table,
     TableBody,
@@ -21,14 +23,15 @@ import StyledTableRow from './StyledTableRow';
 function StorageProductsTable() {
     const { categories } = useRouteLoaderData('root');
     const { storages, products } = useLoaderData();
+    const { register, handleSubmit } = useForm();
 
     console.log('categories:', categories);
     console.log('storages:', storages);
     console.log('products:', products);
     console.log('products.results:', products.results);
 
-    const handleBarcodeSearch = () => {
-        console.log('handleBarcodeSearch');
+    const handleBarcodeSearch = (formData) => {
+        console.log('handleBarcodeSearch', formData);
     };
 
     return (
@@ -39,6 +42,22 @@ function StorageProductsTable() {
                     <TableRow>
                         <StyledTableCell>
                             {/* todo: searchbar peruskomponentti tuotteiden hakua varten */}
+                            <Form onSubmit={handleSubmit(handleBarcodeSearch)}>
+                                {/* todo: näytä vain hakuikoni kunnes painetaan, jolloin tekstikenttä laajenee/aktivoituu */}
+                                <TextField
+                                    {...register('barcodeSearch')}
+                                    placeholder="Viivakoodi"
+                                    sx={{ backgroundColor: 'white' }}
+                                />
+                                <Button type="submit" variant="contained" color="primary">
+                                    Hae
+                                </Button>
+                                {/* todo:linkki viivakoodiskanneriin */}
+                                <IconButton fontSize="large" aria-label="barcode search">
+                                    {/* todo: custom viivakoodi-ikoni? */}
+                                    <QrCodeScannerIcon />
+                                </IconButton>
+                            </Form>
                         </StyledTableCell>
                         <StyledTableCell align="right">Tuotenimi</StyledTableCell>
                         <StyledTableCell align="right">Määrä</StyledTableCell>
@@ -76,7 +95,7 @@ function StorageProductsTable() {
                 {/* todo: sama groupid- stackkaa tuotteet */}
                 {/* todo: näytä tilauksille varatut tuotteet ja kplmäärä? */}
                 <TableBody>
-                    {products.results.map((row) => (
+                    {products?.results?.map((row) => (
                         <StyledTableRow key={row.id}>
                             <StyledTableCell component="th" scope="row">
                                 <Link to={`/varasto/tuotteet/${row.id}`}>viivakoodi?</Link>

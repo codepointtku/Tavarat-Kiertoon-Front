@@ -6,7 +6,7 @@ import useCustomSearchParams from '../Hooks/useCustomSearchParams';
 function StorageProducts() {
     const { categories } = useRouteLoaderData('root');
     const { storages, products } = useLoaderData();
-    const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });
+    // const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });
 
     if (!categories) {
         return <>categories lataus ei toimi.</>;
@@ -24,7 +24,11 @@ function StorageProducts() {
 
     return (
         <div>
-            <StorageProductsTable page={usedParams.page} rowsPerPage={usedParams.rows} setUsedParams={setUsedParams} />
+            {/* todo: add new item link  */}
+
+            <StorageProductsTable
+            // page={usedParams.page} rowsPerPage={usedParams.rows} setUsedParams={setUsedParams}
+            />
         </div>
     );
 }
