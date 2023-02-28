@@ -13,16 +13,13 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { isWeekend, max, min, parseISO } from 'date-fns';
-import { fi } from 'date-fns/locale';
+import { parseISO } from 'date-fns';
 import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 import { TransitionGroup } from 'react-transition-group';
 
+import BikeCalendar from './BikeCalendar';
 import BikeCard from './BikeCard';
 import BikeConfirmation from './BikeConfirmation';
 
@@ -124,32 +121,14 @@ export default function BikesPage() {
                                                     control={control}
                                                     rules={{ required: true }}
                                                     render={({ field: { onChange, onBlur, value } }) => (
-                                                        <LocalizationProvider
-                                                            dateAdapter={AdapterDateFns}
-                                                            adapterLocale={fi}
-                                                        >
-                                                            <DatePicker
-                                                                label="Aloituspäivä *"
-                                                                value={value}
-                                                                onChange={onChange}
-                                                                onBlur={onBlur}
-                                                                inputProps={{
-                                                                    placeholder: 'pv.kk.v',
-                                                                }}
-                                                                renderInput={(params) => <TextField {...params} />}
-                                                                disableMaskedInput
-                                                                shouldDisableDate={(day) => isWeekend(day)}
-                                                                minDate={minDate}
-                                                                maxDate={
-                                                                    watch('endDate')
-                                                                        ? min([maxDate, watch('endDate')])
-                                                                        : maxDate
-                                                                }
-                                                                sx={{ '& .Mui-disabled': { backgroundColor: 'black' } }}
-                                                                views={['month', 'day']}
-                                                                openTo="month"
-                                                            />
-                                                        </LocalizationProvider>
+                                                        <BikeCalendar
+                                                            onChange={onChange}
+                                                            onBlur={onBlur}
+                                                            startDate={value}
+                                                            endDate={watch('endDate')}
+                                                            minDate={minDate}
+                                                            maxDate={maxDate}
+                                                        />
                                                     )}
                                                 />
                                                 <Controller
@@ -157,31 +136,15 @@ export default function BikesPage() {
                                                     control={control}
                                                     rules={{ required: true }}
                                                     render={({ field: { onChange, onBlur, value } }) => (
-                                                        <LocalizationProvider
-                                                            dateAdapter={AdapterDateFns}
-                                                            adapterLocale={fi}
-                                                        >
-                                                            <DatePicker
-                                                                label="Loppumispäivä *"
-                                                                value={value}
-                                                                onChange={onChange}
-                                                                onBlur={onBlur}
-                                                                inputProps={{
-                                                                    placeholder: 'pv.kk.v',
-                                                                }}
-                                                                renderInput={(params) => <TextField {...params} />}
-                                                                disableMaskedInput
-                                                                shouldDisableDate={(day) => isWeekend(day)}
-                                                                minDate={
-                                                                    watch('startDate')
-                                                                        ? max([minDate, watch('startDate')])
-                                                                        : minDate
-                                                                }
-                                                                maxDate={maxDate}
-                                                                views={['month', 'day']}
-                                                                openTo="month"
-                                                            />
-                                                        </LocalizationProvider>
+                                                        <BikeCalendar
+                                                            onChange={onChange}
+                                                            onBlur={onBlur}
+                                                            startDate={watch('startDate')}
+                                                            endDate={value}
+                                                            minDate={minDate}
+                                                            maxDate={maxDate}
+                                                            isStartDate={false}
+                                                        />
                                                     )}
                                                 />
                                             </Stack>
@@ -355,38 +318,14 @@ export default function BikesPage() {
                                                             control={control}
                                                             rules={{ required: true }}
                                                             render={({ field: { onChange, onBlur, value } }) => (
-                                                                <LocalizationProvider
-                                                                    dateAdapter={AdapterDateFns}
-                                                                    adapterLocale={fi}
-                                                                >
-                                                                    <DatePicker
-                                                                        label="Aloituspäivä *"
-                                                                        value={value}
-                                                                        onChange={onChange}
-                                                                        onBlur={onBlur}
-                                                                        inputProps={{
-                                                                            placeholder: 'pv.kk.v',
-                                                                        }}
-                                                                        renderInput={(params) => (
-                                                                            <TextField {...params} />
-                                                                        )}
-                                                                        disableMaskedInput
-                                                                        shouldDisableDate={(day) => isWeekend(day)}
-                                                                        minDate={minDate}
-                                                                        maxDate={
-                                                                            watch('endDate')
-                                                                                ? min([maxDate, watch('endDate')])
-                                                                                : maxDate
-                                                                        }
-                                                                        sx={{
-                                                                            '& .Mui-disabled': {
-                                                                                backgroundColor: 'black',
-                                                                            },
-                                                                        }}
-                                                                        views={['month', 'day']}
-                                                                        openTo="month"
-                                                                    />
-                                                                </LocalizationProvider>
+                                                                <BikeCalendar
+                                                                    onChange={onChange}
+                                                                    onBlur={onBlur}
+                                                                    startDate={value}
+                                                                    endDate={watch('endDate')}
+                                                                    minDate={minDate}
+                                                                    maxDate={maxDate}
+                                                                />
                                                             )}
                                                         />
                                                         <Controller
@@ -394,33 +333,15 @@ export default function BikesPage() {
                                                             control={control}
                                                             rules={{ required: true }}
                                                             render={({ field: { onChange, onBlur, value } }) => (
-                                                                <LocalizationProvider
-                                                                    dateAdapter={AdapterDateFns}
-                                                                    adapterLocale={fi}
-                                                                >
-                                                                    <DatePicker
-                                                                        label="Loppumispäivä *"
-                                                                        value={value}
-                                                                        onChange={onChange}
-                                                                        onBlur={onBlur}
-                                                                        inputProps={{
-                                                                            placeholder: 'pv.kk.v',
-                                                                        }}
-                                                                        renderInput={(params) => (
-                                                                            <TextField {...params} />
-                                                                        )}
-                                                                        disableMaskedInput
-                                                                        shouldDisableDate={(day) => isWeekend(day)}
-                                                                        minDate={
-                                                                            watch('startDate')
-                                                                                ? max([minDate, watch('startDate')])
-                                                                                : minDate
-                                                                        }
-                                                                        maxDate={maxDate}
-                                                                        views={['month', 'day']}
-                                                                        openTo="month"
-                                                                    />
-                                                                </LocalizationProvider>
+                                                                <BikeCalendar
+                                                                    onChange={onChange}
+                                                                    onBlur={onBlur}
+                                                                    startDate={watch('startDate')}
+                                                                    endDate={value}
+                                                                    minDate={minDate}
+                                                                    maxDate={maxDate}
+                                                                    isStartDate={false}
+                                                                />
                                                             )}
                                                         />
                                                     </Stack>
