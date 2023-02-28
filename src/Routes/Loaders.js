@@ -8,7 +8,7 @@ export const rootLoader = async () => {
     const { data: colors } = await axios.get('http://localhost:8000/colors/');
     const { data: categories } = await axios.get('http://localhost:8000/categories/');
     const { data: bulletins } = await axios.get('http://localhost:8000/bulletins/');
-    const { data: cart } = await axios.get('http://localhost:8000/shopping_carts/3');
+    const { data: cart } = await axios.get('http://localhost:8000/shopping_carts/4');
 
     /* eslint-disable no-shadow */
 

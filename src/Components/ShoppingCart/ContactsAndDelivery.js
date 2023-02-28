@@ -3,14 +3,18 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { Typography, TextField, Grid, MenuItem, Box } from '@mui/material';
+import { Typography, TextField, Grid, MenuItem, Box, Alert } from '@mui/material';
 
 import CartButtons from './CartButtons';
 
 function ContactsAndDelivery() {
     const [buttonTask, setButtonTask] = useState('');
     const [selectedAddress, setSelectedAddress] = useState('Osoite 1');
-    const { register, handleSubmit, formState } = useForm();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
 
     const addresses = ['Osoite 1', 'Osoite 2', 'Osoite 3', 'Osoite 4'];
     const navigate = useNavigate();
@@ -21,7 +25,6 @@ function ContactsAndDelivery() {
     const handleChange = (SelectChangeEvent) => {
         setSelectedAddress(SelectChangeEvent.target.value);
     };
-    console.log(formState);
 
     // const values = getValues(['firstName', 'lastName', 'email', 'phoneNumber', 'locationCode']);
 
@@ -32,16 +35,31 @@ function ContactsAndDelivery() {
             </Typography>
             <Grid container spacing={4}>
                 <Grid item>
-                    <TextField label="Etunimi" variant="outlined" {...register('firstName')} />
+                    <TextField label="Etunimi" variant="outlined" {...register('firstName', { required: true })} />
+                    {errors.firstName && <Alert severity="error">Tämä kenttä on täytettävä.</Alert>}
                 </Grid>
                 <Grid item>
-                    <TextField label="Sukunimi" variant="outlined" {...register('lastName')} />
+                    <TextField label="Sukunimi" variant="outlined" {...register('lastName', { required: true })} />
+                    {errors.lastName && <Alert severity="error">Tämä kenttä on täytettävä.</Alert>}
                 </Grid>
                 <Grid item>
-                    <TextField label="Sähköposti" variant="outlined" {...register('email')} />
+                    <TextField
+                        label="Sähköposti"
+                        variant="outlined"
+                        {...register('email', {
+                            required: true,
+                            pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/,
+                        })}
+                    />
+                    {errors.email && <Alert severity="error">Tämä kenttä on täytettävä.</Alert>}
                 </Grid>
                 <Grid item>
-                    <TextField label="Puh. numero" variant="outlined" {...register('phoneNumber')} />
+                    <TextField
+                        label="Puh. numero"
+                        variant="outlined"
+                        {...register('phoneNumber', { required: true, valueAsNumber: true })}
+                    />
+                    {errors.phoneNumber && <Alert severity="error">Tämä kenttä on täytettävä.</Alert>}
                 </Grid>
             </Grid>
             <Typography variant="h4" sx={{ marginTop: 5, marginBottom: 2, color: 'primary.main' }}>
@@ -53,7 +71,7 @@ function ContactsAndDelivery() {
                         label="Toimitusosoitteet"
                         variant="outlined"
                         value={selectedAddress}
-                        {...register('deliveryAddress')}
+                        {...register('deliveryAddress', { required: true })}
                         onChange={handleChange}
                         select
                     >
@@ -63,7 +81,12 @@ function ContactsAndDelivery() {
                     </TextField>
                 </Grid>
                 <Grid item>
-                    <TextField label="Toimitustapa" variant="outlined" {...register('deliveryMethod')} />
+                    <TextField
+                        label="Toimitustapa"
+                        variant="outlined"
+                        {...register('deliveryMethod', { required: true })}
+                    />
+                    {errors.deliveryMethod && <Alert severity="error">Tämä kenttä on täytettävä.</Alert>}
                 </Grid>
             </Grid>
             <Box
