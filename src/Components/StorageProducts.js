@@ -1,4 +1,4 @@
-import { useLoaderData, useRouteLoaderData } from 'react-router-dom';
+import { Link, useLoaderData, useRouteLoaderData } from 'react-router-dom';
 
 import { IconButton, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -26,8 +26,14 @@ function StorageProducts() {
 
     return (
         <div>
-            {/* todo: add new item link  */}
-            <IconButton variant="contained" color="primary" fontSize="large" aria-label="lisää uusi tuote">
+            <IconButton
+                component={Link}
+                to="/varasto/tuotteet/luo"
+                variant="contained"
+                color="primary"
+                fontSize="large"
+                aria-label="lisää uusi tuote"
+            >
                 <SearchIcon sx={{ color: 'white' }} />
                 Lisää uusi tuote
             </IconButton>
