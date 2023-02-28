@@ -70,6 +70,37 @@ const orderEditAction = async ({ params, request }) => {
 };
 
 /*
+creates new product
+*/
+const addProductAction = async ({ request }) => {
+    const formData = await request.formData();
+    // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+    // const productName = formData.get('productName');
+    console.log('formData actionissa :', formData);
+    if (request.method === 'post') {
+        const response = await axios.post('http://localhost:8000/products/', formData);
+        console.log(response);
+        if (response.status === 201) {
+            return 'Tuote lisätty';
+        }
+        return 'Virhe lisättäessä tuotetta';
+    }
+    // // id haettava editointia varten
+    // if (request.method === 'PUT') {
+    //     const response = await axios.put(
+    //         'http://localhost:8000/products/:id',
+    //         formData
+    //     );
+    //     console.log(response);
+    //     if (response.status === 201) {
+    //         return 'Tuote lisätty';
+    //     }
+    //     return 'Virhe lisättäessä tuotetta';
+    // }
+    return null;
+};
+
+/*
 creates new storage
 */
 const storageCreateAction = async ({ request }) => {
@@ -123,4 +154,12 @@ const userLoginAction = async ({ request }) => {
     return { type: 'login', status: false };
 };
 
-export { userSignupAction, contactAction, orderEditAction, storageCreateAction, storageEditAction, userLoginAction };
+export {
+    userSignupAction,
+    contactAction,
+    orderEditAction,
+    storageCreateAction,
+    storageEditAction,
+    userLoginAction,
+    addProductAction,
+};
