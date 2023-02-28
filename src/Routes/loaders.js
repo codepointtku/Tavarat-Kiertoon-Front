@@ -1,18 +1,19 @@
 import axios from 'axios';
+import apiCall from '../Utils/apiCall';
 
 // just a comment for file-rename commit to work. remove this
 
 /**
  * Get different defaults for the site
  */
-const rootLoader = async () => {
+const rootLoader = async (auth, setAuth) => {
     const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: shoppingCart }] =
         await Promise.all([
-            axios.get('http://localhost:8000/contacts/'),
-            axios.get('http://localhost:8000/colors/'),
-            axios.get('http://localhost:8000/categories/'),
-            axios.get('http://localhost:8000/bulletins/'),
-            axios.get('http://localhost:8000/shopping_carts/'),
+            apiCall(auth, setAuth, '/contacts/', 'get'),
+            apiCall(auth, setAuth, '/colors/', 'get'),
+            apiCall(auth, setAuth, '/categories/', 'get'),
+            apiCall(auth, setAuth, '/bulletins/', 'get'),
+            apiCall(auth, setAuth, '/shopping_carts/', 'get'),
         ]);
     return { contacts, colors, categories, bulletins, shoppingCart };
 };
@@ -20,32 +21,24 @@ const rootLoader = async () => {
 /**
  * Get all products
  */
-const productListLoader = async () => {
-    try {
-        const { data } = await axios.get('http://localhost:8000/products/');
-        return data.results;
-    } catch {
-        return null;
-    }
+const productListLoader = async (auth, setAuth) => {
+    const { data } = await apiCall(auth, setAuth, '/products/', 'get');
+    return data.results;
 };
 
 /**
  * Get one product
  */
-const productDetailsLoader = async ({ params }) => {
-    try {
-        const { data } = await axios.get(`http://localhost:8000/products/${params.id}`);
-        return data;
-    } catch {
-        return null;
-    }
+const productDetailsLoader = async (auth, setAuth, params) => {
+    const { data } = await apiCall(auth, setAuth, `/products/${params.id}`, 'get');
+    return data;
 };
 
 /**
  * Get all orders.
  */
-const ordersListLoader = async ({ params }) => {
-    const { data } = await axios.get('http://localhost:8000/orders');
+const ordersListLoader = async (auth, setAuth, params) => {
+    const { data } = await apiCall(auth, setAuth, '/orders', 'get');
     // num will tell back-end which entries to bring
     // view is order status, unless archived can bring all?
     // or will be replaced into the back-end later?
@@ -67,33 +60,24 @@ const ordersListLoader = async ({ params }) => {
         return 1;
     });
 
-    if (data) {
-        return data;
-    }
-    return null;
+    return data;
 };
 
 /**
  * Get one order
  */
-const orderViewLoader = async ({ params }) => {
-    const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
-    if (data) {
-        data.productList = data.products;
-        return data;
-    }
-    return null;
+const orderViewLoader = async (auth, setAuth, params) => {
+    const response = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
+    response.data.productList = response.data.products;
+    return response.data;
 };
 
 /**
  * Get one order
  */
-const orderEditLoader = async ({ params }) => {
-    const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
-    if (data) {
-        return data;
-    }
-    return null;
+const orderEditLoader = async (auth, setAuth, params) => {
+    const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
+    return data;
 };
 
 /**
@@ -114,37 +98,37 @@ const addItemLoader = async () => {
 /**
  * Get one order
  */
-const pdfViewLoader = async ({ params }) => {
-    const { data } = await axios.get(`http://localhost:8000/orders/${params.id}`);
-    return data || null;
+const pdfViewLoader = async (auth, setAuth, params) => {
+    const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
+    return data;
 };
 
 /**
  * Get all storages
  */
-const storagesListLoader = async () => {
-    const { data } = await axios.get('http://localhost:8000/storages');
+const storagesListLoader = async (auth, setAuth) => {
+    const { data } = await apiCall(auth, setAuth, '/storages', 'get');
     return data;
 };
 
-const storageEditLoader = async ({ params }) => {
-    const { data } = await axios.get(`http://localhost:8000/storages/${params.id}`);
+const storageEditLoader = async (auth, setAuth, params) => {
+    const { data } = await apiCall(auth, setAuth, `/storages/${params.id}`, 'get');
     return data;
 };
 
 /**
  * Get all users
  */
-const usersListLoader = async () => {
-    const { data } = await axios.get('http://localhost:8000/users');
+const usersListLoader = async (auth, setAuth) => {
+    const { data } = await apiCall(auth, setAuth, '/users', 'get');
     return data;
 };
 
 /**
  * Get one user
  */
-const userEditLoader = async ({ params }) => {
-    const { data } = await axios.get(`http://localhost:8000/users/${params.id}`);
+const userEditLoader = async (auth, setAuth, params) => {
+    const { data } = await apiCall(auth, setAuth, `/users/${params.id}`, 'get');
     return data;
 };
 

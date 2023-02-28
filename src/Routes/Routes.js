@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
@@ -38,6 +39,8 @@ import SignupLandingPage from '../Components/Signup/SignupLandingPage';
 import SignupPage from '../Components/Signup/SignupPage';
 import ContactPage from '../Components/ContactPage';
 
+import AuthContext from '../Context/AuthContext';
+
 import PDFView from '../Components/PDFView';
 import {
     addItemLoader,
@@ -73,23 +76,24 @@ import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
 
 function Routes() {
+    const { auth, setAuth } = useContext(AuthContext);
     const router = createBrowserRouter([
         {
             path: '/',
             element: <RootLayout />,
             errorElement: <ErrorBoundary />,
             id: 'root',
-            loader: rootLoader,
+            loader: async () => rootLoader(auth, setAuth),
             children: [
                 {
                     path: '/',
                     element: <BaseLayout />,
-                    action: userLoginAction,
+                    action: async ({ request }) => userLoginAction(auth, setAuth, request),
                     children: [
                         {
                             index: true,
                             element: <ProductList />,
-                            loader: productListLoader,
+                            loader: async () => productListLoader(auth, setAuth),
                         },
                         {
                             path: 'tuotteet',
@@ -103,7 +107,7 @@ function Routes() {
                                 {
                                     path: ':id',
                                     element: <ProductDetails />,
-                                    loader: productDetailsLoader,
+                                    loader: async ({ params }) => productDetailsLoader(auth, setAuth, params),
                                 },
                             ],
                         },
@@ -183,20 +187,20 @@ function Routes() {
                                     path: 'kayttaja',
                                     element: <SignupPage isLocationForm={false} />,
                                     loader: userSignupLoader,
-                                    action: userSignupAction,
+                                    action: async ({ request }) => userSignupAction(auth, setAuth, request),
                                 },
                                 {
                                     path: 'toimipaikka',
                                     element: <SignupPage isLocationForm />,
                                     loader: userSignupLoader,
-                                    action: userSignupAction,
+                                    action: async ({ request }) => userSignupAction(auth, setAuth, request),
                                 },
                             ],
                         },
                         {
                             path: 'otayhteytta',
                             element: <ContactPage />,
-                            action: contactAction,
+                            action: async ({ request }) => contactAction(auth, setAuth, request),
                         },
                     ],
                 },
@@ -209,14 +213,14 @@ function Routes() {
                     ),
                     errorElement: (
                         <ThemeProvider theme={storageTheme}>
-                            <StorageLayout />
+                            <ErrorBoundary />,
                         </ThemeProvider>
                     ),
                     children: [
                         {
                             path: ':num/:view',
                             element: <OrdersList />,
-                            loader: ordersListLoader,
+                            loader: async ({ params }) => ordersListLoader(auth, setAuth, params),
                         },
                         {
                             path: 'tilaus',
@@ -233,13 +237,15 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <OrderView />,
-                                            loader: orderViewLoader,
+
+                                            loader: async ({ params }) => orderViewLoader(auth, setAuth, params),
                                         },
                                         {
                                             path: 'muokkaa',
                                             element: <OrderEdit />,
-                                            action: orderEditAction,
-                                            loader: orderEditLoader,
+                                            action: async ({ request, params }) =>
+                                                orderEditAction(auth, setAuth, request, params),
+                                            loader: async ({ params }) => orderEditLoader(auth, setAuth, params),
                                         },
                                     ],
                                 },
@@ -265,7 +271,7 @@ function Routes() {
                                 {
                                     path: ':id',
                                     element: <PDFView />,
-                                    loader: pdfViewLoader,
+                                    loader: ({ params }) => pdfViewLoader(auth, setAuth, params),
                                 },
                             ],
                         },
@@ -280,7 +286,7 @@ function Routes() {
                     ),
                     errorElement: (
                         <ThemeProvider theme={adminTheme}>
-                            <AdminLayout />
+                            <ErrorBoundary />,
                         </ThemeProvider>
                     ),
                     children: [
@@ -295,13 +301,14 @@ function Routes() {
                                 {
                                     index: true,
                                     element: <StoragesList />,
-                                    loader: storagesListLoader,
+                                    loader: async () => storagesListLoader(auth, setAuth),
                                 },
                                 {
                                     path: ':id',
                                     element: <StorageEdit />,
-                                    loader: storageEditLoader,
-                                    action: storageEditAction,
+                                    loader: async ({ params }) => storageEditLoader(auth, setAuth, params),
+                                    action: async ({ request, params }) =>
+                                        storageEditAction(auth, setAuth, request, params),
                                 },
                             ],
                         },
@@ -313,19 +320,19 @@ function Routes() {
                                 {
                                     index: true,
                                     element: <UsersList />,
-                                    loader: usersListLoader,
+                                    loader: async () => usersListLoader(auth, setAuth),
                                 },
                                 {
                                     path: ':id',
                                     element: <UserEdit />,
-                                    loader: userEditLoader,
+                                    loader: async ({ params }) => userEditLoader(auth, setAuth, params),
                                 },
                             ],
                         },
                         {
                             path: 'varastot/luo',
                             element: <AddStorage />,
-                            action: storageCreateAction,
+                            action: async ({ request }) => storageCreateAction(auth, setAuth, request),
                         },
                         {
                             path: 'hakemukset',

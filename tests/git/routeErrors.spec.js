@@ -176,6 +176,13 @@ test.describe('pdf', () => {
     });
 });
 
+test.describe('fail', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/varasto/asd/asd/asd');
+        await expect(page.getByText('Etsimääsi sijaintia /varasto/asd/asd/asd')).toBeVisible();
+    });
+});
+
 test.describe('bikes', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/bikes');
