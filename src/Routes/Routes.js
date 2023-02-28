@@ -257,7 +257,7 @@ function Routes() {
                             path: 'tuotteet/luo',
                             element: <AddNewItem />,
                             loader: storageProductsLoader,
-                            action: addProductAction,
+                            action: async ({ request }) => addProductAction(auth, setAuth, request),
                         },
                         {
                             path: 'koodinlukija',

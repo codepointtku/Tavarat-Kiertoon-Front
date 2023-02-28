@@ -93,18 +93,15 @@ const addProductAction = async (auth, setAuth, request) => {
     // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     // const productName = formData.get('productName');
     console.log('formData actionissa :', formData);
-    if (request.method === 'post') {
-        // const response = await axios.post('http://localhost:8000/products/', formData);
-        const response = await apiCall(auth, setAuth, '/products/', 'post', {
-            address: formData.get('address'),
-            name: formData.get('name'),
-            in_use: formData.get('in_use'),
-        });
-        if (response.status === 201) {
-            return { type: 'post', status: true };
-        }
-        return { type: 'post', status: false };
+
+    const response = await apiCall(auth, setAuth, '/products/', 'post', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    if (response.status === 200) {
+        return { type: 'post', status: true };
     }
+    return { type: 'post', status: false };
+
     // placeholder
     // // id haettava editointia varten
     // if (request.method === 'PUT') {
@@ -118,7 +115,6 @@ const addProductAction = async (auth, setAuth, request) => {
     //     }
     //     return 'Virhe lisättäessä tuotetta';
     // }
-    return null;
 };
 
 /*

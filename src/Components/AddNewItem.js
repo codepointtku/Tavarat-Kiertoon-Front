@@ -53,7 +53,7 @@ function AddNewItem() {
         weight: null,
         category: null,
         storages: null,
-        color: null,
+        color_name: null,
         pictures: [],
     };
 
@@ -69,19 +69,18 @@ function AddNewItem() {
             amount: 1,
             available: true,
             price: 999.0,
+            group_id: 1,
             shelf_id: 1,
             measurements: 'wrdrqwf',
             weight: 3.0,
             // category: 1,
             storages: 1,
-            color: 1,
             // pictures: [1],
         };
 
         submit(formData, {
             method: 'post',
             action: '/varasto/tuotteet/luo/',
-            headers: { 'Content-Type': 'multipart/form-data' },
         });
     };
 
