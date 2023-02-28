@@ -24,7 +24,7 @@ function AddToCartButton({ size, id, name }) {
     // console.log(cartItems);
 
     // Tehtävät muutokset
-    // ｜｜ Ostosprosessin navigaation parantaminen jos mahdollista
+    // ｜｜ Ostosprosessin navigaation parantaminen jos mahdollista ++ optimoi tekokeino niin, että on mahdollisimman vähän uudelleenkäytettyä koodia
     // ｜｜ Pudotusvalikon toimintaan saaminen ostosprosessin toisessa vaiheessa
     // ｜｜ Tuotteiden lisääminen backendistä ostoskoriin toimintaan saanti
     // ｜｜ React hook formin toimintaan saanti

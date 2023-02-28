@@ -9,34 +9,17 @@ import CartButtons from './CartButtons';
 
 function ContactsAndDelivery() {
     const [buttonTask, setButtonTask] = useState('');
-    const { register, handleSubmit, formState } = useForm({
-        defaultValues: {
-            firstName: '',
-            lastName: '',
-            email: '',
-            phoneNumber: '',
-            locationCode: '',
-            deliveryAddress: '',
-            deliveryMethod: '',
-        },
-    });
+    const [selectedAddress, setSelectedAddress] = useState('Osoite 1');
+    const { register, handleSubmit, formState } = useForm();
 
     const addresses = ['Osoite 1', 'Osoite 2', 'Osoite 3', 'Osoite 4'];
     const navigate = useNavigate();
-    // const handleChange = (SelectChangeEvent) => {
-    //     setSelectedAddress(SelectChangeEvent.target.value);
-    // };
-    // function onSubmit(data) {
-    //     const onSubmit = (data) => {
-    //         navigate(forwardUrl);
-    //         return data;
-    //     };
-    // }
-    // console.log(errors);
-
     const onSubmit = (data) => {
         alert(JSON.stringify(data));
         navigate(buttonTask === 'forward' ? '/ostoskori/vaihe3' : '/ostoskori');
+    };
+    const handleChange = (SelectChangeEvent) => {
+        setSelectedAddress(SelectChangeEvent.target.value);
     };
     console.log(formState);
 
@@ -69,8 +52,9 @@ function ContactsAndDelivery() {
                     <TextField
                         label="Toimitusosoitteet"
                         variant="outlined"
-                        value="Osoite 1"
+                        value={selectedAddress}
                         {...register('deliveryAddress')}
+                        onChange={handleChange}
                         select
                     >
                         {addresses.map((address) => (
