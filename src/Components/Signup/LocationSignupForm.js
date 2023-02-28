@@ -184,22 +184,6 @@ function LocationForm() {
                         />
                     </FormControl>
                     <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-contactperson">Vastuuhenkilö</InputLabel>
-                        <OutlinedInput
-                            {...register('contactperson')}
-                            id="outlined-adornment-contactperson"
-                            type="text"
-                            label="Vastuuhenkilö"
-                            placeholder="Tilin vastuuhenkilön nimi"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <Person2Icon />
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
-
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
                         <InputLabel htmlFor="outlined-adornment-email">Sähköpostiosoite</InputLabel>
                         <OutlinedInput
                             {...register('email')}

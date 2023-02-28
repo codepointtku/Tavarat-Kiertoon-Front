@@ -30,7 +30,6 @@ const userSignupAction = async (auth, setAuth, request) => {
         phone_number: formData.get('phonenumber'),
         password: formData.get('password'),
         joint_user: formData.get('jointuser'),
-        contact_person: formData.get('contactperson'),
         address: formData.get('address'),
         zip_code: formData.get('zipcode'),
         city: formData.get('town'),
