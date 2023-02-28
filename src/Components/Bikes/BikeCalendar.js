@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 export default function BikeCalendar({ onChange, onBlur, startDate, endDate, minDate, maxDate, isStartDate }) {
     const handleMinDate = () => {
         if (isStartDate) {
-            return endDate ? max([minDate, subDays(endDate, 14)]) : minDate;
+            return endDate ? max([minDate, subDays(endDate, 13)]) : minDate;
         }
         return startDate ? max([minDate, startDate]) : minDate;
     };
@@ -20,7 +20,7 @@ export default function BikeCalendar({ onChange, onBlur, startDate, endDate, min
         if (isStartDate) {
             return endDate ? min([maxDate, endDate]) : maxDate;
         }
-        return startDate ? min([maxDate, addDays(startDate, 14)]) : maxDate;
+        return startDate ? min([maxDate, addDays(startDate, 13)]) : maxDate;
     };
 
     return (
