@@ -63,6 +63,7 @@ export default function BikesPage() {
             contactPersonName: '',
             contactPersonPhoneNumber: '',
             deliveryAddress: '',
+            pickup: false,
             storageType: null,
             extraInfo: '',
         },
@@ -96,7 +97,7 @@ export default function BikesPage() {
                         <Box>
                             <TransitionGroup>
                                 {isIntroVisible ? (
-                                    <Fade key="main-page-intro">
+                                    <Fade key="main-page-intro" appear={false}>
                                         <Card
                                             sx={{
                                                 p: 2,

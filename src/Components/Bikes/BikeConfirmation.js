@@ -1,8 +1,10 @@
 import {
     Box,
     Button,
+    Checkbox,
     FormControl,
     FormControlLabel,
+    FormGroup,
     FormHelperText,
     FormLabel,
     InputLabel,
@@ -166,38 +168,50 @@ export default function BikeConfirmation({
                         )}
                     />
                 </Stack>
-                <Stack gap={1}>
-                    <Controller
-                        name="storageType"
-                        control={control}
-                        rules={{ required: true }}
-                        render={({ field: { onChange, onBlur, value } }) => (
-                            <FormControl required>
-                                <FormLabel id="storage-label">Säilytystapa</FormLabel>
-                                <Typography variant="caption">
-                                    Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä,
-                                    tuomme ne lukittavassa kärryssä.
-                                </Typography>
-                                <RadioGroup
-                                    row
-                                    aria-labelledby="storage-label"
-                                    name="storage"
-                                    value={value}
-                                    onChange={(_, option) => onChange(option)}
-                                    onBlur={onBlur}
-                                >
-                                    <FormControlLabel value="inside" control={<Radio />} label="Sisällä" />
-                                    <FormControlLabel value="outside" control={<Radio />} label="Kärryssä" />
-                                </RadioGroup>
-                            </FormControl>
-                        )}
-                    />
-                </Stack>
+                <Controller
+                    name="storageType"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <FormControl required>
+                            <FormLabel id="storage-label">Säilytystapa</FormLabel>
+                            <Typography variant="caption">
+                                Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä,
+                                tuomme ne lukittavassa kärryssä.
+                            </Typography>
+                            <RadioGroup
+                                row
+                                aria-labelledby="storage-label"
+                                name="storage"
+                                value={value}
+                                onChange={(_, option) => onChange(option)}
+                                onBlur={onBlur}
+                            >
+                                <FormControlLabel value="inside" control={<Radio />} label="Sisällä" />
+                                <FormControlLabel value="outside" control={<Radio />} label="Kärryssä" />
+                            </RadioGroup>
+                        </FormControl>
+                    )}
+                />
                 <Controller
                     name="extraInfo"
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextField label="Lisätiedot" onChange={onChange} value={value} onBlur={onBlur} multiline />
+                    )}
+                />
+                <Controller
+                    name="pickup"
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <FormGroup>
+                            <Box>
+                                <FormControlLabel
+                                    control={<Checkbox checked={value} onChange={onChange} onBlur={onBlur} />}
+                                    label="Tulen noutamaan itse"
+                                />
+                            </Box>
+                        </FormGroup>
                     )}
                 />
                 <Stack flexDirection="row" justifyContent="space-between" mt={2}>
