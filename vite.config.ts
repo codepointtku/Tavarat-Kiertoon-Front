@@ -7,6 +7,9 @@ export default defineConfig({
     server: {
         port: 3000,
     },
+    preview: {
+        port: 3000,
+    },
     // Enable using .js instead of .jsx
     // https://github.com/vitejs/vite/discussions/3448#discussioncomment-749919
     esbuild: {

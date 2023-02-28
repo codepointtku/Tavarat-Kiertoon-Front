@@ -38,6 +38,7 @@
         "dev": "npm install && vite",
         "build": "vite build",
         "test": "playwright test",
+        "serve": "vite preview",
         "pretty": "prettier --write ."
     },
     "eslintConfig": {
