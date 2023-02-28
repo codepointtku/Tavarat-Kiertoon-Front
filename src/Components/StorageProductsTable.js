@@ -13,7 +13,6 @@ import {
     TextField,
     IconButton,
     Button,
-    Icon,
 } from '@mui/material';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import TablePaginationActions from './TablePaginationActions';

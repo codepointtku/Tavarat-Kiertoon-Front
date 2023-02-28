@@ -22,7 +22,6 @@ import Announcements from '../Components/Announcements';
 
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
-import AddItem from '../Components/AddItem';
 import DeliveryView from '../Components/DeliveryView';
 import BackgroundInfo from '../Components/Backgroundinfo';
 import StatsPage from '../Components/Stats/StatsPage';
@@ -50,7 +49,14 @@ import {
     storageProductsLoader,
 } from './loaders';
 
-import { userSignupAction, contactAction, orderEditAction, storageCreateAction, storageEditAction } from './actions';
+import {
+    userSignupAction,
+    contactAction,
+    orderEditAction,
+    storageCreateAction,
+    storageEditAction,
+    addProductAction,
+} from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
 import GuideCommon from '../Components/Instructions/GuideCommon';
@@ -59,6 +65,7 @@ import GuideOrdering from '../Components/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
 import StorageProducts from '../Components/StorageProducts';
+import AddNewItem from '../Components/AddNewItem';
 
 function Routes() {
     const router = createBrowserRouter([
@@ -237,6 +244,12 @@ function Routes() {
                             id: 'storageProducts',
                             element: <StorageProducts />,
                             loader: storageProductsLoader,
+                        },
+                        {
+                            path: 'tuotteet/luo',
+                            element: <AddNewItem />,
+                            loader: storageProductsLoader,
+                            action: addProductAction,
                         },
                         {
                             path: 'koodinlukija',
