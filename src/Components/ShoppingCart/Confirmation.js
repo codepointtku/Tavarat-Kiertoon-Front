@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Typography, Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
@@ -9,10 +11,16 @@ function Confirmation() {
         formState: { errors },
     } = useForm();
 
+    const [buttonTask, setButtonTask] = useState('');
+    const navigate = useNavigate();
+    const onSubmit = (data) => {
+        alert(JSON.stringify(data));
+        navigate(buttonTask === 'forward' ? '/' : '/ostoskori/vaihe2');
+    };
     console.log(errors);
 
     return (
-        <form onSubmit={handleSubmit()}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <Typography variant="h4" color="primary.main">
                 Ostosten yhteenveto
             </Typography>
@@ -47,7 +55,13 @@ function Confirmation() {
                     <Typography variant="subtitle1">Tuotemäärä</Typography>
                 </Grid>
             </Grid>
-            <CartButtons backUrl="/ostoskori/vaihe2" forwardUrl="/" backText="Takaisin" forwardText="Vahvista" />
+            <CartButtons
+                backUrl="/ostoskori/vaihe2"
+                forwardUrl="/"
+                backText="Takaisin"
+                forwardText="Vahvista"
+                setButtonTask={setButtonTask}
+            />
         </form>
     );
 }

@@ -1,11 +1,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { Typography, TextField, Grid, MenuItem, Box } from '@mui/material';
 
 import CartButtons from './CartButtons';
 
 function ContactsAndDelivery() {
+    const [buttonTask, setButtonTask] = useState('');
     const { register, handleSubmit, formState } = useForm({
         defaultValues: {
             firstName: '',
@@ -19,10 +22,10 @@ function ContactsAndDelivery() {
     });
 
     const addresses = ['Osoite 1', 'Osoite 2', 'Osoite 3', 'Osoite 4'];
+    const navigate = useNavigate();
     // const handleChange = (SelectChangeEvent) => {
     //     setSelectedAddress(SelectChangeEvent.target.value);
     // };
-    // const navigate = useNavigate();
     // function onSubmit(data) {
     //     const onSubmit = (data) => {
     //         navigate(forwardUrl);
@@ -30,7 +33,11 @@ function ContactsAndDelivery() {
     //     };
     // }
     // console.log(errors);
-    const onSubmit = (data) => alert(JSON.stringify(data));
+
+    const onSubmit = (data) => {
+        alert(JSON.stringify(data));
+        navigate(buttonTask === 'forward' ? '/ostoskori/vaihe3' : '/ostoskori');
+    };
     console.log(formState);
 
     // const values = getValues(['firstName', 'lastName', 'email', 'phoneNumber', 'locationCode']);
@@ -93,6 +100,7 @@ function ContactsAndDelivery() {
                 forwardUrl="/ostoskori/vaihe3"
                 backText="Takaisin"
                 forwardText="Seuraava"
+                setButtonTask={setButtonTask}
             />
         </form>
     );

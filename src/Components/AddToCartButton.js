@@ -27,6 +27,7 @@ function AddToCartButton({ size, id, name }) {
     // ｜｜ Ostosprosessin navigaation parantaminen jos mahdollista
     // ｜｜ Pudotusvalikon toimintaan saaminen ostosprosessin toisessa vaiheessa
     // ｜｜ Tuotteiden lisääminen backendistä ostoskoriin toimintaan saanti
+    // ｜｜ React hook formin toimintaan saanti
 
     return (
         <Button
