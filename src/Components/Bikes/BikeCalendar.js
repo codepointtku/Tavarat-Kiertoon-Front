@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import ClearIcon from '@mui/icons-material/Clear';
-import { IconButton, TextField } from '@mui/material';
+import { Box, IconButton, TextField } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -34,7 +34,7 @@ export default function BikeCalendar({ onChange, onBlur, startDate, endDate, min
                     placeholder: 'pv.kk.v',
                 }}
                 renderInput={(params) => (
-                    <div style={{ position: 'relative', display: 'inline-block' }}>
+                    <Box sx={{ position: 'relative', display: 'inline-block' }}>
                         <TextField {...params} />
                         <IconButton
                             style={{ position: 'absolute', top: '.5rem', margin: 'auto', right: '2rem' }}
@@ -42,7 +42,7 @@ export default function BikeCalendar({ onChange, onBlur, startDate, endDate, min
                         >
                             <ClearIcon />
                         </IconButton>
-                    </div>
+                    </Box>
                 )}
                 // InputAdornmentProps={{
                 //     actionBar: {
