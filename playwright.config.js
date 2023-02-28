@@ -14,7 +14,8 @@ import { devices } from '@playwright/test';
  */
 const config = {
     webServer: {
-        command: 'serve',
+        command: 'npm run serve',
+        port: 3000,
     },
 
     testDir: './tests',
