@@ -32,6 +32,8 @@ const userSignupAction = async (auth, setAuth, request) => {
         joint_user: formData.get('jointuser'),
         contact_person: formData.get('contactperson'),
         address: formData.get('address'),
+        zip_code: formData.get('zipcode'),
+        city: formData.get('town'),
     });
     if (response.status === 201) {
         return { type: 'create', status: true };
