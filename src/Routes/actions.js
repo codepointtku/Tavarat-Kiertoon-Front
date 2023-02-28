@@ -137,6 +137,10 @@ const itemCreateAction = async (auth, setAuth, request) => {
     return { type: 'createitem', status: false };
 };
 
+/**
+ * updates existing item
+ */
+
 const itemUpdateAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, '/products/', 'put', formData);
