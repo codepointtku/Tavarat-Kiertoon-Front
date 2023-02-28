@@ -30,9 +30,7 @@ export default function BikeCalendar({ onChange, onBlur, startDate, endDate, min
                 value={isStartDate ? startDate : endDate}
                 onChange={onChange}
                 onBlur={onBlur}
-                inputProps={{
-                    placeholder: 'pv.kk.v',
-                }}
+                inputProps={{ placeholder: 'pv.kk.v' }}
                 renderInput={(params) => (
                     <Box sx={{ position: 'relative', display: 'inline-block' }}>
                         <TextField {...params} />
@@ -58,7 +56,7 @@ export default function BikeCalendar({ onChange, onBlur, startDate, endDate, min
                 shouldDisableDate={(day) => isWeekend(day)}
                 minDate={handleMinDate()}
                 maxDate={handleMaxDate()}
-                sx={{ '& .Mui-disabled': { backgroundColor: 'black' } }}
+                // sx={{ '& .Mui-disabled': { backgroundColor: 'black' } }}
                 views={['month', 'day']}
                 openTo="month"
             />
