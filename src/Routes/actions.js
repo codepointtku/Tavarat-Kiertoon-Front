@@ -6,7 +6,7 @@ import apiCall from '../Utils/apiCall';
 const userLoginAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
-        email: formData.get('email'),
+        user_name: formData.get('email'),
         password: formData.get('password'),
     });
     if (response.status === 200) {
