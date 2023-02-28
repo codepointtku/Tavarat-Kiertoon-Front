@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import Container from '@mui/material/Container';
+import { Container, Stack } from '@mui/material';
 import DefaultAppBar from '../Components/AppBar/Default/DefaultAppBar';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
@@ -7,20 +7,20 @@ import Footer from './Components/Footer';
 // default Layout
 function BaseLayout() {
     return (
-        <div>
+        <Stack sx={{ minHeight: ['100vh', '100svh'] }}>
             <header>
                 <Header />
                 <DefaultAppBar />
             </header>
-            <main>
-                <Container maxWidth="lg">
+            <Container maxWidth="xl" sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
+                <main>
                     <Outlet />
-                </Container>
-            </main>
+                </main>
+            </Container>
             <footer>
                 <Footer />
             </footer>
-        </div>
+        </Stack>
     );
 }
 
