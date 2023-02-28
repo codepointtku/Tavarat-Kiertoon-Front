@@ -1,4 +1,6 @@
-import { TextField } from '@mui/material';
+/* eslint-disable react/jsx-props-no-spreading */
+import ClearIcon from '@mui/icons-material/Clear';
+import { IconButton, TextField } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -31,8 +33,27 @@ export default function BikeCalendar({ onChange, onBlur, startDate, endDate, min
                 inputProps={{
                     placeholder: 'pv.kk.v',
                 }}
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(params) => (
+                    <div style={{ position: 'relative', display: 'inline-block' }}>
+                        <TextField {...params} />
+                        <IconButton
+                            style={{ position: 'absolute', top: '.5rem', margin: 'auto', right: '2rem' }}
+                            onClick={() => onChange(null)}
+                        >
+                            <ClearIcon />
+                        </IconButton>
+                    </div>
+                )}
+                // InputAdornmentProps={{
+                //     actionBar: {
+                //         actions: ['clear'],
+                //     },
+                // }}
+                // componentsProps={{
+                //     actionBar: {
+                //         actions: ['clear'],
+                //     },
+                // }}
                 disableMaskedInput
                 shouldDisableDate={(day) => isWeekend(day)}
                 minDate={handleMinDate()}
