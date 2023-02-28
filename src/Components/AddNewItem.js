@@ -41,6 +41,7 @@ function AddNewItem() {
     // });
 
     const item = {
+        amount: 1,
         available: false,
         barcode: '',
         group_id: '',
