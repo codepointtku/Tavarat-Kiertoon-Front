@@ -15,7 +15,7 @@ function AddExistingItem({ item, setTab }) {
             <Button
                 onClick={() =>
                     navigate(generatePath('/varasto/koodinlukija'), {
-                        state: { ...item, oldItem: true, returnpath: '/varasto/luo' },
+                        state: { ...item, oldItem: true, returnpath: '/varasto/tuotteet/luo' },
                     })
                 }
             >
@@ -50,7 +50,7 @@ function AddExistingItem({ item, setTab }) {
             <Button
                 onClick={() => {
                     setTab(1);
-                    navigate(generatePath('/varasto/luo'), {
+                    navigate(generatePath('/varasto/tuotteet/luo'), {
                         replace: true,
                         state: { ...location.state, barcode: barCode, id: itemId, oldItem: true },
                     });
