@@ -96,7 +96,7 @@ export default function BikesPage() {
                         <Box>
                             <TransitionGroup>
                                 {isIntroVisible ? (
-                                    <Fade key="intro">
+                                    <Fade key="main-page-intro">
                                         <Card
                                             sx={{
                                                 p: 2,
@@ -115,38 +115,41 @@ export default function BikesPage() {
                                             <Typography align="center" variant="h6">
                                                 Vuokraustiedot
                                             </Typography>
-                                            <Stack gap={2} flexDirection="row" justifyContent="center">
-                                                <Controller
-                                                    name="startDate"
-                                                    control={control}
-                                                    rules={{ required: true }}
-                                                    render={({ field: { onChange, onBlur, value } }) => (
-                                                        <BikeCalendar
-                                                            onChange={onChange}
-                                                            onBlur={onBlur}
-                                                            startDate={value}
-                                                            endDate={watch('endDate')}
-                                                            minDate={minDate}
-                                                            maxDate={maxDate}
-                                                        />
-                                                    )}
-                                                />
-                                                <Controller
-                                                    name="endDate"
-                                                    control={control}
-                                                    rules={{ required: true }}
-                                                    render={({ field: { onChange, onBlur, value } }) => (
-                                                        <BikeCalendar
-                                                            onChange={onChange}
-                                                            onBlur={onBlur}
-                                                            startDate={watch('startDate')}
-                                                            endDate={value}
-                                                            minDate={minDate}
-                                                            maxDate={maxDate}
-                                                            isStartDate={false}
-                                                        />
-                                                    )}
-                                                />
+                                            <Stack gap={1}>
+                                                <Stack gap={2} flexDirection="row" justifyContent="center">
+                                                    <Controller
+                                                        name="startDate"
+                                                        control={control}
+                                                        rules={{ required: true }}
+                                                        render={({ field: { onChange, onBlur, value } }) => (
+                                                            <BikeCalendar
+                                                                onChange={onChange}
+                                                                onBlur={onBlur}
+                                                                startDate={value}
+                                                                endDate={watch('endDate')}
+                                                                minDate={minDate}
+                                                                maxDate={maxDate}
+                                                            />
+                                                        )}
+                                                    />
+                                                    <Controller
+                                                        name="endDate"
+                                                        control={control}
+                                                        rules={{ required: true }}
+                                                        render={({ field: { onChange, onBlur, value } }) => (
+                                                            <BikeCalendar
+                                                                onChange={onChange}
+                                                                onBlur={onBlur}
+                                                                startDate={watch('startDate')}
+                                                                endDate={value}
+                                                                minDate={minDate}
+                                                                maxDate={maxDate}
+                                                                isStartDate={false}
+                                                            />
+                                                        )}
+                                                    />
+                                                </Stack>
+                                                <Typography align="center">Max 2vk</Typography>
                                             </Stack>
                                             <Box sx={{ display: 'flex', justifyContent: 'end' }}>
                                                 <Button
@@ -160,7 +163,7 @@ export default function BikesPage() {
                                         </Card>
                                     </Fade>
                                 ) : (
-                                    <Fade key="not-intro">
+                                    <Fade key="main-page-main">
                                         <Stack gap={2} flexDirection="row" justifyContent="space-between">
                                             <Box sx={{ flex: 1 }}>
                                                 <Typography my={2} variant="h6">
@@ -398,7 +401,9 @@ export default function BikesPage() {
                     <Slide direction="left" key="BikeConfirmation" container={containerRef.current} appear={false}>
                         <Box>
                             <BikeConfirmation
-                                watch={watch}
+                                startDate={watch('startDate')}
+                                endDate={watch('endDate')}
+                                selectedBikes={watch('selectedBikes')}
                                 control={control}
                                 bikes={loaderData.bikes}
                                 setIsConfirmationVisible={setIsConfirmationVisible}

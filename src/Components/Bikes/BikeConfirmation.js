@@ -19,7 +19,14 @@ import { format } from 'date-fns';
 import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
 
-export default function BikeConfirmation({ watch, control, bikes, setIsConfirmationVisible }) {
+export default function BikeConfirmation({
+    startDate,
+    endDate,
+    selectedBikes,
+    control,
+    bikes,
+    setIsConfirmationVisible,
+}) {
     return (
         <Paper
             sx={{
@@ -36,14 +43,14 @@ export default function BikeConfirmation({ watch, control, bikes, setIsConfirmat
                 </Typography>
                 <Stack gap={2} flexDirection="row" justifyContent="space-between">
                     <Stack gap={2}>
-                        {!!watch('startDate') && !!watch('endDate') && (
-                            <Typography>{`${format(watch('startDate'), 'd.M.yyyy')} - ${format(
-                                watch('endDate'),
+                        {!!startDate && !!endDate && (
+                            <Typography>{`${format(startDate, 'd.M.yyyy')} - ${format(
+                                endDate,
                                 'd.M.yyyy'
                             )}`}</Typography>
                         )}
                         <Box>
-                            {Object.entries(watch('selectedBikes')).map(
+                            {Object.entries(selectedBikes).map(
                                 ([key, value]) =>
                                     !!value && (
                                         <Typography key={key}>
@@ -81,7 +88,7 @@ export default function BikeConfirmation({ watch, control, bikes, setIsConfirmat
                                         <MenuItem value={12.5}>12:30</MenuItem>
                                         <MenuItem value={13}>13:00</MenuItem>
                                     </Select>
-                                    <FormHelperText>{format(watch('startDate'), 'd.M.yyyy')}</FormHelperText>
+                                    <FormHelperText>{format(startDate, 'd.M.yyyy')}</FormHelperText>
                                 </FormControl>
                             )}
                         />
@@ -112,7 +119,7 @@ export default function BikeConfirmation({ watch, control, bikes, setIsConfirmat
                                         <MenuItem value={12.5}>12:30</MenuItem>
                                         <MenuItem value={13}>13:00</MenuItem>
                                     </Select>
-                                    <FormHelperText>{format(watch('endDate'), 'd.M.yyyy')}</FormHelperText>
+                                    <FormHelperText>{format(endDate, 'd.M.yyyy')}</FormHelperText>
                                 </FormControl>
                             )}
                         />
@@ -183,21 +190,6 @@ export default function BikeConfirmation({ watch, control, bikes, setIsConfirmat
                                     <FormControlLabel value="outside" control={<Radio />} label="Kärryssä" />
                                 </RadioGroup>
                             </FormControl>
-                            // <Autocomplete
-                            //     disablePortal
-                            //     id="storage"
-                            //     options={[
-                            //         { value: 'inside', label: 'Sisällä' },
-                            //         { value: 'outside', label: 'Kärryssä' },
-                            //     ]}
-                            //     getOptionLabel={(option) => option.label}
-                            //     isOptionEqualToValue={(option) => option.value === value.value}
-                            //     // eslint-disable-next-line react/jsx-props-no-spreading
-                            //     renderInput={(params) => <TextField {...params} label="Säilytystapa" />}
-                            //     value={value}
-                            //     onChange={(_, option) => onChange(option)}
-                            //     onBlur={onBlur}
-                            // />
                         )}
                     />
                 </Stack>
@@ -234,7 +226,9 @@ BikeConfirmation.propTypes = {
             brand: PropTypes.string,
         })
     ).isRequired,
-    watch: PropTypes.func.isRequired,
+    startDate: PropTypes.instanceOf(Date),
+    endDate: PropTypes.instanceOf(Date),
+    selectedBikes: PropTypes.objectOf(PropTypes.number),
     control: PropTypes.shape({
         startDate: PropTypes.instanceOf(Date),
         startTime: PropTypes.number,
@@ -250,6 +244,9 @@ BikeConfirmation.propTypes = {
 };
 
 BikeConfirmation.defaultProps = {
+    startDate: null,
+    endDate: null,
+    selectedBikes: {},
     control: PropTypes.shape({
         startDate: null,
         startTime: null,
