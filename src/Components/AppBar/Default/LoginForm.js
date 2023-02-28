@@ -36,7 +36,6 @@ function LoginForm() {
 
     const onSubmit = (data) => {
         const formData = { ...data };
-        console.log(formData);
         submit(formData, {
             method: 'post',
             action: '/',
