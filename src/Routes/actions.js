@@ -122,4 +122,37 @@ const storageEditAction = async (auth, setAuth, request, params) => {
     return null;
 };
 
-export { userSignupAction, contactAction, orderEditAction, storageCreateAction, storageEditAction, userLoginAction };
+/**
+ * creates a new item
+ */
+
+const itemCreateAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/products/', 'post', formData, {
+        headers: { 'content-type': 'multipart/form-data' },
+    });
+    if (response.status === 200) {
+        return { type: 'createitem', status: true };
+    }
+    return { type: 'createitem', status: false };
+};
+
+const itemUpdateAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/products/', 'put', formData);
+    if (response.status === 200) {
+        return { type: 'updateitem', status: true };
+    }
+    return { type: 'updateitem', status: false };
+};
+
+export {
+    userSignupAction,
+    contactAction,
+    orderEditAction,
+    storageCreateAction,
+    storageEditAction,
+    userLoginAction,
+    itemCreateAction,
+    itemUpdateAction,
+};
