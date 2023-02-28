@@ -175,3 +175,10 @@ test.describe('pdf', () => {
         await expect(page.getByText('Etsimääsi sijaintia /varasto/pdf/0')).not.toBeVisible();
     });
 });
+
+test.describe('fail', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/varasto/asd/asd/asd');
+        await expect(page.getByText('Etsimääsi sijaintia /varasto/asd/asd/asd')).toBeVisible();
+    });
+});
