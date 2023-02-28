@@ -9,4 +9,4 @@ RUN npm install --global serve
 COPY . .
 RUN npm run build 
 
-CMD [ "serve", "-s", "build" ]
+CMD [ "serve", "-s", "dist" ]
