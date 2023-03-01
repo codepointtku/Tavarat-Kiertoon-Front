@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const apiCall = async (auth, setAuth, path, method, data) => {
+const apiCall = async (auth, setAuth, path, method, data, options) => {
     const result = await axios({
         method,
         url: `http://localhost:8000${path}`,
         data,
-        options: { withCredentials: true },
+        options: { ...options, withCredentials: true },
     });
     Object.keys(auth).forEach((each) => {
         if (result.data.authorization?.contains(each)) {
