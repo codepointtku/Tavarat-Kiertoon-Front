@@ -78,6 +78,7 @@ function Routes() {
             errorElement: <ErrorBoundary />,
             id: 'root',
             loader: async () => rootLoader(auth, setAuth),
+            shouldRevalidate: () => false,
             children: [
                 {
                     path: '/',
