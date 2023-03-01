@@ -6,7 +6,7 @@ import apiCall from '../Utils/apiCall';
 const userLoginAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
-        email: formData.get('email'),
+        user_name: formData.get('email'),
         password: formData.get('password'),
     });
     if (response.status === 200) {
@@ -30,8 +30,9 @@ const userSignupAction = async (auth, setAuth, request) => {
         phone_number: formData.get('phonenumber'),
         password: formData.get('password'),
         joint_user: formData.get('jointuser'),
-        contact_person: formData.get('contactperson'),
         address: formData.get('address'),
+        zip_code: formData.get('zipcode'),
+        city: formData.get('town'),
     });
     if (response.status === 201) {
         return { type: 'create', status: true };
@@ -156,6 +157,34 @@ const storageEditAction = async (auth, setAuth, request, params) => {
     return null;
 };
 
+/**
+ * creates a new item
+ */
+
+const itemCreateAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/products/', 'post', formData, {
+        headers: { 'content-type': 'multipart/form-data' },
+    });
+    if (response.status === 200) {
+        return { type: 'createitem', status: true };
+    }
+    return { type: 'createitem', status: false };
+};
+
+/**
+ * updates existing item
+ */
+
+const itemUpdateAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/products/', 'put', formData);
+    if (response.status === 200) {
+        return { type: 'updateitem', status: true };
+    }
+    return { type: 'updateitem', status: false };
+};
+
 export {
     userSignupAction,
     contactAction,
@@ -164,4 +193,6 @@ export {
     storageEditAction,
     userLoginAction,
     addProductAction,
+    itemCreateAction,
+    itemUpdateAction,
 };
