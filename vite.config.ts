@@ -9,6 +9,8 @@ export default defineConfig({
     },
     preview: {
         port: 3000,
+        host: true,
+        strictPort: true,
     },
     // Enable using .js instead of .jsx
     // https://github.com/vitejs/vite/discussions/3448#discussioncomment-749919
