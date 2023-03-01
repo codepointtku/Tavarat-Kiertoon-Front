@@ -93,10 +93,12 @@ const addProductAction = async (auth, setAuth, request) => {
     // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     // const productName = formData.get('productName');
     console.log('formData actionissa :', formData);
+    console.log('formData.get(actionissa :', formData.get('name'));
 
     const response = await apiCall(auth, setAuth, '/products/', 'post', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
+    console.log('response actionissa :', response);
     if (response.status === 200) {
         return { type: 'post', status: true };
     }

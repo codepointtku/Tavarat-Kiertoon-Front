@@ -9,6 +9,7 @@ import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Typog
 import imageCompression from 'browser-image-compression';
 
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 
 function AddNewItem() {
     const { categories } = useRouteLoaderData('root');
@@ -23,8 +24,24 @@ function AddNewItem() {
         register,
         handleSubmit,
         watch,
+        setValue,
         formState: { errors, isValid },
-    } = useForm();
+    } = useForm({
+        defaultValues: {
+            amount: 1,
+            available: true,
+            price: 99.0,
+            group_id: '',
+            shelf_id: '',
+            measurements: 'wrdrqwf',
+            weight: 0.0,
+            // category: 1,
+            storages: 1,
+            color_name: 'Vihreä',
+            color: 1,
+            // pictures: [],
+        },
+    });
 
     // useEffect(() => {
     //     if (
@@ -41,7 +58,7 @@ function AddNewItem() {
     // });
 
     const item = {
-        amount: 1,
+        amount: '',
         available: false,
         barcode: '',
         group_id: '',
@@ -60,23 +77,23 @@ function AddNewItem() {
     const description = watch('description');
     // const name = watch('name');
 
-    const onSubmit = (postData) => {
+    const onSubmit = (formData) => {
         console.log(errors);
-        console.log('onSubmit postdata:', postData);
+        console.log('onSubmit formData:', formData);
 
-        const formData = {
-            ...postData,
-            amount: 1,
-            available: true,
-            price: 999.0,
-            group_id: 1,
-            shelf_id: 1,
-            measurements: 'wrdrqwf',
-            weight: 3.0,
-            // category: 1,
-            storages: 1,
-            // pictures: [1],
-        };
+        // const formData = {
+        //     ...postData,
+        //     amount: 1,
+        //     available: true,
+        //     price: 999.0,
+        //     group_id: 1,
+        //     shelf_id: 1,
+        //     measurements: 'wrdrqwf',
+        //     weight: 3.0,
+        //     // category: 1,
+        //     storages: 1,
+        //     // pictures: [1],
+        // };
 
         submit(formData, {
             method: 'post',
@@ -94,6 +111,12 @@ function AddNewItem() {
 
         // bring images to back-end with a call, then setItems into images brought back.
         console.log(uploads);
+        const response = await axios.post('http://localhost:8000/pictures/', uploads, {
+            headers: { 'content-type': 'multipart/form-data' },
+        });
+        console.log('axios pictures post', response.data);
+        // setValue('pictures', uploads);
+        setValue('pictures', response.data);
     };
 
     return (
@@ -117,7 +140,8 @@ function AddNewItem() {
                         {...register('name', { required: 'Nimi on pakollinen', max: 255, min: 3 })}
                         label="Nimi"
                         multiline
-                        defaultValue={item.name}
+                        // defaultValue={item.name}
+                        defaultValue="testinimi"
                         // error={!!errors.name}
                         // helperText={errors.name?.message || `${name?.length || 0}/255`}
                     />
@@ -129,7 +153,8 @@ function AddNewItem() {
                         // disabled
                         // id="outlined-disabled"
                         label="Viivakoodi"
-                        defaultValue={item.barcode}
+                        // defaultValue={item.barcode}
+                        defaultValue="testiviivakoodi"
                     >
                         {item.barcode}
                     </TextField>
@@ -169,7 +194,6 @@ function AddNewItem() {
                         {...register('category_name', { required: true })}
                         defaultValue=""
                     >
-                        {/* FIX in backend, we don't want categories.categories */}
                         {categories?.map((category) => (
                             <MenuItem key={category.id} value={category.name}>
                                 {category.name}
@@ -183,12 +207,14 @@ function AddNewItem() {
                         multiline
                         helperText={`${description?.length || '0'}/1000`}
                         // defaultValue={item.free_description}
+                        defaultValue="vapaa kuvaus testi"
                     />
                     <CardActions>
                         <Button variant="contained" component="label" size="large">
                             Lisää kuvat
                             <input
-                                {...register('pictures')}
+                                // {...register('pictures')}
+                                // setValue in uploadFile
                                 onChange={(event) => {
                                     uploadFile(event.target.files);
                                 }}
