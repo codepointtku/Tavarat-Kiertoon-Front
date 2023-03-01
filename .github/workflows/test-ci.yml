@@ -18,8 +18,6 @@ jobs:
                   node-version: 16
             - name: install dependencies
               run: npm ci
-            - name: vite build
-              run: vite build  
             - name: install playwright browsers
               run: npx playwright install --with-deps
             - name: run tests
