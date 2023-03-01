@@ -22,6 +22,7 @@ import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import Person2Icon from '@mui/icons-material/Person2';
 import PhoneIcon from '@mui/icons-material/Phone';
+import HomeIcon from '@mui/icons-material/Home';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import BackButton from '../BackButton';
@@ -183,22 +184,6 @@ function LocationForm() {
                         />
                     </FormControl>
                     <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-contactperson">Vastuuhenkilö</InputLabel>
-                        <OutlinedInput
-                            {...register('contactperson')}
-                            id="outlined-adornment-contactperson"
-                            type="text"
-                            label="Vastuuhenkilö"
-                            placeholder="Tilin vastuuhenkilön nimi"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <Person2Icon />
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
-
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
                         <InputLabel htmlFor="outlined-adornment-email">Sähköpostiosoite</InputLabel>
                         <OutlinedInput
                             {...register('email')}
@@ -224,6 +209,51 @@ function LocationForm() {
                             endAdornment={
                                 <InputAdornment position="end">
                                     <PhoneIcon />
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="outlined-adornment-address">Osoite</InputLabel>
+                        <OutlinedInput
+                            {...register('address')}
+                            id="outlined-adornment-address"
+                            type="text"
+                            label="Osoite"
+                            placeholder="Kahvikuja 5 as. 666"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <HomeIcon />
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="outlined-adornment-zipcode">Postinumero</InputLabel>
+                        <OutlinedInput
+                            {...register('zipcode')}
+                            id="outlined-adornment-zipcode"
+                            type="text"
+                            label="Postinumero"
+                            placeholder="20100"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <HomeIcon />
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="outlined-adornment-town">Kaupunki</InputLabel>
+                        <OutlinedInput
+                            {...register('town')}
+                            id="outlined-adornment-town"
+                            type="text"
+                            label="Kaupunki"
+                            placeholder="Turku"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <HomeIcon />
                                 </InputAdornment>
                             }
                         />
