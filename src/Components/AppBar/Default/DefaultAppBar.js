@@ -94,7 +94,11 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 const drawerWidth = 490;
 
-function Drawer({ currentOpenDrawer, name, children }) {
+function Drawer({ currentOpenDrawer, name, onClose, children }) {
+    const handleClose = () => {
+        onClose();
+    };
+
     return (
         <MuiDrawer
             sx={{
@@ -105,9 +109,12 @@ function Drawer({ currentOpenDrawer, name, children }) {
                     width: drawerWidth,
                 },
             }}
-            variant="persistent"
             anchor="right"
             open={currentOpenDrawer === name}
+            onClose={handleClose}
+            variant="temporary"
+            disableScrollLock
+            slotProps={{ backdrop: { invisible: true } }}
         >
             <DrawerHeader />
             <Divider />
@@ -115,6 +122,13 @@ function Drawer({ currentOpenDrawer, name, children }) {
         </MuiDrawer>
     );
 }
+
+Drawer.propTypes = {
+    currentOpenDrawer: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
+    onClose: PropTypes.func.isRequired,
+};
 
 function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState(null);
@@ -145,8 +159,8 @@ function DefaultAppBar() {
     return (
         <Box>
             <AppBar
-                // bgcolor="primary"
                 sx={{
+                    zIndex: 1250,
                     backgroundColor: 'primary.main',
                     width: 'min-content',
                     boxShadow: 0,
@@ -186,7 +200,7 @@ function DefaultAppBar() {
                 </Toolbar>
             </AppBar>
 
-            <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart">
+            <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart" onClose={drawerOpen('')}>
                 {/* tähän oma komponentti.. */}
                 <List>
                     {cart.products.map((product) => (
@@ -213,7 +227,7 @@ function DefaultAppBar() {
                 </List>
             </Drawer>
 
-            <Drawer currentOpenDrawer={currentOpenDrawer} name="account">
+            <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
                 <LoginForm />
             </Drawer>
 
@@ -225,9 +239,3 @@ function DefaultAppBar() {
 }
 
 export default DefaultAppBar;
-
-Drawer.propTypes = {
-    currentOpenDrawer: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    children: PropTypes.node.isRequired,
-};

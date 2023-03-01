@@ -1,17 +1,13 @@
-import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
+import { useContext } from 'react';
+import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
-
-import axios from 'axios';
-
-import DefaultView from './DefaultView';
-import StorageView from './StorageView';
-import AdminView from './AdminView';
 
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
-import Base from '../Layouts/Base';
-import Storage from '../Layouts/Storage';
-import Admin from '../Layouts/Admin';
+import BaseLayout from '../Layouts/BaseLayout';
+import StorageLayout from '../Layouts/StorageLayout';
+import AdminLayout from '../Layouts/AdminLayout';
+import RootLayout from '../Layouts/RootLayout';
 
 import OrdersList from '../Components/OrdersList';
 import OrderView from '../Components/OrderView';
@@ -36,10 +32,13 @@ import DeliveryView from '../Components/DeliveryView';
 import BackgroundInfo from '../Components/Backgroundinfo';
 import StatsPage from '../Components/Stats/StatsPage';
 import ErrorBoundary from '../Components/ErrorBoundary';
+import AddStorage from '../Components/AddStorage';
 
 import SignupLandingPage from '../Components/Signup/SignupLandingPage';
 import SignupPage from '../Components/Signup/SignupPage';
 import ContactPage from '../Components/ContactPage';
+
+import AuthContext from '../Context/AuthContext';
 
 import PDFView from '../Components/PDFView';
 import {
@@ -55,7 +54,17 @@ import {
     storageEditLoader,
     userEditLoader,
     usersListLoader,
-} from './Loaders';
+    userSignupLoader,
+} from './loaders';
+
+import {
+    userSignupAction,
+    contactAction,
+    orderEditAction,
+    storageEditAction,
+    userLoginAction,
+    storageCreateAction,
+} from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
 import GuideCommon from '../Components/Instructions/GuideCommon';
@@ -65,31 +74,25 @@ import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
 
 function Routes() {
+    const { auth, setAuth } = useContext(AuthContext);
     const router = createBrowserRouter([
         {
             path: '/',
-            element: <Outlet />,
-            id: 'root',
+            element: <RootLayout />,
             errorElement: <ErrorBoundary />,
-            loader: rootLoader,
+            id: 'root',
+            loader: async () => rootLoader(auth, setAuth),
+            shouldRevalidate: () => false,
             children: [
                 {
                     path: '/',
-                    element: (
-                        <Base>
-                            <DefaultView />
-                        </Base>
-                    ),
-                    errorElement: (
-                        <Base>
-                            <ErrorBoundary />
-                        </Base>
-                    ),
+                    element: <BaseLayout />,
+                    action: async ({ request }) => userLoginAction(auth, setAuth, request),
                     children: [
                         {
-                            path: '/',
+                            index: true,
                             element: <ProductList />,
-                            loader: productListLoader,
+                            loader: async () => productListLoader(auth, setAuth),
                             action: async ({ request }) => {
                                 const formData = await request.formData();
                                 const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
@@ -104,61 +107,79 @@ function Routes() {
                             },
                         },
                         {
-                            // Redirect if no id is given
-                            path: '/tuotteet',
-                            element: <Navigate to="/" />,
+                            path: 'tuotteet',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    // Redirect if no id is given
+                                    index: true,
+                                    element: <Navigate to="/" />,
+                                },
+                                {
+                                    path: ':id',
+                                    element: <ProductDetails />,
+                                    loader: async ({ params }) => productDetailsLoader(auth, setAuth, params),
+                                },
+                            ],
                         },
                         {
-                            path: '/tuotteet/:id',
-                            element: <ProductDetails />,
-                            loader: productDetailsLoader,
+                            path: 'ohjeet',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <InstructionsPage />,
+                                },
+                                {
+                                    path: 'ukk',
+                                    element: <GuideCommon />,
+                                },
+                                {
+                                    path: 'tili',
+                                    element: <GuideAccount />,
+                                    children: [
+                                        {
+                                            path: ':value',
+                                            element: <GuideAccount />,
+                                        },
+                                    ],
+                                },
+                                {
+                                    path: 'tilaus',
+                                    element: <GuideOrdering />,
+                                    children: [
+                                        {
+                                            path: ':value',
+                                            element: <GuideOrdering />,
+                                        },
+                                    ],
+                                },
+                                {
+                                    path: 'nouto',
+                                    element: <GuideShipping />,
+                                },
+                                {
+                                    path: 'pyorat',
+                                    element: <GuideBikes />,
+                                    children: [
+                                        {
+                                            path: ':value',
+                                            element: <GuideBikes />,
+                                        },
+                                    ],
+                                },
+                            ],
                         },
                         {
-                            path: '/ohjeet',
-                            element: <InstructionsPage />,
-                        },
-                        {
-                            path: '/ohjeet/ukk',
-                            element: <GuideCommon />,
-                        },
-                        {
-                            path: '/ohjeet/tili',
-                            element: <GuideAccount />,
-                        },
-                        {
-                            path: '/ohjeet/tili/:value',
-                            element: <GuideAccount />,
-                        },
-                        {
-                            path: '/ohjeet/tilaus',
-                            element: <GuideOrdering />,
-                        },
-                        {
-                            path: '/ohjeet/tilaus/:value',
-                            element: <GuideOrdering />,
-                        },
-                        {
-                            path: '/ohjeet/nouto',
-                            element: <GuideShipping />,
-                        },
-                        {
-                            path: '/ohjeet/pyorat',
-                            element: <GuideBikes />,
-                        },
-                        {
-                            path: '/ohjeet/pyorat/:value',
-                            element: <GuideBikes />,
-                        },
-                        {
-                            path: '/toimitus',
+                            path: 'toimitus',
                             element: <DeliveryView />,
                         },
                         {
-                            path: '/taustatietoa',
+                            path: 'taustatietoa',
                             element: <BackgroundInfo />,
                         },
                         {
-                            path: '/stats',
+                            path: 'stats',
                             element: <StatsPage />,
                         },
                         {
@@ -184,173 +205,166 @@ function Routes() {
                             element: <Announcements />,
                         },
                         {
-                            path: '/rekisteroidy',
-                            element: <SignupLandingPage />,
+                            path: 'rekisteroidy',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <SignupLandingPage />,
+                                },
+                                {
+                                    path: 'kayttaja',
+                                    element: <SignupPage isLocationForm={false} />,
+                                    loader: userSignupLoader,
+                                    action: async ({ request }) => userSignupAction(auth, setAuth, request),
+                                },
+                                {
+                                    path: 'toimipaikka',
+                                    element: <SignupPage isLocationForm />,
+                                    loader: userSignupLoader,
+                                    action: async ({ request }) => userSignupAction(auth, setAuth, request),
+                                },
+                            ],
                         },
                         {
-                            path: '/rekisteroidy/kayttaja',
-                            element: <SignupPage isLocationForm={false} />,
-                        },
-                        {
-                            path: '/rekisteroidy/toimipaikka',
-                            element: <SignupPage isLocationForm />,
-                        },
-                        {
-                            path: '/otayhteytta',
+                            path: 'otayhteytta',
                             element: <ContactPage />,
-                            action: async ({ request }) => {
-                                const formData = await request.formData();
-                                const response = await axios.post('http://localhost:8000/contact_forms/', formData);
-                                console.log(response);
-                                return response.data || null;
-                            },
+                            action: async ({ request }) => contactAction(auth, setAuth, request),
                         },
                     ],
                 },
-
                 {
-                    path: '/varasto',
+                    path: 'varasto',
                     element: (
                         <ThemeProvider theme={storageTheme}>
-                            <Storage>
-                                <StorageView />
-                            </Storage>
+                            <StorageLayout />
                         </ThemeProvider>
                     ),
                     errorElement: (
                         <ThemeProvider theme={storageTheme}>
-                            <Storage>
-                                <ErrorBoundary />
-                            </Storage>
+                            <ErrorBoundary />,
                         </ThemeProvider>
                     ),
                     children: [
                         {
-                            path: '/varasto/:num/:view',
+                            path: ':num/:view',
                             element: <OrdersList />,
-                            loader: ordersListLoader,
+                            loader: async ({ params }) => ordersListLoader(auth, setAuth, params),
                         },
                         {
-                            path: '/varasto/tilaus/:id',
-                            element: <OrderView />,
-                            loader: orderViewLoader,
-                        },
-                        {
-                            path: '/varasto/tilaus/:id/muokkaa',
-                            element: <OrderEdit />,
-                            action: async ({ params, request }) => {
-                                const formData = await request.formData();
-                                // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
-                                // const productName = formData.get('productName');
-                                if (request.method === 'POST') {
-                                    if (formData.get('type') === 'delete') {
-                                        const response = await axios.delete(
-                                            `http://localhost:8000/orders/${params.id}`,
-                                            {
-                                                data: {
-                                                    product: Number(formData.get('product')),
-                                                    productId: Number(formData.get('productId')),
-                                                },
-                                            }
-                                        );
-                                        if (response.status === 202) {
-                                            return { type: 'delete', status: true };
-                                        }
-                                        return { type: 'delete', status: false };
-                                    }
-                                    if (formData.get('type') === 'put') {
-                                        const response = await axios.put(`http://localhost:8000/orders/${params.id}`, {
-                                            contact: formData.get('contact'),
-                                            delivery_address: formData.get('delivery_address'),
-                                            status: formData.get('status'),
-                                            order_info: formData.get('order_info'),
-                                        });
-                                        if (response.status === 200) {
-                                            return { type: 'update', status: true };
-                                        }
-                                        return { type: 'update', status: false };
-                                    }
-                                }
+                            path: 'tilaus',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <Navigate to="/varasto" />,
+                                },
+                                {
+                                    path: ':id',
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <OrderView />,
 
-                                return null;
-                            },
-                            loader: orderEditLoader,
+                                            loader: async ({ params }) => orderViewLoader(auth, setAuth, params),
+                                        },
+                                        {
+                                            path: 'muokkaa',
+                                            element: <OrderEdit />,
+                                            action: async ({ request, params }) =>
+                                                orderEditAction(auth, setAuth, request, params),
+                                            loader: async ({ params }) => orderEditLoader(auth, setAuth, params),
+                                        },
+                                    ],
+                                },
+                            ],
                         },
                         {
-                            path: '/varasto/luo',
+                            path: 'luo',
                             element: <AddItem />,
                             loader: addItemLoader,
                         },
                         {
-                            path: '/varasto/koodinlukija',
+                            path: 'koodinlukija',
                             element: <QrScanner />,
                         },
                         {
-                            path: '/varasto/pdf/:id',
-                            element: <PDFView />,
-                            loader: pdfViewLoader,
+                            path: 'pdf',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <Navigate to="/varasto" />,
+                                },
+                                {
+                                    path: ':id',
+                                    element: <PDFView />,
+                                    loader: ({ params }) => pdfViewLoader(auth, setAuth, params),
+                                },
+                            ],
                         },
                     ],
                 },
                 {
-                    path: '/admin',
+                    path: 'admin',
                     element: (
                         <ThemeProvider theme={adminTheme}>
-                            <Admin>
-                                <AdminView />
-                            </Admin>
+                            <AdminLayout />
                         </ThemeProvider>
                     ),
                     errorElement: (
                         <ThemeProvider theme={adminTheme}>
-                            <Admin>
-                                <ErrorBoundary />
-                            </Admin>
+                            <ErrorBoundary />,
                         </ThemeProvider>
                     ),
                     children: [
                         {
-                            path: '/admin',
-                            element: <StoragesList />,
-                            loader: storagesListLoader,
+                            index: true,
+                            element: <Navigate to="varastot" />,
                         },
                         {
-                            path: '/admin/users',
+                            path: 'varastot',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <StoragesList />,
+                                    loader: async () => storagesListLoader(auth, setAuth),
+                                },
+                                {
+                                    path: ':id',
+                                    element: <StorageEdit />,
+                                    loader: async ({ params }) => storageEditLoader(auth, setAuth, params),
+                                    action: async ({ request, params }) =>
+                                        storageEditAction(auth, setAuth, request, params),
+                                },
+                            ],
+                        },
+                        // NOTE : JTo : 'users' paths need to be checked once users are enabled in back-end
+                        {
+                            path: 'users',
                             element: <UsersList />,
-                            loader: usersListLoader,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <UsersList />,
+                                    loader: async () => usersListLoader(auth, setAuth),
+                                },
+                                {
+                                    path: ':id',
+                                    element: <UserEdit />,
+                                    loader: async ({ params }) => userEditLoader(auth, setAuth, params),
+                                },
+                            ],
                         },
                         {
-                            path: '/admin/users/:id',
-                            element: <UserEdit />,
-                            loader: userEditLoader,
+                            path: 'varastot/luo',
+                            element: <AddStorage />,
+                            action: async ({ request }) => storageCreateAction(auth, setAuth, request),
                         },
                         {
-                            path: '/admin/varastot/:id',
-                            element: <StorageEdit />,
-                            action: async ({ params, request }) => {
-                                const formData = await request.formData();
-                                if (request.method === 'POST') {
-                                    if (formData.get('type') === 'put') {
-                                        const response = await axios.put(
-                                            `http://localhost:8000/storages/${params.id}`,
-                                            {
-                                                address: formData.get('address'),
-                                                name: formData.get('name'),
-                                                in_use: formData.get('in_use'),
-                                            }
-                                        );
-                                        if (response.status === 200) {
-                                            return { type: 'update', status: true };
-                                        }
-                                        return { type: 'update', status: false };
-                                    }
-                                }
-                                return null;
-                            },
-                            loader: storageEditLoader,
-                        },
-                        {
-                            path: '/admin/hakemukset',
+                            path: 'hakemukset',
                             element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
                         },
                     ],
