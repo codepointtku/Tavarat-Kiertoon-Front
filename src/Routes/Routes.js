@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
+import DefaultView from './DefaultView';
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
 
@@ -22,7 +23,6 @@ import UserEdit from '../Components/UserEdit';
 import BikesView from './BikesView';
 import BikesPage from '../Components/Bikes/BikesPage';
 
-import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
 import Announcements from '../Components/Announcements';
 
@@ -93,7 +93,7 @@ function Routes() {
                     children: [
                         {
                             index: true,
-                            element: <ProductList />,
+                            element: <DefaultView />,
                             loader: async () => productListLoader(auth, setAuth),
                         },
                         {
