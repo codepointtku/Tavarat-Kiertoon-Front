@@ -37,7 +37,7 @@ function createDates(startDate, rows, taken, maxAvailable) {
         for (let day = 0; day < 5; day += 1) {
             const date = addDays(monday, day + row * 7);
             const dateString = `${date.getDate()}.${date.getMonth() + 1}`;
-            const unitsInUse = taken[format(date, 'd.M.yyyy')] ?? 0;
+            const unitsInUse = taken[format(date, 'dd.MM.yyyy')] ?? 0;
             week.push({ date, dateString, available: maxAvailable - unitsInUse });
         }
         weeks.push(week);
