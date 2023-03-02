@@ -9,7 +9,7 @@ import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Typog
 import imageCompression from 'browser-image-compression';
 
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
+// import axios from 'axios';
 
 function AddNewItem() {
     const { categories } = useRouteLoaderData('root');
@@ -39,10 +39,11 @@ function AddNewItem() {
             storages: 1,
             color_name: 'Vihreä',
             color: 1,
-            pictures: [1, 2],
+            // pictures: [1],
         },
     });
 
+    // TODO: validation with react-hook-form
     // useEffect(() => {
     //     if (
     //         validator.isLength(String(item.name), { min: 3, max: 255 }) &&
@@ -57,43 +58,11 @@ function AddNewItem() {
     //     }
     // });
 
-    const item = {
-        amount: '',
-        available: false,
-        barcode: '',
-        group_id: '',
-        name: '',
-        price: null,
-        shelf_id: null,
-        free_description: '',
-        measurements: '',
-        weight: null,
-        category: null,
-        storages: null,
-        color_name: null,
-        pictures: [],
-    };
-
     const description = watch('description');
-    // const name = watch('name');
 
     const onSubmit = (formData) => {
         console.log(errors);
         console.log('onSubmit formData:', formData);
-
-        // const formData = {
-        //     ...postData,
-        //     amount: 1,
-        //     available: true,
-        //     price: 999.0,
-        //     group_id: 1,
-        //     shelf_id: 1,
-        //     measurements: 'wrdrqwf',
-        //     weight: 3.0,
-        //     // category: 1,
-        //     storages: 1,
-        //     // pictures: [1],
-        // };
 
         submit(formData, {
             method: 'post',
@@ -108,15 +77,15 @@ function AddNewItem() {
         };
 
         const uploads = await Promise.all(Object.values(files).map(async (file) => imageCompression(file, options)));
-
-        // bring images to back-end with a call, then setItems into images brought back.
-        console.log(uploads);
-        const response = await axios.post('http://localhost:8000/pictures/', uploads, {
-            headers: { 'content-type': 'multipart/form-data' },
-        });
-        console.log('axios pictures post', response.data);
-        setValue('pictures', uploads);
+        // // some code from kuvatestit:
+        // // bring images to back-end with a call, then setItems into images brought back.
+        // console.log(uploads);
+        // const response = await axios.post('http://localhost:8000/pictures/', uploads, {
+        //     headers: { 'content-type': 'multipart/form-data' },
+        // });
+        // console.log('axios pictures post', response.data);
         // setValue('pictures', response.data);
+        setValue('pictures', uploads);
     };
 
     return (
@@ -156,7 +125,7 @@ function AddNewItem() {
                         // defaultValue={item.barcode}
                         defaultValue="testiviivakoodi"
                     >
-                        {item.barcode}
+                        viivakoodi
                     </TextField>
                     {/* <CardActions>
                         <Button
@@ -203,7 +172,7 @@ function AddNewItem() {
                     <TextField
                         id="filled-helperText"
                         label="Vapaa Kuvaus"
-                        {...register('free_description', { required: true, max: 1000, min: 6 })}
+                        {...register('free_description', { required: false, max: 1000 })}
                         multiline
                         helperText={`${description?.length || '0'}/1000`}
                         // defaultValue={item.free_description}
@@ -215,9 +184,9 @@ function AddNewItem() {
                             <input
                                 // {...register('pictures')}
                                 // setValue in uploadFile
-                                // onChange={(event) => {
-                                //     uploadFile(event.target.files);
-                                // }}
+                                onChange={(event) => {
+                                    uploadFile(event.target.files);
+                                }}
                                 hidden
                                 accept="image/*"
                                 multiple
