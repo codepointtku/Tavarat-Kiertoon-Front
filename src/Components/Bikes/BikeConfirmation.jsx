@@ -56,7 +56,7 @@ export default function BikeConfirmation({
                                 ([key, value]) =>
                                     !!value && (
                                         <Typography key={key}>
-                                            {value}x {bikes.find((bike) => bike.id === Number(key)).name}
+                                            {value}x {bikes.find((bike) => String(bike.id) === String(key)).name}
                                         </Typography>
                                     )
                             )}
@@ -237,7 +237,7 @@ BikeConfirmation.propTypes = {
     setIsConfirmationVisible: PropTypes.func.isRequired,
     bikes: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.number,
+            id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
             name: PropTypes.string,
             description: PropTypes.string,
             max_available: PropTypes.number,

@@ -28,26 +28,31 @@ export default function BikesPage() {
     const [isIntroVisible, setIsIntroVisible] = useState(true);
     const containerRef = useRef(null);
 
-    const [searchParams, setSearchParams] = useSearchParams();
     const loaderData = useLoaderData();
+    const bikes = [
+        ...loaderData.bikes,
+        // The bike package id and bike id would have possibility for overlap since they're both just incrementing
+        ...loaderData.packages.map((bikePackage) => ({ ...bikePackage, id: `package-${bikePackage.id}` })),
+    ];
+    const [searchParams, setSearchParams] = useSearchParams();
     const filteredBikes = searchParams.get('filters')
-        ? loaderData.bikes.filter((bike) =>
+        ? bikes.filter((bike) =>
               Object.entries(JSON.parse(searchParams.get('filters'))).every(
                   ([filterName, filterValue]) => filterValue === bike[filterName]
               )
           )
-        : loaderData.bikes;
+        : bikes;
 
     const sizeOptionsSet = new Set();
     const colorOptionsSet = new Set();
     const brandOptionsSet = new Set();
     const typeOptionsSet = new Set();
 
-    loaderData.bikes.forEach((bike) => {
-        sizeOptionsSet.add(bike.size);
-        colorOptionsSet.add(bike.color);
-        brandOptionsSet.add(bike.brand);
-        typeOptionsSet.add(bike.type);
+    bikes.forEach((bike) => {
+        if (bike.size !== null) sizeOptionsSet.add(bike.size);
+        if (bike.color !== null) colorOptionsSet.add(bike.color);
+        if (bike.brand !== null) brandOptionsSet.add(bike.brand);
+        if (bike.type !== null) typeOptionsSet.add(bike.type);
     });
 
     const minDate = parseISO(loaderData.date_info.available_from);
@@ -354,10 +359,12 @@ export default function BikesPage() {
                                                                                     <Collapse key={key}>
                                                                                         <Typography>
                                                                                             {`${value}x ${
-                                                                                                loaderData.bikes.find(
+                                                                                                bikes.find(
                                                                                                     (bike) =>
-                                                                                                        bike.id ===
-                                                                                                        Number(key)
+                                                                                                        String(
+                                                                                                            bike.id
+                                                                                                        ) ===
+                                                                                                        String(key)
                                                                                                 ).name
                                                                                             }`}
                                                                                         </Typography>
@@ -402,7 +409,7 @@ export default function BikesPage() {
                                 endDate={watch('endDate')}
                                 selectedBikes={watch('selectedBikes')}
                                 control={control}
-                                bikes={loaderData.bikes}
+                                bikes={bikes}
                                 setIsConfirmationVisible={setIsConfirmationVisible}
                             />
                         </Box>
