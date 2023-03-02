@@ -14,7 +14,7 @@ import { devices } from '@playwright/test';
  */
 const config = {
     webServer: {
-        command: 'react-scripts start',
+        command: 'npm run serve',
         port: 3000,
     },
 

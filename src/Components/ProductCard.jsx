@@ -16,8 +16,8 @@ function ProductCard({ productName, id, picture }) {
     };
 
     return (
-        <Box sx={{ minWidth: 240 }}>
-            <Card sx={{ maxWidth: 300 }}>
+        <Box sx={{ minWidth: 180, display: 'flex', justifyContent: 'center' }}>
+            <Card sx={{ maxWidth: 320 }}>
                 <CardActionArea component={Link} to={`/tuotteet/${id}`}>
                     <CardMedia
                         component="img"
@@ -30,23 +30,33 @@ function ProductCard({ productName, id, picture }) {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button
-                        variant="outlined"
-                        component={Link}
-                        to={`/tuotteet/${id}`}
-                        size="small"
-                        startIcon={<InfoOutlinedIcon />}
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '0.2rem',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
                     >
-                        Lisää tietoa
-                    </Button>
-                    <Button
-                        color={addedToCart ? 'success' : 'primary'}
-                        size="small"
-                        startIcon={<AddShoppingCartOutlinedIcon />}
-                        onClick={handleClickAddToCartBtn}
-                    >
-                        {addToCartButtonValue}
-                    </Button>
+                        <Button
+                            variant="outlined"
+                            component={Link}
+                            to={`/tuotteet/${id}`}
+                            size="small"
+                            // startIcon={<InfoOutlinedIcon />}
+                        >
+                            <InfoOutlinedIcon fontSize="small" />
+                        </Button>
+                        <Button
+                            color={addedToCart ? 'success' : 'primary'}
+                            size="small"
+                            startIcon={<AddShoppingCartOutlinedIcon />}
+                            onClick={handleClickAddToCartBtn}
+                        >
+                            {addToCartButtonValue}
+                        </Button>
+                    </Box>
                 </CardActions>
             </Card>
         </Box>
