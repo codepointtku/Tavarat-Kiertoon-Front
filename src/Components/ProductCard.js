@@ -15,8 +15,6 @@ function ProductCard({ productName, id, picture }) {
         setValue('Lisätty!');
     };
 
-    console.log(picture);
-
     return (
         <Box sx={{ minWidth: 240 }}>
             <Card sx={{ maxWidth: 300 }}>
