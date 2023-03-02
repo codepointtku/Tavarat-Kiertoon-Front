@@ -176,9 +176,9 @@ test.describe('pdf', () => {
     });
 });
 
-test.describe('fail-test', () => {
-    test('fail-test', async ({ page }) => {
-        await page.goto('/test/failing');
-        await expect(page.getByText('Etsimääsi sijaintia /test/failing')).toBeVisible();
+test.describe('fail', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/varasto/asd/asd/asd');
+        await expect(page.getByText('Etsimääsi sijaintia /varasto/asd/asd/asd')).toBeVisible();
     });
 });
