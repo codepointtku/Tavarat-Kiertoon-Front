@@ -4,9 +4,9 @@ WORKDIR /usr/src/app
 
 COPY package.json package-lock.json* ./
 RUN npm ci && npm cache clean --force
-RUN npm install --global serve
 
 COPY . .
-RUN npm run build 
+RUN npm run build
+EXPOSE 3000
 
-CMD [ "serve", "-s", "build" ]
+CMD ["npm", "run", "serve"]
