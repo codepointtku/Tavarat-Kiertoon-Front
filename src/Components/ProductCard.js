@@ -30,23 +30,33 @@ function ProductCard({ productName, id, picture }) {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button
-                        variant="outlined"
-                        component={Link}
-                        to={`/tuotteet/${id}`}
-                        size="small"
-                        startIcon={<InfoOutlinedIcon />}
-                    />
-                    {/* Tietoa
-                    </Button> */}
-                    <Button
-                        color={addedToCart ? 'success' : 'primary'}
-                        size="small"
-                        startIcon={<AddShoppingCartOutlinedIcon />}
-                        onClick={handleClickAddToCartBtn}
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '0.2rem',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
                     >
-                        {addToCartButtonValue}
-                    </Button>
+                        <Button
+                            variant="outlined"
+                            component={Link}
+                            to={`/tuotteet/${id}`}
+                            size="small"
+                            // startIcon={<InfoOutlinedIcon />}
+                        >
+                            <InfoOutlinedIcon fontSize="small" />
+                        </Button>
+                        <Button
+                            color={addedToCart ? 'success' : 'primary'}
+                            size="small"
+                            startIcon={<AddShoppingCartOutlinedIcon />}
+                            onClick={handleClickAddToCartBtn}
+                        >
+                            {addToCartButtonValue}
+                        </Button>
+                    </Box>
                 </CardActions>
             </Card>
         </Box>

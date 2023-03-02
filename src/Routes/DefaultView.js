@@ -7,10 +7,10 @@ import ProductList from '../Components/ProductList';
 function DefaultView() {
     return (
         <Grid container mt={2} mb={2}>
-            <Grid item xs={12} sm={6} md={3} lg={3} xl={2}>
+            <Grid item xs={12} sm={4} md={3} lg={2} xl={1}>
                 <CategoryTree />
             </Grid>
-            <Grid item xs={12} sm={6} md={9} lg={9} xl={10}>
+            <Grid item xs={12} sm={8} md={9} lg={10} xl={11}>
                 <ProductList />
             </Grid>
         </Grid>
