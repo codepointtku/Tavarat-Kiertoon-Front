@@ -58,7 +58,7 @@ const orderEditAction = async (auth, setAuth, request, params) => {
     // const productName = formData.get('productName');
     if (request.method === 'POST') {
         if (formData.get('type') === 'delete') {
-            const response = await apiCall(auth, setAuth, `/orders/${params.id}`, 'post', {
+            const response = await apiCall(auth, setAuth, `/orders/${params.id}/`, 'delete', {
                 data: {
                     product: Number(formData.get('product')),
                     productId: Number(formData.get('productId')),
@@ -70,7 +70,7 @@ const orderEditAction = async (auth, setAuth, request, params) => {
             return { type: 'delete', status: false };
         }
         if (formData.get('type') === 'put') {
-            const response = await apiCall(auth, setAuth, `/orders/${params.id}`, 'put', {
+            const response = await apiCall(auth, setAuth, `/orders/${params.id}/`, 'put', {
                 contact: formData.get('contact'),
                 delivery_address: formData.get('delivery_address'),
                 status: formData.get('status'),
