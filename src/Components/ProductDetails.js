@@ -28,7 +28,6 @@ function ProductDetails() {
     }
     const { name: productName, free_description: description, date, category, barcode } = data;
     const [image, setImage] = useState(data.pictures[0]);
-    const [image, setImage] = useState(data.pictures[0]);
     const { auth } = useContext(AuthContext);
 
     return (
