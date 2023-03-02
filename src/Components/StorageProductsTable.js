@@ -18,19 +18,26 @@ import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import TablePaginationActions from './TablePaginationActions';
 import StyledTableCell from './StyledTableCell';
 import StyledTableRow from './StyledTableRow';
+import useCustomSearchParams from '../Hooks/useCustomSearchParams';
 
 function StorageProductsTable() {
     const { categories } = useRouteLoaderData('root');
     const { storages, products } = useLoaderData();
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, watch } = useForm();
+    // const [searchParams, setSearchParams] = useSearchParams();
+    const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });
 
     console.log('categories:', categories);
     console.log('storages:', storages);
     console.log('products:', products);
     console.log('products.results:', products.results);
 
+    const search = watch('searchString');
+
     const handleBarcodeSearch = (formData) => {
         console.log('handleBarcodeSearch', formData);
+        setUsedParams(search);
+        // setSearchParams({ search: formData.searchString });
     };
 
     return (
@@ -44,7 +51,8 @@ function StorageProductsTable() {
                             <Form onSubmit={handleSubmit(handleBarcodeSearch)}>
                                 {/* todo: näytä vain hakuikoni kunnes painetaan, jolloin tekstikenttä laajenee/aktivoituu */}
                                 <TextField
-                                    {...register('barcodeSearch')}
+                                    type="search"
+                                    {...register('searchString')}
                                     placeholder="Viivakoodi / tuoteID"
                                     sx={{ backgroundColor: 'white' }}
                                 />

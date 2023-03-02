@@ -94,7 +94,8 @@ const addProductAction = async (auth, setAuth, request) => {
     // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     // const productName = formData.get('productName');
     console.log('formData actionissa :', formData);
-    console.log('formData.get(actionissa :', formData.get('name'));
+    console.log('formData.get name actionissa :', formData.get('name'));
+    console.log('formData.get pictures actionissa :', formData.get('pictures'));
 
     const response = await apiCall(auth, setAuth, '/products/', 'post', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },

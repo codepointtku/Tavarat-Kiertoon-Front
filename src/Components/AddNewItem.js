@@ -39,7 +39,7 @@ function AddNewItem() {
             storages: 1,
             color_name: 'Vihreä',
             color: 1,
-            // pictures: [],
+            pictures: [1, 2],
         },
     });
 
@@ -115,8 +115,8 @@ function AddNewItem() {
             headers: { 'content-type': 'multipart/form-data' },
         });
         console.log('axios pictures post', response.data);
-        // setValue('pictures', uploads);
-        setValue('pictures', response.data);
+        setValue('pictures', uploads);
+        // setValue('pictures', response.data);
     };
 
     return (
@@ -178,7 +178,7 @@ function AddNewItem() {
                         select
                         label="Sijainti"
                         {...register('storage_name', { required: true })}
-                        defaultValue=""
+                        defaultValue="Kahvivarasto"
                     >
                         {storages?.map((location) => (
                             <MenuItem key={location.id} value={location.name}>
@@ -192,7 +192,7 @@ function AddNewItem() {
                         select
                         label="Kategoria"
                         {...register('category_name', { required: true })}
-                        defaultValue=""
+                        defaultValue="Keittiökamat"
                     >
                         {categories?.map((category) => (
                             <MenuItem key={category.id} value={category.name}>
@@ -215,9 +215,9 @@ function AddNewItem() {
                             <input
                                 // {...register('pictures')}
                                 // setValue in uploadFile
-                                onChange={(event) => {
-                                    uploadFile(event.target.files);
-                                }}
+                                // onChange={(event) => {
+                                //     uploadFile(event.target.files);
+                                // }}
                                 hidden
                                 accept="image/*"
                                 multiple

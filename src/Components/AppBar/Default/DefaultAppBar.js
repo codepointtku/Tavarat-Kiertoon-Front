@@ -17,6 +17,7 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
+    Button,
 } from '@mui/material';
 
 import SearchIcon from '@mui/icons-material/Search';
@@ -28,7 +29,8 @@ import MailIcon from '@mui/icons-material/Mail';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import PhishingIcon from '@mui/icons-material/Phishing';
 
-import { Link } from 'react-router-dom';
+import { Form, Link, useSearchParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import LoginForm from './LoginForm';
 // import ContactForm from './ContactForm';
 
@@ -135,6 +137,8 @@ Drawer.propTypes = {
 
 function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
+    const { register, handleSubmit, formState } = useForm();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const drawerOpen = (drawer) => () => {
         if (currentOpenDrawer === drawer) {
@@ -142,6 +146,12 @@ function DefaultAppBar() {
         } else {
             setCurrentOpenDrawer(drawer);
         }
+    };
+
+    const handleSearchSubmit = (data) => {
+        console.log(formState.search);
+        console.log(data);
+        setSearchParams({ search: formState.search }, { replace: true });
     };
 
     return (
@@ -160,11 +170,20 @@ function DefaultAppBar() {
                     }}
                 >
                     <Stack direction="row" spacing={4}>
-                        <Search>
+                        <Search component={Form} onSubmit={handleSubmit(handleSearchSubmit)}>
                             <SearchIconWrapper>
                                 <SearchIcon sx={{ fontSize: 30, color: '#fff' }} />
                             </SearchIconWrapper>
-                            <StyledInputBase placeholder="Etsi tuotteita…" inputProps={{ 'aria-label': 'search' }} />
+                            <StyledInputBase
+                                type="search"
+                                // eslint-disable-next-line react/jsx-props-no-spreading
+                                {...register('search')}
+                                placeholder="Etsi tuotteita…"
+                                inputProps={{ 'aria-label': 'search' }}
+                            />{' '}
+                            <Button type="submit" variant="contained" color="primary">
+                                Hae
+                            </Button>
                         </Search>
                         <IconButton onClick={drawerOpen('shoppingCart')}>
                             <StyledBadge
