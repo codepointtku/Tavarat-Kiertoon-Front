@@ -1,10 +1,12 @@
 import { useRouteLoaderData } from 'react-router-dom';
 
+import arrayToTree from 'array-to-tree';
+
 import { TreeView, TreeItem } from '@mui/lab';
+import { Box } from '@mui/material';
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-
-import arrayToTree from 'array-to-tree';
 
 function CategoryTree() {
     const { categories } = useRouteLoaderData('root');
@@ -14,7 +16,7 @@ function CategoryTree() {
         customID: 'id',
     });
 
-    const data = {
+    const fullTree = {
         id: 'root',
         name: 'Tuotekategoriat',
         children: categoryTreeMain,
@@ -27,15 +29,18 @@ function CategoryTree() {
     );
 
     return (
-        <TreeView
-            aria-label="rich object"
-            defaultCollapseIcon={<ExpandMoreIcon />}
-            defaultExpanded={['root']}
-            defaultExpandIcon={<ChevronRightIcon />}
-            sx={{ flexGrow: 1, maxWidth: 320, overflowY: 'auto' }}
-        >
-            {renderTree(data)}
-        </TreeView>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <TreeView
+                aria-label="product category tree view"
+                defaultExpanded={['root']}
+                // expanded={}
+                defaultCollapseIcon={<ExpandMoreIcon />}
+                defaultExpandIcon={<ChevronRightIcon />}
+                sx={{ flexGrow: 1, maxWidth: 320, overflowY: 'auto' }}
+            >
+                {renderTree(fullTree)}
+            </TreeView>
+        </Box>
     );
 }
 

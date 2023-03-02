@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
-function ProductCard({ productName, id }) {
+function ProductCard({ productName, id, picture }) {
     const [addedToCart, setAddedToCart] = useState(false);
     const [addToCartButtonValue, setValue] = useState('Lisää koriin');
 
@@ -16,32 +16,47 @@ function ProductCard({ productName, id }) {
     };
 
     return (
-        <Box sx={{ minWidth: 240 }}>
-            <Card sx={{ maxWidth: 300 }}>
+        <Box sx={{ minWidth: 180, display: 'flex', justifyContent: 'center' }}>
+            <Card sx={{ maxWidth: 320 }}>
                 <CardActionArea component={Link} to={`/tuotteet/${id}`}>
-                    <CardMedia component="img" alt="kuva" height="200" image="tonipal_kahville.jpg" />
+                    <CardMedia
+                        component="img"
+                        alt="kuva"
+                        height="200"
+                        image={`http://localhost:8000/media/${picture}`}
+                    />
                     <CardContent>
                         <Typography variant="h6">{productName}</Typography>
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button
-                        variant="outlined"
-                        component={Link}
-                        to={`/tuotteet/${id}`}
-                        size="small"
-                        startIcon={<InfoOutlinedIcon />}
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '0.2rem',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
                     >
-                        Lisää tietoa
-                    </Button>
-                    <Button
-                        color={addedToCart ? 'success' : 'primary'}
-                        size="small"
-                        startIcon={<AddShoppingCartOutlinedIcon />}
-                        onClick={handleClickAddToCartBtn}
-                    >
-                        {addToCartButtonValue}
-                    </Button>
+                        <Button
+                            variant="outlined"
+                            component={Link}
+                            to={`/tuotteet/${id}`}
+                            size="small"
+                            // startIcon={<InfoOutlinedIcon />}
+                        >
+                            <InfoOutlinedIcon fontSize="small" />
+                        </Button>
+                        <Button
+                            color={addedToCart ? 'success' : 'primary'}
+                            size="small"
+                            startIcon={<AddShoppingCartOutlinedIcon />}
+                            onClick={handleClickAddToCartBtn}
+                        >
+                            {addToCartButtonValue}
+                        </Button>
+                    </Box>
                 </CardActions>
             </Card>
         </Box>
@@ -52,6 +67,7 @@ function ProductCard({ productName, id }) {
 ProductCard.propTypes = {
     productName: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
+    picture: PropTypes.string.isRequired,
 };
 
 export default ProductCard;
