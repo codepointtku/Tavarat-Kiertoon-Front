@@ -23,6 +23,7 @@ const rootLoader = async (auth, setAuth) => {
  */
 const productListLoader = async (auth, setAuth) => {
     const { data } = await apiCall(auth, setAuth, '/products/', 'get');
+    console.log(data.results);
     return data.results;
 };
 
