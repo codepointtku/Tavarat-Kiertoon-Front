@@ -26,7 +26,7 @@ import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
 import DeliveryView from '../Components/DeliveryView';
 import BackgroundInfo from '../Components/Backgroundinfo';
-import StatsPage from '../Components/Stats/StatsPage';
+import Stats from '../Components/Stats/Stats';
 import ErrorBoundary from '../Components/ErrorBoundary';
 import AddStorage from '../Components/AddStorage';
 
@@ -164,7 +164,7 @@ function Routes() {
                         },
                         {
                             path: 'stats',
-                            element: <StatsPage />,
+                            element: <Stats />,
                         },
                         {
                             path: 'tiedotteet',
