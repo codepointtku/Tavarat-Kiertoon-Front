@@ -41,7 +41,7 @@ function ProductDetails() {
                         <CardMedia
                             component="img"
                             alt="product image"
-                            height="300"
+                            height="460"
                             image={`http://localhost:8000/media/${image}`}
                         />
                         <CardContent>
@@ -69,7 +69,7 @@ function ProductDetails() {
                                 ) : null}
 
                                 <Typography variant="body1" color="text.secondary" gutterBottom>
-                                    Description: {description}
+                                    Tuotekuvaus: {description}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                     Added on: {new Date(date).toLocaleDateString('fi-FI')}
