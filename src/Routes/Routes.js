@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import axios from 'axios';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
@@ -99,9 +100,9 @@ function Routes() {
                                 const product = formData.get('name');
                                 console.log(product);
                                 if (request.method === 'POST') {
-                                    await axios.post('http://localhost:8000/shopping_carts/3', { id, product });
+                                    await axios.post('http://localhost:8000/shopping_cart', { product });
                                 } else if (request.method === 'DELETE') {
-                                    await axios.delete(`http://localhost:8000/shopping_carts/3/products/${id}`);
+                                    await axios.delete(`http://localhost:8000/shopping_cart/${id}`);
                                 }
                                 return null;
                             },

@@ -9,7 +9,7 @@ function AddToCartButton({ size, id, name }) {
 
     const handleClickAddToCartBtn = () => {
         submit(
-            { id, name },
+            { name },
             {
                 method: 'post',
                 action: '/',
