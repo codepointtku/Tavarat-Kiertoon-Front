@@ -3,7 +3,6 @@ import { useState, useMemo } from 'react';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import defaultTheme from './Themes/defaultTheme';
-// import './Themes/index.css';
 
 import Routes from './Routes/Routes';
 import AuthContext from './Context/AuthContext';
