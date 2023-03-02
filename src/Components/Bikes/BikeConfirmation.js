@@ -127,14 +127,36 @@ export default function BikeConfirmation({
                         />
                     </Stack>
                 </Stack>
-                <Controller
-                    name="deliveryAddress"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextField label="Toimitusosoite" onChange={onChange} value={value} onBlur={onBlur} required />
-                    )}
-                />
+                <Stack gap={1}>
+                    <Controller
+                        name="deliveryAddress"
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <TextField
+                                label="Toimitusosoite"
+                                onChange={onChange}
+                                value={value}
+                                onBlur={onBlur}
+                                required
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="pickup"
+                        control={control}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <FormGroup>
+                                <Box>
+                                    <FormControlLabel
+                                        control={<Checkbox checked={value} onChange={onChange} onBlur={onBlur} />}
+                                        label="Tulen noutamaan itse"
+                                    />
+                                </Box>
+                            </FormGroup>
+                        )}
+                    />
+                </Stack>
                 <Stack flexDirection="row" gap={2}>
                     <Controller
                         name="contactPersonName"
@@ -198,20 +220,6 @@ export default function BikeConfirmation({
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextField label="Lisätiedot" onChange={onChange} value={value} onBlur={onBlur} multiline />
-                    )}
-                />
-                <Controller
-                    name="pickup"
-                    control={control}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <FormGroup>
-                            <Box>
-                                <FormControlLabel
-                                    control={<Checkbox checked={value} onChange={onChange} onBlur={onBlur} />}
-                                    label="Tulen noutamaan itse"
-                                />
-                            </Box>
-                        </FormGroup>
                     )}
                 />
                 <Stack flexDirection="row" justifyContent="space-between" mt={2}>
