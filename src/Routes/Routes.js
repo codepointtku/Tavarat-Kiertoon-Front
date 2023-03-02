@@ -353,6 +353,7 @@ function Routes() {
                             path: '/bikes',
                             element: <BikesPage />,
                             loader: bikesListLoader,
+                            shouldRevalidate: () => false,
                         },
                     ],
                 },
