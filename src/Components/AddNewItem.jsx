@@ -9,7 +9,7 @@ import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Typog
 import imageCompression from 'browser-image-compression';
 
 import { useForm } from 'react-hook-form';
-// import axios from 'axios';
+import axios from 'axios';
 
 function AddNewItem() {
     const { categories } = useRouteLoaderData('root');
