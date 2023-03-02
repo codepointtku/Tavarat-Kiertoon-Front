@@ -59,10 +59,8 @@ const orderEditAction = async (auth, setAuth, request, params) => {
     if (request.method === 'POST') {
         if (formData.get('type') === 'delete') {
             const response = await apiCall(auth, setAuth, `/orders/${params.id}/`, 'delete', {
-                data: {
-                    product: Number(formData.get('product')),
-                    productId: Number(formData.get('productId')),
-                },
+                product: Number(formData.get('product')),
+                productId: Number(formData.get('productId')),
             });
             if (response.status === 202) {
                 return { type: 'delete', status: true };
