@@ -3,6 +3,7 @@ import { useRouteLoaderData } from 'react-router-dom';
 import arrayToTree from 'array-to-tree';
 
 import { TreeView, TreeItem } from '@mui/lab';
+import { Box } from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -28,16 +29,18 @@ function CategoryTree() {
     );
 
     return (
-        <TreeView
-            aria-label="product category tree view"
-            defaultExpanded={['root']}
-            // expanded={}
-            defaultCollapseIcon={<ExpandMoreIcon />}
-            defaultExpandIcon={<ChevronRightIcon />}
-            sx={{ flexGrow: 1, maxWidth: 320, overflowY: 'auto' }}
-        >
-            {renderTree(fullTree)}
-        </TreeView>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <TreeView
+                aria-label="product category tree view"
+                defaultExpanded={['root']}
+                // expanded={}
+                defaultCollapseIcon={<ExpandMoreIcon />}
+                defaultExpandIcon={<ChevronRightIcon />}
+                sx={{ flexGrow: 1, maxWidth: 320, overflowY: 'auto' }}
+            >
+                {renderTree(fullTree)}
+            </TreeView>
+        </Box>
     );
 }
 
