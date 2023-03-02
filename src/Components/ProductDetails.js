@@ -15,39 +15,6 @@ import { useContext, useState } from 'react';
 import AuthContext from '../Context/AuthContext';
 import AddToCartButton from './AddToCartButton';
 
-const itemData = [
-    {
-        img: '../br.jpg',
-        title: 'Kuvan1 otsikko',
-        id: '1',
-    },
-    {
-        img: '../br.jpg',
-        title: 'Kuvan2 otsikko',
-        id: '2',
-    },
-    {
-        img: '../br.jpg',
-        title: 'Kuvan3 otsikko',
-        id: '3',
-    },
-    {
-        img: '../br.jpg',
-        title: 'Kuvan4 otsikko',
-        id: '4',
-    },
-    {
-        img: '../br.jpg',
-        title: 'Kuvan5 otsikko',
-        id: '5',
-    },
-    {
-        img: '../br.jpg',
-        title: 'Kuvan6 otsikko',
-        id: '6',
-    },
-];
-
 function ProductDetails() {
     const { id: productId } = useParams();
 
@@ -56,23 +23,28 @@ function ProductDetails() {
         return <>ToniPal Kahville</>;
     }
     const { name: productName, free_description: description, date, category, barcode } = data;
-    const [image, setImage] = useState(itemData[0].img);
+    const [image, setImage] = useState(data.pictures[0]);
     const { auth } = useContext(AuthContext);
 
     return (
         <Box margin={2}>
             <Container maxWidth="md">
                 <Card>
-                    <CardMedia component="img" alt="product image" height="300" image={image} />
+                    <CardMedia
+                        component="img"
+                        alt="product image"
+                        height="300"
+                        image={`http://localhost:8000/media/${image}`}
+                    />
                     <CardContent>
                         <>
                             <ImageList cols={6} rowHeight={164}>
-                                {itemData.map((item) => (
-                                    <ImageListItem key={item.id} onClick={() => setImage(item.img)}>
+                                {data.pictures.map((pic) => (
+                                    <ImageListItem key={pic} onClick={() => setImage(pic)}>
                                         <img
-                                            src={`${item.img}`}
-                                            srcSet={`${item.img}`}
-                                            alt={item.title}
+                                            src={`http://localhost:8000/media/${pic}`}
+                                            srcSet={`http://localhost:8000/media/${pic}`}
+                                            alt="kuva"
                                             loading="lazy"
                                         />
                                     </ImageListItem>
