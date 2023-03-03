@@ -1,6 +1,8 @@
 import axios from 'axios';
 
 const apiCall = async (auth, setAuth, path, method, data, options) => {
+    axios.defaults.xsrfCookieName = 'csrftoken';
+    axios.defaults.xsrfHeaderName = 'X-CSRFToken';
     axios.defaults.withCredentials = true;
     const result = await axios({
         method,
