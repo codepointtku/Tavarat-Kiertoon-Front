@@ -136,7 +136,7 @@ const userEditLoader = async (auth, setAuth, params) => {
  * Get all bikes
  */
 const bikesListLoader = async () => {
-    const { data } = await axios.get('http://localhost:8000/bikes');
+    const { data } = await axios.get('http://localhost:8000/bikes/');
     return data;
 };
 

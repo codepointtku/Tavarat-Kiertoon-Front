@@ -342,7 +342,7 @@ function Routes() {
                     ],
                 },
                 {
-                    path: '/bikes',
+                    path: '/pyorat',
                     element: (
                         <BikesLayout>
                             <BikesView />
@@ -350,7 +350,7 @@ function Routes() {
                     ),
                     children: [
                         {
-                            path: '/bikes',
+                            path: '/pyorat',
                             element: <BikesPage />,
                             loader: bikesListLoader,
                             shouldRevalidate: () => false,
