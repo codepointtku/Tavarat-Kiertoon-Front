@@ -311,6 +311,11 @@ function Routes() {
                                     action: async ({ request, params }) =>
                                         storageEditAction(auth, setAuth, request, params),
                                 },
+                                {
+                                    path: 'luo',
+                                    element: <AddStorage />,
+                                    action: async ({ request }) => storageCreateAction(auth, setAuth, request),
+                                },
                             ],
                         },
                         // NOTE : JTo : 'users' paths need to be checked once users are enabled in back-end
@@ -330,11 +335,7 @@ function Routes() {
                                 },
                             ],
                         },
-                        {
-                            path: 'varastot/luo',
-                            element: <AddStorage />,
-                            action: async ({ request }) => storageCreateAction(auth, setAuth, request),
-                        },
+
                         {
                             path: 'hakemukset',
                             element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
