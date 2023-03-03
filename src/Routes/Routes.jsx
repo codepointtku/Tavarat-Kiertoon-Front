@@ -20,7 +20,6 @@ import QrScanner from '../Components/QrScanner';
 import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
 
-import BikesView from './BikesView';
 import BikesPage from '../Components/Bikes/BikesPage';
 
 import ProductDetails from '../Components/ProductDetails';
@@ -343,11 +342,7 @@ function Routes() {
                 },
                 {
                     path: '/pyorat',
-                    element: (
-                        <BikesLayout>
-                            <BikesView />
-                        </BikesLayout>
-                    ),
+                    element: <BikesLayout />,
                     children: [
                         {
                             path: '/pyorat',
