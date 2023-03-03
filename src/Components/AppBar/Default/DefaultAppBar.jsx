@@ -147,9 +147,10 @@ function DefaultAppBar() {
     return (
         <Box>
             <AppBar
+                color="transparent"
                 sx={{
                     zIndex: 1250,
-                    backgroundColor: 'primary.main',
+                    // backgroundColor: 'primary.main',
                     width: 'min-content',
                     boxShadow: 0,
                 }}
