@@ -17,7 +17,7 @@ function Header() {
                             <img
                                 src={logo}
                                 alt="Turku logo ja teksti valkoinen"
-                                style={{ width: 'auto', maxWidth: '100%', height: 'auto' }}
+                                style={{ width: 'auto', maxWidth: '200px', height: 'auto' }}
                             />
                         </Link>
                     </Grid>
