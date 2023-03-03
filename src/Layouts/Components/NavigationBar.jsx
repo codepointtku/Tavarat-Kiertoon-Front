@@ -24,19 +24,19 @@ function NavigationBar() {
                     <Button component={Link} to="/">
                         Tuotteet
                     </Button>
-                    <Button component={Link} to="/">
+                    <Button component={Link} to="/kategoriat">
                         Kategoriat
                     </Button>
-                    <Button component={Link} to="/">
+                    <Button component={Link} to="/tiedotteet">
                         Tiedotteet
                     </Button>
-                    <Button component={Link} to="/">
+                    <Button component={Link} to="/ohjeet">
                         Ohjeet
                     </Button>
-                    <Button component={Link} to="/">
+                    <Button component={Link} to="/stats">
                         Tilastot
                     </Button>
-                    <Button component={Link} to="/">
+                    <Button component={Link} to="/lihapullat">
                         Lihapullat
                     </Button>
                 </ButtonGroup>
