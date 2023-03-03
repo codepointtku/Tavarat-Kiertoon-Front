@@ -31,7 +31,7 @@ export default function BikesPage() {
     const loaderData = useLoaderData();
     const bikes = [
         ...loaderData.bikes,
-        // The bike package id and bike id would have possibility for overlap since they're both just incrementing
+        // The bike package id and bike id would have possibility for overlap since they're both just incrementing fr
         ...loaderData.packages.map((bikePackage) => ({ ...bikePackage, id: `package-${bikePackage.id}` })),
     ];
     const [searchParams, setSearchParams] = useSearchParams();
