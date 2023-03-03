@@ -10,8 +10,6 @@ const userLoginAction = async (auth, setAuth, request) => {
         password: formData.get('password'),
     });
     if (response.status === 200) {
-        localStorage.setItem('access_token', response.data.access);
-        localStorage.setItem('refresh_token', response.data.refresh);
         return { type: 'login', status: true };
     }
     return { type: 'login', status: false };
