@@ -28,7 +28,7 @@ const firstMondayOfValidWeek = (startDateObject) => {
     return previousMonday(startDateObject);
 };
 
-function createDates(startDate, rows, taken, maxAvailable) {
+function createDates(startDate, rows, unavailable, maxAvailable) {
     const startDateObject = new Date(startDate);
     const monday = firstMondayOfValidWeek(startDateObject);
     const weeks = [];
@@ -37,7 +37,7 @@ function createDates(startDate, rows, taken, maxAvailable) {
         for (let day = 0; day < 5; day += 1) {
             const date = addDays(monday, day + row * 7);
             const dateString = `${date.getDate()}.${date.getMonth() + 1}`;
-            const unitsInUse = taken[format(date, 'dd.MM.yyyy')] ?? 0;
+            const unitsInUse = unavailable[format(date, 'dd.MM.yyyy')] ?? 0;
             week.push({ date, dateString, available: maxAvailable - unitsInUse });
         }
         weeks.push(week);
@@ -45,14 +45,14 @@ function createDates(startDate, rows, taken, maxAvailable) {
     return weeks;
 }
 
-function createInitialState({ dateInfo, rows, taken, maxAvailable }) {
+function createInitialState({ dateInfo, rows, unavailable, maxAvailable }) {
     return {
         rows,
-        taken,
+        unavailable,
         maxAvailable,
         availableFrom: dateInfo.available_from,
         availableTo: dateInfo.available_to,
-        dates: createDates(dateInfo.available_from, rows, taken, maxAvailable),
+        dates: createDates(dateInfo.available_from, rows, unavailable, maxAvailable),
         isForwardDisabled: false,
         isBackwardDisabled: isBefore(
             firstMondayOfValidWeek(parseISO(dateInfo.available_from)),
@@ -69,7 +69,7 @@ function reducer(state, action) {
                 dates: createDates(
                     addWeeks(state.dates[0][0].date, state.rows),
                     state.rows,
-                    state.taken,
+                    state.unavailable,
                     state.maxAvailable
                 ),
                 isForwardDisabled: !isBefore(
@@ -85,7 +85,7 @@ function reducer(state, action) {
                 dates: createDates(
                     subWeeks(state.dates[0][0].date, state.rows),
                     state.rows,
-                    state.taken,
+                    state.unavailable,
                     state.maxAvailable
                 ),
                 isForwardDisabled: false,
@@ -98,7 +98,7 @@ function reducer(state, action) {
         case 'jump_to_date': {
             return {
                 ...state,
-                dates: createDates(action.date, state.rows, state.taken, state.maxAvailable),
+                dates: createDates(action.date, state.rows, state.unavailable, state.maxAvailable),
                 isForwardDisabled: !isBefore(
                     addWeeks(firstMondayOfValidWeek(action.date), state.rows),
                     parseISO(state.availableTo)
@@ -112,8 +112,15 @@ function reducer(state, action) {
     }
 }
 
-export default function BikeAvailability({ dateInfo, rows, taken, maxAvailable, selectedStartDate, selectedEndDate }) {
-    const [state, dispatch] = useReducer(reducer, { dateInfo, rows, taken, maxAvailable }, createInitialState);
+export default function BikeAvailability({
+    dateInfo,
+    rows,
+    unavailable,
+    maxAvailable,
+    selectedStartDate,
+    selectedEndDate,
+}) {
+    const [state, dispatch] = useReducer(reducer, { dateInfo, rows, unavailable, maxAvailable }, createInitialState);
 
     useEffect(() => {
         if (selectedStartDate) dispatch({ type: 'jump_to_date', date: selectedStartDate });
@@ -206,7 +213,7 @@ BikeAvailability.propTypes = {
         monday: PropTypes.string,
     }).isRequired,
     maxAvailable: PropTypes.number.isRequired,
-    taken: PropTypes.objectOf(PropTypes.number).isRequired,
+    unavailable: PropTypes.objectOf(PropTypes.number).isRequired,
     rows: PropTypes.number,
     selectedStartDate: PropTypes.instanceOf(Date),
     selectedEndDate: PropTypes.instanceOf(Date),

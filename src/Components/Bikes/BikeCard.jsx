@@ -82,7 +82,7 @@ export default function BikeCard({
                     <BikeAvailability
                         dateInfo={dateInfo}
                         maxAvailable={bike.max_available}
-                        taken={bike.taken}
+                        unavailable={bike.unavailable}
                         selectedStartDate={selectedStartDate}
                         selectedEndDate={selectedEndDate}
                     />
@@ -135,7 +135,7 @@ BikeCard.propTypes = {
         name: PropTypes.string,
         description: PropTypes.string,
         max_available: PropTypes.number,
-        taken: PropTypes.objectOf(PropTypes.number),
+        unavailable: PropTypes.objectOf(PropTypes.number),
         size: PropTypes.string,
         dateAdded: PropTypes.string,
         barcode: PropTypes.string,
