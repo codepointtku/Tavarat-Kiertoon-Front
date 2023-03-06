@@ -34,12 +34,8 @@ export default function BikeCard({
             <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Typography variant="h6">{bike.name}</Typography>
                 <Box sx={{ mb: 1 }}>
-                    <Typography variant="body2" color="text.secondary">
-                        Tyyppi: {bike.type}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        Koko: {bike.size}
-                    </Typography>
+                    <Typography variant="body2">Tyyppi: {bike.type}</Typography>
+                    <Typography variant="body2">Koko: {bike.size}</Typography>
                 </Box>
                 <Box>
                     <Button
@@ -111,18 +107,12 @@ export default function BikeCard({
                         <Typography variant="h6" component="h2">
                             {bike.name}
                         </Typography>
-                        <Typography sx={{ mt: 1 }} variant="body2" color="text.secondary">
+                        <Typography sx={{ mt: 1 }} variant="body2">
                             Kuvaus: {bike.description}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Tyyppi: {bike.type}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Koko: {bike.size}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Yhteensä palvelussa: {bike.max_available}
-                        </Typography>
+                        <Typography variant="body2">Tyyppi: {bike.type}</Typography>
+                        <Typography variant="body2">Koko: {bike.size}</Typography>
+                        <Typography variant="body2">Yhteensä palvelussa: {bike.max_available}</Typography>
                     </Stack>
                 </Box>
             </Modal>
