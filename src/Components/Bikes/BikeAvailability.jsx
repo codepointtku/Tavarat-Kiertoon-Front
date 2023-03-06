@@ -151,7 +151,9 @@ export default function BikeAvailability({
                                     <Grid item key={day.dateString} width="50px" mt={1}>
                                         <Box
                                             borderRadius={1}
-                                            sx={isSelectedDate ? { backgroundColor: '#ffff8d', boxShadow: 1 } : {}}
+                                            sx={
+                                                isSelectedDate ? { backgroundColor: 'primary.light', boxShadow: 1 } : {}
+                                            }
                                         >
                                             <Typography variant="body2" align="center">
                                                 {day.dateString}
@@ -159,7 +161,7 @@ export default function BikeAvailability({
 
                                             {isBefore(day.date, parseISO(dateInfo.available_from)) ||
                                             isAfter(day.date, parseISO(dateInfo.available_to)) ? (
-                                                <Box borderRadius={1} boxShadow={1} backgroundColor="grey">
+                                                <Box borderRadius={1} boxShadow={1} backgroundColor="text.secondary">
                                                     <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
                                                         X
                                                     </Typography>
