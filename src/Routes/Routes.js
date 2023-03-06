@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import axios from 'axios';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
@@ -65,6 +64,7 @@ import {
     storageEditAction,
     userLoginAction,
     storageCreateAction,
+    productListAction,
 } from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
@@ -91,21 +91,11 @@ function Routes() {
                     action: async ({ request }) => userLoginAction(auth, setAuth, request),
                     children: [
                         {
-                            index: true,
+                            // index: true,
+                            path: '/',
                             element: <ProductList />,
                             loader: async () => productListLoader(auth, setAuth),
-                            action: async ({ request }) => {
-                                const formData = await request.formData();
-                                const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
-                                const product = formData.get('name');
-                                console.log(product);
-                                if (request.method === 'POST') {
-                                    await axios.post('http://localhost:8000/shopping_cart', { product });
-                                } else if (request.method === 'DELETE') {
-                                    await axios.delete(`http://localhost:8000/shopping_cart/${id}`);
-                                }
-                                return null;
-                            },
+                            action: async ({ request }) => productListAction(auth, setAuth, request),
                         },
                         {
                             path: 'tuotteet',

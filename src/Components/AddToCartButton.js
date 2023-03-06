@@ -7,18 +7,18 @@ function AddToCartButton({ size, id, name }) {
     const { cartItems } = useRouteLoaderData('root');
     const submit = useSubmit();
 
-    const handleClickAddToCartBtn = () => {
-        submit(
-            { name },
+    const handleClickAddToCartBtn = async () => {
+        await submit(
+            { name, id },
             {
                 method: 'post',
                 action: '/',
             }
         );
+        window.location.reload(true);
     };
 
     const itemsInCart = cartItems.filter((item) => item.id === id);
-    console.log(itemsInCart);
 
     // cartItems.map((item) => console.log(Object.values(item).includes()));
     // console.log(cartItems);

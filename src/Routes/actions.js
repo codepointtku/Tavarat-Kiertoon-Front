@@ -151,6 +151,39 @@ const itemUpdateAction = async (auth, setAuth, request) => {
     return { type: 'updateitem', status: false };
 };
 
+// adds product to shopping cart
+
+const productListAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    // const product = formData.get('name');
+    const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+    if (request.method === 'POST') {
+        const response = await apiCall(auth, setAuth, '/shopping_carts/', 'post', {
+            user: 4,
+            products: [id],
+        });
+        console.log(id, 'post method test', response.status);
+        if (response.status === 201) {
+            alert('Item added successfully');
+            return { type: 'post', status: true };
+        }
+        return { type: 'post', status: false };
+        // await axios.post('http://localhost:8000/shopping_cart', { product });
+    }
+    if (request.method === 'DELETE') {
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'delete', {
+            user: 4,
+            products: [id],
+        });
+        if (response.status === 200) {
+            return { type: 'delete', status: true };
+        }
+        return { type: 'delete', status: false };
+        // await axios.delete(`http://localhost:8000/shopping_cart/${id}`);
+    }
+    return null;
+};
+
 export {
     userSignupAction,
     contactAction,
@@ -160,4 +193,5 @@ export {
     userLoginAction,
     itemCreateAction,
     itemUpdateAction,
+    productListAction,
 };

@@ -1,14 +1,20 @@
 import axios from 'axios';
+import apiCall from '../Utils/apiCall';
 
 /**
  * Get different defaults for the site
  */
-export const rootLoader = async () => {
-    const { data: contacts } = await axios.get('http://localhost:8000/contacts/');
-    const { data: colors } = await axios.get('http://localhost:8000/colors/');
-    const { data: categories } = await axios.get('http://localhost:8000/categories/');
-    const { data: bulletins } = await axios.get('http://localhost:8000/bulletins/');
-    const { data: cart } = await axios.get('http://localhost:8000/shopping_cart');
+export const rootLoader = async (auth, setAuth) => {
+    const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: cart }] =
+        await Promise.all([
+            apiCall(auth, setAuth, '/contacts/', 'get'),
+            apiCall(auth, setAuth, '/colors/', 'get'),
+            apiCall(auth, setAuth, '/categories/', 'get'),
+            apiCall(auth, setAuth, '/bulletins/', 'get'),
+            apiCall(auth, setAuth, '/shopping_cart/', 'get'),
+        ]);
+
+    console.log(cart.products);
 
     /* eslint-disable no-shadow */
 
@@ -24,7 +30,7 @@ export const rootLoader = async () => {
         }
 
         cartItem.count += 1;
-
+        console.log(cartItems);
         return cartItems;
     }, []);
 
