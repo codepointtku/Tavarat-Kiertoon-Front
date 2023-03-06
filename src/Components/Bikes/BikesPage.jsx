@@ -355,22 +355,40 @@ export default function BikesPage() {
                                                                 <TransitionGroup>
                                                                     {Object.keys(watch('selectedBikes')).length ? (
                                                                         Object.entries(watch('selectedBikes')).map(
-                                                                            ([key, value]) =>
-                                                                                !!value && (
-                                                                                    <Collapse key={key}>
-                                                                                        <Typography>
-                                                                                            {`${value}x ${
-                                                                                                bikes.find(
-                                                                                                    (bike) =>
-                                                                                                        String(
-                                                                                                            bike.id
-                                                                                                        ) ===
-                                                                                                        String(key)
-                                                                                                ).name
-                                                                                            }`}
-                                                                                        </Typography>
-                                                                                    </Collapse>
-                                                                                )
+                                                                            ([key, value]) => {
+                                                                                const bike = bikes.find(
+                                                                                    (_bike) =>
+                                                                                        String(_bike.id) === String(key)
+                                                                                );
+                                                                                return (
+                                                                                    !!value && (
+                                                                                        <Collapse key={key}>
+                                                                                            <Typography
+                                                                                                sx={
+                                                                                                    isValidBikeAmount(
+                                                                                                        watch(
+                                                                                                            'startDate'
+                                                                                                        ),
+                                                                                                        watch(
+                                                                                                            'endDate'
+                                                                                                        ),
+                                                                                                        watch(
+                                                                                                            'selectedBikes'
+                                                                                                        ),
+                                                                                                        [bike]
+                                                                                                    )
+                                                                                                        ? {}
+                                                                                                        : {
+                                                                                                              color: 'red',
+                                                                                                          }
+                                                                                                }
+                                                                                            >
+                                                                                                {`${value}x ${bike.name}`}
+                                                                                            </Typography>
+                                                                                        </Collapse>
+                                                                                    )
+                                                                                );
+                                                                            }
                                                                         )
                                                                     ) : (
                                                                         <Collapse>
