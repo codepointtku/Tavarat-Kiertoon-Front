@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
+import DefaultView from './DefaultView';
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
 import BaseLayout from '../Layouts/BaseLayout';
@@ -17,7 +18,6 @@ import QrScanner from '../Components/QrScanner';
 import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
 
-import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
 import Announcements from '../Components/Announcements';
 
@@ -30,7 +30,7 @@ import ContactsAndDelivery from '../Components/ShoppingCart/ContactsAndDelivery'
 import Confirmation from '../Components/ShoppingCart/Confirmation';
 import DeliveryView from '../Components/DeliveryView';
 import BackgroundInfo from '../Components/Backgroundinfo';
-import StatsPage from '../Components/Stats/StatsPage';
+import Stats from '../Components/Stats/Stats';
 import ErrorBoundary from '../Components/ErrorBoundary';
 import AddStorage from '../Components/AddStorage';
 
@@ -171,7 +171,7 @@ function Routes() {
                         },
                         {
                             path: 'stats',
-                            element: <StatsPage />,
+                            element: <Stats />,
                         },
                         {
                             path: '/ostoskori',

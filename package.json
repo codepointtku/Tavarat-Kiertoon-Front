@@ -38,11 +38,11 @@
         "web-vitals": "^2.1.4"
     },
     "scripts": {
-        "start": "npm ci && react-scripts start",
-        "dev": "npm install && react-scripts start",
-        "build": "react-scripts build",
+        "start": "npm ci && vite",
+        "dev": "npm install && vite",
+        "build": "vite build",
         "test": "playwright test",
-        "eject": "react-scripts eject",
+        "serve": "vite preview",
         "pretty": "prettier --write ."
     },
     "eslintConfig": {
@@ -69,6 +69,7 @@
     "devDependencies": {
         "@faker-js/faker": "^7.6.0",
         "@playwright/test": "^1.29.2",
+        "@vitejs/plugin-react": "^3.1.0",
         "babel-eslint": "^10.1.0",
         "concurrently": "^7.6.0",
         "eslint": "^8.2.0",
@@ -78,6 +79,7 @@
         "eslint-plugin-jsx-a11y": "^6.5.1",
         "eslint-plugin-react": "^7.28.0",
         "eslint-plugin-react-hooks": "^4.3.0",
-        "prettier": "^2.7.1"
+        "prettier": "^2.7.1",
+        "vite": "^4.1.4"
     }
 }

@@ -1,9 +1,10 @@
+/* eslint-disable */
 import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
 import logo from '../Assets/turku_pysty_300ppi_viiva_black.png';
 // import PropTypes from 'prop-types';
 
-// JTo: Disable ESLint proptypes for this file untill we have proper structure
-/* eslint react/prop-types: 0 */
+// NOTE: JTo: Temporary baseUrl. Move this to env variable.
+const baseUrl = 'http://localhost:8000';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -47,8 +48,9 @@ const styles = StyleSheet.create({
         lineHeight: '1.5',
     },
     list: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'flex-start',
+        fontSize: 10,
     },
     productPage: {
         flexDirection: 'row',
@@ -69,7 +71,9 @@ function PDFDocument({ order }) {
     const orderRecipient = order.contact;
     const orderAddress = order.delivery_address;
     const orderInfo = order.order_info;
-    const orderProducts = order.products.map((product) => ({ id: product, imageSrc: '../br.jpg' }));
+    const orderProducts = order.products;
+
+    // console.log('###', order);
 
     return (
         <Document language="fi">
@@ -95,14 +99,13 @@ function PDFDocument({ order }) {
                 </View>
                 <View style={styles.listSection}>
                     <Text style={{ marginBottom: 10 }}>Tuotteet</Text>
+
                     <View style={styles.list}>
-                        {orderProducts.map((product, index) =>
-                            index < orderProducts.length - 1 ? (
-                                <Text key={product.id}>{product.id}, </Text>
-                            ) : (
-                                <Text key={product.id}>{product.id}</Text>
-                            )
-                        )}
+                        {orderProducts.map((product, index) => (
+                            <Text key={product.id}>
+                                {product.id} - {product.name}
+                            </Text>
+                        ))}
                     </View>
                 </View>
             </Page>
@@ -110,9 +113,12 @@ function PDFDocument({ order }) {
             <Page style={styles.productPage}>
                 {orderProducts.map((product) => (
                     <View style={styles.product} key={product.id}>
-                        <Text>Product {product.id}</Text>
-                        <Image src="../br.jpg" style={{ width: '200px' }} />
-                        <Text>Just to fill a page untill we have something to show here</Text>
+                        <Text>
+                            Tuote {product.id}: {product.name}
+                        </Text>
+                        <Image src={`${baseUrl}/media/${product.pictures[0]}`} style={{ width: '200px' }} />
+
+                        <Text>Tähän voi kirjoittaa lisää tietoa tuotteesta</Text>
                     </View>
                 ))}
             </Page>
