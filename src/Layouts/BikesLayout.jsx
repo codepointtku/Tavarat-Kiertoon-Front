@@ -15,6 +15,7 @@ const bikeTheme = createTheme({
             ...defaultTheme.palette.primary,
             main: '#005b72',
             light: '#ffff8d', // Used as the highlight color
+            dark: '#8bc1d7',
         },
         text: {
             ...defaultTheme.palette.text,
