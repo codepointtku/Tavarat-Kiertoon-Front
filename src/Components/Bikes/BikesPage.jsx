@@ -22,6 +22,7 @@ import { TransitionGroup } from 'react-transition-group';
 import BikeCalendar from './BikeCalendar';
 import BikeCard from './BikeCard';
 import BikeConfirmation from './BikeConfirmation';
+import isValidBikeAmount from './isValidBikeAmount';
 
 export default function BikesPage() {
     const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
@@ -384,6 +385,12 @@ export default function BikesPage() {
                                                                 color="success"
                                                                 onClick={() => setIsConfirmationVisible(true)}
                                                                 disabled={
+                                                                    !isValidBikeAmount(
+                                                                        watch('startDate'),
+                                                                        watch('endDate'),
+                                                                        watch('selectedBikes'),
+                                                                        bikes
+                                                                    ) ||
                                                                     !Object.keys(watch('selectedBikes')).length ||
                                                                     !watch('startDate') ||
                                                                     !watch('endDate')
