@@ -85,6 +85,7 @@ export default function BikeCard({
                         unavailable={bike.unavailable}
                         selectedStartDate={selectedStartDate}
                         selectedEndDate={selectedEndDate}
+                        amountSelected={amountSelected}
                     />
                 </Stack>
             </CardActions>

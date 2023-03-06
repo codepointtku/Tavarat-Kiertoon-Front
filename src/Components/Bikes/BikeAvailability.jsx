@@ -119,6 +119,7 @@ export default function BikeAvailability({
     maxAvailable,
     selectedStartDate,
     selectedEndDate,
+    amountSelected,
 }) {
     const [state, dispatch] = useReducer(reducer, { dateInfo, rows, unavailable, maxAvailable }, createInitialState);
 
@@ -140,56 +141,52 @@ export default function BikeAvailability({
                 <Box mb={1}>
                     {state.dates.map((week) => (
                         <Grid container spacing={1} key={`week-${week[0].dateString}`}>
-                            {week.map((day) => (
-                                <Grid item key={day.dateString} width="50px" mt={1}>
-                                    <Box
-                                        borderRadius={1}
-                                        sx={
-                                            (isAfter(day.date, selectedStartDate) &&
-                                                isBefore(day.date, selectedEndDate)) ||
-                                            isSameDay(day.date, selectedStartDate) ||
-                                            isSameDay(day.date, selectedEndDate)
-                                                ? { backgroundColor: '#ffff8d', boxShadow: 1 }
-                                                : {}
-                                        }
-                                    >
-                                        <Typography variant="body2" align="center">
-                                            {day.dateString}
-                                        </Typography>
+                            {week.map((day) => {
+                                const isSelectedDate =
+                                    (isAfter(day.date, selectedStartDate) && isBefore(day.date, selectedEndDate)) ||
+                                    isSameDay(day.date, selectedStartDate) ||
+                                    isSameDay(day.date, selectedEndDate);
+                                const available = isSelectedDate ? day.available - amountSelected : day.available;
+                                return (
+                                    <Grid item key={day.dateString} width="50px" mt={1}>
+                                        <Box
+                                            borderRadius={1}
+                                            sx={isSelectedDate ? { backgroundColor: '#ffff8d', boxShadow: 1 } : {}}
+                                        >
+                                            <Typography variant="body2" align="center">
+                                                {day.dateString}
+                                            </Typography>
 
-                                        {isBefore(day.date, parseISO(dateInfo.available_from)) ||
-                                        isAfter(day.date, parseISO(dateInfo.available_to)) ? (
-                                            <Box borderRadius={1} boxShadow={1} backgroundColor="grey">
-                                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
-                                                    X
-                                                </Typography>
-                                            </Box>
-                                        ) : (
-                                            <Box
-                                                borderRadius={1}
-                                                boxShadow={1}
-                                                sx={
-                                                    day.available
-                                                        ? {
-                                                              //   width: '20px',
-                                                              //   height: '20px',
-                                                              backgroundColor: 'green',
-                                                          }
-                                                        : {
-                                                              //   width: '20px',
-                                                              //   height: '20px',
-                                                              backgroundColor: 'red',
-                                                          }
-                                                }
-                                            >
-                                                <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
-                                                    {day.available}
-                                                </Typography>
-                                            </Box>
-                                        )}
-                                    </Box>
-                                </Grid>
-                            ))}
+                                            {isBefore(day.date, parseISO(dateInfo.available_from)) ||
+                                            isAfter(day.date, parseISO(dateInfo.available_to)) ? (
+                                                <Box borderRadius={1} boxShadow={1} backgroundColor="grey">
+                                                    <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
+                                                        X
+                                                    </Typography>
+                                                </Box>
+                                            ) : (
+                                                <Box
+                                                    borderRadius={1}
+                                                    boxShadow={1}
+                                                    sx={
+                                                        available >= 1
+                                                            ? {
+                                                                  backgroundColor: 'green',
+                                                              }
+                                                            : {
+                                                                  backgroundColor: 'red',
+                                                              }
+                                                    }
+                                                >
+                                                    <Typography sx={{ color: 'white', fontSize: 14 }} align="center">
+                                                        {available}
+                                                    </Typography>
+                                                </Box>
+                                            )}
+                                        </Box>
+                                    </Grid>
+                                );
+                            })}
                         </Grid>
                     ))}
                 </Box>
@@ -217,6 +214,7 @@ BikeAvailability.propTypes = {
     rows: PropTypes.number,
     selectedStartDate: PropTypes.instanceOf(Date),
     selectedEndDate: PropTypes.instanceOf(Date),
+    amountSelected: PropTypes.number.isRequired,
 };
 
 BikeAvailability.defaultProps = {
