@@ -10,8 +10,6 @@ const userLoginAction = async (auth, setAuth, request) => {
         password: formData.get('password'),
     });
     if (response.status === 200) {
-        localStorage.setItem('access_token', response.data.access);
-        localStorage.setItem('refresh_token', response.data.refresh);
         return { type: 'login', status: true };
     }
     return { type: 'login', status: false };
@@ -58,11 +56,9 @@ const orderEditAction = async (auth, setAuth, request, params) => {
     // const productName = formData.get('productName');
     if (request.method === 'POST') {
         if (formData.get('type') === 'delete') {
-            const response = await apiCall(auth, setAuth, `/orders/${params.id}/`, 'delete', {
-                data: {
-                    product: Number(formData.get('product')),
-                    productId: Number(formData.get('productId')),
-                },
+            const response = await apiCall(auth, setAuth, `/orders/${params.id}`, 'delete', {
+                product: Number(formData.get('product')),
+                productId: Number(formData.get('productId')),
             });
             if (response.status === 202) {
                 return { type: 'delete', status: true };
