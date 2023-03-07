@@ -24,20 +24,20 @@ function StorageProductsTable() {
     const { categories } = useRouteLoaderData('root');
     const { storages, products } = useLoaderData();
     const { register, handleSubmit, watch } = useForm();
-    // const [searchParams, setSearchParams] = useSearchParams();
-    const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });
+    const [searchParams, setSearchParams] = useSearchParams();
+    // const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });
 
     console.log('categories:', categories);
     console.log('storages:', storages);
     console.log('products:', products);
     console.log('products.results:', products.results);
 
-    const search = watch('searchString');
+    // const search = watch('searchString');
 
     const handleBarcodeSearch = (formData) => {
         console.log('handleBarcodeSearch', formData);
-        setUsedParams(search);
-        // setSearchParams({ search: formData.searchString });
+        // setUsedParams(search);
+        setSearchParams({ search: formData.searchString });
     };
 
     return (
