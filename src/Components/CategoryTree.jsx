@@ -13,10 +13,12 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 function CategoryTree() {
     const { categories } = useRouteLoaderData('root');
 
-    let [searchParams, setSearchParams] = useSearchParams({});
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const handleClick = (nodesName) => {
-        setSearchParams({ filter: nodesName });
+    const category = searchParams.get('kategoria');
+
+    const handleClick = (kategoria) => {
+        setSearchParams({ kategoria });
     };
 
     const categoryTreeMain = arrayToTree(categories, {
@@ -32,22 +34,20 @@ function CategoryTree() {
 
     const renderTree = (nodes) => {
         return (
-            <TreeItem
-                key={nodes.id}
-                nodeId={String(nodes.id)}
-                label={nodes.name}
-                onClick={() => handleClick(nodes.name)}
-            >
+            <TreeItem key={nodes.id} nodeId={String(nodes.id)} label={nodes.name} onClick={() => handleClick(nodes.id)}>
                 {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
             </TreeItem>
         );
     };
 
+    console.log('categoryTreeMain:', categoryTreeMain);
+
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <TreeView
                 aria-label="product category tree view"
-                defaultExpanded={['root']}
+                defaultExpanded={['root', '6', '7', '8']}
+                selected={category}
                 defaultCollapseIcon={<ExpandMoreIcon />}
                 defaultExpandIcon={<ChevronRightIcon />}
                 sx={{ flexGrow: 1, maxWidth: 320, overflowY: 'auto' }}

@@ -88,7 +88,7 @@ function Routes() {
                         {
                             index: true,
                             element: <DefaultView />,
-                            loader: async () => productListLoader(auth, setAuth),
+                            loader: async ({ request }) => productListLoader(auth, setAuth, request),
                         },
                         {
                             path: 'tuotteet',

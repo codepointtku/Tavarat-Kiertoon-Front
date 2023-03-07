@@ -19,11 +19,18 @@ const rootLoader = async (auth, setAuth) => {
 };
 
 /**
- * Get all products
+ * Get all products / get products based on category id
  */
-const productListLoader = async (auth, setAuth) => {
-    const { data } = await apiCall(auth, setAuth, '/products/', 'get');
-    return data.results;
+const productListLoader = async (auth, setAuth, request) => {
+    const url = new URL(request.url);
+    const filter = url.searchParams.get('kategoria');
+    if (filter) {
+        const { data } = await apiCall(auth, setAuth, `/categories/${filter}/products`, 'get');
+        return data.results;
+    } else {
+        const { data } = await apiCall(auth, setAuth, '/products/', 'get');
+        return data.results;
+    }
 };
 
 /**
