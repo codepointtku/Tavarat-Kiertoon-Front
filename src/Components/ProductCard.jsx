@@ -5,12 +5,17 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import AddToCartButton from './AddToCartButton';
 
-function ProductCard({ productName, id }) {
+function ProductCard({ productName, id, picture }) {
     return (
-        <Box sx={{ minWidth: 240 }}>
-            <Card sx={{ maxWidth: 300 }}>
+        <Box sx={{ minWidth: 180, display: 'flex', justifyContent: 'center' }}>
+            <Card sx={{ maxWidth: 320 }}>
                 <CardActionArea component={Link} to={`/tuotteet/${id}`}>
-                    <CardMedia component="img" alt="kuva" height="200" image="tonipal_kahville.jpg" />
+                    <CardMedia
+                        component="img"
+                        alt="kuva"
+                        height="200"
+                        image={`http://localhost:8000/media/${picture}`}
+                    />
                     <CardContent>
                         <Typography variant="h6">{productName}</Typography>
                     </CardContent>
@@ -26,7 +31,7 @@ function ProductCard({ productName, id }) {
                     >
                         Lisää tietoa
                     </Button>
-                    <AddToCartButton size="small" id={id} name={productName} />
+                    <AddToCartButton size="small" id={id} />
                 </CardActions>
             </Card>
         </Box>
@@ -37,6 +42,7 @@ function ProductCard({ productName, id }) {
 ProductCard.propTypes = {
     productName: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
+    picture: PropTypes.string.isRequired,
 };
 
 export default ProductCard;

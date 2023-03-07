@@ -3,22 +3,27 @@ import PropTypes from 'prop-types';
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import { Button } from '@mui/material';
 
-function AddToCartButton({ size, id, name }) {
+function AddToCartButton({ size, id }) {
     const { cartItems } = useRouteLoaderData('root');
     const submit = useSubmit();
 
-    const handleClickAddToCartBtn = () => {
+    function handleSubmit() {
         submit(
-            { id, name },
+            { id },
             {
-                method: 'post',
+                method: 'put',
                 action: '/',
             }
         );
+    }
+
+    const handleClickAddToCartBtn = async () => {
+        const submitted = await handleSubmit();
+        console.log(submitted);
+        // window.location.reload(true);
     };
 
     const itemsInCart = cartItems.filter((item) => item.id === id);
-    console.log(itemsInCart);
 
     // cartItems.map((item) => console.log(Object.values(item).includes()));
     // console.log(cartItems);
@@ -45,7 +50,6 @@ function AddToCartButton({ size, id, name }) {
 AddToCartButton.propTypes = {
     size: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
 };
 
 export default AddToCartButton;

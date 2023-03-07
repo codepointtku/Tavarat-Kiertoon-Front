@@ -10,8 +10,6 @@ const userLoginAction = async (auth, setAuth, request) => {
         password: formData.get('password'),
     });
     if (response.status === 200) {
-        localStorage.setItem('access_token', response.data.access);
-        localStorage.setItem('refresh_token', response.data.refresh);
         return { type: 'login', status: true };
     }
     return { type: 'login', status: false };
@@ -58,11 +56,9 @@ const orderEditAction = async (auth, setAuth, request, params) => {
     // const productName = formData.get('productName');
     if (request.method === 'POST') {
         if (formData.get('type') === 'delete') {
-            const response = await apiCall(auth, setAuth, `/orders/${params.id}`, 'post', {
-                data: {
-                    product: Number(formData.get('product')),
-                    productId: Number(formData.get('productId')),
-                },
+            const response = await apiCall(auth, setAuth, `/orders/${params.id}`, 'delete', {
+                product: Number(formData.get('product')),
+                productId: Number(formData.get('productId')),
             });
             if (response.status === 202) {
                 return { type: 'delete', status: true };
@@ -70,7 +66,7 @@ const orderEditAction = async (auth, setAuth, request, params) => {
             return { type: 'delete', status: false };
         }
         if (formData.get('type') === 'put') {
-            const response = await apiCall(auth, setAuth, `/orders/${params.id}`, 'put', {
+            const response = await apiCall(auth, setAuth, `/orders/${params.id}/`, 'put', {
                 contact: formData.get('contact'),
                 delivery_address: formData.get('delivery_address'),
                 status: formData.get('status'),
@@ -151,6 +147,39 @@ const itemUpdateAction = async (auth, setAuth, request) => {
     return { type: 'updateitem', status: false };
 };
 
+// adds product to shopping cart
+
+const productListAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    // const product = formData.get('name');
+    const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+    if (request.method === 'PUT') {
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            user: 4,
+            products: [id],
+        });
+        console.log(id, 'put method test', response.status);
+        if (response.status === 201) {
+            alert('Item added successfully');
+            return { type: 'put', status: true };
+        }
+        return { type: 'put', status: false };
+        // await axios.post('http://localhost:8000/shopping_cart', { product });
+    }
+    if (request.method === 'DELETE') {
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'delete', {
+            user: 4,
+            products: [id],
+        });
+        if (response.status === 200) {
+            return { type: 'delete', status: true };
+        }
+        return { type: 'delete', status: false };
+        // await axios.delete(`http://localhost:8000/shopping_cart/${id}`);
+    }
+    return null;
+};
+
 export {
     userSignupAction,
     contactAction,
@@ -160,4 +189,5 @@ export {
     userLoginAction,
     itemCreateAction,
     itemUpdateAction,
+    productListAction,
 };

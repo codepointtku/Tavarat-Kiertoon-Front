@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
+import DefaultView from './DefaultView';
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
 import BaseLayout from '../Layouts/BaseLayout';
@@ -17,7 +18,6 @@ import QrScanner from '../Components/QrScanner';
 import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
 
-import ProductList from '../Components/ProductList';
 import ProductDetails from '../Components/ProductDetails';
 import Announcements from '../Components/Announcements';
 
@@ -30,7 +30,7 @@ import ContactsAndDelivery from '../Components/ShoppingCart/ContactsAndDelivery'
 import Confirmation from '../Components/ShoppingCart/Confirmation';
 import DeliveryView from '../Components/DeliveryView';
 import BackgroundInfo from '../Components/Backgroundinfo';
-import StatsPage from '../Components/Stats/StatsPage';
+import Stats from '../Components/Stats/Stats';
 import ErrorBoundary from '../Components/ErrorBoundary';
 import AddStorage from '../Components/AddStorage';
 
@@ -64,6 +64,7 @@ import {
     storageEditAction,
     userLoginAction,
     storageCreateAction,
+    productListAction,
 } from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
@@ -90,21 +91,11 @@ function Routes() {
                     action: async ({ request }) => userLoginAction(auth, setAuth, request),
                     children: [
                         {
-                            index: true,
+                            // index: true,
+                            path: '/',
                             element: <ProductList />,
                             loader: async () => productListLoader(auth, setAuth),
-                            action: async ({ request }) => {
-                                const formData = await request.formData();
-                                const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
-                                const product = formData.get('name');
-                                console.log(product);
-                                if (request.method === 'POST') {
-                                    await axios.post('http://localhost:8000/shopping_carts/4', { id, product });
-                                } else if (request.method === 'DELETE') {
-                                    await axios.delete(`http://localhost:8000/shopping_carts/4/products/${id}`);
-                                }
-                                return null;
-                            },
+                            action: async ({ request }) => productListAction(auth, setAuth, request),
                         },
                         {
                             path: 'tuotteet',
@@ -180,7 +171,7 @@ function Routes() {
                         },
                         {
                             path: 'stats',
-                            element: <StatsPage />,
+                            element: <Stats />,
                         },
                         {
                             path: '/ostoskori',
