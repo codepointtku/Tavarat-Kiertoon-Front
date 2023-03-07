@@ -96,6 +96,30 @@ export default function BikesPage() {
             };
         });
 
+    const bikePackageUnavailable = (bikePackage) => {
+        const bikePool = loaderData.bikes;
+        const unavailable = {};
+        bikePackage.bikes.forEach(([packageBikeId, packageBikeAmount]) => {
+            const bike = bikePool.find(({ id }) => id === Number(packageBikeId));
+            const selectedBikesKeys = Object.keys(watch('selectedBikes'));
+            if (startDate && endDate && selectedBikesKeys.length) {
+                const filteredBikes = bikes.filter((bike) => selectedBikesKeys.includes(String(bike.id)));
+                const dates = [];
+                const days = differenceInCalendarDays(endDate, startDate);
+                for (let i = 0; i <= days; i += 1) dates.push(format(addDays(startDate, i), 'dd.MM.yyyy'));
+                return filteredBikes.every((bike) =>
+                    dates.every((date) => {
+                        const unitsInUse = bike.unavailable[date] ?? 0;
+                        return (
+                            bikePackage.max_available - unitsInUse - watch('selectedBikes')[bike.id] - packageBikeAmount
+                        );
+                    })
+                );
+            }
+        });
+        return unavailable;
+    };
+
     const storageTypeForm = (
         <Controller
             name="storageType"
@@ -308,7 +332,17 @@ export default function BikesPage() {
                                                                         name="selectedBikes"
                                                                         render={({ field: { onChange, value } }) => (
                                                                             <BikeCard
-                                                                                bike={bike}
+                                                                                bike={
+                                                                                    bike.type !== 'package'
+                                                                                        ? bike
+                                                                                        : {
+                                                                                              ...bike,
+                                                                                              unavailable:
+                                                                                                  bikePackageUnavailable(
+                                                                                                      bike
+                                                                                                  ),
+                                                                                          }
+                                                                                }
                                                                                 dateInfo={loaderData.date_info}
                                                                                 amountSelected={value[bike.id] ?? 0}
                                                                                 onChange={(newValue) => {
