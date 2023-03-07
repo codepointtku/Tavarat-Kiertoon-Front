@@ -27,7 +27,7 @@ function TestButtons() {
                     <b>Links to pages: </b>
                     <Link to="/">Home --- </Link>
                     <Link to="/varasto/0/delivery?page=0&rows=5">Varastot --- </Link>
-                    <Link to="/bikes">Bikes --- </Link>
+                    <Link to="/pyorat">Bikes --- </Link>
                     <Link to="/admin">Admin --- </Link>
                     <Link to="/stats">Stats --- </Link>
                     <Link to="/tiedotteet">Tiedotteet</Link>

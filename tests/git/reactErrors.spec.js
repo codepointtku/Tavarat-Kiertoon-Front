@@ -185,7 +185,7 @@ test.describe('fail-test', () => {
 
 test.describe('bikes', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/bikes');
-        await expect(page.getByText('Virhe sijainnissa /bikes')).not.toBeVisible();
+        await page.goto('/pyorat');
+        await expect(page.getByText('Virhe sijainnissa /pyorat')).not.toBeVisible();
     });
 });
