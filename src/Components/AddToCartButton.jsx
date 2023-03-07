@@ -7,7 +7,9 @@ function AddToCartButton({ size, id }) {
     const { cartItems } = useRouteLoaderData('root');
     const submit = useSubmit();
 
-    function handleSubmit() {
+    // submit menee väärään actioniin tällä hetkellä
+
+    const handleClickAddToCartBtn = async () => {
         submit(
             { id },
             {
@@ -15,11 +17,6 @@ function AddToCartButton({ size, id }) {
                 action: '/',
             }
         );
-    }
-
-    const handleClickAddToCartBtn = async () => {
-        const submitted = await handleSubmit();
-        console.log(submitted);
         // window.location.reload(true);
     };
 

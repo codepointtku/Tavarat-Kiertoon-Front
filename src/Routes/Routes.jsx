@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
-import ProductList from '../Components/ProductList';
+import DefaultView from './DefaultView';
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
 import BaseLayout from '../Layouts/BaseLayout';
@@ -62,9 +62,8 @@ import {
     contactAction,
     orderEditAction,
     storageEditAction,
-    userLoginAction,
     storageCreateAction,
-    productListAction,
+    frontPageActions,
 } from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
@@ -88,14 +87,12 @@ function Routes() {
                 {
                     path: '/',
                     element: <BaseLayout />,
-                    action: async ({ request }) => userLoginAction(auth, setAuth, request),
+                    action: async ({ request }) => frontPageActions(auth, setAuth, request),
                     children: [
                         {
-                            // index: true,
-                            path: '/',
-                            element: <ProductList />,
+                            index: true,
+                            element: <DefaultView />,
                             loader: async () => productListLoader(auth, setAuth),
-                            action: async ({ request }) => productListAction(auth, setAuth, request),
                         },
                         {
                             path: 'tuotteet',

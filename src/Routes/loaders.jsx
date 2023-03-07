@@ -155,16 +155,16 @@ export const storageEditLoader = async ({ params }) => {
 /**
  * Get one user
  */
-export const userEditLoader = async ({ params }) => {
-    const { data } = await axios.get(`http://localhost:8000/users/${params.id}`);
+export const userEditLoader = async (auth, setAuth, params) => {
+    const { data } = await apiCall(auth, setAuth, `/users/${params.id}`, 'get');
     return data;
 };
 
 /**
  * Get all users
  */
-export const usersListLoader = async () => {
-    const { data } = await axios.get('http://localhost:8000/users');
+export const usersListLoader = async (auth, setAuth) => {
+    const { data } = await apiCall(auth, setAuth, '/users', 'get');
     return data;
 };
 
