@@ -83,7 +83,19 @@ const orderEditLoader = async (auth, setAuth, params) => {
 /**
  * Get all categories and storages
  */
-const storageProductsLoader = async () => {
+const storageProductsLoader = async (auth, setAuth, request) => {
+    // const url new URLSearchParams(request).get('search');
+    const url = new URL(request.url);
+    const search = url.searchParams.get('search');
+    console.log('search @ storageProductsLoaders:', search);
+
+    if (search) {
+        const [{ data: storages }, { data: products }] = await Promise.all([
+            axios.get('http://localhost:8000/storages/'),
+            axios.get(`http://localhost:8000/products/?search=${search}`),
+        ]);
+        return { storages, products };
+    }
     const [{ data: storages }, { data: products }] = await Promise.all([
         axios.get('http://localhost:8000/storages/'),
         axios.get('http://localhost:8000/products/'),

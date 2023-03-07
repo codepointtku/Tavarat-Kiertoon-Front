@@ -252,7 +252,7 @@ function Routes() {
                             path: 'tuotteet',
                             id: 'storageProducts',
                             element: <StorageProducts />,
-                            loader: storageProductsLoader,
+                            loader: async ({ request }) => storageProductsLoader(auth, setAuth, request),
                         },
                         {
                             path: 'tuotteet/luo',
