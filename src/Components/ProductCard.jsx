@@ -26,7 +26,9 @@ function ProductCard({ productName, id, picture }) {
                         image={`http://localhost:8000/media/${picture}`}
                     />
                     <CardContent>
-                        <Typography variant="h6">{productName}</Typography>
+                        <Typography variant="h6" fontWeight="fontWeightThin" lineHeight="1.2">
+                            {productName}
+                        </Typography>
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
