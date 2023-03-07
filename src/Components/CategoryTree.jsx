@@ -1,4 +1,5 @@
 import { useRouteLoaderData, useSearchParams } from 'react-router-dom';
+import { useMemo } from 'react';
 
 import arrayToTree from 'array-to-tree';
 
@@ -8,23 +9,44 @@ import { Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
-// caturl={`localhost:8000/categories/${nodes.id}/products`}
+function useExpandedCategories(categoryParam, categories) {
+    return useMemo(() => {
+        const expandedCategories = [];
+        const categoryId = Number(categoryParam);
+
+        if (categoryParam) {
+            let parent = categoryId;
+            while (parent) {
+                const category = categories.find(({ id }) => id === parent);
+                expandedCategories.push(String(category.id));
+                parent = category.parent;
+            }
+            expandedCategories.reverse();
+        }
+
+        return expandedCategories;
+    }, []);
+}
 
 function CategoryTree() {
     const { categories } = useRouteLoaderData('root');
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const category = searchParams.get('kategoria');
+    const categoryParam = searchParams.get('kategoria');
 
     const handleClick = (kategoria) => {
-        setSearchParams({ kategoria });
+        if (kategoria !== 'root') {
+            setSearchParams({ kategoria });
+        }
     };
 
     const categoryTreeMain = arrayToTree(categories, {
         parentProperty: 'parent',
         customID: 'id',
     });
+
+    const expandedCategories = useExpandedCategories(categoryParam, categories);
 
     const fullTree = {
         id: 'root',
@@ -40,14 +62,12 @@ function CategoryTree() {
         );
     };
 
-    console.log('categoryTreeMain:', categoryTreeMain);
-
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <TreeView
                 aria-label="product category tree view"
-                defaultExpanded={['root', '6', '7', '8']}
-                selected={category}
+                defaultExpanded={['root', ...expandedCategories]}
+                selected={categoryParam}
                 defaultCollapseIcon={<ExpandMoreIcon />}
                 defaultExpandIcon={<ChevronRightIcon />}
                 sx={{ flexGrow: 1, maxWidth: 320, overflowY: 'auto' }}
