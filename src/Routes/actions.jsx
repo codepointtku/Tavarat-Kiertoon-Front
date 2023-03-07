@@ -88,7 +88,6 @@ creates new product
 const addProductAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
-    // const productName = formData.get('productName');
     console.log('formData actionissa :', formData);
     console.log('formData.get name actionissa :', formData.get('name'));
     console.log('formData.get pictures actionissa :', formData.get('pictures'));

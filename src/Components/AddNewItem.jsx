@@ -77,7 +77,7 @@ function AddNewItem() {
         };
 
         const uploads = await Promise.all(Object.values(files).map(async (file) => imageCompression(file, options)));
-        // // some code from kuvatestit:
+        // // some code from kuvatestit branch, could be reused if pictures need to be sent before sending whole form:
         // // bring images to back-end with a call, then setItems into images brought back.
         // console.log(uploads);
         // const response = await axios.post('http://localhost:8000/pictures/', uploads, {
@@ -182,11 +182,11 @@ function AddNewItem() {
                         <Button variant="contained" component="label" size="large">
                             Lisää kuvat
                             <input
-                                // {...register('pictures')}
+                                {...register('pictures')}
                                 // setValue in uploadFile
-                                onChange={(event) => {
-                                    uploadFile(event.target.files);
-                                }}
+                                // onChange={(event) => {
+                                //     uploadFile(event.target.files);
+                                // }}
                                 hidden
                                 accept="image/*"
                                 multiple
