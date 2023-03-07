@@ -6,12 +6,9 @@ import {
     FormControlLabel,
     FormGroup,
     FormHelperText,
-    FormLabel,
     InputLabel,
     MenuItem,
     Paper,
-    Radio,
-    RadioGroup,
     Select,
     Stack,
     TextField,
@@ -190,31 +187,6 @@ export default function BikeConfirmation({
                         )}
                     />
                 </Stack>
-                <Controller
-                    name="storageType"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <FormControl required>
-                            <FormLabel id="storage-label">Säilytystapa</FormLabel>
-                            <Typography variant="caption">
-                                Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä,
-                                tuomme ne lukittavassa kärryssä.
-                            </Typography>
-                            <RadioGroup
-                                row
-                                aria-labelledby="storage-label"
-                                name="storage"
-                                value={value}
-                                onChange={(_, option) => onChange(option)}
-                                onBlur={onBlur}
-                            >
-                                <FormControlLabel value="inside" control={<Radio />} label="Sisällä" />
-                                <FormControlLabel value="outside" control={<Radio />} label="Kärryssä" />
-                            </RadioGroup>
-                        </FormControl>
-                    )}
-                />
                 <Controller
                     name="extraInfo"
                     control={control}
