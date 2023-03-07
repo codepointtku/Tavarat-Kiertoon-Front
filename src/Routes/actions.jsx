@@ -19,8 +19,7 @@ const frontPageActions = async (auth, setAuth, request) => {
     }
     if (request.method === 'PUT') {
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
-            user: 1,
-            products: [id],
+            products: id,
         });
         console.log(id, 'put method test', response.status);
         if (response.status === 201) {
@@ -30,14 +29,13 @@ const frontPageActions = async (auth, setAuth, request) => {
         return { type: 'put', status: false };
     }
     if (request.method === 'DELETE') {
-        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'delete', {
-            user: 4,
-            products: [id],
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            products: id,
         });
         if (response.status === 200) {
-            return { type: 'delete', status: true };
+            return { type: 'put', status: true };
         }
-        return { type: 'delete', status: false };
+        return { type: 'put', status: false };
     }
     return null;
 };

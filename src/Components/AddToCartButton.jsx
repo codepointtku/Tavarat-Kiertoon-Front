@@ -7,7 +7,7 @@ function AddToCartButton({ size, id }) {
     const { cartItems } = useRouteLoaderData('root');
     const submit = useSubmit();
 
-    // submit menee väärään actioniin tällä hetkellä
+    // mitä tietoa back endiin menee kun lomake lähetetään
 
     const handleClickAddToCartBtn = async () => {
         submit(
@@ -17,7 +17,7 @@ function AddToCartButton({ size, id }) {
                 action: '/',
             }
         );
-        // window.location.reload(true);
+        window.location.reload(true);
     };
 
     const itemsInCart = cartItems.filter((item) => item.id === id);

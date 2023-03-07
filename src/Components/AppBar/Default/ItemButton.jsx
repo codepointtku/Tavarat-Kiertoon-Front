@@ -22,6 +22,7 @@ function ItemButton({ text, index }) {
                 action: '/',
             }
         );
+        window.location.reload(true);
     });
 
     return (
