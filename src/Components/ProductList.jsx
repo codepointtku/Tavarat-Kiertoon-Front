@@ -1,6 +1,7 @@
 import Grid from '@mui/material/Grid';
 import { useLoaderData } from 'react-router-dom';
 
+import CategoryTree from './CategoryTree';
 import ProductCard from './ProductCard';
 
 function ProductList() {

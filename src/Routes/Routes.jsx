@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
-import DefaultView from './DefaultView';
+import ProductList from '../Components/ProductList';
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
 import BaseLayout from '../Layouts/BaseLayout';
