@@ -36,11 +36,11 @@ function ContactsAndDelivery() {
             <Grid container spacing={4}>
                 <Grid item>
                     <TextField label="Etunimi" variant="outlined" {...register('firstName', { required: true })} />
-                    {errors.firstName && <Alert severity="error">Tämä kenttä on täytettävä.</Alert>}
+                    {errors.firstName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                 </Grid>
                 <Grid item>
                     <TextField label="Sukunimi" variant="outlined" {...register('lastName', { required: true })} />
-                    {errors.lastName && <Alert severity="error">Tämä kenttä on täytettävä.</Alert>}
+                    {errors.lastName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                 </Grid>
                 <Grid item>
                     <TextField
@@ -51,15 +51,15 @@ function ContactsAndDelivery() {
                             pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/,
                         })}
                     />
-                    {errors.email && <Alert severity="error">Tämä kenttä on täytettävä.</Alert>}
+                    {errors.email && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                 </Grid>
                 <Grid item>
                     <TextField
                         label="Puh. numero"
                         variant="outlined"
-                        {...register('phoneNumber', { required: true, valueAsNumber: true })}
+                        {...register('phoneNumber', { required: true, pattern: { value: /^[0-9]+$/ } })}
                     />
-                    {errors.phoneNumber && <Alert severity="error">Tämä kenttä on täytettävä.</Alert>}
+                    {errors.phoneNumber && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                 </Grid>
             </Grid>
             <Typography variant="h4" sx={{ marginTop: 5, marginBottom: 2, color: 'primary.main' }}>
@@ -86,7 +86,7 @@ function ContactsAndDelivery() {
                         variant="outlined"
                         {...register('deliveryMethod', { required: true })}
                     />
-                    {errors.deliveryMethod && <Alert severity="error">Tämä kenttä on täytettävä.</Alert>}
+                    {errors.deliveryMethod && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                 </Grid>
             </Grid>
             <Box
