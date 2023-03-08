@@ -161,14 +161,31 @@ export const userEditLoader = async (auth, setAuth, params) => {
 };
 
 /**
- * Get all users
+ * Get all bikes
  */
-export const usersListLoader = async (auth, setAuth) => {
-    const { data } = await apiCall(auth, setAuth, '/users', 'get');
+const bikesListLoader = async () => {
+    const { data } = await axios.get('http://localhost:8000/bikes/');
     return data;
 };
 
 /**
  * returns null load
  */
-export const userSignupLoader = async () => null;
+const userSignupLoader = async () => null;
+
+export {
+    rootLoader,
+    productListLoader,
+    productDetailsLoader,
+    ordersListLoader,
+    orderViewLoader,
+    orderEditLoader,
+    addItemLoader,
+    pdfViewLoader,
+    storagesListLoader,
+    storageEditLoader,
+    usersListLoader,
+    userEditLoader,
+    userSignupLoader,
+    bikesListLoader,
+};
