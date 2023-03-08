@@ -7,7 +7,12 @@ import {
     Collapse,
     Container,
     Fade,
+    FormControl,
+    FormControlLabel,
+    FormLabel,
     List,
+    Radio,
+    RadioGroup,
     Slide,
     Stack,
     TextField,
@@ -22,6 +27,7 @@ import { TransitionGroup } from 'react-transition-group';
 import BikeCalendar from './BikeCalendar';
 import BikeCard from './BikeCard';
 import BikeConfirmation from './BikeConfirmation';
+import isValidBikeAmount from './isValidBikeAmount';
 
 export default function BikesPage() {
     const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
@@ -90,6 +96,34 @@ export default function BikesPage() {
             };
         });
 
+    const storageTypeForm = (
+        <Controller
+            name="storageType"
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, onBlur, value } }) => (
+                <FormControl required sx={{ maxWidth: 560 }}>
+                    <FormLabel id="storage-label">Säilytystapa</FormLabel>
+                    <Typography variant="caption">
+                        Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä, tuomme ne
+                        lukittavassa kärryssä. Huom. kärryn valitseminen voi rajoittaa saatavuutta.
+                    </Typography>
+                    <RadioGroup
+                        row
+                        aria-labelledby="storage-label"
+                        name="storage"
+                        value={value}
+                        onChange={(_, option) => onChange(option)}
+                        onBlur={onBlur}
+                    >
+                        <FormControlLabel value="inside" control={<Radio />} label="Sisällä" />
+                        <FormControlLabel value="outside" control={<Radio />} label="Kärryssä" />
+                    </RadioGroup>
+                </FormControl>
+            )}
+        />
+    );
+
     return (
         <Container sx={{ mb: 6 }} ref={containerRef}>
             <Typography variant="h3" align="center" color="primary.main" my={3}>
@@ -118,8 +152,13 @@ export default function BikesPage() {
                                                 <Typography align="center" variant="h6">
                                                     Vuokraustiedot
                                                 </Typography>
-                                                <Stack gap={1}>
-                                                    <Stack gap={2} flexDirection="row" justifyContent="center">
+                                                <Stack gap={1} alignItems="center">
+                                                    <Stack
+                                                        gap={2}
+                                                        flexDirection="row"
+                                                        justifyContent="center"
+                                                        alignItems="center"
+                                                    >
                                                         <Controller
                                                             name="startDate"
                                                             control={control}
@@ -153,12 +192,17 @@ export default function BikesPage() {
                                                         />
                                                     </Stack>
                                                     <Typography align="center">Max 2vk</Typography>
+                                                    {storageTypeForm}
                                                 </Stack>
                                                 <Box sx={{ display: 'flex', justifyContent: 'end' }}>
                                                     <Button
                                                         color="success"
                                                         onClick={() => setIsIntroVisible(false)}
-                                                        disabled={!watch('startDate') || !watch('endDate')}
+                                                        disabled={
+                                                            !watch('startDate') ||
+                                                            !watch('endDate') ||
+                                                            !watch('storageType')
+                                                        }
                                                     >
                                                         Seuraava
                                                     </Button>
@@ -354,22 +398,40 @@ export default function BikesPage() {
                                                                 <TransitionGroup>
                                                                     {Object.keys(watch('selectedBikes')).length ? (
                                                                         Object.entries(watch('selectedBikes')).map(
-                                                                            ([key, value]) =>
-                                                                                !!value && (
-                                                                                    <Collapse key={key}>
-                                                                                        <Typography>
-                                                                                            {`${value}x ${
-                                                                                                bikes.find(
-                                                                                                    (bike) =>
-                                                                                                        String(
-                                                                                                            bike.id
-                                                                                                        ) ===
-                                                                                                        String(key)
-                                                                                                ).name
-                                                                                            }`}
-                                                                                        </Typography>
-                                                                                    </Collapse>
-                                                                                )
+                                                                            ([key, value]) => {
+                                                                                const bike = bikes.find(
+                                                                                    (_bike) =>
+                                                                                        String(_bike.id) === String(key)
+                                                                                );
+                                                                                return (
+                                                                                    !!value && (
+                                                                                        <Collapse key={key}>
+                                                                                            <Typography
+                                                                                                sx={
+                                                                                                    isValidBikeAmount(
+                                                                                                        watch(
+                                                                                                            'startDate'
+                                                                                                        ),
+                                                                                                        watch(
+                                                                                                            'endDate'
+                                                                                                        ),
+                                                                                                        watch(
+                                                                                                            'selectedBikes'
+                                                                                                        ),
+                                                                                                        [bike]
+                                                                                                    )
+                                                                                                        ? {}
+                                                                                                        : {
+                                                                                                              color: 'red',
+                                                                                                          }
+                                                                                                }
+                                                                                            >
+                                                                                                {`${value}x ${bike.name}`}
+                                                                                            </Typography>
+                                                                                        </Collapse>
+                                                                                    )
+                                                                                );
+                                                                            }
                                                                         )
                                                                     ) : (
                                                                         <Collapse>
@@ -379,14 +441,22 @@ export default function BikesPage() {
                                                                 </TransitionGroup>
                                                             </List>
                                                         </Box>
+                                                        {storageTypeForm}
                                                         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
                                                             <Button
                                                                 color="success"
                                                                 onClick={() => setIsConfirmationVisible(true)}
                                                                 disabled={
+                                                                    !isValidBikeAmount(
+                                                                        watch('startDate'),
+                                                                        watch('endDate'),
+                                                                        watch('selectedBikes'),
+                                                                        bikes
+                                                                    ) ||
                                                                     !Object.keys(watch('selectedBikes')).length ||
                                                                     !watch('startDate') ||
-                                                                    !watch('endDate')
+                                                                    !watch('endDate') ||
+                                                                    !watch('storageType')
                                                                 }
                                                             >
                                                                 Vahvistus
