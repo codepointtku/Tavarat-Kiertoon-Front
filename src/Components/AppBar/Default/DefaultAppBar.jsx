@@ -131,7 +131,7 @@ Drawer.propTypes = {
 };
 
 function DefaultAppBar() {
-    const [currentOpenDrawer, setCurrentOpenDrawer] = useState(null);
+    const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
     const { cart } = useRouteLoaderData('root');
 
@@ -180,7 +180,7 @@ function DefaultAppBar() {
                         </Search>
                         <IconButton onClick={drawerOpen('shoppingCart')}>
                             <StyledBadge
-                                badgeContent={cart.products.length}
+                                badgeContent={cart?.products?.length}
                                 sx={{ color: 'primary.contrastText' }}
                                 anchorOrigin={{
                                     vertical: 'top',
@@ -203,7 +203,7 @@ function DefaultAppBar() {
             <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart" onClose={drawerOpen('')}>
                 {/* tähän oma komponentti.. */}
                 <List>
-                    {cart.products.map((product) => (
+                    {cart?.products?.map((product) => (
                         <ItemButton text={product.name} index={product.id} />
                     ))}
 
