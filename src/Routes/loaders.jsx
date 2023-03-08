@@ -5,6 +5,17 @@ import apiCall from '../Utils/apiCall';
  * Get different defaults for the site
  */
 export const rootLoader = async (auth, setAuth) => {
+    if (!auth) {
+        const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }] = await Promise.all([
+            apiCall(auth, setAuth, '/contacts/', 'get'),
+            apiCall(auth, setAuth, '/colors/', 'get'),
+            apiCall(auth, setAuth, '/categories/', 'get'),
+            apiCall(auth, setAuth, '/bulletins/', 'get'),
+        ]);
+
+        return { contacts, colors, categories, bulletins };
+    }
+
     const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: cart }] =
         await Promise.all([
             apiCall(auth, setAuth, '/contacts/', 'get'),
