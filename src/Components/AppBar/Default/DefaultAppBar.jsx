@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import {
     AppBar,
     Box,
     Toolbar,
-    // InputBase,
     IconButton,
     Stack,
     Badge,
@@ -33,26 +32,23 @@ import LoginForm from './LoginForm';
 
 //
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
-    '& .MuiBadge-badge': {
-        right: -8,
-        border: `0.1rem solid ${theme.palette.background.paper}`,
-        backgroundColor: `${theme.palette.primary.light}`,
-    },
-}));
+const drawerHead = '6rem';
 
-//
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    backgroundColor: '#009bd8',
-    padding: theme.spacing(0, 1),
-    // marginTop: '1rem',
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-start',
-}));
+const DrawerHeader = () => {
+    return (
+        <Box
+            id="drawer-header"
+            sx={{
+                display: 'flex',
+                alignItems: 'stretch',
+                justifyContent: 'flex-start',
+                backgroundColor: '#009bd8',
+                // necessary for content to be below app bar
+                minHeight: drawerHead,
+            }}
+        ></Box>
+    );
+};
 
 const drawerWidth = 490;
 
@@ -79,7 +75,6 @@ function Drawer({ currentOpenDrawer, name, onClose, children }) {
             slotProps={{ backdrop: { invisible: true } }}
         >
             <DrawerHeader />
-            <Divider />
             {children}
         </MuiDrawer>
     );
@@ -91,6 +86,14 @@ Drawer.propTypes = {
     children: PropTypes.node.isRequired,
     onClose: PropTypes.func.isRequired,
 };
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+    '& .MuiBadge-badge': {
+        right: -8,
+        border: `0.1rem solid ${theme.palette.background.paper}`,
+        backgroundColor: `${theme.palette.error.main}`,
+    },
+}));
 
 function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
@@ -106,17 +109,14 @@ function DefaultAppBar() {
     return (
         <Box>
             <AppBar
-                // position="absolute"
-                // color="transparent"
+                color="transparent"
                 sx={{
-                    // top: 0,
-                    // right: 0,
                     zIndex: 1250,
-                    // backgroundColor: 'primary.main',
                     width: 'min-content',
+                    minHeight: drawerHead,
                     boxShadow: 0,
-                    // padding: '1rem',
-                    // marginTop: '1rem',
+                    padding: '1rem 0 0 0rem',
+                    // border: '1px solid red',
                 }}
             >
                 <Toolbar
@@ -124,7 +124,7 @@ function DefaultAppBar() {
                         justifyContent: 'flex-end',
                     }}
                 >
-                    <Stack direction="row" spacing={4}>
+                    <Stack direction="row" spacing={2}>
                         <IconButton onClick={drawerOpen('shoppingCart')}>
                             <StyledBadge
                                 badgeContent={4}
@@ -134,14 +134,14 @@ function DefaultAppBar() {
                                     horizontal: 'right',
                                 }}
                             >
-                                <ShoppingCartOutlinedIcon sx={{ fontSize: 40, color: '#fff' }} />
+                                <ShoppingCartOutlinedIcon sx={{ fontSize: 30, color: '#fff' }} />
                             </StyledBadge>
                         </IconButton>
                         <IconButton onClick={drawerOpen('account')}>
-                            <AccountCircleOutlinedIcon sx={{ fontSize: 40, color: '#fff' }} />
+                            <AccountCircleOutlinedIcon sx={{ fontSize: 30, color: '#fff' }} />
                         </IconButton>
                         <IconButton component={Link} to="/otayhteytta">
-                            <MailIcon sx={{ fontSize: 40, color: '#fff' }} />
+                            <MailIcon sx={{ fontSize: 30, color: '#fff' }} />
                         </IconButton>
                     </Stack>
                 </Toolbar>

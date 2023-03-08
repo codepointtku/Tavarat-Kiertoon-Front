@@ -114,7 +114,7 @@ function LoginForm() {
                             Sisään
                         </Button>
                     </Box>
-                    <MuiLink variant="body2" component={Link} to="/doesnotexist/" sx={{ display: 'block', mt: 6 }}>
+                    <MuiLink variant="body2" component={Link} to="/doesnotexist/" sx={{ display: 'block', mt: 4 }}>
                         Unohtunut salasana?
                     </MuiLink>
 
