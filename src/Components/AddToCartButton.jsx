@@ -20,7 +20,7 @@ function AddToCartButton({ size, id }) {
         window.location.reload(true);
     };
 
-    const itemsInCart = cartItems.filter((item) => item.id === id);
+    const itemsInCart = cartItems?.filter((item) => item.id === id);
 
     // cartItems.map((item) => console.log(Object.values(item).includes()));
     // console.log(cartItems);
@@ -33,13 +33,13 @@ function AddToCartButton({ size, id }) {
 
     return (
         <Button
-            color={itemsInCart.length > 0 ? 'success' : 'primary'}
+            color={itemsInCart?.length > 0 ? 'success' : 'primary'}
             size={size}
             aria-label="add to shopping cart"
             startIcon={<AddShoppingCartOutlinedIcon />}
             onClick={handleClickAddToCartBtn}
         >
-            Lisää koriin <br /> {cartItems.map((item) => item.id === id && `(${item.count}) kpl`)}
+            Lisää koriin <br /> {cartItems?.map((item) => item.id === id && `(${item.count}) kpl`)}
         </Button>
     );
 }
