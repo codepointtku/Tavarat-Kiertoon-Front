@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Outlet } from 'react-router';
 import { useLocation } from 'react-router-dom';
-import { styled } from '@mui/system';
+import { styled } from '@mui/material/styles';
 
 import { Container, Box, Stepper, Step, StepLabel } from '@mui/material';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
