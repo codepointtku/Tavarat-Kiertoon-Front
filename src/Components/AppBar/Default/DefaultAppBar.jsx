@@ -19,7 +19,6 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-// import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
@@ -28,7 +27,6 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import PhishingIcon from '@mui/icons-material/Phishing';
 
 import LoginForm from './LoginForm';
-// import ContactForm from './ContactForm';
 
 //
 
@@ -100,11 +98,6 @@ const iconHover = {
         color: 'primary.dark',
     },
 };
-// const iconHover = {
-//     '&:hover .MuiAvatar-root': {
-//         backgroundColor: 'secondary.dark',
-//     },
-// };
 
 function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
@@ -127,7 +120,6 @@ function DefaultAppBar() {
                     minHeight: drawerHead,
                     boxShadow: 0,
                     padding: '1rem 0 0 0rem',
-                    // border: '1px solid red',
                 }}
             >
                 <Toolbar
@@ -188,10 +180,6 @@ function DefaultAppBar() {
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
                 <LoginForm />
             </Drawer>
-
-            {/* <Drawer currentOpenDrawer={currentOpenDrawer} name="contact">
-                <ContactForm />
-            </Drawer> */}
         </Box>
     );
 }
