@@ -95,6 +95,17 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     },
 }));
 
+const iconHover = {
+    '&:hover .MuiSvgIcon-root': {
+        color: 'primary.dark',
+    },
+};
+// const iconHover = {
+//     '&:hover .MuiAvatar-root': {
+//         backgroundColor: 'secondary.dark',
+//     },
+// };
+
 function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
 
@@ -125,7 +136,7 @@ function DefaultAppBar() {
                     }}
                 >
                     <Stack direction="row" spacing={2}>
-                        <IconButton onClick={drawerOpen('shoppingCart')}>
+                        <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
                             <StyledBadge
                                 badgeContent={4}
                                 sx={{ color: 'primary.contrastText' }}
@@ -137,10 +148,10 @@ function DefaultAppBar() {
                                 <ShoppingCartOutlinedIcon sx={{ fontSize: 30, color: '#fff' }} />
                             </StyledBadge>
                         </IconButton>
-                        <IconButton onClick={drawerOpen('account')}>
+                        <IconButton onClick={drawerOpen('account')} sx={iconHover}>
                             <AccountCircleOutlinedIcon sx={{ fontSize: 30, color: '#fff' }} />
                         </IconButton>
-                        <IconButton component={Link} to="/otayhteytta">
+                        <IconButton component={Link} to="/otayhteytta" sx={iconHover}>
                             <MailIcon sx={{ fontSize: 30, color: '#fff' }} />
                         </IconButton>
                     </Stack>
