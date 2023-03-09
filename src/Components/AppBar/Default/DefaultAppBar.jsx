@@ -166,13 +166,13 @@ function DefaultAppBar() {
                     width: 'min-content',
                     minHeight: drawerHead,
                     boxShadow: 0,
-                    padding: '1rem 0 0 0rem',
+                    padding: '1rem 1rem 0 1rem',
                     borderBottomLeftRadius: '0.4rem',
                     borderTopLeftRadius: '0.4rem',
                 }}
             >
                 <Toolbar>
-                    <Stack direction="row" spacing={2}>
+                    <Stack direction="row" spacing={4}>
                         <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
                             <StyledBadge
                                 badgeContent={4}
@@ -182,11 +182,11 @@ function DefaultAppBar() {
                                     horizontal: 'right',
                                 }}
                             >
-                                <ShoppingCartOutlinedIcon sx={{ fontSize: 30, color: '#fff' }} />
+                                <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
                             </StyledBadge>
                         </IconButton>
                         <IconButton onClick={drawerOpen('account')} sx={iconHover}>
-                            <AccountCircleOutlinedIcon sx={{ fontSize: 30, color: '#fff' }} />
+                            <AccountCircleOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
                         </IconButton>
                     </Stack>
                 </Toolbar>
