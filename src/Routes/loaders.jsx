@@ -4,10 +4,12 @@ import apiCall from '../Utils/apiCall';
 // just a comment for file-rename commit to work. remove this
 
 /**
- * Get different defaults for the site
+ * Get various defaults for the site
  */
 const rootLoader = async (auth, setAuth) => {
-    if (!auth.user) {
+    console.log('rootLoader, auth:', auth);
+
+    if (auth.user_group === false) {
         const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }] = await Promise.all([
             apiCall(auth, setAuth, '/contacts/', 'get'),
             apiCall(auth, setAuth, '/colors/', 'get'),
