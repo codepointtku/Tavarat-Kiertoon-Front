@@ -16,7 +16,7 @@ function ProductCard({ productName, id, picture }) {
     };
 
     return (
-        <Box sx={{ minWidth: 180, display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ minWidth: 200, display: 'flex', justifyContent: 'center' }}>
             <Card sx={{ maxWidth: 320 }}>
                 <CardActionArea component={Link} to={`/tuotteet/${id}`}>
                     <CardMedia
