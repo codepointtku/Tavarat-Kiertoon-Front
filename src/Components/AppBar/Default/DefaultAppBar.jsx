@@ -147,9 +147,6 @@ function DefaultAppBar() {
                         <IconButton onClick={drawerOpen('account')} sx={iconHover}>
                             <AccountCircleOutlinedIcon sx={{ fontSize: 30, color: '#fff' }} />
                         </IconButton>
-                        <IconButton component={Link} to="/otayhteytta" sx={iconHover}>
-                            <MailIcon sx={{ fontSize: 30, color: '#fff' }} />
-                        </IconButton>
                     </Stack>
                 </Toolbar>
             </AppBar>
@@ -182,7 +179,7 @@ function DefaultAppBar() {
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
-                <LoginForm />
+                <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>
         </Box>
     );
