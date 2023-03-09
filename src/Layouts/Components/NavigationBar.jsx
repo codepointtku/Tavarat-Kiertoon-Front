@@ -23,11 +23,11 @@ function LinkBar() {
                 <Button component={Link} to="/ohjeet">
                     Ohjeet
                 </Button>
-                <Button component={Link} to="/stats">
-                    Tilastot
-                </Button>
-                <Button component={Link} to="/lihapullat">
+                <Button component={Link} to="/taustatietoa">
                     Taustaa
+                </Button>
+                <Button component={Link} to="/otayhteytta">
+                    Ota yhteyttä
                 </Button>
             </ButtonGroup>
         </Box>
@@ -35,8 +35,6 @@ function LinkBar() {
 }
 
 function AuthedLinkBar() {
-    // const { auth } = useContext(AuthContext);
-
     return (
         <Box id="authed-navbuttons-wrapper" sx={{ marginLeft: '1rem' }}>
             <ButtonGroup
@@ -45,16 +43,15 @@ function AuthedLinkBar() {
                 aria-label="authed navigation link buttons"
                 sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
             >
-                {/* {!auth.storage && ( */}
+                <Button component={Link} to="/stats">
+                    Tilastot
+                </Button>
                 <Button component={Link} to="/varasto">
                     Varaston hallintanäkymä
                 </Button>
-                {/* )} */}
-                {/* {!auth.admin && ( */}
                 <Button component={Link} to="/admin">
                     Sivuston hallintanäkymä
                 </Button>
-                {/* )} */}
             </ButtonGroup>
         </Box>
     );
