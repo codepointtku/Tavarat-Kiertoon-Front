@@ -60,8 +60,6 @@ function AuthedLinkBar() {
 function NavigationBar() {
     const { auth } = useContext(AuthContext);
 
-    console.log(auth);
-
     return (
         <>
             <Box
