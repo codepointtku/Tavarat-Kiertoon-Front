@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
@@ -16,6 +16,7 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
+    Avatar,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -26,7 +27,10 @@ import MailIcon from '@mui/icons-material/Mail';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import PhishingIcon from '@mui/icons-material/Phishing';
 
+import CloseIcon from '@mui/icons-material/Close';
+
 import LoginForm from './LoginForm';
+import Tooltip from '../../Tooltip';
 
 //
 
@@ -105,6 +109,43 @@ const toolBarHover = {
     },
 };
 
+function CloseDrawerButton({ setCurrentOpenDrawer }) {
+    function handleClick() {
+        setCurrentOpenDrawer('');
+    }
+
+    const buttonHover = {
+        '&:hover .MuiAvatar-root': {
+            backgroundColor: 'primary.dark',
+        },
+    };
+
+    return (
+        <Tooltip title="Sulje">
+            <IconButton
+                onClick={handleClick}
+                sx={[
+                    buttonHover,
+                    {
+                        p: '0',
+                        marginTop: '1rem',
+                    },
+                ]}
+            >
+                <Avatar
+                    sx={{
+                        bgcolor: 'primary.main',
+                        width: 48,
+                        height: 48,
+                    }}
+                >
+                    <CloseIcon />
+                </Avatar>
+            </IconButton>
+        </Tooltip>
+    );
+}
+
 function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
 
@@ -180,6 +221,7 @@ function DefaultAppBar() {
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
                 <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
+                <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>
         </Box>
     );
