@@ -18,7 +18,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { addDays, differenceInCalendarDays, format, parseISO } from 'date-fns';
+import { parseISO } from 'date-fns';
 import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
@@ -27,7 +27,7 @@ import { TransitionGroup } from 'react-transition-group';
 import BikeCalendar from './BikeCalendar';
 import BikeCard from './BikeCard';
 import BikeConfirmation from './BikeConfirmation';
-import isValidBikeAmount from './isValidBikeAmount';
+import isValidBikeAmount, { bikePackageUnavailable } from './isValidBikeAmount';
 
 export default function BikesPage() {
     const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
@@ -95,27 +95,6 @@ export default function BikesPage() {
                 }),
             };
         });
-
-    const bikePackageUnavailable = (bikePackage) => {
-        const unavailable = {};
-        if (watch('startDate') || watch('endDate')) {
-            const dates = [];
-            const days = differenceInCalendarDays(watch('endDate'), watch('startDate'));
-            for (let i = 0; i <= days; i += 1) dates.push(format(addDays(watch('startDate'), i), 'dd.MM.yyyy'));
-            bikePackage.bikes.forEach(([packageBikeId, packageBikeAmount]) => {
-                const bike = loaderData.bikes.find(({ id }) => id === Number(packageBikeId));
-                if (Object.keys(watch('selectedBikes')).includes(bike.id)) {
-                    dates.forEach((date) => {
-                        const unitsInUse = bike.unavailable[date] ?? 0;
-                        unavailable[date] = Math.floor(
-                            packageBikeAmount / (bike.max_available - unitsInUse - watch('selectedBikes')[bike.id])
-                        );
-                    });
-                }
-            });
-        }
-        return unavailable;
-    };
 
     const storageTypeForm = (
         <Controller
@@ -330,13 +309,19 @@ export default function BikesPage() {
                                                                         render={({ field: { onChange, value } }) => (
                                                                             <BikeCard
                                                                                 bike={
-                                                                                    bike.type !== 'package'
+                                                                                    bike.type !== 'Paketti'
                                                                                         ? bike
                                                                                         : {
                                                                                               ...bike,
                                                                                               unavailable:
                                                                                                   bikePackageUnavailable(
-                                                                                                      bike
+                                                                                                      bike,
+                                                                                                      minDate,
+                                                                                                      maxDate,
+                                                                                                      loaderData.bikes,
+                                                                                                      watch(
+                                                                                                          'selectedBikes'
+                                                                                                      )
                                                                                                   ),
                                                                                           }
                                                                                 }
