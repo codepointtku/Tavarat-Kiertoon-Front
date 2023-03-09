@@ -18,7 +18,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { parseISO } from 'date-fns';
+import { addDays, differenceInCalendarDays, format, parseISO } from 'date-fns';
 import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
@@ -102,19 +102,19 @@ export default function BikesPage() {
         bikePackage.bikes.forEach(([packageBikeId, packageBikeAmount]) => {
             const bike = bikePool.find(({ id }) => id === Number(packageBikeId));
             const selectedBikesKeys = Object.keys(watch('selectedBikes'));
-            if (startDate && endDate && selectedBikesKeys.length) {
-                const filteredBikes = bikes.filter((bike) => selectedBikesKeys.includes(String(bike.id)));
-                const dates = [];
-                const days = differenceInCalendarDays(endDate, startDate);
-                for (let i = 0; i <= days; i += 1) dates.push(format(addDays(startDate, i), 'dd.MM.yyyy'));
-                return filteredBikes.every((bike) =>
-                    dates.every((date) => {
-                        const unitsInUse = bike.unavailable[date] ?? 0;
-                        return (
-                            bikePackage.max_available - unitsInUse - watch('selectedBikes')[bike.id] - packageBikeAmount
-                        );
-                    })
-                );
+            if (selectedBikesKeys.includes(bike.id)) {
+                // if (watch('startDate') && watch('endDate') && selectedBikesKeys.length) {
+                //     const filterBikes = bikes.filter(({ id }) => selectedBikesKeys.includes(String(id)));
+                //     const dates = [];
+                //     const days = differenceInCalendarDays(watch('endDate'), watch('startDate'));
+                //     for (let i = 0; i <= days; i += 1) dates.push(format(addDays(watch('startDate'), i), 'dd.MM.yyyy'));
+                //     return filterBikes.every(({ unavailable: bikeUnavailable, id }) =>
+                //         dates.every((date) => {
+                //             const unitsInUse = bikeUnavailable[date] ?? 0;
+                //             return bikePackage.max_available - unitsInUse - watch('selectedBikes')[id] - packageBikeAmount / bikePackage.max_available;
+                //         })
+                //     );
+                // }
             }
         });
         return unavailable;
