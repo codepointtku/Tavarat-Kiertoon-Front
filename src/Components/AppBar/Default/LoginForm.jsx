@@ -49,15 +49,12 @@ function LoginForm({ setCurrentOpenDrawer }) {
     return (
         <>
             {responseStatus?.type === 'login' && !responseStatus?.status && (
-                <>
-                    <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" timer={3000} />
-                </>
+                <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" timer={3000} />
             )}
             {responseStatus?.type === 'login' && responseStatus?.status && (
-                <>
-                    <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={3000} />
-                </>
+                <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={3000} />
             )}
+
             <Container maxWidth="xs" component={Form} onSubmit={handleSubmit(onSubmit)}>
                 <Box
                     sx={{
