@@ -23,7 +23,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import AlertBox from '../../AlertBox';
 
-function LoginForm() {
+function LoginForm({ setCurrentOpenDrawer }) {
     const { register, handleSubmit } = useForm();
     const submit = useSubmit();
     const responseStatus = useActionData();
@@ -42,18 +42,20 @@ function LoginForm() {
         });
     };
 
+    const handleClickCloseDrawer = () => {
+        setCurrentOpenDrawer('');
+    };
+
     return (
         <>
             {responseStatus?.type === 'login' && !responseStatus?.status && (
                 <>
                     <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" timer={3000} />
-                    <br />
                 </>
             )}
             {responseStatus?.type === 'login' && responseStatus?.status && (
                 <>
                     <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={3000} />
-                    <br />
                 </>
             )}
             <Container maxWidth="xs" component={Form} onSubmit={handleSubmit(onSubmit)}>
@@ -118,7 +120,13 @@ function LoginForm() {
                         Unohtunut salasana?
                     </MuiLink>
 
-                    <Button sx={{ mt: 2 }} variant="outlined" component={Link} to="/rekisteroidy">
+                    <Button
+                        sx={{ mt: 2 }}
+                        variant="outlined"
+                        component={Link}
+                        to="/rekisteroidy"
+                        onClick={handleClickCloseDrawer}
+                    >
                         Luo uusi tunnus
                     </Button>
                 </Box>
