@@ -10,13 +10,6 @@ const Search = styled('div')(({ theme }) => ({
     '&:hover': {
         backgroundColor: alpha(theme.palette.primary.main, 0.2),
     },
-    width: { xs: '100%' },
-    // [theme.breakpoints.up('xs')]: {
-    //     width: 'auto',
-    // },
-    // [theme.breakpoints.up('xs')]: {
-    //     width: 'auto',
-    // },
 }));
 
 function SearchField() {
@@ -26,7 +19,7 @@ function SearchField() {
                 <InputBase
                     autoFocus
                     placeholder="Etsi tuotteita…"
-                    startAdornment={<SearchIcon sx={{ fontSize: 30, color: 'primary.main', marginRight: '2rem' }} />}
+                    startAdornment={<SearchIcon sx={{ fontSize: 30, color: 'primary.main', marginRight: '3rem' }} />}
                     inputProps={{ 'aria-label': 'searchfield' }}
                     sx={{ color: 'inherit', padding: '1rem 6rem 1rem 1rem' }}
                 />
