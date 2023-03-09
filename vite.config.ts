@@ -11,7 +11,7 @@ export default defineConfig({
         host: true,
         strictPort: true,
     },
-    optimizeDeps: {
-        exclude: ['events'],
-    },
+    // optimizeDeps: {
+    //     exclude: ['events'],
+    // },
 });
