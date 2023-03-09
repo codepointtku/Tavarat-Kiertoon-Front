@@ -97,26 +97,23 @@ export default function BikesPage() {
         });
 
     const bikePackageUnavailable = (bikePackage) => {
-        const bikePool = loaderData.bikes;
         const unavailable = {};
-        bikePackage.bikes.forEach(([packageBikeId, packageBikeAmount]) => {
-            const bike = bikePool.find(({ id }) => id === Number(packageBikeId));
-            const selectedBikesKeys = Object.keys(watch('selectedBikes'));
-            if (selectedBikesKeys.includes(bike.id)) {
-                // if (watch('startDate') && watch('endDate') && selectedBikesKeys.length) {
-                //     const filterBikes = bikes.filter(({ id }) => selectedBikesKeys.includes(String(id)));
-                //     const dates = [];
-                //     const days = differenceInCalendarDays(watch('endDate'), watch('startDate'));
-                //     for (let i = 0; i <= days; i += 1) dates.push(format(addDays(watch('startDate'), i), 'dd.MM.yyyy'));
-                //     return filterBikes.every(({ unavailable: bikeUnavailable, id }) =>
-                //         dates.every((date) => {
-                //             const unitsInUse = bikeUnavailable[date] ?? 0;
-                //             return bikePackage.max_available - unitsInUse - watch('selectedBikes')[id] - packageBikeAmount / bikePackage.max_available;
-                //         })
-                //     );
-                // }
-            }
-        });
+        if (watch('startDate') || watch('endDate')) {
+            const dates = [];
+            const days = differenceInCalendarDays(watch('endDate'), watch('startDate'));
+            for (let i = 0; i <= days; i += 1) dates.push(format(addDays(watch('startDate'), i), 'dd.MM.yyyy'));
+            bikePackage.bikes.forEach(([packageBikeId, packageBikeAmount]) => {
+                const bike = loaderData.bikes.find(({ id }) => id === Number(packageBikeId));
+                if (Object.keys(watch('selectedBikes')).includes(bike.id)) {
+                    dates.forEach((date) => {
+                        const unitsInUse = bike.unavailable[date] ?? 0;
+                        unavailable[date] = Math.floor(
+                            packageBikeAmount / (bike.max_available - unitsInUse - watch('selectedBikes')[bike.id])
+                        );
+                    });
+                }
+            });
+        }
         return unavailable;
     };
 
