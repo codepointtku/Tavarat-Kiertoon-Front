@@ -7,7 +7,7 @@ import ProductCard from './ProductCard';
 function ProductList() {
     const { products } = useLoaderData();
 
-    console.log(products);
+    console.log('products:', products);
 
     return (
         <Grid container mt={1} mb={1}>

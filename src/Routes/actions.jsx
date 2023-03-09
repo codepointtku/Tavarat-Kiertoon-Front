@@ -4,6 +4,8 @@ import apiCall from '../Utils/apiCall';
  * logins user or adds a product to / deletes a product from shopping cart
  */
 const frontPageActions = async (auth, setAuth, request) => {
+    console.log('ollaan frontPageActionssissa');
+
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     if (request.method === 'POST') {

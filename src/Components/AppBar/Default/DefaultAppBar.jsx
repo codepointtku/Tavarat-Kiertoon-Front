@@ -131,7 +131,7 @@ Drawer.propTypes = {
 };
 
 function DefaultAppBar() {
-    const [currentOpenDrawer, setCurrentOpenDrawer] = useState(null);
+    const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
     const { cart } = useRouteLoaderData('root');
 
@@ -204,7 +204,7 @@ function DefaultAppBar() {
                 {/* tähän oma komponentti.. */}
                 <List>
                     {cart.products.map((product) => (
-                        <ItemButton text={product.name} index={product.id} />
+                        <ItemButton key={product.id} text={product.name} index={product.id} />
                     ))}
 
                     {/* // products.results.map((result) => {
