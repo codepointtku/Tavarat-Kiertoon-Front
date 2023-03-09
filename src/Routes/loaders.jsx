@@ -28,6 +28,7 @@ const rootLoader = async (auth, setAuth) => {
         ]);
 
     console.log('@rootLoader, cart.products:', cart?.products);
+    console.log('cart:', cart);
 
     /* eslint-disable no-shadow */
 
