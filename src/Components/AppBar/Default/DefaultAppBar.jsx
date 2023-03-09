@@ -99,6 +99,12 @@ const iconHover = {
     },
 };
 
+const toolBarHover = {
+    '&:hover .MuiPaper-root': {
+        backgroundColor: 'primary.main',
+    },
+};
+
 function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
 
@@ -111,22 +117,20 @@ function DefaultAppBar() {
     };
 
     return (
-        <Box>
+        <Box id="appbar-containing-div" sx={toolBarHover}>
             <AppBar
-                color="transparent"
                 sx={{
+                    backgroundColor: 'rgba(0, 155, 216, 0.55)',
                     zIndex: 1250,
                     width: 'min-content',
                     minHeight: drawerHead,
                     boxShadow: 0,
                     padding: '1rem 0 0 0rem',
+                    borderBottomLeftRadius: '0.4rem',
+                    borderTopLeftRadius: '0.4rem',
                 }}
             >
-                <Toolbar
-                    sx={{
-                        justifyContent: 'flex-end',
-                    }}
-                >
+                <Toolbar>
                     <Stack direction="row" spacing={2}>
                         <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
                             <StyledBadge
