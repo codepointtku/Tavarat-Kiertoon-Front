@@ -90,7 +90,7 @@ function ProductDetails() {
                             </>
                         </CardContent>
                         <CardActions>
-                            <AddToCartButton size="medium" productName={productName} />
+                            <AddToCartButton size="medium" id={Number(productId)} productName={productName} />
                         </CardActions>
                     </Card>
                 </Grid>
