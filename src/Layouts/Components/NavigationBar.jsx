@@ -61,21 +61,19 @@ function NavigationBar() {
     const { auth } = useContext(AuthContext);
 
     return (
-        <>
-            <Box
-                id="navbar-container"
-                aria-label="navigation bar"
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    width: '100%',
-                    mb: '1rem',
-                }}
-            >
-                <LinkBar />
-                {auth.storage && <AuthedLinkBar />}
-            </Box>
-        </>
+        <Box
+            id="navbar-container"
+            aria-label="navigation bar"
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                width: '100%',
+                mb: '1rem',
+            }}
+        >
+            <LinkBar />
+            {auth.storage && <AuthedLinkBar />}
+        </Box>
     );
 }
 
