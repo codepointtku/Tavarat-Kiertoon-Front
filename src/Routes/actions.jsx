@@ -18,6 +18,10 @@ const frontPageActions = async (auth, setAuth, request) => {
         return { type: 'login', status: false };
     }
     if (request.method === 'PUT') {
+        if (auth.user_group === false) {
+            alert('log in as with user_group rights first');
+            return null;
+        }
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
             products: id,
         });
