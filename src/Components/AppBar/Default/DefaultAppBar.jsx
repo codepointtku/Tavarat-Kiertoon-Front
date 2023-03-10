@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useRouteLoaderData, Link } from 'react-router-dom';
-import { styled, alpha } from '@mui/material/styles';
+import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
@@ -8,7 +7,6 @@ import {
     Box,
     Button,
     Toolbar,
-    InputBase,
     IconButton,
     Stack,
     Badge,
@@ -19,79 +17,34 @@ import {
     ListItemText,
     Typography,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import CallIcon from '@mui/icons-material/Call';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 
 import ItemButton from './ItemButton';
 import LoginForm from './LoginForm';
-// import ContactForm from './ContactForm';
 
 //
 
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(1),
-        width: 'auto',
-    },
-}));
+const drawerHead = '6rem';
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            width: '14ch',
-            '&:focus': {
-                width: '22ch',
-            },
-        },
-    },
-}));
-
-const StyledBadge = styled(Badge)(({ theme }) => ({
-    '& .MuiBadge-badge': {
-        right: -8,
-        border: `0.1rem solid ${theme.palette.background.paper}`,
-        backgroundColor: `${theme.palette.primary.light}`,
-    },
-}));
-
-//
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-start',
-}));
+function DrawerHeader() {
+    return (
+        <Box
+            id="drawer-header"
+            sx={{
+                display: 'flex',
+                alignItems: 'stretch',
+                justifyContent: 'flex-start',
+                backgroundColor: '#009bd8',
+                // necessary for content to be below app bar
+                minHeight: drawerHead,
+            }}
+        />
+    );
+}
 
 const drawerWidth = 490;
 
@@ -118,7 +71,6 @@ function Drawer({ currentOpenDrawer, name, onClose, children }) {
             slotProps={{ backdrop: { invisible: true } }}
         >
             <DrawerHeader />
-            <Divider />
             {children}
         </MuiDrawer>
     );
@@ -129,6 +81,26 @@ Drawer.propTypes = {
     name: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
     onClose: PropTypes.func.isRequired,
+};
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+    '& .MuiBadge-badge': {
+        right: -8,
+        border: `0.1rem solid ${theme.palette.background.paper}`,
+        backgroundColor: `${theme.palette.error.main}`,
+    },
+}));
+
+const iconHover = {
+    '&:hover .MuiSvgIcon-root': {
+        color: 'primary.dark',
+    },
+};
+
+const toolBarHover = {
+    '&:hover .MuiPaper-root': {
+        backgroundColor: 'primary.main',
+    },
 };
 
 function DefaultAppBar() {
@@ -159,28 +131,22 @@ function DefaultAppBar() {
     // results on taulukko objekteja
 
     return (
-        <Box>
+        <Box id="appbar-containing-div" sx={toolBarHover}>
             <AppBar
                 sx={{
+                    backgroundColor: 'rgba(0, 155, 216, 0.55)',
                     zIndex: 1250,
-                    backgroundColor: 'primary.main',
                     width: 'min-content',
+                    minHeight: drawerHead,
                     boxShadow: 0,
+                    padding: '1rem 1rem 0 1rem',
+                    borderBottomLeftRadius: '0.4rem',
+                    borderTopLeftRadius: '0.4rem',
                 }}
             >
-                <Toolbar
-                    sx={{
-                        justifyContent: 'flex-end',
-                    }}
-                >
+                <Toolbar>
                     <Stack direction="row" spacing={4}>
-                        <Search>
-                            <SearchIconWrapper>
-                                <SearchIcon sx={{ fontSize: 30, color: '#fff' }} />
-                            </SearchIconWrapper>
-                            <StyledInputBase placeholder="Etsi tuotteita…" inputProps={{ 'aria-label': 'search' }} />
-                        </Search>
-                        <IconButton onClick={drawerOpen('shoppingCart')}>
+                        <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
                             <StyledBadge
                                 badgeContent={cart?.products?.length}
                                 sx={{ color: 'primary.contrastText' }}
@@ -189,14 +155,11 @@ function DefaultAppBar() {
                                     horizontal: 'right',
                                 }}
                             >
-                                <ShoppingCartOutlinedIcon sx={{ fontSize: 30, color: '#fff' }} />
+                                <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
                             </StyledBadge>
                         </IconButton>
-                        <IconButton onClick={drawerOpen('account')}>
-                            <AccountCircleOutlinedIcon sx={{ fontSize: 30, color: '#fff' }} />
-                        </IconButton>
-                        <IconButton component={Link} to="/otayhteytta">
-                            <CallIcon sx={{ fontSize: 30, color: '#fff' }} />
+                        <IconButton onClick={drawerOpen('account')} sx={iconHover}>
+                            <AccountCircleOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
                         </IconButton>
                     </Stack>
                 </Toolbar>
@@ -211,9 +174,7 @@ function DefaultAppBar() {
                         </Typography>
                     )}
                     {cart?.products?.map((product) => (
-                        <>
-                            <ItemButton key={product.id} text={product.name} index={product.id} />
-                        </>
+                        <ItemButton key={product.id} text={product.name} index={product.id} />
                     ))}
 
                     {/* // products.results.map((result) => {
@@ -237,12 +198,8 @@ function DefaultAppBar() {
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
-                <LoginForm />
+                <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>
-
-            {/* <Drawer currentOpenDrawer={currentOpenDrawer} name="contact">
-                <ContactForm />
-            </Drawer> */}
         </Box>
     );
 }

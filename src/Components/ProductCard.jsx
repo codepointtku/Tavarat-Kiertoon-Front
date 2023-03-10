@@ -7,8 +7,8 @@ import AddToCartButton from './AddToCartButton';
 
 function ProductCard({ productName, id, picture }) {
     return (
-        <Box sx={{ minWidth: 180, display: 'flex', justifyContent: 'center' }}>
-            <Card sx={{ maxWidth: 320 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Card sx={{ maxWidth: 240 }}>
                 <CardActionArea component={Link} to={`/tuotteet/${id}`}>
                     <CardMedia
                         component="img"
@@ -17,22 +17,34 @@ function ProductCard({ productName, id, picture }) {
                         image={`http://localhost:8000/media/${picture}`}
                     />
                     <CardContent>
-                        <Typography variant="h6">{productName}</Typography>
+                        <Typography variant="h6" fontWeight="fontWeightLight" lineHeight="1">
+                            {productName}
+                        </Typography>
                     </CardContent>
                 </CardActionArea>
-                <CardActions>
-                    <Button
-                        variant="outlined"
-                        component={Link}
-                        to={`/tuotteet/${id}`}
-                        size="small"
-                        sx={{ marginRight: 1 }}
-                        startIcon={<InfoOutlinedIcon />}
-                    >
-                        Lisää tietoa
-                    </Button>
-                    <AddToCartButton size="small" id={id} />
-                </CardActions>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '0.2rem',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <CardActions>
+                        <Button
+                            variant="outlined"
+                            component={Link}
+                            to={`/tuotteet/${id}`}
+                            size="small"
+                            sx={{ marginRight: 1 }}
+                            startIcon={<InfoOutlinedIcon />}
+                        >
+                            Lisää tietoa
+                        </Button>
+                        <AddToCartButton size="small" id={id} />
+                    </CardActions>
+                </Box>
             </Card>
         </Box>
     );
