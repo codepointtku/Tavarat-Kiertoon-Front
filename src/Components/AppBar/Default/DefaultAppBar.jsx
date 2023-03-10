@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -25,6 +25,8 @@ import MailIcon from '@mui/icons-material/Mail';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import PhishingIcon from '@mui/icons-material/Phishing';
 
+import AuthContext from '../../../Context/AuthContext';
+import LoggedIn from './LoggedIn';
 import LoginForm from './LoginForm';
 
 //
@@ -105,6 +107,8 @@ const toolBarHover = {
 };
 
 function DefaultAppBar() {
+    const { auth } = useContext(AuthContext);
+    console.log(auth.storage_group);
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
 
     const drawerOpen = (drawer) => () => {
@@ -178,7 +182,7 @@ function DefaultAppBar() {
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
-                <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
+                {auth.storage_group ? <LoggedIn /> : <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />}
             </Drawer>
         </Box>
     );
