@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { useSubmit } from 'react-router-dom';
 import { ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton } from '@mui/material';
 import InboxIcon from '@mui/icons-material/Inbox';
@@ -10,11 +10,7 @@ function ProductInCart({ text, index }) {
     const [hoveredOver, setHoveredOver] = useState(false);
     const submit = useSubmit();
 
-    // index = id
-
-    console.log(index);
-
-    const handleClick = useCallback(() => {
+    const handleClick = () => {
         submit(
             { index },
             {
@@ -22,8 +18,7 @@ function ProductInCart({ text, index }) {
                 action: '/',
             }
         );
-        window.location.reload(true);
-    });
+    };
 
     return (
         <ListItem key={text} disablePadding>
