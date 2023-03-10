@@ -55,6 +55,7 @@ import {
     userEditLoader,
     usersListLoader,
     userSignupLoader,
+    shoppingCartLoader,
 } from './loaders';
 
 import {
@@ -82,11 +83,14 @@ function Routes() {
             errorElement: <ErrorBoundary />,
             id: 'root',
             loader: async () => rootLoader(auth, setAuth),
+            // Loads data only at first page load, not with every route
             shouldRevalidate: () => false,
             children: [
                 {
                     path: '/',
                     element: <BaseLayout />,
+                    id: 'frontPage',
+                    loader: async () => shoppingCartLoader(auth, setAuth),
                     action: async ({ request }) => frontPageActions(auth, setAuth, request),
                     children: [
                         {
