@@ -6,7 +6,7 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import MailIcon from '@mui/icons-material/Mail';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-function ItemButton({ text, index }) {
+function ProductInCart({ text, index }) {
     const [hoveredOver, setHoveredOver] = useState(false);
     const submit = useSubmit();
 
@@ -40,9 +40,9 @@ function ItemButton({ text, index }) {
     );
 }
 
-ItemButton.propTypes = {
+ProductInCart.propTypes = {
     text: PropTypes.string.isRequired,
     index: PropTypes.number.isRequired,
 };
 
-export default ItemButton;
+export default ProductInCart;

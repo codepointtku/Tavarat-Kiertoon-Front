@@ -23,7 +23,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 
-import ItemButton from './ItemButton';
+import ProductInCart from './ItemButton';
 import LoginForm from './LoginForm';
 
 //
@@ -174,7 +174,7 @@ function DefaultAppBar() {
                         </Typography>
                     )}
                     {cart?.products?.map((product) => (
-                        <ItemButton key={product.id} text={product.name} index={product.id} />
+                        <ProductInCart key={product.id} text={product.name} index={product.id} />
                     ))}
 
                     {/* // products.results.map((result) => {

@@ -9,16 +9,16 @@ import apiCall from '../Utils/apiCall';
 const rootLoader = async (auth, setAuth) => {
     console.log('rootLoader, auth:', auth);
 
-    if (auth.user_group === false) {
-        const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }] = await Promise.all([
-            apiCall(auth, setAuth, '/contacts/', 'get'),
-            apiCall(auth, setAuth, '/colors/', 'get'),
-            apiCall(auth, setAuth, '/categories/', 'get'),
-            apiCall(auth, setAuth, '/bulletins/', 'get'),
-        ]);
+    // if (auth.user_group === false) {
+    //     const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }] = await Promise.all([
+    //         apiCall(auth, setAuth, '/contacts/', 'get'),
+    //         apiCall(auth, setAuth, '/colors/', 'get'),
+    //         apiCall(auth, setAuth, '/categories/', 'get'),
+    //         apiCall(auth, setAuth, '/bulletins/', 'get'),
+    //     ]);
 
-        return { contacts, colors, categories, bulletins };
-    }
+    //     return { contacts, colors, categories, bulletins };
+    // }
 
     const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: cart }] =
         await Promise.all([
@@ -62,10 +62,9 @@ const productListLoader = async (auth, setAuth, request) => {
     if (filter) {
         const { data } = await apiCall(auth, setAuth, `/categories/${filter}/products`, 'get');
         return data.results;
-    } else {
-        const { data } = await apiCall(auth, setAuth, '/products/', 'get');
-        return data.results;
     }
+    const { data } = await apiCall(auth, setAuth, '/products/', 'get');
+    return data.results;
 };
 
 /**
