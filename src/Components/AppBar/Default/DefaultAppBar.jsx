@@ -17,6 +17,7 @@ import {
     Divider,
     ListItem,
     ListItemText,
+    Typography,
 } from '@mui/material';
 
 import SearchIcon from '@mui/icons-material/Search';
@@ -134,6 +135,7 @@ function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
     const { cart } = useRouteLoaderData('root');
+    console.log(cart);
 
     // cart?.products?.map((items) => {
     //     cartItems = products.results.filter((result) => items.products.map((productId) => productId === result.id));
@@ -203,8 +205,15 @@ function DefaultAppBar() {
             <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart" onClose={drawerOpen('')}>
                 {/* tähän oma komponentti.. */}
                 <List>
+                    {cart.products.length === 0 && (
+                        <Typography variant="h6" align="center">
+                            Ostoskorisi on tyhjä.
+                        </Typography>
+                    )}
                     {cart?.products?.map((product) => (
-                        <ItemButton key={product.id} text={product.name} index={product.id} />
+                        <>
+                            <ItemButton key={product.id} text={product.name} index={product.id} />
+                        </>
                     ))}
 
                     {/* // products.results.map((result) => {
