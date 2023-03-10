@@ -4,8 +4,6 @@ import apiCall from '../Utils/apiCall';
  * logins user or adds a product to / deletes a product from shopping cart
  */
 const frontPageActions = async (auth, setAuth, request) => {
-    console.log('ollaan frontPageActionssissa');
-
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     if (request.method === 'POST') {
@@ -23,21 +21,22 @@ const frontPageActions = async (auth, setAuth, request) => {
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
             products: id,
         });
-        console.log(id, 'put method test', response.status);
-        if (response.status === 201) {
-            alert('Item added successfully');
-            return { type: 'put', status: true };
+        // console.log(id, 'put method test', response.status);
+        if (response.status === 202) {
+            // alert('Item added successfully');
+            return { type: 'update', status: true };
         }
-        return { type: 'put', status: false };
+        return { type: 'update', status: false };
     }
     if (request.method === 'DELETE') {
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
             products: id,
         });
-        if (response.status === 200) {
-            return { type: 'put', status: true };
+
+        if (response.status === 202) {
+            return { type: 'delete', status: true };
         }
-        return { type: 'put', status: false };
+        return { type: 'delete', status: false };
     }
     return null;
 };
