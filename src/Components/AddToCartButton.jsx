@@ -4,7 +4,7 @@ import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutl
 import { Button } from '@mui/material';
 
 function AddToCartButton({ size, id }) {
-    const { cartItems } = useRouteLoaderData('root');
+    const { cartItems } = useRouteLoaderData('frontPage');
     const submit = useSubmit();
 
     // mitä tietoa back endiin menee kun lomake lähetetään
@@ -17,19 +17,9 @@ function AddToCartButton({ size, id }) {
                 action: '/',
             }
         );
-        window.location.reload(true);
     };
 
     const itemsInCart = cartItems?.filter((item) => item.id === id);
-
-    // cartItems.map((item) => console.log(Object.values(item).includes()));
-    // console.log(cartItems);
-
-    // Tehtävät muutokset
-    // ｜｜ Ostosprosessin navigaation parantaminen jos mahdollista ++ optimoi tekokeino niin, että on mahdollisimman vähän uudelleenkäytettyä koodia
-    // ｜｜ Pudotusvalikon toimintaan saaminen ostosprosessin toisessa vaiheessa ✓
-    // ｜｜ Tuotteiden lisääminen backendistä ostoskoriin toimintaan saanti
-    // ｜｜ React hook formin toimintaan saanti
 
     return (
         <Button
