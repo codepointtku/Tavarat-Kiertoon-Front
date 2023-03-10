@@ -9,31 +9,28 @@ import apiCall from '../Utils/apiCall';
 const rootLoader = async (auth, setAuth) => {
     console.log('rootLoader, auth:', auth);
 
-    // if (auth.user_group === false) {
-    //     const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }] = await Promise.all([
-    //         apiCall(auth, setAuth, '/contacts/', 'get'),
-    //         apiCall(auth, setAuth, '/colors/', 'get'),
-    //         apiCall(auth, setAuth, '/categories/', 'get'),
-    //         apiCall(auth, setAuth, '/bulletins/', 'get'),
-    //     ]);
+    const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }] = await Promise.all([
+        apiCall(auth, setAuth, '/contacts/', 'get'),
+        apiCall(auth, setAuth, '/colors/', 'get'),
+        apiCall(auth, setAuth, '/categories/', 'get'),
+        apiCall(auth, setAuth, '/bulletins/', 'get'),
+    ]);
 
-    //     return { contacts, colors, categories, bulletins };
-    // }
+    return { contacts, colors, categories, bulletins };
+};
 
-    const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: cart }] =
-        await Promise.all([
-            apiCall(auth, setAuth, '/contacts/', 'get'),
-            apiCall(auth, setAuth, '/colors/', 'get'),
-            apiCall(auth, setAuth, '/categories/', 'get'),
-            apiCall(auth, setAuth, '/bulletins/', 'get'),
-            apiCall(auth, setAuth, '/shopping_cart/', 'get'),
-        ]);
+/**
+ * Get shoppingCart for logged in user
+ */
+const shoppingCartLoader = async (auth, setAuth) => {
+    const { data: cart } = await apiCall(auth, setAuth, '/shopping_cart/', 'get');
 
-    console.log('@rootLoader, cart.products:', cart?.products);
-    console.log('cart:', cart);
+    // console.log('@shoppingCartLoader, cart.products:', cart?.products);
+    // console.log('@shoppingCartLoader, cart:', cart);
 
     /* eslint-disable no-shadow */
-
+    // // auth check for future
+    // if (auth.user_group === true){...}
     const cartItems = cart?.products?.reduce((cartItems, product) => {
         let cartItem = cartItems.find((cartItem) => cartItem.group_id === product.group_id);
 
@@ -46,11 +43,11 @@ const rootLoader = async (auth, setAuth) => {
         }
 
         cartItem.count += 1;
-        console.log(cartItems);
+        // console.log(cartItems);
         return cartItems;
     }, []);
 
-    return { contacts, colors, categories, bulletins, cart, cartItems };
+    return { cartItems, cart };
 };
 
 /**
@@ -201,4 +198,5 @@ export {
     userEditLoader,
     userSignupLoader,
     bikesListLoader,
+    shoppingCartLoader,
 };
