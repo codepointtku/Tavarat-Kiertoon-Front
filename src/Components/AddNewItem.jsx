@@ -9,7 +9,6 @@ import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Typog
 import imageCompression from 'browser-image-compression';
 
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 
 function AddNewItem() {
     const { categories } = useRouteLoaderData('root');
@@ -31,7 +30,6 @@ function AddNewItem() {
             amount: 1,
             available: true,
             price: 99.0,
-            group_id: '',
             shelf_id: '',
             measurements: 'wrdrqwf',
             weight: 0.0,
@@ -60,13 +58,24 @@ function AddNewItem() {
 
     const description = watch('description');
 
-    const onSubmit = (formData) => {
-        console.log(errors);
+    const onSubmit = async (data) => {
+        const formData = new FormData();
+        Object.keys(data).forEach((key) => {
+            if (key !== 'pictures') formData.append(key, data[key]);
+        });
+        Object.values(data.pictures).forEach((value) => formData.append('pictures[]', value));
+
+        console.log(formData.get('pictures'));
         console.log('onSubmit formData:', formData);
+
+        /* await apiCall(auth, setAuth, '/products/', 'post', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        }); */
 
         submit(formData, {
             method: 'post',
             action: '/varasto/tuotteet/luo/',
+            encType: 'multipart/form-data',
         });
     };
 
