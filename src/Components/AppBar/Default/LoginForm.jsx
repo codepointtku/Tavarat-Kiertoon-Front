@@ -21,9 +21,12 @@ import {
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import AlertBox from '../../AlertBox';
+import CloseIcon from '@mui/icons-material/Close';
 
-function LoginForm() {
+import AlertBox from '../../AlertBox';
+import Tooltip from '../../Tooltip';
+
+function LoginForm({ setCurrentOpenDrawer }) {
     const { register, handleSubmit } = useForm();
     const submit = useSubmit();
     const responseStatus = useActionData();
@@ -42,20 +45,56 @@ function LoginForm() {
         });
     };
 
+    const handleClickCloseDrawer = () => {
+        setCurrentOpenDrawer('');
+    };
+
+    const CloseDrawerButton = () => {
+        function handleClick() {
+            setCurrentOpenDrawer('');
+        }
+
+        const buttonHover = {
+            '&:hover .MuiAvatar-root': {
+                backgroundColor: 'primary.dark',
+            },
+        };
+
+        return (
+            <Tooltip title="Sulje">
+                <IconButton
+                    onClick={handleClick}
+                    sx={[
+                        buttonHover,
+                        {
+                            p: '0',
+                            marginTop: '1rem',
+                        },
+                    ]}
+                >
+                    <Avatar
+                        sx={{
+                            bgcolor: 'primary.main',
+                            width: 48,
+                            height: 48,
+                        }}
+                    >
+                        <CloseIcon />
+                    </Avatar>
+                </IconButton>
+            </Tooltip>
+        );
+    };
+
     return (
         <>
             {responseStatus?.type === 'login' && !responseStatus?.status && (
-                <>
-                    <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" timer={3000} />
-                    <br />
-                </>
+                <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" timer={3000} />
             )}
             {responseStatus?.type === 'login' && responseStatus?.status && (
-                <>
-                    <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={3000} />
-                    <br />
-                </>
+                <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={3000} />
             )}
+
             <Container maxWidth="xs" component={Form} onSubmit={handleSubmit(onSubmit)}>
                 <Box
                     sx={{
@@ -114,13 +153,20 @@ function LoginForm() {
                             Sisään
                         </Button>
                     </Box>
-                    <MuiLink variant="body2" component={Link} to="/doesnotexist/" sx={{ display: 'block', mt: 6 }}>
+                    <MuiLink variant="body2" component={Link} to="/doesnotexist/" sx={{ display: 'block', mt: 4 }}>
                         Unohtunut salasana?
                     </MuiLink>
 
-                    <Button sx={{ mt: 2 }} variant="outlined" component={Link} to="/rekisteroidy">
+                    <Button
+                        sx={{ mt: 2 }}
+                        variant="outlined"
+                        component={Link}
+                        to="/rekisteroidy"
+                        onClick={handleClickCloseDrawer}
+                    >
                         Luo uusi tunnus
                     </Button>
+                    <CloseDrawerButton />
                 </Box>
             </Container>
         </>

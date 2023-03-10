@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
-import { Container, Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import DefaultAppBar from '../Components/AppBar/Default/DefaultAppBar';
+import NavigationBar from './Components/NavigationBar';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 
@@ -12,11 +13,12 @@ function BaseLayout() {
                 <Header />
                 <DefaultAppBar />
             </header>
-            <Container maxWidth="xl" sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
+            <NavigationBar />
+            <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column', margin: '0 2rem 0 2rem' }}>
                 <main>
                     <Outlet />
                 </main>
-            </Container>
+            </Box>
             <footer>
                 <Footer />
             </footer>
