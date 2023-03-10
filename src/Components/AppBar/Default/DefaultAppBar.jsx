@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useRouteLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
@@ -23,7 +23,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 
-import ProductInCart from './ItemButton';
+import ProductInCart from './ProductInCart';
 import LoginForm from './LoginForm';
 
 //
@@ -106,13 +106,7 @@ const toolBarHover = {
 function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
-    const { cart } = useRouteLoaderData('root');
-    console.log('kartti:', cart);
-
-    // cart?.products?.map((items) => {
-    //     cartItems = products.results.filter((result) => items.products.map((productId) => productId === result.id));
-    //     return cartItems;
-    // });
+    const { cart } = useLoaderData();
 
     const drawerOpen = (drawer) => () => {
         if (currentOpenDrawer === drawer) {
@@ -124,11 +118,8 @@ function DefaultAppBar() {
 
     function navigateToCart() {
         navigate('/ostoskori');
-        setCurrentOpenDrawer(null);
+        setCurrentOpenDrawer('');
     }
-
-    // console.log(cart);
-    // results on taulukko objekteja
 
     return (
         <Box id="appbar-containing-div" sx={toolBarHover}>
@@ -176,12 +167,6 @@ function DefaultAppBar() {
                     {cart?.products?.map((product) => (
                         <ProductInCart key={product.id} text={product.name} index={product.id} />
                     ))}
-
-                    {/* // products.results.map((result) => {
-                        //     if (result.id === item.id) {
-                        //         return <ItemButton text={result.name} index={item.id} />;
-                        //     }
-                        // }) */}
                 </List>
                 <Divider />
                 <List>
