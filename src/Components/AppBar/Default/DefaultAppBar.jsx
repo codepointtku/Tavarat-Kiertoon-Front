@@ -107,7 +107,7 @@ function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
     const { cart } = useRouteLoaderData('root');
-    console.log(cart);
+    console.log('kartti:', cart);
 
     // cart?.products?.map((items) => {
     //     cartItems = products.results.filter((result) => items.products.map((productId) => productId === result.id));
@@ -168,7 +168,7 @@ function DefaultAppBar() {
             <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart" onClose={drawerOpen('')}>
                 {/* tähän oma komponentti.. */}
                 <List>
-                    {cart.products.length === 0 && (
+                    {cart?.products?.length === 0 && (
                         <Typography variant="h6" align="center">
                             Ostoskorisi on tyhjä.
                         </Typography>
