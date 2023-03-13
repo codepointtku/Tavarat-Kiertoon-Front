@@ -109,10 +109,6 @@ const toolBarHover = {
 function DefaultAppBar() {
     const { auth } = useContext(AuthContext);
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
-    // const [user, setUser] = useState(handler());
-
-    // console.log(user);
-
     const drawerOpen = (drawer) => () => {
         if (currentOpenDrawer === drawer) {
             setCurrentOpenDrawer('');
@@ -120,11 +116,6 @@ function DefaultAppBar() {
             setCurrentOpenDrawer(drawer);
         }
     };
-
-    // function handler(userEmail) {
-    //     console.log(userEmail);
-    //     return userEmail === undefined ? 'user not logged in' : userEmail;
-    // }
 
     return (
         <Box id="appbar-containing-div" sx={toolBarHover}>
