@@ -180,7 +180,7 @@ function DefaultAppBar() {
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
-                {auth.storage_group ? (
+                {auth.admin_group ? (
                     <Welcome
                         user={
                             localStorage.getItem('userEmail') === null

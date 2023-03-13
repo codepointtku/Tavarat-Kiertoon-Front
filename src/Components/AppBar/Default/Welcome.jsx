@@ -13,6 +13,7 @@ function Welcome({ user, setCurrentOpenDrawer }) {
             method: 'post',
             action: '/',
         });
+        window.location.reload(true);
     };
 
     return (

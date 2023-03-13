@@ -5,7 +5,7 @@ import apiCall from '../Utils/apiCall';
  */
 const userLoginAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    if (auth.storage_group) {
+    if (auth.admin_group) {
         const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
             formData,
         });
