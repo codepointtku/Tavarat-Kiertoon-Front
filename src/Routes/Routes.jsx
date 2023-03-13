@@ -319,7 +319,7 @@ function Routes() {
                         // NOTE : JTo : 'users' paths need to be checked once users are enabled in back-end
                         {
                             path: 'users',
-                            element: <UsersList />,
+                            element: <Outlet />,
                             children: [
                                 {
                                     index: true,
