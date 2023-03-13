@@ -129,7 +129,7 @@ function LoginForm({ setCurrentOpenDrawer }) {
                     >
                         Luo uusi tunnus
                     </Button>
-                    <CloseDrawerButton />
+                    <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
                 </Box>
             </Container>
         </>

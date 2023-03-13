@@ -187,6 +187,7 @@ function DefaultAppBar() {
                                 ? 'user not logged in'
                                 : localStorage.getItem('userEmail')
                         }
+                        setCurrentOpenDrawer={setCurrentOpenDrawer}
                     />
                 ) : (
                     <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
