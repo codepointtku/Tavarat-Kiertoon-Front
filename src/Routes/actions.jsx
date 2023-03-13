@@ -1,10 +1,19 @@
 import apiCall from '../Utils/apiCall';
 
 /**
- * logins user
+ * logins or logouts user
  */
 const userLoginAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
+    if (auth.storage_group) {
+        const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
+            formData,
+        });
+        if (response.status === 200) {
+            return { type: 'logout', status: true };
+        }
+        return { type: 'logout', status: false };
+    }
     const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
         user_name: formData.get('email'),
         password: formData.get('password'),
