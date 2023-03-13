@@ -69,6 +69,7 @@ const orderEditAction = async (auth, setAuth, request, params) => {
             const response = await apiCall(auth, setAuth, `/orders/${params.id}/`, 'put', {
                 contact: formData.get('contact'),
                 delivery_address: formData.get('delivery_address'),
+                phone_number: formData.get('phone_number'),
                 status: formData.get('status'),
                 order_info: formData.get('order_info'),
             });
