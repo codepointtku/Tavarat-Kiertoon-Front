@@ -6,10 +6,35 @@ function UserEdit() {
     const loader = useLoaderData();
     const [userData, setUserData] = useState(loader);
 
-    const roles = ['kahvinkeittäjä', 'varasto', 'admin'];
+    const roles = ['superkäyttäjä', 'admin', 'henkilökunta', 'ei käyttöoikeuksia'];
 
     const handleChange = (key, event) => {
         setUserData({ ...userData, [key]: event.target.value });
+    };
+
+    const checkPermissions = (user) => {
+        if (user.is_superuser === true) {
+            return 'superkäyttäjä';
+        }
+        if (user.is_admin === true) {
+            return 'admin';
+        }
+        if (user.is_staff === true) {
+            return 'henkilökunta';
+        }
+        return 'ei käyttöoikeuksia';
+    };
+
+    const applyPermissions = (event) => {
+        if (event.target.value === 'superkäyttäjä') {
+            setUserData({ ...userData, is_superuser: true, is_admin: true, is_staff: true });
+        } else if (event.target.value === 'admin') {
+            setUserData({ ...userData, is_superuser: false, is_admin: true, is_staff: true });
+        } else if (event.target.value === 'henkilökunta') {
+            setUserData({ ...userData, is_superuser: false, is_admin: false, is_staff: true });
+        } else {
+            setUserData({ ...userData, is_superuser: false, is_admin: false, is_staff: false });
+        }
     };
 
     return (
@@ -30,13 +55,13 @@ function UserEdit() {
                 </div>
                 <div>
                     <h5>
-                        <TextField disabled defaultValue={userData.phone} label="Alkuperäinen numero" />
+                        <TextField disabled defaultValue={userData.phone_number} label="Alkuperäinen numero" />
                         <TextField
                             label="Muokkaa puhelinnumeroa"
                             onChange={(event) => {
-                                handleChange('phone', event);
+                                handleChange('phone_number', event);
                             }}
-                            defaultValue={userData.phone}
+                            defaultValue={userData.phone_number}
                         />
                     </h5>
                 </div>
@@ -54,16 +79,20 @@ function UserEdit() {
                 </div>
                 <div>
                     <h5>
-                        <TextField disabled defaultValue={userData.roles} label="Alkuperäinen käyttöoikeus" />
+                        <TextField
+                            disabled
+                            defaultValue={checkPermissions(userData)}
+                            label="Alkuperäinen käyttöoikeus"
+                        />
                         <TextField
                             id="outlined-select"
                             select
                             label="Muokkaa käyttäjän oikeuksia"
                             onChange={(event) => {
-                                handleChange('roles', event);
+                                applyPermissions(event);
                             }}
                             sx={{ width: '19%' }}
-                            value={userData.roles}
+                            value={checkPermissions(userData)}
                         >
                             {roles.map((role) => (
                                 <MenuItem key={role} value={role}>
@@ -75,7 +104,13 @@ function UserEdit() {
                 </div>
             </Box>
             <h5 align="center">
-                <Button>Tallenna käyttäjän tiedot</Button>
+                <Button
+                    onClick={() => {
+                        console.log(userData);
+                    }}
+                >
+                    Tallenna käyttäjän tiedot
+                </Button>
             </h5>
         </>
     );
