@@ -26,7 +26,7 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import PhishingIcon from '@mui/icons-material/Phishing';
 
 import AuthContext from '../../../Context/AuthContext';
-import LoggedIn from './LoggedIn';
+import Welcome from './Welcome';
 import LoginForm from './LoginForm';
 
 //
@@ -108,8 +108,10 @@ const toolBarHover = {
 
 function DefaultAppBar() {
     const { auth } = useContext(AuthContext);
-    console.log(auth.storage_group);
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
+    // const [user, setUser] = useState(handler());
+
+    // console.log(user);
 
     const drawerOpen = (drawer) => () => {
         if (currentOpenDrawer === drawer) {
@@ -118,6 +120,11 @@ function DefaultAppBar() {
             setCurrentOpenDrawer(drawer);
         }
     };
+
+    // function handler(userEmail) {
+    //     console.log(userEmail);
+    //     return userEmail === undefined ? 'user not logged in' : userEmail;
+    // }
 
     return (
         <Box id="appbar-containing-div" sx={toolBarHover}>
@@ -182,7 +189,17 @@ function DefaultAppBar() {
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
-                {auth.storage_group ? <LoggedIn /> : <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />}
+                {auth.storage_group ? (
+                    <Welcome
+                        user={
+                            localStorage.getItem('userEmail') === null
+                                ? 'user not logged in'
+                                : localStorage.getItem('userEmail')
+                        }
+                    />
+                ) : (
+                    <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
+                )}
             </Drawer>
         </Box>
     );

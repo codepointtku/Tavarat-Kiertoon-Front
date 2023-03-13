@@ -37,12 +37,13 @@ function LoginForm({ setCurrentOpenDrawer }) {
         event.preventDefault();
     };
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         const formData = { ...data };
         submit(formData, {
             method: 'post',
             action: '/',
         });
+        localStorage.setItem('userEmail', formData.email);
     };
 
     const handleClickCloseDrawer = () => {
