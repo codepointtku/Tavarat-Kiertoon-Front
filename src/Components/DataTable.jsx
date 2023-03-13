@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
     Table,
     TableBody,
+    TableCell,
     TableContainer,
     TableHead,
     TableFooter,
@@ -10,7 +11,7 @@ import {
     TableRow,
     Paper,
 } from '@mui/material';
-import { Link, useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import TablePaginationActions from './TablePaginationActions';
 import StyledTableCell from './StyledTableCell';
 import StyledTableRow from './StyledTableRow';
@@ -18,6 +19,7 @@ import SortByMenu from './SortByMenu';
 
 function OrderListTable({ page, rowsPerPage, setUsedParams }) {
     const orders = useLoaderData();
+    const navigate = useNavigate();
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - orders.length) : 0;
 
@@ -64,16 +66,21 @@ function OrderListTable({ page, rowsPerPage, setUsedParams }) {
                         ? orders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : orders
                     ).map((row) => (
-                        <StyledTableRow key={row.id}>
-                            <StyledTableCell component="th" scope="row">
-                                <Link to={`/varasto/tilaus/${row.id}?page=0&rows=5`}>{row.id}</Link>
-                            </StyledTableCell>
-                            <StyledTableCell align="right">{row.status}</StyledTableCell>
-                            <StyledTableCell align="right">{row.delivery_address}</StyledTableCell>
-                            <StyledTableCell align="right">{row.user}</StyledTableCell>
-                            <StyledTableCell align="right">{row.contact}</StyledTableCell>
-                            <StyledTableCell align="right">{dateParse(row.delivery_date)}</StyledTableCell>
-                        </StyledTableRow>
+                        <TableRow
+                            key={row.id}
+                            style={{ cursor: 'pointer' }}
+                            hover
+                            onClick={() => navigate(`/varasto/tilaus/${row.id}?page=0&rows=5`)}
+                        >
+                            <TableCell component="th" scope="row">
+                                {row.id}
+                            </TableCell>
+                            <TableCell align="right">{row.status}</TableCell>
+                            <TableCell align="right">{row.delivery_address}</TableCell>
+                            <TableCell align="right">{row.user}</TableCell>
+                            <TableCell align="right">{row.contact}</TableCell>
+                            <TableCell align="right">{dateParse(row.delivery_date)}</TableCell>
+                        </TableRow>
                     ))}
 
                     {emptyRows > 0 && (

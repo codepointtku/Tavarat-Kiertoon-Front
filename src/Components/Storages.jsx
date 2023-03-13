@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 import { useNavigate, Link } from 'react-router-dom';
-import { Table, TableBody, TableContainer, TableHead, TableRow, TableCell, Button } from '@mui/material';
+import { Table, TableBody, TableContainer, TableHead, TableRow, TableCell, Button, Paper } from '@mui/material';
 import StyledTableCell from './StyledTableCell';
 
 function Storages({ storages }) {
     const navigate = useNavigate();
 
     return (
-        <TableContainer align="center" sx={{ padding: '2rem' }}>
-            <Table style={{ width: 1200 }} aria-label="customized table">
+        <TableContainer component={Paper} align="center" sx={{ padding: '2rem' }}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
                     <TableRow>
                         <StyledTableCell>Varasto ID </StyledTableCell>
