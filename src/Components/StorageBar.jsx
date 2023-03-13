@@ -44,7 +44,7 @@ export default function StorageBar() {
                             <Button
                                 key={page.name}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
-                                to="/varasto/0/delivery?page=0&rows=5"
+                                to={page.path}
                                 component={Link}
                             >
                                 {page.name}
