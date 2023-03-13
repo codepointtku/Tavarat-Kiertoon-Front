@@ -17,6 +17,8 @@ function ErrorBoundary() {
         if (err?.status === 404) {
             return 'noroute';
         }
+        // for development console logging errors
+        console.log(err);
         return 'else';
     };
 
