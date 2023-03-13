@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
+import { useNavigate } from 'react-router-dom';
 import {
     Container,
     TextField,
@@ -15,7 +16,14 @@ import { useForm } from 'react-hook-form';
 import { Form, useSubmit } from 'react-router-dom';
 
 function ContactPage() {
-    const { register, handleSubmit, watch } = useForm();
+    const navigate = useNavigate();
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { isSubmitted },
+    } = useForm();
     const submit = useSubmit();
 
     const subject = watch('subject');
@@ -26,6 +34,7 @@ function ContactPage() {
             method: 'post',
             action: '/otayhteytta',
         });
+        navigate('/');
     };
 
     return (
@@ -115,6 +124,7 @@ function ContactPage() {
                         rows={6}
                     />
                     <Button
+                        disabled={isSubmitted}
                         type="submit"
                         style={{ width: 200 }}
                         sx={{
