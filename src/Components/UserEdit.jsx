@@ -1,10 +1,12 @@
 import { MenuItem, TextField, Box, Button } from '@mui/material';
 import { useState } from 'react';
 import { useLoaderData } from 'react-router';
+// import { useSubmit } from 'react-router-dom';
 
 function UserEdit() {
     const loader = useLoaderData();
     const [userData, setUserData] = useState(loader);
+    // const submit = useSubmit();
 
     const roles = ['superkäyttäjä', 'admin', 'henkilökunta', 'ei käyttöoikeuksia'];
 
@@ -106,6 +108,15 @@ function UserEdit() {
             <h5 align="center">
                 <Button
                     onClick={() => {
+                        /*
+                        submit(
+                            {
+                                type: 'put',
+                                ...userData,
+                            },
+                            { method: 'post' }
+                        );
+                        */
                         console.log(userData);
                     }}
                 >
