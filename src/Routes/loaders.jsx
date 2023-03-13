@@ -27,10 +27,9 @@ const productListLoader = async (auth, setAuth, request) => {
     if (filter) {
         const { data } = await apiCall(auth, setAuth, `/categories/${filter}/products`, 'get');
         return data.results;
-    } else {
-        const { data } = await apiCall(auth, setAuth, '/products/', 'get');
-        return data.results;
     }
+    const { data } = await apiCall(auth, setAuth, '/products/', 'get');
+    return data.results;
 };
 
 /**
@@ -55,7 +54,7 @@ const ordersListLoader = async (auth, setAuth, params) => {
         finished: 0,
     };
     statuses[params.view] = 10;
-    data.sort((a, b) => {
+    data.results.sort((a, b) => {
         if (statuses[a.status] > statuses[b.status]) {
             return -1;
         }
@@ -67,7 +66,7 @@ const ordersListLoader = async (auth, setAuth, params) => {
         return 1;
     });
 
-    return data;
+    return data.results;
 };
 
 /**
