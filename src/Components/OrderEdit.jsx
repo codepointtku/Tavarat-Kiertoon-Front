@@ -159,6 +159,27 @@ function OrderEdit() {
                 </div>
                 <div>
                     <h5>
+                        <TextField disabled defaultValue={orderData.phone_number} label="Alkuperäinen puhelinnumero" />
+                        <TextField
+                            focused={checkChange('phone_number')}
+                            label="Muokkaa puhelinnumeroa"
+                            onChange={(event) => {
+                                handleChange('phone_number', event);
+                            }}
+                            value={orderState.phone_number}
+                        />
+                        <Button
+                            sx={{ mt: '8px', ml: '1rem' }}
+                            onClick={() => {
+                                revertChange('phone_number');
+                            }}
+                        >
+                            Peruuta muutokset
+                        </Button>
+                    </h5>
+                </div>
+                <div>
+                    <h5>
                         <TextField disabled defaultValue={orderData.status} label="Alkuperäinen status" />
                         <TextField
                             focused={checkChange('status')}
