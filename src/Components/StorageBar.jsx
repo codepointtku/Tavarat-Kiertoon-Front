@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { useNavigate, Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 export default function StorageBar() {
     const [currentPage, setCurrentPage] = useState('Tilaukset');
@@ -14,7 +14,6 @@ export default function StorageBar() {
         { name: 'Luo tuote', path: '/varasto/luo' },
     ];
 
-    const navigate = useNavigate();
     const location = useLocation();
     const { id } = useParams();
 
@@ -32,7 +31,7 @@ export default function StorageBar() {
 
     function handleNavigation(path) {
         if (path !== location.pathname) {
-            navigate(path);
+            <Link to={path} />;
         }
     }
 
@@ -41,7 +40,7 @@ export default function StorageBar() {
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        <Link to="/varasto/0/delivery?rows=5&page=0" style={{ color: 'white' }}>
+                        <Link to="/varasto/0/delivery?page=0&rows=5" style={{ color: 'white' }}>
                             Varasto
                         </Link>
                         <Typography variant="subtitle2">{currentPage}</Typography>
