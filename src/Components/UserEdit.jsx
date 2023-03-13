@@ -91,7 +91,7 @@ function UserEdit() {
                             onChange={(event) => {
                                 applyPermissions(event);
                             }}
-                            sx={{ width: '19%' }}
+                            sx={{ width: '27%' }}
                             value={checkPermissions(userData)}
                         >
                             {roles.map((role) => (
