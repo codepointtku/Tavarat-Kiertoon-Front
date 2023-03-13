@@ -6,7 +6,7 @@ import apiCall from '../Utils/apiCall';
 const userLoginAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
-        user_name: formData.get('email'),
+        username: formData.get('email'),
         password: formData.get('password'),
     });
     if (response.status === 200) {
@@ -21,7 +21,7 @@ const userLoginAction = async (auth, setAuth, request) => {
 const userSignupAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, '/users/create/', 'post', {
-        user_name: formData.get('username'),
+        username: formData.get('username'),
         first_name: formData.get('firstname'),
         last_name: formData.get('lastname'),
         email: formData.get('email'),
