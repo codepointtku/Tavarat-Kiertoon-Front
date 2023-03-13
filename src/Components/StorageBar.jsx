@@ -29,12 +29,6 @@ export default function StorageBar() {
         }
     }, [location]);
 
-    function handleNavigation(path) {
-        if (path !== location.pathname) {
-            <Link to={path} />;
-        }
-    }
-
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -50,9 +44,8 @@ export default function StorageBar() {
                             <Button
                                 key={page.name}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
-                                onClick={() => {
-                                    handleNavigation(`${page.path}`);
-                                }}
+                                to="/varasto/0/delivery?page=0&rows=5"
+                                component={Link}
                             >
                                 {page.name}
                             </Button>
