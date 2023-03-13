@@ -35,7 +35,7 @@ function Storages({ storages }) {
                 </TableBody>
             </Table>
             <h5>
-                <Button onClick={() => navigate('varastot/luo')}>Luo varasto</Button>
+                <Button onClick={() => navigate('luo')}>Luo varasto</Button>
             </h5>
         </TableContainer>
     );
