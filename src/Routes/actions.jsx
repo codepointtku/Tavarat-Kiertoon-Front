@@ -8,10 +8,9 @@ const frontPageActions = async (auth, setAuth, request) => {
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     if (request.method === 'POST') {
         const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
-            user_name: formData.get('email'),
+            username: formData.get('email'),
             password: formData.get('password'),
         });
-        console.log(response.status);
         if (response.status === 200) {
             return { type: 'login', status: true };
         }
@@ -51,7 +50,7 @@ const frontPageActions = async (auth, setAuth, request) => {
 const userSignupAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, '/users/create/', 'post', {
-        user_name: formData.get('username'),
+        username: formData.get('username'),
         first_name: formData.get('firstname'),
         last_name: formData.get('lastname'),
         email: formData.get('email'),
@@ -99,6 +98,7 @@ const orderEditAction = async (auth, setAuth, request, params) => {
             const response = await apiCall(auth, setAuth, `/orders/${params.id}/`, 'put', {
                 contact: formData.get('contact'),
                 delivery_address: formData.get('delivery_address'),
+                phone_number: formData.get('phone_number'),
                 status: formData.get('status'),
                 order_info: formData.get('order_info'),
             });
@@ -135,7 +135,7 @@ const storageEditAction = async (auth, setAuth, request, params) => {
     const formData = await request.formData();
     if (request.method === 'POST') {
         if (formData.get('type') === 'put') {
-            const response = await apiCall(auth, setAuth, `/storages/${params.id}`, 'put', {
+            const response = await apiCall(auth, setAuth, `/storages/${params.id}/`, 'put', {
                 address: formData.get('address'),
                 name: formData.get('name'),
                 in_use: formData.get('in_use'),
