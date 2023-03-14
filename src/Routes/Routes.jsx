@@ -239,6 +239,10 @@ function Routes() {
                     ),
                     children: [
                         {
+                            index: true,
+                            element: <Navigate to="0/delivery?page=0&rows=5" />,
+                        },
+                        {
                             path: ':num/:view',
                             element: <OrdersList />,
                             loader: async ({ params }) => ordersListLoader(auth, setAuth, params),
