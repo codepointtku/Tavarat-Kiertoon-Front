@@ -32,15 +32,8 @@ function ProductCard({ productName, id, picture }) {
                     }}
                 >
                     <CardActions>
-                        <Button
-                            variant="outlined"
-                            component={Link}
-                            to={`/tuotteet/${id}`}
-                            size="small"
-                            sx={{ marginRight: 1 }}
-                            startIcon={<InfoOutlinedIcon />}
-                        >
-                            Lisää tietoa
+                        <Button variant="outlined" component={Link} to={`/tuotteet/${id}`} size="small">
+                            <InfoOutlinedIcon fontSize="small" />
                         </Button>
                         <AddToCartButton size="small" id={id} />
                     </CardActions>
