@@ -4,18 +4,48 @@ import apiCall from '../Utils/apiCall';
 // just a comment for file-rename commit to work. remove this
 
 /**
- * Get different defaults for the site
+ * Get various defaults for the site
  */
 const rootLoader = async (auth, setAuth) => {
-    const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: shoppingCart }] =
-        await Promise.all([
-            apiCall(auth, setAuth, '/contacts/', 'get'),
-            apiCall(auth, setAuth, '/colors/', 'get'),
-            apiCall(auth, setAuth, '/categories/', 'get'),
-            apiCall(auth, setAuth, '/bulletins/', 'get'),
-            apiCall(auth, setAuth, '/shopping_carts/', 'get'),
-        ]);
-    return { contacts, colors, categories, bulletins, shoppingCart };
+    const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }] = await Promise.all([
+        apiCall(auth, setAuth, '/contacts/', 'get'),
+        apiCall(auth, setAuth, '/colors/', 'get'),
+        apiCall(auth, setAuth, '/categories/', 'get'),
+        apiCall(auth, setAuth, '/bulletins/', 'get'),
+    ]);
+
+    return { contacts, colors, categories, bulletins };
+};
+
+/**
+ * Get shoppingCart for logged in user
+ */
+const shoppingCartLoader = async (auth, setAuth) => {
+    const { data: cart } = await apiCall(auth, setAuth, '/shopping_cart/', 'get');
+
+    // console.log('@shoppingCartLoader, cart.products:', cart?.products);
+    // console.log('@shoppingCartLoader, cart:', cart);
+
+    /* eslint-disable no-shadow */
+    // // auth check for future
+    // if (auth.user_group === true){...}
+    const cartItems = cart?.products?.reduce((cartItems, product) => {
+        let cartItem = cartItems.find((cartItem) => cartItem.group_id === product.group_id);
+
+        if (!cartItem) {
+            cartItem = {
+                ...product,
+                count: 0,
+            };
+            cartItems.push(cartItem);
+        }
+
+        cartItem.count += 1;
+        // console.log(cartItems);
+        return cartItems;
+    }, []);
+
+    return { cartItems, cart };
 };
 
 /**
@@ -166,4 +196,5 @@ export {
     userEditLoader,
     userSignupLoader,
     bikesListLoader,
+    shoppingCartLoader,
 };

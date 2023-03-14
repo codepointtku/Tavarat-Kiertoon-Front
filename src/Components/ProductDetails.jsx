@@ -14,10 +14,9 @@ import {
     Grid,
 } from '@mui/material';
 
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-
 import BackButton from './BackButton';
 import AuthContext from '../Context/AuthContext';
+import AddToCartButton from './AddToCartButton';
 
 function ProductDetails() {
     const { id: productId } = useParams();
@@ -91,10 +90,7 @@ function ProductDetails() {
                             </>
                         </CardContent>
                         <CardActions>
-                            <Button size="medium" aria-label="add to shopping cart">
-                                <AddShoppingCartIcon />
-                                Lisää koriin
-                            </Button>
+                            <AddToCartButton size="medium" id={Number(productId)} productName={productName} />
                         </CardActions>
                     </Card>
                 </Grid>

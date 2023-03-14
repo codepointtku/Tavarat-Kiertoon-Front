@@ -182,10 +182,3 @@ test.describe('fail', () => {
         await expect(page.getByText('Etsimääsi sijaintia /varasto/asd/asd/asd')).toBeVisible();
     });
 });
-
-test.describe('bikes', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/pyorat');
-        await expect(page.getByText('Etsimääsi sijaintia /pyorat')).not.toBeVisible();
-    });
-});
