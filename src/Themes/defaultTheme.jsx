@@ -43,7 +43,7 @@ const defaultTheme = createTheme({
         },
     },
     typography: {
-        fontSize: 16,
+        fontSize: 14,
         fontSizeSmall: 12,
         // fontWeight: "choice", (default=fontWeightRegular)
         fontWeightThin: 100,

@@ -5,10 +5,12 @@ import { ThemeProvider } from '@mui/material';
 import DefaultView from './DefaultView';
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
+
 import BaseLayout from '../Layouts/BaseLayout';
 import StorageLayout from '../Layouts/StorageLayout';
 import AdminLayout from '../Layouts/AdminLayout';
 import RootLayout from '../Layouts/RootLayout';
+import BikesLayout from '../Layouts/BikesLayout';
 
 import OrdersList from '../Components/OrdersList';
 import OrderView from '../Components/OrderView';
@@ -17,6 +19,8 @@ import QrScanner from '../Components/QrScanner';
 
 import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
+
+import BikesPage from '../Components/Bikes/BikesPage';
 
 import ProductDetails from '../Components/ProductDetails';
 import Announcements from '../Components/Announcements';
@@ -51,6 +55,7 @@ import {
     userEditLoader,
     usersListLoader,
     userSignupLoader,
+    bikesListLoader,
 } from './loaders';
 
 import {
@@ -88,7 +93,7 @@ function Routes() {
                         {
                             index: true,
                             element: <DefaultView />,
-                            loader: async () => productListLoader(auth, setAuth),
+                            loader: async ({ request }) => productListLoader(auth, setAuth, request),
                         },
                         {
                             path: 'tuotteet',
@@ -213,6 +218,10 @@ function Routes() {
                     ),
                     children: [
                         {
+                            index: true,
+                            element: <Navigate to="0/delivery?page=0&rows=5" />,
+                        },
+                        {
                             path: ':num/:view',
                             element: <OrdersList />,
                             loader: async ({ params }) => ordersListLoader(auth, setAuth, params),
@@ -332,6 +341,18 @@ function Routes() {
                         {
                             path: 'hakemukset',
                             element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
+                        },
+                    ],
+                },
+                {
+                    path: '/pyorat',
+                    element: <BikesLayout />,
+                    children: [
+                        {
+                            path: '/pyorat',
+                            element: <BikesPage />,
+                            loader: bikesListLoader,
+                            shouldRevalidate: () => false,
                         },
                     ],
                 },
