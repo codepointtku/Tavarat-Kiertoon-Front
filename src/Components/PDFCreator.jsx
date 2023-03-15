@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { border } from '@mui/system';
 import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
 // import logo from '../Assets/turku_pysty_300ppi_viiva_black.png';
 import logo from '../Assets/LOGO.png';
@@ -38,8 +37,8 @@ const styles = StyleSheet.create({
         flex: 0.4,
     },
     // Section
-    freeDescriptionSection: {
-        border: '1px solid black',
+    orderInfoSection: {
+        border: '1px solid lightgray',
         flexDirection: 'column',
         flex: 0.4,
         padding: 10,
@@ -47,7 +46,7 @@ const styles = StyleSheet.create({
     },
     // Section
     listSection: {
-        border: '1px solid black',
+        // border: '1px solid black',
         padding: 10,
         flex: 0.5,
         lineHeight: '1.5',
@@ -56,6 +55,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-start',
         fontSize: 10,
+        marginLeft: 10,
     },
     productPage: {
         flexDirection: 'row',
@@ -63,10 +63,12 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     product: {
-        width: '50%', // 2 products / line
+        width: '48%', // 2 products / line
         height: '25%', // 4 lines of products / page
         fontSize: 12,
-        padding: '20px',
+        padding: 10,
+        margin: 5,
+        border: '1px solid lightgray',
     },
 });
 
@@ -76,16 +78,14 @@ function PDFDocument({ order }) {
     const productsPerPage = 8
     const productOnFirstPage = 4
 
-    // products from props
-    const orderProducts = order.products;
-    console.log('### PDFCreator:', orderProducts)
-
-    // create productList array to show.
+    // create productList array to render.
+    // read order.products that contains every product individually
     // move orderProducts with same barcode into same array inside productList array.
-    //  => productList[0][0] is a product
+    //  => productList.length is number of different products
+    //  => productList[0][0] is a single product
     //  => productList[0].length is the number of those products
     const productList = []
-    orderProducts.forEach(orderProduct => {
+    order.products.forEach(orderProduct => {
         const i = productList.findIndex(productListProduct => productListProduct[0]?.barcode === orderProduct.barcode)
         if (i < 0) {
             productList.push([orderProduct])
@@ -93,7 +93,10 @@ function PDFDocument({ order }) {
         }
         productList[i].push([orderProduct])
     });
-    // console.log('### productList', productList[1][0].barcode,productList[1].length)
+
+    // calculate the number of pages needed
+
+
 
     // Address section on top of the page
     const addressSection = (
@@ -116,7 +119,20 @@ function PDFDocument({ order }) {
         </View>
     )
 
-
+    const orderInfoSection = (
+        <View style={styles.orderInfoSection}>
+            <Text style={{ marginVertical: 10 }}>Lisätietoa</Text>
+            <Text style={{ fontSize: 10, marginLeft: 10 }}>{order.order_info}</Text>
+            <Text style={{ marginVertical: 10 }}>Tuotteet</Text>
+            <View style={styles.list}>
+                {productList.map((product, index) => (
+                    <Text key={product[0].id}>
+                        {product[0].name} x {product.length}{index === productList.length-1 ? '' : ', '}
+                    </Text>
+                ))}
+            </View>
+        </View>
+    )
 
 
     return (
@@ -124,29 +140,18 @@ function PDFDocument({ order }) {
             <Page size="A4" style={styles.orderPage}>
                 <Text>Tavarat kiertoon</Text>
                 {addressSection}
-                <View style={styles.freeDescriptionSection}>
-                    <Text style={{ marginVertical: 5 }}>Lisätietoa</Text>
-                    <Text style={{ fontSize: 10 }}>{order.order_info}</Text>
-                    <Text style={{ marginVertical: 5 }}>Tuotteet</Text>
-                    <View style={styles.list}>
-                        {orderProducts.map((product, index) => (
-                            <Text key={product.id}>
-                                {product.name}{index === orderProducts.length-1 ? '' : ', '}
-                            </Text>
-                        ))}
-                    </View>
-                </View>
+                {orderInfoSection}
                 <View style={styles.listSection}>
                 </View>
             </Page>
 
             <Page style={styles.productPage}>
-                {orderProducts.map((product, index) => (
-                    <View style={styles.product} key={product.id}>
-                        <Text>
-                            Tuote {product.id}: {product.name}
+                {productList.map((product) => (
+                    <View style={styles.product} key={product[0].id}>
+                        <Text style={{ marginBottom: "5px" }}>
+                            Tuote {product[0].id}: {product[0].name}, {product.length} kpl
                         </Text>
-                        <Image src={`${baseUrl}/media/${product.pictures[0]}`} style={{ width: '200px' }} />
+                        <Image src={`${baseUrl}/media/${product[0].pictures[0]}`} style={{ width: '200px' }} />
 
                         <Text>Tähän voi kirjoittaa lisää tietoa tuotteesta</Text>
                     </View>
