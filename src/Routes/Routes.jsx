@@ -9,6 +9,7 @@ import BaseLayout from '../Layouts/BaseLayout';
 import StorageLayout from '../Layouts/StorageLayout';
 import AdminLayout from '../Layouts/AdminLayout';
 import RootLayout from '../Layouts/RootLayout';
+import BikesLayout from '../Layouts/BikesLayout';
 
 import OrdersList from '../Components/OrdersList';
 import OrderView from '../Components/OrderView';
@@ -17,6 +18,8 @@ import QrScanner from '../Components/QrScanner';
 
 import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
+
+import BikesPage from '../Components/Bikes/BikesPage';
 
 import ProductDetails from '../Components/ProductDetails';
 import Announcements from '../Components/Announcements';
@@ -56,6 +59,7 @@ import {
     usersListLoader,
     userSignupLoader,
     shoppingCartLoader,
+    bikesListLoader,
 } from './loaders';
 
 import {
@@ -73,6 +77,7 @@ import GuideAccount from '../Components/Instructions/GuideAccount';
 import GuideOrdering from '../Components/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
+
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
@@ -365,6 +370,19 @@ function Routes() {
                         },
                     ],
                 },
+                {
+                    path: '/pyorat',
+                    element: <BikesLayout />,
+                    children: [
+                        {
+                            path: '/pyorat',
+                            element: <BikesPage />,
+                            loader: bikesListLoader,
+                            shouldRevalidate: () => false,
+                        },
+                    ],
+                },
+
             ],
         },
     ]);
