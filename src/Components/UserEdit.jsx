@@ -1,17 +1,28 @@
-import { MenuItem, TextField, Box, Button } from '@mui/material';
+import { MenuItem, TextField, Box, Button, Grid, Container } from '@mui/material';
 import { useState } from 'react';
 import { useLoaderData } from 'react-router';
 // import { useSubmit } from 'react-router-dom';
 
 function UserEdit() {
-    const loader = useLoaderData();
-    const [userData, setUserData] = useState(loader);
+    const userData = useLoaderData();
+    const [userState, setUserState] = useState(userData);
     // const submit = useSubmit();
 
     const roles = ['superkäyttäjä', 'admin', 'henkilökunta', 'ei käyttöoikeuksia'];
 
     const handleChange = (key, event) => {
-        setUserData({ ...userData, [key]: event.target.value });
+        setUserState({ ...userState, [key]: event.target.value });
+    };
+
+    const revertChange = (key) => {
+        setUserState({ ...userState, [key]: userData[key] });
+    };
+
+    const checkChange = (key) => {
+        if (userState[key] === userData[key]) {
+            return false;
+        }
+        return true;
     };
 
     const checkPermissions = (user) => {
@@ -29,13 +40,13 @@ function UserEdit() {
 
     const applyPermissions = (event) => {
         if (event.target.value === 'superkäyttäjä') {
-            setUserData({ ...userData, is_superuser: true, is_admin: true, is_staff: true });
+            setUserState({ ...userState, is_superuser: true, is_admin: true, is_staff: true });
         } else if (event.target.value === 'admin') {
-            setUserData({ ...userData, is_superuser: false, is_admin: true, is_staff: true });
+            setUserState({ ...userState, is_superuser: false, is_admin: true, is_staff: true });
         } else if (event.target.value === 'henkilökunta') {
-            setUserData({ ...userData, is_superuser: false, is_admin: false, is_staff: true });
+            setUserState({ ...userState, is_superuser: false, is_admin: false, is_staff: true });
         } else {
-            setUserData({ ...userData, is_superuser: false, is_admin: false, is_staff: false });
+            setUserState({ ...userState, is_superuser: false, is_admin: false, is_staff: false });
         }
     };
 
@@ -43,67 +54,119 @@ function UserEdit() {
         <>
             <h1 align="center">Muokkaa käyttäjää {userData.id}</h1>
             <Box align="center">
-                <div>
-                    <h5>
-                        <TextField disabled defaultValue={userData.name} label="Alkuperäinen nimi" />
-                        <TextField
-                            label="Muokkaa nimeä"
-                            onChange={(event) => {
-                                handleChange('name', event);
-                            }}
-                            defaultValue={userData.name}
-                        />
-                    </h5>
-                </div>
-                <div>
-                    <h5>
-                        <TextField disabled defaultValue={userData.phone_number} label="Alkuperäinen numero" />
-                        <TextField
-                            label="Muokkaa puhelinnumeroa"
-                            onChange={(event) => {
-                                handleChange('phone_number', event);
-                            }}
-                            defaultValue={userData.phone_number}
-                        />
-                    </h5>
-                </div>
-                <div>
-                    <h5>
-                        <TextField disabled defaultValue={userData.email} label="Alkuperäinen sähköposti" />
-                        <TextField
-                            label="Muokkaa sähköpostia"
-                            onChange={(event) => {
-                                handleChange('email', event);
-                            }}
-                            defaultValue={userData.email}
-                        />
-                    </h5>
-                </div>
-                <div>
-                    <h5>
-                        <TextField
-                            disabled
-                            defaultValue={checkPermissions(userData)}
-                            label="Alkuperäinen käyttöoikeus"
-                        />
-                        <TextField
-                            id="outlined-select"
-                            select
-                            label="Muokkaa käyttäjän oikeuksia"
-                            onChange={(event) => {
-                                applyPermissions(event);
-                            }}
-                            sx={{ width: '27%' }}
-                            value={checkPermissions(userData)}
-                        >
-                            {roles.map((role) => (
-                                <MenuItem key={role} value={role}>
-                                    {role}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </h5>
-                </div>
+                <Container maxWidth="md">
+                    <Grid container spacing={4}>
+                        <Grid item xs={4}>
+                            <TextField disabled fullWidth defaultValue={userData.name} label="Alkuperäinen nimi" />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField
+                                label="Muokkaa nimeä"
+                                fullWidth
+                                focused={checkChange('name')}
+                                onChange={(event) => {
+                                    handleChange('name', event);
+                                }}
+                                value={userState.name}
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Button
+                                onClick={() => {
+                                    revertChange('name');
+                                }}
+                            >
+                                Peruuta muutokset
+                            </Button>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField
+                                disabled
+                                fullWidth
+                                defaultValue={userData.phone_number}
+                                label="Alkuperäinen numero"
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField
+                                label="Muokkaa puhelinnumeroa"
+                                fullWidth
+                                focused={checkChange('phone_number')}
+                                onChange={(event) => {
+                                    handleChange('phone_number', event);
+                                }}
+                                value={userState.phone_number}
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Button
+                                onClick={() => {
+                                    revertChange('phone_number');
+                                }}
+                            >
+                                Peruuta muutokset
+                            </Button>
+                        </Grid>
+
+                        <Grid item xs={4}>
+                            <TextField
+                                disabled
+                                fullWidth
+                                defaultValue={userData.email}
+                                label="Alkuperäinen sähköposti"
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField
+                                label="Muokkaa sähköpostia"
+                                fullWidth
+                                focused={checkChange('email')}
+                                onChange={(event) => {
+                                    handleChange('email', event);
+                                }}
+                                value={userState.email}
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Button
+                                onClick={() => {
+                                    revertChange('email');
+                                }}
+                            >
+                                Peruuta muutokset
+                            </Button>
+                        </Grid>
+
+                        <Grid item xs={4}>
+                            <TextField
+                                disabled
+                                defaultValue={checkPermissions(userData)}
+                                label="Alkuperäinen käyttöoikeus"
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField
+                                id="outlined-select"
+                                select
+                                label="Muokkaa käyttäjän oikeuksia"
+                                onChange={(event) => {
+                                    applyPermissions(event);
+                                }}
+                                sx={{ width: '27%' }}
+                                value={checkPermissions(userData)}
+                            >
+                                {roles.map((role) => (
+                                    <MenuItem key={role} value={role}>
+                                        {role}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Button>Peruuta muutokset</Button>
+                        </Grid>
+                    </Grid>
+                </Container>
             </Box>
             <h5 align="center">
                 <Button
