@@ -14,10 +14,6 @@ function UserEdit() {
         setUserState({ ...userState, [key]: event.target.value });
     };
 
-    const revertChange = (key) => {
-        setUserState({ ...userState, [key]: userData[key] });
-    };
-
     const checkChange = (key) => {
         if (userState[key] === userData[key]) {
             return false;
@@ -38,15 +34,27 @@ function UserEdit() {
         return 'ei käyttöoikeuksia';
     };
 
+    const revertChange = (key) => {
+        if (key === 'permission') {
+            setUserState({ ...userState, [key]: checkPermissions(key) });
+        } else {
+            setUserState({ ...userState, [key]: userData[key] });
+        }
+    };
+
     const applyPermissions = (event) => {
         if (event.target.value === 'superkäyttäjä') {
-            setUserState({ ...userState, is_superuser: true, is_admin: true, is_staff: true });
+            setUserState({ ...userState, is_superuser: true });
+            handleChange('permission', event);
         } else if (event.target.value === 'admin') {
-            setUserState({ ...userState, is_superuser: false, is_admin: true, is_staff: true });
+            setUserState({ ...userState, is_superuser: false, is_admin: true });
+            handleChange('permission', event);
         } else if (event.target.value === 'henkilökunta') {
             setUserState({ ...userState, is_superuser: false, is_admin: false, is_staff: true });
+            handleChange('permission', event);
         } else {
             setUserState({ ...userState, is_superuser: false, is_admin: false, is_staff: false });
+            handleChange('permission', event);
         }
     };
 
@@ -140,6 +148,7 @@ function UserEdit() {
                         <Grid item xs={4}>
                             <TextField
                                 disabled
+                                fullWidth
                                 defaultValue={checkPermissions(userData)}
                                 label="Alkuperäinen käyttöoikeus"
                             />
@@ -148,12 +157,15 @@ function UserEdit() {
                             <TextField
                                 id="outlined-select"
                                 select
+                                fullWidth
+                                focused={
+                                    userState.permission ? checkPermissions(userData) !== userState.permission : false
+                                }
                                 label="Muokkaa käyttäjän oikeuksia"
                                 onChange={(event) => {
                                     applyPermissions(event);
                                 }}
-                                sx={{ width: '27%' }}
-                                value={checkPermissions(userData)}
+                                value={userState.permission ? userState.permission : checkPermissions(userData)}
                             >
                                 {roles.map((role) => (
                                     <MenuItem key={role} value={role}>
@@ -163,7 +175,13 @@ function UserEdit() {
                             </TextField>
                         </Grid>
                         <Grid item xs={4}>
-                            <Button>Peruuta muutokset</Button>
+                            <Button
+                                onClick={() => {
+                                    revertChange('permission');
+                                }}
+                            >
+                                Peruuta muutokset
+                            </Button>
                         </Grid>
                     </Grid>
                 </Container>
