@@ -1,9 +1,11 @@
 import { useState, useContext } from 'react';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
     AppBar,
     Box,
+    Button,
     Toolbar,
     IconButton,
     Stack,
@@ -12,28 +14,25 @@ import {
     List,
     Divider,
     ListItem,
-    ListItemButton,
-    ListItemIcon,
     ListItemText,
+    Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
-import PhishingIcon from '@mui/icons-material/Phishing';
 
 import AuthContext from '../../../Context/AuthContext';
 import Welcome from './Welcome';
+import ProductInCart from './ProductInCart';
 import LoginForm from './LoginForm';
 
 //
 
 const drawerHead = '6rem';
 
-const DrawerHeader = () => {
+function DrawerHeader() {
     return (
         <Box
             id="drawer-header"
@@ -45,9 +44,9 @@ const DrawerHeader = () => {
                 // necessary for content to be below app bar
                 minHeight: drawerHead,
             }}
-        ></Box>
+        />
     );
-};
+}
 
 const drawerWidth = 490;
 
@@ -109,6 +108,9 @@ const toolBarHover = {
 function DefaultAppBar() {
     const { auth } = useContext(AuthContext);
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
+    const navigate = useNavigate();
+    const { cart } = useLoaderData();
+
     const drawerOpen = (drawer) => () => {
         if (currentOpenDrawer === drawer) {
             setCurrentOpenDrawer('');
@@ -116,6 +118,11 @@ function DefaultAppBar() {
             setCurrentOpenDrawer(drawer);
         }
     };
+
+    function navigateToCart() {
+        navigate('/ostoskori');
+        setCurrentOpenDrawer('');
+    }
 
     return (
         <Box id="appbar-containing-div" sx={toolBarHover}>
@@ -135,7 +142,7 @@ function DefaultAppBar() {
                     <Stack direction="row" spacing={4}>
                         <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
                             <StyledBadge
-                                badgeContent={4}
+                                badgeContent={cart?.products?.length}
                                 sx={{ color: 'primary.contrastText' }}
                                 anchorOrigin={{
                                     vertical: 'top',
@@ -155,27 +162,26 @@ function DefaultAppBar() {
             <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart" onClose={drawerOpen('')}>
                 {/* tähän oma komponentti.. */}
                 <List>
-                    {['Jakkara', 'Nahkasohva', 'Piirtoheitin', 'Chuck Norriksen verkkarit'].map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
+                    {cart?.products?.length === 0 && (
+                        <Typography variant="h6" align="center">
+                            Ostoskorisi on tyhjä.
+                        </Typography>
+                    )}
+                    {cart?.products?.map((product) => (
+                        <ProductInCart key={product.id} text={product.name} index={product.id} />
                     ))}
                 </List>
                 <Divider />
                 <List>
-                    {['Kassalle', 'Muikulle', 'Pihalle'].map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? <ShoppingCartCheckoutIcon /> : <PhishingIcon />}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
+                    <ListItem>
+                        <Button
+                            onClick={() => navigateToCart()}
+                            variant="contained"
+                            startIcon={<ShoppingCartCheckoutIcon />}
+                        >
+                            <ListItemText primary="Kassalle" />
+                        </Button>
+                    </ListItem>
                 </List>
             </Drawer>
 

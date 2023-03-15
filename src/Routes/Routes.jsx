@@ -5,7 +5,6 @@ import { ThemeProvider } from '@mui/material';
 import DefaultView from './DefaultView';
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
-
 import BaseLayout from '../Layouts/BaseLayout';
 import StorageLayout from '../Layouts/StorageLayout';
 import AdminLayout from '../Layouts/AdminLayout';
@@ -28,6 +27,10 @@ import Announcements from '../Components/Announcements';
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
+import ShoppingCart from '../Components/ShoppingCart/ShoppingCart';
+import CartView from '../Components/ShoppingCart/CartView';
+import ContactsAndDelivery from '../Components/ShoppingCart/ContactsAndDelivery';
+import Confirmation from '../Components/ShoppingCart/Confirmation';
 import DeliveryView from '../Components/DeliveryView';
 import BackgroundInfo from '../Components/Backgroundinfo';
 import Stats from '../Components/Stats/Stats';
@@ -55,6 +58,7 @@ import {
     userEditLoader,
     usersListLoader,
     userSignupLoader,
+    shoppingCartLoader,
     bikesListLoader,
 } from './loaders';
 
@@ -63,8 +67,8 @@ import {
     contactAction,
     orderEditAction,
     storageEditAction,
-    userLoginAction,
     storageCreateAction,
+    frontPageActions,
 } from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
@@ -73,6 +77,7 @@ import GuideAccount from '../Components/Instructions/GuideAccount';
 import GuideOrdering from '../Components/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
+
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
@@ -83,12 +88,15 @@ function Routes() {
             errorElement: <ErrorBoundary />,
             id: 'root',
             loader: async () => rootLoader(auth, setAuth),
+            // Loads data only at first page load, not with every route
             shouldRevalidate: () => false,
             children: [
                 {
                     path: '/',
                     element: <BaseLayout />,
-                    action: async ({ request }) => userLoginAction(auth, setAuth, request),
+                    id: 'frontPage',
+                    loader: async () => shoppingCartLoader(auth, setAuth),
+                    action: async ({ request }) => frontPageActions(auth, setAuth, request),
                     children: [
                         {
                             index: true,
@@ -172,7 +180,25 @@ function Routes() {
                             element: <Stats />,
                         },
                         {
-                            path: 'tiedotteet',
+                            path: '/ostoskori',
+                            element: <ShoppingCart />,
+                            children: [
+                                {
+                                    path: '/ostoskori/',
+                                    element: <CartView />,
+                                },
+                                {
+                                    path: '/ostoskori/vaihe2',
+                                    element: <ContactsAndDelivery />,
+                                },
+                                {
+                                    path: '/ostoskori/vaihe3',
+                                    element: <Confirmation />,
+                                },
+                            ],
+                        },
+                        {
+                            path: '/tiedotteet',
                             element: <Announcements />,
                         },
                         {
@@ -356,6 +382,7 @@ function Routes() {
                         },
                     ],
                 },
+
             ],
         },
     ]);

@@ -1,27 +1,56 @@
 import apiCall from '../Utils/apiCall';
 
 /**
- * logins or logouts user
+ * logins or logouts user, adds a product to shopping cart and deletes product from shopping cart
  */
-const userLoginAction = async (auth, setAuth, request) => {
+const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    if (auth.admin_group) {
-        const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
-            formData,
+    const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+    if (request.method === 'POST') {
+        if (auth.admin_group) {
+            const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
+                formData,
+            });
+            if (response.status === 200) {
+                return { type: 'logout', status: true };
+            }
+            return { type: 'logout', status: false };
+        }
+        const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
+            username: formData.get('email'),
+            password: formData.get('password'),
         });
         if (response.status === 200) {
-            return { type: 'logout', status: true };
+            return { type: 'login', status: true };
         }
-        return { type: 'logout', status: false };
+        return { type: 'login', status: false };
     }
-    const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
-        username: formData.get('email'),
-        password: formData.get('password'),
-    });
-    if (response.status === 200) {
-        return { type: 'login', status: true };
+    if (request.method === 'PUT') {
+        if (auth.user_group === false) {
+            alert('log in as with user_group rights first');
+            return null;
+        }
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            products: id,
+        });
+        // console.log(id, 'put method test', response.status);
+        if (response.status === 202) {
+            // alert('Item added successfully');
+            return { type: 'update', status: true };
+        }
+        return { type: 'update', status: false };
     }
-    return { type: 'login', status: false };
+    if (request.method === 'DELETE') {
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            products: id,
+        });
+
+        if (response.status === 202) {
+            return { type: 'delete', status: true };
+        }
+        return { type: 'delete', status: false };
+    }
+    return null;
 };
 
 /**
@@ -159,11 +188,11 @@ const itemUpdateAction = async (auth, setAuth, request) => {
 
 export {
     userSignupAction,
+    frontPageActions,
     contactAction,
     orderEditAction,
     storageCreateAction,
     storageEditAction,
-    userLoginAction,
     itemCreateAction,
     itemUpdateAction,
 };
