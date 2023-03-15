@@ -1,6 +1,8 @@
 /* eslint-disable */
+import { border } from '@mui/system';
 import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
-import logo from '../Assets/turku_pysty_300ppi_viiva_black.png';
+// import logo from '../Assets/turku_pysty_300ppi_viiva_black.png';
+import logo from '../Assets/LOGO.png';
 // import PropTypes from 'prop-types';
 
 // NOTE: JTo: Temporary baseUrl. Move this to env variable.
@@ -11,107 +13,135 @@ const styles = StyleSheet.create({
     orderPage: {
         flexDirection: 'column',
         padding: 10,
-        fontSize: 14,
+        fontSize: 12,
     },
+    // Section
     addressSection: {
-        border: '1px solid black',
+        border: '1px solid lightgray',
         padding: 10,
         marginBottom: 10,
-        flex: 1,
+        flex: 0.1,
         flexDirection: 'row',
     },
     addressLogo: {
         flexDirection: 'column',
-        flex: 1,
+        flex: 0.4,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
     },
-    addressTextLeft: {
+    addressField: {
         flexDirection: 'column',
-        flex: 1,
+        flex: 0.2,
     },
-    addressTextRight: {
+    addressValue: {
         flexDirection: 'column',
-        flex: 2,
+        flex: 0.4,
     },
+    // Section
     freeDescriptionSection: {
         border: '1px solid black',
         flexDirection: 'column',
-        flex: 1,
+        flex: 0.4,
         padding: 10,
         marginBottom: 10,
     },
+    // Section
     listSection: {
         border: '1px solid black',
         padding: 10,
-        flex: 2,
+        flex: 0.5,
         lineHeight: '1.5',
     },
     list: {
-        flexDirection: 'column',
+        flexDirection: 'row',
         alignItems: 'flex-start',
         fontSize: 10,
     },
     productPage: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        fontSize: 14,
+        fontSize: 12,
     },
     product: {
         width: '50%', // 2 products / line
         height: '25%', // 4 lines of products / page
-        fontSize: 14,
+        fontSize: 12,
         padding: '20px',
     },
 });
 
 // Create Document Component
 function PDFDocument({ order }) {
-    const orderId = order.id;
-    const orderRecipient = order.contact;
-    const orderAddress = order.delivery_address;
-    const orderInfo = order.order_info;
-    const orderProducts = order.products;
+    // constants for page creation
+    const productsPerPage = 8
+    const productOnFirstPage = 4
 
-    // console.log('###', order);
+    // products from props
+    const orderProducts = order.products;
+    console.log('### PDFCreator:', orderProducts)
+
+    // create productList array to show.
+    // move orderProducts with same barcode into same array inside productList array.
+    //  => productList[0][0] is a product
+    //  => productList[0].length is the number of those products
+    const productList = []
+    orderProducts.forEach(orderProduct => {
+        const i = productList.findIndex(productListProduct => productListProduct[0]?.barcode === orderProduct.barcode)
+        if (i < 0) {
+            productList.push([orderProduct])
+            return
+        }
+        productList[i].push([orderProduct])
+    });
+    // console.log('### productList', productList[1][0].barcode,productList[1].length)
+
+    // Address section on top of the page
+    const addressSection = (
+        <View style={styles.addressSection}>
+            <View style={styles.addressLogo}>
+                <Image src={logo} style={{ width: '140px' }} />
+            </View>
+            <View style={styles.addressField}>
+                <Text>Tilausnumero:</Text>
+                <Text>Vastaanottaja:</Text>
+                <Text>Toimitusosoite:</Text>
+                <Text>Puhelinnumero:</Text>
+            </View>
+            <View style={styles.addressValue}>
+                <Text>{order.id ? order.id : ' '}</Text>
+                <Text>{order.contact ? order.contact : ' '}</Text>
+                <Text>{order.delivery_address ? order.delivery_address : ' '}</Text>
+                <Text>{order.phone_number ? order.phone_number : ' '}</Text>
+            </View>
+        </View>
+    )
+
+
+
 
     return (
         <Document language="fi">
             <Page size="A4" style={styles.orderPage}>
-                <View style={styles.addressSection}>
-                    <View style={styles.addressLogo}>
-                        <Image src={logo} style={{ width: '60px' }} />
-                    </View>
-                    <View style={styles.addressTextLeft} />
-                    <View style={styles.addressTextLeft}>
-                        <Text style={{ paddingBottom: '10px' }}>Tilausnumero:</Text>
-                        <Text>Vastaanottaja:</Text>
-                        <Text>Toimitusosoite:</Text>
-                    </View>
-                    <View style={styles.addressTextRight}>
-                        <Text style={{ paddingBottom: '10px' }}>{orderId}</Text>
-                        <Text>{orderRecipient}</Text>
-                        <Text>{orderAddress}</Text>
-                    </View>
-                </View>
+                <Text>Tavarat kiertoon</Text>
+                {addressSection}
                 <View style={styles.freeDescriptionSection}>
-                    <Text>{orderInfo}</Text>
-                </View>
-                <View style={styles.listSection}>
-                    <Text style={{ marginBottom: 10 }}>Tuotteet</Text>
-
+                    <Text style={{ marginVertical: 5 }}>Lisätietoa</Text>
+                    <Text style={{ fontSize: 10 }}>{order.order_info}</Text>
+                    <Text style={{ marginVertical: 5 }}>Tuotteet</Text>
                     <View style={styles.list}>
                         {orderProducts.map((product, index) => (
                             <Text key={product.id}>
-                                {product.id} - {product.name}
+                                {product.name}{index === orderProducts.length-1 ? '' : ', '}
                             </Text>
                         ))}
                     </View>
                 </View>
+                <View style={styles.listSection}>
+                </View>
             </Page>
 
             <Page style={styles.productPage}>
-                {orderProducts.map((product) => (
+                {orderProducts.map((product, index) => (
                     <View style={styles.product} key={product.id}>
                         <Text>
                             Tuote {product.id}: {product.name}
@@ -131,4 +161,3 @@ function PDFDocument({ order }) {
 // };
 
 export default PDFDocument;
-//
