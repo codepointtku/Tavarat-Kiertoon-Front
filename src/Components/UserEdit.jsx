@@ -42,22 +42,6 @@ function UserEdit() {
         }
     };
 
-    const applyPermissions = (event) => {
-        if (event.target.value === 'superkäyttäjä') {
-            setUserState({ ...userState, is_superuser: true });
-            handleChange('permission', event);
-        } else if (event.target.value === 'admin') {
-            setUserState({ ...userState, is_superuser: false, is_admin: true });
-            handleChange('permission', event);
-        } else if (event.target.value === 'henkilökunta') {
-            setUserState({ ...userState, is_superuser: false, is_admin: false, is_staff: true });
-            handleChange('permission', event);
-        } else {
-            setUserState({ ...userState, is_superuser: false, is_admin: false, is_staff: false });
-            handleChange('permission', event);
-        }
-    };
-
     return (
         <>
             <h1 align="center">Muokkaa käyttäjää {userData.id}</h1>
@@ -163,7 +147,7 @@ function UserEdit() {
                                 }
                                 label="Muokkaa käyttäjän oikeuksia"
                                 onChange={(event) => {
-                                    applyPermissions(event);
+                                    handleChange('permission', event);
                                 }}
                                 value={userState.permission ? userState.permission : checkPermissions(userData)}
                             >
@@ -198,7 +182,7 @@ function UserEdit() {
                             { method: 'post' }
                         );
                         */
-                        console.log(userData);
+                        console.log(userState);
                     }}
                 >
                     Tallenna käyttäjän tiedot
