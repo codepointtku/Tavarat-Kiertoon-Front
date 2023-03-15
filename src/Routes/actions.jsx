@@ -1,18 +1,47 @@
 import apiCall from '../Utils/apiCall';
 
 /**
- * logins user
+ * logins user or adds a product to / deletes a product from shopping cart
  */
-const userLoginAction = async (auth, setAuth, request) => {
+const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
-        username: formData.get('email'),
-        password: formData.get('password'),
-    });
-    if (response.status === 200) {
-        return { type: 'login', status: true };
+    const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+    if (request.method === 'POST') {
+        const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
+            username: formData.get('email'),
+            password: formData.get('password'),
+        });
+        if (response.status === 200) {
+            return { type: 'login', status: true };
+        }
+        return { type: 'login', status: false };
     }
-    return { type: 'login', status: false };
+    if (request.method === 'PUT') {
+        if (auth.user_group === false) {
+            alert('log in as with user_group rights first');
+            return null;
+        }
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            products: id,
+        });
+        // console.log(id, 'put method test', response.status);
+        if (response.status === 202) {
+            // alert('Item added successfully');
+            return { type: 'update', status: true };
+        }
+        return { type: 'update', status: false };
+    }
+    if (request.method === 'DELETE') {
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            products: id,
+        });
+
+        if (response.status === 202) {
+            return { type: 'delete', status: true };
+        }
+        return { type: 'delete', status: false };
+    }
+    return null;
 };
 
 /**
@@ -150,11 +179,11 @@ const itemUpdateAction = async (auth, setAuth, request) => {
 
 export {
     userSignupAction,
+    frontPageActions,
     contactAction,
     orderEditAction,
     storageCreateAction,
     storageEditAction,
-    userLoginAction,
     itemCreateAction,
     itemUpdateAction,
 };
