@@ -64,6 +64,7 @@ function UserEdit() {
                         </Grid>
                         <Grid item xs={4}>
                             <Button
+                                sx={{ mt: '8px', ml: '1rem' }}
                                 onClick={() => {
                                     revertChange('name');
                                 }}
@@ -92,6 +93,7 @@ function UserEdit() {
                         </Grid>
                         <Grid item xs={4}>
                             <Button
+                                sx={{ mt: '8px', ml: '1rem' }}
                                 onClick={() => {
                                     revertChange('phone_number');
                                 }}
@@ -121,6 +123,7 @@ function UserEdit() {
                         </Grid>
                         <Grid item xs={4}>
                             <Button
+                                sx={{ mt: '8px', ml: '1rem' }}
                                 onClick={() => {
                                     revertChange('email');
                                 }}
@@ -160,6 +163,7 @@ function UserEdit() {
                         </Grid>
                         <Grid item xs={4}>
                             <Button
+                                sx={{ mt: '8px', ml: '1rem' }}
                                 onClick={() => {
                                     revertChange('permission');
                                 }}
