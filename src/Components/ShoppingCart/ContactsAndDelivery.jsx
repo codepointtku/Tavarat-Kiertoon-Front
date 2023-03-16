@@ -31,7 +31,10 @@ function ContactsAndDelivery() {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Typography variant="h4" sx={{ marginBottom: 2, color: 'primary.main' }}>
-                Yhteystiedot
+                Tilaajan tiedot
+            </Typography>
+            <Typography variant="h4" sx={{ marginBottom: 2, color: 'primary.main' }}>
+                Vastaanottajan yhteystiedot
             </Typography>
             <Grid container spacing={4}>
                 <Grid item>
