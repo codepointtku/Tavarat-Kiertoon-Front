@@ -10,14 +10,17 @@ const apiCall = async (auth, setAuth, path, method, data, options) => {
         data,
         options: { ...options },
     });
-    if (path === '/users/login') {
+    if (path === '/users/login' || path === '/users/login/refresh') {
         console.log('@ apiCall, login data', result.data);
     }
 
-    if (path === '/users/login/') {
+    if (path === '/users/login/' || path === '/users/login/refresh') {
+        console.log(result);
         // auth on objekti { user_group: false, storage_group: false, admin_group: false }
         // luo iniAuthin authin pohjalta, jota muokataan alempana
         const iniAuth = auth;
+        // tallentaa käyttäjänimen login.tiedoista
+        iniAuth.username = result?.data?.username;
         Object.keys(auth).forEach((each) => {
             // each on joko user_group, storage_group tai admin_group
             // result.data.group on array, joka sisältää käyttäjän ryhmät [user_group:false, storage_group:false, admin_group:false]
