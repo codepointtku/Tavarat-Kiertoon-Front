@@ -10,12 +10,11 @@ const apiCall = async (auth, setAuth, path, method, data, options) => {
         data,
         options: { ...options },
     });
-    if (path === '/users/login' || path === '/users/login/refresh') {
-        console.log('@ apiCall, login data', result.data);
-    }
-
-    if (path === '/users/login/' || path === '/users/login/refresh') {
+    if (path === '/users/login/' || path === '/users/login/refresh/') {
         console.log(result);
+        if (result.status === 204) {
+            return null;
+        }
         // auth on objekti { user_group: false, storage_group: false, admin_group: false }
         // luo iniAuthin authin pohjalta, jota muokataan alempana
         const iniAuth = auth;
@@ -38,8 +37,11 @@ const apiCall = async (auth, setAuth, path, method, data, options) => {
         if (iniAuth !== auth) {
             setAuth(iniAuth);
         }
+        setTimeout(() => {
+            apiCall(auth, setAuth, '/users/login/refresh/', 'post');
+        }, 10000);
     }
-
+    console.log('test111111');
     return result;
 };
 
