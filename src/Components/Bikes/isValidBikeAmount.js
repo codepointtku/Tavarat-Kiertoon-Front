@@ -41,6 +41,7 @@ export const bikePackageUnavailable = (bikePackage, minDate, maxDate, bikes, sel
             }
         });
     });
-    unavailable[bikePackage.name] = 0;
+    // The following line is useful for debugging. You can see the name in the BikeAvailability unavailable.
+    // unavailable[bikePackage.name] = 0;
     return unavailable;
 };
