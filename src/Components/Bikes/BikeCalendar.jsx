@@ -32,10 +32,10 @@ export default function BikeCalendar({ onChange, onBlur, startDate, endDate, min
                 onBlur={onBlur}
                 inputProps={{ placeholder: 'pv.kk.v' }}
                 renderInput={(params) => (
-                    <Box sx={{ position: 'relative', display: 'inline-block' }}>
+                    <Box sx={{ position: 'relative', display: 'inline-block', width: 'max-content' }}>
                         <TextField {...params} />
                         <IconButton
-                            style={{ position: 'absolute', top: '.5rem', margin: 'auto', right: '2em' }}
+                            style={{ position: 'absolute', top: '.5rem', margin: 'auto', right: '30px' }}
                             onClick={() => onChange(null)}
                         >
                             <ClearIcon />
