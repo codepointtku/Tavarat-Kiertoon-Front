@@ -1,4 +1,4 @@
-import { MenuItem, TextField, Box, Button, Grid, Container } from '@mui/material';
+import { MenuItem, TextField, Box, Button, Grid, Container, Checkbox, FormControlLabel } from '@mui/material';
 import { useState } from 'react';
 import { useLoaderData } from 'react-router';
 // import { useSubmit } from 'react-router-dom';
@@ -6,12 +6,21 @@ import { useLoaderData } from 'react-router';
 function UserEdit() {
     const userData = useLoaderData();
     const [userState, setUserState] = useState(userData[0]);
+    const groups = userData[1];
     // const submit = useSubmit();
 
     const roles = ['superkäyttäjä', 'admin', 'henkilökunta', 'ei käyttöoikeuksia'];
 
-    const handleChange = (key, event) => {
-        setUserState({ ...userState, [key]: event.target.value });
+    const handleChange = (key, event, group) => {
+        if (key === 'groups') {
+            if (event.target.checked) {
+                setUserState({ ...userState, [key]: userState.groups.concat(group) });
+            } else {
+                setUserState({ ...userState, [key]: userState.groups.filter((group_) => group_.id !== group.id) });
+            }
+        } else {
+            setUserState({ ...userState, [key]: event.target.value });
+        }
     };
 
     const checkChange = (key) => {
@@ -173,6 +182,16 @@ function UserEdit() {
                                 Peruuta muutokset
                             </Button>
                         </Grid>
+                        {groups.map((group) => (
+                            <FormControlLabel
+                                key={group.id}
+                                onChange={(event) => {
+                                    handleChange('groups', event, group);
+                                }}
+                                control={<Checkbox />}
+                                label={group.name}
+                            />
+                        ))}
                     </Grid>
                 </Container>
             </Box>
