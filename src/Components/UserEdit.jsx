@@ -5,7 +5,7 @@ import { useLoaderData } from 'react-router';
 
 function UserEdit() {
     const userData = useLoaderData();
-    const [userState, setUserState] = useState(userData);
+    const [userState, setUserState] = useState(userData[0]);
     // const submit = useSubmit();
 
     const roles = ['superkäyttäjä', 'admin', 'henkilökunta', 'ei käyttöoikeuksia'];
@@ -15,7 +15,7 @@ function UserEdit() {
     };
 
     const checkChange = (key) => {
-        if (userState[key] === userData[key]) {
+        if (userState[key] === userData[0][key]) {
             return false;
         }
         return true;
@@ -36,20 +36,20 @@ function UserEdit() {
 
     const revertChange = (key) => {
         if (key === 'permission') {
-            setUserState({ ...userState, [key]: checkPermissions(key) });
+            setUserState({ ...userState, [key]: checkPermissions(userData[0]) });
         } else {
-            setUserState({ ...userState, [key]: userData[key] });
+            setUserState({ ...userState, [key]: userData[0][key] });
         }
     };
 
     return (
         <>
-            <h1 align="center">Muokkaa käyttäjää {userData.id}</h1>
+            <h1 align="center">Muokkaa käyttäjää {userData[0].id}</h1>
             <Box align="center">
                 <Container maxWidth="md">
                     <Grid container spacing={4}>
                         <Grid item xs={4}>
-                            <TextField disabled fullWidth defaultValue={userData.name} label="Alkuperäinen nimi" />
+                            <TextField disabled fullWidth defaultValue={userData[0].name} label="Alkuperäinen nimi" />
                         </Grid>
                         <Grid item xs={4}>
                             <TextField
@@ -76,7 +76,7 @@ function UserEdit() {
                             <TextField
                                 disabled
                                 fullWidth
-                                defaultValue={userData.phone_number}
+                                defaultValue={userData[0].phone_number}
                                 label="Alkuperäinen numero"
                             />
                         </Grid>
@@ -106,7 +106,7 @@ function UserEdit() {
                             <TextField
                                 disabled
                                 fullWidth
-                                defaultValue={userData.email}
+                                defaultValue={userData[0].email}
                                 label="Alkuperäinen sähköposti"
                             />
                         </Grid>
@@ -136,7 +136,7 @@ function UserEdit() {
                             <TextField
                                 disabled
                                 fullWidth
-                                defaultValue={checkPermissions(userData)}
+                                defaultValue={checkPermissions(userData[0])}
                                 label="Alkuperäinen käyttöoikeus"
                             />
                         </Grid>
@@ -146,13 +146,15 @@ function UserEdit() {
                                 select
                                 fullWidth
                                 focused={
-                                    userState.permission ? checkPermissions(userData) !== userState.permission : false
+                                    userState.permission
+                                        ? checkPermissions(userData[0]) !== userState.permission
+                                        : false
                                 }
                                 label="Muokkaa käyttäjän oikeuksia"
                                 onChange={(event) => {
                                     handleChange('permission', event);
                                 }}
-                                value={userState.permission ? userState.permission : checkPermissions(userData)}
+                                value={userState.permission ? userState.permission : checkPermissions(userData[0])}
                             >
                                 {roles.map((role) => (
                                     <MenuItem key={role} value={role}>
