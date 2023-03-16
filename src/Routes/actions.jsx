@@ -7,7 +7,8 @@ const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     if (request.method === 'POST') {
-        if (auth.admin_group) {
+        console.log(auth.username);
+        if (auth.username) {
             const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
                 formData,
             });

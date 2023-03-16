@@ -186,7 +186,7 @@ function DefaultAppBar() {
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
-                {auth.admin_group ? (
+                {auth.username ? (
                     <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} auth={auth} />
                 ) : (
                     <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />

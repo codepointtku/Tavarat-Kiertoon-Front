@@ -1,4 +1,4 @@
-import { Form } from 'react-router-dom';
+import { Form, useSubmit } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { Typography, Button, Container, Box } from '@mui/material';
@@ -6,17 +6,13 @@ import CloseDrawerButton from './CloseDrawerButton';
 
 function Welcome({ auth, setCurrentOpenDrawer }) {
     const { handleSubmit } = useForm();
+    const submit = useSubmit();
 
     const onSubmit = () => {
-        const cookies = document.cookie.split(';');
-
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i];
-            const eqPos = cookie.indexOf('=');
-            const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
-            document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
-        }
-        window.location.reload(true);
+        submit(null, {
+            method: 'post',
+            action: '/',
+        });
     };
 
     return (
