@@ -43,7 +43,7 @@ const apiCall = async (auth, setAuth, path, method, data, options) => {
         if (path !== '/users/logout/') {
             setTimeout(() => {
                 apiCall(auth, setAuth, '/users/login/refresh/', 'post');
-            }, 10000);
+            }, 1000 * 10);
         }
     }
     return result;
