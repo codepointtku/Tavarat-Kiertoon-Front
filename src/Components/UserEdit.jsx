@@ -1,4 +1,4 @@
-import { TextField, Box, Button, Grid, Container, Checkbox, FormControlLabel } from '@mui/material';
+import { TextField, Box, Button, Grid, Container, Checkbox, FormControlLabel, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useLoaderData } from 'react-router';
 // import { useSubmit } from 'react-router-dom';
@@ -124,7 +124,7 @@ function UserEdit() {
 
                         <Grid item xs={8}>
                             <Box border="1px solid #CCC" borderRadius="4px">
-                                <Grid>Muokkaa käyttöoikeuksia</Grid>
+                                <Typography padding="0.5rem">Muokkaa käyttöoikeuksia</Typography>
                                 <Grid item xs={13} alignItems="start">
                                     {groups.map((group) => (
                                         <FormControlLabel
