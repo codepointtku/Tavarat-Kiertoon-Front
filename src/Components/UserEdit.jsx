@@ -1,4 +1,4 @@
-import { MenuItem, TextField, Box, Button, Grid, Container, Checkbox, FormControlLabel } from '@mui/material';
+import { TextField, Box, Button, Grid, Container, Checkbox, FormControlLabel } from '@mui/material';
 import { useState } from 'react';
 import { useLoaderData } from 'react-router';
 // import { useSubmit } from 'react-router-dom';
@@ -8,8 +8,6 @@ function UserEdit() {
     const [userState, setUserState] = useState(userData[0]);
     const groups = userData[1];
     // const submit = useSubmit();
-
-    const roles = ['superkäyttäjä', 'admin', 'henkilökunta', 'ei käyttöoikeuksia'];
 
     const handleChange = (key, event, group) => {
         if (key === 'groups') {
@@ -30,25 +28,8 @@ function UserEdit() {
         return true;
     };
 
-    const checkPermissions = (user) => {
-        if (user.is_superuser === true) {
-            return 'superkäyttäjä';
-        }
-        if (user.is_admin === true) {
-            return 'admin';
-        }
-        if (user.is_staff === true) {
-            return 'henkilökunta';
-        }
-        return 'ei käyttöoikeuksia';
-    };
-
     const revertChange = (key) => {
-        if (key === 'permission') {
-            setUserState({ ...userState, [key]: checkPermissions(userData[0]) });
-        } else {
-            setUserState({ ...userState, [key]: userData[0][key] });
-        }
+        setUserState({ ...userState, [key]: userData[0][key] });
     };
 
     return (
@@ -141,57 +122,38 @@ function UserEdit() {
                             </Button>
                         </Grid>
 
-                        <Grid item xs={4}>
-                            <TextField
-                                disabled
-                                fullWidth
-                                defaultValue={checkPermissions(userData[0])}
-                                label="Alkuperäinen käyttöoikeus"
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextField
-                                id="outlined-select"
-                                select
-                                fullWidth
-                                focused={
-                                    userState.permission
-                                        ? checkPermissions(userData[0]) !== userState.permission
-                                        : false
-                                }
-                                label="Muokkaa käyttäjän oikeuksia"
-                                onChange={(event) => {
-                                    handleChange('permission', event);
-                                }}
-                                value={userState.permission ? userState.permission : checkPermissions(userData[0])}
-                            >
-                                {roles.map((role) => (
-                                    <MenuItem key={role} value={role}>
-                                        {role}
-                                    </MenuItem>
+                        <Grid
+                            item
+                            xs={7.5}
+                            border="1px solid black"
+                            borderRadius="4px"
+                            marginLeft="2rem"
+                            marginTop="2rem"
+                        >
+                            <h5>Muokkaa käyttöoikeuksia</h5>
+                            <Grid item xs={13} alignItems="start">
+                                {groups.map((group) => (
+                                    <FormControlLabel
+                                        key={group.id}
+                                        onChange={(event) => {
+                                            handleChange('groups', event, group);
+                                        }}
+                                        checked={userState.groups.some((group_) => group_.id === group.id)}
+                                        control={<Checkbox />}
+                                        label={group.name}
+                                    />
                                 ))}
-                            </TextField>
+                            </Grid>
                         </Grid>
                         <Grid item xs={4}>
                             <Button
-                                sx={{ mt: '8px', ml: '1rem' }}
                                 onClick={() => {
-                                    revertChange('permission');
+                                    revertChange('groups');
                                 }}
                             >
                                 Peruuta muutokset
                             </Button>
                         </Grid>
-                        {groups.map((group) => (
-                            <FormControlLabel
-                                key={group.id}
-                                onChange={(event) => {
-                                    handleChange('groups', event, group);
-                                }}
-                                control={<Checkbox />}
-                                label={group.name}
-                            />
-                        ))}
                     </Grid>
                 </Container>
             </Box>
@@ -202,7 +164,7 @@ function UserEdit() {
                         submit(
                             {
                                 type: 'put',
-                                ...userData,
+                                ...userState,
                             },
                             { method: 'post' }
                         );
