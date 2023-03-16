@@ -10,38 +10,42 @@ const apiCall = async (auth, setAuth, path, method, data, options) => {
         data,
         options: { ...options },
     });
-    if (path === '/users/login/' || path === '/users/login/refresh/') {
-        console.log(result);
+
+    // checks if path if related to userlogin etc
+    if (path === '/users/login/' || path === '/users/login/refresh/' || path === '/users/logout/') {
+        // if refresh fails apiCalls to logout in order to remove the cookies
         if (result.status === 204) {
+            apiCall(auth, setAuth, '/users/logout/', 'post');
             return null;
         }
-        // auth on objekti { user_group: false, storage_group: false, admin_group: false }
-        // luo iniAuthin authin pohjalta, jota muokataan alempana
+        // auth is object { user_group: false, storage_group: false, admin_group: false }
+        // creates initialAuth in order to update auth data
         const iniAuth = auth;
-        // tallentaa käyttäjänimen login.tiedoista
-        iniAuth.username = result?.data?.username;
+        // saves username from login and refresh, false in case of the logout
+        iniAuth.username = result?.data?.username || false;
+        // loops trought the auth in order to save user_groups, saves only if there is a change
         Object.keys(auth).forEach((each) => {
-            // each on joko user_group, storage_group tai admin_group
-            // result.data.group on array, joka sisältää käyttäjän ryhmät [user_group:false, storage_group:false, admin_group:false]
+            // each is user_group, storage_group tai admin_group
+            // result.data.group is array, which contains [user_group:false, storage_group:false, admin_group:false]
             if (result.data.groups?.includes(each)) {
-                // esim. jos auth[user_group] on false, eli käyttäjällä ei ole vielä oikeuksia, asetetaan oikeudet
                 if (auth[each] === false) {
                     iniAuth[each] = true;
                 }
-                // jos on ylimääräisiä oikeuksia, ne poistetaan
             } else if (auth[each] === true) {
                 iniAuth[each] = false;
             }
         });
-        // jos muokattu iniAuth eroaa authista, muutetaan auth iniAuthiksi
+        // if there is difference in-between initAuth and auth, auth is updated
         if (iniAuth !== auth) {
             setAuth(iniAuth);
         }
-        setTimeout(() => {
-            apiCall(auth, setAuth, '/users/login/refresh/', 'post');
-        }, 10000);
+        // if path is not logout starts timer to refresh again
+        if (path !== '/users/logout/') {
+            setTimeout(() => {
+                apiCall(auth, setAuth, '/users/login/refresh/', 'post');
+            }, 10000);
+        }
     }
-    console.log('test111111');
     return result;
 };
 
