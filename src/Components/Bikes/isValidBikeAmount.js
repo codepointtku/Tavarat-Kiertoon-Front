@@ -17,7 +17,7 @@ export default function isValidBikeAmount(startDate, endDate, selectedBikes, bik
     return true;
 }
 
-export const bikePackageUnavailable = (bikePackage, minDate, maxDate, bikes, selectedBikes) => {
+export const bikePackageUnavailable = (bikePackage, minDate, maxDate, bikes, selectedBikes, startDate, endDate) => {
     const unavailable = {};
     const dates = [];
     const days = differenceInCalendarDays(maxDate, minDate);
@@ -27,9 +27,9 @@ export const bikePackageUnavailable = (bikePackage, minDate, maxDate, bikes, sel
         dates.forEach((date) => {
             const unitsInUse = bike.unavailable[date] ?? 0;
             const unitsSelected =
-                !isBefore(parseISO(date), minDate) && !isAfter(parseISO(date), maxDate)
-                    ? selectedBikes[bike.id] ?? 0
-                    : 0;
+                isBefore(parseISO(date), startDate) || isAfter(parseISO(date), endDate)
+                    ? 0
+                    : selectedBikes[bike.id] ?? 0;
             const remaining = bike.max_available - unitsInUse - unitsSelected;
             const packagesInUse = bikePackage.max_available - Math.floor(remaining / packageBikeAmount);
             if (packagesInUse > 0) {

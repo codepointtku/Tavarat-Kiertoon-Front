@@ -317,7 +317,9 @@ export default function BikesPage() {
                                                                                                   minDate,
                                                                                                   maxDate,
                                                                                                   loaderData.bikes,
-                                                                                                  value
+                                                                                                  value,
+                                                                                                  watch('startDate'),
+                                                                                                  watch('endDate')
                                                                                               ),
                                                                                       }
                                                                             }
