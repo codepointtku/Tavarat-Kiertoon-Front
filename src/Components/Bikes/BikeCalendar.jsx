@@ -42,21 +42,10 @@ export default function BikeCalendar({ onChange, onBlur, startDate, endDate, min
                         </IconButton>
                     </Box>
                 )}
-                // InputAdornmentProps={{
-                //     actionBar: {
-                //         actions: ['clear'],
-                //     },
-                // }}
-                // componentsProps={{
-                //     actionBar: {
-                //         actions: ['clear'],
-                //     },
-                // }}
                 disableMaskedInput
                 shouldDisableDate={(day) => isWeekend(day)}
                 minDate={handleMinDate()}
                 maxDate={handleMaxDate()}
-                // sx={{ '& .Mui-disabled': { backgroundColor: 'black' } }}
                 views={['month', 'day']}
                 openTo="month"
             />
