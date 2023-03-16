@@ -12,6 +12,7 @@ const rootLoader = async (auth, setAuth) => {
         apiCall(auth, setAuth, '/colors/', 'get'),
         apiCall(auth, setAuth, '/categories/', 'get'),
         apiCall(auth, setAuth, '/bulletins/', 'get'),
+        apiCall(auth, setAuth, '/users/login/refresh/', 'post'),
     ]);
 
     return { contacts, colors, categories, bulletins };
