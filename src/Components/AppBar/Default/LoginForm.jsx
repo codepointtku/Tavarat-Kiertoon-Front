@@ -21,10 +21,9 @@ import {
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import CloseIcon from '@mui/icons-material/Close';
 
 import AlertBox from '../../AlertBox';
-import Tooltip from '../../Tooltip';
+import CloseDrawerButton from './CloseDrawerButton';
 
 function LoginForm({ setCurrentOpenDrawer }) {
     const { register, handleSubmit } = useForm();
@@ -37,7 +36,7 @@ function LoginForm({ setCurrentOpenDrawer }) {
         event.preventDefault();
     };
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         const formData = { ...data };
         submit(formData, {
             method: 'post',
@@ -47,43 +46,6 @@ function LoginForm({ setCurrentOpenDrawer }) {
 
     const handleClickCloseDrawer = () => {
         setCurrentOpenDrawer('');
-    };
-
-    const CloseDrawerButton = () => {
-        function handleClick() {
-            setCurrentOpenDrawer('');
-        }
-
-        const buttonHover = {
-            '&:hover .MuiAvatar-root': {
-                backgroundColor: 'primary.dark',
-            },
-        };
-
-        return (
-            <Tooltip title="Sulje">
-                <IconButton
-                    onClick={handleClick}
-                    sx={[
-                        buttonHover,
-                        {
-                            p: '0',
-                            marginTop: '1rem',
-                        },
-                    ]}
-                >
-                    <Avatar
-                        sx={{
-                            bgcolor: 'primary.main',
-                            width: 48,
-                            height: 48,
-                        }}
-                    >
-                        <CloseIcon />
-                    </Avatar>
-                </IconButton>
-            </Tooltip>
-        );
     };
 
     return (
@@ -166,7 +128,7 @@ function LoginForm({ setCurrentOpenDrawer }) {
                     >
                         Luo uusi tunnus
                     </Button>
-                    <CloseDrawerButton />
+                    <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
                 </Box>
             </Container>
         </>
