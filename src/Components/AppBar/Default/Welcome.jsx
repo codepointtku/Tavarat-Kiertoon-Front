@@ -1,18 +1,21 @@
-import { Form, useSubmit } from 'react-router-dom';
+import { Form } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { Typography, Button, Container, Box } from '@mui/material';
 import CloseDrawerButton from './CloseDrawerButton';
 
-function Welcome({ user, setCurrentOpenDrawer }) {
+function Welcome({ auth, setCurrentOpenDrawer }) {
     const { handleSubmit } = useForm();
-    const submit = useSubmit();
 
     const onSubmit = () => {
-        submit(null, {
-            method: 'post',
-            action: '/',
-        });
+        const cookies = document.cookie.split(';');
+
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i];
+            const eqPos = cookie.indexOf('=');
+            const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+            document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+        }
         window.location.reload(true);
     };
 
@@ -20,7 +23,7 @@ function Welcome({ user, setCurrentOpenDrawer }) {
         <Container maxWidth="xs" component={Form} onSubmit={handleSubmit(onSubmit)}>
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <Typography variant="h4" align="center" color="primary.main" sx={{ mt: 5 }}>
-                    Tervetuloa {user}!
+                    Tervetuloa {auth.username}!
                 </Typography>
                 <Button sx={{ mt: 5, mb: 5 }} type="submit" fullWidth>
                     Kirjaudu ulos

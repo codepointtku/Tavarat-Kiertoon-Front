@@ -187,14 +187,7 @@ function DefaultAppBar() {
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
                 {auth.admin_group ? (
-                    <Welcome
-                        user={
-                            localStorage.getItem('userEmail') === null
-                                ? 'user not logged in'
-                                : localStorage.getItem('userEmail')
-                        }
-                        setCurrentOpenDrawer={setCurrentOpenDrawer}
-                    />
+                    <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} auth={auth} />
                 ) : (
                     <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
                 )}

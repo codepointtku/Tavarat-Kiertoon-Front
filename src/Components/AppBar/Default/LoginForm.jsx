@@ -42,7 +42,6 @@ function LoginForm({ setCurrentOpenDrawer }) {
             method: 'post',
             action: '/',
         });
-        localStorage.setItem('userEmail', formData.email);
     };
 
     const handleClickCloseDrawer = () => {
