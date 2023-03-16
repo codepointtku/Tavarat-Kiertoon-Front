@@ -122,29 +122,23 @@ function UserEdit() {
                             </Button>
                         </Grid>
 
-                        <Grid
-                            item
-                            xs={8}
-                            border="1px solid #CCC"
-                            borderRadius="4px"
-                            paddingLeft="0"
-                            // marginLeft="2rem"
-                            // marginTop="2rem"
-                        >
-                            <Grid>Muokkaa käyttöoikeuksia</Grid>
-                            <Grid item xs={13} alignItems="start">
-                                {groups.map((group) => (
-                                    <FormControlLabel
-                                        key={group.id}
-                                        onChange={(event) => {
-                                            handleChange('groups', event, group);
-                                        }}
-                                        checked={userState.groups.some((group_) => group_.id === group.id)}
-                                        control={<Checkbox />}
-                                        label={group.name}
-                                    />
-                                ))}
-                            </Grid>
+                        <Grid item xs={8}>
+                            <Box border="1px solid #CCC" borderRadius="4px">
+                                <Grid>Muokkaa käyttöoikeuksia</Grid>
+                                <Grid item xs={13} alignItems="start">
+                                    {groups.map((group) => (
+                                        <FormControlLabel
+                                            key={group.id}
+                                            onChange={(event) => {
+                                                handleChange('groups', event, group);
+                                            }}
+                                            checked={userState.groups.some((group_) => group_.id === group.id)}
+                                            control={<Checkbox />}
+                                            label={group.name}
+                                        />
+                                    ))}
+                                </Grid>
+                            </Box>
                         </Grid>
                         <Grid item xs={4}>
                             <Button
