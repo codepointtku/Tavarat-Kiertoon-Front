@@ -124,13 +124,14 @@ function UserEdit() {
 
                         <Grid
                             item
-                            xs={7.5}
-                            border="1px solid black"
+                            xs={8}
+                            border="1px solid #CCC"
                             borderRadius="4px"
-                            marginLeft="2rem"
-                            marginTop="2rem"
+                            paddingLeft="0"
+                            // marginLeft="2rem"
+                            // marginTop="2rem"
                         >
-                            <h5>Muokkaa käyttöoikeuksia</h5>
+                            <Grid>Muokkaa käyttöoikeuksia</Grid>
                             <Grid item xs={13} alignItems="start">
                                 {groups.map((group) => (
                                     <FormControlLabel
@@ -147,6 +148,8 @@ function UserEdit() {
                         </Grid>
                         <Grid item xs={4}>
                             <Button
+                                // sx={{ mt: '3rem', ml: '1.5rem' }}
+                                sx={{ mt: '8px', ml: '1rem' }}
                                 onClick={() => {
                                     revertChange('groups');
                                 }}
