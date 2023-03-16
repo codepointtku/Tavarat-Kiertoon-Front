@@ -1,18 +1,47 @@
 import apiCall from '../Utils/apiCall';
 
 /**
- * logins user
+ * logins user or adds a product to / deletes a product from shopping cart
  */
-const userLoginAction = async (auth, setAuth, request) => {
+const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
-        user_name: formData.get('email'),
-        password: formData.get('password'),
-    });
-    if (response.status === 200) {
-        return { type: 'login', status: true };
+    const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+    if (request.method === 'POST') {
+        const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
+            username: formData.get('email'),
+            password: formData.get('password'),
+        });
+        if (response.status === 200) {
+            return { type: 'login', status: true };
+        }
+        return { type: 'login', status: false };
     }
-    return { type: 'login', status: false };
+    if (request.method === 'PUT') {
+        if (auth.user_group === false) {
+            alert('log in as with user_group rights first');
+            return null;
+        }
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            products: id,
+        });
+        // console.log(id, 'put method test', response.status);
+        if (response.status === 202) {
+            // alert('Item added successfully');
+            return { type: 'update', status: true };
+        }
+        return { type: 'update', status: false };
+    }
+    if (request.method === 'DELETE') {
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            products: id,
+        });
+
+        if (response.status === 202) {
+            return { type: 'delete', status: true };
+        }
+        return { type: 'delete', status: false };
+    }
+    return null;
 };
 
 /**
@@ -21,7 +50,7 @@ const userLoginAction = async (auth, setAuth, request) => {
 const userSignupAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, '/users/create/', 'post', {
-        user_name: formData.get('username'),
+        username: formData.get('username'),
         first_name: formData.get('firstname'),
         last_name: formData.get('lastname'),
         email: formData.get('email'),
@@ -69,6 +98,7 @@ const orderEditAction = async (auth, setAuth, request, params) => {
             const response = await apiCall(auth, setAuth, `/orders/${params.id}/`, 'put', {
                 contact: formData.get('contact'),
                 delivery_address: formData.get('delivery_address'),
+                phone_number: formData.get('phone_number'),
                 status: formData.get('status'),
                 order_info: formData.get('order_info'),
             });
@@ -105,7 +135,7 @@ const storageEditAction = async (auth, setAuth, request, params) => {
     const formData = await request.formData();
     if (request.method === 'POST') {
         if (formData.get('type') === 'put') {
-            const response = await apiCall(auth, setAuth, `/storages/${params.id}`, 'put', {
+            const response = await apiCall(auth, setAuth, `/storages/${params.id}/`, 'put', {
                 address: formData.get('address'),
                 name: formData.get('name'),
                 in_use: formData.get('in_use'),
@@ -149,11 +179,11 @@ const itemUpdateAction = async (auth, setAuth, request) => {
 
 export {
     userSignupAction,
+    frontPageActions,
     contactAction,
     orderEditAction,
     storageCreateAction,
     storageEditAction,
-    userLoginAction,
     itemCreateAction,
     itemUpdateAction,
 };
