@@ -35,7 +35,7 @@ export default function BikeCalendar({ onChange, onBlur, startDate, endDate, min
                     <Box sx={{ position: 'relative', display: 'inline-block' }}>
                         <TextField {...params} />
                         <IconButton
-                            style={{ position: 'absolute', top: '.5rem', margin: 'auto', right: '2rem' }}
+                            style={{ position: 'absolute', top: '.5rem', margin: 'auto', right: '2em' }}
                             onClick={() => onChange(null)}
                         >
                             <ClearIcon />
