@@ -142,8 +142,7 @@ function UserEdit() {
                         </Grid>
                         <Grid item xs={4}>
                             <Button
-                                // sx={{ mt: '3rem', ml: '1.5rem' }}
-                                sx={{ mt: '8px', ml: '1rem' }}
+                                sx={{ mt: '2.6rem', ml: '1rem' }}
                                 onClick={() => {
                                     revertChange('groups');
                                 }}
