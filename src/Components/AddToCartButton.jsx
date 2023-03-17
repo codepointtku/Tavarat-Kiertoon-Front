@@ -1,11 +1,18 @@
+import { useContext } from 'react';
 import { useSubmit, useRouteLoaderData } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import { Button } from '@mui/material';
+import AuthContext from '../Context/AuthContext';
 
 function AddToCartButton({ size, id }) {
+    const { auth } = useContext(AuthContext);
     const { cartItems } = useRouteLoaderData('frontPage');
     const submit = useSubmit();
+
+    if (!auth.username) {
+        return <div>modifiedButton</div>;
+    }
 
     // mitä tietoa back endiin menee kun lomake lähetetään
 
