@@ -23,6 +23,7 @@ const rootLoader = async (auth, setAuth) => {
  */
 const shoppingCartLoader = async (auth, setAuth) => {
     const { data: cart } = await apiCall(auth, setAuth, '/shopping_cart/', 'get');
+    const { data: user } = await apiCall(auth, setAuth, '/user/', 'get');
 
     // console.log('@shoppingCartLoader, cart.products:', cart?.products);
     // console.log('@shoppingCartLoader, cart:', cart);
@@ -46,7 +47,7 @@ const shoppingCartLoader = async (auth, setAuth) => {
         return cartItems;
     }, []);
 
-    return { cartItems, cart };
+    return { cartItems, cart, user };
 };
 
 /**
