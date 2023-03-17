@@ -26,7 +26,7 @@ function CartView() {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             {cartItems?.map((item) => (
-                <Grid container direction="row" justifyContent="space-around">
+                <Grid key={item.id} container direction="row" justifyContent="space-around">
                     <Typography variant="h6">{item.name}</Typography>
                     <Box display="inline-flex">
                         <IconButton color="primary">
