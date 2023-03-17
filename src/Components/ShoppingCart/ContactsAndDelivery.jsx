@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLoaderData } from 'react-router-dom';
 import { Typography, TextField, Grid, MenuItem, Box, Alert } from '@mui/material';
 
 import CartButtons from './CartButtons';
 
 function ContactsAndDelivery() {
+    const user = useLoaderData();
+    console.log(user);
     const [buttonTask, setButtonTask] = useState('');
     const [selectedAddress, setSelectedAddress] = useState('Osoite 1');
     const {
@@ -30,9 +32,48 @@ function ContactsAndDelivery() {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Typography variant="h4" sx={{ marginBottom: 2, color: 'primary.main' }}>
-                Tilaajan tiedot
-            </Typography>
+            <Box
+                sx={{
+                    p: 5,
+                    fontWeight: 'bold',
+                    fontSize: '22px',
+                    mt: 5,
+                    mb: 5,
+                    maxWidth: 800,
+                    borderStyle: 'solid',
+                    borderRadius: 5,
+                    borderColor: 'primary.main',
+                    backgroundColor: 'secondary.light',
+                }}
+            >
+                <Typography variant="h4" align="center" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
+                    Tilaajan tiedot
+                </Typography>
+                <Grid container spacing={4}>
+                    <Grid item xs={6}>
+                        <Typography variant="h5" align="center">
+                            Nimi: {user.name}
+                        </Typography>
+                        <Typography variant="h5" align="center">
+                            Sähköposti: {user.email}
+                        </Typography>
+                        <Typography variant="h5" align="center">
+                            Kaupunki: {user.address_list[0].city}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography variant="h5" align="center">
+                            Puh. numero: {user.phone_number}
+                        </Typography>
+                        <Typography variant="h5" align="center">
+                            Osoite: {user.address_list[0].address}
+                        </Typography>
+                        <Typography variant="h5" align="center">
+                            Posti: {user.address_list[0].zip_code}
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </Box>
             <Typography variant="h4" sx={{ marginBottom: 2, color: 'primary.main' }}>
                 Vastaanottajan yhteystiedot
             </Typography>
@@ -99,11 +140,12 @@ function ContactsAndDelivery() {
                     fontSize: '22px',
                     marginTop: 5,
                     borderStyle: 'solid',
-                    borderColor: 'primary.main',
+                    borderWidth: 5,
+                    borderColor: 'secondary.dark',
                     backgroundColor: 'primary.light',
                 }}
             >
-                Toimituksessa voi kestää 1-2 viikkoa.
+                Toimituksessa kestää keskimäärin 1-2 viikkoa.
             </Box>
             <CartButtons
                 backUrl="/ostoskori"
