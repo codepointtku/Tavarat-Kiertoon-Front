@@ -169,6 +169,12 @@ const userEditLoader = async (auth, setAuth, params) => {
     return data;
 };
 
+/* get logged in users data */
+const userInfoLoader = async (auth, setAuth) => {
+    const { data } = await apiCall(auth, setAuth, '/user', 'get');
+    return data;
+};
+
 /**
  * Get all bikes
  */
@@ -196,6 +202,7 @@ export {
     usersListLoader,
     userEditLoader,
     userSignupLoader,
+    userInfoLoader,
     bikesListLoader,
     shoppingCartLoader,
 };

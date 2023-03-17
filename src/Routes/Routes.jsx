@@ -40,6 +40,7 @@ import AddStorage from '../Components/AddStorage';
 import SignupLandingPage from '../Components/Signup/SignupLandingPage';
 import SignupPage from '../Components/Signup/SignupPage';
 import ContactPage from '../Components/ContactPage';
+import UserProfilePage from '../Components/Profilepage/UserProfilePage';
 
 import AuthContext from '../Context/AuthContext';
 
@@ -60,6 +61,7 @@ import {
     userSignupLoader,
     shoppingCartLoader,
     bikesListLoader,
+    userInfoLoader,
 } from './loaders';
 
 import {
@@ -77,7 +79,6 @@ import GuideAccount from '../Components/Instructions/GuideAccount';
 import GuideOrdering from '../Components/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
-
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
@@ -222,6 +223,11 @@ function Routes() {
                                     action: async ({ request }) => userSignupAction(auth, setAuth, request),
                                 },
                             ],
+                        },
+                        {
+                            path: 'profiili',
+                            element: <UserProfilePage />,
+                            loader: userInfoLoader,
                         },
                         {
                             path: 'otayhteytta',
@@ -382,7 +388,6 @@ function Routes() {
                         },
                     ],
                 },
-
             ],
         },
     ]);
