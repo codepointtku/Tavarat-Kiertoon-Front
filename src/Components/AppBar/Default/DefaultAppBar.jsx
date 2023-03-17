@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -23,6 +23,8 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 
+import AuthContext from '../../../Context/AuthContext';
+import Welcome from './Welcome';
 import ProductInCart from './ProductInCart';
 import LoginForm from './LoginForm';
 
@@ -104,6 +106,7 @@ const toolBarHover = {
 };
 
 function DefaultAppBar() {
+    const { auth } = useContext(AuthContext);
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
     const { cart } = useLoaderData();
@@ -183,7 +186,11 @@ function DefaultAppBar() {
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
-                <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
+                {auth.username ? (
+                    <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} auth={auth} />
+                ) : (
+                    <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
+                )}
             </Drawer>
         </Box>
     );
