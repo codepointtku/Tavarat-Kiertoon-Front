@@ -5,21 +5,21 @@ module.exports = {
         jest: true,
     },
     extends: [
-        "plugin:react/recommended",
-        "airbnb",
+        'plugin:react/recommended',
+        'airbnb',
         // https://github.com/jsx-eslint/eslint-plugin-react/blob/577cb64fb6/README.md#configuration
-        "plugin:react/jsx-runtime",
-        "prettier",
+        'plugin:react/jsx-runtime',
+        'prettier',
     ],
     parserOptions: {
         ecmaFeatures: {
             jsx: true,
         },
-        ecmaVersion: "latest",
-        sourceType: "module",
+        ecmaVersion: 'latest',
+        sourceType: 'module',
     },
-    plugins: ["react"],
+    plugins: ['react'],
     rules: {
-        "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],
+        'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     },
 };
