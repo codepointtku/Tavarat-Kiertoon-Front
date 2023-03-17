@@ -109,7 +109,9 @@ function DefaultAppBar() {
     const { auth } = useContext(AuthContext);
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
-    const { cart } = useLoaderData();
+    const { cartItems, cart } = useLoaderData();
+    console.log('cartItems @ appBar', cartItems);
+    console.log('cart @ appBar', cart);
 
     const drawerOpen = (drawer) => () => {
         if (currentOpenDrawer === drawer) {
@@ -142,7 +144,7 @@ function DefaultAppBar() {
                     <Stack direction="row" spacing={4}>
                         <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
                             <StyledBadge
-                                badgeContent={cart?.products?.length}
+                                badgeContent={cartItems?.length}
                                 sx={{ color: 'primary.contrastText' }}
                                 anchorOrigin={{
                                     vertical: 'top',
@@ -162,13 +164,13 @@ function DefaultAppBar() {
             <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart" onClose={drawerOpen('')}>
                 {/* tähän oma komponentti.. */}
                 <List>
-                    {cart?.products?.length === 0 && (
+                    {cartItems?.length === 0 && (
                         <Typography variant="h6" align="center">
                             Ostoskorisi on tyhjä.
                         </Typography>
                     )}
-                    {cart?.products?.map((product) => (
-                        <ProductInCart key={product.id} text={product.name} index={product.id} />
+                    {cartItems?.map((product) => (
+                        <ProductInCart key={product.id} text={product.name} index={product.id} count={product.count} />
                     ))}
                 </List>
                 <Divider />
