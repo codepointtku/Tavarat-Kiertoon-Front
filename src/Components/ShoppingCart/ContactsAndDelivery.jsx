@@ -9,16 +9,14 @@ import CartButtons from './CartButtons';
 
 function ContactsAndDelivery() {
     const user = useLoaderData();
-    console.log(user);
     const [buttonTask, setButtonTask] = useState('');
-    const [selectedAddress, setSelectedAddress] = useState('Osoite 1');
+    const [selectedAddress, setSelectedAddress] = useState(user.address_list[0].address);
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
-    const addresses = ['Osoite 1', 'Osoite 2', 'Osoite 3', 'Osoite 4'];
     const navigate = useNavigate();
     const onSubmit = (data) => {
         alert(JSON.stringify(data));
@@ -119,8 +117,8 @@ function ContactsAndDelivery() {
                         onChange={handleChange}
                         select
                     >
-                        {addresses.map((address) => (
-                            <MenuItem value={address}>{address}</MenuItem>
+                        {user.address_list.map((a) => (
+                            <MenuItem value={a.address}>{a.address}</MenuItem>
                         ))}
                     </TextField>
                 </Grid>
