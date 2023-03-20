@@ -25,6 +25,7 @@ import BikesPage from '../Components/Bikes/BikesPage';
 import ProductDetails from '../Components/ProductDetails';
 import Announcements from '../Components/Announcements';
 
+import ThankYouPage from '../Components/ThankYouPage';
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
 import AddItem from '../Components/AddItem';
@@ -65,6 +66,7 @@ import {
     storageEditAction,
     userLoginAction,
     storageCreateAction,
+    bikeOrderAction,
 } from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
@@ -150,6 +152,7 @@ function Routes() {
                                 {
                                     path: 'pyorat',
                                     element: <GuideBikes />,
+                                    action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                                     children: [
                                         {
                                             path: ':value',
@@ -170,6 +173,10 @@ function Routes() {
                         {
                             path: 'stats',
                             element: <Stats />,
+                        },
+                        {
+                            path: 'kiitos',
+                            element: <ThankYouPage />,
                         },
                         {
                             path: 'tiedotteet',

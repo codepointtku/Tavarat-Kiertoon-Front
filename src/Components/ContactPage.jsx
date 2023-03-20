@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Form, useSubmit } from 'react-router-dom';
 import {
     Container,
     TextField,
@@ -13,7 +13,6 @@ import {
     Grid,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { Form, useSubmit } from 'react-router-dom';
 
 function ContactPage() {
     const navigate = useNavigate();
@@ -34,9 +33,8 @@ function ContactPage() {
             method: 'post',
             action: '/otayhteytta',
         });
-        navigate('/');
+        navigate('/kiitos');
     };
-
     return (
         <Grid
             container
@@ -133,6 +131,7 @@ function ContactPage() {
                         }}
                     >
                         Lähetä viesti
+                        {/* <AlertBox text="asia pihvi" status="success" /> */}
                     </Button>
                 </FormControl>
             </Container>
