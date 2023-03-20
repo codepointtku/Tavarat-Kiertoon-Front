@@ -8,7 +8,7 @@ import Routes from './Routes/Routes';
 import AuthContext from './Context/AuthContext';
 
 function App() {
-    const [auth, setAuth] = useState({ user: false, storage: false, admin: false });
+    const [auth, setAuth] = useState({ user_group: false, storage_group: false, admin_group: false, username: false });
     const authorized = useMemo(() => ({ auth, setAuth }), [auth]); // https://github.com/jsx-eslint/eslint-plugin-react/blob/master/docs/rules/jsx-no-constructed-context-values.md
 
     return (

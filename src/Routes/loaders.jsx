@@ -4,24 +4,61 @@ import apiCall from '../Utils/apiCall';
 // just a comment for file-rename commit to work. remove this
 
 /**
- * Get different defaults for the site
+ * Get various defaults for the site
  */
 const rootLoader = async (auth, setAuth) => {
-    const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: shoppingCart }] =
-        await Promise.all([
-            apiCall(auth, setAuth, '/contacts/', 'get'),
-            apiCall(auth, setAuth, '/colors/', 'get'),
-            apiCall(auth, setAuth, '/categories/', 'get'),
-            apiCall(auth, setAuth, '/bulletins/', 'get'),
-            apiCall(auth, setAuth, '/shopping_carts/', 'get'),
-        ]);
-    return { contacts, colors, categories, bulletins, shoppingCart };
+    const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }] = await Promise.all([
+        apiCall(auth, setAuth, '/contacts/', 'get'),
+        apiCall(auth, setAuth, '/colors/', 'get'),
+        apiCall(auth, setAuth, '/categories/', 'get'),
+        apiCall(auth, setAuth, '/bulletins/', 'get'),
+        apiCall(auth, setAuth, '/users/login/refresh/', 'post'),
+    ]);
+
+    return { contacts, colors, categories, bulletins };
 };
 
 /**
- * Get all products
+ * Get shoppingCart for logged in user
  */
-const productListLoader = async (auth, setAuth) => {
+const shoppingCartLoader = async (auth, setAuth) => {
+    const { data: cart } = await apiCall(auth, setAuth, '/shopping_cart/', 'get');
+
+    // console.log('@shoppingCartLoader, cart.products:', cart?.products);
+    // console.log('@shoppingCartLoader, cart:', cart);
+
+    /* eslint-disable no-shadow */
+    // // auth check for future
+    // if (auth.user_group === true){...}
+    const cartItems = cart?.products?.reduce((cartItems, product) => {
+        let cartItem = cartItems.find((cartItem) => cartItem.group_id === product.group_id);
+
+        if (!cartItem) {
+            cartItem = {
+                ...product,
+                count: 0,
+            };
+            cartItems.push(cartItem);
+        }
+
+        cartItem.count += 1;
+        // console.log(cartItems);
+        return cartItems;
+    }, []);
+
+    return { cartItems, cart };
+};
+
+/**
+ * Get all products / get products based on category id
+ */
+const productListLoader = async (auth, setAuth, request) => {
+    const url = new URL(request.url);
+    const filter = url.searchParams.get('kategoria');
+    if (filter) {
+        const { data } = await apiCall(auth, setAuth, `/categories/${filter}/products`, 'get');
+        return data.results;
+    }
     const { data } = await apiCall(auth, setAuth, '/products/', 'get');
     return data.results;
 };
@@ -48,7 +85,7 @@ const ordersListLoader = async (auth, setAuth, params) => {
         finished: 0,
     };
     statuses[params.view] = 10;
-    data.sort((a, b) => {
+    data.results.sort((a, b) => {
         if (statuses[a.status] > statuses[b.status]) {
             return -1;
         }
@@ -60,7 +97,7 @@ const ordersListLoader = async (auth, setAuth, params) => {
         return 1;
     });
 
-    return data;
+    return data.results;
 };
 
 /**
@@ -141,6 +178,14 @@ const userEditLoader = async (auth, setAuth, params) => {
 };
 
 /**
+ * Get all bikes
+ */
+const bikesListLoader = async () => {
+    const { data } = await axios.get('http://localhost:8000/bikes/');
+    return data;
+};
+
+/**
  * returns null load
  */
 const userSignupLoader = async () => null;
@@ -159,4 +204,6 @@ export {
     usersListLoader,
     userEditLoader,
     userSignupLoader,
+    bikesListLoader,
+    shoppingCartLoader,
 };

@@ -1,23 +1,14 @@
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
-import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import AddToCartButton from './AddToCartButton';
 
 function ProductCard({ productName, id, picture }) {
-    const [addedToCart, setAddedToCart] = useState(false);
-    const [addToCartButtonValue, setValue] = useState('Lisää koriin');
-
-    const handleClickAddToCartBtn = () => {
-        setAddedToCart(!addedToCart);
-        setValue('Lisätty!');
-    };
-
     return (
-        <Box sx={{ minWidth: 180, display: 'flex', justifyContent: 'center' }}>
-            <Card sx={{ maxWidth: 320 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Card sx={{ maxWidth: 240 }}>
                 <CardActionArea component={Link} to={`/tuotteet/${id}`}>
                     <CardMedia
                         component="img"
@@ -26,38 +17,27 @@ function ProductCard({ productName, id, picture }) {
                         image={`http://localhost:8000/media/${picture}`}
                     />
                     <CardContent>
-                        <Typography variant="h6">{productName}</Typography>
+                        <Typography variant="h6" fontWeight="fontWeightLight" lineHeight="1">
+                            {productName}
+                        </Typography>
                     </CardContent>
                 </CardActionArea>
-                <CardActions>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            gap: '0.2rem',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Button
-                            variant="outlined"
-                            component={Link}
-                            to={`/tuotteet/${id}`}
-                            size="small"
-                            // startIcon={<InfoOutlinedIcon />}
-                        >
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '0.2rem',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <CardActions>
+                        <Button variant="outlined" component={Link} to={`/tuotteet/${id}`} size="small">
                             <InfoOutlinedIcon fontSize="small" />
                         </Button>
-                        <Button
-                            color={addedToCart ? 'success' : 'primary'}
-                            size="small"
-                            startIcon={<AddShoppingCartOutlinedIcon />}
-                            onClick={handleClickAddToCartBtn}
-                        >
-                            {addToCartButtonValue}
-                        </Button>
-                    </Box>
-                </CardActions>
+                        <AddToCartButton size="small" id={id} />
+                    </CardActions>
+                </Box>
             </Card>
         </Box>
     );
