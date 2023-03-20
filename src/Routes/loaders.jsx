@@ -7,15 +7,17 @@ import apiCall from '../Utils/apiCall';
  * Get various defaults for the site
  */
 const rootLoader = async (auth, setAuth) => {
-    const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }] = await Promise.all([
-        apiCall(auth, setAuth, '/contacts/', 'get'),
-        apiCall(auth, setAuth, '/colors/', 'get'),
-        apiCall(auth, setAuth, '/categories/', 'get'),
-        apiCall(auth, setAuth, '/bulletins/', 'get'),
-        apiCall(auth, setAuth, '/users/login/refresh/', 'post'),
-    ]);
+    const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: categoryTree }] =
+        await Promise.all([
+            apiCall(auth, setAuth, '/contacts/', 'get'),
+            apiCall(auth, setAuth, '/colors/', 'get'),
+            apiCall(auth, setAuth, '/categories/', 'get'),
+            apiCall(auth, setAuth, '/bulletins/', 'get'),
+            apiCall(auth, setAuth, '/categories/tree/', 'get'),
+            apiCall(auth, setAuth, '/users/login/refresh/', 'post'),
+        ]);
 
-    return { contacts, colors, categories, bulletins };
+    return { contacts, colors, categories, bulletins, categoryTree };
 };
 
 /**
@@ -54,9 +56,20 @@ const shoppingCartLoader = async (auth, setAuth) => {
  */
 const productListLoader = async (auth, setAuth, request) => {
     const url = new URL(request.url);
-    const filter = url.searchParams.get('kategoria');
-    if (filter) {
-        const { data } = await apiCall(auth, setAuth, `/categories/${filter}/products`, 'get');
+    const categories = url.searchParams.getAll('kategoria');
+    console.log(categories);
+
+    let newList = '';
+
+    Object.values(categories).forEach((each) => {
+        newList += `category=${each}&`;
+    });
+
+    console.log(newList);
+
+    if (categories.length > 0) {
+        newList.slice(0, -1);
+        const { data } = await apiCall(auth, setAuth, `/products/?${newList}`, 'get');
         return data.results;
     }
     const { data } = await apiCall(auth, setAuth, '/products/', 'get');

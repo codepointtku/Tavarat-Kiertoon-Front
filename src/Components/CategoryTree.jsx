@@ -29,7 +29,7 @@ function useExpandedCategories(categoryParam, categories) {
 }
 
 function CategoryTree() {
-    const { categories } = useRouteLoaderData('root');
+    const { categoryTree, categories } = useRouteLoaderData('root');
 
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -37,7 +37,13 @@ function CategoryTree() {
 
     const handleClick = (kategoria) => {
         if (kategoria !== 'root') {
-            setSearchParams({ kategoria });
+            console.log(kategoria);
+            const iniParams = new URLSearchParams();
+            categoryTree[Number(kategoria)].forEach((each) => {
+                iniParams.append('kategoria', each);
+            });
+            console.log(iniParams);
+            setSearchParams(iniParams);
         }
     };
 
@@ -54,13 +60,11 @@ function CategoryTree() {
         children: categoryTreeMain,
     };
 
-    const renderTree = (nodes) => {
-        return (
-            <TreeItem key={nodes.id} nodeId={String(nodes.id)} label={nodes.name} onClick={() => handleClick(nodes.id)}>
-                {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
-            </TreeItem>
-        );
-    };
+    const renderTree = (nodes) => (
+        <TreeItem key={nodes.id} nodeId={String(nodes.id)} label={nodes.name} onClick={() => handleClick(nodes.id)}>
+            {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
+        </TreeItem>
+    );
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
