@@ -1,13 +1,15 @@
 import { TextField, Box, Button, Grid, Container, Checkbox, FormControlLabel, Typography } from '@mui/material';
 import { useState } from 'react';
-import { useLoaderData } from 'react-router';
-// import { useSubmit } from 'react-router-dom';
+import { useLoaderData, useActionData } from 'react-router';
+import { useSubmit } from 'react-router-dom';
+import AlertBox from './AlertBox';
 
 function UserEdit() {
     const userData = useLoaderData();
     const [userState, setUserState] = useState(userData[0]);
     const groups = userData[1];
-    // const submit = useSubmit();
+    const submit = useSubmit();
+    const responseStatus = useActionData();
 
     const handleChange = (key, event, group) => {
         if (key === 'groups') {
@@ -57,6 +59,35 @@ function UserEdit() {
                                 sx={{ mt: '8px', ml: '1rem' }}
                                 onClick={() => {
                                     revertChange('name');
+                                }}
+                            >
+                                Peruuta muutokset
+                            </Button>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField
+                                disabled
+                                fullWidth
+                                defaultValue={userData[0].username}
+                                label="Alkuperäinen käyttäjänimi"
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField
+                                label="Muokkaa käyttäjänimeä"
+                                fullWidth
+                                focused={checkChange('username')}
+                                onChange={(event) => {
+                                    handleChange('username', event);
+                                }}
+                                value={userState.username}
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Button
+                                sx={{ mt: '8px', ml: '1rem' }}
+                                onClick={() => {
+                                    revertChange('username');
                                 }}
                             >
                                 Peruuta muutokset
@@ -153,10 +184,17 @@ function UserEdit() {
                     </Grid>
                 </Container>
             </Box>
+
+            {responseStatus?.type === 'update' && !responseStatus?.status && (
+                <AlertBox text="Käyttäjän tallennus epäonnistui! Lataa sivu uudestaan." status="error" />
+            )}
+            {responseStatus?.type === 'update' && responseStatus?.status && (
+                <AlertBox text="Käyttäjän tallennus onnistui!" status="success" />
+            )}
+
             <h5 align="center">
                 <Button
                     onClick={() => {
-                        /*
                         submit(
                             {
                                 type: 'put',
@@ -164,8 +202,6 @@ function UserEdit() {
                             },
                             { method: 'post' }
                         );
-                        */
-                        console.log(userState);
                     }}
                 >
                     Tallenna käyttäjän tiedot

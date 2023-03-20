@@ -69,6 +69,7 @@ import {
     storageEditAction,
     storageCreateAction,
     frontPageActions,
+    userEditAction,
 } from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
@@ -77,7 +78,6 @@ import GuideAccount from '../Components/Instructions/GuideAccount';
 import GuideOrdering from '../Components/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
-
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
@@ -356,6 +356,8 @@ function Routes() {
                                     path: ':id',
                                     element: <UserEdit />,
                                     loader: async ({ params }) => userEditLoader(auth, setAuth, params),
+                                    action: async ({ request, params }) =>
+                                        userEditAction(auth, setAuth, request, params),
                                 },
                             ],
                         },
@@ -382,7 +384,6 @@ function Routes() {
                         },
                     ],
                 },
-
             ],
         },
     ]);
