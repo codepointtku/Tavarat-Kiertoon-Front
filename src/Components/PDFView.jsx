@@ -9,7 +9,7 @@ function PDFView() {
     const loader = useLoaderData();
 
     return (
-        <PDFViewer style={{ width: '100%', height: '1500px', border: '1px solid blue' }}>
+        <PDFViewer style={{ width: '100%', height: '1500px' }}>
             <PDFDocument order={loader} />
         </PDFViewer>
     );

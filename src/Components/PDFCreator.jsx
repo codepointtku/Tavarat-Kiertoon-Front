@@ -1,27 +1,20 @@
-/* eslint-disable */
 import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
+import PropTypes from 'prop-types';
 import logo from '../Assets/LOGO.png';
-// import PropTypes from 'prop-types';
 
 // NOTE: JTo: Temporary baseUrl. Move this to env variable.
 const baseUrl = 'http://localhost:8000';
 
 // Create styles
 const styles = StyleSheet.create({
-    img: {
-        width: '70%',
-        height: 'auto',
-    },
-
     // Pages
     page: {
-        padding: 20,
+        padding: 30,
         fontSize: 12,
     },
     pageView: {
         height: '100%',
         width: '100%',
-        // backgroundColor: 'red',
     },
 
     // Address
@@ -33,24 +26,26 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     addressLogo: {
-        flexDirection: 'column',
         flex: 0.4,
+        flexDirection: 'column',
         alignItems: 'flex-start',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
     },
     addressField: {
-        flexDirection: 'column',
         flex: 0.2,
+        flexDirection: 'column',
+        justifyContent: 'center',
     },
     addressValue: {
-        flexDirection: 'column',
         flex: 0.4,
+        flexDirection: 'column',
+        justifyContent: 'center',
     },
 
     // orderInfo
     orderInfo: {
         border: '1px solid lightgray',
-        flex: 0.25,
+        flex: 0.2,
         flexDirection: 'column',
         marginBottom: 10,
         padding: 10,
@@ -65,8 +60,7 @@ const styles = StyleSheet.create({
 
     // firstPageProducts
     firstPageProducts: {
-        // border: '1px solid lightgray',
-        flex: 0.65,
+        flex: 0.7,
         flexDirection: 'row',
         flexWrap: 'wrap',
     },
@@ -75,46 +69,17 @@ const styles = StyleSheet.create({
         fontSize: 12,
         padding: 10,
         width: '50%', // 2 products / line
-        height: '50%', // 4 lines of products / page
+        height: '250px', // 3 lines of products / product page
     },
-
-    // -------------------------------------------------------------------------------------
-    orderPage: {
-        flexDirection: 'column',
-        padding: 20,
-        fontSize: 12,
+    productImg: {
+        height: 'auto',
+        width: '70%',
+        marginBottom: '10px',
     },
     productPage: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        padding: 20,
-        fontSize: 12,
     },
-
-    productSection: {
-        // border: '1px solid black',
-        // padding: 10,
-        flex: 0.6,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        // lineHeight: '1.5',
-    },
-
-    list: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        flexWrap: 'wrap',
-        fontSize: 10,
-        marginLeft: 10,
-    },
-    // productCard: {
-    //     width: '48%', // 2 products / line
-    //     height: '42%', // 4 lines of products / page
-    //     fontSize: 12,
-    //     padding: 10,
-    //     margin: 5,
-    //     border: '1px solid lightgray',
-    // },
 });
 
 /**
@@ -129,7 +94,12 @@ const createRenderableProductList = (aProducts) => {
     const aTempProducts = [];
     aProducts.forEach((aProduct) => {
         const productIndex = aTempProducts.findIndex((aTempProduct) => aTempProduct[0]?.group_id === aProduct.group_id);
-        productIndex < 0 ? aTempProducts.push([aProduct]) : aTempProducts[productIndex].push([aProduct]);
+        // productIndex < 0 ? aTempProducts.push([aProduct]) : aTempProducts[productIndex].push([aProduct]);
+        if (productIndex < 0) {
+            aTempProducts.push([aProduct]);
+        } else {
+            aTempProducts[productIndex].push([aProduct]);
+        }
     });
 
     // create a single Array that contains only unique objects and add numberOfProducts field to each object
@@ -145,13 +115,13 @@ const createRenderableProductList = (aProducts) => {
 };
 
 /**
- * Move products to page size arrays. First page has less products due to orderInfo
- * [ {}{}{}{}{}{}{}{}{}{}{}{}{}{} ] => [ [{}{}{}{}],[{}{}{}{}{}{}{}{}],[{}{}] ]
+ * Move products to page size arrays. First page has less products due to space taken by address and orderInfo
+ * [ {}{}{}{}{}{}{}{}{}{}{}{}{}{} ] => [ [{}{}{}{}],[{}{}{}{}{}{}],[{}{}{}{}] ]
  * @returns
  */
 const createPaginatedProductsLists = (aRenderProducts) => {
     const productsOnFirstPage = 4;
-    const productsPerPage = 8;
+    const productsPerPage = 6;
 
     const aRenderPages = [];
     const firstChunk = aRenderProducts.slice(0, productsOnFirstPage);
@@ -172,40 +142,36 @@ const createPaginatedProductsLists = (aRenderProducts) => {
 function PDFDocument({ order }) {
     const productList = createRenderableProductList(order.products);
     const paginatedProductList = createPaginatedProductsLists(productList);
-    console.log('### PDF', paginatedProductList);
-
-    // calculate the number of pages needed
 
     // Address section on top of the page
-    const addressSection = () => {
-        return (
-            <View style={styles.address}>
-                <View style={styles.addressLogo}>
-                    <Image src={logo} style={{ width: '140px' }} />
-                </View>
-                <View style={styles.addressField}>
-                    <Text>Tilausnumero:</Text>
-                    <Text>Vastaanottaja:</Text>
-                    <Text>Toimitusosoite:</Text>
-                    <Text>Puhelinnumero:</Text>
-                </View>
-                <View style={styles.addressValue}>
-                    <Text>{order.id ? order.id : ' '}</Text>
-                    <Text>{order.contact ? order.contact : ' '}</Text>
-                    <Text>{order.delivery_address ? order.delivery_address : ' '}</Text>
-                    <Text>{order.phone_number ? order.phone_number : ' '}</Text>
-                </View>
+    const addressSection = () => (
+        <View style={styles.address}>
+            <View style={styles.addressLogo}>
+                <Image src={logo} style={{ width: '140px' }} />
             </View>
-        );
-    };
+            <View style={styles.addressField}>
+                {/* <Text style={{ marginVertical: '2px' }}>Tilausnumero:</Text> */}
+                <Text style={{ marginVertical: '2px' }}>Vastaanottaja:</Text>
+                <Text style={{ marginVertical: '2px' }}>Toimitusosoite:</Text>
+                <Text style={{ marginVertical: '2px' }}>Puhelinnumero:</Text>
+            </View>
+            <View style={styles.addressValue}>
+                {/* <Text style={{ marginVertical: '2px' }}>{order.id ? order.id : ' '}</Text> */}
+                <Text style={{ marginVertical: '2px' }}>{order.contact ? order.contact : ' '}</Text>
+                <Text style={{ marginVertical: '2px' }}>{order.delivery_address ? order.delivery_address : ' '}</Text>
+                <Text style={{ marginVertical: '2px' }}>{order.phone_number ? order.phone_number : ' '}</Text>
+            </View>
+        </View>
+    );
 
     // First page "additional info" field
-    const orderInfoSection = () => {
-        return (
-            <View style={styles.orderInfo}>
-                <Text style={{ marginBottom: 5 }}>Lisätietoa</Text>
-                <Text style={{ fontSize: 10, marginLeft: 10 }}>{order.order_info}</Text>
-                <Text style={{ marginVertical: 5 }}>Tuotteet</Text>
+    const orderInfoSection = () => (
+        <View style={styles.orderInfo}>
+            <Text style={{ marginBottom: 5 }}>Lisätietoa</Text>
+            <Text style={{ fontSize: 10, marginLeft: 10 }}>{order.order_info}</Text>
+
+            {/* Render list of products to the orderInfoSection */}
+            {/* <Text style={{ marginVertical: 5 }}>Tuotteet</Text>
                 <View style={styles.orderInfoProductList}>
                     {productList.map((product, index) => (
                         <Text key={product.id}>
@@ -213,76 +179,90 @@ function PDFDocument({ order }) {
                             {index === productList.length - 1 ? '' : ', '}
                         </Text>
                     ))}
-                </View>
-            </View>
-        );
-    };
-
-    // First page products
-    const firstPageProducts = (paginatedProductList) => {
-        return (
-            <View style={styles.firstPageProducts}>
-                {paginatedProductList[0].map((product) =>
-                    // Render a single Product Card
-                    productCard(product)
-                )}
-            </View>
-        );
-    };
+                </View> */}
+        </View>
+    );
 
     // Product card
-    const productCard = (product) => {
-        return (
-            <View style={styles.productCard} key={product.id}>
-                <Image src={`${baseUrl}/media/${product.pictures[0]}`} style={styles.img} />
-                {/* <Image src={`${baseUrl}/media/${product.pictures[0]}`} style={{ width: '150px' }} /> */}
-                {/* <Image src={`${baseUrl}/media/${product.pictures[0]}`} style={{ width: '100%' }} /> */}
+    const productCard = (product) => (
+        <View style={styles.productCard} key={product.id}>
+            <Image src={`${baseUrl}/media/${product.pictures[0]}`} style={styles.productImg} />
+
+            <Text style={{ fontSize: '12', marginBottom: '5px' }}>
+                {product.name}: {product.numberOfProducts} kpl.
+            </Text>
+            <Text style={{ fontSize: '10', marginBottom: '5px' }}>Tuotenro: {product.group_id}</Text>
+            <Text style={{ fontSize: '10', marginBottom: '5px' }}>
+                Sijainti: {product.storage_name}
+                {product.shelf_id ? ` / ${product.shelf_id}` : ''}
+            </Text>
+        </View>
+    );
+
+    const headerSection = (page) => (
+        <View style={{ fontSize: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+            <View style={{ flex: 1, alignItems: 'flex-start' }}>
+                <Text>Tavarat Kiertoon</Text>
+            </View>
+            <View style={{ flex: 1, alignItems: 'center' }}>
+                <Text>Tilausnumero: {order.id}</Text>
+            </View>
+            <View style={{ flex: 1, alignItems: 'flex-end' }}>
                 <Text>
-                    {product.name}: {product.numberOfProducts} kpl.
-                </Text>
-                <Text>Tuotenumero: {product.group_id}</Text>
-                <Text>
-                    Sijainti: {product.storage_name}
-                    {product.shelf_id ? ' / ' + product.shelf_id : ''}
+                    Sivu {page}/{paginatedProductList.length}
                 </Text>
             </View>
-        );
-    };
+        </View>
+    );
 
+    // render first page products (returns a view)
+    const firstPageProducts = () => (
+        <View style={styles.firstPageProducts}>{paginatedProductList[0].map((product) => productCard(product))}</View>
+    );
+
+    // render products for rest of the pages (returns pages)
+    const productPages = () => (
+        <Page size="A4" style={styles.page}>
+            {paginatedProductList.slice(1).map((pageList, index) => (
+                <View key={pageList[0].id} style={styles.pageView}>
+                    {headerSection(index + 2, paginatedProductList.length)}
+                    <View style={styles.productPage}>{pageList.map((product) => productCard(product))}</View>
+                </View>
+            ))}
+        </Page>
+    );
+
+    // RENDER
     return (
         <Document language="fi">
+            {/* First page */}
             <Page size="A4" style={styles.page}>
                 <View style={styles.pageView}>
+                    {headerSection(1)}
                     {addressSection()}
                     {orderInfoSection()}
-                    {firstPageProducts(paginatedProductList)}
+                    {firstPageProducts()}
                 </View>
             </Page>
 
-            {/* <Page size="A4" style={styles.orderPage}>
-                <Text>Tavarat kiertoon sivu 1 / {paginatedProductList.length}</Text>
-                {addressSection()}
-                {orderInfoSection()}
-                <View style={styles.productSection}>
-                    {paginatedProductList[0].map((product) =>
-                        // Render a single Product Card
-                        productCard(product)
-                    )}
-                </View>
-            </Page> */}
-
-            {/* <Page style={styles.productPage}>
-                {productList.map((product) =>
-                    // Render a single Product Card
-                    productCard(product)
-                )}
-            </Page> */}
+            {/* Rest of the pages */}
+            {paginatedProductList.length > 1 && productPages()}
         </Document>
     );
 }
 
-// PDFDocument.propTypes = {
-//     order: PropTypes.object
-// };
+/**
+ * Proptypes
+ */
+PDFDocument.propTypes = {
+    order: PropTypes.shape({
+        products: PropTypes.arrayOf(PropTypes.object),
+        contact: PropTypes.string,
+        delivery_address: PropTypes.string,
+        phone_number: PropTypes.string,
+        order_info: PropTypes.string,
+        id: PropTypes.number,
+    }).isRequired,
+};
 
 export default PDFDocument;
