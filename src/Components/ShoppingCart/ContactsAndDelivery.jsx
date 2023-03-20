@@ -52,18 +52,6 @@ function ContactsAndDelivery() {
                     <Typography variant="h6">Sähköposti: {user.email}</Typography>
                     <Typography variant="h6">Puh. numero: {user.phone_number}</Typography>
                 </Box>
-                {/* <Typography variant="h5" align="center" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
-                    Tilaajan osoitteet
-                </Typography>
-                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                    {user.address_list.map((address) => (
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography variant="h6">
-                                {address.address} {address.zip_code} {address.city}{' '}
-                            </Typography>
-                        </Box>
-                    ))}
-                </Box> */}
             </Box>
             <Typography variant="h4" sx={{ marginBottom: 2, color: 'primary.main' }}>
                 Vastaanottajan yhteystiedot
