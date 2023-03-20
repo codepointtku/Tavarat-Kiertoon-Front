@@ -1,12 +1,22 @@
 import apiCall from '../Utils/apiCall';
 
 /**
- * logins user or adds a product to / deletes a product from shopping cart
+ * logins or logouts user, adds a product to shopping cart and deletes product from shopping cart
  */
 const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     if (request.method === 'POST') {
+        console.log(auth.username);
+        if (auth.username) {
+            const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
+                formData,
+            });
+            if (response.status === 200) {
+                return { type: 'logout', status: true };
+            }
+            return { type: 'logout', status: false };
+        }
         const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
             username: formData.get('email'),
             password: formData.get('password'),
