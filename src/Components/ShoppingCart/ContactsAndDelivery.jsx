@@ -25,7 +25,7 @@ function ContactsAndDelivery() {
     const handleChange = (SelectChangeEvent) => {
         setSelectedAddress(SelectChangeEvent.target.value);
     };
-
+    const correctAddress = user.address_list.filter((address) => address.address === selectedAddress);
     // const values = getValues(['firstName', 'lastName', 'email', 'phoneNumber', 'locationCode']);
 
     return (
@@ -44,33 +44,26 @@ function ContactsAndDelivery() {
                     backgroundColor: 'secondary.light',
                 }}
             >
-                <Typography variant="h4" align="center" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
-                    Tilaajan tiedot
+                <Typography variant="h4" align="center" sx={{ mb: 2, fontWeight: 'bold' }}>
+                    Tilaajan yhteystiedot
                 </Typography>
-                <Grid container spacing={4}>
-                    <Grid item xs={6}>
-                        <Typography variant="h5" align="center">
-                            Nimi: {user.name}
-                        </Typography>
-                        <Typography variant="h5" align="center">
-                            Sähköposti: {user.email}
-                        </Typography>
-                        <Typography variant="h5" align="center">
-                            Kaupunki: {user.address_list[0].city}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Typography variant="h5" align="center">
-                            Puh. numero: {user.phone_number}
-                        </Typography>
-                        <Typography variant="h5" align="center">
-                            Osoite: {user.address_list[0].address}
-                        </Typography>
-                        <Typography variant="h5" align="center">
-                            Posti: {user.address_list[0].zip_code}
-                        </Typography>
-                    </Grid>
-                </Grid>
+                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                    <Typography variant="h6">Nimi: {user.name}</Typography>
+                    <Typography variant="h6">Sähköposti: {user.email}</Typography>
+                    <Typography variant="h6">Puh. numero: {user.phone_number}</Typography>
+                </Box>
+                {/* <Typography variant="h5" align="center" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
+                    Tilaajan osoitteet
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                    {user.address_list.map((address) => (
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Typography variant="h6">
+                                {address.address} {address.zip_code} {address.city}{' '}
+                            </Typography>
+                        </Box>
+                    ))}
+                </Box> */}
             </Box>
             <Typography variant="h4" sx={{ marginBottom: 2, color: 'primary.main' }}>
                 Vastaanottajan yhteystiedot
@@ -110,7 +103,7 @@ function ContactsAndDelivery() {
             <Grid container spacing={4}>
                 <Grid item>
                     <TextField
-                        label="Toimitusosoitteet"
+                        label="Toimitusosoite"
                         variant="outlined"
                         value={selectedAddress}
                         {...register('deliveryAddress', { required: true })}
@@ -122,6 +115,26 @@ function ContactsAndDelivery() {
                         ))}
                     </TextField>
                 </Grid>
+                {selectedAddress && (
+                    <>
+                        <Grid item>
+                            <TextField
+                                label="Postinumero"
+                                variant="outlined"
+                                value={correctAddress[0].zip_code}
+                                {...register('zipCode', { required: true })}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="Kaupunki"
+                                variant="outlined"
+                                value={correctAddress[0].city}
+                                {...register('city', { required: true })}
+                            />
+                        </Grid>
+                    </>
+                )}
                 <Grid item>
                     <TextField
                         label="Toimitustapa"
