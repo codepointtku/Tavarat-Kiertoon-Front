@@ -38,7 +38,7 @@ export default function BikeConfirmation({
     const submit = useSubmit();
 
     const onSubmit = (data) => {
-        const formData = { ...data, status: 'abc' };
+        const formData = { ...data };
         submit(formData, {
             method: 'post',
             action: '/pyorat',
