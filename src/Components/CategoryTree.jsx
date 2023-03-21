@@ -37,12 +37,10 @@ function CategoryTree() {
 
     const handleClick = (kategoria) => {
         if (kategoria !== 'root') {
-            console.log(kategoria);
             const iniParams = new URLSearchParams();
             categoryTree[Number(kategoria)].forEach((each) => {
                 iniParams.append('kategoria', each);
             });
-            console.log(iniParams);
             setSearchParams(iniParams);
         }
     };
