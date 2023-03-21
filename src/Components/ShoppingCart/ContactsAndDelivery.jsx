@@ -10,7 +10,7 @@ import CartButtons from './CartButtons';
 function ContactsAndDelivery() {
     const user = useLoaderData();
     const [buttonTask, setButtonTask] = useState('');
-    const [selectedAddress, setSelectedAddress] = useState(user.address_list[0].address);
+    const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
     const {
         register,
         handleSubmit,
@@ -25,7 +25,7 @@ function ContactsAndDelivery() {
     const handleChange = (SelectChangeEvent) => {
         setSelectedAddress(SelectChangeEvent.target.value);
     };
-    const correctAddress = user.address_list.filter((address) => address.address === selectedAddress);
+    const correctAddress = user.address_list?.filter((address) => address.address === selectedAddress);
     // const values = getValues(['firstName', 'lastName', 'email', 'phoneNumber', 'locationCode']);
 
     return (
@@ -98,7 +98,7 @@ function ContactsAndDelivery() {
                         onChange={handleChange}
                         select
                     >
-                        {user.address_list.map((a) => (
+                        {user.address_list?.map((a) => (
                             <MenuItem value={a.address}>{a.address}</MenuItem>
                         ))}
                     </TextField>
@@ -109,7 +109,7 @@ function ContactsAndDelivery() {
                             <TextField
                                 label="Postinumero"
                                 variant="outlined"
-                                value={correctAddress[0].zip_code}
+                                value={correctAddress[0]?.zip_code}
                                 {...register('zipCode', { required: true })}
                             />
                         </Grid>
@@ -117,7 +117,7 @@ function ContactsAndDelivery() {
                             <TextField
                                 label="Kaupunki"
                                 variant="outlined"
-                                value={correctAddress[0].city}
+                                value={correctAddress[0]?.city}
                                 {...register('city', { required: true })}
                             />
                         </Grid>
