@@ -11,7 +11,6 @@ function CartView() {
     const navigate = useNavigate();
     const submit = useSubmit();
     const { cartItems } = useRouteLoaderData('frontPage');
-    console.log(cartItems);
     const {
         handleSubmit,
         formState: { errors },
@@ -27,7 +26,8 @@ function CartView() {
         alert(JSON.stringify(data));
         navigate('/ostoskori/vaihe2');
     };
-    console.log({ errors, cartItems });
+
+    console.log(errors);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

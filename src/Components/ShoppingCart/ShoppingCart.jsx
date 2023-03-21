@@ -41,7 +41,6 @@ const CartStepConnector = styled(StepConnector)(({ theme }) => ({
 
 function ShoppingCart() {
     const { pathname } = useLocation();
-    console.log(pathname);
     const steps = ['Ostoskori', 'Yhteystiedot & toimitus', 'Vahvistus'];
     function setStep() {
         switch (pathname) {
