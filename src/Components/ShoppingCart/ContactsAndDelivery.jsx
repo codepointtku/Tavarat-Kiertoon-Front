@@ -2,21 +2,21 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLoaderData } from 'react-router-dom';
 import { Typography, TextField, Grid, MenuItem, Box, Alert } from '@mui/material';
 
 import CartButtons from './CartButtons';
 
 function ContactsAndDelivery() {
+    const user = useLoaderData();
     const [buttonTask, setButtonTask] = useState('');
-    const [selectedAddress, setSelectedAddress] = useState('Osoite 1');
+    const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
-    const addresses = ['Osoite 1', 'Osoite 2', 'Osoite 3', 'Osoite 4'];
     const navigate = useNavigate();
     const onSubmit = (data) => {
         alert(JSON.stringify(data));
@@ -25,13 +25,36 @@ function ContactsAndDelivery() {
     const handleChange = (SelectChangeEvent) => {
         setSelectedAddress(SelectChangeEvent.target.value);
     };
-
+    const correctAddress = user.address_list?.filter((address) => address.address === selectedAddress);
     // const values = getValues(['firstName', 'lastName', 'email', 'phoneNumber', 'locationCode']);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            <Box
+                sx={{
+                    p: 5,
+                    fontWeight: 'bold',
+                    fontSize: '22px',
+                    mt: 5,
+                    mb: 5,
+                    maxWidth: 800,
+                    borderStyle: 'solid',
+                    borderRadius: 5,
+                    borderColor: 'primary.main',
+                    backgroundColor: 'secondary.light',
+                }}
+            >
+                <Typography variant="h4" align="center" sx={{ mb: 2, fontWeight: 'bold' }}>
+                    Tilaajan yhteystiedot
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                    <Typography variant="h6">Nimi: {user.name}</Typography>
+                    <Typography variant="h6">Sähköposti: {user.email}</Typography>
+                    <Typography variant="h6">Puh. numero: {user.phone_number}</Typography>
+                </Box>
+            </Box>
             <Typography variant="h4" sx={{ marginBottom: 2, color: 'primary.main' }}>
-                Yhteystiedot
+                Vastaanottajan yhteystiedot
             </Typography>
             <Grid container spacing={4}>
                 <Grid item>
@@ -68,18 +91,38 @@ function ContactsAndDelivery() {
             <Grid container spacing={4}>
                 <Grid item>
                     <TextField
-                        label="Toimitusosoitteet"
+                        label="Toimitusosoite"
                         variant="outlined"
                         value={selectedAddress}
                         {...register('deliveryAddress', { required: true })}
                         onChange={handleChange}
                         select
                     >
-                        {addresses.map((address) => (
-                            <MenuItem value={address}>{address}</MenuItem>
+                        {user.address_list?.map((a) => (
+                            <MenuItem value={a.address}>{a.address}</MenuItem>
                         ))}
                     </TextField>
                 </Grid>
+                {selectedAddress && (
+                    <>
+                        <Grid item>
+                            <TextField
+                                label="Postinumero"
+                                variant="outlined"
+                                value={correctAddress[0]?.zip_code}
+                                {...register('zipCode', { required: true })}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="Kaupunki"
+                                variant="outlined"
+                                value={correctAddress[0]?.city}
+                                {...register('city', { required: true })}
+                            />
+                        </Grid>
+                    </>
+                )}
                 <Grid item>
                     <TextField
                         label="Toimitustapa"
@@ -96,11 +139,12 @@ function ContactsAndDelivery() {
                     fontSize: '22px',
                     marginTop: 5,
                     borderStyle: 'solid',
-                    borderColor: 'primary.main',
+                    borderWidth: 5,
+                    borderColor: 'secondary.dark',
                     backgroundColor: 'primary.light',
                 }}
             >
-                Toimituksessa voi kestää 1-2 viikkoa.
+                Toimituksessa kestää keskimäärin 1-2 viikkoa.
             </Box>
             <CartButtons
                 backUrl="/ostoskori"

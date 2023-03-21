@@ -60,6 +60,7 @@ import {
     userSignupLoader,
     shoppingCartLoader,
     bikesListLoader,
+    contactsAndDeliveryLoader,
 } from './loaders';
 
 import {
@@ -77,7 +78,6 @@ import GuideAccount from '../Components/Instructions/GuideAccount';
 import GuideOrdering from '../Components/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
-
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
@@ -190,6 +190,7 @@ function Routes() {
                                 {
                                     path: '/ostoskori/vaihe2',
                                     element: <ContactsAndDelivery />,
+                                    loader: contactsAndDeliveryLoader,
                                 },
                                 {
                                     path: '/ostoskori/vaihe3',
@@ -382,7 +383,6 @@ function Routes() {
                         },
                     ],
                 },
-
             ],
         },
     ]);
