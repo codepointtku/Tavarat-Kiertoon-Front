@@ -78,7 +78,6 @@ import GuideOrdering from '../Components/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
 
-
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
     const router = createBrowserRouter([
@@ -158,6 +157,7 @@ function Routes() {
                                 {
                                     path: 'pyorat',
                                     element: <GuideBikes />,
+                                    action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                                     children: [
                                         {
                                             path: ':value',
@@ -382,7 +382,6 @@ function Routes() {
                         },
                     ],
                 },
-
             ],
         },
     ]);
