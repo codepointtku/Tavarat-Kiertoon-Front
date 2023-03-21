@@ -60,6 +60,7 @@ import {
     userSignupLoader,
     shoppingCartLoader,
     bikesListLoader,
+    contactsAndDeliveryLoader,
 } from './loaders';
 
 import {
@@ -190,6 +191,7 @@ function Routes() {
                                 {
                                     path: '/ostoskori/vaihe2',
                                     element: <ContactsAndDelivery />,
+                                    loader: contactsAndDeliveryLoader,
                                 },
                                 {
                                     path: '/ostoskori/vaihe3',
