@@ -161,22 +161,11 @@ const storageEditAction = async (auth, setAuth, request, params) => {
 
 const userEditAction = async (auth, setAuth, request, params) => {
     const formData = await request.formData();
-    if (request.method === 'POST') {
-        if (formData.get('type') === 'put') {
-            const response = await apiCall(auth, setAuth, `/users/update/${params.id}/`, 'put', {
-                name: formData.get('name'),
-                username: formData.get('username'),
-                phone_number: formData.get('phone_number'),
-                email: formData.get('email'),
-                groups: formData.get('groups'),
-            });
-            if (response.status === 200) {
-                return { type: 'update', status: true };
-            }
-            return { type: 'update', status: false };
-        }
+    const response = await apiCall(auth, setAuth, `/users/update/${params.id}/`, 'put', formData);
+    if (response.status === 200) {
+        return { type: 'update', status: true };
     }
-    return null;
+    return { type: 'update', status: false };
 };
 
 /**

@@ -1,22 +1,21 @@
 import { TextField, Box, Button, Grid, Container, Checkbox, FormControlLabel, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useLoaderData, useActionData } from 'react-router';
-import { useSubmit } from 'react-router-dom';
+import { Form } from 'react-router-dom';
 import AlertBox from './AlertBox';
 
 function UserEdit() {
     const userData = useLoaderData();
     const [userState, setUserState] = useState(userData[0]);
     const groups = userData[1];
-    const submit = useSubmit();
     const responseStatus = useActionData();
 
     const handleChange = (key, event, group) => {
         if (key === 'groups') {
             if (event.target.checked) {
-                setUserState({ ...userState, [key]: userState.groups.concat(group) });
+                setUserState({ ...userState, [key]: userState.groups.concat(group.id) });
             } else {
-                setUserState({ ...userState, [key]: userState.groups.filter((group_) => group_.id !== group.id) });
+                setUserState({ ...userState, [key]: userState.groups.filter((group_) => group_ !== group.id) });
             }
         } else {
             setUserState({ ...userState, [key]: event.target.value });
@@ -35,7 +34,7 @@ function UserEdit() {
     };
 
     return (
-        <>
+        <Form method="post">
             <h1 align="center">Muokkaa käyttäjää {userData[0].id}</h1>
             <Box align="center">
                 <Container maxWidth="md">
@@ -45,6 +44,7 @@ function UserEdit() {
                         </Grid>
                         <Grid item xs={4}>
                             <TextField
+                                name="name"
                                 label="Muokkaa nimeä"
                                 fullWidth
                                 focused={checkChange('name')}
@@ -74,6 +74,7 @@ function UserEdit() {
                         </Grid>
                         <Grid item xs={4}>
                             <TextField
+                                name="username"
                                 label="Muokkaa käyttäjänimeä"
                                 fullWidth
                                 focused={checkChange('username')}
@@ -103,6 +104,7 @@ function UserEdit() {
                         </Grid>
                         <Grid item xs={4}>
                             <TextField
+                                name="phone_number"
                                 label="Muokkaa puhelinnumeroa"
                                 fullWidth
                                 focused={checkChange('phone_number')}
@@ -133,6 +135,7 @@ function UserEdit() {
                         </Grid>
                         <Grid item xs={4}>
                             <TextField
+                                name="email"
                                 label="Muokkaa sähköpostia"
                                 fullWidth
                                 focused={checkChange('email')}
@@ -159,13 +162,15 @@ function UserEdit() {
                                 <Grid item xs={13} alignItems="start">
                                     {groups.map((group) => (
                                         <FormControlLabel
+                                            name="groups"
                                             key={group.id}
                                             onChange={(event) => {
                                                 handleChange('groups', event, group);
                                             }}
-                                            checked={userState.groups.some((group_) => group_.id === group.id)}
+                                            checked={userState.groups.includes(group.id)}
                                             control={<Checkbox />}
                                             label={group.name}
+                                            value={group.id}
                                         />
                                     ))}
                                 </Grid>
@@ -193,21 +198,9 @@ function UserEdit() {
             )}
 
             <h5 align="center">
-                <Button
-                    onClick={() => {
-                        submit(
-                            {
-                                type: 'put',
-                                ...userState,
-                            },
-                            { method: 'post' }
-                        );
-                    }}
-                >
-                    Tallenna käyttäjän tiedot
-                </Button>
+                <Button type="submit">Tallenna käyttäjän tiedot</Button>
             </h5>
-        </>
+        </Form>
     );
 }
 
