@@ -90,7 +90,7 @@ const contactAction = async (auth, setAuth, request) => {
  */
 const bikeOrderAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/contact_forms/', 'post', formData);
+    const response = await apiCall(auth, setAuth, '/bikes/rental/', 'post', formData);
     return response.data || null;
 };
 /**
