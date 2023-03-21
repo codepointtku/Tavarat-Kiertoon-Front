@@ -56,20 +56,10 @@ const shoppingCartLoader = async (auth, setAuth) => {
  */
 const productListLoader = async (auth, setAuth, request) => {
     const url = new URL(request.url);
-    const categories = url.searchParams.getAll('kategoria');
-    console.log(categories);
-
-    let newList = '';
-
-    Object.values(categories).forEach((each) => {
-        newList += `category=${each}&`;
-    });
-
-    console.log(newList);
-
-    if (categories.length > 0) {
-        newList.slice(0, -1);
-        const { data } = await apiCall(auth, setAuth, `/products/?${newList}`, 'get');
+    const searchString = url.searchParams.toString();
+    const queryString = searchString.replace(/kategoria/g, 'category');
+    if (searchString.length > 0) {
+        const { data } = await apiCall(auth, setAuth, `/products/?${queryString}`, 'get');
         return data.results;
     }
     const { data } = await apiCall(auth, setAuth, '/products/', 'get');
