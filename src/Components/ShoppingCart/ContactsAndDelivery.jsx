@@ -16,7 +16,6 @@ function ContactsAndDelivery() {
         formState: { errors },
     } = useForm();
 
-    const addresses = ['Osoite 1', 'Osoite 2', 'Osoite 3', 'Osoite 4'];
     const navigate = useNavigate();
     const onSubmit = (data) => {
         alert(JSON.stringify(data));
