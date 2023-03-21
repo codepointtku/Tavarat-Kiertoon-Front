@@ -39,7 +39,9 @@ function CartView() {
                             <IconButton color="primary">
                                 <RemoveCircleRoundedIcon />
                             </IconButton>
-                            <Typography variant="h6">{item.count}</Typography>
+                            <Typography variant="h6" sx={{ p: 0.5 }}>
+                                {item.count}
+                            </Typography>
                             <IconButton color="primary">
                                 <AddCircleRoundedIcon />
                             </IconButton>
