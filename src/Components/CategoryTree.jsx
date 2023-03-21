@@ -4,10 +4,13 @@ import { useMemo } from 'react';
 import arrayToTree from 'array-to-tree';
 
 import { TreeView, TreeItem } from '@mui/lab';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+
+import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
+import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 
 function useExpandedCategories(categoryParam, categories) {
     return useMemo(() => {
@@ -16,8 +19,10 @@ function useExpandedCategories(categoryParam, categories) {
 
         if (categoryParam) {
             let parent = categoryId;
+            const findParentCategory = (category) => category.id === parent;
+
             while (parent) {
-                const category = categories.find(({ id }) => id === parent);
+                const category = categories.find(findParentCategory);
                 expandedCategories.push(String(category.id));
                 parent = category.parent;
             }
@@ -30,19 +35,19 @@ function useExpandedCategories(categoryParam, categories) {
 
 function CategoryTree() {
     const { categoryTree, categories } = useRouteLoaderData('root');
-
     const [searchParams, setSearchParams] = useSearchParams();
+    const categoryParams = searchParams.getAll('kategoria');
 
-    const categoryParam = searchParams.get('kategoria');
-
-    const handleClick = (kategoria) => {
-        if (kategoria !== 'root') {
-            const iniParams = new URLSearchParams();
-            categoryTree[Number(kategoria)].forEach((each) => {
+    const handleClick = (categoryId) => {
+        const iniParams = new URLSearchParams();
+        if (categoryId === 'root') {
+            iniParams.delete('kategoria');
+        } else {
+            categoryTree[categoryId].forEach((each) => {
                 iniParams.append('kategoria', each);
             });
-            setSearchParams(iniParams);
         }
+        setSearchParams(iniParams);
     };
 
     const categoryTreeMain = arrayToTree(categories, {
@@ -50,7 +55,7 @@ function CategoryTree() {
         customID: 'id',
     });
 
-    const expandedCategories = useExpandedCategories(categoryParam, categories);
+    const expandedCategories = useExpandedCategories(categoryParams[0], categories);
 
     const fullTree = {
         id: 'root',
@@ -59,7 +64,23 @@ function CategoryTree() {
     };
 
     const renderTree = (nodes) => (
-        <TreeItem key={nodes.id} nodeId={String(nodes.id)} label={nodes.name} onClick={() => handleClick(nodes.id)}>
+        <TreeItem
+            key={nodes.id}
+            nodeId={String(nodes.id)}
+            label={
+                <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
+                    <Typography variant="body2" sx={{ flexGrow: 1 }}>
+                        {nodes.name}
+                    </Typography>
+                    <Typography variant="caption" color="inherit">
+                        {123}
+                    </Typography>
+                </Box>
+            }
+            onClick={() => handleClick(nodes.id)}
+            expandIcon={<ArrowRightOutlinedIcon />}
+            collapseIcon={<ArrowDropDownOutlinedIcon />}
+        >
             {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
         </TreeItem>
     );
@@ -69,7 +90,7 @@ function CategoryTree() {
             <TreeView
                 aria-label="product category tree view"
                 defaultExpanded={['root', ...expandedCategories]}
-                selected={categoryParam}
+                selected={categoryParams}
                 defaultCollapseIcon={<ExpandMoreIcon />}
                 defaultExpandIcon={<ChevronRightIcon />}
                 sx={{ flexGrow: 1, maxWidth: 320, overflowY: 'auto' }}
