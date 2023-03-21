@@ -85,7 +85,14 @@ const contactAction = async (auth, setAuth, request) => {
     const response = await apiCall(auth, setAuth, '/contact_forms/', 'post', formData);
     return response.data || null;
 };
-
+/**
+ * sends bike order form to back-end
+ */
+const bikeOrderAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/contact_forms/', 'post', formData);
+    return response.data || null;
+};
 /**
  * removes items from the order and edits order data
  */
@@ -196,4 +203,5 @@ export {
     storageEditAction,
     itemCreateAction,
     itemUpdateAction,
+    bikeOrderAction,
 };

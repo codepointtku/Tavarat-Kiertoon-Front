@@ -69,6 +69,7 @@ import {
     storageEditAction,
     storageCreateAction,
     frontPageActions,
+    bikeOrderAction,
 } from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
