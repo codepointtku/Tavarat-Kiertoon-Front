@@ -25,20 +25,28 @@ function CartView() {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            {cartItems?.map((item) => (
-                <Grid container direction="row" justifyContent="space-around">
-                    <Typography variant="h6">{item.name}</Typography>
-                    <Box display="inline-flex">
-                        <IconButton color="primary">
-                            <RemoveCircleRoundedIcon />
-                        </IconButton>
-                        <Typography variant="h6">{item.count}</Typography>
-                        <IconButton color="primary">
-                            <AddCircleRoundedIcon />
-                        </IconButton>
-                    </Box>
+            <Grid container direction="row" justifyContent="space-around">
+                <Grid container direction="column" sx={{ width: 'auto' }}>
+                    {cartItems?.map((item) => (
+                        <Typography variant="h6" sx={{ p: 0.5 }}>
+                            {item.name}
+                        </Typography>
+                    ))}
                 </Grid>
-            ))}
+                <Grid container direction="column" sx={{ width: 'auto' }}>
+                    {cartItems?.map((item) => (
+                        <Box display="inline-flex">
+                            <IconButton color="primary">
+                                <RemoveCircleRoundedIcon />
+                            </IconButton>
+                            <Typography variant="h6">{item.count}</Typography>
+                            <IconButton color="primary">
+                                <AddCircleRoundedIcon />
+                            </IconButton>
+                        </Box>
+                    ))}
+                </Grid>
+            </Grid>
             <hr />
             <CartButtons
                 backUrl="/"
