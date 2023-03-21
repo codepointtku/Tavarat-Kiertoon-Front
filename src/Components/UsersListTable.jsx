@@ -48,17 +48,24 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, users }) {
         }
     }, [page]);
 
-    const checkPermissions = (user) => {
-        if (user.is_superuser === true) {
-            return 'superkäyttäjä';
-        }
-        if (user.is_admin === true) {
+    const checkPermissions = (groups) => {
+        const groupCheck = [];
+        groups.forEach((group) => {
+            groupCheck.push(group.name);
+        });
+        if (groupCheck.includes('admin_group')) {
             return 'admin';
         }
-        if (user.is_staff === true) {
-            return 'henkilökunta';
+        if (groupCheck.includes('storage_group')) {
+            return 'varasto';
         }
-        return 'ei käyttöoikeuksia';
+        if (groupCheck.includes('user_group')) {
+            return 'käyttäjä';
+        }
+        if (groupCheck.includes('bicycle_group')) {
+            return 'pyörä';
+        }
+        return 'ei käyttöoikeutta';
     };
 
     return (
@@ -92,7 +99,7 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, users }) {
                                     <StyledTableCell>{row.name}</StyledTableCell>
                                     <StyledTableCell align="right">{row.phone_number}</StyledTableCell>
                                     <StyledTableCell align="right">{row.email}</StyledTableCell>
-                                    <StyledTableCell align="right">{checkPermissions(row)}</StyledTableCell>
+                                    <StyledTableCell align="right">{checkPermissions(row.groups)}</StyledTableCell>
                                 </StyledTableRow>
                                 <TableRow>
                                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -131,7 +138,9 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, users }) {
                                                             <TableCell align="right">{row.name}</TableCell>
                                                             <TableCell align="right">{row.phone_number}</TableCell>
                                                             <TableCell align="right">{row.email}</TableCell>
-                                                            <TableCell align="right">{checkPermissions(row)}</TableCell>
+                                                            <TableCell align="right">
+                                                                {checkPermissions(row.groups)}
+                                                            </TableCell>
                                                             <TableCell align="right">{row.last_login}</TableCell>
                                                         </TableRow>
                                                     </TableBody>
