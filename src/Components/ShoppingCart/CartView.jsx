@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useRouteLoaderData } from 'react-router-dom';
+import { useNavigate, useRouteLoaderData, useSubmit } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Box, Grid, Typography, IconButton } from '@mui/material';
 
@@ -11,11 +11,19 @@ import CartButtons from './CartButtons';
 function CartView() {
     const [buttonTask, setButtonTask] = useState('');
     const navigate = useNavigate();
+    const submit = useSubmit();
     const { cartItems } = useRouteLoaderData('frontPage');
+    console.log(cartItems);
     const {
         handleSubmit,
         formState: { errors },
     } = useForm();
+
+    const handleClick = (action, id) => {
+        action === 'add'
+            ? submit({ id }, { method: 'put', action: '/' })
+            : submit({ id }, { method: 'delete', action: '/' });
+    };
 
     const onSubmit = (data) => {
         alert(JSON.stringify(data));
@@ -36,13 +44,13 @@ function CartView() {
                 <Grid container direction="column" sx={{ width: 'auto' }}>
                     {cartItems?.map((item) => (
                         <Box display="inline-flex">
-                            <IconButton color="primary">
+                            <IconButton color="primary" onClick={() => handleClick('remove', item.id)}>
                                 <RemoveCircleRoundedIcon />
                             </IconButton>
                             <Typography variant="h6" sx={{ p: 0.5 }}>
                                 {item.count}
                             </Typography>
-                            <IconButton color="primary">
+                            <IconButton color="primary" onClick={() => handleClick('add', item.id)}>
                                 <AddCircleRoundedIcon />
                             </IconButton>
                         </Box>
