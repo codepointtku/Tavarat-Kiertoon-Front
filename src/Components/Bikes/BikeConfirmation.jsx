@@ -30,7 +30,6 @@ export default function BikeConfirmation({
     setIsConfirmationVisible,
 }) {
     const {
-        register,
         handleSubmit,
 
         formState: { isSubmitted },
@@ -152,7 +151,6 @@ export default function BikeConfirmation({
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
-                                {...register('address')}
                                 label="Toimitusosoite"
                                 onChange={onChange}
                                 value={value}
@@ -183,7 +181,6 @@ export default function BikeConfirmation({
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
-                                {...register('name')}
                                 label="Vastaanottajan nimi"
                                 onChange={onChange}
                                 value={value}
@@ -199,7 +196,6 @@ export default function BikeConfirmation({
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
-                                {...register('phone_number')}
                                 label="Vastaanottajan puhelinnumero"
                                 onChange={onChange}
                                 value={value}
@@ -215,14 +211,7 @@ export default function BikeConfirmation({
                     name="extraInfo"
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                        <TextField
-                            {...register('moreinfo')}
-                            label="Lisätiedot"
-                            onChange={onChange}
-                            value={value}
-                            onBlur={onBlur}
-                            multiline
-                        />
+                        <TextField label="Lisätiedot" onChange={onChange} value={value} onBlur={onBlur} multiline />
                     )}
                 />
                 <Stack flexDirection="row" justifyContent="space-between" mt={2}>

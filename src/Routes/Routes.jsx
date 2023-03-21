@@ -158,7 +158,6 @@ function Routes() {
                                 {
                                     path: 'pyorat',
                                     element: <GuideBikes />,
-                                    action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                                     children: [
                                         {
                                             path: ':value',
@@ -378,6 +377,7 @@ function Routes() {
                         {
                             path: '/pyorat',
                             element: <BikesPage />,
+                            action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                             loader: bikesListLoader,
                             shouldRevalidate: () => false,
                         },
