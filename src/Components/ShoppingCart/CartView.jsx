@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate, useRouteLoaderData, useSubmit } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Box, Grid, Typography, IconButton } from '@mui/material';
@@ -9,7 +8,6 @@ import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import CartButtons from './CartButtons';
 
 function CartView() {
-    const [buttonTask, setButtonTask] = useState('');
     const navigate = useNavigate();
     const submit = useSubmit();
     const { cartItems } = useRouteLoaderData('frontPage');
@@ -27,7 +25,7 @@ function CartView() {
 
     const onSubmit = (data) => {
         alert(JSON.stringify(data));
-        navigate(buttonTask === 'forward' ? '/ostoskori/vaihe2' : '/');
+        navigate('/ostoskori/vaihe2');
     };
     console.log({ errors, cartItems });
 
@@ -58,13 +56,7 @@ function CartView() {
                 </Grid>
             </Grid>
             <hr />
-            <CartButtons
-                backUrl="/"
-                forwardUrl="/ostoskori/vaihe2"
-                backText="Jatka ostoksia"
-                forwardText="Seuraava"
-                setButtonTask={setButtonTask}
-            />
+            <CartButtons backText="Jatka ostoksia" forwardText="Seuraava" />
         </form>
     );
 }

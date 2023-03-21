@@ -8,7 +8,7 @@ import { Typography, TextField, Grid, MenuItem, Box, Alert } from '@mui/material
 import CartButtons from './CartButtons';
 
 function ContactsAndDelivery() {
-    const [buttonTask, setButtonTask] = useState('');
+    // const [buttonTask, setButtonTask] = useState('');
     const [selectedAddress, setSelectedAddress] = useState('Osoite 1');
     const {
         register,
@@ -16,10 +16,11 @@ function ContactsAndDelivery() {
         formState: { errors },
     } = useForm();
 
+    const addresses = ['Osoite 1', 'Osoite 2', 'Osoite 3', 'Osoite 4'];
     const navigate = useNavigate();
     const onSubmit = (data) => {
         alert(JSON.stringify(data));
-        navigate(buttonTask === 'forward' ? '/ostoskori/vaihe3' : '/ostoskori');
+        navigate('/ostoskori/vaihe3');
     };
     const handleChange = (SelectChangeEvent) => {
         setSelectedAddress(SelectChangeEvent.target.value);
@@ -101,13 +102,7 @@ function ContactsAndDelivery() {
             >
                 Toimituksessa voi kestää 1-2 viikkoa.
             </Box>
-            <CartButtons
-                backUrl="/ostoskori"
-                forwardUrl="/ostoskori/vaihe3"
-                backText="Takaisin"
-                forwardText="Seuraava"
-                setButtonTask={setButtonTask}
-            />
+            <CartButtons backText="Takaisin" forwardText="Seuraava" />
         </form>
     );
 }
