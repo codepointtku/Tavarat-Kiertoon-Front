@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-props-no-spreading */
+
 import {
     Box,
     Button,
@@ -16,7 +18,8 @@ import {
 } from '@mui/material';
 import { format } from 'date-fns';
 import PropTypes from 'prop-types';
-import { Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
+import { Form, useSubmit } from 'react-router-dom';
 
 export default function BikeConfirmation({
     startDate,
@@ -26,8 +29,26 @@ export default function BikeConfirmation({
     bikes,
     setIsConfirmationVisible,
 }) {
+    const {
+        register,
+        handleSubmit,
+
+        formState: { isSubmitted },
+    } = useForm();
+    const submit = useSubmit();
+
+    const onSubmit = (data) => {
+        const formData = { ...data, status: 'abc' };
+        submit(formData, {
+            method: 'post',
+            action: '/pyorat',
+        });
+    };
+
     return (
         <Paper
+            component={Form}
+            onSubmit={handleSubmit(onSubmit)}
             sx={{
                 mt: 3,
                 mx: 'auto',
@@ -131,6 +152,7 @@ export default function BikeConfirmation({
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
+                                {...register('address')}
                                 label="Toimitusosoite"
                                 onChange={onChange}
                                 value={value}
@@ -161,6 +183,7 @@ export default function BikeConfirmation({
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
+                                {...register('name')}
                                 label="Vastaanottajan nimi"
                                 onChange={onChange}
                                 value={value}
@@ -176,6 +199,7 @@ export default function BikeConfirmation({
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
+                                {...register('phone_number')}
                                 label="Vastaanottajan puhelinnumero"
                                 onChange={onChange}
                                 value={value}
@@ -191,14 +215,23 @@ export default function BikeConfirmation({
                     name="extraInfo"
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                        <TextField label="Lisätiedot" onChange={onChange} value={value} onBlur={onBlur} multiline />
+                        <TextField
+                            {...register('moreinfo')}
+                            label="Lisätiedot"
+                            onChange={onChange}
+                            value={value}
+                            onBlur={onBlur}
+                            multiline
+                        />
                     )}
                 />
                 <Stack flexDirection="row" justifyContent="space-between" mt={2}>
                     <Button color="error" onClick={() => setIsConfirmationVisible(false)}>
                         Takaisin
                     </Button>
-                    <Button color="success">Lähetä</Button>
+                    <Button disabled={isSubmitted} type="submit" color="success">
+                        Lähetä
+                    </Button>
                 </Stack>
             </Stack>
         </Paper>
