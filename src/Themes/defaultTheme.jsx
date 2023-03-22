@@ -44,14 +44,17 @@ const defaultTheme = createTheme({
     },
     typography: {
         fontSize: 14,
-        fontSizeSmall: 12,
-        // fontWeight: "choice", (default=fontWeightRegular)
+        // fontSize="choice" (as string)
+        fontSizeSmall: 10,
+        fontSizeYourMama: 40,
+        // fontWeight="choice", (as string) - (default=fontWeightRegular)
         fontWeightThin: 100,
         fontWeightLight: 200,
         fontWeightRegular: 300,
         fontWeightMedium: 400,
         fontWeightBold: 600,
         fontWeightHeavy: 800,
+        fontWeightYourMom: 1000,
         button: { textTransform: 'initial' },
     },
     breakpoints: {

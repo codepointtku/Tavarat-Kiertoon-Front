@@ -6,9 +6,6 @@ import arrayToTree from 'array-to-tree';
 import { TreeView, TreeItem } from '@mui/lab';
 import { Box, Typography } from '@mui/material';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-
 import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 
@@ -68,11 +65,16 @@ function CategoryTree() {
             key={nodes.id}
             nodeId={String(nodes.id)}
             label={
-                <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
-                    <Typography variant="body2" sx={{ flexGrow: 1 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', p: 0.8 }}>
+                    <Typography variant="body1" sx={{ flexGrow: 1 }}>
                         {nodes.name}
                     </Typography>
-                    <Typography variant="caption" color="inherit">
+                    <Typography
+                        variant="caption"
+                        color="primary.main"
+                        fontSize="fontSizeSmall"
+                        fontWeight="fontWeightThin"
+                    >
                         {123}
                     </Typography>
                 </Box>
@@ -91,8 +93,6 @@ function CategoryTree() {
                 aria-label="product category tree view"
                 defaultExpanded={['root', ...expandedCategories]}
                 selected={categoryParams}
-                defaultCollapseIcon={<ExpandMoreIcon />}
-                defaultExpandIcon={<ChevronRightIcon />}
                 sx={{ flexGrow: 1, maxWidth: 320, overflowY: 'auto' }}
             >
                 {renderTree(fullTree)}
