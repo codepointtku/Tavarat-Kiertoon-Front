@@ -23,7 +23,6 @@ const rootLoader = async (auth, setAuth) => {
  */
 const shoppingCartLoader = async (auth, setAuth) => {
     const { data: cart } = await apiCall(auth, setAuth, '/shopping_cart/', 'get');
-
     // console.log('@shoppingCartLoader, cart.products:', cart?.products);
     // console.log('@shoppingCartLoader, cart:', cart);
 
@@ -182,6 +181,15 @@ const bikesListLoader = async () => {
  */
 const userSignupLoader = async () => null;
 
+/**
+ * Gets user info for shopping cart process phase 2
+ */
+
+const contactsAndDeliveryLoader = async (auth, setAuth) => {
+    const { data } = await apiCall(auth, setAuth, '/user/', 'get');
+    return data;
+};
+
 export {
     rootLoader,
     productListLoader,
@@ -198,4 +206,5 @@ export {
     userSignupLoader,
     bikesListLoader,
     shoppingCartLoader,
+    contactsAndDeliveryLoader,
 };
