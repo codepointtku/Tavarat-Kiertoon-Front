@@ -18,7 +18,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { parseISO } from 'date-fns';
+import { parseISO, setHours, setMinutes } from 'date-fns';
 import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Form, useLoaderData, useSearchParams, useSubmit } from 'react-router-dom';
@@ -126,8 +126,21 @@ export default function BikesPage() {
 
     const submit = useSubmit();
 
-    const onSubmit = (formData) => {
-        console.log('formData @ onSubmit', formData);
+    const onSubmit = (data) => {
+        // add hours and minutes to start date
+        const startDateTime = setMinutes(
+            setHours(data.startDate, Math.floor(data.startTime)),
+            (data.startTime - Math.floor(data.startTime)) * 60
+        ).toISOString();
+
+        // add hours and minutes to end date
+        const endDateTime = setMinutes(
+            setHours(data.endDate, Math.floor(data.endTime)),
+            (data.endTime - Math.floor(data.endTime)) * 60
+        ).toISOString();
+
+        const formData = { ...data, startDateTime, endDateTime };
+
         submit(formData, {
             method: 'post',
             action: '/pyorat',
