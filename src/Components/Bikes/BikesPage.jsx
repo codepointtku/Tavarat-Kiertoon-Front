@@ -21,7 +21,7 @@ import {
 import { parseISO } from 'date-fns';
 import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useLoaderData, useSearchParams } from 'react-router-dom';
+import { Form, useLoaderData, useSearchParams, useSubmit } from 'react-router-dom';
 import { TransitionGroup } from 'react-transition-group';
 
 import BikeCalendar from './BikeCalendar';
@@ -64,7 +64,7 @@ export default function BikesPage() {
     const minDate = parseISO(loaderData.date_info.available_from);
     const maxDate = parseISO(loaderData.date_info.available_to);
 
-    const { control, watch } = useForm({
+    const { control, watch, handleSubmit } = useForm({
         defaultValues: {
             startDate: null,
             startTime: 8,
@@ -124,8 +124,18 @@ export default function BikesPage() {
         />
     );
 
+    const submit = useSubmit();
+
+    const onSubmit = (formData) => {
+        console.log('formData @ onSubmit', formData);
+        submit(formData, {
+            method: 'post',
+            action: '/pyorat',
+        });
+    };
+
     return (
-        <Container sx={{ mb: 6 }} ref={containerRef}>
+        <Container component={Form} onSubmit={handleSubmit(onSubmit)} sx={{ mb: 6 }} ref={containerRef}>
             <Typography variant="h3" align="center" color="primary.main" my={3}>
                 Polkupyörienvuokraus
             </Typography>

@@ -18,8 +18,8 @@ import {
 } from '@mui/material';
 import { format } from 'date-fns';
 import PropTypes from 'prop-types';
-import { Controller, useForm } from 'react-hook-form';
-import { Form, useSubmit } from 'react-router-dom';
+import { Controller } from 'react-hook-form';
+// import { Form, useSubmit } from 'react-router-dom';
 
 export default function BikeConfirmation({
     startDate,
@@ -29,25 +29,8 @@ export default function BikeConfirmation({
     bikes,
     setIsConfirmationVisible,
 }) {
-    const {
-        handleSubmit,
-
-        formState: { isSubmitted },
-    } = useForm();
-    const submit = useSubmit();
-
-    const onSubmit = (data) => {
-        const formData = { ...data };
-        submit(formData, {
-            method: 'post',
-            action: '/pyorat',
-        });
-    };
-
     return (
         <Paper
-            component={Form}
-            onSubmit={handleSubmit(onSubmit)}
             sx={{
                 mt: 3,
                 mx: 'auto',
@@ -151,6 +134,7 @@ export default function BikeConfirmation({
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
+                                name="delivery_address"
                                 label="Toimitusosoite"
                                 onChange={onChange}
                                 value={value}
@@ -181,6 +165,7 @@ export default function BikeConfirmation({
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
+                                name="contact_name"
                                 label="Vastaanottajan nimi"
                                 onChange={onChange}
                                 value={value}
@@ -196,6 +181,7 @@ export default function BikeConfirmation({
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
+                                name="contact_phone_number"
                                 label="Vastaanottajan puhelinnumero"
                                 onChange={onChange}
                                 value={value}
@@ -218,7 +204,7 @@ export default function BikeConfirmation({
                     <Button color="error" onClick={() => setIsConfirmationVisible(false)}>
                         Takaisin
                     </Button>
-                    <Button disabled={isSubmitted} type="submit" color="success">
+                    <Button type="submit" color="success">
                         Lähetä
                     </Button>
                 </Stack>
