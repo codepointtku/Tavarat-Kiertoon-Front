@@ -6,6 +6,7 @@ import apiCall from '../Utils/apiCall';
 const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+    const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : -1;
     if (request.method === 'POST') {
         console.log(auth.username);
         if (auth.username) {
@@ -33,6 +34,7 @@ const frontPageActions = async (auth, setAuth, request) => {
         }
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
             products: id,
+            amount,
         });
         // console.log(id, 'put method test', response.status);
         if (response.status === 202) {
@@ -44,6 +46,7 @@ const frontPageActions = async (auth, setAuth, request) => {
     if (request.method === 'DELETE') {
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
             products: id,
+            amount,
         });
 
         if (response.status === 202) {

@@ -11,7 +11,7 @@ function AddToCartButton({ size, id }) {
 
     const handleClickAddToCartBtn = async () => {
         submit(
-            { id },
+            { id, amount },
             {
                 method: 'put',
                 action: '/',
