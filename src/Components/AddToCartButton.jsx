@@ -33,7 +33,7 @@ function AddToCartButton({ size, id }) {
                 align="center"
                 type="number"
                 sx={{ ml: 2 }}
-                inputProps={{ max: 999, min: -999, style: { padding: 5, width: 30 } }}
+                inputProps={{ max: 999, min: -999, style: { padding: 5, width: 30, height: 20 } }}
                 value={amount}
                 onChange={(SelectChangeEvent) => {
                     setAmount(SelectChangeEvent.target.value);
