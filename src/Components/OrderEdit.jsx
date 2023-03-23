@@ -83,12 +83,17 @@ function OrderEdit() {
     const submit = useSubmit();
 
     const deleteItem = (id, items) => {
-        if (items.length > 1) {
-            for (let index = 0; index < orderItems[id]; index += 1) {
-                submit({ type: 'delete', product: items.at(index).id, productId: orderData.id }, { method: 'post' });
+        if (window.confirm('Poistetaanko tuote?')) {
+            if (items.length > 1) {
+                for (let index = 0; index < orderItems[id]; index += 1) {
+                    submit(
+                        { type: 'delete', product: items.at(index).id, productId: orderData.id },
+                        { method: 'post' }
+                    );
+                }
+            } else {
+                submit({ type: 'delete', product: items.at(-1).id, productId: orderData.id }, { method: 'post' });
             }
-        } else {
-            submit({ type: 'delete', product: items.at(-1).id, productId: orderData.id }, { method: 'post' });
         }
     };
 
@@ -294,13 +299,15 @@ function OrderEdit() {
             <h5 align="center">
                 <Button
                     onClick={() => {
-                        submit(
-                            {
-                                type: 'put',
-                                ...orderState,
-                            },
-                            { method: 'post' }
-                        );
+                        if (window.confirm('Tallennetaanko tilauksen tiedot?')) {
+                            submit(
+                                {
+                                    type: 'put',
+                                    ...orderState,
+                                },
+                                { method: 'post' }
+                            );
+                        }
                     }}
                 >
                     Tallenna tilauksen tiedot
