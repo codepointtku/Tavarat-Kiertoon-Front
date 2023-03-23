@@ -22,6 +22,7 @@ import { styled } from '@mui/material/styles';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import AuthContext from '../../../Context/AuthContext';
 import Welcome from './Welcome';
@@ -171,6 +172,11 @@ function DefaultAppBar() {
                         <ProductInCart key={product.id} text={product.name} index={product.id} />
                     ))}
                 </List>
+                <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}>
+                    <Button color="error" startIcon={<DeleteIcon />}>
+                        <ListItemText primary="Tyhjennä ostoskori" primaryTypographyProps={{ fontWeight: 'bold' }} />
+                    </Button>
+                </ListItem>
                 <Divider />
                 <List>
                     <ListItem>
