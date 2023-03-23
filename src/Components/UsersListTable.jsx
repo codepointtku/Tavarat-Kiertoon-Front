@@ -19,15 +19,17 @@ import {
 import Button from '@mui/material/Button';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import TablePaginationActions from './TablePaginationActions';
 import StyledTableCell from './StyledTableCell';
 import StyledTableRow from './StyledTableRow';
 
-function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
+function UsersListTable({ page, rowsPerPage, setUsedParams, users }) {
+    if (!users) {
+        return <>Käyttäjiä ei löytynyt</>;
+    }
     const [isOpen, setIsOpen] = useState({});
-    const navigate = useNavigate();
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
     const handleChangePage = (event, newPage) => {
         setUsedParams('page', newPage);
@@ -39,12 +41,32 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
     };
 
     useEffect(() => {
-        if (page > Math.floor(rows.length / rowsPerPage)) {
-            setUsedParams('page', Math.floor(rows.length / rowsPerPage));
+        if (page > Math.floor(users.length / rowsPerPage)) {
+            setUsedParams('page', Math.floor(users.length / rowsPerPage));
         } else if (page < 0) {
             setUsedParams('page', 0);
         }
     }, [page]);
+
+    const checkPermissions = (groups) => {
+        const groupCheck = [];
+        groups.forEach((group) => {
+            groupCheck.push(group.name);
+        });
+        if (groupCheck.includes('admin_group')) {
+            return 'admin';
+        }
+        if (groupCheck.includes('storage_group')) {
+            return 'varasto';
+        }
+        if (groupCheck.includes('user_group')) {
+            return 'käyttäjä';
+        }
+        if (groupCheck.includes('bicycle_group')) {
+            return 'pyörä';
+        }
+        return 'ei käyttöoikeutta';
+    };
 
     return (
         <TableContainer component={Paper} sx={{ padding: '2rem' }}>
@@ -59,7 +81,7 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows).map(
+                    {(rowsPerPage > 0 ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : users).map(
                         (row) => (
                             <Fragment key={row.id}>
                                 <StyledTableRow>
@@ -75,9 +97,9 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
                                         </IconButton>
                                     </StyledTableCell>
                                     <StyledTableCell>{row.name}</StyledTableCell>
-                                    <StyledTableCell align="right">{row.phone}</StyledTableCell>
+                                    <StyledTableCell align="right">{row.phone_number}</StyledTableCell>
                                     <StyledTableCell align="right">{row.email}</StyledTableCell>
-                                    <StyledTableCell align="right">{row.roles}</StyledTableCell>
+                                    <StyledTableCell align="right">{checkPermissions(row.groups)}</StyledTableCell>
                                 </StyledTableRow>
                                 <TableRow>
                                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -88,7 +110,8 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
                                                     <Button
                                                         type="button"
                                                         align="right"
-                                                        onClick={() => navigate(row.id)}
+                                                        to={`/admin/users/${row.id}`}
+                                                        component={Link}
                                                     >
                                                         Muokkaa käyttäjää
                                                     </Button>
@@ -113,9 +136,11 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
                                                                 {row.id}
                                                             </TableCell>
                                                             <TableCell align="right">{row.name}</TableCell>
-                                                            <TableCell align="right">{row.phone}</TableCell>
+                                                            <TableCell align="right">{row.phone_number}</TableCell>
                                                             <TableCell align="right">{row.email}</TableCell>
-                                                            <TableCell align="right">{row.roles}</TableCell>
+                                                            <TableCell align="right">
+                                                                {checkPermissions(row.groups)}
+                                                            </TableCell>
                                                             <TableCell align="right">{row.last_login}</TableCell>
                                                         </TableRow>
                                                     </TableBody>
@@ -139,7 +164,7 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, rows }) {
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25, 100]}
                             colSpan={3}
-                            count={rows.length}
+                            count={users.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             SelectProps={{
@@ -163,13 +188,15 @@ UsersListTable.propTypes = {
     page: PropTypes.number.isRequired,
     setUsedParams: PropTypes.func.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
-    rows: PropTypes.arrayOf(
+    users: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.string.isRequired,
+            id: PropTypes.number.isRequired,
             name: PropTypes.string.isRequired,
-            phone: PropTypes.string.isRequired,
+            phone_number: PropTypes.string.isRequired,
             email: PropTypes.string.isRequired,
-            roles: PropTypes.arrayOf(PropTypes.string).isRequired,
+            is_admin: PropTypes.bool.isRequired,
+            is_staff: PropTypes.bool.isRequired,
+            is_superuser: PropTypes.bool.isRequired,
         })
     ).isRequired,
 };

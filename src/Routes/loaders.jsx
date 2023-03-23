@@ -167,8 +167,16 @@ const usersListLoader = async (auth, setAuth) => {
  * Get one user
  */
 const userEditLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, `/users/${params.id}`, 'get');
-    return data;
+    const dataList = [];
+    let { data } = await apiCall(auth, setAuth, `/users/${params.id}`, 'get');
+    data.groups = data.groups.map((group) => group.id);
+    dataList.push(data);
+    data = await apiCall(auth, setAuth, '/users/groups', 'get');
+    dataList.push(data.data);
+    if (dataList) {
+        return dataList;
+    }
+    return null;
 };
 
 /**
