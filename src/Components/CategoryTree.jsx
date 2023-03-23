@@ -75,7 +75,7 @@ function CategoryTree() {
                         fontSize="fontSizeSmall"
                         fontWeight="fontWeightThin"
                     >
-                        {123}
+                        {nodes.product_count}
                     </Typography>
                 </Box>
             }
