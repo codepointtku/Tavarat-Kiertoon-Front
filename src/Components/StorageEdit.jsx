@@ -146,13 +146,14 @@ function StorageEdit() {
             <h5 align="center">
                 <Button
                     onClick={() => {
-                        submit(
-                            {
-                                type: 'put',
-                                ...storageState,
-                            },
-                            { method: 'post' }
-                        );
+                        if (window.confirm('Tallennetaanko varaston tiedot?'))
+                            submit(
+                                {
+                                    type: 'put',
+                                    ...storageState,
+                                },
+                                { method: 'post' }
+                            );
                     }}
                 >
                     Tallenna varaston tiedot
