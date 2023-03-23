@@ -1,12 +1,9 @@
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData } from 'react-router';
 import UsersListTable from './UsersListTable';
 import useCustomSearchParams from '../Hooks/useCustomSearchParams';
 
 function UsersList() {
     const data = useLoaderData();
-    if (!data) {
-        return <>Käyttäjiä ei löydy</>;
-    }
     const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });
 
     return (
@@ -15,7 +12,7 @@ function UsersList() {
                 page={usedParams.page}
                 rowsPerPage={usedParams.rows}
                 setUsedParams={setUsedParams}
-                rows={data}
+                users={data}
             />
         )
     );
