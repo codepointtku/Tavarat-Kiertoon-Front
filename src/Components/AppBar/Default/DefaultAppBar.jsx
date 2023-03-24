@@ -126,9 +126,9 @@ function DefaultAppBar() {
         setCurrentOpenDrawer('');
     }
 
-    const handleClick = () => {
-        submit({}, { method: 'put', action: '/' });
-    };
+    function handleClick() {
+        submit('', { method: 'put', action: '/' });
+    }
 
     return (
         <Box id="appbar-containing-div" sx={toolBarHover}>

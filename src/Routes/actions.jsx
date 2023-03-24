@@ -35,7 +35,7 @@ const frontPageActions = async (auth, setAuth, request) => {
         if (!id) {
             console.log('id AND amount is not defined');
             const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
-                products: [],
+                products: '',
             });
             return response;
         }
