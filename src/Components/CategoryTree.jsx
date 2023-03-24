@@ -54,13 +54,11 @@ function CategoryTree() {
         children: categoryTreeMain,
     };
 
-    const renderTree = (nodes) => {
-        return (
-            <TreeItem key={nodes.id} nodeId={String(nodes.id)} label={nodes.name} onClick={() => handleClick(nodes.id)}>
-                {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
-            </TreeItem>
-        );
-    };
+    const renderTree = (nodes) => (
+        <TreeItem key={nodes.id} nodeId={String(nodes.id)} label={nodes.name} onClick={() => handleClick(nodes.id)}>
+            {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
+        </TreeItem>
+    );
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
