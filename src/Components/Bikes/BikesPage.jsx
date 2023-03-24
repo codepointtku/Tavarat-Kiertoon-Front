@@ -18,16 +18,16 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { parseISO } from 'date-fns';
+import { parseISO, setHours, setMinutes } from 'date-fns';
 import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useLoaderData, useSearchParams } from 'react-router-dom';
+import { Form, useLoaderData, useSearchParams, useSubmit } from 'react-router-dom';
 import { TransitionGroup } from 'react-transition-group';
 
 import BikeCalendar from './BikeCalendar';
 import BikeCard from './BikeCard';
 import BikeConfirmation from './BikeConfirmation';
-import isValidBikeAmount from './isValidBikeAmount';
+import isValidBikeAmount, { bikePackageUnavailable } from './isValidBikeAmount';
 
 export default function BikesPage() {
     const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
@@ -39,7 +39,7 @@ export default function BikesPage() {
         ...loaderData.bikes,
         // The bike package id and bike id would have possibility for overlap since they're both just incrementing from 0
         ...loaderData.packages.map((bikePackage) => ({ ...bikePackage, id: `package-${bikePackage.id}` })),
-    ];
+    ].sort((a, b) => b.max_available - a.max_available);
     const [searchParams, setSearchParams] = useSearchParams();
     const filteredBikes = searchParams.get('filters')
         ? bikes.filter((bike) =>
@@ -64,7 +64,7 @@ export default function BikesPage() {
     const minDate = parseISO(loaderData.date_info.available_from);
     const maxDate = parseISO(loaderData.date_info.available_to);
 
-    const { control, watch } = useForm({
+    const { control, watch, handleSubmit } = useForm({
         defaultValues: {
             startDate: null,
             startTime: 8,
@@ -124,8 +124,31 @@ export default function BikesPage() {
         />
     );
 
+    const submit = useSubmit();
+
+    const onSubmit = (data) => {
+        // add hours and minutes to start date
+        const startDateTime = setMinutes(
+            setHours(data.startDate, Math.floor(data.startTime)),
+            (data.startTime - Math.floor(data.startTime)) * 60
+        ).toISOString();
+
+        // add hours and minutes to end date
+        const endDateTime = setMinutes(
+            setHours(data.endDate, Math.floor(data.endTime)),
+            (data.endTime - Math.floor(data.endTime)) * 60
+        ).toISOString();
+
+        const formData = { ...data, startDateTime, endDateTime, selectedBikes: JSON.stringify(data.selectedBikes) };
+
+        submit(formData, {
+            method: 'post',
+            action: '/pyorat',
+        });
+    };
+
     return (
-        <Container sx={{ mb: 6 }} ref={containerRef}>
+        <Container component={Form} onSubmit={handleSubmit(onSubmit)} sx={{ mb: 6 }} ref={containerRef}>
             <Typography variant="h3" align="center" color="primary.main" my={3}>
                 Polkupyörienvuokraus
             </Typography>
@@ -298,48 +321,60 @@ export default function BikesPage() {
                                                     </Stack>
                                                 </Box>
                                                 <Stack gap={1}>
-                                                    <TransitionGroup>
-                                                        {filteredBikes
-                                                            .sort((a, b) => b.max_available - a.max_available)
-                                                            .map((bike) => (
-                                                                <Collapse key={bike.id}>
-                                                                    <Controller
-                                                                        control={control}
-                                                                        name="selectedBikes"
-                                                                        render={({ field: { onChange, value } }) => (
-                                                                            <BikeCard
-                                                                                bike={bike}
-                                                                                dateInfo={loaderData.date_info}
-                                                                                amountSelected={value[bike.id] ?? 0}
-                                                                                onChange={(newValue) => {
-                                                                                    if (
-                                                                                        Number.isNaN(newValue) ||
-                                                                                        !Number(newValue)
-                                                                                    ) {
-                                                                                        const newSelectedBikes = {
-                                                                                            ...value,
-                                                                                        };
-                                                                                        delete newSelectedBikes[
-                                                                                            bike.id
-                                                                                        ];
-                                                                                        onChange(newSelectedBikes);
-                                                                                    } else if (
-                                                                                        newValue >= 0 &&
-                                                                                        newValue <= bike.max_available
-                                                                                    )
-                                                                                        onChange({
-                                                                                            ...value,
-                                                                                            [bike.id]: Number(newValue),
-                                                                                        });
-                                                                                }}
-                                                                                startDate={watch('startDate')}
-                                                                                endDate={watch('endDate')}
-                                                                            />
-                                                                        )}
-                                                                    />
-                                                                </Collapse>
-                                                            ))}
-                                                    </TransitionGroup>
+                                                    <Controller
+                                                        control={control}
+                                                        name="selectedBikes"
+                                                        render={({ field: { onChange, value } }) => (
+                                                            <TransitionGroup>
+                                                                {filteredBikes.map((bike) => (
+                                                                    <Collapse key={bike.id}>
+                                                                        <BikeCard
+                                                                            bike={
+                                                                                bike.type !== 'Paketti'
+                                                                                    ? bike
+                                                                                    : {
+                                                                                          ...bike,
+                                                                                          unavailable:
+                                                                                              bikePackageUnavailable(
+                                                                                                  bike,
+                                                                                                  minDate,
+                                                                                                  maxDate,
+                                                                                                  loaderData.bikes,
+                                                                                                  value,
+                                                                                                  watch('startDate'),
+                                                                                                  watch('endDate')
+                                                                                              ),
+                                                                                      }
+                                                                            }
+                                                                            dateInfo={loaderData.date_info}
+                                                                            amountSelected={value[bike.id] ?? 0}
+                                                                            onChange={(newValue) => {
+                                                                                if (
+                                                                                    Number.isNaN(newValue) ||
+                                                                                    !Number(newValue)
+                                                                                ) {
+                                                                                    const newSelectedBikes = {
+                                                                                        ...value,
+                                                                                    };
+                                                                                    delete newSelectedBikes[bike.id];
+                                                                                    onChange(newSelectedBikes);
+                                                                                } else if (
+                                                                                    newValue >= 0 &&
+                                                                                    newValue <= bike.max_available
+                                                                                )
+                                                                                    onChange({
+                                                                                        ...value,
+                                                                                        [bike.id]: Number(newValue),
+                                                                                    });
+                                                                            }}
+                                                                            startDate={watch('startDate')}
+                                                                            endDate={watch('endDate')}
+                                                                        />
+                                                                    </Collapse>
+                                                                ))}
+                                                            </TransitionGroup>
+                                                        )}
+                                                    />
                                                 </Stack>
                                             </Box>
                                             <Box sx={{ width: '300px' }}>

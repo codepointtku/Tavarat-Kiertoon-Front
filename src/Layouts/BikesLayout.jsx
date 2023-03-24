@@ -1,11 +1,10 @@
 import { Container, Stack, ThemeProvider } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 import { Outlet } from 'react-router';
 
-import { createTheme } from '@mui/material/styles';
+import defaultTheme from '../Themes/defaultTheme';
 import Footer from './Components/Footer';
 import Header from './Components/Header';
-
-import defaultTheme from '../Themes/defaultTheme';
 
 const bikeTheme = createTheme({
     ...defaultTheme,
