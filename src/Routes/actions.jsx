@@ -93,7 +93,7 @@ const contactAction = async (auth, setAuth, request) => {
 const bikeOrderAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     // console.log('@bikeorderAction', formData.get('contactPersonName'));
-    const response = await apiCall(auth, setAuth, '/bikes/rental', 'post', {
+    const response = await apiCall(auth, setAuth, '/bikes/rental/', 'post', {
         contact_name: formData.get('contactPersonName'),
         contact_phone_number: formData.get('contactPersonPhoneNumber'),
         delivery_address: formData.get('deliveryAddress'),
