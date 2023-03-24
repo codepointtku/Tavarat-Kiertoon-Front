@@ -12,6 +12,7 @@ function ProductList() {
                 <Grid item key={product.id} xs={13} sm={7} md={5} lg={4} xl={3}>
                     <ProductCard
                         id={product.id}
+                        groupId={product.group_id}
                         productName={product.name}
                         date={product.date}
                         picture={product.pictures[0]}

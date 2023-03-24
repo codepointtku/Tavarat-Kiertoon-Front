@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { useSubmit } from 'react-router-dom';
+import { useSubmit, useRouteLoaderData } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import { Box, Button, TextField } from '@mui/material';
 
-function AddToCartButton({ size, id }) {
+function AddToCartButton({ size, id, groupId }) {
     const submit = useSubmit();
+    const { cart } = useRouteLoaderData('frontPage');
     const [amount, setAmount] = useState(1);
-    console.log(amount);
+    console.log(cart);
 
     const handleClickAddToCartBtn = async () => {
         submit(
@@ -29,16 +30,18 @@ function AddToCartButton({ size, id }) {
             >
                 Lisää koriin
             </Button>
-            <TextField
-                align="center"
-                type="number"
-                sx={{ ml: 2 }}
-                inputProps={{ max: 999, min: -999, style: { padding: 5, width: 45, height: 20 } }}
-                value={amount}
-                onChange={(SelectChangeEvent) => {
-                    setAmount(SelectChangeEvent.target.value);
-                }}
-            />
+            {cart?.products?.some((product) => product['group_id'] === groupId) && (
+                <TextField
+                    align="center"
+                    type="number"
+                    sx={{ ml: 2 }}
+                    inputProps={{ max: 999, min: -999, style: { padding: 5, width: 45, height: 20 } }}
+                    value={amount}
+                    onChange={(SelectChangeEvent) => {
+                        setAmount(SelectChangeEvent.target.value);
+                    }}
+                />
+            )}
         </Box>
     );
 }
@@ -46,6 +49,7 @@ function AddToCartButton({ size, id }) {
 AddToCartButton.propTypes = {
     size: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
+    groupId: PropTypes.string.isRequired,
 };
 
 export default AddToCartButton;

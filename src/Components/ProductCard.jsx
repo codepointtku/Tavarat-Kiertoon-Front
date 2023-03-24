@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import AddToCartButton from './AddToCartButton';
 
-function ProductCard({ productName, id, picture }) {
+function ProductCard({ productName, id, groupId, picture }) {
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Card sx={{ maxWidth: 400 }}>
@@ -35,7 +35,7 @@ function ProductCard({ productName, id, picture }) {
                         <Button variant="outlined" component={Link} to={`/tuotteet/${id}`} size="small">
                             <InfoOutlinedIcon fontSize="small" />
                         </Button>
-                        <AddToCartButton size="small" id={id} />
+                        <AddToCartButton size="small" id={id} groupId={groupId} />
                     </CardActions>
                 </Box>
             </Card>
@@ -47,6 +47,7 @@ function ProductCard({ productName, id, picture }) {
 ProductCard.propTypes = {
     productName: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
+    groupId: PropTypes.string.isRequired,
     picture: PropTypes.string.isRequired,
 };
 
