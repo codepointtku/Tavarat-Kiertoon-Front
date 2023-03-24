@@ -28,6 +28,7 @@ const frontPageActions = async (auth, setAuth, request) => {
     }
     if (request.method === 'PUT') {
         if (auth.user_group === false) {
+            // eslint-disable-next-line no-alert
             alert('log in as with user_group rights first');
             return null;
         }
