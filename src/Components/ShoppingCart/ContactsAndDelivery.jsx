@@ -9,7 +9,6 @@ import CartButtons from './CartButtons';
 
 function ContactsAndDelivery() {
     const user = useLoaderData();
-    const [buttonTask, setButtonTask] = useState('');
     const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
     const {
         register,
@@ -20,13 +19,12 @@ function ContactsAndDelivery() {
     const navigate = useNavigate();
     const onSubmit = (data) => {
         alert(JSON.stringify(data));
-        navigate(buttonTask === 'forward' ? '/ostoskori/vaihe3' : '/ostoskori');
+        navigate('/ostoskori/vaihe3');
     };
     const handleChange = (SelectChangeEvent) => {
         setSelectedAddress(SelectChangeEvent.target.value);
     };
     const correctAddress = user.address_list?.filter((address) => address.address === selectedAddress);
-    // const values = getValues(['firstName', 'lastName', 'email', 'phoneNumber', 'locationCode']);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -99,7 +97,9 @@ function ContactsAndDelivery() {
                         select
                     >
                         {user.address_list?.map((a) => (
-                            <MenuItem value={a.address}>{a.address}</MenuItem>
+                            <MenuItem value={a.address} key={a.id}>
+                                {a.address}
+                            </MenuItem>
                         ))}
                     </TextField>
                 </Grid>
@@ -146,13 +146,7 @@ function ContactsAndDelivery() {
             >
                 Toimituksessa kestää keskimäärin 1-2 viikkoa.
             </Box>
-            <CartButtons
-                backUrl="/ostoskori"
-                forwardUrl="/ostoskori/vaihe3"
-                backText="Takaisin"
-                forwardText="Seuraava"
-                setButtonTask={setButtonTask}
-            />
+            <CartButtons backText="Takaisin" forwardText="Seuraava" />
         </form>
     );
 }

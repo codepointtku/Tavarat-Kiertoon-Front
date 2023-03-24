@@ -6,6 +6,7 @@ import apiCall from '../Utils/apiCall';
 const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+    const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : -1;
     if (request.method === 'POST') {
         console.log(auth.username);
         if (auth.username) {
@@ -32,8 +33,15 @@ const frontPageActions = async (auth, setAuth, request) => {
             alert('log in as with user_group rights first');
             return null;
         }
+        if (!id) {
+            const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+                products: '',
+            });
+            return response;
+        }
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
             products: id,
+            amount,
         });
         // console.log(id, 'put method test', response.status);
         if (response.status === 202) {
@@ -45,6 +53,7 @@ const frontPageActions = async (auth, setAuth, request) => {
     if (request.method === 'DELETE') {
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
             products: id,
+            amount,
         });
 
         if (response.status === 202) {
@@ -212,6 +221,40 @@ const itemUpdateAction = async (auth, setAuth, request) => {
     return { type: 'updateitem', status: false };
 };
 
+/**
+ * adds or removes items from shopping cart while in ordering process phase 1
+ */
+
+const cartViewAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const amount = request.method === 'PUT' ? 1 : -1;
+    const id = Number(formData.get('id'));
+    if (request.method === 'PUT') {
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            products: id,
+            amount,
+        });
+        // console.log(id, 'put method test', response.status);
+        if (response.status === 202) {
+            // alert('Item added successfully');
+            return { type: 'update', status: true };
+        }
+        return { type: 'update', status: false };
+    }
+    if (request.method === 'DELETE') {
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            products: id,
+            amount,
+        });
+
+        if (response.status === 202) {
+            return { type: 'delete', status: true };
+        }
+        return { type: 'delete', status: false };
+    }
+    return null;
+};
+
 export {
     userSignupAction,
     frontPageActions,
@@ -222,5 +265,6 @@ export {
     userEditAction,
     itemCreateAction,
     itemUpdateAction,
+    cartViewAction,
     bikeOrderAction,
 };
