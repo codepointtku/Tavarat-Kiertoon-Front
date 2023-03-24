@@ -32,6 +32,13 @@ const frontPageActions = async (auth, setAuth, request) => {
             alert('log in as with user_group rights first');
             return null;
         }
+        if (!id) {
+            console.log('id AND amount is not defined');
+            const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+                products: [],
+            });
+            return response;
+        }
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
             products: id,
             amount,

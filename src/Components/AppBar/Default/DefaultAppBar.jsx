@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate, useSubmit } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
@@ -110,6 +110,7 @@ function DefaultAppBar() {
     const { auth } = useContext(AuthContext);
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
+    const submit = useSubmit();
     const { cart } = useLoaderData();
 
     const drawerOpen = (drawer) => () => {
@@ -124,6 +125,10 @@ function DefaultAppBar() {
         navigate('/ostoskori');
         setCurrentOpenDrawer('');
     }
+
+    const handleClick = () => {
+        submit({}, { method: 'put', action: '/' });
+    };
 
     return (
         <Box id="appbar-containing-div" sx={toolBarHover}>
@@ -171,12 +176,19 @@ function DefaultAppBar() {
                     {cart?.products?.map((product) => (
                         <ProductInCart key={product.id} text={product.name} index={product.id} />
                     ))}
+                    {cart?.products?.length > 0 && (
+                        <ListItem
+                            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}
+                        >
+                            <Button color="error" startIcon={<DeleteIcon />} onClick={handleClick}>
+                                <ListItemText
+                                    primary="Tyhjennä ostoskori"
+                                    primaryTypographyProps={{ fontWeight: 'bold' }}
+                                />
+                            </Button>
+                        </ListItem>
+                    )}
                 </List>
-                <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}>
-                    <Button color="error" startIcon={<DeleteIcon />}>
-                        <ListItemText primary="Tyhjennä ostoskori" primaryTypographyProps={{ fontWeight: 'bold' }} />
-                    </Button>
-                </ListItem>
                 <Divider />
                 <List>
                     <ListItem>
