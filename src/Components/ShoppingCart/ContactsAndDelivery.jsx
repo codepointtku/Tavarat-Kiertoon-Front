@@ -25,7 +25,6 @@ function ContactsAndDelivery() {
         setSelectedAddress(SelectChangeEvent.target.value);
     };
     const correctAddress = user.address_list?.filter((address) => address.address === selectedAddress);
-    // const values = getValues(['firstName', 'lastName', 'email', 'phoneNumber', 'locationCode']);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -98,7 +97,9 @@ function ContactsAndDelivery() {
                         select
                     >
                         {user.address_list?.map((a) => (
-                            <MenuItem value={a.address}>{a.address}</MenuItem>
+                            <MenuItem value={a.address} key={a.id}>
+                                {a.address}
+                            </MenuItem>
                         ))}
                     </TextField>
                 </Grid>

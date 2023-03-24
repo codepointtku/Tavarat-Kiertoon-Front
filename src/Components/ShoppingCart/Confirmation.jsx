@@ -5,17 +5,13 @@ import { useForm } from 'react-hook-form';
 import CartButtons from './CartButtons';
 
 function Confirmation() {
-    const {
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    const { handleSubmit } = useForm();
 
     const navigate = useNavigate();
     const onSubmit = (data) => {
         alert(JSON.stringify(data));
         navigate('/');
     };
-    console.log(errors);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

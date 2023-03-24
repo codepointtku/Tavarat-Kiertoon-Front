@@ -11,10 +11,7 @@ function CartView() {
     const navigate = useNavigate();
     const submit = useSubmit();
     const { cartItems } = useRouteLoaderData('frontPage');
-    const {
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    const { handleSubmit } = useForm();
 
     const handleClick = (action, id) => {
         action === 'add'
@@ -27,21 +24,19 @@ function CartView() {
         navigate('/ostoskori/vaihe2');
     };
 
-    console.log(errors);
-
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container direction="row" justifyContent="space-around">
                 <Grid container direction="column" sx={{ width: 'auto' }}>
                     {cartItems?.map((item) => (
-                        <Typography variant="h6" sx={{ p: 0.5 }}>
+                        <Typography variant="h6" sx={{ p: 0.5 }} key={item.id}>
                             {item.name}
                         </Typography>
                     ))}
                 </Grid>
                 <Grid container direction="column" sx={{ width: 'auto' }}>
                     {cartItems?.map((item) => (
-                        <Box display="inline-flex">
+                        <Box display="inline-flex" key={item.id}>
                             <IconButton color="primary" onClick={() => handleClick('remove', item.id)}>
                                 <RemoveCircleRoundedIcon />
                             </IconButton>
