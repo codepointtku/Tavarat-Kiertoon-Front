@@ -8,7 +8,7 @@ import AddToCartButton from './AddToCartButton';
 function ProductCard({ productName, id, groupId, picture }) {
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Card sx={{ maxWidth: 400 }}>
+            <Card sx={{ width: 300 }}>
                 <CardActionArea component={Link} to={`/tuotteet/${id}`}>
                     <CardMedia
                         component="img"
