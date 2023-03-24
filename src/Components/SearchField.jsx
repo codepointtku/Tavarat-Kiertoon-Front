@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Form, useSubmit } from 'react-router-dom';
+import { Form, useSearchParams } from 'react-router-dom';
 
 import { Box, Button, InputBase } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
@@ -17,11 +17,14 @@ const Search = styled('div')(({ theme }) => ({
 
 function SearchField() {
     const { handleSubmit, register } = useForm();
-    const submit = useSubmit();
+    // const submit = useSubmit();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const onSubmit = (formData) => {
-        console.log('hello');
-        console.log(formData);
+        console.log('formData:', formData);
+        console.log('formData.search:', formData.search);
+        setSearchParams({ hakusana: formData.search });
+        console.log('searchParams:', searchParams);
     };
 
     return (
@@ -37,7 +40,9 @@ function SearchField() {
                     sx={{ color: 'inherit', padding: '1rem 6rem 1rem 1rem' }}
                 />
             </Search>
-            <Button type="submit">Eti</Button>
+            <Button type="submit" sx={{ p: '0 2rem 0 2rem' }}>
+                Hae
+            </Button>
         </Box>
     );
 }
