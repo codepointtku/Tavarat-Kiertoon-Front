@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-props-no-spreading */
-
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
     Accordion,
@@ -24,7 +23,6 @@ import { format } from 'date-fns';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
-// import { Form, useSubmit } from 'react-router-dom';
 
 export default function BikeConfirmation({
     startDate,
