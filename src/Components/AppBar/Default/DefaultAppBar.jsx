@@ -108,12 +108,14 @@ const toolBarHover = {
 
 function DefaultAppBar() {
     const { auth } = useContext(AuthContext);
+    const [notLoggedIn, setNotLoggedIn] = useState(false);
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
     const submit = useSubmit();
     const { cart } = useLoaderData();
 
     const drawerOpen = (drawer) => () => {
+        notLoggedIn && setNotLoggedIn(false);
         if (currentOpenDrawer === drawer) {
             setCurrentOpenDrawer('');
         } else {
@@ -122,8 +124,13 @@ function DefaultAppBar() {
     };
 
     function navigateToCart() {
-        navigate('/ostoskori');
-        setCurrentOpenDrawer('');
+        if (!auth.username) {
+            setCurrentOpenDrawer('account');
+            setNotLoggedIn(true);
+        } else {
+            setCurrentOpenDrawer('');
+            navigate('/ostoskori');
+        }
     }
 
     function handleClick() {
@@ -207,7 +214,7 @@ function DefaultAppBar() {
                 {auth.username ? (
                     <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} auth={auth} />
                 ) : (
-                    <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
+                    <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} notLoggedIn={notLoggedIn} />
                 )}
             </Drawer>
         </Box>
