@@ -71,6 +71,7 @@ import {
     storageCreateAction,
     frontPageActions,
     userEditAction,
+    cartViewAction,
     bikeOrderAction,
 } from './actions';
 
@@ -188,6 +189,7 @@ function Routes() {
                                 {
                                     path: '/ostoskori/',
                                     element: <CartView />,
+                                    action: async ({ request }) => cartViewAction(auth, setAuth, request),
                                 },
                                 {
                                     path: '/ostoskori/vaihe2',
