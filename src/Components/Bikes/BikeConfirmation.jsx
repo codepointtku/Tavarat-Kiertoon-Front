@@ -1,4 +1,9 @@
+/* eslint-disable react/jsx-props-no-spreading */
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
     Box,
     Button,
     Checkbox,
@@ -16,6 +21,7 @@ import {
 } from '@mui/material';
 import { format } from 'date-fns';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 
 export default function BikeConfirmation({
@@ -26,6 +32,8 @@ export default function BikeConfirmation({
     bikes,
     setIsConfirmationVisible,
 }) {
+    const [requiredCheckboxes, setRequiredCheckboxes] = useState({ education: false, responsibilities: false });
+
     return (
         <Paper
             sx={{
@@ -131,6 +139,7 @@ export default function BikeConfirmation({
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
+                                name="delivery_address"
                                 label="Toimitusosoite"
                                 onChange={onChange}
                                 value={value}
@@ -161,6 +170,7 @@ export default function BikeConfirmation({
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
+                                name="contact_name"
                                 label="Vastaanottajan nimi"
                                 onChange={onChange}
                                 value={value}
@@ -176,6 +186,7 @@ export default function BikeConfirmation({
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
+                                name="contact_phone_number"
                                 label="Vastaanottajan puhelinnumero"
                                 onChange={onChange}
                                 value={value}
@@ -194,11 +205,71 @@ export default function BikeConfirmation({
                         <TextField label="Lisätiedot" onChange={onChange} value={value} onBlur={onBlur} multiline />
                     )}
                 />
+                <Stack>
+                    <Box mb={2}>
+                        <Accordion>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="opastukset-sisältö">
+                                <Typography>Opastukset</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus
+                                    ex, sit amet blandit leo lobortis eget.
+                                </Typography>
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="ehdot-sisältö">
+                                <Typography>Käyttöehdot ja vastuut</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus
+                                    ex, sit amet blandit leo lobortis eget.
+                                </Typography>
+                            </AccordionDetails>
+                        </Accordion>
+                    </Box>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onChange={(_e, value) =>
+                                    setRequiredCheckboxes((prevRequiredCheckboxes) => ({
+                                        ...prevRequiredCheckboxes,
+                                        education: value,
+                                    }))
+                                }
+                                value={requiredCheckboxes.education}
+                            />
+                        }
+                        label="Olen saanut tarvittavat opastukset"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onChange={(_e, value) =>
+                                    setRequiredCheckboxes((prevRequiredCheckboxes) => ({
+                                        ...prevRequiredCheckboxes,
+                                        responsibilities: value,
+                                    }))
+                                }
+                                value={requiredCheckboxes.responsibilities}
+                            />
+                        }
+                        label="Olen lukenut ja ymmärtänyt käyttöehdot ja vastuut"
+                    />
+                </Stack>
                 <Stack flexDirection="row" justifyContent="space-between" mt={2}>
                     <Button color="error" onClick={() => setIsConfirmationVisible(false)}>
                         Takaisin
                     </Button>
-                    <Button color="success">Lähetä</Button>
+                    <Button
+                        type="submit"
+                        color="success"
+                        disabled={Object.values(requiredCheckboxes).some((checkbox) => !checkbox)}
+                    >
+                        Lähetä
+                    </Button>
                 </Stack>
             </Stack>
         </Paper>
