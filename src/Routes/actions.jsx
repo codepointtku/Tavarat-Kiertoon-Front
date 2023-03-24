@@ -1,5 +1,3 @@
-// import toISOString from 'date-fns';
-
 import apiCall from '../Utils/apiCall';
 
 /**
