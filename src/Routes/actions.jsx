@@ -1,3 +1,5 @@
+// import toISOString from 'date-fns';
+
 import apiCall from '../Utils/apiCall';
 
 /**
@@ -85,7 +87,22 @@ const contactAction = async (auth, setAuth, request) => {
     const response = await apiCall(auth, setAuth, '/contact_forms/', 'post', formData);
     return response.data || null;
 };
-
+/**
+ * sends bike order form to back-end
+ */
+const bikeOrderAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    // console.log('@bikeorderAction', formData.get('contactPersonName'));
+    const response = await apiCall(auth, setAuth, '/bikes/rental/', 'post', {
+        contact_name: formData.get('contactPersonName'),
+        contact_phone_number: formData.get('contactPersonPhoneNumber'),
+        delivery_address: formData.get('deliveryAddress'),
+        start_date: formData.get('startDateTime'),
+        end_date: formData.get('endDateTime'),
+        bike_stock: JSON.parse(formData.get('selectedBikes')),
+    });
+    return response.data || null;
+};
 /**
  * removes items from the order and edits order data
  */
@@ -206,4 +223,5 @@ export {
     userEditAction,
     itemCreateAction,
     itemUpdateAction,
+    bikeOrderAction,
 };

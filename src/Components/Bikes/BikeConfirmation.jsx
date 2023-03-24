@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-props-no-spreading */
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
     Accordion,
@@ -22,6 +24,7 @@ import { format } from 'date-fns';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
+// import { Form, useSubmit } from 'react-router-dom';
 
 export default function BikeConfirmation({
     startDate,
@@ -138,6 +141,7 @@ export default function BikeConfirmation({
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
+                                name="delivery_address"
                                 label="Toimitusosoite"
                                 onChange={onChange}
                                 value={value}
@@ -168,6 +172,7 @@ export default function BikeConfirmation({
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
+                                name="contact_name"
                                 label="Vastaanottajan nimi"
                                 onChange={onChange}
                                 value={value}
@@ -183,6 +188,7 @@ export default function BikeConfirmation({
                         rules={{ required: true }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
+                                name="contact_phone_number"
                                 label="Vastaanottajan puhelinnumero"
                                 onChange={onChange}
                                 value={value}
@@ -259,7 +265,11 @@ export default function BikeConfirmation({
                     <Button color="error" onClick={() => setIsConfirmationVisible(false)}>
                         Takaisin
                     </Button>
-                    <Button color="success" disabled={Object.values(requiredCheckboxes).some((checkbox) => !checkbox)}>
+                    <Button
+                        type="submit"
+                        color="success"
+                        disabled={Object.values(requiredCheckboxes).some((checkbox) => !checkbox)}
+                    >
                         Lähetä
                     </Button>
                 </Stack>
