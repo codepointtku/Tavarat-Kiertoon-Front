@@ -33,7 +33,6 @@ const frontPageActions = async (auth, setAuth, request) => {
             return null;
         }
         if (!id) {
-            console.log('id AND amount is not defined');
             const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
                 products: '',
             });
@@ -206,6 +205,36 @@ const itemUpdateAction = async (auth, setAuth, request) => {
     return { type: 'updateitem', status: false };
 };
 
+const cartViewAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const amount = request.method === 'PUT' ? 1 : -1;
+    const id = Number(formData.get('id'));
+    if (request.method === 'PUT') {
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            products: id,
+            amount,
+        });
+        // console.log(id, 'put method test', response.status);
+        if (response.status === 202) {
+            // alert('Item added successfully');
+            return { type: 'update', status: true };
+        }
+        return { type: 'update', status: false };
+    }
+    if (request.method === 'DELETE') {
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            products: id,
+            amount,
+        });
+
+        if (response.status === 202) {
+            return { type: 'delete', status: true };
+        }
+        return { type: 'delete', status: false };
+    }
+    return null;
+};
+
 export {
     userSignupAction,
     frontPageActions,
@@ -216,4 +245,5 @@ export {
     userEditAction,
     itemCreateAction,
     itemUpdateAction,
+    cartViewAction,
 };

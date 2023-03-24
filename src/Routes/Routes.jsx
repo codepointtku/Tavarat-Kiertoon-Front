@@ -71,6 +71,7 @@ import {
     storageCreateAction,
     frontPageActions,
     userEditAction,
+    cartViewAction,
 } from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
@@ -187,6 +188,7 @@ function Routes() {
                                 {
                                     path: '/ostoskori/',
                                     element: <CartView />,
+                                    action: async ({ request }) => cartViewAction(auth, setAuth, request),
                                 },
                                 {
                                     path: '/ostoskori/vaihe2',

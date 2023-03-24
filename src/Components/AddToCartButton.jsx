@@ -8,7 +8,6 @@ function AddToCartButton({ size, id, groupId }) {
     const submit = useSubmit();
     const { cart } = useRouteLoaderData('frontPage');
     const [amount, setAmount] = useState(1);
-    console.log(cart);
 
     const handleClickAddToCartBtn = async () => {
         submit(

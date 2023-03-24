@@ -18,8 +18,8 @@ function CartView() {
 
     const handleClick = (action, id) => {
         action === 'add'
-            ? submit({ id }, { method: 'put', action: '/' })
-            : submit({ id }, { method: 'delete', action: '/' });
+            ? submit({ id }, { method: 'put', action: '/ostoskori/' })
+            : submit({ id }, { method: 'delete', action: '/ostoskori/' });
     };
 
     const onSubmit = (data) => {
