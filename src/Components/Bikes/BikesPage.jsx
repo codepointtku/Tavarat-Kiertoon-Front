@@ -139,7 +139,7 @@ export default function BikesPage() {
             (data.endTime - Math.floor(data.endTime)) * 60
         ).toISOString();
 
-        const formData = { ...data, startDateTime, endDateTime };
+        const formData = { ...data, startDateTime, endDateTime, selectedBikes: JSON.stringify(data.selectedBikes) };
 
         submit(formData, {
             method: 'post',

@@ -99,7 +99,7 @@ const bikeOrderAction = async (auth, setAuth, request) => {
         delivery_address: formData.get('deliveryAddress'),
         start_date: formData.get('startDateTime'),
         end_date: formData.get('endDateTime'),
-        bike_stock: [30],
+        bike_stock: JSON.parse(formData.get('selectedBikes')),
     });
     return response.data || null;
 };
