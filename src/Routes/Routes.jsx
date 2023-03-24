@@ -60,6 +60,7 @@ import {
     userSignupLoader,
     shoppingCartLoader,
     bikesListLoader,
+    contactsAndDeliveryLoader,
 } from './loaders';
 
 import {
@@ -69,6 +70,7 @@ import {
     storageEditAction,
     storageCreateAction,
     frontPageActions,
+    userEditAction,
     bikeOrderAction,
 } from './actions';
 
@@ -190,6 +192,7 @@ function Routes() {
                                 {
                                     path: '/ostoskori/vaihe2',
                                     element: <ContactsAndDelivery />,
+                                    loader: contactsAndDeliveryLoader,
                                 },
                                 {
                                     path: '/ostoskori/vaihe3',
@@ -345,7 +348,7 @@ function Routes() {
                         // NOTE : JTo : 'users' paths need to be checked once users are enabled in back-end
                         {
                             path: 'users',
-                            element: <UsersList />,
+                            element: <Outlet />,
                             children: [
                                 {
                                     index: true,
@@ -356,6 +359,8 @@ function Routes() {
                                     path: ':id',
                                     element: <UserEdit />,
                                     loader: async ({ params }) => userEditLoader(auth, setAuth, params),
+                                    action: async ({ request, params }) =>
+                                        userEditAction(auth, setAuth, request, params),
                                 },
                             ],
                         },

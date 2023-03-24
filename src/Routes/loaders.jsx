@@ -23,7 +23,6 @@ const rootLoader = async (auth, setAuth) => {
  */
 const shoppingCartLoader = async (auth, setAuth) => {
     const { data: cart } = await apiCall(auth, setAuth, '/shopping_cart/', 'get');
-
     // console.log('@shoppingCartLoader, cart.products:', cart?.products);
     // console.log('@shoppingCartLoader, cart:', cart);
 
@@ -165,8 +164,16 @@ const usersListLoader = async (auth, setAuth) => {
  * Get one user
  */
 const userEditLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, `/users/${params.id}`, 'get');
-    return data;
+    const dataList = [];
+    let { data } = await apiCall(auth, setAuth, `/users/${params.id}`, 'get');
+    data.groups = data.groups.map((group) => group.id);
+    dataList.push(data);
+    data = await apiCall(auth, setAuth, '/users/groups', 'get');
+    dataList.push(data.data);
+    if (dataList) {
+        return dataList;
+    }
+    return null;
 };
 
 /**
@@ -181,6 +188,15 @@ const bikesListLoader = async () => {
  * returns null load
  */
 const userSignupLoader = async () => null;
+
+/**
+ * Gets user info for shopping cart process phase 2
+ */
+
+const contactsAndDeliveryLoader = async (auth, setAuth) => {
+    const { data } = await apiCall(auth, setAuth, '/user/', 'get');
+    return data;
+};
 
 export {
     rootLoader,
@@ -198,4 +214,5 @@ export {
     userSignupLoader,
     bikesListLoader,
     shoppingCartLoader,
+    contactsAndDeliveryLoader,
 };

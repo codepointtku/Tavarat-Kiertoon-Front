@@ -176,6 +176,15 @@ const storageEditAction = async (auth, setAuth, request, params) => {
     return null;
 };
 
+const userEditAction = async (auth, setAuth, request, params) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, `/users/update/${params.id}/`, 'put', formData);
+    if (response.status === 200) {
+        return { type: 'update', status: true };
+    }
+    return { type: 'update', status: false };
+};
+
 /**
  * creates a new item
  */
@@ -211,6 +220,7 @@ export {
     orderEditAction,
     storageCreateAction,
     storageEditAction,
+    userEditAction,
     itemCreateAction,
     itemUpdateAction,
     bikeOrderAction,
