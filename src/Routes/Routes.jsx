@@ -72,6 +72,7 @@ import {
     frontPageActions,
     userEditAction,
     cartViewAction,
+    bikeOrderAction,
 } from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
@@ -383,6 +384,7 @@ function Routes() {
                         {
                             path: '/pyorat',
                             element: <BikesPage />,
+                            action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                             loader: bikesListLoader,
                             shouldRevalidate: () => false,
                         },
