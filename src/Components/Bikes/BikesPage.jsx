@@ -42,12 +42,18 @@ export default function BikesPage() {
     ].sort((a, b) => b.max_available - a.max_available);
     const [searchParams, setSearchParams] = useSearchParams();
     const filteredBikes = searchParams.get('filters')
-        ? bikes.filter((bike) =>
-              Object.entries(JSON.parse(searchParams.get('filters'))).every(
-                  ([filterName, filterValue]) => filterValue === bike[filterName]
+        ? bikes
+              .filter((bike) =>
+                  bike.package_only_count ? bike.max_available > bike.package_only_count : bike.max_available
               )
-          )
-        : bikes;
+              .filter((bike) =>
+                  Object.entries(JSON.parse(searchParams.get('filters'))).every(
+                      ([filterName, filterValue]) => filterValue === bike[filterName]
+                  )
+              )
+        : bikes.filter((bike) =>
+              bike.package_only_count ? bike.max_available > bike.package_only_count : bike.max_available
+          );
 
     const sizeOptionsSet = new Set();
     const colorOptionsSet = new Set();
@@ -360,7 +366,10 @@ export default function BikesPage() {
                                                                                     onChange(newSelectedBikes);
                                                                                 } else if (
                                                                                     newValue >= 0 &&
-                                                                                    newValue <= bike.max_available
+                                                                                    newValue <= bike.package_only_count
+                                                                                        ? bike.max_available -
+                                                                                          bike.package_only_count
+                                                                                        : bike.max_available
                                                                                 )
                                                                                     onChange({
                                                                                         ...value,
