@@ -14,7 +14,7 @@ function ProductCard({ productName, id, groupId, picture }) {
                         component="img"
                         alt="kuva"
                         height="200"
-                        image={`http://localhost:8000/media/${picture}`}
+                        image={`http://${window.location.hostname}:8000/media/${picture}`}
                     />
                     <CardContent>
                         <Typography variant="h6" fontWeight="fontWeightLight" lineHeight="1">
