@@ -27,6 +27,9 @@ export default function BikeCard({
     endDate: selectedEndDate,
 }) {
     const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
+    const maxNonPackageAvailable = bike.package_only_count
+        ? bike.max_available - bike.package_only_count
+        : bike.max_available;
 
     return (
         <Card sx={{ my: 1, display: 'flex', flexDirection: 'row', height: '220px' }}>
@@ -69,7 +72,7 @@ export default function BikeCard({
                             aria-label="lisää yksi"
                             size="small"
                             color="primary"
-                            disabled={amountSelected >= bike.max_available}
+                            disabled={amountSelected >= maxNonPackageAvailable}
                             onClick={() => onChange(amountSelected + 1)}
                         >
                             <AddCircleIcon fontSize="inherit" />
@@ -77,7 +80,7 @@ export default function BikeCard({
                     </Box>
                     <BikeAvailability
                         dateInfo={dateInfo}
-                        maxAvailable={bike.max_available}
+                        maxAvailable={maxNonPackageAvailable}
                         unavailable={bike.unavailable}
                         selectedStartDate={selectedStartDate}
                         selectedEndDate={selectedEndDate}
@@ -112,7 +115,7 @@ export default function BikeCard({
                         </Typography>
                         <Typography variant="body2">Tyyppi: {bike.type}</Typography>
                         <Typography variant="body2">Koko: {bike.size}</Typography>
-                        <Typography variant="body2">Yhteensä palvelussa: {bike.max_available}</Typography>
+                        <Typography variant="body2">Yhteensä palvelussa: {maxNonPackageAvailable}</Typography>
                     </Stack>
                 </Box>
             </Modal>
@@ -127,6 +130,8 @@ BikeCard.propTypes = {
         description: PropTypes.string,
         max_available: PropTypes.number,
         unavailable: PropTypes.objectOf(PropTypes.number),
+        package_only_count: PropTypes.number,
+        package_only_unavailable: PropTypes.objectOf(PropTypes.number),
         size: PropTypes.string,
         dateAdded: PropTypes.string,
         barcode: PropTypes.string,
