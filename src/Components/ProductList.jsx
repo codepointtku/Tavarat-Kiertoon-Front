@@ -9,9 +9,10 @@ function ProductList() {
     return (
         <Grid container spacing={2}>
             {products?.map((product) => (
-                <Grid item key={product.id} xs={12} sm={6} md={4} lg={3} xl={2}>
+                <Grid item key={product.id} xs={13} sm={7} md={5} lg={4} xl={3}>
                     <ProductCard
                         id={product.id}
+                        groupId={product.group_id}
                         productName={product.name}
                         date={product.date}
                         picture={product.pictures[0]}

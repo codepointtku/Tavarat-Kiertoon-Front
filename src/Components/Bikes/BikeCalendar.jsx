@@ -32,31 +32,20 @@ export default function BikeCalendar({ onChange, onBlur, startDate, endDate, min
                 onBlur={onBlur}
                 inputProps={{ placeholder: 'pv.kk.v' }}
                 renderInput={(params) => (
-                    <Box sx={{ position: 'relative', display: 'inline-block' }}>
+                    <Box sx={{ position: 'relative', display: 'inline-block', width: 'max-content' }}>
                         <TextField {...params} />
                         <IconButton
-                            style={{ position: 'absolute', top: '.5rem', margin: 'auto', right: '2rem' }}
+                            style={{ position: 'absolute', top: '.5rem', margin: 'auto', right: '30px' }}
                             onClick={() => onChange(null)}
                         >
                             <ClearIcon />
                         </IconButton>
                     </Box>
                 )}
-                // InputAdornmentProps={{
-                //     actionBar: {
-                //         actions: ['clear'],
-                //     },
-                // }}
-                // componentsProps={{
-                //     actionBar: {
-                //         actions: ['clear'],
-                //     },
-                // }}
                 disableMaskedInput
                 shouldDisableDate={(day) => isWeekend(day)}
                 minDate={handleMinDate()}
                 maxDate={handleMaxDate()}
-                // sx={{ '& .Mui-disabled': { backgroundColor: 'black' } }}
                 views={['month', 'day']}
                 openTo="month"
             />

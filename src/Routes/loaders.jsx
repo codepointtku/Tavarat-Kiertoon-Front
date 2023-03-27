@@ -7,15 +7,17 @@ import apiCall from '../Utils/apiCall';
  * Get various defaults for the site
  */
 const rootLoader = async (auth, setAuth) => {
-    const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }] = await Promise.all([
-        apiCall(auth, setAuth, '/contacts/', 'get'),
-        apiCall(auth, setAuth, '/colors/', 'get'),
-        apiCall(auth, setAuth, '/categories/', 'get'),
-        apiCall(auth, setAuth, '/bulletins/', 'get'),
-        apiCall(auth, setAuth, '/users/login/refresh/', 'post'),
-    ]);
+    const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: categoryTree }] =
+        await Promise.all([
+            apiCall(auth, setAuth, '/contacts/', 'get'),
+            apiCall(auth, setAuth, '/colors/', 'get'),
+            apiCall(auth, setAuth, '/categories/', 'get'),
+            apiCall(auth, setAuth, '/bulletins/', 'get'),
+            apiCall(auth, setAuth, '/categories/tree/', 'get'),
+            apiCall(auth, setAuth, '/users/login/refresh/', 'post'),
+        ]);
 
-    return { contacts, colors, categories, bulletins };
+    return { contacts, colors, categories, bulletins, categoryTree };
 };
 
 /**
@@ -23,7 +25,6 @@ const rootLoader = async (auth, setAuth) => {
  */
 const shoppingCartLoader = async (auth, setAuth) => {
     const { data: cart } = await apiCall(auth, setAuth, '/shopping_cart/', 'get');
-
     // console.log('@shoppingCartLoader, cart.products:', cart?.products);
     // console.log('@shoppingCartLoader, cart:', cart);
 
@@ -54,9 +55,10 @@ const shoppingCartLoader = async (auth, setAuth) => {
  */
 const productListLoader = async (auth, setAuth, request) => {
     const url = new URL(request.url);
-    const filter = url.searchParams.get('kategoria');
-    if (filter) {
-        const { data } = await apiCall(auth, setAuth, `/categories/${filter}/products`, 'get');
+    const searchString = url.searchParams.toString();
+    const queryString = searchString.replace(/kategoria/g, 'category');
+    if (searchString.length > 0) {
+        const { data } = await apiCall(auth, setAuth, `/products/?${queryString}`, 'get');
         return data.results;
     }
     const { data } = await apiCall(auth, setAuth, '/products/', 'get');
@@ -165,8 +167,16 @@ const usersListLoader = async (auth, setAuth) => {
  * Get one user
  */
 const userEditLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, `/users/${params.id}`, 'get');
-    return data;
+    const dataList = [];
+    let { data } = await apiCall(auth, setAuth, `/users/${params.id}`, 'get');
+    data.groups = data.groups.map((group) => group.id);
+    dataList.push(data);
+    data = await apiCall(auth, setAuth, '/users/groups', 'get');
+    dataList.push(data.data);
+    if (dataList) {
+        return dataList;
+    }
+    return null;
 };
 
 /* get logged in users data */
@@ -188,6 +198,15 @@ const bikesListLoader = async () => {
  */
 const userSignupLoader = async () => null;
 
+/**
+ * Gets user info for shopping cart process phase 2
+ */
+
+const contactsAndDeliveryLoader = async (auth, setAuth) => {
+    const { data } = await apiCall(auth, setAuth, '/user/', 'get');
+    return data;
+};
+
 export {
     rootLoader,
     productListLoader,
@@ -205,4 +224,5 @@ export {
     userInfoLoader,
     bikesListLoader,
     shoppingCartLoader,
+    contactsAndDeliveryLoader,
 };

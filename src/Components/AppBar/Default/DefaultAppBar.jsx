@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate, useSubmit } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
@@ -22,6 +22,7 @@ import { styled } from '@mui/material/styles';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import AuthContext from '../../../Context/AuthContext';
 import Welcome from './Welcome';
@@ -107,11 +108,14 @@ const toolBarHover = {
 
 function DefaultAppBar() {
     const { auth } = useContext(AuthContext);
+    const [notLoggedIn, setNotLoggedIn] = useState(false);
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
+    const submit = useSubmit();
     const { cart } = useLoaderData();
 
     const drawerOpen = (drawer) => () => {
+        notLoggedIn && setNotLoggedIn(false);
         if (currentOpenDrawer === drawer) {
             setCurrentOpenDrawer('');
         } else {
@@ -120,8 +124,17 @@ function DefaultAppBar() {
     };
 
     function navigateToCart() {
-        navigate('/ostoskori');
-        setCurrentOpenDrawer('');
+        if (!auth.username) {
+            setCurrentOpenDrawer('account');
+            setNotLoggedIn(true);
+        } else {
+            setCurrentOpenDrawer('');
+            navigate('/ostoskori');
+        }
+    }
+
+    function handleClick() {
+        submit('', { method: 'put', action: '/' });
     }
 
     return (
@@ -170,6 +183,18 @@ function DefaultAppBar() {
                     {cart?.products?.map((product) => (
                         <ProductInCart key={product.id} text={product.name} index={product.id} />
                     ))}
+                    {cart?.products?.length > 0 && (
+                        <ListItem
+                            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}
+                        >
+                            <Button color="error" startIcon={<DeleteIcon />} onClick={handleClick}>
+                                <ListItemText
+                                    primary="Tyhjennä ostoskori"
+                                    primaryTypographyProps={{ fontWeight: 'bold' }}
+                                />
+                            </Button>
+                        </ListItem>
+                    )}
                 </List>
                 <Divider />
                 <List>
@@ -189,7 +214,7 @@ function DefaultAppBar() {
                 {auth.username ? (
                     <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} auth={auth} />
                 ) : (
-                    <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
+                    <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} notLoggedIn={notLoggedIn} />
                 )}
             </Drawer>
         </Box>
