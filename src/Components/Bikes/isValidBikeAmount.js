@@ -1,9 +1,9 @@
 import { addDays, differenceInCalendarDays, format, isAfter, isBefore, parseISO } from 'date-fns';
 
-export default function isValidBikeAmount(startDate, endDate, selectedBikes, bikes) {
+export default function isValidBikeAmount(startDate, endDate, selectedBikes, bikes, specificBikes = null) {
     const selectedBikesKeys = Object.keys(selectedBikes);
     if (startDate && endDate && selectedBikesKeys.length) {
-        const filteredBikes = bikes.filter((bike) => selectedBikesKeys.includes(String(bike.id)));
+        const filteredBikes = specificBikes || bikes.filter((bike) => selectedBikesKeys.includes(String(bike.id)));
         const dates = [];
         const days = differenceInCalendarDays(endDate, startDate);
         for (let i = 0; i <= days; i += 1) dates.push(format(addDays(startDate, i), 'dd.MM.yyyy'));
