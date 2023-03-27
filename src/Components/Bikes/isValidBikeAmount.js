@@ -27,7 +27,7 @@ export const bikePackageUnavailable = (bikePackage, minDate, maxDate, bikes, sel
         const bike = bikes.find(({ id }) => Number(id) === Number(packageBikeId));
         dates.forEach((date) => {
             const unitsInUse = bike.unavailable[date] ?? 0;
-            const packageUnitsInUse = bike.package_only_unavailable[date] ?? 0;
+            const packageUnitsInUse = bike.package_only_unavailable?.[date] ?? 0;
             const unitsSelected =
                 isBefore(parseISO(date), startDate) || isAfter(parseISO(date), endDate)
                     ? 0
