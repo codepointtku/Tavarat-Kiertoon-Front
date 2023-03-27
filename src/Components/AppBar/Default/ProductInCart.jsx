@@ -21,7 +21,7 @@ function ProductInCart({ text, index }) {
     };
 
     return (
-        <ListItem key={text} disablePadding>
+        <ListItem key={text} sx={{ height: 50 }} disablePadding>
             <ListItemButton onMouseOver={() => setHoveredOver(true)} onMouseOut={() => setHoveredOver(false)}>
                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                 <ListItemText primary={text} />

@@ -60,6 +60,7 @@ import {
     userSignupLoader,
     shoppingCartLoader,
     bikesListLoader,
+    contactsAndDeliveryLoader,
 } from './loaders';
 
 import {
@@ -69,6 +70,9 @@ import {
     storageEditAction,
     storageCreateAction,
     frontPageActions,
+    userEditAction,
+    cartViewAction,
+    bikeOrderAction,
 } from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
@@ -77,7 +81,6 @@ import GuideAccount from '../Components/Instructions/GuideAccount';
 import GuideOrdering from '../Components/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
-
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
@@ -186,10 +189,12 @@ function Routes() {
                                 {
                                     path: '/ostoskori/',
                                     element: <CartView />,
+                                    action: async ({ request }) => cartViewAction(auth, setAuth, request),
                                 },
                                 {
                                     path: '/ostoskori/vaihe2',
                                     element: <ContactsAndDelivery />,
+                                    loader: contactsAndDeliveryLoader,
                                 },
                                 {
                                     path: '/ostoskori/vaihe3',
@@ -345,7 +350,7 @@ function Routes() {
                         // NOTE : JTo : 'users' paths need to be checked once users are enabled in back-end
                         {
                             path: 'users',
-                            element: <UsersList />,
+                            element: <Outlet />,
                             children: [
                                 {
                                     index: true,
@@ -356,6 +361,8 @@ function Routes() {
                                     path: ':id',
                                     element: <UserEdit />,
                                     loader: async ({ params }) => userEditLoader(auth, setAuth, params),
+                                    action: async ({ request, params }) =>
+                                        userEditAction(auth, setAuth, request, params),
                                 },
                             ],
                         },
@@ -377,12 +384,12 @@ function Routes() {
                         {
                             path: '/pyorat',
                             element: <BikesPage />,
+                            action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                             loader: bikesListLoader,
                             shouldRevalidate: () => false,
                         },
                     ],
                 },
-
             ],
         },
     ]);

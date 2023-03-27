@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 
 import {
     Avatar,
+    Alert,
     Box,
     Button,
     Container,
@@ -25,7 +26,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import AlertBox from '../../AlertBox';
 import CloseDrawerButton from './CloseDrawerButton';
 
-function LoginForm({ setCurrentOpenDrawer }) {
+function LoginForm({ setCurrentOpenDrawer, notLoggedIn }) {
     const { register, handleSubmit } = useForm();
     const submit = useSubmit();
     const responseStatus = useActionData();
@@ -128,6 +129,11 @@ function LoginForm({ setCurrentOpenDrawer }) {
                     >
                         Luo uusi tunnus
                     </Button>
+                    {notLoggedIn && (
+                        <Alert severity="error" sx={{ mt: 5, mb: 5, fontWeight: 'bold' }}>
+                            Kirjautuminen vaaditaan ostoskorin käyttöön
+                        </Alert>
+                    )}
                     <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
                 </Box>
             </Container>

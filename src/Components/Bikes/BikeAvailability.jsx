@@ -106,6 +106,13 @@ function reducer(state, action) {
                 isBackwardDisabled: isBefore(firstMondayOfValidWeek(action.date), parseISO(state.availableFrom)),
             };
         }
+        case 'update_unavailable': {
+            return {
+                ...state,
+                unavailable: action.unavailable,
+                dates: createDates(state.dates[0][0].date, state.rows, action.unavailable, state.maxAvailable),
+            };
+        }
         default: {
             throw Error(`Unknown action: ${action.type}`);
         }
@@ -122,6 +129,10 @@ export default function BikeAvailability({
     amountSelected,
 }) {
     const [state, dispatch] = useReducer(reducer, { dateInfo, rows, unavailable, maxAvailable }, createInitialState);
+
+    useEffect(() => {
+        dispatch({ type: 'update_unavailable', unavailable });
+    }, [unavailable]);
 
     useEffect(() => {
         if (selectedStartDate) dispatch({ type: 'jump_to_date', date: selectedStartDate });

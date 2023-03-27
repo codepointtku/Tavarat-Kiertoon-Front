@@ -6,6 +6,7 @@ import apiCall from '../Utils/apiCall';
 const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+    const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : -1;
     if (request.method === 'POST') {
         console.log(auth.username);
         if (auth.username) {
@@ -31,8 +32,15 @@ const frontPageActions = async (auth, setAuth, request) => {
             alert('log in as with user_group rights first');
             return null;
         }
+        if (!id) {
+            const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+                products: '',
+            });
+            return response;
+        }
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
             products: id,
+            amount,
         });
         // console.log(id, 'put method test', response.status);
         if (response.status === 202) {
@@ -44,6 +52,7 @@ const frontPageActions = async (auth, setAuth, request) => {
     if (request.method === 'DELETE') {
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
             products: id,
+            amount,
         });
 
         if (response.status === 202) {
@@ -85,7 +94,22 @@ const contactAction = async (auth, setAuth, request) => {
     const response = await apiCall(auth, setAuth, '/contact_forms/', 'post', formData);
     return response.data || null;
 };
-
+/**
+ * sends bike order form to back-end
+ */
+const bikeOrderAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    // console.log('@bikeorderAction', formData.get('contactPersonName'));
+    const response = await apiCall(auth, setAuth, '/bikes/rental/', 'post', {
+        contact_name: formData.get('contactPersonName'),
+        contact_phone_number: formData.get('contactPersonPhoneNumber'),
+        delivery_address: formData.get('deliveryAddress'),
+        start_date: formData.get('startDateTime'),
+        end_date: formData.get('endDateTime'),
+        bike_stock: JSON.parse(formData.get('selectedBikes')),
+    });
+    return response.data || null;
+};
 /**
  * removes items from the order and edits order data
  */
@@ -159,6 +183,15 @@ const storageEditAction = async (auth, setAuth, request, params) => {
     return null;
 };
 
+const userEditAction = async (auth, setAuth, request, params) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, `/users/update/${params.id}/`, 'put', formData);
+    if (response.status === 200) {
+        return { type: 'update', status: true };
+    }
+    return { type: 'update', status: false };
+};
+
 /**
  * creates a new item
  */
@@ -187,6 +220,40 @@ const itemUpdateAction = async (auth, setAuth, request) => {
     return { type: 'updateitem', status: false };
 };
 
+/**
+ * adds or removes items from shopping cart while in ordering process phase 1
+ */
+
+const cartViewAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const amount = request.method === 'PUT' ? 1 : -1;
+    const id = Number(formData.get('id'));
+    if (request.method === 'PUT') {
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            products: id,
+            amount,
+        });
+        // console.log(id, 'put method test', response.status);
+        if (response.status === 202) {
+            // alert('Item added successfully');
+            return { type: 'update', status: true };
+        }
+        return { type: 'update', status: false };
+    }
+    if (request.method === 'DELETE') {
+        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            products: id,
+            amount,
+        });
+
+        if (response.status === 202) {
+            return { type: 'delete', status: true };
+        }
+        return { type: 'delete', status: false };
+    }
+    return null;
+};
+
 export {
     userSignupAction,
     frontPageActions,
@@ -194,6 +261,9 @@ export {
     orderEditAction,
     storageCreateAction,
     storageEditAction,
+    userEditAction,
     itemCreateAction,
     itemUpdateAction,
+    cartViewAction,
+    bikeOrderAction,
 };
