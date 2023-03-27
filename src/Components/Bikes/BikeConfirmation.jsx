@@ -31,6 +31,7 @@ export default function BikeConfirmation({
     control,
     bikes,
     setIsConfirmationVisible,
+    setIsThankYouModalVisible,
 }) {
     const [requiredCheckboxes, setRequiredCheckboxes] = useState({ education: false, responsibilities: false });
 
@@ -267,6 +268,7 @@ export default function BikeConfirmation({
                         type="submit"
                         color="success"
                         disabled={Object.values(requiredCheckboxes).some((checkbox) => !checkbox)}
+                        onClick={() => setIsThankYouModalVisible(true)}
                     >
                         Lähetä
                     </Button>
@@ -278,6 +280,7 @@ export default function BikeConfirmation({
 
 BikeConfirmation.propTypes = {
     setIsConfirmationVisible: PropTypes.func.isRequired,
+    setIsThankYouModalVisible: PropTypes.func.isRequired,
     bikes: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
