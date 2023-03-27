@@ -40,6 +40,7 @@ import AddStorage from '../Components/AddStorage';
 import SignupLandingPage from '../Components/Signup/SignupLandingPage';
 import SignupPage from '../Components/Signup/SignupPage';
 import ContactPage from '../Components/ContactPage';
+import UserProfilePage from '../Components/Profilepage/UserProfilePage';
 
 import AuthContext from '../Context/AuthContext';
 
@@ -61,6 +62,7 @@ import {
     shoppingCartLoader,
     bikesListLoader,
     contactsAndDeliveryLoader,
+    userInfoLoader,
 } from './loaders';
 
 import {
@@ -121,6 +123,11 @@ function Routes() {
                                     loader: async ({ params }) => productDetailsLoader(auth, setAuth, params),
                                 },
                             ],
+                        },
+                        {
+                            path: 'profiili',
+                            element: <UserProfilePage />,
+                            loader: userInfoLoader,
                         },
                         {
                             path: 'ohjeet',

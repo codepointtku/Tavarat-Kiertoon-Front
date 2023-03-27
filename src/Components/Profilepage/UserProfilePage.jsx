@@ -45,7 +45,7 @@ function Hero() {
                         <Person2Icon />
                     </Avatar>
                 </Grid>
-                <Grid item xs={4}></Grid>
+                <Grid item xs={4} />
             </Grid>
             <Box sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
                 <TypographyTitle text="Käyttäjäprofiili" />
