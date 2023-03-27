@@ -7,7 +7,7 @@ const apiCall = async (auth, setAuth, path, method, data, options) => {
     const result = await axios({
         method,
         url: path,
-        baseURL: `http://${window.location.hostname}:8000`,
+        baseURL: `${window.location.protocol}//${window.location.hostname}:8000`,
         data,
         options: { ...options },
     });

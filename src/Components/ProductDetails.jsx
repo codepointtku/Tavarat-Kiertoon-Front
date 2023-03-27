@@ -41,7 +41,7 @@ function ProductDetails() {
                             component="img"
                             alt="product image"
                             height="460"
-                            image={`http://${window.location.hostname}:8000/media/${image}`}
+                            image={`${window.location.protocol}//${window.location.hostname}:8000/media/${image}`}
                         />
                         <CardContent>
                             <>
@@ -49,8 +49,8 @@ function ProductDetails() {
                                     {data.pictures.map((pic) => (
                                         <ImageListItem key={pic} onClick={() => setImage(pic)}>
                                             <img
-                                                src={`http://${window.location.hostname}:8000/media/${pic}`}
-                                                srcSet={`http://${window.location.hostname}:8000/media/${pic}`}
+                                                src={`${window.location.protocol}//${window.location.hostname}:8000/media/${pic}`}
+                                                srcSet={`${window.location.protocol}//${window.location.hostname}:8000/media/${pic}`}
                                                 alt="kuva"
                                                 loading="lazy"
                                             />
