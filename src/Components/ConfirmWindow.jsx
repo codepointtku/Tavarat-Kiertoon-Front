@@ -22,7 +22,9 @@ function ConfirmWindow({ open, onConfirm, title, content }) {
                 <DialogContentText id="alert-dialog-description">{content}</DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleDecline}>Peruuta</Button>
+                <Button variant="outlined" onClick={handleDecline}>
+                    Peruuta
+                </Button>
                 <Button onClick={handleConfirm} autoFocus>
                     Hyväksy
                 </Button>
