@@ -31,7 +31,7 @@ import BikeThankYouModal from './BikeThankYouModal';
 import isValidBikeAmount, { bikePackageUnavailable } from './isValidBikeAmount';
 
 export default function BikesPage() {
-    const { control, watch, handleSubmit, reset } = useForm({
+    const { control, watch, handleSubmit, reset, getValues } = useForm({
         defaultValues: {
             startDate: null,
             startTime: 8,
@@ -533,6 +533,8 @@ export default function BikesPage() {
                 setIsConfirmationVisible={setIsConfirmationVisible}
                 setIsIntroVisible={setIsIntroVisible}
                 reset={reset}
+                getValues={getValues}
+                bikes={bikes}
             />
         </Container>
     );
