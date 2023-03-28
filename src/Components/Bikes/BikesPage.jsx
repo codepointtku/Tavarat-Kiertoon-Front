@@ -38,41 +38,6 @@ import BikeConfirmation from './BikeConfirmation';
 import isValidBikeAmount, { bikePackageUnavailable } from './isValidBikeAmount';
 
 export default function BikesPage() {
-    const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
-    const [isIntroVisible, setIsIntroVisible] = useState(true);
-    const [isThankYouModalVisible, setIsThankYouModalVisible] = useState(false);
-    const containerRef = useRef(null);
-
-    const loaderData = useLoaderData();
-    const bikes = [
-        ...loaderData.bikes,
-        // The bike package id and bike id would have possibility for overlap since they're both just incrementing from 0
-        ...loaderData.packages.map((bikePackage) => ({ ...bikePackage, id: `package-${bikePackage.id}` })),
-    ].sort((a, b) => b.max_available - a.max_available);
-    const [searchParams, setSearchParams] = useSearchParams();
-    const filteredBikes = searchParams.get('filters')
-        ? bikes.filter((bike) =>
-              Object.entries(JSON.parse(searchParams.get('filters'))).every(
-                  ([filterName, filterValue]) => filterValue === bike[filterName]
-              )
-          )
-        : bikes;
-
-    const sizeOptionsSet = new Set();
-    const colorOptionsSet = new Set();
-    const brandOptionsSet = new Set();
-    const typeOptionsSet = new Set();
-
-    bikes.forEach((bike) => {
-        if (bike.size !== null) sizeOptionsSet.add(bike.size);
-        if (bike.color !== null) colorOptionsSet.add(bike.color);
-        if (bike.brand !== null) brandOptionsSet.add(bike.brand);
-        if (bike.type !== null) typeOptionsSet.add(bike.type);
-    });
-
-    const minDate = parseISO(loaderData.date_info.available_from);
-    const maxDate = parseISO(loaderData.date_info.available_to);
-
     const { control, watch, handleSubmit, reset } = useForm({
         defaultValues: {
             startDate: null,
@@ -87,6 +52,56 @@ export default function BikesPage() {
             storageType: null,
             extraInfo: '',
         },
+    });
+
+    const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
+    const [isIntroVisible, setIsIntroVisible] = useState(true);
+    const [isThankYouModalVisible, setIsThankYouModalVisible] = useState(false);
+    const containerRef = useRef(null);
+
+    const loaderData = useLoaderData();
+    const minDate = parseISO(loaderData.date_info.available_from);
+    const maxDate = parseISO(loaderData.date_info.available_to);
+    const bikes = [
+        ...loaderData.bikes,
+        // The bike package id and bike id would have possibility for overlap since they're both just incrementing from 0
+        ...loaderData.packages.map((bikePackage) => ({
+            ...bikePackage,
+            id: `package-${bikePackage.id}`,
+            unavailable: bikePackageUnavailable(
+                bikePackage,
+                minDate,
+                maxDate,
+                loaderData.bikes,
+                watch('selectedBikes'),
+                watch('startDate'),
+                watch('endDate')
+            ),
+        })),
+    ].sort((a, b) => b.max_available - a.max_available);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const filteredBikes = searchParams.get('filters')
+        ? bikes.filter((bike) =>
+              Object.entries(JSON.parse(searchParams.get('filters'))).every(
+                  ([filterName, filterValue]) => filterValue === bike[filterName]
+              ) && bike.package_only_count
+                  ? bike.max_available > bike.package_only_count
+                  : bike.max_available
+          )
+        : bikes.filter((bike) =>
+              bike.package_only_count ? bike.max_available > bike.package_only_count : bike.max_available
+          );
+
+    const sizeOptionsSet = new Set();
+    const colorOptionsSet = new Set();
+    const brandOptionsSet = new Set();
+    const typeOptionsSet = new Set();
+
+    bikes.forEach((bike) => {
+        if (bike.size !== null) sizeOptionsSet.add(bike.size);
+        if (bike.color !== null) colorOptionsSet.add(bike.color);
+        if (bike.brand !== null) brandOptionsSet.add(bike.brand);
+        if (bike.type !== null) typeOptionsSet.add(bike.type);
     });
 
     const handleFilterChange = (filter, newOption) =>
@@ -338,23 +353,7 @@ export default function BikesPage() {
                                                                 {filteredBikes.map((bike) => (
                                                                     <Collapse key={bike.id}>
                                                                         <BikeCard
-                                                                            bike={
-                                                                                bike.type !== 'Paketti'
-                                                                                    ? bike
-                                                                                    : {
-                                                                                          ...bike,
-                                                                                          unavailable:
-                                                                                              bikePackageUnavailable(
-                                                                                                  bike,
-                                                                                                  minDate,
-                                                                                                  maxDate,
-                                                                                                  loaderData.bikes,
-                                                                                                  value,
-                                                                                                  watch('startDate'),
-                                                                                                  watch('endDate')
-                                                                                              ),
-                                                                                      }
-                                                                            }
+                                                                            bike={bike}
                                                                             dateInfo={loaderData.date_info}
                                                                             amountSelected={value[bike.id] ?? 0}
                                                                             onChange={(newValue) => {
@@ -369,7 +368,10 @@ export default function BikesPage() {
                                                                                     onChange(newSelectedBikes);
                                                                                 } else if (
                                                                                     newValue >= 0 &&
-                                                                                    newValue <= bike.max_available
+                                                                                    newValue <= bike.package_only_count
+                                                                                        ? bike.max_available -
+                                                                                          bike.package_only_count
+                                                                                        : bike.max_available
                                                                                 )
                                                                                     onChange({
                                                                                         ...value,
@@ -462,6 +464,7 @@ export default function BikesPage() {
                                                                                                         watch(
                                                                                                             'selectedBikes'
                                                                                                         ),
+                                                                                                        bikes,
                                                                                                         [bike]
                                                                                                     )
                                                                                                         ? {}

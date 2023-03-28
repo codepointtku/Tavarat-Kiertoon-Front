@@ -288,6 +288,8 @@ BikeConfirmation.propTypes = {
             description: PropTypes.string,
             max_available: PropTypes.number,
             unavailable: PropTypes.objectOf(PropTypes.number),
+            package_only_count: PropTypes.number,
+            package_only_unavailable: PropTypes.objectOf(PropTypes.number),
             size: PropTypes.string,
             type: PropTypes.string,
             color: PropTypes.string,
