@@ -25,7 +25,7 @@ function ProductDetails() {
     if (!data) {
         return <>ToniPal Kahville</>;
     }
-    const { name: productName, free_description: description, date, category, barcode } = data;
+    const { name: productName, free_description: description, date, category, barcode, amount } = data;
     const [image, setImage] = useState(data.pictures[0]);
     const { auth } = useContext(AuthContext);
 
@@ -59,6 +59,9 @@ function ProductDetails() {
                                 </ImageList>
                                 <Typography gutterBottom variant="h5" component="div">
                                     {productName}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {amount > 0 ? `Saatavilla: ${amount} kpl` : 'Ei saatavilla'}
                                 </Typography>
                                 {/* show id if component used in storageview or admin */}
                                 {auth.storage || auth.admin ? (
