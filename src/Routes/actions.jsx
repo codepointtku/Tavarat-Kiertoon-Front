@@ -156,7 +156,7 @@ const storageCreateAction = async (auth, setAuth, request) => {
     const response = await apiCall(auth, setAuth, '/storages/', 'post', {
         address: formData.get('address'),
         name: formData.get('name'),
-        in_use: formData.get('in_use'),
+        in_use: formData.get('in_use') === 'käytössä' ? true : false,
     });
     if (response.status === 201) {
         return { type: 'post', status: true };
