@@ -1,23 +1,17 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Typography, Grid } from '@mui/material';
+import { Typography, Grid, Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 import CartButtons from './CartButtons';
 
 function Confirmation() {
-    const {
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    const { handleSubmit } = useForm();
 
-    const [buttonTask, setButtonTask] = useState('');
     const navigate = useNavigate();
     const onSubmit = (data) => {
         alert(JSON.stringify(data));
-        navigate(buttonTask === 'forward' ? '/' : '/ostoskori/vaihe2');
+        navigate('/');
     };
-    console.log(errors);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -25,43 +19,62 @@ function Confirmation() {
                 Ostosten yhteenveto
             </Typography>
             <hr />
-            <Typography variant="h6">Yhteystiedot</Typography>
-            <Grid container spacing={4}>
-                <Grid item>
-                    <Typography variant="subtitle1">Sähköposti</Typography>
+            <Box
+                sx={{
+                    mt: 5,
+                    p: 5,
+                    borderStyle: 'solid',
+                    borderWidth: 5,
+                    borderRadius: 5,
+                    width: 600,
+                    borderColor: 'primary.main',
+                    backgroundColor: 'primary.light',
+                }}
+            >
+                <Typography variant="overline" sx={{ fontSize: 20, fontWeight: 'bold' }}>
+                    Yhteystiedot
+                </Typography>
+                <Grid container direction="row" spacing={2}>
+                    <Grid item>
+                        <Typography variant="subtitle1">Sähköposti</Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="subtitle1">Puh. numero</Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="subtitle1">Toimipaikkakoodi</Typography>
+                    </Grid>
                 </Grid>
-                <Grid item>
-                    <Typography variant="subtitle1">Puh. numero</Typography>
+                <Typography variant="overline" sx={{ fontSize: 20, fontWeight: 'bold' }}>
+                    Toimitustiedot
+                </Typography>
+                <Grid container direction="row" spacing={2}>
+                    <Grid item>
+                        <Typography variant="subtitle1">Toimitusosoite</Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="subtitle1">Postiosoite</Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="subtitle1">Kaupunki</Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="subtitle1">Toimitustapa</Typography>
+                    </Grid>
                 </Grid>
-                <Grid item>
-                    <Typography variant="subtitle1">Toimipaikkakoodi</Typography>
+                <Typography variant="overline" sx={{ fontSize: 20, fontWeight: 'bold' }}>
+                    Tilaustiedot
+                </Typography>
+                <Grid container direction="row" spacing={2}>
+                    <Grid item>
+                        <Typography variant="subtitle1">Tuotenimi</Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="subtitle1">Tuotemäärä</Typography>
+                    </Grid>
                 </Grid>
-            </Grid>
-            <Typography variant="h6">Toimitustiedot</Typography>
-            <Grid container spacing={4}>
-                <Grid item>
-                    <Typography variant="subtitle1">Toimitusosoite</Typography>
-                </Grid>
-                <Grid item>
-                    <Typography variant="subtitle1">Toimitustapa</Typography>
-                </Grid>
-            </Grid>
-            <Typography variant="h6">Tilaustiedot</Typography>
-            <Grid container spacing={4}>
-                <Grid item>
-                    <Typography variant="subtitle1">Tuotenimi</Typography>
-                </Grid>
-                <Grid item>
-                    <Typography variant="subtitle1">Tuotemäärä</Typography>
-                </Grid>
-            </Grid>
-            <CartButtons
-                backUrl="/ostoskori/vaihe2"
-                forwardUrl="/"
-                backText="Takaisin"
-                forwardText="Vahvista"
-                setButtonTask={setButtonTask}
-            />
+            </Box>
+            <CartButtons backText="Takaisin" forwardText="Vahvista" />
         </form>
     );
 }
