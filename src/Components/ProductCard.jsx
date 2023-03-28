@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import AddToCartButton from './AddToCartButton';
 
-function ProductCard({ productName, id, groupId, picture }) {
+function ProductCard({ productName, id, groupId, picture, amount }) {
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Card sx={{ width: 300 }}>
@@ -19,6 +19,9 @@ function ProductCard({ productName, id, groupId, picture }) {
                     <CardContent>
                         <Typography variant="h6" fontWeight="fontWeightLight" lineHeight="1">
                             {productName}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {amount > 0 ? `Saatavilla: ${amount} kpl` : 'Ei saatavilla'}
                         </Typography>
                     </CardContent>
                 </CardActionArea>
@@ -49,6 +52,7 @@ ProductCard.propTypes = {
     id: PropTypes.number.isRequired,
     groupId: PropTypes.string.isRequired,
     picture: PropTypes.string.isRequired,
+    amount: PropTypes.number.isRequired,
 };
 
 export default ProductCard;
