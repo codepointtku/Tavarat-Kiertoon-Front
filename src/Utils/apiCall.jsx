@@ -6,7 +6,8 @@ const apiCall = async (auth, setAuth, path, method, data, options) => {
     axios.defaults.withCredentials = true;
     const result = await axios({
         method,
-        url: `http://localhost:8000${path}`,
+        url: path,
+        baseURL: `${window.location.protocol}//${window.location.hostname}:8000`,
         data,
         options: { ...options },
     });

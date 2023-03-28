@@ -71,6 +71,8 @@ import {
     storageCreateAction,
     frontPageActions,
     userEditAction,
+    cartViewAction,
+    bikeOrderAction,
 } from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
@@ -187,6 +189,7 @@ function Routes() {
                                 {
                                     path: '/ostoskori/',
                                     element: <CartView />,
+                                    action: async ({ request }) => cartViewAction(auth, setAuth, request),
                                 },
                                 {
                                     path: '/ostoskori/vaihe2',
@@ -381,6 +384,7 @@ function Routes() {
                         {
                             path: '/pyorat',
                             element: <BikesPage />,
+                            action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                             loader: bikesListLoader,
                             shouldRevalidate: () => false,
                         },
