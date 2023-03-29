@@ -111,7 +111,7 @@ function StorageProductsTable() {
                                 {/* todo: link to working product page with storage related info and edit functionality */}
                                 <Link to={`/varasto/tuotteet/${row.id}`}>{row.name}</Link>
                             </StyledTableCell>
-                            <StyledTableCell align="right">määrä</StyledTableCell>
+                            <StyledTableCell align="right">{row.amount}</StyledTableCell>
                             <StyledTableCell align="right">{row.barcode}</StyledTableCell>
                             <StyledTableCell align="right">{row.category}</StyledTableCell>
                             <StyledTableCell align="right">
