@@ -16,6 +16,7 @@ function ProductList() {
                         productName={product.name}
                         date={product.date}
                         picture={product.pictures[0]}
+                        amount={product.amount}
                     />
                 </Grid>
             ))}

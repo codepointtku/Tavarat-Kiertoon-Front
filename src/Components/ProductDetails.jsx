@@ -25,7 +25,16 @@ function ProductDetails() {
     if (!data) {
         return <>ToniPal Kahville</>;
     }
-    const { name: productName, free_description: description, date, category, barcode, amount } = data;
+    const {
+        name: productName,
+        free_description: description,
+        date,
+        category,
+        barcode,
+        amount,
+        group_id: groupId,
+    } = data;
+    console.log('data @ productDetails', data);
     const [image, setImage] = useState(data.pictures[0]);
     const { auth } = useContext(AuthContext);
 
@@ -93,7 +102,12 @@ function ProductDetails() {
                             </>
                         </CardContent>
                         <CardActions>
-                            <AddToCartButton size="medium" id={Number(productId)} productName={productName} />
+                            <AddToCartButton
+                                size="medium"
+                                id={Number(productId)}
+                                productName={productName}
+                                groupId={groupId}
+                            />
                         </CardActions>
                     </Card>
                 </Grid>
