@@ -27,10 +27,11 @@ import { TransitionGroup } from 'react-transition-group';
 import BikeCalendar from './BikeCalendar';
 import BikeCard from './BikeCard';
 import BikeConfirmation from './BikeConfirmation';
+import BikeThankYouModal from './BikeThankYouModal';
 import isValidBikeAmount, { bikePackageUnavailable } from './isValidBikeAmount';
 
 export default function BikesPage() {
-    const { control, watch, handleSubmit } = useForm({
+    const { control, watch, handleSubmit, reset, getValues } = useForm({
         defaultValues: {
             startDate: null,
             startTime: 8,
@@ -48,6 +49,7 @@ export default function BikesPage() {
 
     const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
     const [isIntroVisible, setIsIntroVisible] = useState(true);
+    const [isThankYouModalVisible, setIsThankYouModalVisible] = useState(false);
     const containerRef = useRef(null);
 
     const loaderData = useLoaderData();
@@ -519,11 +521,21 @@ export default function BikesPage() {
                                 control={control}
                                 bikes={bikes}
                                 setIsConfirmationVisible={setIsConfirmationVisible}
+                                setIsThankYouModalVisible={setIsThankYouModalVisible}
                             />
                         </Box>
                     </Slide>
                 )}
             </TransitionGroup>
+            <BikeThankYouModal
+                isThankYouModalVisible={isThankYouModalVisible}
+                setIsThankYouModalVisible={setIsThankYouModalVisible}
+                setIsConfirmationVisible={setIsConfirmationVisible}
+                setIsIntroVisible={setIsIntroVisible}
+                reset={reset}
+                getValues={getValues}
+                bikes={bikes}
+            />
         </Container>
     );
 }
