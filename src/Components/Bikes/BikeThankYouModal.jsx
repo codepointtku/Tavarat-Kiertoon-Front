@@ -23,7 +23,7 @@ function BikeThankYouModal({
     bikes,
 }) {
     // onClick: set Intro view true, set other views false, reset
-    const onClickHandler = () => {
+    const modalExitHandler = () => {
         setIsThankYouModalVisible(false);
         setIsConfirmationVisible(false);
         setIsIntroVisible(true);
@@ -37,7 +37,7 @@ function BikeThankYouModal({
     return (
         <Modal
             open={isThankYouModalVisible}
-            onClose={() => setIsThankYouModalVisible(false)}
+            onClose={modalExitHandler}
             aria-labelledby="Order Succesfull"
         >
             <Box
@@ -82,7 +82,7 @@ function BikeThankYouModal({
                         </ListItem>
                     </List>
                     <Box sx={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}>
-                        <Button color="success" onClick={onClickHandler}>
+                        <Button color="success" onClick={modalExitHandler}>
                             Palaa etusivulle
                         </Button>
                     </Box>
