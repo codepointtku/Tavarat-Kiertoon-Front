@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import logo from '../Assets/LOGO.png';
 
 // NOTE: JTo: Temporary baseUrl. Move this to env variable.
-const baseUrl = 'http://localhost:8000';
+const baseUrl = `${window.location.protocol}//${window.location.hostname}:8000`;
 
 // Create styles
 const styles = StyleSheet.create({
