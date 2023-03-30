@@ -170,14 +170,21 @@ function AddNewItem() {
                         select
                         label="Kategoria"
                         {...register('category_name', { required: true })}
-                        defaultValue="Keittiökamat"
+                        defaultValue=""
                     >
                         {categories?.map((category) => (
-                            <MenuItem key={category.id} value={category.name}>
+                            <MenuItem
+                                // tähän funktio joka asettaa valuen setValue('category_name', category.id)
+                                onClick={() => setValue('category', category.id)}
+                                key={category.id}
+                                value={category.name}
+                            >
                                 {category.name}
                             </MenuItem>
                         ))}
                     </TextField>
+                    {/* todo amount / määrä kenttä */}
+                    {/* todo värikenttä, uuden värin lisäys mahdollisuus, backend hyväksyy stringin ja luo uuden ellei ole olemassa. Lisäkenttä lisää uusi väri */}
                     <TextField
                         id="filled-helperText"
                         label="Vapaa Kuvaus"
