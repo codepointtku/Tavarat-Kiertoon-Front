@@ -35,11 +35,7 @@ function BikeThankYouModal({
 
     // RENDER
     return (
-        <Modal
-            open={isThankYouModalVisible}
-            onClose={modalExitHandler}
-            aria-labelledby="Order Succesfull"
-        >
+        <Modal open={isThankYouModalVisible} onClose={modalExitHandler} aria-labelledby="Order Succesfull">
             <Box
                 sx={{
                     position: 'absolute',
