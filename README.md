@@ -55,10 +55,16 @@ On the next start Docker will rebuild the images using the new code.
 
 ## Testing
 
-Test configuration is set to 'localhost:3000/'.
+Github runs all tests in tests/git folder on pull requests to develop-branch.
 
-Run playwright tests from the terminal with the command: `npm test`
+If running tests locally run before testing:
+`npm ci`
+`npm run build`
 
-Testing performs automatical ci, no need to start separately.
+Run playwright tests from the terminal with commands:
+`npm test` runs all tests
+`npx playwright test tests/jenkins` runs all tests in jenkins-folder
 
-Tests run automatically when there is a pull request on develop-branch.
+Codegen can be used to help generate new tests, use it with front end running with command:
+`npx playwright codegen "front-ip"` for example:
+`npx playwright codegen localhost:3000`
