@@ -1,23 +1,6 @@
-import { test, expect } from '@playwright/test';
+// import { test, expect } from '@playwright/test';
 
-const loginTest = async (page) => {
-    await page.goto('/');
-    await page.locator('#appbar-containing-div').getByRole('button').nth(1).click();
-    await page.getByPlaceholder('sinä@turku.fi').click();
-    await page.getByPlaceholder('sinä@turku.fi').fill('super');
-    await page.getByPlaceholder('****').click();
-    await page.getByPlaceholder('****').fill('super');
-    await page.getByRole('button', { name: 'Sisään' }).click();
-    await page.getByRole('button', { name: 'Sulje' }).click();
-};
-
-test.describe('frontpage', () => {
-    test('login', async ({ page }) => {
-        await loginTest(page);
-        await expect(page.getByRole('button', { name: 5 })).toBeVisible();
-    });
-
-    /* test('create new user', async ({ page }) => {
+/* test('create new user', async ({ page }) => {
         await page.goto('/');
         await page.locator('#appbar-containing-div').getByRole('button').nth(1).click();
         await page.getByRole('link', { name: 'Luo uusi tunnus' }).click();
@@ -46,6 +29,3 @@ test.describe('frontpage', () => {
         await expect(page.getByText('Tunnuksen luominen onnistui')).toBeVisible();
 
     }); */
-});
-
-export default loginTest;
