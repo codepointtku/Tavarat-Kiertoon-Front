@@ -69,9 +69,9 @@ function ProductDetails() {
                                 <Typography gutterBottom variant="h5" component="div">
                                     {productName}
                                 </Typography>
-                                <Typography variant="body2" color="text.secondary">
+                                {/* <Typography variant="body2" color="text.secondary">
                                     {amount > 0 ? `Saatavilla: ${amount} kpl` : 'Ei saatavilla'}
-                                </Typography>
+                                </Typography> */}
                                 {/* show id if component used in storageview or admin */}
                                 {auth.storage || auth.admin ? (
                                     <Typography variant="body6" color="text.secondary">
