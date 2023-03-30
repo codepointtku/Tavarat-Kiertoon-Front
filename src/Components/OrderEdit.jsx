@@ -101,7 +101,7 @@ function OrderEdit() {
     const handleConfirmDelete = (confirm) => {
         if (confirm) {
             const { items, id } = itemRef.current;
-            if (items.length > 1) {
+            if (items.length > 1 && orderItems[id] !== undefined) {
                 for (let index = 0; index < orderItems[id]; index += 1) {
                     submit(
                         { type: 'delete', product: items.at(index).id, productId: orderData.id },
