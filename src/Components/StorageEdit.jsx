@@ -170,10 +170,14 @@ function StorageEdit() {
                 </Box>
 
                 {responseStatus?.type === 'update' && !responseStatus?.status && (
-                    <AlertBox text="Varaston tallennus epäonnistui! Lataa sivu uudestaan." status="error" />
+                    <AlertBox
+                        text="Varaston tallennus epäonnistui! Lataa sivu uudestaan."
+                        status="error"
+                        timer={3000}
+                    />
                 )}
                 {responseStatus?.type === 'update' && responseStatus?.status && (
-                    <AlertBox text="Varaston tallennus onnistui" status="success" />
+                    <AlertBox text="Varaston tallennus onnistui" status="success" timer={3000} />
                 )}
 
                 <h5 align="center">
