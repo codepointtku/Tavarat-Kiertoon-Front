@@ -81,6 +81,7 @@ import GuideAccount from '../Components/Instructions/GuideAccount';
 import GuideOrdering from '../Components/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
+import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
@@ -386,6 +387,12 @@ function Routes() {
                             element: <BikesPage />,
                             action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                             loader: bikesListLoader,
+                            shouldRevalidate: () => false,
+                        },
+                        {
+                            path: '/pyorat/pyoravarasto',
+                            element: <BikeWarehouse />,
+
                             shouldRevalidate: () => false,
                         },
                     ],
