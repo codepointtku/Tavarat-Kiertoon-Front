@@ -162,6 +162,9 @@ export default function BikesPage() {
             method: 'post',
             action: '/pyorat',
         });
+
+        // Show Thank You modal visible
+        setIsThankYouModalVisible(true);
     };
 
     return (
@@ -521,7 +524,6 @@ export default function BikesPage() {
                                 control={control}
                                 bikes={bikes}
                                 setIsConfirmationVisible={setIsConfirmationVisible}
-                                setIsThankYouModalVisible={setIsThankYouModalVisible}
                             />
                         </Box>
                     </Slide>
