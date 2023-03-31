@@ -74,6 +74,7 @@ import {
     userEditAction,
     cartViewAction,
     bikeOrderAction,
+    confirmationAction,
 } from './actions';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
@@ -206,6 +207,7 @@ function Routes() {
                                 {
                                     path: '/ostoskori/vaihe3',
                                     element: <Confirmation />,
+                                    action: async ({ request }) => confirmationAction(auth, setAuth, request),
                                 },
                             ],
                         },

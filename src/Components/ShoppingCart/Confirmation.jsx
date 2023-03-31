@@ -1,4 +1,4 @@
-import { useNavigate, useRouteLoaderData } from 'react-router-dom';
+import { useNavigate, useRouteLoaderData, useSubmit } from 'react-router-dom';
 import { Typography, Grid, Box, List, ListItem, ListItemText } from '@mui/material';
 import { useStateMachine } from 'little-state-machine';
 import Update from './Update';
@@ -7,13 +7,15 @@ import { useForm } from 'react-hook-form';
 import CartButtons from './CartButtons';
 
 function Confirmation() {
-    const { handleSubmit } = useForm();
+    const { handleSubmit, register } = useForm();
     const { state } = useStateMachine({ Update });
-    const { cartItems } = useRouteLoaderData('frontPage');
-
+    const { products } = useRouteLoaderData('frontPage');
+    const submit = useSubmit();
     const navigate = useNavigate();
-    const onSubmit = (data) => {
-        alert(JSON.stringify(data));
+    const onSubmit = () => {
+        const { city, email, deliveryAddress, phoneNumber } = state;
+        console.log(city, email, deliveryAddress);
+        submit({ deliveryAddress, email, phoneNumber, products }, { method: 'post', action: '/ostoskori/vaihe3' });
         navigate('/');
     };
 
@@ -45,7 +47,9 @@ function Confirmation() {
                         </Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">Sähköposti: {state.email}</Typography>
+                        <Typography variant="subtitle1" {...register('contact')}>
+                            Sähköposti: {state.email}
+                        </Typography>
                     </Grid>
                     <Grid item>
                         <Typography variant="subtitle1">Puh. numero: {state.phoneNumber}</Typography>
@@ -72,8 +76,8 @@ function Confirmation() {
                     Tilaustiedot
                 </Typography>
                 <List>
-                    {cartItems?.map((item) => (
-                        <ListItem disableGutters disablePadding>
+                    {products?.map((item) => (
+                        <ListItem key={item.id} disableGutters disablePadding>
                             <ListItemText primary={`${item.count}x ${item.name}`} />
                         </ListItem>
                     ))}

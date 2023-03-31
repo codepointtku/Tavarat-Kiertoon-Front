@@ -256,6 +256,10 @@ const cartViewAction = async (auth, setAuth, request) => {
     return null;
 };
 
+const confirmationAction = async (auth, setAuth, request) => {
+    return null;
+};
+
 export {
     userSignupAction,
     frontPageActions,
@@ -268,4 +272,5 @@ export {
     itemUpdateAction,
     cartViewAction,
     bikeOrderAction,
+    confirmationAction,
 };

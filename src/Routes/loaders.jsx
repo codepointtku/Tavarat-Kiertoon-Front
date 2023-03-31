@@ -31,7 +31,7 @@ const shoppingCartLoader = async (auth, setAuth) => {
     /* eslint-disable no-shadow */
     // // auth check for future
     // if (auth.user_group === true){...}
-    const cartItems = cart?.products?.reduce((cartItems, product) => {
+    const products = cart?.products?.reduce((cartItems, product) => {
         let cartItem = cartItems.find((cartItem) => cartItem.group_id === product.group_id);
 
         if (!cartItem) {
@@ -47,7 +47,7 @@ const shoppingCartLoader = async (auth, setAuth) => {
         return cartItems;
     }, []);
 
-    return { cartItems, cart };
+    return { products, cart };
 };
 
 /**
@@ -182,7 +182,7 @@ const userEditLoader = async (auth, setAuth, params) => {
 /**
  * Get all bikes
  */
-const bikesListLoader = async ( auth, setAuth) => {
+const bikesListLoader = async (auth, setAuth) => {
     const { data } = await apiCall(auth, setAuth, '/bikes', 'get');
     return data;
 };
