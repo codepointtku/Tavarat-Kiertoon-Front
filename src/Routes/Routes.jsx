@@ -379,21 +379,19 @@ function Routes() {
                     ],
                 },
                 {
-                    path: '/pyorat',
+                    path: 'pyorat',
                     element: <BikesLayout />,
                     children: [
                         {
-                            path: '/pyorat',
+                            path: 'pyorat',
                             element: <BikesPage />,
                             action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                             loader: bikesListLoader,
                             shouldRevalidate: () => false,
                         },
                         {
-                            path: '/pyorat/pyoravarasto',
+                            path: 'pyoravarasto',
                             element: <BikeWarehouse />,
-
-                            shouldRevalidate: () => false,
                         },
                     ],
                 },
