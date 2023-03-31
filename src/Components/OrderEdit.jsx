@@ -101,7 +101,7 @@ function OrderEdit() {
     const handleConfirmDelete = (confirm) => {
         if (confirm) {
             const { items, id } = itemRef.current;
-            if (items.length > 1) {
+            if (items.length > 1 && orderItems[id] !== undefined) {
                 for (let index = 0; index < orderItems[id]; index += 1) {
                     submit(
                         { type: 'delete', product: items.at(index).id, productId: orderData.id },
@@ -269,16 +269,20 @@ function OrderEdit() {
                 </Box>
                 <h2 align="center">Poista tilauksen tuotteita.</h2>
                 {responseStatus?.type === 'delete' && !responseStatus?.status && (
-                    <AlertBox text="Esineen poistaminen epäonnistui" status="error" />
+                    <AlertBox text="Esineen poistaminen epäonnistui" status="error" timer={3000} />
                 )}
                 {responseStatus?.type === 'delete' && responseStatus?.status && (
-                    <AlertBox text="Esineen poistaminen onnistui" status="success" />
+                    <AlertBox text="Esineen poistaminen onnistui" status="success" timer={3000} />
                 )}
                 {responseStatus?.type === 'update' && !responseStatus?.status && (
-                    <AlertBox text="Tilauksen tallennus epäonnistui! Lataa sivu uudestaan." status="error" />
+                    <AlertBox
+                        text="Tilauksen tallennus epäonnistui! Lataa sivu uudestaan."
+                        status="error"
+                        timer={3000}
+                    />
                 )}
                 {responseStatus?.type === 'update' && responseStatus?.status && (
-                    <AlertBox text="Tilauksen tallennus onnistui" status="success" />
+                    <AlertBox text="Tilauksen tallennus onnistui" status="success" timer={3000} />
                 )}
                 <TableContainer sx={{ padding: '2rem' }}>
                     <Table>
