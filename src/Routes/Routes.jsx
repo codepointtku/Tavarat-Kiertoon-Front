@@ -83,6 +83,7 @@ import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
 import StorageProducts from '../Components/StorageProducts';
 import AddNewItem from '../Components/AddNewItem';
+import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
@@ -387,7 +388,7 @@ function Routes() {
                     ],
                 },
                 {
-                    path: '/pyorat',
+                    path: 'pyorat',
                     element: <BikesLayout />,
                     children: [
                         {
@@ -396,6 +397,10 @@ function Routes() {
                             action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                             loader: bikesListLoader,
                             shouldRevalidate: () => false,
+                        },
+                        {
+                            path: 'pyoravarasto',
+                            element: <BikeWarehouse />,
                         },
                     ],
                 },
