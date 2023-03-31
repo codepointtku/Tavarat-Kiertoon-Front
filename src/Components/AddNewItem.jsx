@@ -183,7 +183,12 @@ function AddNewItem() {
                             </MenuItem>
                         ))}
                     </TextField>
-                    {/* todo amount / määrä kenttä */}
+                    <TextField
+                        type="number"
+                        label="Määrä"
+                        placeholder="amount"
+                        {...register('amount', { required: true, max: 10000, min: 1 })}
+                    />
                     {/* todo värikenttä, uuden värin lisäys mahdollisuus, backend hyväksyy stringin ja luo uuden ellei ole olemassa. Lisäkenttä lisää uusi väri */}
                     <TextField
                         id="filled-helperText"
