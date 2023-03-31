@@ -1,11 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { Typography, Grid, Box } from '@mui/material';
+import { useStateMachine } from 'little-state-machine';
+import Update from './Update';
 import { useForm } from 'react-hook-form';
 
 import CartButtons from './CartButtons';
 
 function Confirmation() {
     const { handleSubmit } = useForm();
+    const { state } = useStateMachine({ Update });
 
     const navigate = useNavigate();
     const onSubmit = (data) => {
@@ -26,23 +29,25 @@ function Confirmation() {
                     borderStyle: 'solid',
                     borderWidth: 5,
                     borderRadius: 5,
-                    width: 600,
+                    maxWidth: 900,
                     borderColor: 'primary.main',
                     backgroundColor: 'primary.light',
                 }}
             >
                 <Typography variant="overline" sx={{ fontSize: 20, fontWeight: 'bold' }}>
-                    Yhteystiedot
+                    Vastaanottajan Yhteystiedot
                 </Typography>
                 <Grid container direction="row" spacing={2}>
                     <Grid item>
-                        <Typography variant="subtitle1">Sähköposti</Typography>
+                        <Typography variant="subtitle1">
+                            Nimi: {state.firstName} {state.lastName}
+                        </Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">Puh. numero</Typography>
+                        <Typography variant="subtitle1">Sähköposti: {state.email}</Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">Toimipaikkakoodi</Typography>
+                        <Typography variant="subtitle1">Puh. numero: {state.phoneNumber}</Typography>
                     </Grid>
                 </Grid>
                 <Typography variant="overline" sx={{ fontSize: 20, fontWeight: 'bold' }}>
@@ -50,16 +55,16 @@ function Confirmation() {
                 </Typography>
                 <Grid container direction="row" spacing={2}>
                     <Grid item>
-                        <Typography variant="subtitle1">Toimitusosoite</Typography>
+                        <Typography variant="subtitle1">Toimitusosoite: {state.deliveryAddress}</Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">Postiosoite</Typography>
+                        <Typography variant="subtitle1">Postiosoite: {state.zipCode}</Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">Kaupunki</Typography>
+                        <Typography variant="subtitle1">Kaupunki: {state.city}</Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">Toimitustapa</Typography>
+                        <Typography variant="subtitle1">Toimitustapa: {state.deliveryMethod}</Typography>
                     </Grid>
                 </Grid>
                 <Typography variant="overline" sx={{ fontSize: 20, fontWeight: 'bold' }}>
@@ -67,10 +72,10 @@ function Confirmation() {
                 </Typography>
                 <Grid container direction="row" spacing={2}>
                     <Grid item>
-                        <Typography variant="subtitle1">Tuotenimi</Typography>
+                        <Typography variant="subtitle1">Tuotenimi: </Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">Tuotemäärä</Typography>
+                        <Typography variant="subtitle1">Tuotemäärä: </Typography>
                     </Grid>
                 </Grid>
             </Box>

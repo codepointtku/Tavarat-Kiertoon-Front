@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLoaderData } from 'react-router-dom';
+import { useStateMachine } from 'little-state-machine';
 import { Typography, TextField, Grid, MenuItem, Box, Alert } from '@mui/material';
 
 import CartButtons from './CartButtons';
+import Update from './Update';
 
 function ContactsAndDelivery() {
     const user = useLoaderData();
@@ -15,10 +17,12 @@ function ContactsAndDelivery() {
         handleSubmit,
         formState: { errors },
     } = useForm();
+    const { actions } = useStateMachine({ Update });
+    // console.log('update state: ', state, 'update actions: ', actions);
 
     const navigate = useNavigate();
     const onSubmit = (data) => {
-        alert(JSON.stringify(data));
+        actions.Update(data);
         navigate('/ostoskori/vaihe3');
     };
     const handleChange = (SelectChangeEvent) => {
