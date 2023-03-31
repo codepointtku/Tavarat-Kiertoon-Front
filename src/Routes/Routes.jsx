@@ -383,7 +383,7 @@ function Routes() {
                     element: <BikesLayout />,
                     children: [
                         {
-                            path: 'pyorat',
+                            path: '/pyorat',
                             element: <BikesPage />,
                             action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                             loader: bikesListLoader,
