@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
+import { StateMachineProvider, createStore } from 'little-state-machine';
 import { ThemeProvider } from '@mui/material';
 
 import DefaultView from './DefaultView';
@@ -81,6 +82,8 @@ import GuideAccount from '../Components/Instructions/GuideAccount';
 import GuideOrdering from '../Components/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
+
+createStore({});
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
@@ -184,7 +187,11 @@ function Routes() {
                         },
                         {
                             path: '/ostoskori',
-                            element: <ShoppingCart />,
+                            element: (
+                                <StateMachineProvider>
+                                    <ShoppingCart />
+                                </StateMachineProvider>
+                            ),
                             children: [
                                 {
                                     path: '/ostoskori/',
