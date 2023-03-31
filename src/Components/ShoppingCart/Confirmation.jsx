@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
-import { Typography, Grid, Box } from '@mui/material';
+import { useNavigate, useRouteLoaderData } from 'react-router-dom';
+import { Typography, Grid, Box, List, ListItem, ListItemText } from '@mui/material';
 import { useStateMachine } from 'little-state-machine';
 import Update from './Update';
 import { useForm } from 'react-hook-form';
@@ -9,6 +9,7 @@ import CartButtons from './CartButtons';
 function Confirmation() {
     const { handleSubmit } = useForm();
     const { state } = useStateMachine({ Update });
+    const { cartItems } = useRouteLoaderData('frontPage');
 
     const navigate = useNavigate();
     const onSubmit = (data) => {
@@ -70,14 +71,13 @@ function Confirmation() {
                 <Typography variant="overline" sx={{ fontSize: 20, fontWeight: 'bold' }}>
                     Tilaustiedot
                 </Typography>
-                <Grid container direction="row" spacing={2}>
-                    <Grid item>
-                        <Typography variant="subtitle1">Tuotenimi: </Typography>
-                    </Grid>
-                    <Grid item>
-                        <Typography variant="subtitle1">Tuotemäärä: </Typography>
-                    </Grid>
-                </Grid>
+                <List>
+                    {cartItems?.map((item) => (
+                        <ListItem disableGutters disablePadding>
+                            <ListItemText primary={`${item.count}x ${item.name}`} />
+                        </ListItem>
+                    ))}
+                </List>
             </Box>
             <CartButtons backText="Takaisin" forwardText="Vahvista" />
         </form>
