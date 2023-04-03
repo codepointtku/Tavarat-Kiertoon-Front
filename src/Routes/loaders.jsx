@@ -1,8 +1,6 @@
 import axios from 'axios';
 import apiCall from '../Utils/apiCall';
 
-// just a comment for file-rename commit to work. remove this
-
 /**
  * Get various defaults for the site
  */
@@ -51,7 +49,7 @@ const shoppingCartLoader = async (auth, setAuth) => {
 };
 
 /**
- * Get all products / get products based on category id
+ * Get all products / get products based on category id || search string
  */
 const productListLoader = async (auth, setAuth, request) => {
     const url = new URL(request.url);
