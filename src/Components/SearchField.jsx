@@ -7,9 +7,11 @@ import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 
 const Search = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.primary.main, 0.06),
+    backgroundColor: alpha(theme.palette.primary.main, 0.08),
     '&:hover': {
         backgroundColor: alpha(theme.palette.primary.main, 0.2),
     },
@@ -34,10 +36,10 @@ function SearchField() {
                     placeholder="Etsi tuotteita…"
                     startAdornment={<SearchIcon sx={{ fontSize: 30, color: 'primary.main', marginRight: '3rem' }} />}
                     inputProps={{ 'aria-label': 'searchfield' }}
-                    sx={{ color: 'inherit', padding: '1rem 6rem 1rem 1rem' }}
+                    sx={{ color: 'inherit', padding: '0.5rem' }}
                 />
             </Search>
-            <Button type="submit" sx={{ p: '0 2rem 0 2rem' }}>
+            <Button type="submit" sx={{ p: '1rem 2rem 1rem 2rem' }}>
                 Hae
             </Button>
         </Box>
