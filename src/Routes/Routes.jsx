@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
+import { BikeScooter } from '@mui/icons-material';
 import DefaultView from './DefaultView';
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
@@ -82,6 +83,9 @@ import GuideOrdering from '../Components/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Instructions/GuideShipping';
 import GuideBikes from '../Components/Instructions/GuideBikes';
 import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
+import BikePackets from '../Components/Bikes/BikePackets';
+import Bikes from '../Components/Bikes/Bikes';
+import BikeRentals from '../Components/Bikes/BikeRentals';
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
@@ -378,6 +382,7 @@ function Routes() {
                         },
                     ],
                 },
+                // bikes routes
                 {
                     path: 'pyorat',
                     element: <BikesLayout />,
@@ -392,6 +397,20 @@ function Routes() {
                         {
                             path: 'pyoravarasto',
                             element: <BikeWarehouse />,
+                            children: [
+                                {
+                                    path: 'pyorat',
+                                    element: <Bikes />,
+                                },
+                                {
+                                    path: 'pyoratilaukset',
+                                    element: <BikeRentals />,
+                                },
+                                {
+                                    path: 'pyorapaketit',
+                                    element: <BikePackets />,
+                                },
+                            ],
                         },
                     ],
                 },
