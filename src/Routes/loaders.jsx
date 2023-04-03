@@ -193,14 +193,8 @@ const bikesListLoader = async (auth, setAuth) => {
 const userSignupLoader = async () => null;
 
 /**
- * Gets user info for shopping cart process phase 2
+ * Gets user info for shopping cart process
  */
-
-const contactsAndDeliveryLoader = async (auth, setAuth) => {
-    const { data } = await apiCall(auth, setAuth, '/user/', 'get');
-    return data;
-};
-
 const shoppingProcessLoader = async (auth, setAuth) => {
     const { data: user } = await apiCall(auth, setAuth, '/user/', 'get');
     return user;
@@ -222,6 +216,5 @@ export {
     userSignupLoader,
     bikesListLoader,
     shoppingCartLoader,
-    contactsAndDeliveryLoader,
     shoppingProcessLoader,
 };

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useLoaderData } from 'react-router-dom';
+import { useNavigate, useLoaderData, useRouteLoaderData } from 'react-router-dom';
 import { useStateMachine } from 'little-state-machine';
 import { Typography, TextField, Grid, MenuItem, Box, Alert } from '@mui/material';
 
@@ -10,7 +10,7 @@ import CartButtons from './CartButtons';
 import Update from './Update';
 
 function ContactsAndDelivery() {
-    const user = useLoaderData();
+    const user = useRouteLoaderData('shoppingCart');
     const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
     const {
         register,

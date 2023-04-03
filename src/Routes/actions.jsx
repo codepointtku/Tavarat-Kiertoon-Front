@@ -260,7 +260,6 @@ const cartViewAction = async (auth, setAuth, request) => {
  */
 
 const confirmationAction = async (auth, setAuth, request) => {
-    console.log(auth.id);
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, '/orders/', 'post', {
         contact: formData.get('email'),

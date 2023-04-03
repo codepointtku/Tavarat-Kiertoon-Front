@@ -61,7 +61,6 @@ import {
     userSignupLoader,
     shoppingCartLoader,
     bikesListLoader,
-    contactsAndDeliveryLoader,
     shoppingProcessLoader,
 } from './loaders';
 
@@ -205,7 +204,6 @@ function Routes() {
                                 {
                                     path: '/ostoskori/vaihe2',
                                     element: <ContactsAndDelivery />,
-                                    loader: contactsAndDeliveryLoader,
                                 },
                                 {
                                     path: '/ostoskori/vaihe3',
