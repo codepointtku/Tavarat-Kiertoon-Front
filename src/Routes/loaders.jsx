@@ -55,12 +55,19 @@ const shoppingCartLoader = async (auth, setAuth) => {
  */
 const productListLoader = async (auth, setAuth, request) => {
     const url = new URL(request.url);
-    const searchString = url.searchParams.toString();
-    const queryString = searchString.replace(/kategoria/g, 'category');
-    if (searchString.length > 0) {
+    const searchParamString = url.searchParams.toString();
+
+    if (searchParamString.includes('kategoria')) {
+        const queryString = searchParamString.replace(/kategoria/g, 'category');
         const { data } = await apiCall(auth, setAuth, `/products/?${queryString}`, 'get');
         return data.results;
     }
+    if (searchParamString.includes('haku')) {
+        const queryString = searchParamString.replace(/haku/g, 'search');
+        const { data } = await apiCall(auth, setAuth, `/products/?${queryString}`, 'get');
+        return data.results;
+    }
+
     const { data } = await apiCall(auth, setAuth, '/products/', 'get');
     return data.results;
 };
@@ -182,7 +189,7 @@ const userEditLoader = async (auth, setAuth, params) => {
 /**
  * Get all bikes
  */
-const bikesListLoader = async ( auth, setAuth) => {
+const bikesListLoader = async (auth, setAuth) => {
     const { data } = await apiCall(auth, setAuth, '/bikes', 'get');
     return data;
 };

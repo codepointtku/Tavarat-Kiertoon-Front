@@ -17,20 +17,11 @@ const Search = styled('div')(({ theme }) => ({
 
 function SearchField() {
     const { handleSubmit, register } = useForm();
-    // const submit = useSubmit();
+    // eslint-disable-next-line no-unused-vars
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const onSubmit = () => {
-        console.log('hellou');
-        // console.log('formData:', formData);
-        // console.log('formData.search:', formData.search);
-        // setSearchParams({ hakusana: formData.search });
-    };
-    // console.log('searchParams:', searchParams);
-
-    const handleMoro = () => {
-        setSearchParams({ moro: 'nappia_painettu' });
-        console.log('sP:', searchParams);
+    const onSubmit = (formData) => {
+        setSearchParams({ haku: formData.search });
     };
 
     return (
@@ -46,7 +37,7 @@ function SearchField() {
                     sx={{ color: 'inherit', padding: '1rem 6rem 1rem 1rem' }}
                 />
             </Search>
-            <Button onClick={handleMoro} type="submit" sx={{ p: '0 2rem 0 2rem' }}>
+            <Button type="submit" sx={{ p: '0 2rem 0 2rem' }}>
                 Hae
             </Button>
         </Box>
