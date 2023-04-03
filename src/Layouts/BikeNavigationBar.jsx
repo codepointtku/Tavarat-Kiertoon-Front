@@ -1,9 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
-
+import PedalBikeIcon from '@mui/icons-material/PedalBike';
 import { Box, Button, ButtonGroup } from '@mui/material';
-
-import AuthContext from '../Context/AuthContext';
 
 function BikeLinkBar() {
     return (
@@ -14,13 +11,13 @@ function BikeLinkBar() {
                 aria-label="navigation link buttons"
                 sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
             >
-                <Button component={Link} to="/pyorat">
-                    Pyörät
+                <Button component={Link} to="pyorat">
+                    <PedalBikeIcon> Pyörät </PedalBikeIcon>
                 </Button>
-                <Button component={Link} to="/pyoratilaukset">
+                <Button component={Link} to="pyoratilaukset">
                     Pyörätilaukset
                 </Button>
-                <Button component={Link} to="/pyorapaketit">
+                <Button component={Link} to="pyorapaketit">
                     Pyöräpaketit
                 </Button>
             </ButtonGroup>
@@ -29,8 +26,6 @@ function BikeLinkBar() {
 }
 
 function BikeNavigationBar() {
-    const { auth } = useContext(AuthContext);
-
     return (
         <Box
             id="navbar-container"
@@ -43,7 +38,6 @@ function BikeNavigationBar() {
             }}
         >
             <BikeLinkBar />
-            {auth.storage && <BikeLinkBar />}
         </Box>
     );
 }
