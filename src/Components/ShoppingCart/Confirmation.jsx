@@ -1,21 +1,22 @@
 import { useNavigate, useRouteLoaderData, useSubmit } from 'react-router-dom';
 import { Typography, Grid, Box, List, ListItem, ListItemText } from '@mui/material';
 import { useStateMachine } from 'little-state-machine';
-import Update from './Update';
 import { useForm } from 'react-hook-form';
 
+import Update from './Update';
 import CartButtons from './CartButtons';
 
 function Confirmation() {
     const { handleSubmit, register } = useForm();
     const { state } = useStateMachine({ Update });
     const { products } = useRouteLoaderData('frontPage');
+    const { id } = useRouteLoaderData('shoppingCart');
     const submit = useSubmit();
     const navigate = useNavigate();
+
     const onSubmit = () => {
-        const { city, email, deliveryAddress, phoneNumber } = state;
-        console.log(city, email, deliveryAddress);
-        submit({ deliveryAddress, email, phoneNumber, products }, { method: 'post', action: '/ostoskori/vaihe3' });
+        const { email, deliveryAddress, phoneNumber } = state;
+        submit({ deliveryAddress, email, phoneNumber, id }, { method: 'post', action: '/ostoskori/vaihe3' });
         navigate('/');
     };
 
@@ -63,7 +64,7 @@ function Confirmation() {
                         <Typography variant="subtitle1">Toimitusosoite: {state.deliveryAddress}</Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">Postiosoite: {state.zipCode}</Typography>
+                        <Typography variant="subtitle1">Postiosoite: {state.zipcode}</Typography>
                     </Grid>
                     <Grid item>
                         <Typography variant="subtitle1">Kaupunki: {state.city}</Typography>

@@ -62,6 +62,7 @@ import {
     shoppingCartLoader,
     bikesListLoader,
     contactsAndDeliveryLoader,
+    shoppingProcessLoader,
 } from './loaders';
 
 import {
@@ -193,6 +194,8 @@ function Routes() {
                                     <ShoppingCart />
                                 </StateMachineProvider>
                             ),
+                            id: 'shoppingCart',
+                            loader: shoppingProcessLoader,
                             children: [
                                 {
                                     path: '/ostoskori/',
@@ -364,6 +367,7 @@ function Routes() {
                                 {
                                     index: true,
                                     element: <UsersList />,
+                                    id: 'users',
                                     loader: async () => usersListLoader(auth, setAuth),
                                 },
                                 {

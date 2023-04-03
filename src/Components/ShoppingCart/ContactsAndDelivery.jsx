@@ -114,7 +114,7 @@ function ContactsAndDelivery() {
                                 label="Postinumero"
                                 variant="outlined"
                                 value={correctAddress[0]?.zip_code}
-                                {...register('zipCode', { required: true })}
+                                {...register('zipcode', { required: true })}
                             />
                         </Grid>
                         <Grid item>

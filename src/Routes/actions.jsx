@@ -8,7 +8,6 @@ const frontPageActions = async (auth, setAuth, request) => {
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : -1;
     if (request.method === 'POST') {
-        console.log(auth.username);
         if (auth.username) {
             const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
                 formData,
@@ -256,8 +255,25 @@ const cartViewAction = async (auth, setAuth, request) => {
     return null;
 };
 
+/**
+ * Adds an item in order
+ */
+
 const confirmationAction = async (auth, setAuth, request) => {
-    return null;
+    console.log(auth.id);
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/orders/', 'post', {
+        contact: formData.get('email'),
+        delivery_address: formData.get('deliveryAddress'),
+        phone_number: formData.get('phoneNumber'),
+        status: 'Delivery',
+        user: formData.get('id'),
+        // products: formData.get('productIds'),
+    });
+    if (response.status === 200) {
+        return { type: 'post', status: true };
+    }
+    return { type: 'post', status: true };
 };
 
 export {

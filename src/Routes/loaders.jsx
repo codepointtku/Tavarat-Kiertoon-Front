@@ -159,8 +159,8 @@ const storageEditLoader = async (auth, setAuth, params) => {
  * Get all users
  */
 const usersListLoader = async (auth, setAuth) => {
-    const { data } = await apiCall(auth, setAuth, '/users', 'get');
-    return data;
+    const { data: users } = await apiCall(auth, setAuth, '/users', 'get');
+    return users;
 };
 
 /**
@@ -201,6 +201,11 @@ const contactsAndDeliveryLoader = async (auth, setAuth) => {
     return data;
 };
 
+const shoppingProcessLoader = async (auth, setAuth) => {
+    const { data: user } = await apiCall(auth, setAuth, '/user/', 'get');
+    return user;
+};
+
 export {
     rootLoader,
     productListLoader,
@@ -218,4 +223,5 @@ export {
     bikesListLoader,
     shoppingCartLoader,
     contactsAndDeliveryLoader,
+    shoppingProcessLoader,
 };
