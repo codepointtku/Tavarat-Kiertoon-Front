@@ -1,41 +1,25 @@
-import { useState, useEffect } from 'react';
-import { useSubmit, useActionData } from 'react-router-dom';
 import { Box, Button, Card, CardActions, CardContent, MenuItem, TextField } from '@mui/material';
+import { useState } from 'react';
+import { useActionData, useSubmit } from 'react-router-dom';
 import validator from 'validator';
+import type { storageCreateAction } from '../Routes/actions';
 import AlertBox from './AlertBox';
 
 function AddStorage() {
-    const initialState = { name: '', address: '', in_use: false };
+    const initialState = { name: '', address: '', in_use: 'ei käytössä' };
     const [storage, setStorage] = useState(initialState);
-    const [validStorage, setValidStorage] = useState(false);
     const submit = useSubmit();
-    const responseStatus = useActionData();
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof storageCreateAction>>;
 
-    const handleChange = (key, event) => {
-        if (key === 'in_use') {
-            if (event.target.value === 'käytössä') {
-                setStorage({ ...storage, [key]: true });
-            } else {
-                setStorage({ ...storage, [key]: false });
-            }
-        } else {
-            setStorage({ ...storage, [key]: event.target.value });
-        }
+    const handleChange = (key: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setStorage({ ...storage, [key]: event.target.value });
     };
 
     const choices = ['käytössä', 'ei käytössä'];
 
-    useEffect(() => {
-        if (
-            validator.isLength(String(storage.name), { min: 3, max: 255 }) &&
-            validator.isLength(String(storage.address), { min: 3, max: 255 })
-        ) {
-            setValidStorage(true);
-        } else {
-            setValidStorage(false);
-        }
-    });
-
+    const validStorage =
+        validator.isLength(String(storage.name), { min: 3, max: 255 }) &&
+        validator.isLength(String(storage.address), { min: 3, max: 255 });
     return (
         <Box sx={{ padding: '24px' }}>
             {responseStatus?.type === 'post' && !responseStatus?.status && (
@@ -51,11 +35,8 @@ function AddStorage() {
                 </>
             )}
             <Card sx={{ maxWidth: '60vw' }}>
-                <h2 align="center" style={{ textDecoration: 'underline' }}>
-                    Uusi varasto
-                </h2>
+                <h2 style={{ textDecoration: 'underline' }}>Uusi varasto</h2>
                 <Box
-                    align="center"
                     component="form"
                     sx={{
                         '& .MuiTextField-root': { m: 1, width: '40ch' },
@@ -93,7 +74,7 @@ function AddStorage() {
                                 handleChange('in_use', event);
                             }}
                             defaultValue=""
-                            value={storage.in_use ? 'käytössä' : 'ei käytössä'}
+                            value={storage.in_use}
                         >
                             {choices.map((choice) => (
                                 <MenuItem key={choice} value={choice}>
