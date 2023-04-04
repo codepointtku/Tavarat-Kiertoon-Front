@@ -6,9 +6,9 @@ import apiCall from '../Utils/apiCall';
 const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+    // eslint-disable-next-line no-nested-ternary
     const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : -1;
     if (request.method === 'POST') {
-        console.log(auth.username);
         if (auth.username) {
             const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
                 formData,
