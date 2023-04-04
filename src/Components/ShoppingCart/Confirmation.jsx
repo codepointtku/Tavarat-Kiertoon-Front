@@ -1,4 +1,4 @@
-import { useNavigate, useRouteLoaderData, useSubmit } from 'react-router-dom';
+import { useRouteLoaderData, useSubmit } from 'react-router-dom';
 import { Typography, Grid, Box, List, ListItem, ListItemText } from '@mui/material';
 import { useStateMachine } from 'little-state-machine';
 import { useForm } from 'react-hook-form';
@@ -12,12 +12,12 @@ function Confirmation() {
     const { products } = useRouteLoaderData('frontPage');
     const { id } = useRouteLoaderData('shoppingCart');
     const submit = useSubmit();
-    const navigate = useNavigate();
+    const order = 'order';
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         const { email, deliveryAddress, phoneNumber } = state;
         submit({ deliveryAddress, email, phoneNumber, id }, { method: 'post', action: '/ostoskori/vaihe3' });
-        navigate('/');
+        submit({ order }, { method: 'put', action: '/' });
     };
 
     return (

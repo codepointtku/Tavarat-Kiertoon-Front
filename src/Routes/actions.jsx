@@ -32,9 +32,13 @@ const frontPageActions = async (auth, setAuth, request) => {
             return null;
         }
         if (!id) {
+            // clear cart if no id is being sent or clear cart and return "type: orderCreated" when a new order is created.
             const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
                 products: '',
             });
+            if (formData.has('order')) {
+                return { type: 'orderCreated', status: true };
+            }
             return response;
         }
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
