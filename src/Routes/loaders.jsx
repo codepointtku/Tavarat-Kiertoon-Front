@@ -53,16 +53,26 @@ const shoppingCartLoader = async (auth, setAuth) => {
  */
 const productListLoader = async (auth, setAuth, request) => {
     const url = new URL(request.url);
-    const searchParamString = url.searchParams.toString();
 
-    if (searchParamString.includes('kategoria')) {
-        const queryString = searchParamString.replace(/kategoria/g, 'category');
-        const { data } = await apiCall(auth, setAuth, `/products/?${queryString}`, 'get');
+    if (url.searchParams.has('kategoria')) {
+        url.searchParams.forEach((value, key) => {
+            if (key === 'kategoria') {
+                url.searchParams.append('category', value);
+            }
+        });
+        url.searchParams.delete('kategoria');
+        const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
         return data.results;
     }
-    if (searchParamString.includes('haku')) {
-        const queryString = searchParamString.replace(/haku/g, 'search');
-        const { data } = await apiCall(auth, setAuth, `/products/?${queryString}`, 'get');
+
+    if (url.searchParams.has('haku')) {
+        url.searchParams.forEach((value, key) => {
+            if (key === 'haku') {
+                url.searchParams.append('search', value);
+            }
+        });
+        url.searchParams.delete('haku');
+        const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
         return data.results;
     }
 
