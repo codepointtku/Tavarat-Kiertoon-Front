@@ -8,6 +8,7 @@ import {
     CardMedia,
     Typography,
     Grid,
+    Tooltip,
 } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
@@ -30,9 +31,11 @@ function ProductCard({ productName, id, groupId, picture, amount }) {
                         <Typography variant="h6" fontWeight="fontWeightLight" lineHeight="1">
                             {productName}
                         </Typography>
-                        <Typography variant="string" fontWeight="400" lineHeight="1" sx={{ mt: 0.5 }}>
-                            Varastossa {amount} kpl
-                        </Typography>
+                        <Tooltip title="määrä varastossa" placement="left">
+                            <Typography variant="string" fontWeight="400" lineHeight="1" sx={{ mt: 0.5 }}>
+                                {amount} kpl
+                            </Typography>
+                        </Tooltip>
                     </CardContent>
                 </CardActionArea>
                 <Box
