@@ -57,6 +57,7 @@ function SearchField() {
             <Search id="search-wrapper">
                 <SearchIcon sx={{ fontSize: 30, color: 'primary.main', margin: '0 1rem 0 1rem' }} />
                 <InputBase
+                    id="search-text-input-field"
                     // eslint-disable-next-line react/jsx-props-no-spreading
                     {...register('search')}
                     autoFocus
@@ -64,7 +65,7 @@ function SearchField() {
                     inputProps={{ 'aria-label': 'searchfield' }}
                     sx={{ color: 'inherit', padding: '0.5rem' }}
                 />
-                {clearBtnWatcher?.length > 0 ? (
+                {clearBtnWatcher ? (
                     <IconButton aria-label="clear" onClick={clearInputField} sx={{ marginRight: '1rem' }}>
                         <ClearIcon />
                     </IconButton>
