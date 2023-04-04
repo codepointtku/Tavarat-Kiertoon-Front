@@ -49,7 +49,6 @@ function AddToCartButton({ size, id, groupId }) {
 AddToCartButton.propTypes = {
     size: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
-    groupId: PropTypes.string.isRequired,
 };
 
 export default AddToCartButton;
