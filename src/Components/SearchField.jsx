@@ -13,10 +13,11 @@ const Search = styled('div')(({ theme }) => ({
     alignItems: 'center',
     position: 'relative',
     width: '34ch',
-    border: '0.1rem solid #009bd8',
+    border: '0.1rem solid rgba(0,155,216, 0.4)',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.primary.main, 0.08),
     '&:hover': {
+        border: '0.1rem solid rgba(0,155,216, 1)',
         backgroundColor: alpha(theme.palette.primary.main, 0.2),
     },
 }));
