@@ -45,7 +45,6 @@ const frontPageActions = async (auth, setAuth, request) => {
             products: id,
             amount,
         });
-        // console.log(id, 'put method test', response.status);
         if (response.status === 202) {
             // alert('Item added successfully');
             return { type: 'update', status: true };

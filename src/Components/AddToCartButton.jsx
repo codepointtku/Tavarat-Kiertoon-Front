@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSubmit, useRouteLoaderData } from 'react-router-dom';
+import { useSubmit, useRouteLoaderData, useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import { Box, Button, TextField } from '@mui/material';
@@ -8,13 +8,14 @@ function AddToCartButton({ size, id, groupId }) {
     const submit = useSubmit();
     const { cart } = useRouteLoaderData('frontPage');
     const [amount, setAmount] = useState(1);
+    const [searchParams] = useSearchParams();
 
     const handleClickAddToCartBtn = async () => {
         submit(
             { id, amount },
             {
                 method: 'put',
-                action: '/',
+                action: '/?' + searchParams.toString(),
             }
         );
     };
