@@ -11,8 +11,8 @@ function BikeLinkBar() {
                 aria-label="navigation link buttons"
                 sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
             >
-                <Button component={Link} to="pyorat">
-                    <PedalBikeIcon> Pyörät </PedalBikeIcon>
+                <Button component={Link} to="">
+                    <PedalBikeIcon />
                 </Button>
                 <Button component={Link} to="pyoratilaukset">
                     Pyörätilaukset

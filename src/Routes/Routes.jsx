@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
-import { BikeScooter } from '@mui/icons-material';
 import DefaultView from './DefaultView';
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
@@ -388,7 +387,7 @@ function Routes() {
                     element: <BikesLayout />,
                     children: [
                         {
-                            path: '/pyorat',
+                            index: true,
                             element: <BikesPage />,
                             action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                             loader: bikesListLoader,
@@ -397,9 +396,11 @@ function Routes() {
                         {
                             path: 'pyoravarasto',
                             element: <BikeWarehouse />,
+                            action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
+
                             children: [
                                 {
-                                    path: 'pyorat',
+                                    index: true,
                                     element: <Bikes />,
                                 },
                                 {

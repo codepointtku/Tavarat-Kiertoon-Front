@@ -1,4 +1,5 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
+import { Outlet } from 'react-router';
 import BikeNavigationBar from '../../Layouts/BikeNavigationBar';
 
 // warehouse page for the bikes view
@@ -6,9 +7,7 @@ export default function BikeWarehouse() {
     return (
         <Grid container>
             <BikeNavigationBar />
-            <Typography variant="h3" color="primary">
-                adsadsad EN TEE
-            </Typography>
+            <Outlet />
         </Grid>
     );
 }
