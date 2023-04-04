@@ -58,7 +58,6 @@ function SearchField() {
                 <SearchIcon sx={{ fontSize: 30, color: 'primary.main', margin: '0 1rem 0 1rem' }} />
                 <InputBase
                     id="search-text-input-field"
-                    // eslint-disable-next-line react/jsx-props-no-spreading
                     {...register('search')}
                     autoFocus
                     placeholder="Etsi tuotteita…"
