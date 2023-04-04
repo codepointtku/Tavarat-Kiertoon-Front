@@ -15,7 +15,7 @@ function ProductList() {
                         groupId={product.group_id}
                         productName={product.name}
                         date={product.date}
-                        amount={product.amount}
+                        count={product.amount}
                         picture={product.pictures[0]}
                     />
                 </Grid>

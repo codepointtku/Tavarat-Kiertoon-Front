@@ -16,7 +16,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import AddToCartButton from './AddToCartButton';
 
-function ProductCard({ productName, id, groupId, picture, amount }) {
+function ProductCard({ productName, id, groupId, picture, count }) {
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Card sx={{ width: 400 }}>
@@ -31,9 +31,9 @@ function ProductCard({ productName, id, groupId, picture, amount }) {
                         <Typography variant="h6" fontWeight="fontWeightLight" lineHeight="1">
                             {productName}
                         </Typography>
-                        <Tooltip title="määrä varastossa" placement="left">
-                            <Typography variant="string" fontWeight="400" lineHeight="1" sx={{ mt: 0.5 }}>
-                                {amount} kpl
+                        <Tooltip title="määrä varastossa" placement="left" sx={{ color: 'primary.main' }} arrow>
+                            <Typography variant="subtitle1" fontWeight="400" lineHeight="1" sx={{ mt: 0.5 }}>
+                                {count} kpl
                             </Typography>
                         </Tooltip>
                     </CardContent>
@@ -51,7 +51,7 @@ function ProductCard({ productName, id, groupId, picture, amount }) {
                         <Button variant="outlined" component={Link} to={`/tuotteet/${id}`} size="small">
                             <InfoOutlinedIcon fontSize="small" />
                         </Button>
-                        <AddToCartButton size="small" id={id} groupId={groupId} />
+                        <AddToCartButton size="small" id={id} groupId={groupId} count={count} />
                     </CardActions>
                 </Box>
             </Card>
@@ -65,7 +65,7 @@ ProductCard.propTypes = {
     id: PropTypes.number.isRequired,
     groupId: PropTypes.string.isRequired,
     picture: PropTypes.string.isRequired,
-    amount: PropTypes.number.isRequired,
+    count: PropTypes.number.isRequired,
 };
 
 export default ProductCard;
