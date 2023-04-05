@@ -203,7 +203,7 @@ test.describe('bikeorder', () => {
 });
 test.describe('bikepackets', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/pyorat');
+        await page.goto('/pyorat/pyoravarasto/pyorapaketit');
         await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
     });
 });
