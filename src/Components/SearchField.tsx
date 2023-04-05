@@ -22,14 +22,16 @@ const Search = styled('div')(({ theme }) => ({
     },
 }));
 
-function SearchField() {
-    const { handleSubmit, register, watch, reset, setValue } = useForm<SearchInputValue>();
-    const [searchParams, setSearchParams] = useSearchParams();
+type SearchInputValue = {
+    formData: object;
+    search: string;
+};
 
-    type SearchInputValue = {
-        formData: object;
-        search: string;
-    };
+function SearchField() {
+    const { handleSubmit, register, watch, reset, setValue } = useForm<SearchInputValue>({
+        defaultValues: { search: '' },
+    });
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const onSubmit: SubmitHandler<SearchInputValue> = (formData) => {
         setSearchParams({ haku: formData.search });
@@ -38,20 +40,17 @@ function SearchField() {
     const searchFieldInputText = searchParams.get('haku');
 
     useEffect(() => {
-        // if (searchFieldInputText !== null) {
-        setValue('search', searchFieldInputText!);
-        // }
+        if (searchFieldInputText) {
+            setValue('search', searchFieldInputText);
+        }
     }, [searchFieldInputText]);
 
     const clearBtnWatcher = watch('search');
 
     const clearInputField = () => {
-        if (searchParams.has('haku')) {
-            searchParams.delete('haku');
-            setSearchParams(searchParams);
-        } else {
-            reset();
-        }
+        searchParams.delete('haku');
+        setSearchParams(searchParams);
+        reset();
     };
 
     return (
