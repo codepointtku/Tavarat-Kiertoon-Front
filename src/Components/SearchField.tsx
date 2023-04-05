@@ -23,7 +23,6 @@ const Search = styled('div')(({ theme }) => ({
 }));
 
 type SearchInputValue = {
-    formData: object;
     search: string;
 };
 
@@ -43,7 +42,7 @@ function SearchField() {
         if (searchFieldInputText) {
             setValue('search', searchFieldInputText);
         }
-    }, [searchFieldInputText]);
+    }, [searchFieldInputText, setValue]);
 
     const clearBtnWatcher = watch('search');
 
