@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { Form, useSearchParams } from 'react-router-dom';
 
 import { Box, Button, IconButton, InputBase } from '@mui/material';
@@ -23,18 +23,25 @@ const Search = styled('div')(({ theme }) => ({
 }));
 
 function SearchField() {
-    const { handleSubmit, register, watch, reset, setValue } = useForm();
+    const { handleSubmit, register, watch, reset, setValue } = useForm<SearchInputValue>();
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const onSubmit = (formData) => {
+    type SearchInputValue = {
+        formData: object;
+        search: string;
+    };
+
+    const onSubmit: SubmitHandler<SearchInputValue> = (formData) => {
         setSearchParams({ haku: formData.search });
     };
 
-    const haku = searchParams.get('haku');
+    const searchFieldInputText = searchParams.get('haku');
 
     useEffect(() => {
-        setValue('search', haku);
-    }, [haku]);
+        // if (searchFieldInputText !== null) {
+        setValue('search', searchFieldInputText!);
+        // }
+    }, [searchFieldInputText]);
 
     const clearBtnWatcher = watch('search');
 
