@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { Box, Button, Input, IconButton } from '@mui/material';
 
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
-import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
-import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 function AddToCartButton({ size, id, groupId, count }) {
     const submit = useSubmit();
@@ -14,7 +14,6 @@ function AddToCartButton({ size, id, groupId, count }) {
     const [searchParams] = useSearchParams();
 
     const handleClickAddToCartBtn = async (action, itemAmount) => {
-        console.log(itemAmount);
         action === 'remove'
             ? submit(
                   { id, itemAmount },
@@ -38,15 +37,15 @@ function AddToCartButton({ size, id, groupId, count }) {
                 <Box sx={{ backgroundColor: 'primary.main', borderRadius: 1, height: 30 }}>
                     <IconButton
                         size="small"
-                        sx={{ color: 'background.default', padding: 0, mr: 2, ml: 1 }}
+                        sx={{ color: 'background.default', padding: 0, mr: 1, ml: 0.5 }}
                         onClick={() => handleClickAddToCartBtn('remove', -amount)}
                     >
-                        <RemoveCircleRoundedIcon />
+                        <RemoveCircleOutlineIcon />
                     </IconButton>
                     <Input
-                        align="center"
+                        // align="center"
                         sx={{ mt: 1 / 4 }}
-                        inputProps={{ max: count, min: 1, style: { width: 30, padding: 0 } }}
+                        inputProps={{ max: count, min: 1, style: { width: 30, padding: 0, textAlign: 'center' } }}
                         value={amount}
                         onChange={(SelectChangeEvent) => {
                             setAmount(SelectChangeEvent.target.value);
@@ -55,10 +54,10 @@ function AddToCartButton({ size, id, groupId, count }) {
                     />
                     <IconButton
                         size="small"
-                        sx={{ color: 'background.default', padding: 0, ml: 2, mr: 1 }}
+                        sx={{ color: 'background.default', padding: 0, ml: 1, mr: 0.5 }}
                         onClick={() => handleClickAddToCartBtn('add', amount)}
                     >
-                        <AddCircleRoundedIcon />
+                        <AddCircleOutlineIcon />
                     </IconButton>
                 </Box>
             ) : (
