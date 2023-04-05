@@ -1,12 +1,11 @@
-import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
-import { useState, useEffect } from 'react';
-
+import type { AlertColor } from '@mui/material';
 import { Alert, Snackbar } from '@mui/material';
 
+import DangerousIcon from '@mui/icons-material/Dangerous';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import DangerousIcon from '@mui/icons-material/Dangerous';
 
 // USAGE:
 // available status cases: info, warning, error, success
@@ -14,16 +13,22 @@ import DangerousIcon from '@mui/icons-material/Dangerous';
 // example:
 // <AlertBox text="asia pihvi" status="success" />
 
-function AlertBox({ text, status, timer }) {
+interface Props {
+    text: string;
+    status: AlertColor;
+    timer?: number;
+}
+
+function AlertBox({ text, status, timer }: Props) {
     const [open, setOpen] = useState(true);
 
     useEffect(() => {
-        if (timer > 0) {
+        if (timer) {
             setTimeout(() => {
                 setOpen(false);
             }, timer);
         }
-    }, []);
+    }, [timer]);
 
     return (
         <div>
@@ -50,15 +55,5 @@ function AlertBox({ text, status, timer }) {
         </div>
     );
 }
-
-AlertBox.propTypes = {
-    text: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired,
-    timer: PropTypes.number,
-};
-
-AlertBox.defaultProps = {
-    timer: 0,
-};
 
 export default AlertBox;

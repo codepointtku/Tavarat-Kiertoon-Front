@@ -189,3 +189,21 @@ test.describe('bikes', () => {
         await expect(page.getByText('Etsimääsi sijaintia /pyorat')).not.toBeVisible();
     });
 });
+test.describe('bikewarehouse', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/pyorat/pyoravarasto');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto')).not.toBeVisible();
+    });
+});
+test.describe('bikeorder', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/pyorat/pyoravarasto/pyoratilaukset');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyoratilaukset')).not.toBeVisible();
+    });
+});
+test.describe('bikepackets', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/pyorat/pyoravarasto/pyorapaketit');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+    });
+});
