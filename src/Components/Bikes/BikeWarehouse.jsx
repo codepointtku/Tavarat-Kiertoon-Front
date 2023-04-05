@@ -1,12 +1,13 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
+import { Outlet } from 'react-router';
+import BikeNavigationBar from '../../Layouts/BikeNavigationBar';
 
 // warehouse page for the bikes view
 export default function BikeWarehouse() {
     return (
         <Grid container>
-            <Typography variant="h3" color="primary.main">
-                Varastossa olevat pyörät
-            </Typography>
+            <BikeNavigationBar />
+            <Outlet />
         </Grid>
     );
 }
