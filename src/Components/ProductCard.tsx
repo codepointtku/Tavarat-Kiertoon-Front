@@ -1,11 +1,17 @@
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import AddToCartButton from './AddToCartButton';
 
-function ProductCard({ productName, id, groupId, picture }) {
+interface Props {
+    productName: string;
+    id: number;
+    groupId: string;
+    picture: string;
+}
+
+function ProductCard({ productName, id, groupId, picture }: Props) {
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Card sx={{ width: 300 }}>
@@ -42,13 +48,5 @@ function ProductCard({ productName, id, groupId, picture }) {
         </Box>
     );
 }
-
-// Types not ready, string type for testing
-ProductCard.propTypes = {
-    productName: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
-    groupId: PropTypes.string.isRequired,
-    picture: PropTypes.string.isRequired,
-};
 
 export default ProductCard;
