@@ -27,9 +27,7 @@ type SearchInputValue = {
 };
 
 function SearchField() {
-    const { handleSubmit, register, watch, reset, setValue } = useForm<SearchInputValue>({
-        defaultValues: { search: '' },
-    });
+    const { handleSubmit, register, watch, reset, setValue } = useForm<SearchInputValue>();
     const [searchParams, setSearchParams] = useSearchParams();
 
     const onSubmit: SubmitHandler<SearchInputValue> = (formData) => {
@@ -39,7 +37,7 @@ function SearchField() {
     const searchFieldInputText = searchParams.get('haku');
 
     useEffect(() => {
-        if (searchFieldInputText) {
+        if (searchFieldInputText !== null) {
             setValue('search', searchFieldInputText);
         }
     }, [searchFieldInputText, setValue]);
@@ -47,8 +45,12 @@ function SearchField() {
     const clearBtnWatcher = watch('search');
 
     const clearInputField = () => {
-        searchParams.delete('haku');
-        setSearchParams(searchParams);
+        if (searchParams.has('haku')) {
+            searchParams.delete('haku');
+            setSearchParams(searchParams);
+            reset();
+            return;
+        }
         reset();
     };
 
