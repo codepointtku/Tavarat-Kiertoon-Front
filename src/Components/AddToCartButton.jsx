@@ -43,9 +43,13 @@ function AddToCartButton({ size, id, groupId, count }) {
                         <RemoveCircleOutlineIcon />
                     </IconButton>
                     <Input
-                        // align="center"
                         sx={{ mt: 1 / 4 }}
-                        inputProps={{ max: count, min: 1, style: { width: 30, padding: 0, textAlign: 'center' } }}
+                        type="number"
+                        inputProps={{
+                            max: count,
+                            min: 1,
+                            style: { width: 30, padding: 0, textAlign: 'center' },
+                        }}
                         value={amount}
                         onChange={(SelectChangeEvent) => {
                             setAmount(SelectChangeEvent.target.value);
