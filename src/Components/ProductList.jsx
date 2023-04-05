@@ -15,7 +15,7 @@ function ProductList() {
                         groupId={product.group_id}
                         productName={product.name}
                         date={product.date}
-                        picture={product.pictures[0]}
+                        pictures={product.pictures}
                     />
                 </Grid>
             ))}

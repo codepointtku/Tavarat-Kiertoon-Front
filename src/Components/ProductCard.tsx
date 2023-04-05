@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
+import Carousel from 'react-material-ui-carousel';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import { Link } from 'react-router-dom';
@@ -8,20 +10,36 @@ interface Props {
     productName: string;
     id: number;
     groupId: string;
-    picture: string;
+    pictures: string[];
 }
 
-function ProductCard({ productName, id, groupId, picture }: Props) {
+function ProductCard({ productName, id, groupId, pictures }: Props) {
+    const [hoveredOver, setHoveredOver] = useState(false);
+
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Card sx={{ width: 300 }}>
                 <CardActionArea component={Link} to={`/tuotteet/${id}`}>
-                    <CardMedia
-                        component="img"
-                        alt="kuva"
-                        height="200"
-                        image={`${window.location.protocol}//${window.location.hostname}:8000/media/${picture}`}
-                    />
+                    <Carousel
+                        className="carousel"
+                        animation="slide"
+                        duration={850}
+                        interval={2000}
+                        indicators={false}
+                        autoPlay={hoveredOver}
+                        navButtonsAlwaysInvisible
+                    >
+                        {pictures.map((picture) => (
+                            <CardMedia
+                                component="img"
+                                alt="kuva"
+                                height="200"
+                                onMouseOut={() => setHoveredOver(true)}
+                                // onMouseOut={() => setHoveredOver(false)}
+                                image={`${window.location.protocol}//${window.location.hostname}:8000/media/${picture}`}
+                            />
+                        ))}
+                    </Carousel>
                     <CardContent>
                         <Typography variant="h6" fontWeight="fontWeightLight" lineHeight="1">
                             {productName}
