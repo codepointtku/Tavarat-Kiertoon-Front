@@ -34,24 +34,24 @@ function SearchField() {
         setSearchParams({ haku: formData.search });
     };
 
-    const searchFieldInputText = searchParams.get('haku');
+    const searchParamFromUrl = searchParams.get('haku');
 
+    // set search string from url to search field, if user is following a link with search string
     useEffect(() => {
-        if (searchFieldInputText !== null) {
-            setValue('search', searchFieldInputText);
+        if (searchParamFromUrl !== null) {
+            setValue('search', searchParamFromUrl);
         }
-    }, [searchFieldInputText, setValue]);
+    }, [searchParamFromUrl, setValue]);
 
     const clearBtnWatcher = watch('search');
 
     const clearInputField = () => {
+        reset();
+        // remove search string from url, if there is one
         if (searchParams.has('haku')) {
             searchParams.delete('haku');
             setSearchParams(searchParams);
-            reset();
-            return;
         }
-        reset();
     };
 
     return (
