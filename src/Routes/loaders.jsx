@@ -182,8 +182,13 @@ const userEditLoader = async (auth, setAuth, params) => {
 /**
  * Get all bikes
  */
-const bikesListLoader = async ( auth, setAuth) => {
+const bikesListLoader = async (auth, setAuth) => {
     const { data } = await apiCall(auth, setAuth, '/bikes', 'get');
+    return data;
+};
+// get bulletin subjects
+const bulletingSubjectLoader = async (auth, setAuth) => {
+    const { data } = await apiCall(auth, setAuth, '/bulletin_subjects', 'get');
     return data;
 };
 
@@ -202,6 +207,7 @@ const contactsAndDeliveryLoader = async (auth, setAuth) => {
 };
 
 export {
+    bulletingSubjectLoader,
     rootLoader,
     productListLoader,
     productDetailsLoader,

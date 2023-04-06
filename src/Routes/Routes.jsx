@@ -61,6 +61,7 @@ import {
     shoppingCartLoader,
     bikesListLoader,
     contactsAndDeliveryLoader,
+    bulletingSubjectLoader,
 } from './loaders';
 
 import {
@@ -85,6 +86,7 @@ import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 import BikePackets from '../Components/Bikes/BikePackets';
 import Bikes from '../Components/Bikes/Bikes';
 import BikeRentals from '../Components/Bikes/BikeRentals';
+import NewAnnouncement from '../Components/NewAnnouncement';
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
@@ -332,6 +334,11 @@ function Routes() {
                         {
                             index: true,
                             element: <Navigate to="varastot" />,
+                        },
+                        {
+                            path: 'tiedotteet/luo',
+                            element: <NewAnnouncement />,
+                            loader: bulletingSubjectLoader,
                         },
                         {
                             path: 'varastot',
