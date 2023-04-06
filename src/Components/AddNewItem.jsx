@@ -1,9 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 // add new item
-// import { useEffect, useState } from 'react';
-// import { useNavigate, generatePath } from 'react-router';
 import { useRouteLoaderData, useLoaderData, useSubmit, Form } from 'react-router-dom';
-// import PropTypes from 'prop-types';
 // import Barcode from 'react-barcode';
 import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import imageCompression from 'browser-image-compression';
@@ -14,11 +11,9 @@ function AddNewItem() {
     const { categories } = useRouteLoaderData('root');
     const { storages } = useLoaderData();
     console.log('categories:', categories, 'storages:', storages);
-    if (!storages || !categories) {
-        return <>Esinetietojen lataus ei toimi.</>;
-    }
-    // const navigate = useNavigate();
     const submit = useSubmit();
+
+    // const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -33,7 +28,6 @@ function AddNewItem() {
             shelf_id: '',
             measurements: 'wrdrqwf',
             weight: 0.0,
-            // category: 1,
             storages: 1,
             color_name: 'Vihreä',
             color: 1,
@@ -118,7 +112,6 @@ function AddNewItem() {
                         {...register('name', { required: 'Nimi on pakollinen', max: 255, min: 3 })}
                         label="Nimi"
                         multiline
-                        // defaultValue={item.name}
                         defaultValue="testinimi"
                         // error={!!errors.name}
                         // helperText={errors.name?.message || `${name?.length || 0}/255`}
@@ -131,7 +124,6 @@ function AddNewItem() {
                         // disabled
                         // id="outlined-disabled"
                         label="Viivakoodi"
-                        // defaultValue={item.barcode}
                         defaultValue="testiviivakoodi"
                     >
                         viivakoodi
@@ -151,7 +143,6 @@ function AddNewItem() {
                     </CardActions> */}
 
                     <TextField
-                        // required
                         id="outlined-select"
                         select
                         label="Sijainti"
@@ -165,7 +156,6 @@ function AddNewItem() {
                         ))}
                     </TextField>
                     <TextField
-                        // required
                         id="outlined-select"
                         select
                         label="Kategoria"
@@ -196,7 +186,6 @@ function AddNewItem() {
                         {...register('free_description', { required: false, max: 1000 })}
                         multiline
                         helperText={`${description?.length || '0'}/1000`}
-                        // defaultValue={item.free_description}
                         defaultValue="vapaa kuvaus testi"
                     />
                     <CardActions>
