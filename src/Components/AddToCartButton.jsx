@@ -17,7 +17,6 @@ function AddToCartButton({ size, id, groupId, count }) {
         const input = SelectChangeEvent.target.value;
         if ((input >= 1 && input <= count) || input === '') {
             setAmount(input);
-            console.log(amount);
         }
     }
 
