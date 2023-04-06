@@ -73,6 +73,7 @@ import {
     frontPageActions,
     userEditAction,
     cartViewAction,
+    createBulletinAction,
     bikeOrderAction,
 } from './actions';
 
@@ -339,6 +340,7 @@ function Routes() {
                             path: 'tiedotteet/luo',
                             element: <NewAnnouncement />,
                             loader: bulletingSubjectLoader,
+                            action: async ({ request }) => createBulletinAction(auth, setAuth, request),
                         },
                         {
                             path: 'varastot',

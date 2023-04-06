@@ -25,7 +25,7 @@ function ContactPage() {
         const formData = { ...data, category: 'category', status: 'abc' };
         submit(formData, {
             method: 'post',
-            action: '/otayhteytta',
+            action: '/admin/tiedotteet/luo',
         });
     };
 
@@ -71,7 +71,11 @@ function ContactPage() {
                                 <InputLabel>Aihe</InputLabel>
                                 <Select {...register('subject')} labelId="select-label" defaultValue="" label="Aihe">
                                     {subjects.map((subject) => (
-                                        <MenuItem key={subject.id} value={subject}>
+                                        <MenuItem
+                                            key={subject.id}
+                                            value={subject}
+                                            // subject vaihdettava jotta lähtee oikeassa muodossa
+                                        >
                                             {subject.name}
                                         </MenuItem>
                                     ))}

@@ -208,6 +208,15 @@ const itemCreateAction = async (auth, setAuth, request) => {
     }
     return { type: 'createitem', status: false };
 };
+// add new announcement
+const createBulletinAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/bulletins/', 'post', formData);
+    if (response.status === 200) {
+        return { type: 'createnewannouncement', status: true };
+    }
+    return { type: 'createnewannouncement', status: false };
+};
 
 /**
  * updates existing item
@@ -263,6 +272,7 @@ export {
     orderEditAction,
     storageCreateAction,
     storageEditAction,
+    createBulletinAction,
     userEditAction,
     itemCreateAction,
     itemUpdateAction,
