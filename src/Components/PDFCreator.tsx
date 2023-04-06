@@ -1,5 +1,5 @@
 import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import logo from '../Assets/LOGO.png';
 
 // NOTE: JTo: Temporary baseUrl. Move this to env variable.
@@ -87,20 +87,23 @@ const styles = StyleSheet.create({
  * @param {Array} aProducts : Array of all products individually (from backend)
  * @returns {Array} aRenderPages : Array of combined productsproducts
  */
-const createRenderableProductList = (aProducts) => {
+const createRenderableProductList = (aProducts: IProduct[]) => {
     // move all aProducts with same group_id into same array inside aTempProducts array.
     // [{}{}{}{}{}{}{}] => [ [{}{}{}], [{}], [{}{}], [{}] ]
     //  => aTemp[0][0] == product, aTemp[0].length == product amount, aTemp.length == number of different products
-    const aTempProducts = [];
+    const aTempProducts: IProduct[] = [];
     aProducts.forEach((aProduct) => {
         const productIndex = aTempProducts.findIndex((aTempProduct) => aTempProduct[0]?.group_id === aProduct.group_id);
-        // productIndex < 0 ? aTempProducts.push([aProduct]) : aTempProducts[productIndex].push([aProduct]);
+        console.log('### ### productIndex', productIndex);
         if (productIndex < 0) {
             aTempProducts.push([aProduct]);
         } else {
-            aTempProducts[productIndex].push([aProduct]);
+            aTempProducts[productIndex].push(aProduct);
         }
     });
+
+    console.log('### aProducts', aProducts);
+    console.log('### aTempProducts', aTempProducts);
 
     // create a single Array that contains only unique objects and add numberOfProducts field to each object
     // [ [{}{}{}], [{}], [{}{}], [{}] ] => [ {}{}{}{} ]
@@ -139,7 +142,39 @@ const createPaginatedProductsLists = (aRenderProducts) => {
  *
  * @param {*} order : The order that needs to be printed
  */
-function PDFDocument({ order }) {
+interface IProduct {
+    available: boolean;
+    barcode: string;
+    category: number;
+    category_name: string;
+    color: number;
+    color_name: string;
+    date: string;
+    free_description: string;
+    group_id: string;
+    id: number;
+    measurements: string | null; // JTo: Check this
+    name: string;
+    pictures: string[];
+    price: number;
+    shelf_id: string | null; // JTo: Check this
+    storage_name: string;
+    storages: number;
+    weight: number;
+}
+
+interface IPDFDocument {
+    order: {
+        products: IProduct[]; // JTo: Is this correct ???
+        contact: string;
+        delivery_address: string;
+        phone_number: string;
+        order_info: string;
+        id: number;
+    };
+}
+
+function PDFDocument({ order }: IPDFDocument) {
     const productList = createRenderableProductList(order.products);
     const paginatedProductList = createPaginatedProductsLists(productList);
 
@@ -254,15 +289,15 @@ function PDFDocument({ order }) {
 /**
  * Proptypes
  */
-PDFDocument.propTypes = {
-    order: PropTypes.shape({
-        products: PropTypes.arrayOf(PropTypes.object),
-        contact: PropTypes.string,
-        delivery_address: PropTypes.string,
-        phone_number: PropTypes.string,
-        order_info: PropTypes.string,
-        id: PropTypes.number,
-    }).isRequired,
-};
+// PDFDocument.propTypes = {
+//     order: PropTypes.shape({
+//         products: PropTypes.arrayOf(PropTypes.object),
+//         contact: PropTypes.string,
+//         delivery_address: PropTypes.string,
+//         phone_number: PropTypes.string,
+//         order_info: PropTypes.string,
+//         id: PropTypes.number,
+//     }).isRequired,
+// };
 
 export default PDFDocument;
