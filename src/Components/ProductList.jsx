@@ -11,7 +11,7 @@ function SearchResultMessage() {
     if (searchParams.has('haku')) {
         return (
             <Box id="no-search-input-results">
-                <TypographyHeading text="Hupsista! :-(" />
+                <TypographyHeading text="Hupsista! :-/" />
                 <Box sx={{ margin: '1rem' }}>
                     <Typography component="span">Hakusi “</Typography>
                     <Typography component="span" fontWeight="fontWeightBold">

@@ -35,15 +35,14 @@ function SearchField() {
     };
 
     const searchParamFromUrl = searchParams.get('haku');
+    const searchFieldHasInput = watch('search');
 
     // set search string from url to search field, if user is following a link with search string
     useEffect(() => {
         if (searchParamFromUrl !== null) {
             setValue('search', searchParamFromUrl);
         }
-    }, [searchParamFromUrl, setValue]);
-
-    const clearBtnWatcher = watch('search');
+    }, [searchParamFromUrl, setValue, reset]);
 
     const clearInputField = () => {
         reset();
@@ -70,7 +69,7 @@ function SearchField() {
                     inputProps={{ 'aria-label': 'searchfield' }}
                     sx={{ color: 'inherit', padding: '0.5rem' }}
                 />
-                {clearBtnWatcher ? (
+                {searchFieldHasInput ? (
                     <IconButton aria-label="clear" onClick={clearInputField} sx={{ marginRight: '1rem' }}>
                         <ClearIcon />
                     </IconButton>
