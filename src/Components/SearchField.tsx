@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Form, useSearchParams } from 'react-router-dom';
 
@@ -6,7 +7,6 @@ import { styled, alpha } from '@mui/material/styles';
 
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
-import { useEffect } from 'react';
 
 const Search = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -47,7 +47,6 @@ function SearchField() {
 
     const clearInputField = () => {
         reset();
-        // remove search string from url, if there is one
         if (searchParams.has('haku')) {
             searchParams.delete('haku');
             setSearchParams(searchParams);
