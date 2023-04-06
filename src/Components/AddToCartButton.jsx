@@ -13,6 +13,14 @@ function AddToCartButton({ size, id, groupId, count }) {
     const [amount, setAmount] = useState(1);
     const [searchParams] = useSearchParams();
 
+    function handleChange(SelectChangeEvent) {
+        const input = SelectChangeEvent.target.value;
+        if ((input >= 1 && input <= count) || input === '') {
+            setAmount(input);
+            console.log(amount);
+        }
+    }
+
     const handleClickAddToCartBtn = async (action, itemAmount) => {
         action === 'remove'
             ? submit(
@@ -44,17 +52,15 @@ function AddToCartButton({ size, id, groupId, count }) {
                     </IconButton>
                     <Input
                         sx={{ mt: 1 / 4 }}
-                        // classes={{}}
-                        type="number"
                         inputProps={{
-                            max: count,
-                            min: 1,
-                            style: { width: 30, padding: 0, textAlign: 'center' },
+                            style: {
+                                width: 30,
+                                padding: 0,
+                                textAlign: 'center',
+                            },
                         }}
                         value={amount}
-                        onChange={(SelectChangeEvent) => {
-                            setAmount(SelectChangeEvent.target.value);
-                        }}
+                        onChange={handleChange}
                         disableUnderline
                     />
                     <IconButton
