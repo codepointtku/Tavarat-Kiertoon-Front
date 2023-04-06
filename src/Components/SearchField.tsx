@@ -39,6 +39,9 @@ function SearchField() {
 
     // set search string from url to search field, if user is following a link with search string
     useEffect(() => {
+        if (searchFieldHasInput) {
+            reset();
+        }
         if (searchParamFromUrl !== null) {
             setValue('search', searchParamFromUrl);
         }
