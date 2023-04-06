@@ -44,6 +44,7 @@ function AddToCartButton({ size, id, groupId, count }) {
                     </IconButton>
                     <Input
                         sx={{ mt: 1 / 4 }}
+                        // classes={{}}
                         type="number"
                         inputProps={{
                             max: count,
