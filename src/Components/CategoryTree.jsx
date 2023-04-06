@@ -27,7 +27,7 @@ function useExpandedCategories(categoryParam, categories) {
         }
 
         return expandedCategories;
-    }, []);
+    }, [categories, categoryParam]);
 }
 
 function CategoryTree() {
