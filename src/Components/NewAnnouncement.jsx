@@ -22,7 +22,7 @@ function ContactPage() {
     console.log(subjects);
 
     const onSubmit = (data) => {
-        const formData = { ...data, category: 'category', status: 'abc' };
+        const formData = { ...data, category: 'category' };
         submit(formData, {
             method: 'post',
             action: '/admin/tiedotteet/luo',
