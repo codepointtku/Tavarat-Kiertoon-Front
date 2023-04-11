@@ -1,12 +1,13 @@
 import { PDFViewer } from '@react-pdf/renderer';
 import { useLoaderData } from 'react-router-dom';
 import PDFDocument from './PDFCreator';
+import type { ILoaderData } from './PDFInterface';
 
 /**
  * View for creating PDF document
  */
 function PDFView() {
-    const loader = useLoaderData();
+    const loader = useLoaderData() as ILoaderData;
 
     return (
         <PDFViewer style={{ width: '100%', height: '1500px' }}>
