@@ -1,5 +1,4 @@
 import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
-// import PropTypes from 'prop-types';
 import logo from '../Assets/LOGO.png';
 
 // NOTE: JTo: Temporary baseUrl. Move this to env variable.
@@ -91,7 +90,7 @@ const createRenderableProductList = (aProducts: IProduct[]) => {
     // move all aProducts with same group_id into same array inside aTempProducts array.
     // [{}{}{}{}{}{}{}] => [ [{}{}{}], [{}], [{}{}], [{}] ]
     //  => aTemp[0][0] == product, aTemp[0].length == product amount, aTemp.length == number of different products
-    const aTempProducts: IProduct[] = [];
+    const aTempProducts: IProduct[][] = [];
     aProducts.forEach((aProduct) => {
         const productIndex = aTempProducts.findIndex((aTempProduct) => aTempProduct[0]?.group_id === aProduct.group_id);
         console.log('### ### productIndex', productIndex);
@@ -108,7 +107,7 @@ const createRenderableProductList = (aProducts: IProduct[]) => {
     // create a single Array that contains only unique objects and add numberOfProducts field to each object
     // [ [{}{}{}], [{}], [{}{}], [{}] ] => [ {}{}{}{} ]
     //  => aRenderProducts[0] == single product, aRenderProducts[0].numberOfProducts == number of those products
-    const aRenderProducts = [];
+    const aRenderProducts: IProduct[] = [];
     aTempProducts.forEach((aProduct, index) => {
         aRenderProducts.push(aProduct[0]);
         aRenderProducts[index] = { ...aRenderProducts[index], numberOfProducts: aTempProducts[index].length };
@@ -122,7 +121,7 @@ const createRenderableProductList = (aProducts: IProduct[]) => {
  * [ {}{}{}{}{}{}{}{}{}{}{}{}{}{} ] => [ [{}{}{}{}],[{}{}{}{}{}{}],[{}{}{}{}] ]
  * @returns
  */
-const createPaginatedProductsLists = (aRenderProducts) => {
+const createPaginatedProductsLists = (aRenderProducts: IProduct[]) => {
     const productsOnFirstPage = 4;
     const productsPerPage = 6;
 
@@ -161,6 +160,7 @@ interface IProduct {
     storage_name: string;
     storages: number;
     weight: number;
+    numberOfProducts?: number;
 }
 
 interface IPDFDocument {
@@ -219,7 +219,7 @@ function PDFDocument({ order }: IPDFDocument) {
     );
 
     // Product card
-    const productCard = (product) => (
+    const productCard = (product: IProduct) => (
         <View style={styles.productCard} key={product.id}>
             <Image src={`${baseUrl}/media/${product.pictures[0]}`} style={styles.productImg} />
 
@@ -234,7 +234,7 @@ function PDFDocument({ order }: IPDFDocument) {
         </View>
     );
 
-    const headerSection = (page) => (
+    const headerSection = (page: number) => (
         <View style={{ fontSize: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
             <View style={{ flex: 1, alignItems: 'flex-start' }}>
                 <Text>Tavarat Kiertoon</Text>
@@ -260,7 +260,7 @@ function PDFDocument({ order }: IPDFDocument) {
         <Page size="A4" style={styles.page}>
             {paginatedProductList.slice(1).map((pageList, index) => (
                 <View key={pageList[0].id} style={styles.pageView}>
-                    {headerSection(index + 2, paginatedProductList.length)}
+                    {headerSection(index + 2)}
                     <View style={styles.productPage}>{pageList.map((product) => productCard(product))}</View>
                 </View>
             ))}
@@ -286,18 +286,5 @@ function PDFDocument({ order }: IPDFDocument) {
     );
 }
 
-/**
- * Proptypes
- */
-// PDFDocument.propTypes = {
-//     order: PropTypes.shape({
-//         products: PropTypes.arrayOf(PropTypes.object),
-//         contact: PropTypes.string,
-//         delivery_address: PropTypes.string,
-//         phone_number: PropTypes.string,
-//         order_info: PropTypes.string,
-//         id: PropTypes.number,
-//     }).isRequired,
-// };
 
 export default PDFDocument;
