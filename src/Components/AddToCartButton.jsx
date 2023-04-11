@@ -10,27 +10,27 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 function AddToCartButton({ size, id, groupId, count }) {
     const submit = useSubmit();
     const { cart } = useRouteLoaderData('frontPage');
-    const [amount, setAmount] = useState(1);
+    const [itemAmount, setItemAmount] = useState(1);
     const [searchParams] = useSearchParams();
 
     function handleChange(SelectChangeEvent) {
         const input = SelectChangeEvent.target.value;
         if ((input >= 1 && input <= count) || input === '') {
-            setAmount(input);
+            setItemAmount(input);
         }
     }
 
-    const handleClickAddToCartBtn = async (action, itemAmount) => {
+    const handleClickAddToCartBtn = async (action, amount) => {
         action === 'remove'
             ? submit(
-                  { id, itemAmount },
+                  { id, amount },
                   {
                       method: 'delete',
                       action: '/?' + searchParams.toString(),
                   }
               )
             : submit(
-                  { id, itemAmount },
+                  { id, amount },
                   {
                       method: 'put',
                       action: '/?' + searchParams.toString(),
@@ -45,7 +45,7 @@ function AddToCartButton({ size, id, groupId, count }) {
                     <IconButton
                         size="small"
                         sx={{ color: 'background.default', padding: 0, mr: 1, ml: 0.5 }}
-                        onClick={() => handleClickAddToCartBtn('remove', -amount)}
+                        onClick={() => handleClickAddToCartBtn('remove', -itemAmount)}
                     >
                         <RemoveCircleOutlineIcon />
                     </IconButton>
@@ -58,14 +58,14 @@ function AddToCartButton({ size, id, groupId, count }) {
                                 textAlign: 'center',
                             },
                         }}
-                        value={amount}
+                        value={itemAmount}
                         onChange={handleChange}
                         disableUnderline
                     />
                     <IconButton
                         size="small"
                         sx={{ color: 'background.default', padding: 0, ml: 1, mr: 0.5 }}
-                        onClick={() => handleClickAddToCartBtn('add', amount)}
+                        onClick={() => handleClickAddToCartBtn('add', itemAmount)}
                     >
                         <AddCircleOutlineIcon />
                     </IconButton>
@@ -75,7 +75,7 @@ function AddToCartButton({ size, id, groupId, count }) {
                     size={size}
                     aria-label="add to shopping cart"
                     startIcon={<AddShoppingCartOutlinedIcon />}
-                    onClick={() => handleClickAddToCartBtn('add', amount)}
+                    onClick={() => handleClickAddToCartBtn('add', itemAmount)}
                 >
                     Lisää koriin
                 </Button>
