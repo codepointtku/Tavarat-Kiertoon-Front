@@ -1,5 +1,6 @@
 import axios from 'axios';
 import apiCall from '../Utils/apiCall';
+import { contactsApi, ordersApi } from '../api';
 
 /**
  * Get various defaults for the site
@@ -7,7 +8,7 @@ import apiCall from '../Utils/apiCall';
 const rootLoader = async (auth, setAuth) => {
     const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: categoryTree }] =
         await Promise.all([
-            apiCall(auth, setAuth, '/contacts/', 'get'),
+            contactsApi.contactsList(),
             apiCall(auth, setAuth, '/colors/', 'get'),
             apiCall(auth, setAuth, '/categories/', 'get'),
             apiCall(auth, setAuth, '/bulletins/', 'get'),
@@ -92,7 +93,7 @@ const productDetailsLoader = async (auth, setAuth, params) => {
  * Get all orders.
  */
 const ordersListLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, '/orders', 'get');
+    const { data } = await ordersApi.ordersList();
     // num will tell back-end which entries to bring
     // view is order status, unless archived can bring all?
     // or will be replaced into the back-end later?

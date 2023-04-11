@@ -86,8 +86,13 @@ import BikePackets from '../Components/Bikes/BikePackets';
 import Bikes from '../Components/Bikes/Bikes';
 import BikeRentals from '../Components/Bikes/BikeRentals';
 
+import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
+
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
+
+    useLoginAxiosInterceptor();
+
     const router = createBrowserRouter([
         {
             path: '/',
