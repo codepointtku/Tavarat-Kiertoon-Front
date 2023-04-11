@@ -93,16 +93,12 @@ const createRenderableProductList = (aProducts: IProduct[]) => {
     const aTempProducts: IProduct[][] = [];
     aProducts.forEach((aProduct) => {
         const productIndex = aTempProducts.findIndex((aTempProduct) => aTempProduct[0]?.group_id === aProduct.group_id);
-        console.log('### ### productIndex', productIndex);
         if (productIndex < 0) {
             aTempProducts.push([aProduct]);
         } else {
             aTempProducts[productIndex].push(aProduct);
         }
     });
-
-    console.log('### aProducts', aProducts);
-    console.log('### aTempProducts', aTempProducts);
 
     // create a single Array that contains only unique objects and add numberOfProducts field to each object
     // [ [{}{}{}], [{}], [{}{}], [{}] ] => [ {}{}{}{} ]
