@@ -1,8 +1,6 @@
 import axios from 'axios';
 import apiCall from '../Utils/apiCall';
 
-// just a comment for file-rename commit to work. remove this
-
 /**
  * Get various defaults for the site
  */
@@ -51,16 +49,33 @@ const shoppingCartLoader = async (auth, setAuth) => {
 };
 
 /**
- * Get all products / get products based on category id
+ * Get all products / get products based on category id || search string
  */
 const productListLoader = async (auth, setAuth, request) => {
     const url = new URL(request.url);
-    const searchString = url.searchParams.toString();
-    const queryString = searchString.replace(/kategoria/g, 'category');
-    if (searchString.length > 0) {
-        const { data } = await apiCall(auth, setAuth, `/products/?${queryString}`, 'get');
+
+    if (url.searchParams.has('kategoria')) {
+        url.searchParams.forEach((value, key) => {
+            if (key === 'kategoria') {
+                url.searchParams.append('category', value);
+            }
+        });
+        url.searchParams.delete('kategoria');
+        const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
         return data.results;
     }
+
+    if (url.searchParams.has('haku')) {
+        url.searchParams.forEach((value, key) => {
+            if (key === 'haku') {
+                url.searchParams.append('search', value);
+            }
+        });
+        url.searchParams.delete('haku');
+        const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
+        return data.results;
+    }
+
     const { data } = await apiCall(auth, setAuth, '/products/', 'get');
     return data.results;
 };
@@ -182,7 +197,7 @@ const userEditLoader = async (auth, setAuth, params) => {
 /**
  * Get all bikes
  */
-const bikesListLoader = async ( auth, setAuth) => {
+const bikesListLoader = async (auth, setAuth) => {
     const { data } = await apiCall(auth, setAuth, '/bikes', 'get');
     return data;
 };
