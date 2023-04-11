@@ -71,11 +71,7 @@ function ContactPage() {
                                 <InputLabel>Aihe</InputLabel>
                                 <Select {...register('subject')} labelId="select-label" defaultValue="" label="Aihe">
                                     {subjects.map((subject) => (
-                                        <MenuItem
-                                            key={subject.id}
-                                            value={subject}
-                                            // subject vaihdettava jotta lähtee oikeassa muodossa
-                                        >
+                                        <MenuItem key={subject.id} value={subject.id}>
                                             {subject.name}
                                         </MenuItem>
                                     ))}
