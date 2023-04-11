@@ -27,7 +27,7 @@ interface Props {
     categoryName: string;
     storageName: string;
     colorName: string;
-    measurements: number;
+    measurements: string;
     weight: number;
     count: number;
     pictures: { id: number; picture_address: string }[];
