@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
-import PedalBikeIcon from '@mui/icons-material/PedalBike';
+
 import { Box, Button, ButtonGroup } from '@mui/material';
+import PedalBikeIcon from '@mui/icons-material/PedalBike';
 
 function BikeLinkBar() {
     return (

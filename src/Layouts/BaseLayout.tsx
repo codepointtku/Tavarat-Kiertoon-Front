@@ -6,6 +6,7 @@ import Header from './Components/Header';
 import Footer from './Components/Footer';
 
 // default Layout
+
 function BaseLayout() {
     return (
         <Stack sx={{ minHeight: ['100vh', '100svh'] }}>
