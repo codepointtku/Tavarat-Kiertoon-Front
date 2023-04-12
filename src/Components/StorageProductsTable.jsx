@@ -18,14 +18,12 @@ import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import TablePaginationActions from './TablePaginationActions';
 import StyledTableCell from './StyledTableCell';
 import StyledTableRow from './StyledTableRow';
-import useCustomSearchParams from '../Hooks/useCustomSearchParams';
 
 function StorageProductsTable() {
     const { categories } = useRouteLoaderData('root');
     const { storages, products } = useLoaderData();
     const { register, handleSubmit, watch } = useForm();
     const [searchParams, setSearchParams] = useSearchParams();
-    // const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });
 
     console.log('categories:', categories);
     console.log('storages:', storages);
