@@ -392,7 +392,7 @@ function Routes() {
                 {
                     path: 'pyorat',
                     element: (
-                        <ThemeProvider theme={adminTheme}>
+                        <ThemeProvider theme={bikeTheme}>
                             <BikesLayout />
                         </ThemeProvider>
                     ),
