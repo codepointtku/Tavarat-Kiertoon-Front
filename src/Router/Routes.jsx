@@ -102,6 +102,7 @@ function Routes() {
             // Loads data only at first page load, not with every route
             shouldRevalidate: () => false,
             children: [
+                // main routes
                 {
                     path: '/',
                     element: <BaseLayout />,
@@ -243,6 +244,7 @@ function Routes() {
                         },
                     ],
                 },
+                // storage routes
                 {
                     path: 'varasto',
                     element: (
@@ -320,6 +322,7 @@ function Routes() {
                         },
                     ],
                 },
+                // admin routes
                 {
                     path: 'admin',
                     element: (
