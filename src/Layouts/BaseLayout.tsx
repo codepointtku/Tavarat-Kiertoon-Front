@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { Box, Stack } from '@mui/material';
+
 import DefaultAppBar from '../Components/AppBar/Default/DefaultAppBar';
 import NavigationBar from './Components/NavigationBar';
 import Header from './Components/Header';

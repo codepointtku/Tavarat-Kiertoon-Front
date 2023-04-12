@@ -9,6 +9,7 @@ import DefaultView from '../Views/DefaultView';
 
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
+import bikeTheme from '../Themes/bikeTheme';
 
 import RootLayout from '../Layouts/RootLayout';
 import BaseLayout from '../Layouts/BaseLayout';
@@ -387,7 +388,11 @@ function Routes() {
                 // bikes routes
                 {
                     path: 'pyorat',
-                    element: <BikesLayout />,
+                    element: (
+                        <ThemeProvider theme={adminTheme}>
+                            <BikesLayout />
+                        </ThemeProvider>
+                    ),
                     children: [
                         {
                             index: true,
