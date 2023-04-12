@@ -3,7 +3,7 @@ import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-rou
 import { ThemeProvider } from '@mui/material';
 
 import AuthContext from '../Context/AuthContext';
-import ErrorBoundary from '../Components/ErrorBoundary';
+import ErrorBoundary from './ErrorBoundary';
 
 import DefaultView from '../Views/DefaultView';
 
