@@ -10,11 +10,9 @@ import Footer from './Components/Footer';
 
 function BaseLayout() {
     return (
-        <Stack sx={{ minHeight: ['100vh', '100svh'] }}>
-            <header>
-                <Header />
-                <DefaultAppBar />
-            </header>
+        <Stack id="main-view-stack" sx={{ minHeight: ['100vh', '100svh'] }}>
+            <Header />
+            <DefaultAppBar />
             <NavigationBar />
             <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column', margin: '0 2rem 0 2rem' }}>
                 <main>

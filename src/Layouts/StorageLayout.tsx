@@ -9,11 +9,9 @@ import Footer from './Components/Footer';
 
 function StorageLayout() {
     return (
-        <Stack sx={{ minHeight: ['100vh', '100svh'] }}>
-            <header>
-                <Header />
-                <StorageBar />
-            </header>
+        <Stack id="storage-view-stack" sx={{ minHeight: ['100vh', '100svh'] }}>
+            <Header />
+            <StorageBar />
             <Container maxWidth="xl" sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
                 <main>
                     <Outlet />

@@ -5,7 +5,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 
 function Footer() {
     return (
-        <Box sx={{ backgroundColor: 'primary.main' }}>
+        <Box id="footer-container" sx={{ backgroundColor: 'primary.main' }}>
             <Grid container justifyContent="space-around" alignItems="center" flexGrow="1" padding="1rem">
                 <Grid item xs={12} md={6} lg={4} color="primary.contrastText" flexDirection="column" textAlign="center">
                     <Typography variant="subtitle2" gutterBottom>

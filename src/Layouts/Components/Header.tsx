@@ -6,7 +6,7 @@ import logo from '../../Assets/Turku_vaaka_300ppi_viiva_white.png';
 function Header() {
     return (
         <header>
-            <Box sx={{ backgroundColor: 'primary.main', padding: '1rem' }}>
+            <Box id="header-container" sx={{ backgroundColor: 'primary.main', padding: '1rem' }}>
                 <Grid container flexDirection="row">
                     <Grid item xs={12} md={2}>
                         <Link to="/">

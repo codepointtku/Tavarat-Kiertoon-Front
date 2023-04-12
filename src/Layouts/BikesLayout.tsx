@@ -6,7 +6,7 @@ import Header from './Components/Header';
 
 export default function BikesLayout() {
     return (
-        <Stack sx={{ minHeight: ['100vh', '100svh'] }}>
+        <Stack id="bike-view-stack" sx={{ minHeight: ['100vh', '100svh'] }}>
             <Header />
             <Container maxWidth="xl" sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
                 <main>
