@@ -50,7 +50,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
             newEntry.id = entry.id;
             newEntry.items = [newEntry];
             orderList.forEach((each) => {
-                if (each.barcode === newEntry.barcode) {
+                if (each.group_id === newEntry.group_id) {
                     newEntry.count += each.count;
                     newEntry.items = newEntry.items.concat(each.items);
                     const index = orderList.findIndex((key) => key.id === each.id);
