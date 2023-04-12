@@ -14,28 +14,37 @@ interface Props {
 }
 
 function ProductCard({ productName, id, groupId, pictures }: Props) {
-    const [hoveredOver, setHoveredOver] = useState(false);
+    const [ind, setInd] = useState(0);
+
+    function onHover(e: any) {
+        console.log(e.type);
+        const CarouselInterval = setInterval(() => setInd((ind) => (ind === pictures.length ? 0 : ind + 1)), 4000);
+        // console.log(ind);
+        e.type === 'mouseout' && clearInterval(CarouselInterval);
+    }
+
+    // console.log(ind);
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Card sx={{ width: 300 }}>
                 <CardActionArea component={Link} to={`/tuotteet/${id}`}>
                     <Carousel
-                        className="carousel"
+                        index={ind}
                         animation="slide"
                         duration={850}
-                        interval={2000}
                         indicators={false}
-                        autoPlay={hoveredOver}
+                        autoPlay={false}
                         navButtonsAlwaysInvisible
                     >
                         {pictures.map((picture) => (
                             <CardMedia
+                                key={picture}
                                 component="img"
                                 alt="kuva"
                                 height="200"
-                                onMouseOut={() => setHoveredOver(true)}
-                                // onMouseOut={() => setHoveredOver(false)}
+                                onMouseOver={(MouseEvent) => onHover(MouseEvent)}
+                                onMouseOut={(MouseEvent) => onHover(MouseEvent)}
                                 image={`${window.location.protocol}//${window.location.hostname}:8000/media/${picture}`}
                             />
                         ))}
