@@ -1,6 +1,6 @@
 import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
 import logo from '../Assets/LOGO.png';
-import type { IPDFDocument, IProduct } from './PDFInterface';
+import type { IPDFDocument, IProduct } from './PDFView';
 
 // NOTE: JTo: Temporary baseUrl. Move this to env variable.
 const baseUrl = `${window.location.protocol}//${window.location.hostname}:8000`;
