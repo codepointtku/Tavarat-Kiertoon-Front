@@ -10,10 +10,10 @@ import DefaultView from '../Views/DefaultView';
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
 
+import RootLayout from '../Layouts/RootLayout';
 import BaseLayout from '../Layouts/BaseLayout';
 import StorageLayout from '../Layouts/StorageLayout';
 import AdminLayout from '../Layouts/AdminLayout';
-import RootLayout from '../Layouts/RootLayout';
 import BikesLayout from '../Layouts/BikesLayout';
 
 import OrdersList from '../Components/OrdersList';
@@ -186,7 +186,7 @@ function Routes() {
                             element: <BackgroundInfo />,
                         },
                         {
-                            path: 'stats',
+                            path: 'tilastot',
                             element: <Stats />,
                         },
                         {
