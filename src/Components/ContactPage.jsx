@@ -13,19 +13,26 @@ import {
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { Form, useSubmit } from 'react-router-dom';
+import { useState } from 'react';
+import AlertBox from './AlertBox';
 
 function ContactPage() {
-    const { register, handleSubmit, watch, isSubmitting, setIsSubmitting } = useForm();
+    const { register, handleSubmit, watch } = useForm();
     const submit = useSubmit();
+    const [success, setSuccess] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const subject = watch('subject');
 
     const onSubmit = (data) => {
         const formData = { ...data, category: 'category', status: 'abc' };
+        setIsSubmitting(true);
+
         submit(formData, {
             method: 'post',
             action: '/otayhteytta',
         });
+        setSuccess(true);
     };
 
     return (
@@ -125,6 +132,7 @@ function ContactPage() {
                     >
                         Lähetä viesti
                     </Button>
+                    {success && <AlertBox text="Tiedote lisätty onnistuneesti" status="success" redirectUrl="/" />}
                 </FormControl>
             </Container>
         </Grid>
