@@ -15,7 +15,7 @@ import { useForm } from 'react-hook-form';
 import { Form, useSubmit } from 'react-router-dom';
 
 function ContactPage() {
-    const { register, handleSubmit, watch } = useForm();
+    const { register, handleSubmit, watch, isSubmitting, setIsSubmitting } = useForm();
     const submit = useSubmit();
 
     const subject = watch('subject');
@@ -115,6 +115,7 @@ function ContactPage() {
                         rows={6}
                     />
                     <Button
+                        disabled={isSubmitting}
                         type="submit"
                         style={{ width: 200 }}
                         sx={{
