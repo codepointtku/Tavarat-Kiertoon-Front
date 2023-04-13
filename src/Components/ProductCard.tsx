@@ -52,24 +52,35 @@ function ProductCard({ productName, id, groupId, pictures }: Props) {
             <Card sx={{ width: 300 }}>
                 <CardActionArea component={Link} to={`/tuotteet/${id}`}>
                     {openInfo ? (
-                        <CardMedia
-                            sx={{
-                                position: 'relative',
-                                overflow: 'visible',
-                                alt: 'kuva',
-                            }}
-                            height={200}
-                            component={Box}
-                            image={`${window.location.protocol}//${window.location.hostname}:8000/media/${pictures[0]}`}
-                        >
-                            {/* <Grid container direction="column" justifyContent="center">
-                                <Grid item>
-                                    <Typography variant="h6" align="center">
-                                        info
-                                    </Typography>
+                        <>
+                            <CardMedia
+                                sx={{
+                                    position: 'relative',
+                                    alt: 'kuva',
+                                }}
+                                height={200}
+                                component={Box}
+                                image={`${window.location.protocol}//${window.location.hostname}:8000/media/${pictures[0]}`}
+                            >
+                                <Grid
+                                    container
+                                    direction="column"
+                                    sx={{
+                                        position: 'absolute',
+                                        width: '100%',
+                                        height: '100%',
+                                        backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                                        backdropFilter: 'blur(6px)',
+                                    }}
+                                    justifyContent="space-evenly"
+                                    alignItems="center"
+                                >
+                                    <Grid item>
+                                        <Typography variant="h6">info</Typography>
+                                    </Grid>
                                 </Grid>
-                            </Grid> */}
-                            <Box
+                            </CardMedia>
+                            {/* <Box
                                 sx={{
                                     position: 'absolute',
                                     width: '100%',
@@ -77,8 +88,8 @@ function ProductCard({ productName, id, groupId, pictures }: Props) {
                                     filter: 'blur(6px)',
                                     zIndex: 1,
                                 }}
-                            />
-                        </CardMedia>
+                            /> */}
+                        </>
                     ) : (
                         <Carousel
                             // index={ind}
