@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import TypographyHeading from '../TypographyHeading';
 
 function ProfileInfo({ userInfo }) {
@@ -6,7 +7,7 @@ function ProfileInfo({ userInfo }) {
     const address = userInfo.address_list.map((item) => item.address);
 
     return (
-        <>
+        <Box sx={{ border: '1px solid red' }}>
             <TypographyHeading text="Käyttäjäprofiilin tiedot" />
             <p>id: {userInfo.id}</p>
             <p>last_login: {userInfo.last_login}</p>
@@ -16,7 +17,7 @@ function ProfileInfo({ userInfo }) {
             <p>phone_number: {userInfo.phone_number}</p>
             <p>username: {userInfo.username}</p>
             <p>osoite: {address}</p>
-        </>
+        </Box>
     );
 }
 

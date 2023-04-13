@@ -103,9 +103,22 @@ function UserProfilePage() {
     return (
         <Container maxWidth="lg" sx={{ marginTop: 2, marginBottom: 2 }}>
             <Hero />
-            <ProfileInfo userInfo={userInfo} />
-            <OrdersActive userOrders={userOrders} />
-            <OrdersHistory userOrdersHistory={userOrders} />
+
+            <Grid container flexDirection="row" justifyContent="space-around" sx={{ border: '1px solid blue' }}>
+                <Grid item>
+                    <ProfileInfo userInfo={userInfo} />
+                </Grid>
+
+                <Grid flexDirection="column" sx={{ border: '1px solid green' }}>
+                    <Grid item>
+                        <OrdersActive userOrders={userOrders} />
+                    </Grid>
+
+                    <Grid item>
+                        <OrdersHistory userOrdersHistory={userOrders} />
+                    </Grid>
+                </Grid>
+            </Grid>
         </Container>
     );
 }
