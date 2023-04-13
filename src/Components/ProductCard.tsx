@@ -20,10 +20,26 @@ interface Props {
     productName: string;
     id: number;
     groupId: string;
+    freeDescription: string;
+    categoryName: string;
+    storageName: string;
+    colorName: string;
+    measurements: number;
+    weight: number;
     pictures: string[];
 }
 
-function ProductCard({ productName, id, groupId, pictures }: Props) {
+function ProductCard({
+    productName,
+    id,
+    groupId,
+    pictures,
+    freeDescription,
+    categoryName,
+    colorName,
+    measurements,
+    weight,
+}: Props) {
     const [hover, setHover] = useState(false);
     const [openInfo, setOpenInfo] = useState(false);
     // const [ind, setInd] = useState(0);
