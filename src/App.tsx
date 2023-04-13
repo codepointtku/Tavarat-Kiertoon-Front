@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import defaultTheme from './Themes/defaultTheme';
 
-import Routes from './Routes/Routes';
+import Routes from './Router/Routes';
 import AuthContext from './Context/AuthContext';
 
 function App() {

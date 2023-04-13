@@ -25,9 +25,6 @@ import StyledTableCell from './StyledTableCell';
 import StyledTableRow from './StyledTableRow';
 
 function UsersListTable({ page, rowsPerPage, setUsedParams, users }) {
-    if (!users) {
-        return <>Käyttäjiä ei löytynyt</>;
-    }
     const [isOpen, setIsOpen] = useState({});
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
@@ -194,9 +191,9 @@ UsersListTable.propTypes = {
             name: PropTypes.string.isRequired,
             phone_number: PropTypes.string.isRequired,
             email: PropTypes.string.isRequired,
-            is_admin: PropTypes.bool.isRequired,
-            is_staff: PropTypes.bool.isRequired,
-            is_superuser: PropTypes.bool.isRequired,
+            is_admin: PropTypes.bool,
+            is_staff: PropTypes.bool,
+            is_superuser: PropTypes.bool,
         })
     ).isRequired,
 };

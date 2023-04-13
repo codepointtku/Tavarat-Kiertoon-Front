@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import PedalBikeIcon from '@mui/icons-material/PedalBike';
+
 import { Box, Button, ButtonGroup } from '@mui/material';
+import PedalBikeIcon from '@mui/icons-material/PedalBike';
 
 function BikeLinkBar() {
     return (
-        <Box id="navbuttons-wrapper" sx={{ borderBottom: '1px solid #009bd8' }}>
+        <Box id="bikes-navbuttons-wrapper" sx={{ borderBottom: '1px solid #009bd8' }}>
             <ButtonGroup
                 variant="text"
                 id="navbuttons"
@@ -28,7 +29,7 @@ function BikeLinkBar() {
 function BikeNavigationBar() {
     return (
         <Box
-            id="navbar-container"
+            id="bikes-navbar-container"
             aria-label="navigation bar"
             sx={{
                 display: 'flex',
