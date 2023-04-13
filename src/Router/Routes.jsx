@@ -2,13 +2,19 @@ import { useContext } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 
-import DefaultView from './DefaultView';
+import AuthContext from '../Context/AuthContext';
+import ErrorBoundary from './ErrorBoundary';
+
+import DefaultView from '../Views/DefaultView';
+
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
+import bikeTheme from '../Themes/bikeTheme';
+
+import RootLayout from '../Layouts/RootLayout';
 import BaseLayout from '../Layouts/BaseLayout';
 import StorageLayout from '../Layouts/StorageLayout';
 import AdminLayout from '../Layouts/AdminLayout';
-import RootLayout from '../Layouts/RootLayout';
 import BikesLayout from '../Layouts/BikesLayout';
 
 import OrdersList from '../Components/OrdersList';
@@ -19,32 +25,40 @@ import QrScanner from '../Components/QrScanner';
 import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
 
-import BikesPage from '../Components/Bikes/BikesPage';
-
-import ProductDetails from '../Components/ProductDetails';
-import Announcements from '../Components/Announcements';
-
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
-import AddItem from '../Components/AddItem';
-import ShoppingCart from '../Components/ShoppingCart/ShoppingCart';
-import CartView from '../Components/ShoppingCart/CartView';
-import ContactsAndDelivery from '../Components/ShoppingCart/ContactsAndDelivery';
-import Confirmation from '../Components/ShoppingCart/Confirmation';
-import DeliveryView from '../Components/DeliveryView';
-import BackgroundInfo from '../Components/Backgroundinfo';
-import Stats from '../Components/Stats/Stats';
-import ErrorBoundary from '../Components/ErrorBoundary';
 import AddStorage from '../Components/AddStorage';
+import AddItem from '../Components/AddItem';
+
+import PDFView from '../Components/PDFView';
+
+import ProductDetails from '../Components/ProductDetails';
+import ShoppingCart from '../Components/ShoppingCart/ShoppingCart';
+import ContactsAndDelivery from '../Components/ShoppingCart/ContactsAndDelivery';
+import CartView from '../Components/ShoppingCart/CartView';
+import Confirmation from '../Components/ShoppingCart/Confirmation';
 
 import SignupLandingPage from '../Components/Signup/SignupLandingPage';
 import SignupPage from '../Components/Signup/SignupPage';
 import ContactPage from '../Components/ContactPage';
-import UserProfilePage from '../Components/Profilepage/UserProfilePage';
+import Stats from '../Components/Stats/Stats';
+import BackgroundInfo from '../Components/Backgroundinfo';
+import Announcements from '../Components/Announcements';
+import DeliveryView from '../Components/DeliveryView';
 
-import AuthContext from '../Context/AuthContext';
+import InstructionsPage from '../Components/Instructions/InstructionsPage';
+import GuideCommon from '../Components/Instructions/GuideCommon';
+import GuideAccount from '../Components/Instructions/GuideAccount';
+import GuideOrdering from '../Components/Instructions/GuideOrdering';
+import GuideShipping from '../Components/Instructions/GuideShipping';
+import GuideBikes from '../Components/Instructions/GuideBikes';
 
-import PDFView from '../Components/PDFView';
+import BikesPage from '../Components/Bikes/BikesPage';
+import Bikes from '../Components/Bikes/Bikes';
+import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
+import BikePackets from '../Components/Bikes/BikePackets';
+import BikeRentals from '../Components/Bikes/BikeRentals';
+
 import {
     addItemLoader,
     orderEditLoader,
@@ -62,7 +76,6 @@ import {
     shoppingCartLoader,
     bikesListLoader,
     contactsAndDeliveryLoader,
-    userInfoLoader,
 } from './loaders';
 
 import {
@@ -77,14 +90,6 @@ import {
     bikeOrderAction,
 } from './actions';
 
-import InstructionsPage from '../Components/Instructions/InstructionsPage';
-import GuideCommon from '../Components/Instructions/GuideCommon';
-import GuideAccount from '../Components/Instructions/GuideAccount';
-import GuideOrdering from '../Components/Instructions/GuideOrdering';
-import GuideShipping from '../Components/Instructions/GuideShipping';
-import GuideBikes from '../Components/Instructions/GuideBikes';
-import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
-
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
     const router = createBrowserRouter([
@@ -97,6 +102,7 @@ function Routes() {
             // Loads data only at first page load, not with every route
             shouldRevalidate: () => false,
             children: [
+                // main routes
                 {
                     path: '/',
                     element: <BaseLayout />,
@@ -124,11 +130,6 @@ function Routes() {
                                     loader: async ({ params }) => productDetailsLoader(auth, setAuth, params),
                                 },
                             ],
-                        },
-                        {
-                            path: 'profiili',
-                            element: <UserProfilePage />,
-                            loader: userInfoLoader,
                         },
                         {
                             path: 'ohjeet',
@@ -187,7 +188,7 @@ function Routes() {
                             element: <BackgroundInfo />,
                         },
                         {
-                            path: 'stats',
+                            path: 'tilastot',
                             element: <Stats />,
                         },
                         {
@@ -243,6 +244,7 @@ function Routes() {
                         },
                     ],
                 },
+                // storage routes
                 {
                     path: 'varasto',
                     element: (
@@ -320,6 +322,7 @@ function Routes() {
                         },
                     ],
                 },
+                // admin routes
                 {
                     path: 'admin',
                     element: (
@@ -385,12 +388,17 @@ function Routes() {
                         },
                     ],
                 },
+                // bikes routes
                 {
                     path: 'pyorat',
-                    element: <BikesLayout />,
+                    element: (
+                        <ThemeProvider theme={bikeTheme}>
+                            <BikesLayout />
+                        </ThemeProvider>
+                    ),
                     children: [
                         {
-                            path: '/pyorat',
+                            index: true,
                             element: <BikesPage />,
                             action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                             loader: bikesListLoader,
@@ -399,6 +407,22 @@ function Routes() {
                         {
                             path: 'pyoravarasto',
                             element: <BikeWarehouse />,
+                            action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
+
+                            children: [
+                                {
+                                    index: true,
+                                    element: <Bikes />,
+                                },
+                                {
+                                    path: 'pyoratilaukset',
+                                    element: <BikeRentals />,
+                                },
+                                {
+                                    path: 'pyorapaketit',
+                                    element: <BikePackets />,
+                                },
+                            ],
                         },
                     ],
                 },

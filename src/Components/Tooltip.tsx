@@ -1,18 +1,16 @@
-import PropTypes from 'prop-types';
-
 import { Tooltip as MuiTooltip, Zoom } from '@mui/material';
 
-function Tooltip({ title, children }) {
+interface Props {
+    title: string;
+    children: React.ReactElement;
+}
+
+function Tooltip({ title, children }: Props) {
     return (
         <MuiTooltip title={title} arrow TransitionComponent={Zoom}>
             {children}
         </MuiTooltip>
     );
 }
-
-Tooltip.propTypes = {
-    title: PropTypes.string.isRequired,
-    children: PropTypes.element.isRequired,
-};
 
 export default Tooltip;
