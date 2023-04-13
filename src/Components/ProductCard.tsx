@@ -42,7 +42,13 @@ function ProductCard({ productName, id, groupId, pictures }: Props) {
         e.type === 'mouseover' ? setHover(true) : setTimeout(() => setHover(false), 3000);
     }
 
-    console.log(hover);
+    function handleHover(event: any) {
+        event.type === 'mouseover'
+            ? setTimeout(() => setOpenInfo(true), 2000)
+            : setTimeout(() => setOpenInfo(false), 2000);
+    }
+
+    // console.log(hover);
 
     // alt="kuva"
     // height="200"
@@ -113,7 +119,7 @@ function ProductCard({ productName, id, groupId, pictures }: Props) {
                             ))}
                         </Carousel>
                     )}
-                    <CardContent>
+                    <CardContent onMouseOver={() => setOpenInfo(true)} onMouseOut={() => setOpenInfo(false)}>
                         <Typography variant="h6" fontWeight="fontWeightLight" lineHeight="1">
                             {productName}
                         </Typography>
@@ -127,8 +133,8 @@ function ProductCard({ productName, id, groupId, pictures }: Props) {
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}
-                    onMouseOver={() => setOpenInfo(true)}
-                    onMouseOut={() => setOpenInfo(false)}
+                    onMouseOver={(MouseEvent) => handleHover(MouseEvent)}
+                    onMouseOut={(MouseEvent) => handleHover(MouseEvent)}
                 >
                     <CardActions>
                         <Button variant="outlined" component={Link} to={`/tuotteet/${id}`} size="small">
