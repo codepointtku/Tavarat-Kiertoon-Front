@@ -40,6 +40,7 @@ import Confirmation from '../Components/ShoppingCart/Confirmation';
 
 import SignupLandingPage from '../Components/Signup/SignupLandingPage';
 import SignupPage from '../Components/Signup/SignupPage';
+import UserProfilePage from '../Components/Profilepage/UserProfilePage';
 import ContactPage from '../Components/ContactPage';
 import Stats from '../Components/Stats/Stats';
 import BackgroundInfo from '../Components/Backgroundinfo';
@@ -76,6 +77,7 @@ import {
     shoppingCartLoader,
     bikesListLoader,
     contactsAndDeliveryLoader,
+    userInfoLoader,
 } from './loaders';
 
 import {
@@ -241,6 +243,11 @@ function Routes() {
                             path: 'otayhteytta',
                             element: <ContactPage />,
                             action: async ({ request }) => contactAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'profiili',
+                            element: <UserProfilePage />,
+                            loader: userInfoLoader,
                         },
                     ],
                 },
