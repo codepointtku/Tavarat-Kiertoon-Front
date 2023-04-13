@@ -128,6 +128,7 @@ function ProductCard({ productName, id, groupId, pictures }: Props) {
                         alignItems: 'center',
                     }}
                     onMouseOver={() => setOpenInfo(true)}
+                    onMouseOut={() => setOpenInfo(false)}
                 >
                     <CardActions>
                         <Button variant="outlined" component={Link} to={`/tuotteet/${id}`} size="small">
