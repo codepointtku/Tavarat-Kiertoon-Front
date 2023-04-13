@@ -1,17 +1,15 @@
 import { Typography } from '@mui/material';
 
-import PropTypes from 'prop-types';
+interface Props {
+    text: string;
+}
 
-function TypographyHeading({ text }) {
+function TypographyHeading({ text }: Props) {
     return (
         <Typography variant="h5" color="primary.main" gutterBottom>
             {text}
         </Typography>
     );
 }
-
-TypographyHeading.propTypes = {
-    text: PropTypes.string.isRequired,
-};
 
 export default TypographyHeading;

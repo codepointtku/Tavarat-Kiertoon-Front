@@ -9,11 +9,9 @@ import Footer from './Components/Footer';
 
 function AdminLayout() {
     return (
-        <Stack sx={{ minHeight: ['100vh', '100svh'] }}>
-            <header>
-                <Header />
-                <AdminBar />
-            </header>
+        <Stack id="admin-view-stack" sx={{ minHeight: ['100vh', '100svh'] }}>
+            <Header />
+            <AdminBar />
             <Container maxWidth="xl" sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
                 <main>
                     <Outlet />
