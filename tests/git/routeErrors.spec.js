@@ -29,10 +29,10 @@ test.describe('taustatietoa', () => {
     });
 });
 
-test.describe('stats', () => {
+test.describe('tilastot', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/stats');
-        await expect(page.getByText('Etsimääsi sijaintia /stats')).not.toBeVisible();
+        await page.goto('/tilastot');
+        await expect(page.getByText('Etsimääsi sijaintia /tilastot')).not.toBeVisible();
     });
 });
 
