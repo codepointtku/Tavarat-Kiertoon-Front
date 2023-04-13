@@ -1,5 +1,15 @@
 import { useState } from 'react';
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    Card,
+    CardActionArea,
+    CardActions,
+    CardContent,
+    CardMedia,
+    Typography,
+    Grid,
+} from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
@@ -14,41 +24,84 @@ interface Props {
 }
 
 function ProductCard({ productName, id, groupId, pictures }: Props) {
-    const [ind, setInd] = useState(0);
+    const [hover, setHover] = useState(false);
+    const [openInfo, setOpenInfo] = useState(false);
+    // const [ind, setInd] = useState(0);
+
+    // function onHover(e: any) {
+    //     console.log(e.type);
+    //     let CarouselInterval;
+    //     e.type === 'mouseover'
+    //         ? (CarouselInterval = setInterval(() => setInd((ind) => (ind === pictures.length ? 0 : ind + 1)), 4000))
+    //         : clearInterval(CarouselInterval);
+    //     // console.log(ind);
+    // }
 
     function onHover(e: any) {
         console.log(e.type);
-        const CarouselInterval = setInterval(() => setInd((ind) => (ind === pictures.length ? 0 : ind + 1)), 4000);
-        // console.log(ind);
-        e.type === 'mouseout' && clearInterval(CarouselInterval);
+        e.type === 'mouseover' ? setHover(true) : setTimeout(() => setHover(false), 3000);
     }
 
-    // console.log(ind);
+    console.log(hover);
+
+    // alt="kuva"
+    // height="200"
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Card sx={{ width: 300 }}>
                 <CardActionArea component={Link} to={`/tuotteet/${id}`}>
-                    <Carousel
-                        index={ind}
-                        animation="slide"
-                        duration={850}
-                        indicators={false}
-                        autoPlay={false}
-                        navButtonsAlwaysInvisible
-                    >
-                        {pictures.map((picture) => (
-                            <CardMedia
-                                key={picture}
-                                component="img"
-                                alt="kuva"
-                                height="200"
-                                onMouseOver={(MouseEvent) => onHover(MouseEvent)}
-                                onMouseOut={(MouseEvent) => onHover(MouseEvent)}
-                                image={`${window.location.protocol}//${window.location.hostname}:8000/media/${picture}`}
+                    {openInfo ? (
+                        <CardMedia
+                            sx={{
+                                position: 'relative',
+                                overflow: 'visible',
+                                alt: 'kuva',
+                            }}
+                            height={200}
+                            component={Box}
+                            image={`${window.location.protocol}//${window.location.hostname}:8000/media/${pictures[0]}`}
+                        >
+                            {/* <Grid container direction="column" justifyContent="center">
+                                <Grid item>
+                                    <Typography variant="h6" align="center">
+                                        info
+                                    </Typography>
+                                </Grid>
+                            </Grid> */}
+                            <Box
+                                sx={{
+                                    position: 'absolute',
+                                    width: '100%',
+                                    height: '100%',
+                                    filter: 'blur(6px)',
+                                    zIndex: 1,
+                                }}
                             />
-                        ))}
-                    </Carousel>
+                        </CardMedia>
+                    ) : (
+                        <Carousel
+                            // index={ind}
+                            animation="slide"
+                            duration={850}
+                            interval={2000}
+                            indicators={false}
+                            autoPlay={hover}
+                            navButtonsAlwaysInvisible
+                        >
+                            {pictures.map((picture) => (
+                                <CardMedia
+                                    key={picture}
+                                    component="img"
+                                    alt="kuva"
+                                    height="200"
+                                    onMouseOver={(MouseEvent) => onHover(MouseEvent)}
+                                    onMouseOut={(MouseEvent) => onHover(MouseEvent)}
+                                    image={`${window.location.protocol}//${window.location.hostname}:8000/media/${picture}`}
+                                />
+                            ))}
+                        </Carousel>
+                    )}
                     <CardContent>
                         <Typography variant="h6" fontWeight="fontWeightLight" lineHeight="1">
                             {productName}
@@ -63,6 +116,7 @@ function ProductCard({ productName, id, groupId, pictures }: Props) {
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}
+                    onMouseOver={() => setOpenInfo(true)}
                 >
                     <CardActions>
                         <Button variant="outlined" component={Link} to={`/tuotteet/${id}`} size="small">
