@@ -196,8 +196,12 @@ const userEditLoader = async (auth, setAuth, params) => {
 
 /* get logged in users data */
 const userInfoLoader = async (auth, setAuth) => {
-    const { data } = await apiCall(auth, setAuth, '/user', 'get');
-    return data;
+    const [{ data: userInfo }, { data: userOrders }] = await Promise.all([
+        await apiCall(auth, setAuth, '/user', 'get'),
+        await apiCall(auth, setAuth, '/orders/user', 'get'),
+    ]);
+
+    return { userInfo, userOrders };
 };
 
 /**

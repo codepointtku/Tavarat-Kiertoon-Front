@@ -55,14 +55,57 @@ function Hero() {
 }
 
 function UserProfilePage() {
-    const data = useLoaderData();
+    const { userInfo, userOrders } = useLoaderData();
+
+    // console.log('loaderin data:', data);
+
+    //     {
+    //     "id": 1,
+    // "address_list": [
+    // {
+    //     "id": 7,
+    //     "address": "kahvi123",
+    //     "zip_code": "20100",
+    //     "city": "turku",
+    //     "user": 8
+    // }
+    //     "last_login": null,
+    //     "name": null,
+    //     "email": "super",
+    //     "creation_date": "2023-04-13T07:59:30.142489Z",
+    //     "phone_number": null,
+    //     "username": "super",
+    //     "groups": [
+    //         {
+    //             "id": 1,
+    //             "name": "user_group",
+    //             "permissions": []
+    //         },
+    //         {
+    //             "id": 2,
+    //             "name": "admin_group",
+    //             "permissions": []
+    //         },
+    //         {
+    //             "id": 3,
+    //             "name": "storage_group",
+    //             "permissions": []
+    //         },
+    //         {
+    //             "id": 4,
+    //             "name": "bicycle_group",
+    //             "permissions": []
+    //         }
+    //     ],
+    //     "user_permissions": []
+    // }
 
     return (
         <Container maxWidth="lg" sx={{ marginTop: 2, marginBottom: 2 }}>
             <Hero />
-            <ProfileInfo data={data} />
-            <OrdersActive data={data} />
-            <OrdersHistory data={data} />
+            <ProfileInfo userInfo={userInfo} />
+            <OrdersActive userOrders={userOrders} />
+            <OrdersHistory userOrdersHistory={userOrders} />
         </Container>
     );
 }

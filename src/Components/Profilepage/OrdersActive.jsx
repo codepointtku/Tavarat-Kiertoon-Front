@@ -1,11 +1,11 @@
 import TypographyHeading from '../TypographyHeading';
 
-function ProfileInfo({ data }) {
-    console.log('ollaan aktiiviset tilaukset', data);
+function ProfileInfo({ userOrders }) {
+    // console.log('ollaan aktiiviset tilaukset', userOrders);
     return (
         <>
-            <TypographyHeading text="Profiilin activio ordersson" />
-            <p>{data.username}</p>
+            <TypographyHeading text="Aktiiviset tilaukset" />
+            <p>hello tässä on aktiiviset tilaukset komponentti</p>
         </>
     );
 }

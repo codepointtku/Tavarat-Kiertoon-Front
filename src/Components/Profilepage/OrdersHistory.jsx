@@ -1,13 +1,13 @@
 import TypographyHeading from '../TypographyHeading';
 
-function ProfileInfo({ data }) {
-    console.log('ollaan historia tilaukset', data);
+function OrdersHistory({ userOrdersHistory }) {
+    // console.log('ollaan historia tilaukset', userOrdersHistory);
     return (
         <>
-            <TypographyHeading text="Profiilin hiztorie de la öörders" />
-            <p>{data.username}</p>
+            <TypographyHeading text="Tilaushistoria" />
+            <p>moi tässä on tilaushistoria</p>
         </>
     );
 }
 
-export default ProfileInfo;
+export default OrdersHistory;
