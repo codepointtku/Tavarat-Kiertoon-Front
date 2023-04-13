@@ -36,6 +36,7 @@ function ProductCard({
     pictures,
     freeDescription,
     categoryName,
+    storageName,
     colorName,
     measurements,
     weight,
@@ -98,7 +99,22 @@ function ProductCard({
                                     alignItems="center"
                                 >
                                     <Grid item>
-                                        <Typography variant="h6">info</Typography>
+                                        <Typography variant="body2">Vapaa kuvaus: {freeDescription}</Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography variant="body2">Kategoria: {categoryName}</Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography variant="body2">Varastosijainti: {storageName}</Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography variant="body2">Väri: {colorName}</Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography variant="body2">Mitat: {measurements}</Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography variant="body2">Paino: {weight}</Typography>
                                     </Grid>
                                 </Grid>
                             </CardMedia>
