@@ -1,16 +1,23 @@
-import { useNavigate } from 'react-router-dom';
-import { Typography, Grid, Box } from '@mui/material';
+import { useRouteLoaderData, useSubmit } from 'react-router-dom';
+import { Typography, Grid, Box, List, ListItem, ListItemText } from '@mui/material';
+import { useStateMachine } from 'little-state-machine';
 import { useForm } from 'react-hook-form';
 
+import Update from './Update';
 import CartButtons from './CartButtons';
 
 function Confirmation() {
-    const { handleSubmit } = useForm();
+    const { handleSubmit, register } = useForm();
+    const { state } = useStateMachine({ Update });
+    const { products } = useRouteLoaderData('frontPage');
+    const { id } = useRouteLoaderData('shoppingCart');
+    const submit = useSubmit();
+    const order = 'order';
 
-    const navigate = useNavigate();
-    const onSubmit = (data) => {
-        alert(JSON.stringify(data));
-        navigate('/');
+    const onSubmit = async () => {
+        const { email, deliveryAddress, phoneNumber } = state;
+        submit({ deliveryAddress, email, phoneNumber, id }, { method: 'post', action: '/ostoskori/vaihe3' });
+        submit({ order }, { method: 'put', action: '/' });
     };
 
     return (
@@ -26,23 +33,27 @@ function Confirmation() {
                     borderStyle: 'solid',
                     borderWidth: 5,
                     borderRadius: 5,
-                    width: 600,
+                    maxWidth: 900,
                     borderColor: 'primary.main',
                     backgroundColor: 'primary.light',
                 }}
             >
                 <Typography variant="overline" sx={{ fontSize: 20, fontWeight: 'bold' }}>
-                    Yhteystiedot
+                    Vastaanottajan Yhteystiedot
                 </Typography>
                 <Grid container direction="row" spacing={2}>
                     <Grid item>
-                        <Typography variant="subtitle1">Sähköposti</Typography>
+                        <Typography variant="subtitle1">
+                            Nimi: {state.firstName} {state.lastName}
+                        </Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">Puh. numero</Typography>
+                        <Typography variant="subtitle1" {...register('contact')}>
+                            Sähköposti: {state.email}
+                        </Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">Toimipaikkakoodi</Typography>
+                        <Typography variant="subtitle1">Puh. numero: {state.phoneNumber}</Typography>
                     </Grid>
                 </Grid>
                 <Typography variant="overline" sx={{ fontSize: 20, fontWeight: 'bold' }}>
@@ -50,29 +61,28 @@ function Confirmation() {
                 </Typography>
                 <Grid container direction="row" spacing={2}>
                     <Grid item>
-                        <Typography variant="subtitle1">Toimitusosoite</Typography>
+                        <Typography variant="subtitle1">Toimitusosoite: {state.deliveryAddress}</Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">Postiosoite</Typography>
+                        <Typography variant="subtitle1">Postiosoite: {state.zipcode}</Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">Kaupunki</Typography>
+                        <Typography variant="subtitle1">Kaupunki: {state.city}</Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">Toimitustapa</Typography>
+                        <Typography variant="subtitle1">Toimitustapa: {state.deliveryMethod}</Typography>
                     </Grid>
                 </Grid>
                 <Typography variant="overline" sx={{ fontSize: 20, fontWeight: 'bold' }}>
                     Tilaustiedot
                 </Typography>
-                <Grid container direction="row" spacing={2}>
-                    <Grid item>
-                        <Typography variant="subtitle1">Tuotenimi</Typography>
-                    </Grid>
-                    <Grid item>
-                        <Typography variant="subtitle1">Tuotemäärä</Typography>
-                    </Grid>
-                </Grid>
+                <List>
+                    {products?.map((item) => (
+                        <ListItem key={item.id} disableGutters disablePadding>
+                            <ListItemText primary={`${item.count}x ${item.name}`} />
+                        </ListItem>
+                    ))}
+                </List>
             </Box>
             <CartButtons backText="Takaisin" forwardText="Vahvista" />
         </form>

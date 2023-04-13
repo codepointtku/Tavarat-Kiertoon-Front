@@ -1,45 +1,84 @@
 import { useState } from 'react';
-import { useSubmit, useRouteLoaderData } from 'react-router-dom';
+import { useSubmit, useRouteLoaderData, useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, Input, IconButton } from '@mui/material';
 
-function AddToCartButton({ size, id, groupId }) {
+import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+
+function AddToCartButton({ size, id, groupId, count }) {
     const submit = useSubmit();
     const { cart } = useRouteLoaderData('frontPage');
-    const [amount, setAmount] = useState(1);
+    const [itemAmount, setItemAmount] = useState(1);
+    const [searchParams] = useSearchParams();
 
-    const handleClickAddToCartBtn = async () => {
-        submit(
-            { id, amount },
-            {
-                method: 'put',
-                action: '/',
-            }
-        );
+    function handleChange(SelectChangeEvent) {
+        const input = SelectChangeEvent.target.value;
+        if ((input >= 1 && input <= count) || input === '') {
+            setItemAmount(input);
+        }
+    }
+
+    const handleClickAddToCartBtn = async (action, amount) => {
+        action === 'remove'
+            ? submit(
+                  { id, amount },
+                  {
+                      method: 'delete',
+                      action: '/?' + searchParams.toString(),
+                  }
+              )
+            : submit(
+                  { id, amount },
+                  {
+                      method: 'put',
+                      action: '/?' + searchParams.toString(),
+                  }
+              );
     };
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
-            <Button
-                size={size}
-                aria-label="add to shopping cart"
-                startIcon={<AddShoppingCartOutlinedIcon />}
-                onClick={handleClickAddToCartBtn}
-            >
-                Lisää koriin
-            </Button>
-            {cart?.products?.some((product) => product['group_id'] === groupId) && (
-                <TextField
-                    align="center"
-                    type="number"
-                    sx={{ ml: 2 }}
-                    inputProps={{ max: 999, min: -999, style: { padding: 5, width: 45, height: 20 } }}
-                    value={amount}
-                    onChange={(SelectChangeEvent) => {
-                        setAmount(SelectChangeEvent.target.value);
-                    }}
-                />
+            {cart?.products?.some((product) => product['group_id'] === groupId) ? (
+                <Box sx={{ backgroundColor: 'primary.main', borderRadius: 1, height: 30 }}>
+                    <IconButton
+                        size="small"
+                        sx={{ color: 'background.default', padding: 0, mr: 1, ml: 0.5 }}
+                        onClick={() => handleClickAddToCartBtn('remove', -itemAmount)}
+                    >
+                        <RemoveCircleOutlineIcon />
+                    </IconButton>
+                    <Input
+                        sx={{ mt: 1 / 4 }}
+                        inputProps={{
+                            style: {
+                                width: 30,
+                                padding: 0,
+                                textAlign: 'center',
+                            },
+                        }}
+                        value={itemAmount}
+                        onChange={handleChange}
+                        disableUnderline
+                    />
+                    <IconButton
+                        size="small"
+                        sx={{ color: 'background.default', padding: 0, ml: 1, mr: 0.5 }}
+                        onClick={() => handleClickAddToCartBtn('add', itemAmount)}
+                    >
+                        <AddCircleOutlineIcon />
+                    </IconButton>
+                </Box>
+            ) : (
+                <Button
+                    size={size}
+                    aria-label="add to shopping cart"
+                    startIcon={<AddShoppingCartOutlinedIcon />}
+                    onClick={() => handleClickAddToCartBtn('add', itemAmount)}
+                >
+                    Lisää koriin
+                </Button>
             )}
         </Box>
     );
@@ -48,7 +87,6 @@ function AddToCartButton({ size, id, groupId }) {
 AddToCartButton.propTypes = {
     size: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
-    groupId: PropTypes.string.isRequired,
 };
 
 export default AddToCartButton;

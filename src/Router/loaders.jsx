@@ -29,7 +29,7 @@ const shoppingCartLoader = async (auth, setAuth) => {
     /* eslint-disable no-shadow */
     // // auth check for future
     // if (auth.user_group === true){...}
-    const cartItems = cart?.products?.reduce((cartItems, product) => {
+    const products = cart?.products?.reduce((cartItems, product) => {
         let cartItem = cartItems.find((cartItem) => cartItem.group_id === product.group_id);
 
         if (!cartItem) {
@@ -45,7 +45,7 @@ const shoppingCartLoader = async (auth, setAuth) => {
         return cartItems;
     }, []);
 
-    return { cartItems, cart };
+    return { products, cart };
 };
 
 /**
@@ -174,8 +174,8 @@ const storageEditLoader = async (auth, setAuth, params) => {
  * Get all users
  */
 const usersListLoader = async (auth, setAuth) => {
-    const { data } = await apiCall(auth, setAuth, '/users', 'get');
-    return data;
+    const { data: users } = await apiCall(auth, setAuth, '/users', 'get');
+    return users;
 };
 
 /**
@@ -208,12 +208,11 @@ const bikesListLoader = async (auth, setAuth) => {
 const userSignupLoader = async () => null;
 
 /**
- * Gets user info for shopping cart process phase 2
+ * Gets user info for shopping cart process
  */
-
-const contactsAndDeliveryLoader = async (auth, setAuth) => {
-    const { data } = await apiCall(auth, setAuth, '/user/', 'get');
-    return data;
+const shoppingProcessLoader = async (auth, setAuth) => {
+    const { data: user } = await apiCall(auth, setAuth, '/user/', 'get');
+    return user;
 };
 
 export {
@@ -232,5 +231,5 @@ export {
     userSignupLoader,
     bikesListLoader,
     shoppingCartLoader,
-    contactsAndDeliveryLoader,
+    shoppingProcessLoader,
 };
