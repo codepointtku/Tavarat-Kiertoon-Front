@@ -1,4 +1,5 @@
 import { addDays, differenceInCalendarDays, format, isAfter, isBefore, parseISO } from 'date-fns';
+import type { bikeInterface } from '../../Layouts/BikesLayout';
 
 /**
  * Interfaces
@@ -14,20 +15,6 @@ interface bikePackageInterface {
     name: string;
     size: string;
     type: string;
-}
-// bikes
-interface bikeInterface {
-    brand: string;
-    color: string;
-    description: string;
-    id: number;
-    max_available: number;
-    name: string;
-    package_only_count: number;
-    package_only_unavailable: { [key: string]: number };
-    size: string;
-    type: string;
-    unavailable: { [key: string]: number };
 }
 // selectedBikes
 interface selectedBikesInterface {
@@ -50,7 +37,6 @@ export default function isValidBikeAmount(
     bikes: bikeInterface[],
     specificBikes = null
 ) {
-    console.log('### isValidBikeAmount', selectedBikes);
     const selectedBikesKeys = Object.keys(selectedBikes);
     if (startDate && endDate && selectedBikesKeys.length) {
         const filteredBikes = specificBikes || bikes.filter((bike) => selectedBikesKeys.includes(String(bike.id)));
