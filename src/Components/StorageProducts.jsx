@@ -8,17 +8,7 @@ import useCustomSearchParams from '../Hooks/useCustomSearchParams';
 function StorageProducts() {
     const { categories } = useRouteLoaderData('root');
     const { storages, products } = useLoaderData();
-    // const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });
 
-    if (!categories) {
-        return <>categories lataus ei toimi.</>;
-    }
-    if (!storages) {
-        return <>storages lataus ei toimi.</>;
-    }
-    if (!products) {
-        return <>products lataus ei toimi.</>;
-    }
     console.log('categories:', categories);
     console.log('storages:', storages);
     console.log('products:', products);
