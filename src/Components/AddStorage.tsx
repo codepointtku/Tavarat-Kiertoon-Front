@@ -2,7 +2,7 @@ import { Box, Button, Card, CardActions, CardContent, MenuItem, TextField } from
 import { useState } from 'react';
 import { useActionData, useSubmit } from 'react-router-dom';
 import validator from 'validator';
-import type { storageCreateAction } from '../Routes/actions';
+import type { storageCreateAction } from '../Router/actions';
 import AlertBox from './AlertBox';
 
 function AddStorage() {

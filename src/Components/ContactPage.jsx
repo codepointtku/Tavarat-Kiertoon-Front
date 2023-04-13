@@ -25,9 +25,7 @@ function ContactPage() {
     const subject = watch('subject');
 
     const onSubmit = (data) => {
-        const formData = { ...data, category: 'category', status: 'abc' };
-        setIsSubmitting(true);
-
+        const formData = { ...data, category: 'category' };
         submit(formData, {
             method: 'post',
             action: '/otayhteytta',

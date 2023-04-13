@@ -43,7 +43,7 @@ function AuthedLinkBar() {
                 aria-label="authed navigation link buttons"
                 sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
             >
-                <Button component={Link} to="/stats">
+                <Button component={Link} to="/tilastot">
                     Tilastot
                 </Button>
                 <Button component={Link} to="/varasto">

@@ -14,23 +14,20 @@ import {
     Grid,
 } from '@mui/material';
 
-import BackButton from './BackButton';
 import AuthContext from '../Context/AuthContext';
+import BackButton from './BackButton';
 import AddToCartButton from './AddToCartButton';
 
 function ProductDetails() {
+    const data = useLoaderData();
     const { id: productId } = useParams();
 
-    const data = useLoaderData();
-    if (!data) {
-        return <>ToniPal Kahville</>;
-    }
     const { name: productName, free_description: description, date, category, barcode } = data;
     const [image, setImage] = useState(data.pictures[0]);
     const { auth } = useContext(AuthContext);
 
     return (
-        <Container maxWidth="md">
+        <Container id="product-detail-card" maxWidth="md">
             <Grid container mt={2} mb={2}>
                 <Grid item xs={1}>
                     <BackButton />
