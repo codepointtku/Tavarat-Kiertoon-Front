@@ -1,22 +1,18 @@
-// import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Grid, Typography } from '@mui/material';
-// import AuthContext from '../../Context/AuthContext';
-import logo from '../../Assets/Turku_vaaka_300ppi_viiva_white.png';
-// import TestButtons from '../../Components/TestButtons';
 
-// const { auth, setAuth } = useContext(AuthContext);
+import logo from '../../Assets/Turku_vaaka_300ppi_viiva_white.png';
 
 function Header() {
     return (
         <header>
-            <Box sx={{ backgroundColor: 'primary.main', padding: '1rem' }}>
+            <Box id="header-container" sx={{ backgroundColor: 'primary.main', padding: '1rem' }}>
                 <Grid container flexDirection="row">
                     <Grid item xs={12} md={2}>
                         <Link to="/">
                             <img
                                 src={logo}
-                                alt="Turku logo ja teksti valkoinen"
+                                alt="Turku logo"
                                 style={{ width: 'auto', maxWidth: '9rem', height: 'auto' }}
                             />
                         </Link>
@@ -30,8 +26,6 @@ function Header() {
                         </Box>
                     </Grid>
                 </Grid>
-
-                {/* <TestButtons /> */}
             </Box>
         </header>
     );

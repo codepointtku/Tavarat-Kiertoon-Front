@@ -150,8 +150,8 @@ function SignUpHero() {
 
 function SignupLandingPage() {
     return (
-        <Paper sx={{ marginTop: 1, marginBottom: 1 }}>
-            <Container maxWidth="md">
+        <Paper id="signup-landingpage-backdrop" sx={{ marginTop: 1, marginBottom: 1 }}>
+            <Container id="signup-landingpage-container" maxWidth="md">
                 <SignUpHero />
                 <SignUpCards />
             </Container>
