@@ -112,7 +112,7 @@ function ProductCard({
                         <Typography variant="h6" fontWeight="fontWeightLight" lineHeight="1">
                             {productName}
                         </Typography>
-                        <Tooltip title="määrä varastossa" placement="left" sx={{ color: 'primary.main' }} arrow>
+                        <Tooltip title="määrä varastossa" placement="bottom" sx={{ color: 'primary.main' }} arrow>
                             <Typography variant="subtitle1" fontWeight="400" lineHeight="1" sx={{ mt: 0.5 }}>
                                 {count} kpl
                             </Typography>
