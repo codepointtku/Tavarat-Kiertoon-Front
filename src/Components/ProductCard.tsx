@@ -127,11 +127,16 @@ function ProductCard({
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}
-                    onMouseOver={(MouseEvent) => handleHover(MouseEvent)}
-                    onMouseOut={(MouseEvent) => handleHover(MouseEvent)}
                 >
                     <CardActions>
-                        <Button variant="outlined" component={Link} to={`/tuotteet/${id}`} size="small">
+                        <Button
+                            variant="outlined"
+                            component={Link}
+                            to={`/tuotteet/${id}`}
+                            size="small"
+                            onMouseOver={(MouseEvent) => handleHover(MouseEvent)}
+                            onMouseOut={(MouseEvent) => handleHover(MouseEvent)}
+                        >
                             <InfoOutlinedIcon fontSize="small" />
                         </Button>
                         <AddToCartButton size="small" id={id} groupId={groupId} count={count} />
