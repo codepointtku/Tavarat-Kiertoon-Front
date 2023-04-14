@@ -44,144 +44,61 @@ function ProductCard({
     weight,
     count,
 }: Props) {
-    const [hover, setHover] = useState(false);
     const [openInfo, setOpenInfo] = useState(false);
-    // const [ind, setInd] = useState(0);
-
-    // function onHover(e: any) {
-    //     console.log(e.type);
-    //     let CarouselInterval;
-    //     e.type === 'mouseover'
-    //         ? (CarouselInterval = setInterval(() => setInd((ind) => (ind === pictures.length ? 0 : ind + 1)), 4000))
-    //         : clearInterval(CarouselInterval);
-    //     // console.log(ind);
-    // }
-
-    function onHover(e: any) {
-        console.log(e.type);
-        e.type === 'mouseover' ? setHover(true) : setTimeout(() => setHover(false), 3000);
-    }
 
     function handleHover(event: any) {
         event.type === 'mouseover' ? setOpenInfo(true) : setOpenInfo(false);
     }
 
-    // console.log(hover);
-
-    // alt="kuva"
-    // height="200"
-
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Card sx={{ width: 300 }}>
-                <CardActionArea component={Link} to={`/tuotteet/${id}`}>
-                    {/* {openInfo ? (
-                        <>
-                            <CardMedia
-                                sx={{
-                                    position: 'relative',
-                                    alt: 'kuva',
-                                }}
-                                height={200}
-                                component={Box}
-                                image={`${window.location.protocol}//${window.location.hostname}:8000/media/${pictures[0]}`}
-                            >
-                                <Grid
-                                    container
-                                    direction="column"
-                                    sx={{
-                                        position: 'absolute',
-                                        width: '100%',
-                                        height: '100%',
-                                        backgroundColor: 'rgba(255, 255, 255, 0.4)',
-                                        backdropFilter: 'blur(6px)',
-                                    }}
-                                    justifyContent="space-evenly"
-                                    alignItems="center"
-                                >
-                                    <Grid item>
-                                        <Typography variant="body2">Vapaa kuvaus: {freeDescription}</Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography variant="body2">Kategoria: {categoryName}</Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography variant="body2">Varastosijainti: {storageName}</Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography variant="body2">Väri: {colorName}</Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography variant="body2">Mitat: {measurements}</Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography variant="body2">Paino: {weight}</Typography>
-                                    </Grid>
-                                </Grid>
-                            </CardMedia> */}
-                    {/* <Box
-                                sx={{
-                                    position: 'absolute',
-                                    width: '100%',
-                                    height: '100%',
-                                    filter: 'blur(6px)',
-                                    zIndex: 1,
-                                }}
-                            /> */}
-                    <Carousel
-                        // index={ind}
-                        animation="slide"
-                        duration={850}
-                        interval={2000}
-                        indicators={false}
-                        autoPlay={hover}
-                        navButtonsAlwaysInvisible
-                    >
+                <CardActionArea component={Box}>
+                    <Carousel animation="slide" duration={850} interval={2000} autoPlay={false}>
                         {pictures.map((picture) => (
-                            <CardMedia
-                                key={picture}
-                                component={Box}
-                                sx={{ position: 'relative', alt: 'kuva' }}
-                                height={200}
-                                onMouseOver={(MouseEvent) => onHover(MouseEvent)}
-                                onMouseOut={(MouseEvent) => onHover(MouseEvent)}
-                                image={`${window.location.protocol}//${window.location.hostname}:8000/media/${picture}`}
-                            >
-                                {openInfo && (
-                                    <Grid
-                                        container
-                                        direction="column"
-                                        sx={{
-                                            position: 'absolute',
-                                            width: '100%',
-                                            height: '100%',
-                                            backgroundColor: 'rgba(255, 255, 255, 0.4)',
-                                            backdropFilter: 'blur(6px)',
-                                        }}
-                                        justifyContent="space-evenly"
-                                        alignItems="center"
-                                    >
-                                        <Grid item>
-                                            <Typography variant="body2">Vapaa kuvaus: {freeDescription}</Typography>
+                            <Box key={picture} component={Link} to={`/tuotteet/${id}`} color="inherit">
+                                <CardMedia
+                                    component={Box}
+                                    sx={{ position: 'relative', alt: 'kuva' }}
+                                    height={200}
+                                    image={`${window.location.protocol}//${window.location.hostname}:8000/media/${picture}`}
+                                >
+                                    {openInfo && (
+                                        <Grid
+                                            container
+                                            direction="column"
+                                            sx={{
+                                                position: 'absolute',
+                                                width: '100%',
+                                                height: '100%',
+                                                paddingLeft: 2,
+                                                backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                                                backdropFilter: 'blur(6px)',
+                                            }}
+                                            justifyContent="space-evenly"
+                                        >
+                                            <Grid item>
+                                                <Typography variant="body2">Kuvaus: {freeDescription}</Typography>
+                                            </Grid>
+                                            <Grid item>
+                                                <Typography variant="body2">Kategoria: {categoryName}</Typography>
+                                            </Grid>
+                                            <Grid item>
+                                                <Typography variant="body2">Varastosijainti: {storageName}</Typography>
+                                            </Grid>
+                                            <Grid item>
+                                                <Typography variant="body2">Väri: {colorName}</Typography>
+                                            </Grid>
+                                            <Grid item>
+                                                <Typography variant="body2">Mitat: {measurements}</Typography>
+                                            </Grid>
+                                            <Grid item>
+                                                <Typography variant="body2">Paino: {weight}</Typography>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item>
-                                            <Typography variant="body2">Kategoria: {categoryName}</Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant="body2">Varastosijainti: {storageName}</Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant="body2">Väri: {colorName}</Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant="body2">Mitat: {measurements}</Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant="body2">Paino: {weight}</Typography>
-                                        </Grid>
-                                    </Grid>
-                                )}
-                            </CardMedia>
+                                    )}
+                                </CardMedia>
+                            </Box>
                         ))}
                     </Carousel>
                     <CardContent
