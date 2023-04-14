@@ -201,6 +201,12 @@ test.describe('bikeorders', () => {
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/pyoratilaukset')).not.toBeVisible();
     });
 });
+test.describe('luotiedote', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tiedotteet/luo');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/tiedotteet/luo')).not.toBeVisible();
+    });
+});
 test.describe('bikepackets', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/pyorat/pyoravarasto/pyorapaketit');
