@@ -130,7 +130,7 @@ function ContactPage() {
                     >
                         Lähetä viesti
                     </Button>
-                    {success && <AlertBox text="Lomake lähetetty!" status="success" redirectUrl="/" />}
+                    {success && <AlertBox text="Lomake lähetetty!" timer={1500} status="success" redirectUrl="/" />}
                 </FormControl>
             </Container>
         </Grid>
