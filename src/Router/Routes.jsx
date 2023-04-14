@@ -78,7 +78,7 @@ import {
     shoppingCartLoader,
     bikesListLoader,
     shoppingProcessLoader,
-    bulletingSubjectLoader,
+    bulletinSubjectLoader,
 } from './loaders';
 
 import {
@@ -356,7 +356,7 @@ function Routes() {
                         {
                             path: 'tiedotteet/luo',
                             element: <NewAnnouncement />,
-                            loader: bulletingSubjectLoader,
+                            loader: bulletinSubjectLoader,
                             action: async ({ request }) => createBulletinAction(auth, setAuth, request),
                         },
                         {
