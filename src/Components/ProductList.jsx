@@ -62,6 +62,7 @@ function ProductList() {
                         groupId={product.group_id}
                         productName={product.name}
                         date={product.date}
+                        count={product.amount}
                         picture={product.pictures[0]}
                         amount={product.amount}
                     />
