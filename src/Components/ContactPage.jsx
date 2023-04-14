@@ -45,6 +45,8 @@ function ContactPage() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                marginLeft: 'auto',
+                marginRight: 'auto',
             }}
         >
             <Typography variant="h3" color="primary.main">
