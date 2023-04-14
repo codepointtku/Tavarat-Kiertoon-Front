@@ -44,11 +44,20 @@ function ProductCard({
     weight,
     count,
 }: Props) {
-    const [openInfo, setOpenInfo] = useState(false);
+    const [openInfo, setOpenInfo] = useState<Boolean>(false);
+    const [delayHandler, setDelayHandler] = useState<NodeJS.Timeout | null>(null);
 
-    function handleHover(event: any) {
-        event.type === 'mouseover' ? setOpenInfo(true) : setOpenInfo(false);
+    function handleHover(event: React.MouseEvent) {
+        console.log(event.type);
+        if (event.type === 'mouseenter') {
+            setDelayHandler(setTimeout(() => setOpenInfo(true), 500));
+        } else if (event.type === 'mouseleave') {
+            delayHandler && clearTimeout(delayHandler);
+            setOpenInfo(false);
+        }
     }
+
+    console.log(delayHandler);
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -105,8 +114,8 @@ function ProductCard({
                         component={Grid}
                         direction="row"
                         justifyContent="space-between"
-                        onMouseOver={(MouseEvent) => handleHover(MouseEvent)}
-                        onMouseOut={(MouseEvent) => handleHover(MouseEvent)}
+                        onMouseEnter={(MouseEvent) => handleHover(MouseEvent)}
+                        onMouseLeave={(MouseEvent) => handleHover(MouseEvent)}
                         container
                     >
                         <Typography variant="h6" fontWeight="fontWeightLight" lineHeight="1">
@@ -134,8 +143,8 @@ function ProductCard({
                             component={Link}
                             to={`/tuotteet/${id}`}
                             size="small"
-                            onMouseOver={(MouseEvent) => handleHover(MouseEvent)}
-                            onMouseOut={(MouseEvent) => handleHover(MouseEvent)}
+                            onMouseEnter={(MouseEvent) => handleHover(MouseEvent)}
+                            onMouseLeave={(MouseEvent) => handleHover(MouseEvent)}
                         >
                             <InfoOutlinedIcon fontSize="small" />
                         </Button>
