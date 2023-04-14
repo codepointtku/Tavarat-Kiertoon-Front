@@ -8,6 +8,7 @@ import {
     CardContent,
     CardMedia,
     Typography,
+    Tooltip,
     Grid,
 } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
@@ -26,6 +27,7 @@ interface Props {
     colorName: string;
     measurements: number;
     weight: number;
+    count: number;
     pictures: string[];
 }
 
@@ -40,6 +42,7 @@ function ProductCard({
     colorName,
     measurements,
     weight,
+    count,
 }: Props) {
     const [hover, setHover] = useState(false);
     const [openInfo, setOpenInfo] = useState(false);
@@ -151,10 +154,22 @@ function ProductCard({
                             ))}
                         </Carousel>
                     )}
-                    <CardContent onMouseOver={() => setOpenInfo(true)} onMouseOut={() => setOpenInfo(false)}>
+                    <CardContent
+                        component={Grid}
+                        direction="row"
+                        justifyContent="space-between"
+                        onMouseOver={(MouseEvent) => handleHover(MouseEvent)}
+                        onMouseOut={(MouseEvent) => handleHover(MouseEvent)}
+                        container
+                    >
                         <Typography variant="h6" fontWeight="fontWeightLight" lineHeight="1">
                             {productName}
                         </Typography>
+                        <Tooltip title="määrä varastossa" placement="left" sx={{ color: 'primary.main' }} arrow>
+                            <Typography variant="subtitle1" fontWeight="400" lineHeight="1" sx={{ mt: 0.5 }}>
+                                {count} kpl
+                            </Typography>
+                        </Tooltip>
                     </CardContent>
                 </CardActionArea>
                 <Box
@@ -172,7 +187,7 @@ function ProductCard({
                         <Button variant="outlined" component={Link} to={`/tuotteet/${id}`} size="small">
                             <InfoOutlinedIcon fontSize="small" />
                         </Button>
-                        <AddToCartButton size="small" id={id} groupId={groupId} />
+                        <AddToCartButton size="small" id={id} groupId={groupId} count={count} />
                     </CardActions>
                 </Box>
             </Card>
