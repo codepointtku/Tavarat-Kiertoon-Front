@@ -2,23 +2,27 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useLoaderData } from 'react-router-dom';
+import { useNavigate, useRouteLoaderData } from 'react-router-dom';
+import { useStateMachine } from 'little-state-machine';
 import { Typography, TextField, Grid, MenuItem, Box, Alert } from '@mui/material';
 
 import CartButtons from './CartButtons';
+import Update from './Update';
 
 function ContactsAndDelivery() {
-    const user = useLoaderData();
+    const user = useRouteLoaderData('shoppingCart');
     const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
+    const { actions } = useStateMachine({ Update });
+    // console.log('update state: ', state, 'update actions: ', actions);
 
     const navigate = useNavigate();
     const onSubmit = (data) => {
-        alert(JSON.stringify(data));
+        actions.Update(data);
         navigate('/ostoskori/vaihe3');
     };
     const handleChange = (SelectChangeEvent) => {
@@ -110,7 +114,7 @@ function ContactsAndDelivery() {
                                 label="Postinumero"
                                 variant="outlined"
                                 value={correctAddress[0]?.zip_code}
-                                {...register('zipCode', { required: true })}
+                                {...register('zipcode', { required: true })}
                             />
                         </Grid>
                         <Grid item>

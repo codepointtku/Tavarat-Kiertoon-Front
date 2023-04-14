@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
+import { StateMachineProvider, createStore } from 'little-state-machine';
 import { ThemeProvider } from '@mui/material';
 
 import AuthContext from '../Context/AuthContext';
@@ -75,7 +76,7 @@ import {
     userSignupLoader,
     shoppingCartLoader,
     bikesListLoader,
-    contactsAndDeliveryLoader,
+    shoppingProcessLoader,
 } from './loaders';
 
 import {
@@ -88,7 +89,10 @@ import {
     userEditAction,
     cartViewAction,
     bikeOrderAction,
+    confirmationAction,
 } from './actions';
+
+createStore({});
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
@@ -193,7 +197,13 @@ function Routes() {
                         },
                         {
                             path: '/ostoskori',
-                            element: <ShoppingCart />,
+                            element: (
+                                <StateMachineProvider>
+                                    <ShoppingCart />
+                                </StateMachineProvider>
+                            ),
+                            id: 'shoppingCart',
+                            loader: shoppingProcessLoader,
                             children: [
                                 {
                                     path: '/ostoskori/',
@@ -203,11 +213,11 @@ function Routes() {
                                 {
                                     path: '/ostoskori/vaihe2',
                                     element: <ContactsAndDelivery />,
-                                    loader: contactsAndDeliveryLoader,
                                 },
                                 {
                                     path: '/ostoskori/vaihe3',
                                     element: <Confirmation />,
+                                    action: async ({ request }) => confirmationAction(auth, setAuth, request),
                                 },
                             ],
                         },
@@ -366,6 +376,7 @@ function Routes() {
                                 {
                                     index: true,
                                     element: <UsersList />,
+                                    id: 'users',
                                     loader: async () => usersListLoader(auth, setAuth),
                                 },
                                 {

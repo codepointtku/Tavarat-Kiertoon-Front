@@ -69,6 +69,7 @@ function ProductList() {
                         colorName={product.color_name}
                         measurements={product.measurements}
                         weight={product.weight}
+                        count={product.amount}
                     />
                 </Grid>
             ))}

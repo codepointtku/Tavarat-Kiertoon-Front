@@ -6,8 +6,8 @@ import apiCall from '../Utils/apiCall';
 const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
-    // eslint-disable-next-line no-nested-ternary
     const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : -1;
+    console.log(amount);
     if (request.method === 'POST') {
         if (auth.username) {
             const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
@@ -34,16 +34,19 @@ const frontPageActions = async (auth, setAuth, request) => {
             return null;
         }
         if (!id) {
+            // clear cart if no id is being sent or clear cart and return "type: orderCreated" when a new order is created.
             const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
                 products: '',
             });
+            if (formData.has('order')) {
+                return { type: 'orderCreated', status: true };
+            }
             return response;
         }
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
             products: id,
             amount,
         });
-        // console.log(id, 'put method test', response.status);
         if (response.status === 202) {
             // alert('Item added successfully');
             return { type: 'update', status: true };
@@ -257,6 +260,26 @@ const cartViewAction = async (auth, setAuth, request) => {
     return null;
 };
 
+/**
+ * Adds an item in order
+ */
+
+const confirmationAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/orders/', 'post', {
+        contact: formData.get('email'),
+        delivery_address: formData.get('deliveryAddress'),
+        phone_number: formData.get('phoneNumber'),
+        status: 'Delivery',
+        user: formData.get('id'),
+        // products: formData.get('productIds'),
+    });
+    if (response.status === 200) {
+        return { type: 'post', status: true };
+    }
+    return { type: 'post', status: true };
+};
+
 export {
     userSignupAction,
     frontPageActions,
@@ -269,4 +292,5 @@ export {
     itemUpdateAction,
     cartViewAction,
     bikeOrderAction,
+    confirmationAction,
 };
