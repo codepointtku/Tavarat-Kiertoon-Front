@@ -191,7 +191,7 @@ const storageEditAction = async (auth, setAuth, request, params) => {
 
 const userEditAction = async (auth, setAuth, request, params) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, `/users/update/${params.id}/`, 'put', formData);
+    const response = await apiCall(auth, setAuth, `/users/${params.id}/edit`, 'put', formData);
     if (response.status === 200) {
         return { type: 'update', status: true };
     }
