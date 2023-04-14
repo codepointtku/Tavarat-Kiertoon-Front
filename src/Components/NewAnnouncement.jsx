@@ -78,7 +78,14 @@ function ContactPage() {
                     <Button disabled={isSubmitting} type="submit" style={{ width: 200 }} sx={{ mt: 2, mb: 2 }}>
                         LISÄÄ TIEDOTE
                     </Button>
-                    {success && <AlertBox text="Tiedote lisätty onnistuneesti" status="success" redirectUrl="/admin" />}
+                    {success && (
+                        <AlertBox
+                            text="Tiedote lisätty onnistuneesti"
+                            status="success"
+                            redirectUrl="/admin"
+                            timer={1500}
+                        />
+                    )}
                 </FormControl>
             </Container>
         </Paper>

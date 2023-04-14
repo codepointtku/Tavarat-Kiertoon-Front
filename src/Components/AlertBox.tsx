@@ -29,9 +29,12 @@ function AlertBox({ text, status, timer, redirectUrl }: Props) {
         if (timer) {
             setTimeout(() => {
                 setOpen(false);
+                if (redirectUrl) {
+                    navigate(redirectUrl);
+                }
             }, timer);
         }
-    }, [timer]);
+    }, [timer, navigate, redirectUrl]);
 
     const handleClose = () => {
         setOpen(false);
