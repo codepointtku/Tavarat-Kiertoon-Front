@@ -25,7 +25,7 @@ function ContactPage() {
 
     return (
         <Paper
-            elevation="3"
+            elevation={3}
             container="true"
             component={Form}
             onSubmit={handleSubmit(onSubmit)}
