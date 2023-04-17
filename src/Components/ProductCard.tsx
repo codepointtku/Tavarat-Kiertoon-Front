@@ -91,22 +91,34 @@ function ProductCard({
                                             justifyContent="space-evenly"
                                         >
                                             <Grid item>
-                                                <Typography variant="body2">Kuvaus: {freeDescription}</Typography>
+                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                    Kuvaus: {freeDescription}
+                                                </Typography>
                                             </Grid>
                                             <Grid item>
-                                                <Typography variant="body2">Kategoria: {categoryName}</Typography>
+                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                    Kategoria: {categoryName}
+                                                </Typography>
                                             </Grid>
                                             <Grid item>
-                                                <Typography variant="body2">Varastosijainti: {storageName}</Typography>
+                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                    Varastosijainti: {storageName}
+                                                </Typography>
                                             </Grid>
                                             <Grid item>
-                                                <Typography variant="body2">Väri: {colorName}</Typography>
+                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                    Väri: {colorName}
+                                                </Typography>
                                             </Grid>
                                             <Grid item>
-                                                <Typography variant="body2">Mitat: {measurements}</Typography>
+                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                    Mitat: {measurements}
+                                                </Typography>
                                             </Grid>
                                             <Grid item>
-                                                <Typography variant="body2">Paino: {weight}</Typography>
+                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                    Paino: {weight}
+                                                </Typography>
                                             </Grid>
                                         </Grid>
                                     )}
