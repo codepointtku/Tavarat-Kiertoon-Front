@@ -63,7 +63,14 @@ function ProductCard({
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Card sx={{ width: 300 }}>
                 <CardActionArea component={Box}>
-                    <Carousel animation="slide" duration={850} interval={2000} autoPlay={false}>
+                    <Carousel
+                        animation="slide"
+                        duration={850}
+                        interval={2000}
+                        autoPlay={false}
+                        indicatorIconButtonProps={{ style: { color: '#bfe6f6' } }}
+                        activeIndicatorIconButtonProps={{ style: { color: '#009bd8' } }}
+                    >
                         {pictures.map((picture) => (
                             <Box key={picture} component={Link} to={`/tuotteet/${id}`} color="inherit">
                                 <CardMedia
