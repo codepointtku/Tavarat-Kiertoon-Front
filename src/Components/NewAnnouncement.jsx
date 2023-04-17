@@ -31,7 +31,8 @@ function ContactPage() {
             onSubmit={handleSubmit(onSubmit)}
             autoComplete="off"
             sx={{
-                ml: 14,
+                marginLeft: 'auto',
+                marginRight: 'auto',
                 mb: 4,
                 width: 1000,
                 marginTop: 4,
