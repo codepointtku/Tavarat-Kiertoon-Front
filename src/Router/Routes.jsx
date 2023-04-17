@@ -47,6 +47,7 @@ import Stats from '../Components/Stats/Stats';
 import BackgroundInfo from '../Components/Backgroundinfo';
 import Announcements from '../Components/Announcements';
 import DeliveryView from '../Components/DeliveryView';
+import ForgotPassword from '../Components/ForgotPassword';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
 import GuideCommon from '../Components/Instructions/GuideCommon';
@@ -254,6 +255,10 @@ function Routes() {
                             path: 'otayhteytta',
                             element: <ContactPage />,
                             action: async ({ request }) => contactAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'unohtuikosalasana',
+                            element: <ForgotPassword />,
                         },
                     ],
                 },
