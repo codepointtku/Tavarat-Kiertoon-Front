@@ -52,6 +52,7 @@ const defaultTheme = createTheme({
         fontWeightLight: 200,
         fontWeightRegular: 300,
         fontWeightMedium: 400,
+        fontWeightMediumBold: 500,
         fontWeightBold: 600,
         fontWeightHeavy: 800,
         fontWeightYourMom: 1000,
