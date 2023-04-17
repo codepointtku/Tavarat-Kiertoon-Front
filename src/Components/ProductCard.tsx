@@ -48,16 +48,13 @@ function ProductCard({
     const [delayHandler, setDelayHandler] = useState<NodeJS.Timeout | null>(null);
 
     function handleHover(event: React.MouseEvent) {
-        console.log(event.type);
         if (event.type === 'mouseenter') {
             setDelayHandler(setTimeout(() => setOpenInfo(true), 500));
         } else if (event.type === 'mouseleave') {
-            delayHandler && clearTimeout(delayHandler);
             setOpenInfo(false);
+            delayHandler && clearTimeout(delayHandler);
         }
     }
-
-    console.log(delayHandler);
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
