@@ -25,7 +25,7 @@ import QrScanner from '../Components/QrScanner';
 
 import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
-import NewAnnouncement from '../Components/NewAnnouncement';
+import NewAnnouncement from '../Components/Admin/NewAnnouncement';
 
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
