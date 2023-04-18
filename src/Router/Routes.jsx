@@ -94,6 +94,7 @@ import {
     createBulletinAction,
     bikeOrderAction,
     confirmationAction,
+    resetEmailAction,
 } from './actions';
 
 createStore({});
@@ -259,6 +260,7 @@ function Routes() {
                         {
                             path: 'unohtuikosalasana',
                             element: <ForgotPassword />,
+                            action: async ({ request }) => resetEmailAction(auth, setAuth, request),
                         },
                     ],
                 },

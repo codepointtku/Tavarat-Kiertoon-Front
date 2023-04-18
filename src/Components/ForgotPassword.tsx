@@ -1,11 +1,22 @@
 import { useForm } from 'react-hook-form';
-import { Typography, Box, Container, TextField } from '@mui/material';
+import { useSubmit, useActionData } from 'react-router-dom';
+import { Typography, Box, Container, TextField, Button, Alert, AlertTitle } from '@mui/material';
 import KeyIcon from '@mui/icons-material/Key';
 
 function ForgotPassword() {
-    const { register, handleSubmit } = useForm();
+    const submit = useSubmit();
+    const responseStatus = useActionData();
+    // console.log(responseStatus);
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
 
-    const onSubmit = (data: any) => console.log(data);
+    const onSubmit = (data: any) => {
+        const { username } = data;
+        submit({ username }, { method: 'post', action: 'unohtuikosalasana' });
+    };
 
     return (
         <Container>
@@ -28,7 +39,19 @@ function ForgotPassword() {
                             <Typography variant="h6" mb={2}>
                                 Syötä käyttäjänimi
                             </Typography>
-                            <TextField label="Käyttäjänimi" {...register('username', { required: true })} fullWidth />
+                            <TextField
+                                label="Käyttäjänimi"
+                                {...register('username', { required: true, minLength: 4, maxLength: 40 })}
+                                fullWidth
+                            />
+                            {errors.username && (
+                                <Alert severity="error" sx={{ mt: 1, maxWidth: 300 }}>
+                                    <AlertTitle>Tämä syöte ei kelpaa.</AlertTitle>
+                                </Alert>
+                            )}
+                            <Button type="submit" sx={{ mt: 2, fontWeight: 'fontWeightMediumBold' }}>
+                                Lähetä salasanan palautuslinkki
+                            </Button>
                         </form>
                     </Box>
                 </Box>
