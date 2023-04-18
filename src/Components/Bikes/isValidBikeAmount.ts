@@ -1,27 +1,8 @@
 import { addDays, differenceInCalendarDays, format, isAfter, isBefore, parseISO } from 'date-fns';
-import type { bikeInterface } from '../../Layouts/BikesLayout';
+import type { bikeInterface, bikePackageInterface, selectedBikesInterface } from '../../Layouts/BikesLayout';
 
 /**
- * Interfaces
- */
-// bikePackage
-interface bikePackageInterface {
-    bikes: { amount: number; bike: number }[];
-    brand: string | null;
-    color: string | null;
-    description: string;
-    id: number;
-    max_available: number;
-    name: string;
-    size: string;
-    type: string;
-}
-// selectedBikes
-interface selectedBikesInterface {
-    [key: string]: number;
-}
-
-/**
+ * isValidBikeAmount
  *
  * @param startDate
  * @param endDate
@@ -30,13 +11,7 @@ interface selectedBikesInterface {
  * @param specificBikes
  * @returns
  */
-export default function isValidBikeAmount(
-    startDate: Date,
-    endDate: Date,
-    selectedBikes: selectedBikesInterface,
-    bikes: bikeInterface[],
-    specificBikes = null
-) {
+export default function isValidBikeAmount(startDate: Date | null, endDate: Date | null, selectedBikes: selectedBikesInterface, bikes: bikeInterface[], specificBikes = null) {
     const selectedBikesKeys = Object.keys(selectedBikes);
     if (startDate && endDate && selectedBikesKeys.length) {
         const filteredBikes = specificBikes || bikes.filter((bike) => selectedBikesKeys.includes(String(bike.id)));
@@ -72,8 +47,8 @@ export const bikePackageUnavailable = (
     maxDate: Date,
     bikes: bikeInterface[],
     selectedBikes: selectedBikesInterface,
-    startDate: Date,
-    endDate: Date
+    startDate: Date | null,
+    endDate: Date | null
 ) => {
     const unavailable: { [key: string]: number } = {};
     const dates: string[] = [];
@@ -85,10 +60,7 @@ export const bikePackageUnavailable = (
             dates.forEach((date) => {
                 const unitsInUse = bike.unavailable[date] ?? 0;
                 const packageUnitsInUse = bike.package_only_unavailable?.[date] ?? 0;
-                const unitsSelected =
-                    isBefore(parseISO(date), startDate) || isAfter(parseISO(date), endDate)
-                        ? 0
-                        : selectedBikes[bike.id] ?? 0;
+                const unitsSelected = startDate && endDate ? (isBefore(parseISO(date), startDate) || isAfter(parseISO(date), endDate) ? 0 : selectedBikes[bike.id] ?? 0) : 0;
                 const remaining = bike.max_available - unitsInUse - packageUnitsInUse - unitsSelected;
                 const packagesInUse = bikePackage.max_available - Math.floor(remaining / packageBikeAmount);
                 if (packagesInUse > 0) {

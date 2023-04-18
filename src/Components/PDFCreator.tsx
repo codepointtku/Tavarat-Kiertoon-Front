@@ -250,5 +250,4 @@ function PDFDocument({ order }: IPDFDocument) {
     );
 }
 
-
 export default PDFDocument;
