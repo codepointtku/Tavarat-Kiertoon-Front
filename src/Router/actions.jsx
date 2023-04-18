@@ -299,9 +299,20 @@ const resetEmailAction = async (auth, setAuth, request) => {
         username: formData.get('username'),
     });
     if (response.status === 200) {
-        return { type: 'post', status: true };
+        return { type: 'emailsent', status: true };
     }
-    return { type: 'post', status: false };
+    return { type: 'emailsent', status: false };
+};
+
+const resetPasswordAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, 'users/password/reset/', 'post', {
+        username: formData.get('username'),
+    });
+    if (response.status === 200) {
+        return { type: 'passwordreset', status: true };
+    }
+    return { type: 'passwordreset', status: true };
 };
 
 export {
@@ -319,4 +330,5 @@ export {
     bikeOrderAction,
     confirmationAction,
     resetEmailAction,
+    resetPasswordAction,
 };

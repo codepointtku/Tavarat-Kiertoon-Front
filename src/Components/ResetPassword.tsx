@@ -1,8 +1,11 @@
 import { useForm } from 'react-hook-form';
-import { useSubmit } from 'react-router-dom';
+import { useSubmit, useActionData } from 'react-router-dom';
 import { Container, Box, Grid, Typography, TextField, Button, Alert } from '@mui/material';
+import AlertBox from './AlertBox';
 
 function ResetPassword() {
+    const submit = useSubmit();
+    const responseStatus = useActionData();
     const {
         register,
         handleSubmit,
@@ -11,11 +14,12 @@ function ResetPassword() {
 
     const onSubmit = (data: any) => {
         const { new_password, new_password_again } = data;
-        console.log(new_password, new_password_again);
+        console.log('Submit meni läpi: ', new_password, new_password_again);
     };
 
     return (
         <Container>
+            <AlertBox text="Salasana vaihdettu onnistuneesti" status="success" timer={2000} />
             <Box sx={{ border: 3, borderStyle: 'solid', borderRadius: 3, padding: 5, mt: 5 }}>
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                     Salasanan palautus
@@ -29,7 +33,7 @@ function ResetPassword() {
                             <Grid item>
                                 <TextField
                                     label="Uusi salasana"
-                                    {...register('new_password', { required: true })}
+                                    {...register('new_password', { required: true, maxLength: 255 })}
                                     fullWidth
                                 />
                             </Grid>
@@ -37,7 +41,11 @@ function ResetPassword() {
                             <Grid item>
                                 <TextField
                                     label="Uusi salasana uudestaan"
-                                    {...register('new_password_again', { required: true })}
+                                    {...register('new_password_again', {
+                                        required: true,
+                                        maxLength: 255,
+                                        validate: (value, formValues) => value === formValues.new_password,
+                                    })}
                                     fullWidth
                                 />
                             </Grid>

@@ -96,6 +96,7 @@ import {
     bikeOrderAction,
     confirmationAction,
     resetEmailAction,
+    resetPasswordAction,
 } from './actions';
 
 createStore({});
@@ -266,6 +267,7 @@ function Routes() {
                         {
                             path: 'salasananpalautus',
                             element: <ResetPassword />,
+                            action: async ({ request }) => resetPasswordAction(auth, setAuth, request),
                         },
                     ],
                 },
