@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import TypographyHeading from '../TypographyHeading';
+import TypographyHeading from '../../TypographyHeading';
 
 function OrdersHistory({ userOrdersHistory }) {
     // console.log('ollaan historia tilaukset', userOrdersHistory);

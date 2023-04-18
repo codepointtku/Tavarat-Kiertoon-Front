@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import TypographyHeading from '../TypographyHeading';
+import TypographyHeading from '../../TypographyHeading';
 
 function ProfileInfo({ userInfo }) {
     // console.log('ollaan ProfileInfolla', userInfo);

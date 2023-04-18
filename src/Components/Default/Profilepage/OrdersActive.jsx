@@ -11,7 +11,7 @@ import FastfoodIcon from '@mui/icons-material/Fastfood';
 import LaptopMacIcon from '@mui/icons-material/LaptopMac';
 import Typography from '@mui/material/Typography';
 
-import TypographyHeading from '../TypographyHeading';
+import TypographyHeading from '../../TypographyHeading';
 
 function CustomizedTimeline() {
     return (

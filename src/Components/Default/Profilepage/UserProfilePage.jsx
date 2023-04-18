@@ -3,8 +3,8 @@ import { useLoaderData } from 'react-router-dom';
 import { Avatar, Box, Container, Grid } from '@mui/material';
 import Person2Icon from '@mui/icons-material/Person2';
 
-import BackButton from '../BackButton';
-import TypographyTitle from '../TypographyTitle';
+import BackButton from '../../BackButton';
+import TypographyTitle from '../../TypographyTitle';
 
 import ProfileInfo from './ProfileInfo';
 import OrdersActive from './OrdersActive';

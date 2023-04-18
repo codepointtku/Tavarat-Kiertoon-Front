@@ -42,7 +42,7 @@ import Confirmation from '../Components/Default/ShoppingCart/Confirmation';
 
 import SignupLandingPage from '../Components/Signup/SignupLandingPage';
 import SignupPage from '../Components/Signup/SignupPage';
-import UserProfilePage from '../Components/Profilepage/UserProfilePage';
+import UserProfilePage from '../Components/Default/Profilepage/UserProfilePage';
 import ContactPage from '../Components/ContactPage';
 import Stats from '../Components/Stats/Stats';
 import BackgroundInfo from '../Components/Backgroundinfo';
