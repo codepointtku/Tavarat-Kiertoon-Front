@@ -191,7 +191,7 @@ const storageEditAction = async (auth, setAuth, request, params) => {
 
 const userEditAction = async (auth, setAuth, request, params) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, `/users/update/${params.id}/`, 'put', formData);
+    const response = await apiCall(auth, setAuth, `/users/${params.id}/edit/`, 'put', formData);
     if (response.status === 200) {
         return { type: 'update', status: true };
     }
@@ -211,6 +211,15 @@ const itemCreateAction = async (auth, setAuth, request) => {
         return { type: 'createitem', status: true };
     }
     return { type: 'createitem', status: false };
+};
+// add new announcement
+const createBulletinAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/bulletins/', 'post', formData);
+    if (response.status === 200) {
+        return { type: 'createnewannouncement', status: true };
+    }
+    return { type: 'createnewannouncement', status: false };
 };
 
 /**
@@ -287,6 +296,7 @@ export {
     orderEditAction,
     storageCreateAction,
     storageEditAction,
+    createBulletinAction,
     userEditAction,
     itemCreateAction,
     itemUpdateAction,
