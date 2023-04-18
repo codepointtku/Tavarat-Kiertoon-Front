@@ -1,6 +1,6 @@
 import { useLoaderData } from 'react-router';
 import UsersListTable from './UsersListTable';
-import useCustomSearchParams from '../Hooks/useCustomSearchParams';
+import useCustomSearchParams from '../../Hooks/useCustomSearchParams';
 
 function UsersList() {
     const data = useLoaderData();

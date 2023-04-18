@@ -20,9 +20,9 @@ import Button from '@mui/material/Button';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Link } from 'react-router-dom';
-import TablePaginationActions from './TablePaginationActions';
-import StyledTableCell from './StyledTableCell';
-import StyledTableRow from './StyledTableRow';
+import TablePaginationActions from '../TablePaginationActions';
+import StyledTableCell from '../StyledTableCell';
+import StyledTableRow from '../StyledTableRow';
 
 function UsersListTable({ page, rowsPerPage, setUsedParams, users }) {
     const [isOpen, setIsOpen] = useState({});

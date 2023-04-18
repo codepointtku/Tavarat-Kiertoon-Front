@@ -11,7 +11,7 @@ import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import GiteIcon from '@mui/icons-material/Gite';
 import Person2Icon from '@mui/icons-material/Person2';
 
-import BackButton from '../BackButton';
+import BackButton from '../../BackButton';
 
 function SignupHelp() {
     return (
