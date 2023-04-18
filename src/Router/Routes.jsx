@@ -21,7 +21,7 @@ import BikesLayout from '../Layouts/BikesLayout';
 import OrdersList from '../Components/OrdersList';
 import OrderView from '../Components/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
-import QrScanner from '../Components/QrScanner';
+import QrScanner from '../Components/Storage/QrScanner';
 
 import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
