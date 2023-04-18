@@ -54,6 +54,7 @@ function ShoppingCart() {
                 return 0;
         }
     }
+
     // useLoaderData tuotenimi ja tuotemäärä
     return (
         <Container

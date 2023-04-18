@@ -6,7 +6,7 @@ function Announcements() {
     const { bulletins } = useRouteLoaderData('root');
 
     const cards = bulletins.map((item) => (
-        <ArticleCard key={item.title} title={item.title} date={item.date} content={item.content} />
+        <ArticleCard key={item.id} title={item.title} date={item.date} content={item.content} />
     ));
 
     return (

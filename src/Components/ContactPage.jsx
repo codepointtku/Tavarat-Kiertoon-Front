@@ -13,19 +13,24 @@ import {
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { Form, useSubmit } from 'react-router-dom';
+import { useState } from 'react';
+import AlertBox from './AlertBox';
 
 function ContactPage() {
     const { register, handleSubmit, watch } = useForm();
     const submit = useSubmit();
+    const [success, setSuccess] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const subject = watch('subject');
 
     const onSubmit = (data) => {
-        const formData = { ...data, category: 'category', status: 'abc' };
+        const formData = { ...data, category: 'category' };
         submit(formData, {
             method: 'post',
             action: '/otayhteytta',
         });
+        setSuccess(true);
     };
 
     return (
@@ -40,6 +45,8 @@ function ContactPage() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                marginLeft: 'auto',
+                marginRight: 'auto',
             }}
         >
             <Typography variant="h3" color="primary.main">
@@ -115,6 +122,7 @@ function ContactPage() {
                         rows={6}
                     />
                     <Button
+                        disabled={isSubmitting}
                         type="submit"
                         style={{ width: 200 }}
                         sx={{
@@ -124,6 +132,7 @@ function ContactPage() {
                     >
                         Lähetä viesti
                     </Button>
+                    {success && <AlertBox text="Lomake lähetetty!" timer={1500} status="success" redirectUrl="/" />}
                 </FormControl>
             </Container>
         </Grid>

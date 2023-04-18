@@ -1,0 +1,19 @@
+import { Container, Stack } from '@mui/material';
+import { Outlet } from 'react-router';
+
+import Footer from './Components/Footer';
+import Header from './Components/Header';
+
+export default function BikesLayout() {
+    return (
+        <Stack id="bike-view-stack" sx={{ minHeight: ['100vh', '100svh'] }}>
+            <Header />
+            <Container maxWidth="xl" sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
+                <main>
+                    <Outlet />
+                </main>
+            </Container>
+            <Footer />
+        </Stack>
+    );
+}
