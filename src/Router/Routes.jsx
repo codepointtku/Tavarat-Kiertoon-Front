@@ -49,6 +49,7 @@ import Announcements from '../Components/Announcements';
 import DeliveryView from '../Components/DeliveryView';
 import ForgotPassword from '../Components/ForgotPassword';
 import ResetPassword from '../Components/ResetPassword';
+import ResetSuccessful from '../Components/ResetSuccessful';
 
 import InstructionsPage from '../Components/Instructions/InstructionsPage';
 import GuideCommon from '../Components/Instructions/GuideCommon';
@@ -265,9 +266,13 @@ function Routes() {
                             action: async ({ request }) => resetEmailAction(auth, setAuth, request),
                         },
                         {
-                            path: 'salasananpalautus',
+                            path: 'salasananpalautus/:uid/:token',
                             element: <ResetPassword />,
-                            action: async ({ request }) => resetPasswordAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'salasanapalautettu',
+                            element: <ResetSuccessful />,
+                            action: async ({ request, params }) => resetPasswordAction(auth, setAuth, request, params),
                         },
                     ],
                 },

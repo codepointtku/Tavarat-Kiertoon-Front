@@ -1,11 +1,15 @@
 import { useForm } from 'react-hook-form';
-import { useSubmit, useActionData } from 'react-router-dom';
+import { useSubmit, useParams } from 'react-router-dom';
 import { Container, Box, Grid, Typography, TextField, Button, Alert } from '@mui/material';
-import AlertBox from './AlertBox';
+
+// interface Params {
+//     uid: string | undefined;
+//     token: string | undefined;
+// }
 
 function ResetPassword() {
     const submit = useSubmit();
-    const responseStatus = useActionData();
+    const { uid, token } = useParams();
     const {
         register,
         handleSubmit,
@@ -13,13 +17,13 @@ function ResetPassword() {
     } = useForm();
 
     const onSubmit = (data: any) => {
+        console.log(uid, token);
         const { new_password, new_password_again } = data;
-        console.log('Submit meni läpi: ', new_password, new_password_again);
+        submit({ new_password, new_password_again }, { method: 'post', action: 'salasanapalautettu' });
     };
 
     return (
         <Container>
-            <AlertBox text="Salasana vaihdettu onnistuneesti" status="success" timer={2000} />
             <Box sx={{ border: 3, borderStyle: 'solid', borderRadius: 3, padding: 5, mt: 5 }}>
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                     Salasanan palautus

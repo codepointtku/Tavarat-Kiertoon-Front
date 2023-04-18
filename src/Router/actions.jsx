@@ -7,7 +7,6 @@ const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : -1;
-    console.log(amount);
     if (request.method === 'POST') {
         if (auth.username) {
             const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
@@ -304,10 +303,13 @@ const resetEmailAction = async (auth, setAuth, request) => {
     return { type: 'emailsent', status: false };
 };
 
-const resetPasswordAction = async (auth, setAuth, request) => {
+const resetPasswordAction = async (auth, setAuth, request, params) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, 'users/password/reset/', 'post', {
-        username: formData.get('username'),
+        new_password: formData.get('new_password'),
+        new_password_again: formData.get('new_password_again'),
+        uidb64: params.uidb64,
+        token: params.token,
     });
     if (response.status === 200) {
         return { type: 'passwordreset', status: true };
