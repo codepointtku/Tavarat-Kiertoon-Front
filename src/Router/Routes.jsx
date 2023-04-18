@@ -27,8 +27,8 @@ import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
 import NewAnnouncement from '../Components/Admin/NewAnnouncement';
 
-import StoragesList from '../Components/StoragesList';
-import StorageEdit from '../Components/StorageEdit';
+import StoragesList from '../Components/Admin/StoragesList';
+import StorageEdit from '../Components/Admin/StorageEdit';
 import AddStorage from '../Components/AddStorage';
 import AddItem from '../Components/AddItem';
 
