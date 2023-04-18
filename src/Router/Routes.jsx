@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
+import { StateMachineProvider, createStore } from 'little-state-machine';
 import { ThemeProvider } from '@mui/material';
 
 import AuthContext from '../Context/AuthContext';
@@ -24,6 +25,7 @@ import QrScanner from '../Components/QrScanner';
 
 import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
+import NewAnnouncement from '../Components/NewAnnouncement';
 
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
@@ -75,7 +77,8 @@ import {
     userSignupLoader,
     shoppingCartLoader,
     bikesListLoader,
-    contactsAndDeliveryLoader,
+    shoppingProcessLoader,
+    bulletinSubjectLoader,
 } from './loaders';
 
 import {
@@ -87,8 +90,12 @@ import {
     frontPageActions,
     userEditAction,
     cartViewAction,
+    createBulletinAction,
     bikeOrderAction,
+    confirmationAction,
 } from './actions';
+
+createStore({});
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
@@ -193,7 +200,13 @@ function Routes() {
                         },
                         {
                             path: '/ostoskori',
-                            element: <ShoppingCart />,
+                            element: (
+                                <StateMachineProvider>
+                                    <ShoppingCart />
+                                </StateMachineProvider>
+                            ),
+                            id: 'shoppingCart',
+                            loader: shoppingProcessLoader,
                             children: [
                                 {
                                     path: '/ostoskori/',
@@ -203,11 +216,11 @@ function Routes() {
                                 {
                                     path: '/ostoskori/vaihe2',
                                     element: <ContactsAndDelivery />,
-                                    loader: contactsAndDeliveryLoader,
                                 },
                                 {
                                     path: '/ostoskori/vaihe3',
                                     element: <Confirmation />,
+                                    action: async ({ request }) => confirmationAction(auth, setAuth, request),
                                 },
                             ],
                         },
@@ -341,6 +354,12 @@ function Routes() {
                             element: <Navigate to="varastot" />,
                         },
                         {
+                            path: 'tiedotteet/luo',
+                            element: <NewAnnouncement />,
+                            loader: bulletinSubjectLoader,
+                            action: async ({ request }) => createBulletinAction(auth, setAuth, request),
+                        },
+                        {
                             path: 'varastot',
                             element: <Outlet />,
                             children: [
@@ -366,6 +385,7 @@ function Routes() {
                                 {
                                     index: true,
                                     element: <UsersList />,
+                                    id: 'users',
                                     loader: async () => usersListLoader(auth, setAuth),
                                 },
                                 {

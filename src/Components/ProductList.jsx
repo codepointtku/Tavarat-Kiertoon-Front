@@ -62,7 +62,14 @@ function ProductList() {
                         groupId={product.group_id}
                         productName={product.name}
                         date={product.date}
-                        picture={product.pictures[0]}
+                        pictures={product.pictures}
+                        freeDescription={product.free_description}
+                        categoryName={product.category_name}
+                        storageName={product.storage_name}
+                        colorName={product.color_name}
+                        measurements={product.measurements}
+                        weight={product.weight}
+                        count={product.amount}
                     />
                 </Grid>
             ))}
