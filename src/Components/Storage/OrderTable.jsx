@@ -1,3 +1,7 @@
+import { useLoaderData, useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect, Fragment } from 'react';
+import PropTypes from 'prop-types';
+
 import {
     Table,
     TableBody,
@@ -12,18 +16,12 @@ import {
     TablePagination,
     Button,
 } from '@mui/material';
-import PropTypes from 'prop-types';
-import { useLoaderData, useNavigate, Link } from 'react-router-dom';
-import { useState, useEffect, Fragment } from 'react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import TablePaginationActions from './TablePaginationActions';
-import StyledTableRow from './StyledTableRow';
-import StyledTableCell from './StyledTableCell';
-// import orderData from '../TestData/tilaus.json';
 
-// replace this with apiCall later on
-// const orderFind = (id) => orderData[id];
+import TablePaginationActions from '../TablePaginationActions';
+import StyledTableRow from '../StyledTableRow';
+import StyledTableCell from '../StyledTableCell';
 
 function OrderTable({ page, rowsPerPage, setUsedParams }) {
     const [isOpen, setIsOpen] = useState({});

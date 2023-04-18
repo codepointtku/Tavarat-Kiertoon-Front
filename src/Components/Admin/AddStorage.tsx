@@ -2,8 +2,8 @@ import { Box, Button, Card, CardActions, CardContent, MenuItem, TextField } from
 import { useState } from 'react';
 import { useActionData, useSubmit } from 'react-router-dom';
 import validator from 'validator';
-import type { storageCreateAction } from '../Router/actions';
-import AlertBox from './AlertBox';
+import type { storageCreateAction } from '../../Router/actions';
+import AlertBox from '../AlertBox';
 
 function AddStorage() {
     const initialState = { name: '', address: '', in_use: 'ei käytössä' };

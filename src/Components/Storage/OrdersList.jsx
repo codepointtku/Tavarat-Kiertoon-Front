@@ -1,5 +1,5 @@
-import OrderListTable from './Storage/DataTable';
-import useCustomSearchParams from '../Hooks/useCustomSearchParams';
+import OrderListTable from './DataTable';
+import useCustomSearchParams from '../../Hooks/useCustomSearchParams';
 
 function OrdersList() {
     const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });

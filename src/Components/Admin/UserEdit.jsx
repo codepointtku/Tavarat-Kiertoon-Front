@@ -2,7 +2,7 @@ import { TextField, Box, Button, Grid, Container, Checkbox, FormControlLabel, Ty
 import { useState, useRef } from 'react';
 import { useLoaderData, useActionData } from 'react-router';
 import { Form, useSubmit } from 'react-router-dom';
-import AlertBox from './AlertBox';
+import AlertBox from '../AlertBox';
 import ConfirmWindow from './ConfirmWindow';
 
 function UserEdit() {

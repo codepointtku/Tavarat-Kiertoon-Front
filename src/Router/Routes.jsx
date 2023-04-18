@@ -18,19 +18,19 @@ import StorageLayout from '../Layouts/StorageLayout';
 import AdminLayout from '../Layouts/AdminLayout';
 import BikesLayout from '../Layouts/BikesLayout';
 
-import OrdersList from '../Components/OrdersList';
-import OrderView from '../Components/OrderView';
+import OrdersList from '../Components/Storage/OrdersList';
+import OrderView from '../Components/Storage/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
 import QrScanner from '../Components/Storage/QrScanner';
 
-import UsersList from '../Components/UsersList';
-import UserEdit from '../Components/UserEdit';
+import UsersList from '../Components/Admin/UsersList';
+import UserEdit from '../Components/Admin/UserEdit';
 import NewAnnouncement from '../Components/Admin/NewAnnouncement';
 
 import StoragesList from '../Components/Admin/StoragesList';
 import StorageEdit from '../Components/Admin/StorageEdit';
-import AddStorage from '../Components/AddStorage';
-import AddItem from '../Components/AddItem';
+import AddStorage from '../Components/Admin/AddStorage';
+import AddItem from '../Components/Storage/AddItem';
 
 import PDFView from '../Components/PDFView';
 
