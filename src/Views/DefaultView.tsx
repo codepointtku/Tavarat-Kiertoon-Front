@@ -2,7 +2,7 @@ import { useActionData } from 'react-router-dom';
 import { Grid, Box } from '@mui/material';
 
 import SearchField from '../Components/SearchField';
-import CategoryTree from '../Components/CategoryTree';
+import CategoryTree from '../Components/Default/CategoryTree';
 import ProductList from '../Components/ProductList';
 import AlertBox from '../Components/AlertBox';
 
