@@ -1,6 +1,6 @@
 import { Container, Typography } from '@mui/material';
 import { useRouteLoaderData } from 'react-router-dom';
-import ArticleCard from '../ArticleCard';
+import ArticleCard from './ArticleCard';
 
 function Announcements() {
     const { bulletins } = useRouteLoaderData('root');
