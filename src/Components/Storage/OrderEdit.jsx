@@ -12,10 +12,10 @@ import {
 import { useState, useRef } from 'react';
 import { useLoaderData, useNavigate, generatePath, useActionData } from 'react-router';
 import { Form, useSubmit } from 'react-router-dom';
-import AlertBox from './AlertBox';
-import StyledTableRow from './StyledTableRow';
-import StyledTableCell from './StyledTableCell';
-import ConfirmWindow from './Admin/ConfirmWindow';
+import AlertBox from '../AlertBox';
+import StyledTableRow from '../StyledTableRow';
+import StyledTableCell from '../StyledTableCell';
+import ConfirmWindow from '../Admin/ConfirmWindow';
 
 function OrderEdit() {
     const orderData = useLoaderData();

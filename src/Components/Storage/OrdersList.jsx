@@ -1,4 +1,4 @@
-import OrderListTable from './DataTable';
+import OrderListTable from './Storage/DataTable';
 import useCustomSearchParams from '../Hooks/useCustomSearchParams';
 
 function OrdersList() {
