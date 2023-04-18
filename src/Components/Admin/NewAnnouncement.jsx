@@ -2,7 +2,7 @@ import { Container, TextField, Typography, Button, FormControl, Paper } from '@m
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, useSubmit } from 'react-router-dom';
-import AlertBox from './AlertBox';
+import AlertBox from '../AlertBox';
 
 function ContactPage() {
     const { register, handleSubmit } = useForm();

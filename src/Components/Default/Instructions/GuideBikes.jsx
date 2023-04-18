@@ -10,7 +10,7 @@ import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import InfoIcon from '@mui/icons-material/Info';
 import RuleIcon from '@mui/icons-material/Rule';
 
-import BackButton from '../BackButton';
+import BackButton from '../../BackButton';
 
 function BikesHelp() {
     return (

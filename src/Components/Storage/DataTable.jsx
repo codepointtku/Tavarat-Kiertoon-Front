@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
 import {
     Table,
     TableBody,
@@ -11,11 +13,11 @@ import {
     TableRow,
     Paper,
 } from '@mui/material';
-import { useLoaderData, useNavigate } from 'react-router-dom';
-import TablePaginationActions from './TablePaginationActions';
-import StyledTableCell from './StyledTableCell';
-import StyledTableRow from './StyledTableRow';
-import SortByMenu from './SortByMenu';
+
+import TablePaginationActions from '../TablePaginationActions';
+import StyledTableCell from '../StyledTableCell';
+import StyledTableRow from '../StyledTableRow';
+import SortByMenu from '../SortByMenu';
 
 function OrderListTable({ page, rowsPerPage, setUsedParams }) {
     const orders = useLoaderData();

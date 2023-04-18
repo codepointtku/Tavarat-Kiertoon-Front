@@ -2,7 +2,7 @@ import { Avatar, Container, Grid, Typography } from '@mui/material';
 
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
-import BackButton from '../BackButton';
+import BackButton from '../../BackButton';
 
 function Hero() {
     return (

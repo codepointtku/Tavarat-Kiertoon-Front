@@ -1,7 +1,7 @@
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 
 import { Box, Divider, Grid, Typography } from '@mui/material';
-import TypographyHeading from './TypographyHeading';
+import TypographyHeading from '../TypographyHeading';
 import ProductCard from './ProductCard';
 
 function SearchResultMessage() {

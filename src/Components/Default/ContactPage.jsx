@@ -14,7 +14,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { Form, useSubmit } from 'react-router-dom';
 import { useState } from 'react';
-import AlertBox from './AlertBox';
+import AlertBox from '../AlertBox';
 
 function ContactPage() {
     const { register, handleSubmit, watch } = useForm();
