@@ -16,7 +16,7 @@ import {
 
 import AuthContext from '../../Context/AuthContext';
 import BackButton from '../BackButton';
-import AddToCartButton from '../AddToCartButton';
+import AddToCartButton from './AddToCartButton';
 
 function ProductDetails() {
     const data = useLoaderData();
