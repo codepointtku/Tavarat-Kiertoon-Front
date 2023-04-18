@@ -3,10 +3,15 @@ import { useSubmit, useActionData } from 'react-router-dom';
 import { Typography, Box, Container, TextField, Button, Alert, AlertTitle } from '@mui/material';
 import KeyIcon from '@mui/icons-material/Key';
 
+interface ResponseStatus {
+    type: 'string';
+    status: Boolean;
+}
+
 function ForgotPassword() {
     const submit = useSubmit();
-    const responseStatus = useActionData();
-    // console.log(responseStatus);
+    const responseStatus = useActionData() as ResponseStatus;
+    console.log(responseStatus);
     const {
         register,
         handleSubmit,
@@ -35,24 +40,28 @@ function ForgotPassword() {
                 </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
                     <Box sx={{ width: 600 }}>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <Typography variant="h6" mb={2}>
-                                Syötä käyttäjänimi
-                            </Typography>
-                            <TextField
-                                label="Käyttäjänimi"
-                                {...register('username', { required: true, minLength: 4, maxLength: 40 })}
-                                fullWidth
-                            />
-                            {errors.username && (
-                                <Alert severity="error" sx={{ mt: 1, maxWidth: 300 }}>
-                                    <AlertTitle>Tämä syöte ei kelpaa.</AlertTitle>
-                                </Alert>
-                            )}
-                            <Button type="submit" sx={{ mt: 2, fontWeight: 'fontWeightMediumBold' }}>
-                                Lähetä salasanan palautuslinkki
-                            </Button>
-                        </form>
+                        {responseStatus?.status ? (
+                            <Typography variant="h5">Salasanan palautuslinkki lähetetty onnistuneesti!</Typography>
+                        ) : (
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <Typography variant="h6" mb={2}>
+                                    Syötä käyttäjänimi
+                                </Typography>
+                                <TextField
+                                    label="Käyttäjänimi"
+                                    {...register('username', { required: true, minLength: 4, maxLength: 40 })}
+                                    fullWidth
+                                />
+                                {errors.username && (
+                                    <Alert severity="error" sx={{ mt: 1, maxWidth: 300 }}>
+                                        <AlertTitle>Tämä syöte ei kelpaa.</AlertTitle>
+                                    </Alert>
+                                )}
+                                <Button type="submit" sx={{ mt: 2, fontWeight: 'fontWeightMediumBold' }}>
+                                    Lähetä salasanan palautuslinkki
+                                </Button>
+                            </form>
+                        )}
                     </Box>
                 </Box>
             </Box>
