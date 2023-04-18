@@ -35,10 +35,10 @@ import AddItem from '../Components/AddItem';
 import PDFView from '../Components/PDFView';
 
 import ProductDetails from '../Components/Default/ProductDetails';
-import ShoppingCart from '../Components/ShoppingCart/ShoppingCart';
-import ContactsAndDelivery from '../Components/ShoppingCart/ContactsAndDelivery';
-import CartView from '../Components/ShoppingCart/CartView';
-import Confirmation from '../Components/ShoppingCart/Confirmation';
+import ShoppingCart from '../Components/Default/ShoppingCart/ShoppingCart';
+import ContactsAndDelivery from '../Components/Default/ShoppingCart/ContactsAndDelivery';
+import CartView from '../Components/Default/ShoppingCart/CartView';
+import Confirmation from '../Components/Default/ShoppingCart/Confirmation';
 
 import SignupLandingPage from '../Components/Default/Signup/SignupLandingPage';
 import SignupPage from '../Components/Default/Signup/SignupPage';
