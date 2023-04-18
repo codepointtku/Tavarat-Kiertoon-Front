@@ -40,20 +40,20 @@ import ContactsAndDelivery from '../Components/ShoppingCart/ContactsAndDelivery'
 import CartView from '../Components/ShoppingCart/CartView';
 import Confirmation from '../Components/ShoppingCart/Confirmation';
 
-import SignupLandingPage from '../Components/Signup/SignupLandingPage';
-import SignupPage from '../Components/Signup/SignupPage';
-import ContactPage from '../Components/ContactPage';
+import SignupLandingPage from '../Components/Default/Signup/SignupLandingPage';
+import SignupPage from '../Components/Default/Signup/SignupPage';
+import ContactPage from '../Components/Default/ContactPage';
 import Stats from '../Components/Stats/Stats';
-import BackgroundInfo from '../Components/Backgroundinfo';
-import Announcements from '../Components/Announcements';
+import BackgroundInfo from '../Components/Default/Backgroundinfo';
+import Announcements from '../Components/Default/Announcements';
 import DeliveryView from '../Components/DeliveryView';
 
-import InstructionsPage from '../Components/Instructions/InstructionsPage';
-import GuideCommon from '../Components/Instructions/GuideCommon';
-import GuideAccount from '../Components/Instructions/GuideAccount';
-import GuideOrdering from '../Components/Instructions/GuideOrdering';
-import GuideShipping from '../Components/Instructions/GuideShipping';
-import GuideBikes from '../Components/Instructions/GuideBikes';
+import InstructionsPage from '../Components/Default/Instructions/InstructionsPage';
+import GuideCommon from '../Components/Default/Instructions/GuideCommon';
+import GuideAccount from '../Components/Default/Instructions/GuideAccount';
+import GuideOrdering from '../Components/Default/Instructions/GuideOrdering';
+import GuideShipping from '../Components/Default/Instructions/GuideShipping';
+import GuideBikes from '../Components/Default/Instructions/GuideBikes';
 
 import BikesPage from '../Components/Bikes/BikesPage';
 import Bikes from '../Components/Bikes/Bikes';
