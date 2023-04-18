@@ -32,7 +32,7 @@ import StorageEdit from '../Components/Admin/StorageEdit';
 import AddStorage from '../Components/Admin/AddStorage';
 import AddItem from '../Components/Storage/AddItem';
 
-import PDFView from '../Components/PDFView';
+import PDFView from '../Components/Storage/PDFView';
 
 import ProductDetails from '../Components/Default/ProductDetails';
 import ShoppingCart from '../Components/Default/ShoppingCart/ShoppingCart';
