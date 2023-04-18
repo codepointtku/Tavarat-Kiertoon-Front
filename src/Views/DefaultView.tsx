@@ -3,7 +3,7 @@ import { Grid, Box } from '@mui/material';
 
 import SearchField from '../Components/SearchField';
 import CategoryTree from '../Components/Default/CategoryTree';
-import ProductList from '../Components/ProductList';
+import ProductList from '../Components/Default/ProductList';
 import AlertBox from '../Components/AlertBox';
 
 // default front page view

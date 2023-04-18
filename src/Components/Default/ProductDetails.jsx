@@ -14,9 +14,9 @@ import {
     Grid,
 } from '@mui/material';
 
-import AuthContext from '../Context/AuthContext';
-import BackButton from './BackButton';
-import AddToCartButton from './AddToCartButton';
+import AuthContext from '../../Context/AuthContext';
+import BackButton from '../BackButton';
+import AddToCartButton from '../AddToCartButton';
 
 function ProductDetails() {
     const data = useLoaderData();

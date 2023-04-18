@@ -15,7 +15,7 @@ import Carousel from 'react-material-ui-carousel';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import { Link } from 'react-router-dom';
-import AddToCartButton from './AddToCartButton';
+import AddToCartButton from '../AddToCartButton';
 
 interface Props {
     productName: string;

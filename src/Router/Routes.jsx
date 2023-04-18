@@ -34,7 +34,7 @@ import AddItem from '../Components/AddItem';
 
 import PDFView from '../Components/PDFView';
 
-import ProductDetails from '../Components/ProductDetails';
+import ProductDetails from '../Components/Default/ProductDetails';
 import ShoppingCart from '../Components/ShoppingCart/ShoppingCart';
 import ContactsAndDelivery from '../Components/ShoppingCart/ContactsAndDelivery';
 import CartView from '../Components/ShoppingCart/CartView';
