@@ -1,5 +1,5 @@
 import OrderTable from './OrderTable';
-import useCustomSearchParams from '../Hooks/useCustomSearchParams';
+import useCustomSearchParams from '../../Hooks/useCustomSearchParams';
 
 function OrderView() {
     const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });

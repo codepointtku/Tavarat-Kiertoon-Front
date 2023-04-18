@@ -24,8 +24,8 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import HomeIcon from '@mui/icons-material/Home';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-import BackButton from '../BackButton';
-import AlertBox from '../AlertBox';
+import BackButton from '../../BackButton';
+import AlertBox from '../../AlertBox';
 
 function Hero() {
     return (

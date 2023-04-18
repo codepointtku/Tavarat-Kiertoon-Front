@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLoaderData, useActionData } from 'react-router';
 import { Form, useSubmit } from 'react-router-dom';
 import { TextField, Box, Button, MenuItem, Grid, Container } from '@mui/material';
-import AlertBox from './AlertBox';
+import AlertBox from '../AlertBox';
 import ConfirmWindow from './ConfirmWindow';
 
 function StorageEdit() {

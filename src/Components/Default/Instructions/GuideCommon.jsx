@@ -16,7 +16,7 @@ import {
 import ChatIcon from '@mui/icons-material/Chat';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import BackButton from '../BackButton';
+import BackButton from '../../BackButton';
 
 function Hero() {
     return (

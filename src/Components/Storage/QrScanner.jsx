@@ -1,5 +1,5 @@
 import { useNavigate, generatePath, useLocation } from 'react-router';
-import Html5QrcodePlugin from '../Utils/qrcodeScanner';
+import Html5QrcodePlugin from '../../Utils/qrcodeScanner';
 
 function QrScanner() {
     const navigate = useNavigate();

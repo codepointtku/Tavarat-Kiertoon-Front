@@ -10,7 +10,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
-import BackButton from '../BackButton';
+import BackButton from '../../BackButton';
 
 function Ordering() {
     return (
