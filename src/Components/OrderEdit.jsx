@@ -15,7 +15,7 @@ import { Form, useSubmit } from 'react-router-dom';
 import AlertBox from './AlertBox';
 import StyledTableRow from './StyledTableRow';
 import StyledTableCell from './StyledTableCell';
-import ConfirmWindow from './ConfirmWindow';
+import ConfirmWindow from './Admin/ConfirmWindow';
 
 function OrderEdit() {
     const orderData = useLoaderData();
