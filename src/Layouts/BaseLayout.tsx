@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { Box, Stack } from '@mui/material';
 
-import DefaultAppBar from '../Components/Default/AppBar/Default/DefaultAppBar';
+import DefaultAppBar from '../Components/Default/AppBar/DefaultAppBar';
 import NavigationBar from './Components/NavigationBar';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
