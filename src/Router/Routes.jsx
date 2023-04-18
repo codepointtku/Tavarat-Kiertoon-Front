@@ -25,6 +25,7 @@ import QrScanner from '../Components/QrScanner';
 
 import UsersList from '../Components/UsersList';
 import UserEdit from '../Components/UserEdit';
+import NewAnnouncement from '../Components/NewAnnouncement';
 
 import StoragesList from '../Components/StoragesList';
 import StorageEdit from '../Components/StorageEdit';
@@ -78,6 +79,7 @@ import {
     shoppingCartLoader,
     bikesListLoader,
     shoppingProcessLoader,
+    bulletinSubjectLoader,
 } from './loaders';
 
 import {
@@ -90,6 +92,7 @@ import {
     frontPageActions,
     userEditAction,
     cartViewAction,
+    createBulletinAction,
     bikeOrderAction,
     confirmationAction,
 } from './actions';
@@ -358,6 +361,12 @@ function Routes() {
                         {
                             index: true,
                             element: <Navigate to="varastot" />,
+                        },
+                        {
+                            path: 'tiedotteet/luo',
+                            element: <NewAnnouncement />,
+                            loader: bulletinSubjectLoader,
+                            action: async ({ request }) => createBulletinAction(auth, setAuth, request),
                         },
                         {
                             path: 'varastot',

@@ -42,6 +42,12 @@ test.describe('tiedotteet', () => {
         await expect(page.getByText('Etsimääsi sijaintia /tiedotteet')).not.toBeVisible();
     });
 });
+test.describe('luotiedote', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tiedotteet/luo');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/tiedotteet/luo')).not.toBeVisible();
+    });
+});
 
 test.describe('rekisteroidy', () => {
     test('no errors', async ({ page }) => {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import type { AlertColor } from '@mui/material';
 import { Alert, Snackbar } from '@mui/material';
@@ -11,24 +12,36 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 // available status cases: info, warning, error, success
 
 // example:
-// <AlertBox text="asia pihvi" status="success" />
+// <AlertBox text="asia pihvi" status="success" timer={5000} redirectUrl="/some-url" />
 
 interface Props {
     text: string;
     status: AlertColor;
     timer?: number;
+    redirectUrl?: string;
 }
 
-function AlertBox({ text, status, timer }: Props) {
+function AlertBox({ text, status, timer, redirectUrl }: Props) {
     const [open, setOpen] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (timer) {
             setTimeout(() => {
                 setOpen(false);
+                if (redirectUrl) {
+                    navigate(redirectUrl);
+                }
             }, timer);
         }
-    }, [timer]);
+    }, [timer, navigate, redirectUrl]);
+
+    const handleClose = () => {
+        setOpen(false);
+        if (redirectUrl) {
+            navigate(redirectUrl);
+        }
+    };
 
     return (
         <div>
@@ -37,7 +50,7 @@ function AlertBox({ text, status, timer }: Props) {
                     <Alert
                         severity={status}
                         variant="filled"
-                        onClose={() => {}}
+                        onClose={handleClose}
                         onClick={() => {
                             setOpen(!open);
                         }}
