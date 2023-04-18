@@ -44,7 +44,6 @@ export default function BikeConfirmation({
 }: bikeConfirmationInterface) {
     const [requiredCheckboxes, setRequiredCheckboxes] = useState({ education: false, responsibilities: false });
 
-    console.log('### control', control, typeof control);
     return (
         <Paper
             sx={{
