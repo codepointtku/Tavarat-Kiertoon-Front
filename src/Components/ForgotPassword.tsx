@@ -54,7 +54,7 @@ function ForgotPassword() {
                                 />
                                 {errors.username && (
                                     <Alert severity="error" sx={{ mt: 1, maxWidth: 300 }}>
-                                        <AlertTitle>Tämä syöte ei kelpaa.</AlertTitle>
+                                        <AlertTitle>Virheellinen syöte</AlertTitle>
                                     </Alert>
                                 )}
                                 <Button type="submit" sx={{ mt: 2, fontWeight: 'fontWeightMediumBold' }}>
