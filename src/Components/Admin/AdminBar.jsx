@@ -29,7 +29,7 @@ export default function AdminBar() {
     }, [location]);
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box id="moro" sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
