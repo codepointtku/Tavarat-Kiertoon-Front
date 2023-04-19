@@ -201,6 +201,20 @@ const bikesListLoader = async (auth, setAuth) => {
     const { data } = await apiCall(auth, setAuth, '/bikes', 'get');
     return data;
 };
+
+/**
+ * bikesTestLoader and bikeTestLoader
+ * JTO: TEST ONLY. IF THIS IS IN VERSION CONTROL, DELETE IT
+ */
+export const bikesTestLoader = async () => {
+    const { data } = await axios.get('http://localhost:4000/bikes/');
+    return data;
+};
+export const bikeTestLoader = async (params) => {
+    const { data } = await axios.get(`http://localhost:4000/bikes/${params.id}`);
+    return data;
+};
+
 // get bulletin subjects
 const bulletinSubjectLoader = async (auth, setAuth) => {
     const { data } = await apiCall(auth, setAuth, '/bulletin_subjects', 'get');

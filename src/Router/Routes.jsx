@@ -79,6 +79,8 @@ import {
     bikesListLoader,
     shoppingProcessLoader,
     bulletinSubjectLoader,
+    bikesTestLoader,
+    bikeTestLoader,
 } from './loaders';
 
 import {
@@ -94,6 +96,7 @@ import {
     bikeOrderAction,
     confirmationAction,
 } from './actions';
+import BikeEditPage from '../Components/Bikes/BikeEditPage';
 
 createStore({});
 
@@ -430,6 +433,8 @@ function Routes() {
                             children: [
                                 {
                                     index: true,
+                                    // loader: bikesListLoader,
+                                    loader: bikesTestLoader,
                                     element: <Bikes />,
                                 },
                                 {
@@ -439,6 +444,21 @@ function Routes() {
                                 {
                                     path: 'pyorapaketit',
                                     element: <BikePackets />,
+                                },
+                                {
+                                    path: 'muokkaa',
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <Navigate to="/pyorat/pyoravarasto" />,
+                                        },
+                                        {
+                                            path: ':id',
+                                            loader: async ({ params }) => bikeTestLoader(params),
+                                            element: <BikeEditPage />,
+                                        }
+                                    ]
                                 },
                             ],
                         },

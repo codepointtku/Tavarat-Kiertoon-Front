@@ -52,6 +52,7 @@ function NoSearchResults() {
 
 function ProductList() {
     const products = useLoaderData();
+    console.log('### ProductList', products)
 
     return products.length ? (
         <Grid container spacing={2}>
