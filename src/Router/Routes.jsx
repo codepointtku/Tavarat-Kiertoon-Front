@@ -420,6 +420,7 @@ function Routes() {
                 // bikes routes
                 {
                     path: 'pyorat',
+                    action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                     element: (
                         <ThemeProvider theme={bikeTheme}>
                             <BikesLayout />
@@ -429,15 +430,12 @@ function Routes() {
                         {
                             index: true,
                             element: <BikesPage />,
-                            action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                             loader: bikesListLoader,
                             shouldRevalidate: () => false,
                         },
                         {
                             path: 'pyoravarasto',
                             element: <BikeWarehouse />,
-                            action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
-
                             children: [
                                 {
                                     index: true,
