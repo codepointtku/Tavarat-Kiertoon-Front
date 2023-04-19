@@ -41,7 +41,9 @@ function ForgotPassword() {
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
                     <Box sx={{ width: 600 }}>
                         {responseStatus?.status ? (
-                            <Typography variant="h5">Salasanan palautuslinkki lähetetty onnistuneesti!</Typography>
+                            <Typography variant="h5" sx={{ p: 4, fontWeight: 'fontWeightMediumBold' }}>
+                                Salasanan palautuslinkki lähetetty onnistuneesti!
+                            </Typography>
                         ) : (
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <Typography variant="h6" mb={2}>
