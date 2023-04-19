@@ -18,45 +18,45 @@ import StorageLayout from '../Layouts/StorageLayout';
 import AdminLayout from '../Layouts/AdminLayout';
 import BikesLayout from '../Layouts/BikesLayout';
 
-import OrdersList from '../Components/OrdersList';
-import OrderView from '../Components/OrderView';
-import OrderEdit from '../Components/OrderEdit';
-import QrScanner from '../Components/QrScanner';
+import OrdersList from '../Components/Storage/OrdersList';
+import OrderView from '../Components/Storage/OrderView';
+import OrderEdit from '../Components/Storage/OrderEdit';
+import QrScanner from '../Components/Storage/QrScanner';
 
-import UsersList from '../Components/UsersList';
-import UserEdit from '../Components/UserEdit';
-import NewAnnouncement from '../Components/NewAnnouncement';
+import UsersList from '../Components/Admin/UsersList';
+import UserEdit from '../Components/Admin/UserEdit';
+import NewAnnouncement from '../Components/Admin/NewAnnouncement';
 
-import StoragesList from '../Components/StoragesList';
-import StorageEdit from '../Components/StorageEdit';
-import AddStorage from '../Components/AddStorage';
-import AddItem from '../Components/AddItem';
+import StoragesList from '../Components/Admin/StoragesList';
+import StorageEdit from '../Components/Admin/StorageEdit';
+import AddStorage from '../Components/Admin/AddStorage';
+import AddItem from '../Components/Storage/AddItem';
 
-import PDFView from '../Components/PDFView';
+import PDFView from '../Components/Storage/PDFView';
 
-import ProductDetails from '../Components/ProductDetails';
-import ShoppingCart from '../Components/ShoppingCart/ShoppingCart';
-import ContactsAndDelivery from '../Components/ShoppingCart/ContactsAndDelivery';
-import CartView from '../Components/ShoppingCart/CartView';
-import Confirmation from '../Components/ShoppingCart/Confirmation';
+import ProductDetails from '../Components/Default/ProductDetails';
+import ShoppingCart from '../Components/Default/ShoppingCart/ShoppingCart';
+import ContactsAndDelivery from '../Components/Default/ShoppingCart/ContactsAndDelivery';
+import CartView from '../Components/Default/ShoppingCart/CartView';
+import Confirmation from '../Components/Default/ShoppingCart/Confirmation';
 
-import SignupLandingPage from '../Components/Signup/SignupLandingPage';
-import SignupPage from '../Components/Signup/SignupPage';
-import ContactPage from '../Components/ContactPage';
-import Stats from '../Components/Stats/Stats';
-import BackgroundInfo from '../Components/Backgroundinfo';
-import Announcements from '../Components/Announcements';
+import SignupLandingPage from '../Components/Default/Signup/SignupLandingPage';
+import SignupPage from '../Components/Default/Signup/SignupPage';
+import ContactPage from '../Components/Default/ContactPage';
+import Stats from '../Components/Admin/Stats/Stats';
+import BackgroundInfo from '../Components/Default/Backgroundinfo';
+import Announcements from '../Components/Default/Announcements';
 import DeliveryView from '../Components/DeliveryView';
 import ForgotPassword from '../Components/ForgotPassword';
 import ResetPassword from '../Components/ResetPassword';
 import ResetSuccessful from '../Components/ResetSuccessful';
 
-import InstructionsPage from '../Components/Instructions/InstructionsPage';
-import GuideCommon from '../Components/Instructions/GuideCommon';
-import GuideAccount from '../Components/Instructions/GuideAccount';
-import GuideOrdering from '../Components/Instructions/GuideOrdering';
-import GuideShipping from '../Components/Instructions/GuideShipping';
-import GuideBikes from '../Components/Instructions/GuideBikes';
+import InstructionsPage from '../Components/Default/Instructions/InstructionsPage';
+import GuideCommon from '../Components/Default/Instructions/GuideCommon';
+import GuideAccount from '../Components/Default/Instructions/GuideAccount';
+import GuideOrdering from '../Components/Default/Instructions/GuideOrdering';
+import GuideShipping from '../Components/Default/Instructions/GuideShipping';
+import GuideBikes from '../Components/Default/Instructions/GuideBikes';
 
 import BikesPage from '../Components/Bikes/BikesPage';
 import Bikes from '../Components/Bikes/Bikes';
@@ -430,6 +430,7 @@ function Routes() {
                 // bikes routes
                 {
                     path: 'pyorat',
+                    action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                     element: (
                         <ThemeProvider theme={bikeTheme}>
                             <BikesLayout />
@@ -439,15 +440,12 @@ function Routes() {
                         {
                             index: true,
                             element: <BikesPage />,
-                            action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                             loader: bikesListLoader,
                             shouldRevalidate: () => false,
                         },
                         {
                             path: 'pyoravarasto',
                             element: <BikeWarehouse />,
-                            action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
-
                             children: [
                                 {
                                     index: true,
