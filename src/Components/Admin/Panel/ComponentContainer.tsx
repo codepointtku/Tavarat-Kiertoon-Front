@@ -1,9 +1,9 @@
 import { Box } from '@mui/material';
-import Overview from './Overview';
+import Overview from './Overview/Overview';
 
 function ComponentContainer() {
     return (
-        <Box id="component-render-area" sx={{ border: '1px solid red', display: 'flex', flexGrow: '1' }}>
+        <Box id="admin-panel-component-render-area" sx={{ border: '1px solid red', display: 'flex', flexGrow: '1' }}>
             <Overview />
         </Box>
     );

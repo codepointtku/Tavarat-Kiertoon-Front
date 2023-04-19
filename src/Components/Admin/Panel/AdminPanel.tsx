@@ -11,7 +11,7 @@ function AdminPanel() {
             sx={{ border: '1px solid blue', display: 'flex', flexDirection: 'row', flexGrow: '1' }}
         >
             <NavigationTree />
-            <Box id="component-area-wrapper" sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Box id="layout-area-container" sx={{ display: 'flex', flexDirection: 'column' }}>
                 <PanelHeader />
                 <ComponentContainer />
             </Box>
