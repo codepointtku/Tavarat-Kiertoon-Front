@@ -13,10 +13,26 @@ import {
     Stack,
     Typography,
 } from '@mui/material';
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import BikeAvailability from './BikeAvailability';
+import type { bikeInterface } from '../../Layouts/BikesLayout';
+
+interface dateInfoInterface {
+    today: string;
+    available_from: string;
+    available_to: string;
+    monday: string;
+}
+
+interface bikeCardInterface {
+    bike: bikeInterface;
+    dateInfo: dateInfoInterface;
+    amountSelected: number;
+    onChange: Function;
+    startDate?: Date;
+    endDate?: Date;
+}
 
 export default function BikeCard({
     bike,
@@ -25,7 +41,7 @@ export default function BikeCard({
     onChange,
     startDate: selectedStartDate,
     endDate: selectedEndDate,
-}) {
+}: bikeCardInterface) {
     const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
     const maxNonPackageAvailable = bike.package_only_count
         ? bike.max_available - bike.package_only_count
@@ -122,37 +138,3 @@ export default function BikeCard({
         </Card>
     );
 }
-
-BikeCard.propTypes = {
-    bike: PropTypes.shape({
-        id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        name: PropTypes.string,
-        description: PropTypes.string,
-        max_available: PropTypes.number,
-        unavailable: PropTypes.objectOf(PropTypes.number),
-        package_only_count: PropTypes.number,
-        package_only_unavailable: PropTypes.objectOf(PropTypes.number),
-        size: PropTypes.string,
-        dateAdded: PropTypes.string,
-        barcode: PropTypes.string,
-        type: PropTypes.string,
-        color: PropTypes.string,
-        location: PropTypes.string,
-        brand: PropTypes.string,
-    }).isRequired,
-    dateInfo: PropTypes.shape({
-        today: PropTypes.string,
-        available_from: PropTypes.string,
-        available_to: PropTypes.string,
-        monday: PropTypes.string,
-    }).isRequired,
-    amountSelected: PropTypes.number.isRequired,
-    onChange: PropTypes.func.isRequired,
-    startDate: PropTypes.instanceOf(Date),
-    endDate: PropTypes.instanceOf(Date),
-};
-
-BikeCard.defaultProps = {
-    startDate: null,
-    endDate: null,
-};

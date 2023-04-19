@@ -1,5 +1,15 @@
-import PropTypes from 'prop-types';
 import { Box, Button, List, ListItem, Modal, Stack, Typography } from '@mui/material';
+import type { bikeInterface } from '../../Layouts/BikesLayout';
+
+interface BikeThankYouModalInterface {
+    isThankYouModalVisible: boolean;
+    setIsThankYouModalVisible: React.Dispatch<React.SetStateAction<null | boolean>>;
+    setIsConfirmationVisible: React.Dispatch<React.SetStateAction<null | boolean>>;
+    setIsIntroVisible: React.Dispatch<React.SetStateAction<null | boolean>>;
+    reset: Function; // JTo: Not sure if this is OK ???
+    getValues: Function; // JTo: Not sure if this is OK ???
+    bikes: bikeInterface[];
+}
 
 /**
  * BikeThankYouModal - Modal to confirm that the rent process has finished succesfully.
@@ -21,7 +31,7 @@ function BikeThankYouModal({
     reset,
     getValues,
     bikes,
-}) {
+}: BikeThankYouModalInterface) {
     // onClick: set Intro view true, set other views false, reset
     const modalExitHandler = () => {
         setIsThankYouModalVisible(false);
@@ -87,29 +97,5 @@ function BikeThankYouModal({
         </Modal>
     );
 }
-
-BikeThankYouModal.propTypes = {
-    setIsThankYouModalVisible: PropTypes.func.isRequired,
-    isThankYouModalVisible: PropTypes.bool.isRequired,
-    setIsConfirmationVisible: PropTypes.func.isRequired,
-    setIsIntroVisible: PropTypes.func.isRequired,
-    reset: PropTypes.func.isRequired,
-    getValues: PropTypes.func.isRequired,
-    bikes: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-            name: PropTypes.string,
-            description: PropTypes.string,
-            max_available: PropTypes.number,
-            unavailable: PropTypes.objectOf(PropTypes.number),
-            package_only_count: PropTypes.number,
-            package_only_unavailable: PropTypes.objectOf(PropTypes.number),
-            size: PropTypes.string,
-            type: PropTypes.string,
-            color: PropTypes.string,
-            brand: PropTypes.string,
-        })
-    ).isRequired,
-};
 
 export default BikeThankYouModal;
