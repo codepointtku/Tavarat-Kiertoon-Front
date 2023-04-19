@@ -272,7 +272,7 @@ function Routes() {
                         {
                             path: 'salasanapalautettu',
                             element: <ResetSuccessful />,
-                            action: async ({ request, params }) => resetPasswordAction(auth, setAuth, request, params),
+                            action: async ({ request }) => resetPasswordAction(auth, setAuth, request),
                         },
                     ],
                 },

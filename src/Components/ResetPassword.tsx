@@ -19,7 +19,9 @@ function ResetPassword() {
     const onSubmit = (data: any) => {
         console.log(uid, token);
         const { new_password, new_password_again } = data;
-        submit({ new_password, new_password_again }, { method: 'post', action: 'salasanapalautettu' });
+        uid &&
+            token &&
+            submit({ new_password, new_password_again, uid, token }, { method: 'post', action: 'salasanapalautettu' });
     };
 
     return (

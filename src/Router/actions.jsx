@@ -303,13 +303,13 @@ const resetEmailAction = async (auth, setAuth, request) => {
     return { type: 'emailsent', status: false };
 };
 
-const resetPasswordAction = async (auth, setAuth, request, params) => {
+const resetPasswordAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, 'users/password/reset/', 'post', {
         new_password: formData.get('new_password'),
         new_password_again: formData.get('new_password_again'),
-        uidb64: params.uidb64,
-        token: params.token,
+        uid: formData.get('uid'),
+        token: formData.get('token'),
     });
     if (response.status === 200) {
         return { type: 'passwordreset', status: true };
