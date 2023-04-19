@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useSubmit, useParams } from 'react-router-dom';
-import { Container, Box, Grid, Typography, TextField, Button, Alert } from '@mui/material';
+import { Container, Box, Grid, Typography, OutlinedInput, Button, Alert, TextField } from '@mui/material';
 
 // interface Params {
 //     uid: string | undefined;
@@ -39,6 +39,7 @@ function ResetPassword() {
                             <Grid item>
                                 <TextField
                                     label="Uusi salasana"
+                                    type="password"
                                     {...register('new_password', { required: true, maxLength: 255 })}
                                     fullWidth
                                 />
@@ -47,6 +48,7 @@ function ResetPassword() {
                             <Grid item>
                                 <TextField
                                     label="Uusi salasana uudestaan"
+                                    type="password"
                                     {...register('new_password_again', {
                                         required: true,
                                         maxLength: 255,
