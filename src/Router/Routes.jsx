@@ -23,6 +23,7 @@ import OrderView from '../Components/Storage/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
 import QrScanner from '../Components/Storage/QrScanner';
 
+import AdminPanel from '../Components/Admin/Panel/AdminPanel';
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
 import NewAnnouncement from '../Components/Admin/NewAnnouncement';
@@ -351,7 +352,7 @@ function Routes() {
                     children: [
                         {
                             index: true,
-                            element: <Navigate to="varastot" />,
+                            element: <AdminPanel />,
                         },
                         {
                             path: 'tiedotteet/luo',
