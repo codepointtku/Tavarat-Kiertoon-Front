@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
 import { Table, TableBody, TableContainer, TableHead, TableRow, TableCell, Button, Paper } from '@mui/material';
-import StyledTableCell from './StyledTableCell';
+import StyledTableCell from '../StyledTableCell';
 
 function Storages({ storages }) {
     const navigate = useNavigate();

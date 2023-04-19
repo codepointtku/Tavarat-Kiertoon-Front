@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router';
 import { Container, Stack } from '@mui/material';
 
-import StorageBar from '../Components/StorageBar';
+import StorageBar from '../Components/Storage/StorageBar';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 
