@@ -47,9 +47,9 @@ import Stats from '../Components/Admin/Stats/Stats';
 import BackgroundInfo from '../Components/Default/Backgroundinfo';
 import Announcements from '../Components/Default/Announcements';
 import DeliveryView from '../Components/DeliveryView';
-import ForgotPassword from '../Components/ForgotPassword';
-import ResetPassword from '../Components/ResetPassword';
-import ResetSuccessful from '../Components/ResetSuccessful';
+import ForgotPassword from '../Components/Default/ForgotPassword';
+import ResetPassword from '../Components/Default/ResetPassword';
+import ResetSuccessful from '../Components/Default/ResetSuccessful';
 
 import InstructionsPage from '../Components/Default/Instructions/InstructionsPage';
 import GuideCommon from '../Components/Default/Instructions/GuideCommon';
