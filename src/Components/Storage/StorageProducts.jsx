@@ -3,9 +3,9 @@ import { Link, useLoaderData, useRouteLoaderData } from 'react-router-dom';
 import { Grid, IconButton, styled } from '@mui/material';
 import StorageProductsTable from './StorageProductsTable';
 import AddCircle from '@mui/icons-material/AddCircle';
-import QrCodeScanner from '@mui/icons-material/QrCodeScanner';
+// import QrCodeScanner from '@mui/icons-material/QrCodeScanner';
 import HorizontalSplitIcon from '@mui/icons-material/HorizontalSplit';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
     display: 'flex',
@@ -13,7 +13,6 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
     margin: 4,
     justifyContent: 'center',
     padding: 4,
-    // backgroundColor: theme.palette.primary.main,
 }));
 
 function StorageProducts() {
@@ -45,8 +44,17 @@ function StorageProducts() {
                 <StyledGrid item xs={3}>
                     <IconButton fontSize="large" color="primary" variant="contained" aria-label="barcode search">
                         {/* todo: custom viivakoodi-ikoni? */}
-                        <HorizontalSplitIcon sx={{ color: 'primary', transform: 'rotate(90deg)' }} fontSize="large" />
-                        <HorizontalSplitIcon sx={{ color: 'primary', transform: 'rotate(90deg)' }} fontSize="large" />
+                        <HorizontalSplitIcon
+                            sx={{
+                                color: 'primary',
+                                transform: 'rotate(90deg)',
+                            }}
+                            fontSize="large"
+                        />
+                        <HorizontalSplitIcon
+                            sx={{ color: 'primary', transform: 'rotate(90deg)', marginLeft: -1.6 }}
+                            fontSize="large"
+                        />
                         Skannaa ja hae
                     </IconButton>
                 </StyledGrid>

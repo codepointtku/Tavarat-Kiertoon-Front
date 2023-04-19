@@ -22,16 +22,16 @@ import OrdersList from '../Components/Storage/OrdersList';
 import OrderView from '../Components/Storage/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
 import QrScanner from '../Components/Storage/QrScanner';
+import StorageProducts from '../Components/Storage/StorageProducts';
+import AddNewItem from '../Components/Storage/AddNewItem';
 
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
 import NewAnnouncement from '../Components/Admin/NewAnnouncement';
 
-import StoragesList from '../Components/StoragesList';
-import StorageEdit from '../Components/StorageEdit';
-import AddStorage from '../Components/AddStorage';
-import StorageProducts from '../Components/StorageProducts';
-import AddNewItem from '../Components/AddNewItem';
+import StoragesList from '../Components/Admin/StoragesList';
+import StorageEdit from '../Components/Admin/StorageEdit';
+import AddStorage from '../Components/Admin/AddStorage';
 
 import PDFView from '../Components/Storage/PDFView';
 

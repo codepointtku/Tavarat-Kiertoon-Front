@@ -15,9 +15,9 @@ import {
     Button,
 } from '@mui/material';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
-import TablePaginationActions from './TablePaginationActions';
-import StyledTableCell from './StyledTableCell';
-import StyledTableRow from './StyledTableRow';
+import TablePaginationActions from '../TablePaginationActions';
+import StyledTableCell from '../StyledTableCell';
+import StyledTableRow from '../StyledTableRow';
 
 function StorageProductsTable() {
     const { categories } = useRouteLoaderData('root');
