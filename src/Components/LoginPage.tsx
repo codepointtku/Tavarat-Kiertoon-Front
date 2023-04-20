@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useState } from 'react';
 import { Link, useSubmit, Form, useActionData } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 import {
     Avatar,
@@ -23,20 +23,30 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-import AlertBox from '../../AlertBox';
+import AlertBox from './AlertBox';
 
-function LoginForm({ notLoggedIn }) {
-    const { register, handleSubmit } = useForm();
+interface FormValues {
+    email: string;
+    password: string;
+}
+
+interface StatusData {
+    type: string;
+    status: boolean;
+}
+
+function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
+    const { register, handleSubmit } = useForm<FormValues>();
     const submit = useSubmit();
-    const responseStatus = useActionData();
+    const responseStatus = useActionData() as StatusData | undefined;
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
-    const handleMouseDownPassword = (event) => {
+    const handleMouseDownPassword = (event: React.MouseEvent) => {
         event.preventDefault();
     };
 
-    const onSubmit = async (data) => {
+    const onSubmit: SubmitHandler<FormValues> = async (data) => {
         const formData = { ...data };
         submit(formData, {
             method: 'post',
