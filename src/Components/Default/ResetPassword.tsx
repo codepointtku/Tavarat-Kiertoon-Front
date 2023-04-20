@@ -1,15 +1,23 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSubmit, useParams } from 'react-router-dom';
-import { Container, Box, Grid, Typography, OutlinedInput, Button, Alert, TextField } from '@mui/material';
+import { useSubmit, useLocation, useActionData, useNavigate } from 'react-router-dom';
+import { Container, Box, Grid, Typography, Button, Alert, TextField } from '@mui/material';
 
-// interface Params {
-//     uid: string | undefined;
-//     token: string | undefined;
-// }
+interface ResponseStatus {
+    type: string;
+    status: Boolean;
+}
 
 function ResetPassword() {
     const submit = useSubmit();
-    const { uid, token } = useParams();
+    const navigate = useNavigate();
+    const responseStatus = useActionData() as ResponseStatus;
+    const {
+        state: { uid, token },
+    } = useLocation();
+
+    console.log(uid, token);
+
     const {
         register,
         handleSubmit,
@@ -17,12 +25,15 @@ function ResetPassword() {
     } = useForm();
 
     const onSubmit = (data: any) => {
-        console.log(uid, token);
         const { new_password, new_password_again } = data;
         uid &&
             token &&
-            submit({ new_password, new_password_again, uid, token }, { method: 'post', action: 'salasanapalautettu' });
+            submit({ new_password, new_password_again, uid, token }, { method: 'post', action: 'salasananpalautus' });
     };
+
+    useEffect(() => {
+        responseStatus?.status && navigate('palautusonnistui');
+    }, [responseStatus]);
 
     return (
         <Container>
