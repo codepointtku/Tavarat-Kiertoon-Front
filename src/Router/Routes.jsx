@@ -23,6 +23,7 @@ import OrderView from '../Components/Storage/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
 import QrScanner from '../Components/Storage/QrScanner';
 
+import LoginPage from '../Components/Storage/LoginPage';
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
 import NewAnnouncement from '../Components/Admin/NewAnnouncement';
@@ -227,6 +228,10 @@ function Routes() {
                         {
                             path: '/tiedotteet',
                             element: <Announcements />,
+                        },
+                        {
+                            path: '/kirjaudusisaan',
+                            element: <LoginPage />,
                         },
                         {
                             path: 'rekisteroidy',
