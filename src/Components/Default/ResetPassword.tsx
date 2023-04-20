@@ -33,6 +33,7 @@ function ResetPassword() {
 
     useEffect(() => {
         responseStatus?.status && navigate('palautusonnistui');
+        responseStatus?.type === 'outdatedtoken' && navigate('/');
     }, [responseStatus]);
 
     return (

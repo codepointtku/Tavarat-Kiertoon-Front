@@ -314,6 +314,8 @@ const resetPasswordAction = async (auth, setAuth, request) => {
     });
     if (response.status === 200) {
         return { type: 'passwordreset', status: true };
+    } else if (response.status === 204) {
+        return { type: 'outdatedtoken', status: true };
     }
     return { type: 'passwordreset', status: false };
 };
