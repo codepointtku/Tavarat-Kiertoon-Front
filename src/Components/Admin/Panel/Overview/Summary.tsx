@@ -1,29 +1,35 @@
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Paper } from '@mui/material';
 
 import SummaryOrders from './SummaryOrders';
 import SummaryProducts from './SummaryProducts';
 import SummaryUsers from './SummaryUsers';
+import TypographyTitle from '../../../TypographyTitle';
+
+function SummaryHero() {
+    return (
+        <Box sx={{ marginBottom: '2rem', paddingTop: '1rem' }}>
+            <TypographyTitle text="Yhteenveto Tavarat Kiertoon-järjestelmän tilasta" />
+        </Box>
+    );
+}
 
 function Summary() {
     return (
-        <Box id="admin-summary">
-            <Grid container>
-                <Grid id="summary-item" item>
-                    <Box id="summary-component" sx={{ border: '1px solid cyan', padding: '1rem' }}>
+        <Box id="admin-summary-area" sx={{ padding: '1rem' }}>
+            <Paper elevation={1}>
+                <SummaryHero />
+                <Grid id="summary-grid-container" container justifyContent="space-evenly">
+                    <Grid className="summary-item" item>
                         <SummaryOrders />
-                    </Box>
-                </Grid>
-                <Grid id="summary-item" item>
-                    <Box id="summary-component" sx={{ border: '1px solid cyan', padding: '1rem' }}>
+                    </Grid>
+                    <Grid className="summary-item" item>
                         <SummaryProducts />
-                    </Box>
-                </Grid>
-                <Grid id="summary-item" item>
-                    <Box id="summary-component" sx={{ border: '1px solid cyan', padding: '1rem' }}>
+                    </Grid>
+                    <Grid className="summary-item" item>
                         <SummaryUsers />
-                    </Box>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </Paper>
         </Box>
     );
 }
