@@ -26,7 +26,7 @@ function StorageProducts() {
 
     return (
         <>
-            <Grid container spacing={4} sx={{ margin: 2 }} justifyContent={'center'}>
+            <Grid container spacing={4} sx={{ margin: 2 }} justifyContent={'space-evenly'}>
                 <StyledGrid
                     item
                     component={Link}

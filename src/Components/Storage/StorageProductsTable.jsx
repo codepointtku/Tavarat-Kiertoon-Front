@@ -45,6 +45,7 @@ function StorageProductsTable() {
                 <TableHead>
                     <TableRow>
                         <StyledTableCell>
+                            Viivakoodi
                             {/* todo: searchbar peruskomponentti tuotteiden hakua varten */}
                             <Form onSubmit={handleSubmit(handleBarcodeSearch)}>
                                 {/* todo: näytä vain hakuikoni kunnes painetaan, jolloin tekstikenttä laajenee/aktivoituu */}
@@ -59,16 +60,15 @@ function StorageProductsTable() {
                                 </Button>
                                 {/* todo:linkki viivakoodiskanneriin */}
                                 <IconButton fontSize="large" variant="contained" aria-label="barcode search">
-                                    {/* todo: custom viivakoodi-ikoni? */}
                                     <QrCodeScannerIcon sx={{ color: 'white' }} />
                                 </IconButton>
                             </Form>
                         </StyledTableCell>
                         <StyledTableCell align="right">Tuotenimi</StyledTableCell>
                         <StyledTableCell align="right">Määrä</StyledTableCell>
-                        <StyledTableCell align="right">Viivakoodi</StyledTableCell>
+                        <StyledTableCell align="right">Varasto</StyledTableCell>
                         <StyledTableCell align="right">Kategoria</StyledTableCell>
-                        <StyledTableCell align="right">Päivämäärä</StyledTableCell>
+                        <StyledTableCell align="right">Luotu / Muokattu</StyledTableCell>
                         {/* <StyledTableCell align="right">Varastopaikka</StyledTableCell> */}
                     </TableRow>
                 </TableHead>
@@ -100,20 +100,24 @@ function StorageProductsTable() {
                 {/* todo: sama groupid- stackkaa tuotteet */}
                 {/* todo: näytä tilauksille varatut tuotteet ja kplmäärä? */}
                 <TableBody>
-                    {products?.results?.map((row) => (
-                        <StyledTableRow key={row.id}>
+                    {products?.results?.map((product) => (
+                        <StyledTableRow key={product.id}>
                             <StyledTableCell component="th" scope="row">
-                                <Link to={`/varasto/tuotteet/${row.id}`}>viivakoodi?</Link>
+                                {/* TODO: varastopuolen tuotesivu, ProductDetails komponenttia hyödyntäen */}
+                                <Link to={`/varasto/tuotteet/${product.id}`}>{product.barcode}</Link>
+                                <Button variant="outlined" color="primary" sx={{ marginLeft: 2 }}>
+                                    Muokkaa
+                                </Button>
                             </StyledTableCell>
                             <StyledTableCell align="right">
                                 {/* todo: link to working product page with storage related info and edit functionality */}
-                                <Link to={`/varasto/tuotteet/${row.id}`}>{row.name}</Link>
+                                <Link to={`/varasto/tuotteet/${product.id}`}>{product.name}</Link>
                             </StyledTableCell>
-                            <StyledTableCell align="right">{row.amount}</StyledTableCell>
-                            <StyledTableCell align="right">{row.barcode}</StyledTableCell>
-                            <StyledTableCell align="right">{row.category}</StyledTableCell>
+                            <StyledTableCell align="right">{product.amount}</StyledTableCell>
+                            <StyledTableCell align="right">{product.storage_name}</StyledTableCell>
+                            <StyledTableCell align="right">{categories[product.category].name}</StyledTableCell>
                             <StyledTableCell align="right">
-                                {new Date(row.date).toLocaleDateString('fi-FI')}
+                                {new Date(product.modified_date).toLocaleDateString('fi-FI')}
                             </StyledTableCell>
                         </StyledTableRow>
                     ))}
