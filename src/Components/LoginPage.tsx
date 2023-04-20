@@ -38,7 +38,7 @@ interface StatusData {
 function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
     const { register, handleSubmit } = useForm<FormValues>();
     const submit = useSubmit();
-    const responseStatus = useActionData() as StatusData | undefined;
+    const responseStatus = useActionData() as StatusData;
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
