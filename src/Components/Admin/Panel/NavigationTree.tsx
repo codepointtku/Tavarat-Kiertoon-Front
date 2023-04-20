@@ -43,6 +43,12 @@ const kayttajat = [
     { icon: <Public />, label: 'Hakemukset' },
 ];
 
+const varastot = [
+    { icon: <People />, label: 'Tarkastele' },
+    { icon: <Dns />, label: 'Muokkaa' },
+    { icon: <PermMedia />, label: 'Lisää uusi' },
+];
+
 const tiedotteet = [
     { icon: <People />, label: 'Tarkastele' },
     { icon: <PermMedia />, label: 'Luo uusi' },
@@ -83,6 +89,7 @@ function NavigationTree() {
     const [openOrdersNavList, setOpenOrdersNavList] = React.useState(false);
     const [openProductsNavList, setOpenProductsNavList] = React.useState(false);
     const [openUsersNavList, setOpenUsersNavList] = React.useState(false);
+    const [openStoragesNavList, setOpenStoragesNavList] = React.useState(false);
     const [openBulletinsNavList, setOpenBulletinsNavList] = React.useState(false);
     const [openMessagingNavList, setOpenMessagingNavList] = React.useState(false);
 
@@ -247,6 +254,63 @@ function NavigationTree() {
             </ListItemButton>
             {openUsersNavList &&
                 kayttajat.map((item) => (
+                    <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
+                        <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
+                        <ListItemText
+                            primary={item.label}
+                            primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }}
+                        />
+                    </ListItemButton>
+                ))}
+        </Box>
+    );
+
+    // varastot
+    const storagesListItems = (
+        <Box
+            sx={{
+                bgcolor: openStoragesNavList ? 'rgba(71, 98, 130, 0.2)' : null,
+                pb: openStoragesNavList ? 2 : 0,
+            }}
+        >
+            <ListItemButton
+                alignItems="flex-start"
+                onClick={() => setOpenStoragesNavList(!openStoragesNavList)}
+                sx={{
+                    px: 3,
+                    pt: 2.5,
+                    pb: openStoragesNavList ? 0 : 2.5,
+                    '&:hover, &:focus': { '& svg': { opacity: openStoragesNavList ? 1 : 0 } },
+                }}
+            >
+                <ListItemText
+                    primary="Varastot"
+                    primaryTypographyProps={{
+                        fontSize: 15,
+                        fontWeight: 'medium',
+                        lineHeight: '20px',
+                        mb: '2px',
+                    }}
+                    secondary="Varastojen hallinta..."
+                    secondaryTypographyProps={{
+                        noWrap: true,
+                        fontSize: 12,
+                        lineHeight: '16px',
+                        color: openStoragesNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
+                    }}
+                    sx={{ my: 0 }}
+                />
+                <KeyboardArrowDown
+                    sx={{
+                        mr: -1,
+                        opacity: 0,
+                        transform: openStoragesNavList ? 'rotate(-180deg)' : 'rotate(0)',
+                        transition: '0.2s',
+                    }}
+                />
+            </ListItemButton>
+            {openStoragesNavList &&
+                varastot.map((item) => (
                     <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
                         <ListItemText
@@ -458,6 +522,7 @@ function NavigationTree() {
                         {ordersListItems}
                         {productsListItems}
                         {usersListItems}
+                        {storagesListItems}
                         {bulletinsListItems}
                         {messagingListItems}
                     </FireNav>
