@@ -51,7 +51,7 @@ function Search() {
             <SearchIconWrapper>
                 <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+            <StyledInputBase placeholder="Etsi sivustolta..." inputProps={{ 'aria-label': 'search' }} />
         </Search>
     );
 }
@@ -65,32 +65,37 @@ function PanelHeader() {
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'center',
+                    flexWrap: 'wrap',
+                    color: 'primary.contrastText',
+                    padding: '0 0 0 2rem',
                 }}
             >
                 <Box id="header-title-wrapper" sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="h6">Tervetuloa takaisin, pekkapuupää</Typography>
+                    <Typography variant="h6" color="primary.contrastText">
+                        Tervetuloa takaisin, pekkapuupää
+                    </Typography>
                     <Typography variant="body2" color="text.hint">
                         Tässä päivän uutiset
                     </Typography>
                 </Box>
-                <Box id="vertical-spacer" sx={{ border: '1px solid green', padding: '1rem', flexGrow: 1 }} />
+                <Box id="vertical-spacer" sx={{ margin: '0 10rem 0 0', padding: '1rem', flexGrow: 1 }} />
                 <Search />
                 <Box id="notifs" sx={{ margin: '0 1rem 0 1rem' }}>
                     <IconButton>
                         <Badge badgeContent={4} color="error">
-                            <NotificationsNoneIcon />
+                            <NotificationsNoneIcon sx={{ color: 'primary.contrastText' }} />
                         </Badge>
                     </IconButton>
                 </Box>
                 <Box id="mail" sx={{ margin: '0 1rem 0 1rem' }}>
                     <IconButton>
                         <Badge badgeContent={3} color="error">
-                            <MailIcon />
+                            <MailIcon sx={{ color: 'primary.contrastText' }} />
                         </Badge>
                     </IconButton>
                 </Box>
                 <Box id="avatar" sx={{ margin: '0 1rem 0 1rem' }}>
-                    <Avatar sx={{ bgcolor: 'primary.light' }}>A</Avatar>
+                    <Avatar sx={{ bgcolor: 'success.dark' }}>A</Avatar>
                 </Box>
             </Box>
         </Box>
