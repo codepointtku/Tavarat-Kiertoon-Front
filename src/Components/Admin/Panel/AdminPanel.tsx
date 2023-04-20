@@ -6,10 +6,7 @@ import ComponentContainer from './ComponentContainer';
 
 function AdminPanel() {
     return (
-        <Box
-            id="admin-panel-container"
-            sx={{ border: '1px solid blue', display: 'flex', flexDirection: 'row', flexGrow: '1' }}
-        >
+        <Box id="admin-panel-container" sx={{ display: 'flex', flexDirection: 'row', flexGrow: '1' }}>
             <NavigationTree />
             <Box id="layout-area-container" sx={{ display: 'flex', flexDirection: 'column' }}>
                 <PanelHeader />
