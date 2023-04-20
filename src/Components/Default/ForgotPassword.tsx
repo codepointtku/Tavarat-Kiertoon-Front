@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useSubmit, useActionData } from 'react-router-dom';
-import { Typography, Box, Container, TextField, Button, Alert, AlertTitle } from '@mui/material';
+import { Typography, Box, Container, TextField, Button, Alert, AlertTitle, Grid } from '@mui/material';
 import KeyIcon from '@mui/icons-material/Key';
 
 interface ResponseStatus {
@@ -34,10 +34,16 @@ function ForgotPassword() {
                     mt: 5,
                 }}
             >
-                <KeyIcon fontSize="large" />
-                <Typography variant="h4" component="span" sx={{ fontWeight: 'bold', ml: 2 }}>
-                    Unohtunut salasana
-                </Typography>
+                <Grid direction="row" gap={2} alignItems="center" container>
+                    <Grid item>
+                        <KeyIcon fontSize="large" />
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                            Unohtunut salasana
+                        </Typography>
+                    </Grid>
+                </Grid>
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
                     <Box sx={{ width: 600 }}>
                         {responseStatus?.status ? (
