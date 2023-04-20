@@ -67,18 +67,18 @@ function PanelHeader() {
                     alignItems: 'center',
                     flexWrap: 'wrap',
                     color: 'primary.contrastText',
-                    padding: '0 0 0 2rem',
+                    padding: '0 0 0 7.4rem',
                 }}
             >
                 <Box id="header-title-wrapper" sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Typography variant="h6" color="primary.contrastText">
-                        Tervetuloa takaisin, pekkapuupää
+                        Tervetuloa takaisin, Antti Adminen
                     </Typography>
                     <Typography variant="body2" color="text.hint">
                         Tässä päivän uutiset
                     </Typography>
                 </Box>
-                <Box id="vertical-spacer" sx={{ margin: '0 10rem 0 0', padding: '1rem', flexGrow: 1 }} />
+                <Box id="vertical-spacer" sx={{ margin: '0 4rem 0 0', padding: '1rem', flexGrow: 1 }} />
                 <Search />
                 <Box id="notifs" sx={{ margin: '0 1rem 0 1rem' }}>
                     <IconButton>

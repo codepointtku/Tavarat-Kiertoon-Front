@@ -7,7 +7,6 @@ import SummaryUsers from './SummaryUsers';
 function Summary() {
     return (
         <Box id="admin-summary">
-            summary
             <Grid container>
                 <Grid id="summary-item" item>
                     <Box id="summary-component" sx={{ border: '1px solid cyan', padding: '1rem' }}>
