@@ -1,27 +1,18 @@
-// import { Box } from '@mui/material';
-
-// function NavigationTree() {
-//     return (
-//         <Box id="admin-panel-navigation-tree" sx={{ border: '1px solid green' }}>
-//             nav tree
-//         </Box>
-//     );
-// }
-
-// export default NavigationTree;
-
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
+import {
+    Box,
+    Divider,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Paper,
+    IconButton,
+    Tooltip,
+} from '@mui/material/';
+
 import ArrowRight from '@mui/icons-material/ArrowRight';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import Home from '@mui/icons-material/Home';
@@ -76,25 +67,42 @@ const FireNav = styled(List)<{ component?: React.ElementType }>({
     },
 });
 
+// type StateStuff = {
+//     ordersNavList: boolean;
+//     productsNavList: boolean;
+//     usersNavList: boolean;
+//     bulletinsNavList: boolean;
+//     messagingNavList: boolean;
+// }
+
 function NavigationTree() {
-    const [open, setOpen] = React.useState(true);
+    // const tila: StateStuff = {ordersNavList: false, productsNavList: false, usersNavList: false, bulletinsNavList: false, messagingNavList: false}
+    // const [open, setOpen] = React.useState(tila);
+
+    // unethical dummy state-thing
+    const [openOrdersNavList, setOpenOrdersNavList] = React.useState(false);
+    const [openProductsNavList, setOpenProductsNavList] = React.useState(false);
+    const [openUsersNavList, setOpenUsersNavList] = React.useState(false);
+    const [openBulletinsNavList, setOpenBulletinsNavList] = React.useState(false);
+    const [openMessagingNavList, setOpenMessagingNavList] = React.useState(false);
 
     // tilaukset
-    const eka = (
+    const ordersListItems = (
         <Box
             sx={{
-                bgcolor: open ? 'rgba(71, 98, 130, 0.2)' : null,
-                pb: open ? 2 : 0,
+                bgcolor: openOrdersNavList ? 'rgba(71, 98, 130, 0.2)' : null,
+                pb: openOrdersNavList ? 2 : 0,
             }}
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpen(!open)}
+                // onClick={() => setOpen({ ...tila, [tila.ordersNavList]: !tila.ordersNavList })}
+                onClick={() => setOpenOrdersNavList(!openOrdersNavList)}
                 sx={{
                     px: 3,
                     pt: 2.5,
-                    pb: open ? 0 : 2.5,
-                    '&:hover, &:focus': { '& svg': { opacity: open ? 1 : 0 } },
+                    pb: openOrdersNavList ? 0 : 2.5,
+                    '&:hover, &:focus': { '& svg': { opacity: openOrdersNavList ? 1 : 0 } },
                 }}
             >
                 <ListItemText
@@ -110,7 +118,7 @@ function NavigationTree() {
                         noWrap: true,
                         fontSize: 12,
                         lineHeight: '16px',
-                        color: open ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
+                        color: openOrdersNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
                     }}
                     sx={{ my: 0 }}
                 />
@@ -118,12 +126,12 @@ function NavigationTree() {
                     sx={{
                         mr: -1,
                         opacity: 0,
-                        transform: open ? 'rotate(-180deg)' : 'rotate(0)',
+                        transform: openOrdersNavList ? 'rotate(-180deg)' : 'rotate(0)',
                         transition: '0.2s',
                     }}
                 />
             </ListItemButton>
-            {open &&
+            {openOrdersNavList &&
                 data.map((item) => (
                     <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
@@ -137,21 +145,21 @@ function NavigationTree() {
     );
 
     // tuotteet
-    const toka = (
+    const productsListItems = (
         <Box
             sx={{
-                bgcolor: open ? 'rgba(71, 98, 130, 0.2)' : null,
-                pb: open ? 2 : 0,
+                bgcolor: openProductsNavList ? 'rgba(71, 98, 130, 0.2)' : null,
+                pb: openProductsNavList ? 2 : 0,
             }}
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpen(!open)}
+                onClick={() => setOpenProductsNavList(!openProductsNavList)}
                 sx={{
                     px: 3,
                     pt: 2.5,
-                    pb: open ? 0 : 2.5,
-                    '&:hover, &:focus': { '& svg': { opacity: open ? 1 : 0 } },
+                    pb: openProductsNavList ? 0 : 2.5,
+                    '&:hover, &:focus': { '& svg': { opacity: openProductsNavList ? 1 : 0 } },
                 }}
             >
                 <ListItemText
@@ -167,7 +175,7 @@ function NavigationTree() {
                         noWrap: true,
                         fontSize: 12,
                         lineHeight: '16px',
-                        color: open ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
+                        color: openProductsNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
                     }}
                     sx={{ my: 0 }}
                 />
@@ -175,12 +183,12 @@ function NavigationTree() {
                     sx={{
                         mr: -1,
                         opacity: 0,
-                        transform: open ? 'rotate(-180deg)' : 'rotate(0)',
+                        transform: openProductsNavList ? 'rotate(-180deg)' : 'rotate(0)',
                         transition: '0.2s',
                     }}
                 />
             </ListItemButton>
-            {open &&
+            {openProductsNavList &&
                 tuotteet.map((item) => (
                     <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
@@ -194,21 +202,21 @@ function NavigationTree() {
     );
 
     // käyttäjät
-    const kolmas = (
+    const usersListItems = (
         <Box
             sx={{
-                bgcolor: open ? 'rgba(71, 98, 130, 0.2)' : null,
-                pb: open ? 2 : 0,
+                bgcolor: openUsersNavList ? 'rgba(71, 98, 130, 0.2)' : null,
+                pb: openUsersNavList ? 2 : 0,
             }}
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpen(!open)}
+                onClick={() => setOpenUsersNavList(!openUsersNavList)}
                 sx={{
                     px: 3,
                     pt: 2.5,
-                    pb: open ? 0 : 2.5,
-                    '&:hover, &:focus': { '& svg': { opacity: open ? 1 : 0 } },
+                    pb: openUsersNavList ? 0 : 2.5,
+                    '&:hover, &:focus': { '& svg': { opacity: openUsersNavList ? 1 : 0 } },
                 }}
             >
                 <ListItemText
@@ -224,7 +232,7 @@ function NavigationTree() {
                         noWrap: true,
                         fontSize: 12,
                         lineHeight: '16px',
-                        color: open ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
+                        color: openUsersNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
                     }}
                     sx={{ my: 0 }}
                 />
@@ -232,12 +240,12 @@ function NavigationTree() {
                     sx={{
                         mr: -1,
                         opacity: 0,
-                        transform: open ? 'rotate(-180deg)' : 'rotate(0)',
+                        transform: openUsersNavList ? 'rotate(-180deg)' : 'rotate(0)',
                         transition: '0.2s',
                     }}
                 />
             </ListItemButton>
-            {open &&
+            {openUsersNavList &&
                 kayttajat.map((item) => (
                     <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
@@ -251,21 +259,21 @@ function NavigationTree() {
     );
 
     // tiedotteet
-    const neljas = (
+    const bulletinsListItems = (
         <Box
             sx={{
-                bgcolor: open ? 'rgba(71, 98, 130, 0.2)' : null,
-                pb: open ? 2 : 0,
+                bgcolor: openBulletinsNavList ? 'rgba(71, 98, 130, 0.2)' : null,
+                pb: openBulletinsNavList ? 2 : 0,
             }}
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpen(!open)}
+                onClick={() => setOpenBulletinsNavList(!openBulletinsNavList)}
                 sx={{
                     px: 3,
                     pt: 2.5,
-                    pb: open ? 0 : 2.5,
-                    '&:hover, &:focus': { '& svg': { opacity: open ? 1 : 0 } },
+                    pb: openBulletinsNavList ? 0 : 2.5,
+                    '&:hover, &:focus': { '& svg': { opacity: openBulletinsNavList ? 1 : 0 } },
                 }}
             >
                 <ListItemText
@@ -281,7 +289,7 @@ function NavigationTree() {
                         noWrap: true,
                         fontSize: 12,
                         lineHeight: '16px',
-                        color: open ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
+                        color: openBulletinsNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
                     }}
                     sx={{ my: 0 }}
                 />
@@ -289,12 +297,12 @@ function NavigationTree() {
                     sx={{
                         mr: -1,
                         opacity: 0,
-                        transform: open ? 'rotate(-180deg)' : 'rotate(0)',
+                        transform: openBulletinsNavList ? 'rotate(-180deg)' : 'rotate(0)',
                         transition: '0.2s',
                     }}
                 />
             </ListItemButton>
-            {open &&
+            {openBulletinsNavList &&
                 tiedotteet.map((item) => (
                     <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
@@ -308,21 +316,21 @@ function NavigationTree() {
     );
 
     // viestit
-    const viides = (
+    const messagingListItems = (
         <Box
             sx={{
-                bgcolor: open ? 'rgba(71, 98, 130, 0.2)' : null,
-                pb: open ? 2 : 0,
+                bgcolor: openMessagingNavList ? 'rgba(71, 98, 130, 0.2)' : null,
+                pb: openMessagingNavList ? 2 : 0,
             }}
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpen(!open)}
+                onClick={() => setOpenMessagingNavList(!openMessagingNavList)}
                 sx={{
                     px: 3,
                     pt: 2.5,
-                    pb: open ? 0 : 2.5,
-                    '&:hover, &:focus': { '& svg': { opacity: open ? 1 : 0 } },
+                    pb: openMessagingNavList ? 0 : 2.5,
+                    '&:hover, &:focus': { '& svg': { opacity: openMessagingNavList ? 1 : 0 } },
                 }}
             >
                 <ListItemText
@@ -338,7 +346,7 @@ function NavigationTree() {
                         noWrap: true,
                         fontSize: 12,
                         lineHeight: '16px',
-                        color: open ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
+                        color: openMessagingNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
                     }}
                     sx={{ my: 0 }}
                 />
@@ -346,12 +354,12 @@ function NavigationTree() {
                     sx={{
                         mr: -1,
                         opacity: 0,
-                        transform: open ? 'rotate(-180deg)' : 'rotate(0)',
+                        transform: openMessagingNavList ? 'rotate(-180deg)' : 'rotate(0)',
                         transition: '0.2s',
                     }}
                 />
             </ListItemButton>
-            {open &&
+            {openMessagingNavList &&
                 viestit.map((item) => (
                     <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
@@ -365,7 +373,7 @@ function NavigationTree() {
     );
 
     return (
-        <Box id="admin-panel-navigation-tree" sx={{ display: 'flex' }}>
+        <Box id="admin-panel-navigation-tree" sx={{ display: 'flex', backgroundColor: 'primary.main' }}>
             <ThemeProvider
                 theme={createTheme({
                     components: {
@@ -384,15 +392,15 @@ function NavigationTree() {
             >
                 <Paper elevation={0} sx={{ maxWidth: 256 }}>
                     <FireNav component="nav" disablePadding>
-                        <ListItemButton component="a" href="#customized-list">
-                            <ListItemIcon sx={{ fontSize: 20 }}>🔥</ListItemIcon>
+                        <ListItemButton component="a" href="/admin">
                             <ListItemText
                                 sx={{ my: 0 }}
-                                primary="Tavarat Liekkeihin"
+                                primary="Hallintapaneeli"
                                 primaryTypographyProps={{
                                     fontSize: 20,
                                     fontWeight: 'medium',
                                     letterSpacing: 0,
+                                    textAlign: 'center',
                                 }}
                             />
                         </ListItemButton>
@@ -447,11 +455,11 @@ function NavigationTree() {
                             </Tooltip>
                         </ListItem>
                         <Divider />
-                        {eka}
-                        {toka}
-                        {kolmas}
-                        {neljas}
-                        {viides}
+                        {ordersListItems}
+                        {productsListItems}
+                        {usersListItems}
+                        {bulletinsListItems}
+                        {messagingListItems}
                     </FireNav>
                 </Paper>
             </ThemeProvider>
