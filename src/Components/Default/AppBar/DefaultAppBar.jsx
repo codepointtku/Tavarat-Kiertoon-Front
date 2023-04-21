@@ -28,6 +28,7 @@ import AuthContext from '../../../Context/AuthContext';
 import Welcome from './Welcome';
 import ProductInCart from './ProductInCart';
 import LoginForm from './LoginForm';
+import UserAvatar from '../UserAvatar';
 
 //
 
@@ -166,7 +167,11 @@ function DefaultAppBar() {
                             </StyledBadge>
                         </IconButton>
                         <IconButton onClick={drawerOpen('account')} sx={iconHover}>
-                            <AccountCircleOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
+                            {auth.username ? (
+                                <UserAvatar />
+                            ) : (
+                                <AccountCircleOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
+                            )}
                         </IconButton>
                     </Stack>
                 </Toolbar>

@@ -12,6 +12,7 @@ import Update from './Update';
 function ContactsAndDelivery() {
     const user = useRouteLoaderData('shoppingCart');
     const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
+    console.log(user);
     const {
         register,
         handleSubmit,
