@@ -18,8 +18,6 @@ function ResetPassword() {
         state: { uid, token },
     } = useLocation();
 
-    console.log(uid, token);
-
     const {
         register,
         handleSubmit,

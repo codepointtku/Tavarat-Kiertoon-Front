@@ -5,6 +5,7 @@ import { Typography, Box, Container, TextField, Button, Alert, Avatar, AlertTitl
 import KeyIcon from '@mui/icons-material/Key';
 import BackButton from '../../BackButton';
 import TypographyTitle from '../../TypographyTitle';
+import TypographyHeading from '../../TypographyHeading';
 
 interface ResponseStatus {
     type: 'string';
@@ -14,7 +15,6 @@ interface ResponseStatus {
 function ForgotPassword() {
     const submit = useSubmit();
     const responseStatus = useActionData() as ResponseStatus;
-    console.log(responseStatus);
     const {
         register,
         handleSubmit,
@@ -59,12 +59,12 @@ function ForgotPassword() {
                 </Box>
             </>
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
-                <Box sx={{ width: 600 }}>
-                    {responseStatus?.status ? (
-                        <Typography variant="h5" sx={{ p: 4, fontWeight: 'fontWeightMediumBold' }}>
-                            Salasanan palautuslinkki lähetetty onnistuneesti!
-                        </Typography>
-                    ) : (
+                {responseStatus?.status ? (
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <TypographyHeading text="Salasanan palautuslinkki lähetetty onnistuneesti!" />
+                    </Box>
+                ) : (
+                    <Box sx={{ width: 600 }}>
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <Typography variant="h6" mb={2}>
                                 Syötä käyttäjänimi
@@ -83,8 +83,8 @@ function ForgotPassword() {
                                 Lähetä salasanan palautuslinkki
                             </Button>
                         </form>
-                    )}
-                </Box>
+                    </Box>
+                )}
             </Box>
         </Container>
     );

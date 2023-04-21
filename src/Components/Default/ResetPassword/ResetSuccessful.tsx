@@ -1,15 +1,15 @@
 import { Container, Grid, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
+import TypographyHeading from '../../TypographyHeading';
 
 function ResetSuccessful() {
     return (
         <Container>
             <Grid
                 sx={{
-                    border: 3,
-                    borderStyle: 'solid',
-                    borderRadius: 3,
-                    padding: 5,
+                    border: '0.1rem solid #bfe6f6',
+                    borderRadius: '1rem',
+                    p: 5,
                     mt: 5,
                 }}
                 container
@@ -18,9 +18,7 @@ function ResetSuccessful() {
                 gap={2}
             >
                 <Grid item>
-                    <Typography variant="h5" fontWeight="fontWeightMediumBold">
-                        Salasana palautettu onnistuneesti
-                    </Typography>
+                    <TypographyHeading text="Salasana palautettu onnistuneesti" />
                 </Grid>
                 <Grid item>
                     <Button component={Link} to="/" sx={{ width: 200, p: 2 }}>

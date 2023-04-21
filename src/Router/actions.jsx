@@ -305,7 +305,6 @@ const resetEmailAction = async (auth, setAuth, request) => {
 
 const resetPasswordAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    console.log(typeof formData.get('uid'), typeof formData.get('token'));
     const response = await apiCall(auth, setAuth, 'users/password/reset/', 'post', {
         new_password: formData.get('new_password'),
         new_password_again: formData.get('new_password_again'),
