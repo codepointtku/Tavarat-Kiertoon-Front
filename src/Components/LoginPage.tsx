@@ -63,7 +63,18 @@ function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
             {responseStatus?.type === 'login' && responseStatus?.status && (
                 <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={3000} />
             )}
-            <Paper>
+            <Paper
+                elevation={3}
+                sx={{
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    mb: 4,
+                    width: 1000,
+                    marginTop: 4,
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+            >
                 <Container maxWidth="xs" component={Form} onSubmit={handleSubmit(onSubmit)}>
                     <Box
                         sx={{
