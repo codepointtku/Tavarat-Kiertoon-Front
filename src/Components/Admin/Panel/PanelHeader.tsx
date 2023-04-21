@@ -1,9 +1,12 @@
+import { Link } from 'react-router-dom';
 import { Avatar, Badge, Box, IconButton, InputBase, Typography } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import MailIcon from '@mui/icons-material/Mail';
+import Tooltip from '../../Tooltip';
 
 function Search() {
     const Search = styled('div')(({ theme }) => ({
@@ -67,7 +70,7 @@ function PanelHeader() {
                     alignItems: 'center',
                     flexWrap: 'wrap',
                     color: 'primary.contrastText',
-                    padding: '0 0 0 7.4rem',
+                    padding: '0 0 0 7rem',
                 }}
             >
                 <Box id="header-title-wrapper" sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -79,6 +82,13 @@ function PanelHeader() {
                     </Typography>
                 </Box>
                 <Box id="vertical-spacer" sx={{ margin: '0 4rem 0 0', padding: '1rem', flexGrow: 1 }} />
+                <Box id="statistics" sx={{ margin: '0 1rem 0 1rem' }}>
+                    <Tooltip title="Tarkastele tilastoja">
+                        <IconButton component={Link} to="/tilastot">
+                            <QueryStatsIcon sx={{ color: 'primary.contrastText' }} />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
                 <Search />
                 <Box id="notifs" sx={{ margin: '0 1rem 0 1rem' }}>
                     <IconButton>
