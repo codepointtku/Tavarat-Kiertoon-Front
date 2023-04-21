@@ -15,7 +15,10 @@ class JenkinsReporter implements Reporter {
         // to keep error messages minimal, only print error message after last retry fails.
         if (result.status === 'failed' && result.retry == config.retries) {
             const message = result.error?.message?.replace(ansiRegex, '');
-            fs.writeFileSync('result.txt', `test "${test.title}" ${result.status}: ${message} `);
+            fs.writeFileSync(
+                'result.txt',
+                `test "${test.title}" ${result.status}: ${message?.substring(0, message?.indexOf('Call log:'))} `
+            );
         }
     }
 }
