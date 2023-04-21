@@ -1,22 +1,34 @@
+import { useEffect, useState } from 'react';
 import { useRouteLoaderData } from 'react-router-dom';
 import { Avatar } from '@mui/material';
 
+interface Loader {
+    user: User;
+}
+
+interface User {
+    name: string;
+}
+
 function UserAvatar() {
-    const { user }: any = useRouteLoaderData('frontPage');
-    const userName: string[] = user?.name?.split(' ');
+    const [bgColor, setBgColor] = useState('');
+    const { user } = useRouteLoaderData('frontPage') as Loader;
+    const userName = user?.name?.split(' ');
     const userInitials = userName?.map(([i]) => i);
-    console.log(userInitials);
+
+    useEffect(() => {
+        randomBgColor();
+    }, []);
 
     function randomBgColor() {
         var r = Math.floor(Math.random() * 256);
         var g = Math.floor(Math.random() * 256);
         var b = Math.floor(Math.random() * 256);
-        const bgColor = 'rgb(' + r + ',' + g + ',' + b + ')';
-        return bgColor;
+        setBgColor('rgb(' + r + ',' + g + ',' + b + ')');
     }
 
     return (
-        <Avatar sx={{ bgcolor: randomBgColor() }} alt="User avatar">
+        <Avatar sx={{ bgcolor: bgColor }} alt="User avatar">
             {userInitials}
         </Avatar>
     );
