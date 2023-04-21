@@ -60,6 +60,7 @@ import Bikes from '../Components/Bikes/Bikes';
 import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
+import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 
 import {
     addItemLoader,
@@ -76,11 +77,11 @@ import {
     usersListLoader,
     userSignupLoader,
     shoppingCartLoader,
+    bikesDefaultLoader,
     bikesListLoader,
+    bikeLoader,
     shoppingProcessLoader,
     bulletinSubjectLoader,
-    bikesTestLoader,
-    bikeTestLoader,
 } from './loaders';
 
 import {
@@ -96,7 +97,6 @@ import {
     bikeOrderAction,
     confirmationAction,
 } from './actions';
-import BikeEditPage from '../Components/Bikes/BikeEditPage';
 
 createStore({});
 
@@ -424,7 +424,7 @@ function Routes() {
                         {
                             index: true,
                             element: <BikesPage />,
-                            loader: bikesListLoader,
+                            loader: bikesDefaultLoader,
                             shouldRevalidate: () => false,
                         },
                         {
@@ -433,8 +433,8 @@ function Routes() {
                             children: [
                                 {
                                     index: true,
-                                    // loader: bikesListLoader,
-                                    loader: bikesTestLoader,
+                                    // loader: bikesDefaultLoader,
+                                    loader: async () => bikesListLoader(auth, setAuth),
                                     element: <Bikes />,
                                 },
                                 {
@@ -455,10 +455,11 @@ function Routes() {
                                         },
                                         {
                                             path: ':id',
-                                            loader: async ({ params }) => bikeTestLoader(params),
-                                            element: <BikeEditPage />,
-                                        }
-                                    ]
+                                            // loader: async ({ params }) => bikeTestLoader(params),
+                                            loader: async ({ params }) => bikeLoader(auth, setAuth, params),
+                                            element: <ModifyBikePage />,
+                                        },
+                                    ],
                                 },
                             ],
                         },

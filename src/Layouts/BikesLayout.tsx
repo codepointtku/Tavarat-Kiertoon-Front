@@ -67,3 +67,42 @@ export default function BikesLayout() {
         </Stack>
     );
 }
+
+/*
+structure for a single bike that back-end returns
+{
+    ​​bike: { 
+        ​​brand: { 
+            id: 2, 
+            name: "Woom" 
+        }
+        color: { 
+            id: 2, 
+            name: "Sininen" 
+        }
+        description: "Hyväkuntonen hieno pyörä suoraa 80-luvulta"
+        id: 1
+        name: "Todella hieno pyörä"
+        size: { 
+            id: 1, 
+            name: "14″" 
+        }
+        type: { 
+            id: 4, 
+            name: "Sähkö" 
+        }
+    }
+    created_at: "2023-04-20T14:00:25.966402+03:00"
+    frame_number: "3e76a906-b908-4c64-a064-da65f0d0f555"
+    id: 1
+    number: "5915a50d-5e2d-4058-af41-9481f66ab921"
+    package_only: false
+    state: "AVAILABLE"
+    storage: { 
+        address: "Blabla 2b, 20230 Turku"
+        id: 1
+        in_use: true
+        name: "Varasto X"
+    }
+}
+*/

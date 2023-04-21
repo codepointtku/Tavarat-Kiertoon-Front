@@ -1,67 +1,106 @@
-import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { useLoaderData } from "react-router";
-import StyledTableCell from "../StyledTableCell";
-import { Link } from "react-router-dom";
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { useLoaderData } from 'react-router';
+import StyledTableCell from '../StyledTableCell'; // used in Table Header
+import { Link } from 'react-router-dom';
+import CheckIcon from '@mui/icons-material/Check';
 
+/**
+ * interface for a single bike
+ */
 export interface bikeInterface {
+    bike: bikeModelInterface;
+    created_at: string;
+    frame_number: string;
     id: number;
-    name: string;
-    description: string;
-    type: string;
-    brand: string;
-    size: string;
-    color: string;
-    package: number;
-    serial_number: string;
-    reserved: {};
+    number: string;
+    package_only: boolean;
+    state: string; // "AVAILABLE"
+    storage: storageInterface;
 }
 
-export default function Bikes() {
+interface bikeModelInterface {
+    brand: { id: number; name: string };
+    color: { id: number; name: string };
+    description: string;
+    id: number;
+    name: string;
+    size: { id: number; name: string };
+    type: { id: number; name: string };
+}
 
-    const bikes = useLoaderData() as bikeInterface[]
-    console.log(bikes)
+interface storageInterface {
+    address: string;
+    id: number;
+    in_use: boolean;
+    name: string;
+}
+
+/**
+ * Bikes
+ * List all bikes in the database
+ *
+ * @returns JSX.Element
+ */
+export default function Bikes() {
+    const loaderData = useLoaderData() as bikeInterface[];
+    console.log('### Bikes', loaderData);
+
     return (
         <>
-        <Box width='100%' textAlign='right' marginBottom='1em' marginTop='-2em' marginRight='2em'>
-            <Button onClick={() => {console.log(`Lisää uusi pyörä`)}}>Lisää uusi pyörä</Button>
-        </Box>
-        <TableContainer component={Paper} sx={{ padding: '2rem' }}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                <TableHead>
-                    <TableRow>
-                        {/* <StyledTableCell>
-                            Tilaus (ID) <SortByMenu />
-                        </StyledTableCell> */}
-                        <StyledTableCell align="right">Nimi</StyledTableCell>
-                        <StyledTableCell align="right">Merkki</StyledTableCell>
-                        <StyledTableCell align="right">Koko</StyledTableCell>
-                        <StyledTableCell align="right">Tyyppi</StyledTableCell>
-                        <StyledTableCell align="right">Väri</StyledTableCell>
-                        <StyledTableCell align="right">Runkonumero</StyledTableCell>
-                        <StyledTableCell align="right" width='10%'>Muokkaa</StyledTableCell>
-                        {/* <StyledTableCell align="right" width='10%'>Poista</StyledTableCell> */}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                {bikes?.map( (bike) => {
-                    return(
-                        <TableRow key={bike.id}>
-                            <TableCell align="right">{bike.name}</TableCell>
-                            <TableCell align="right">{bike.brand}</TableCell>
-                            <TableCell align="right">{bike.size}</TableCell>
-                            <TableCell align="right">{bike.type}</TableCell>
-                            <TableCell align="right">{bike.color}</TableCell>
-                            <TableCell align="right">{bike.serial_number}</TableCell>
-                            <TableCell align="right">
-                                <Button to={`/pyorat/pyoravarasto/muokkaa/${bike.id}`} component={Link}>Muokkaa</Button>
-                            </TableCell>
-                           {/* <TableCell align="right"><Button color="error"  onClick={() => {console.log(`Poista ${bike.serial_number}`)}}>Poista</Button></TableCell> */}
-                       </TableRow>
-                    )
-                })}
-                </TableBody>
-            </Table>
-        </TableContainer>
+            <Box width="100%" textAlign="right" marginBottom="1em" marginTop="-2em" marginRight="2em">
+                <Button
+                    onClick={() => {
+                        console.log(`Lisää uusi pyörä`);
+                    }}
+                >
+                    Lisää uusi pyörä
+                </Button>
+            </Box>
+            <TableContainer component={Paper} sx={{ padding: '2rem' }}>
+                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                    <TableHead>
+                        <TableRow>
+                            <StyledTableCell align="right">Merkki</StyledTableCell>
+                            <StyledTableCell align="right">Koko</StyledTableCell>
+                            <StyledTableCell align="right">Tyyppi</StyledTableCell>
+                            <StyledTableCell align="right">Väri</StyledTableCell>
+                            <StyledTableCell align="right">
+                                <div>Varattu</div>
+                                <div>pakettiin</div>
+                            </StyledTableCell>
+                            <StyledTableCell align="right" width="30%">
+                                Runkonumero
+                            </StyledTableCell>
+                            <StyledTableCell align="right" width="10%">
+                                Muokkaa
+                            </StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {loaderData?.map((bike, index) => {
+                            return (
+                                <TableRow
+                                    key={bike.id}
+                                    sx={{ background: index % 2 ? 'rgba(199, 215, 235, 0.1)' : 'white' }}
+                                    hover
+                                >
+                                    <TableCell align="right">{bike.bike.brand.name}</TableCell>
+                                    <TableCell align="right">{bike.bike.size.name}</TableCell>
+                                    <TableCell align="right">{bike.bike.type.name}</TableCell>
+                                    <TableCell align="right">{bike.bike.color.name}</TableCell>
+                                    <TableCell align="right">{bike.package_only ? <CheckIcon /> : ''}</TableCell>
+                                    <TableCell align="right">{bike.frame_number}</TableCell>
+                                    <TableCell align="right">
+                                        <Button to={`/pyorat/pyoravarasto/muokkaa/${bike.id}`} component={Link}>
+                                            Muokkaa
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </>
     );
 }

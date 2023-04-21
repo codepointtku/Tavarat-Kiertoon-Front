@@ -195,23 +195,39 @@ const userEditLoader = async (auth, setAuth, params) => {
 };
 
 /**
- * Get all bikes
+ * Get lists of bikes and packets for front page
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @returns
  */
-const bikesListLoader = async (auth, setAuth) => {
+const bikesDefaultLoader = async (auth, setAuth) => {
     const { data } = await apiCall(auth, setAuth, '/bikes', 'get');
     return data;
 };
 
 /**
- * bikesTestLoader and bikeTestLoader
- * JTO: TEST ONLY. IF THIS IS IN VERSION CONTROL, DELETE IT
+ * Get list of all bikes
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @returns
  */
-export const bikesTestLoader = async () => {
-    const { data } = await axios.get('http://localhost:4000/bikes/');
+const bikesListLoader = async (auth, setAuth) => {
+    const { data } = await apiCall(auth, setAuth, '/bikes/stock', 'get');
     return data;
 };
-export const bikeTestLoader = async (params) => {
-    const { data } = await axios.get(`http://localhost:4000/bikes/${params.id}`);
+
+/**
+ * Get a single bike
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} params
+ * @returns
+ */
+const bikeLoader = async (auth, setAuth, params) => {
+    const { data } = await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'get');
     return data;
 };
 
@@ -249,7 +265,9 @@ export {
     usersListLoader,
     userEditLoader,
     userSignupLoader,
+    bikesDefaultLoader,
     bikesListLoader,
+    bikeLoader,
     shoppingCartLoader,
     shoppingProcessLoader,
 };
