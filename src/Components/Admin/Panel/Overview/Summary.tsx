@@ -1,4 +1,4 @@
-import { Box, Grid, Paper, Typography } from '@mui/material';
+import { Box, Grid, Paper, Stack, Typography } from '@mui/material';
 
 import TypographyTitle from '../../../TypographyTitle';
 
@@ -15,7 +15,7 @@ function SummaryHero() {
     return (
         <Box sx={{ marginBottom: '2rem', paddingTop: '1rem' }}>
             <Typography variant="h6" textAlign="center" color="#000">
-                Yhteenveto Tavarat Kiertoon-järjestelmän tilasta
+                Järjestelmän tila
             </Typography>
         </Box>
     );
@@ -30,9 +30,14 @@ function Summary() {
                     <News />
                 </Grid>
                 <Grid className="summary-item" item>
-                    <SummaryOrders />
-                    <SummaryProducts />
-                    <SummaryUsers />
+                    <Stack>
+                        <Typography sx={{ color: '#000' }} variant="h6" component="div">
+                            Yhteenveto
+                        </Typography>
+                        <SummaryOrders />
+                        <SummaryProducts />
+                        <SummaryUsers />
+                    </Stack>
                 </Grid>
                 <Grid className="summary-item" item>
                     <StatTest />
