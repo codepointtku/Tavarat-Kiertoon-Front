@@ -1,39 +1,62 @@
 import * as React from 'react';
 
-import { Box, List, ListItem, ListItemIcon, ListItemText, Grid, Typography } from '@mui/material';
+import { Box, List, ListItem, ListItemIcon, ListItemText, Grid, Typography, Stack, Divider } from '@mui/material';
+
+import MailIcon from '@mui/icons-material/Mail';
 import FolderIcon from '@mui/icons-material/Folder';
 
-function generate(element: React.ReactElement) {
-    return [0, 1, 2].map((value) =>
-        React.cloneElement(element, {
-            key: value,
-        })
-    );
-}
+// interface NewsListItems {
+//     maara: number;
+//     teksti: string;
+//     ikoni: React.ReactElement;
+// }
+
+const listaItemit = [
+    {
+        maara: 1,
+        teksti: 'Sinulle on 100 uutta viestiä',
+        tyyppi: 'mail',
+        ikoni: MailIcon,
+    },
+    {
+        maara: 1,
+        teksti: 'Varastossa 3000 uutta tuotetta',
+        tyyppi: 'varasto',
+        ikoni: FolderIcon,
+    },
+    {
+        maara: 1,
+        teksti: 'Lounasravintolassa tänään kanaviilokkia',
+        tyyppi: 'ruoka',
+        ikoni: FolderIcon,
+    },
+    {
+        maara: 1,
+        teksti: 'Bensanhinta Essolla 9mk/l',
+        tyyppi: 'muu',
+        ikoni: FolderIcon,
+    },
+];
+
+const newsTopics = listaItemit.map((topic, index) => (
+    <Box key={index} sx={{ color: '#000', padding: '1rem 0 0 1rem' }}>
+        <Stack direction="row" spacing={2} marginBottom="0.4rem">
+            <FolderIcon />
+            <Typography>{topic.teksti}</Typography>
+        </Stack>
+        <Divider />
+    </Box>
+));
 
 function News() {
     return (
-        <Box id="admin-news" sx={{ border: '1px solid green', padding: '1rem' }}>
-            <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} md={6}>
-                        <Typography sx={{ mt: 1, mb: 1 }} variant="h6" component="div">
-                            Uutizet
-                        </Typography>
-
-                        <List dense>
-                            {generate(
-                                <ListItem>
-                                    <ListItemIcon>
-                                        <FolderIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Single-line item" />
-                                </ListItem>
-                            )}
-                        </List>
-                    </Grid>
-                </Grid>
-            </Box>
+        <Box id="admin-news" sx={{ width: '30rem' }}>
+            <Stack>
+                <Typography sx={{ color: '#000' }} variant="h6" component="div">
+                    Uutiset
+                </Typography>
+                {newsTopics}
+            </Stack>
         </Box>
     );
 }

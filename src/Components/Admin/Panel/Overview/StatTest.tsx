@@ -4,7 +4,7 @@ import PieChart from '../../Stats/PieChart';
 
 function StatTest() {
     return (
-        <Box id="stat-test-container" sx={{ border: '1px solid red', padding: '1rem' }}>
+        <Box id="stat-test-container">
             <PieChart />
         </Box>
     );
