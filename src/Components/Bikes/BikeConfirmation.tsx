@@ -20,9 +20,19 @@ import {
     Typography,
 } from '@mui/material';
 import { format } from 'date-fns';
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
+import type { bikeInterface, selectedBikesInterface } from '../../Layouts/BikesLayout';
+import type { Control } from 'react-hook-form';
+
+interface bikeConfirmationInterface {
+    startDate: Date;
+    endDate: Date;
+    selectedBikes: selectedBikesInterface;
+    control: Control;
+    bikes: bikeInterface[];
+    setIsConfirmationVisible: Function;
+}
 
 export default function BikeConfirmation({
     startDate,
@@ -31,7 +41,7 @@ export default function BikeConfirmation({
     control,
     bikes,
     setIsConfirmationVisible,
-}) {
+}: bikeConfirmationInterface) {
     const [requiredCheckboxes, setRequiredCheckboxes] = useState({ education: false, responsibilities: false });
 
     return (
@@ -61,7 +71,7 @@ export default function BikeConfirmation({
                                 ([key, value]) =>
                                     !!value && (
                                         <Typography key={key}>
-                                            {value}x {bikes.find((bike) => String(bike.id) === String(key)).name}
+                                            {value}x {bikes.find((bike) => String(bike.id) === String(key))?.name}
                                         </Typography>
                                     )
                             )}
@@ -275,55 +285,3 @@ export default function BikeConfirmation({
         </Paper>
     );
 }
-
-BikeConfirmation.propTypes = {
-    setIsConfirmationVisible: PropTypes.func.isRequired,
-    bikes: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-            name: PropTypes.string,
-            description: PropTypes.string,
-            max_available: PropTypes.number,
-            unavailable: PropTypes.objectOf(PropTypes.number),
-            package_only_count: PropTypes.number,
-            package_only_unavailable: PropTypes.objectOf(PropTypes.number),
-            size: PropTypes.string,
-            type: PropTypes.string,
-            color: PropTypes.string,
-            brand: PropTypes.string,
-        })
-    ).isRequired,
-    startDate: PropTypes.instanceOf(Date),
-    endDate: PropTypes.instanceOf(Date),
-    selectedBikes: PropTypes.objectOf(PropTypes.number),
-    control: PropTypes.shape({
-        startDate: PropTypes.instanceOf(Date),
-        startTime: PropTypes.number,
-        endDate: PropTypes.instanceOf(Date),
-        endTime: PropTypes.number,
-        selectedBikes: PropTypes.objectOf(PropTypes.number),
-        contactPersonName: PropTypes.string,
-        contactPersonPhoneNumber: PropTypes.string,
-        deliveryAddress: PropTypes.string,
-        storageType: PropTypes.string,
-        extraInfo: PropTypes.string,
-    }),
-};
-
-BikeConfirmation.defaultProps = {
-    startDate: null,
-    endDate: null,
-    selectedBikes: {},
-    control: PropTypes.shape({
-        startDate: null,
-        startTime: null,
-        endDate: null,
-        endTime: null,
-        selectedBikes: {},
-        contactPersonName: '',
-        contactPersonPhoneNumber: '',
-        deliveryAddress: '',
-        storageType: null,
-        extraInfo: '',
-    }),
-};
