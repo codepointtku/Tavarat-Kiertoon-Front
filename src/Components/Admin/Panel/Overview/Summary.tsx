@@ -1,6 +1,4 @@
-import { Box, Grid, Paper, Stack, Typography } from '@mui/material';
-
-import TypographyTitle from '../../../TypographyTitle';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 
 import News from './News';
 
