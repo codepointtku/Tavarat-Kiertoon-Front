@@ -8,7 +8,7 @@ import {
     Alert,
     Box,
     Button,
-    // Container,
+    Container,
     Checkbox,
     FormControlLabel,
     IconButton,
@@ -18,7 +18,7 @@ import {
     InputLabel,
     OutlinedInput,
     InputAdornment,
-    Paper,
+    // Paper,
 } from '@mui/material';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -63,7 +63,7 @@ function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
             {responseStatus?.type === 'login' && responseStatus?.status && (
                 <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={3000} />
             )}
-            <Paper
+            {/* <Paper
                 elevation={3}
                 component={Form}
                 onSubmit={handleSubmit(onSubmit)}
@@ -79,8 +79,8 @@ function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
                     alignItems: 'center',
                     alingSelf: 'center',
                 }}
-            >
-                {/* <Container maxWidth="xs" component={Form} onSubmit={handleSubmit(onSubmit)}> */}
+            > */}
+            <Container maxWidth="xs" component={Form} onSubmit={handleSubmit(onSubmit)}>
                 <Box
                     sx={{
                         marginTop: 2,
@@ -151,8 +151,8 @@ function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
                         </Alert>
                     )}
                 </Box>
-                {/* </Container> */}
-            </Paper>
+            </Container>
+            {/* </Paper> */}
         </>
     );
 }
