@@ -8,6 +8,8 @@ import ErrorBoundary from './ErrorBoundary';
 
 import DefaultView from '../Views/DefaultView';
 
+import LoginPage from '../Components/LoginPage';
+
 import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
 import bikeTheme from '../Themes/bikeTheme';
@@ -23,7 +25,6 @@ import OrderView from '../Components/Storage/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
 import QrScanner from '../Components/Storage/QrScanner';
 
-import LoginPage from '../Components/Storage/LoginPage';
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
 import NewAnnouncement from '../Components/Admin/NewAnnouncement';
@@ -230,7 +231,7 @@ function Routes() {
                             element: <Announcements />,
                         },
                         {
-                            path: '/kirjaudusisaan',
+                            path: '/kirjaudu',
                             element: <LoginPage />,
                         },
                         {
