@@ -19,9 +19,29 @@ import TablePaginationActions from '../TablePaginationActions';
 import StyledTableCell from '../StyledTableCell';
 import StyledTableRow from '../StyledTableRow';
 
+interface RouteLoaderData {
+    categories: [
+        {
+            id: number;
+            product_count: string;
+            name: string;
+            lft: number;
+            rght: number;
+            tree_id: number;
+            level: number;
+            parent: number;
+        }
+    ];
+}
+
+interface LoaderData {
+    storages: string[];
+    products: string[];
+}
+
 function StorageProductsTable() {
-    const { categories } = useRouteLoaderData('root');
-    const { storages, products } = useLoaderData();
+    const { categories } = useRouteLoaderData('root') as RouteLoaderData;
+    const { storages, products } = useLoaderData() as LoaderData;
     const { register, handleSubmit, watch } = useForm();
     const [searchParams, setSearchParams] = useSearchParams();
 
