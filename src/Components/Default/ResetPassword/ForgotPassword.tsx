@@ -27,7 +27,7 @@ function ForgotPassword() {
     };
 
     return (
-        <Container sx={{ border: '0.1rem solid #bfe6f6', borderRadius: '1rem', pt: 5 }}>
+        <Container sx={{ border: '0.1rem solid #bfe6f6', borderRadius: '1rem', p: 5 }}>
             <>
                 <Grid container>
                     <Grid item xs={4}>
@@ -44,7 +44,7 @@ function ForgotPassword() {
                     >
                         <Avatar
                             sx={{
-                                bgcolor: 'secondary.main',
+                                bgcolor: 'secondary.dark',
                                 width: 48,
                                 height: 48,
                             }}
