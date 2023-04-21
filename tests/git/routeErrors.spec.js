@@ -55,6 +55,12 @@ test.describe('rekisteroidy', () => {
         await expect(page.getByText('Etsimääsi sijaintia /signup')).not.toBeVisible();
     });
 });
+test.describe('kirjaudu', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/kirjaudu');
+        await expect(page.getByText('Etsimääsi sijaintia /kirjaudu')).not.toBeVisible();
+    });
+});
 
 test.describe('rekisteroidykayttaja', () => {
     test('no errors', async ({ page }) => {
