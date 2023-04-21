@@ -47,10 +47,10 @@ import Stats from '../Components/Admin/Stats/Stats';
 import BackgroundInfo from '../Components/Default/Backgroundinfo';
 import Announcements from '../Components/Default/Announcements';
 import DeliveryView from '../Components/DeliveryView';
-import ForgotPassword from '../Components/Default/ForgotPassword';
-import ResetPassword from '../Components/Default/ResetPassword';
-import PasswordResetNavigate from '../Components/Default/PasswordResetNavigate';
-import ResetSuccessful from '../Components/Default/ResetSuccessful';
+import ForgotPassword from '../Components/Default/ResetPassword/ForgotPassword';
+import ResetPassword from '../Components/Default/ResetPassword/ResetPassword';
+import PasswordResetNavigate from '../Components/Default/ResetPassword/PasswordResetNavigate';
+import ResetSuccessful from '../Components/Default/ResetPassword/ResetSuccessful';
 
 import InstructionsPage from '../Components/Default/Instructions/InstructionsPage';
 import GuideCommon from '../Components/Default/Instructions/GuideCommon';

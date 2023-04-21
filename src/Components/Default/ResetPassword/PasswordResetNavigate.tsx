@@ -6,7 +6,7 @@ function PasswordResetNavigate() {
     const { uid, token } = useParams();
     useEffect(() => {
         navigate(generatePath('/salasananpalautus'), { replace: true, state: { uid, token } });
-    });
+    }, []);
 }
 
 export default PasswordResetNavigate;
