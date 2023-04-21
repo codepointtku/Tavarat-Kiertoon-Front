@@ -17,6 +17,7 @@ const apiCall = async (auth, setAuth, path, method, data, options) => {
         // if refresh fails apiCalls to logout in order to remove the cookies
         if (result.status === 204) {
             apiCall(auth, setAuth, '/users/logout/', 'post');
+            // NOTE: should this return result with status instead?
             return null;
         }
         // auth is object { user_group: false, storage_group: false, admin_group: false }
