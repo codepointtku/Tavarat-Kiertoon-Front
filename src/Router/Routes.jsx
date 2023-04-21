@@ -262,7 +262,7 @@ function Routes() {
                             action: async ({ request }) => contactAction(auth, setAuth, request),
                         },
                         {
-                            path: 'unohtuikosalasana',
+                            path: 'unohtunutsalasana',
                             element: <ForgotPassword />,
                             action: async ({ request }) => resetEmailAction(auth, setAuth, request),
                         },
