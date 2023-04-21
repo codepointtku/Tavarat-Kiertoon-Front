@@ -9,21 +9,21 @@ import SummaryUsers from './SummaryUsers';
 import StatTest from './StatTest';
 // import StatTestTwo from './StatTestTwo';
 
-function SummaryHero() {
-    return (
-        <Box sx={{ marginBottom: '2rem', paddingTop: '1rem' }}>
-            <Typography variant="h6" textAlign="center" color="#000">
-                Järjestelmän tila
-            </Typography>
-        </Box>
-    );
-}
+// function SummaryHero() {
+//     return (
+//         <Box sx={{ marginBottom: '2rem', paddingTop: '1rem' }}>
+//             <Typography variant="h6" textAlign="center" color="#000">
+//                 Järjestelmän tila
+//             </Typography>
+//         </Box>
+//     );
+// }
 
 function Summary() {
     return (
         <Box id="admin-summary-area">
-            <SummaryHero />
-            <Grid id="summary-grid-container" container justifyContent="space-evenly">
+            {/* <SummaryHero /> */}
+            <Grid id="summary-grid-container" container justifyContent="space-evenly" marginTop="2rem">
                 <Grid className="summary-item" item>
                     <News />
                 </Grid>
