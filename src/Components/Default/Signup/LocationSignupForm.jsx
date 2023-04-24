@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link, useSubmit, Form, useActionData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -302,13 +303,17 @@ function LocationForm() {
     );
 }
 
-function LocationSignupForm() {
+function LocationSignupForm({ bgColor }) {
     return (
         <>
             <Hero />
-            <LocationForm />
+            <LocationForm bgColor={bgColor} />
         </>
     );
 }
+
+LocationSignupForm.propTypes = {
+    bgColor: PropTypes.string.isRequired,
+};
 
 export default LocationSignupForm;

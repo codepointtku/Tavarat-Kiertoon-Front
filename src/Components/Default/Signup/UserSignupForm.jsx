@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link, useSubmit, Form, useActionData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -53,7 +54,7 @@ function Hero() {
     );
 }
 
-function UserForm() {
+function UserForm({ bgColor }) {
     const { register, handleSubmit } = useForm();
     const submit = useSubmit();
     const responseStatus = useActionData();
@@ -259,13 +260,17 @@ function UserForm() {
     );
 }
 
-function UserSignupForm() {
+function UserSignupForm({ bgColor }) {
     return (
         <>
             <Hero />
-            <UserForm />
+            <UserForm bgColor={bgColor} />
         </>
     );
 }
+
+UserSignupForm.propTypes = {
+    bgColor: PropTypes.string.isRequired,
+};
 
 export default UserSignupForm;
