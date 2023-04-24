@@ -7,7 +7,7 @@ const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : -1;
-    console.log(amount);
+    // console.log(amount);
     if (request.method === 'POST') {
         if (auth.username) {
             const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
