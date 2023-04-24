@@ -11,8 +11,6 @@ function SignupPage({ isLocationForm }) {
     const b = Math.floor(Math.random() * 256);
     const bgColor = 'rgb(' + r + ',' + g + ',' + b + ')';
 
-    console.log(bgColor);
-
     return (
         <Paper>
             <Container sx={{ marginTop: 1, marginBottom: 1 }}>
