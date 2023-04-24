@@ -1,4 +1,4 @@
-import { FullConfig, FullResult, Reporter, Suite, TestCase, TestResult } from '@playwright/test/reporter';
+import { Reporter, TestCase, TestResult } from '@playwright/test/reporter';
 import config from './playwright.config';
 
 const fs = require('fs');
