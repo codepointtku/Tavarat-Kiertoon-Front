@@ -43,7 +43,7 @@ interface storageInterface {
  */
 export default function Bikes() {
     const loaderData = useLoaderData() as bikeInterface[];
-    console.log('### Bikes', loaderData);
+    // console.log('### Bikes', loaderData);
 
     return (
         <>

@@ -70,6 +70,8 @@ export default function BikesLayout() {
 
 /*
 structure for a single bike that back-end returns
+getting all returns all information EXCEPT storage.
+getting single bike with ID returns all information
 {
     ​​bike: { 
         ​​brand: { 
@@ -92,12 +94,14 @@ structure for a single bike that back-end returns
             name: "Sähkö" 
         }
     }
+
     created_at: "2023-04-20T14:00:25.966402+03:00"
     frame_number: "3e76a906-b908-4c64-a064-da65f0d0f555"
     id: 1
     number: "5915a50d-5e2d-4058-af41-9481f66ab921"
     package_only: false
     state: "AVAILABLE"
+
     storage: { 
         address: "Blabla 2b, 20230 Turku"
         id: 1

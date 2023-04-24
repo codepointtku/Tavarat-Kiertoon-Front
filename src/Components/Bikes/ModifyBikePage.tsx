@@ -11,7 +11,7 @@ import { useLoaderData } from 'react-router';
  */
 export default function ModifyBikePage() {
     const loaderData = useLoaderData() as bikeInterface;
-    console.log('### ModifyBikePage', loaderData);
+    // console.log('### ModifyBikePage', loaderData)
 
     return (
         <>
@@ -27,81 +27,96 @@ export default function ModifyBikePage() {
                     Pyörän <i>{loaderData.frame_number}</i> tiedot
                 </h3>
             </Box>
-            {/* Bike Model information */}
-            <TableContainer component={Paper} sx={{ padding: '2rem', marginBottom: '20px' }}>
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                    <TableBody>
-                        <TableRow>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Nimi:</TableCell>
-                            <TableCell colSpan={6}>{loaderData.bike.name}</TableCell>
-                            <TableCell align="right">
-                                <Button>Tähän mallin muokkaus</Button>
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Merkki:</TableCell>
-                            <TableCell>{loaderData.bike.brand.name}</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Tyyppi:</TableCell>
-                            <TableCell>{loaderData.bike.type.name}</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Koko:</TableCell>
-                            <TableCell>{loaderData.bike.size.name}</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Väri:</TableCell>
-                            <TableCell>{loaderData.bike.color.name}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Kuvaus:</TableCell>
-                            <TableCell colSpan={7} sx={{ border: 0 }}>
-                                {loaderData.bike.description}
-                            </TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </TableContainer>
 
-            {/* Bike information */}
-            <TableContainer component={Paper} sx={{ padding: '2rem', marginBottom: '20px' }}>
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                    <TableBody>
-                        <TableRow>
-                            <TableCell colSpan={8} align="right">
-                                <Button>Tähän pyörän muokkaus</Button>
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{ fontWeight: 'bold', border: 0 }}>ID:</TableCell>
-                            <TableCell sx={{ border: 0 }}>{loaderData.id}</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Tila:</TableCell>
-                            <TableCell sx={{ border: 0 }}>{loaderData.state}</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varattu Pakettiin:</TableCell>
-                            <TableCell sx={{ border: 0 }}>{loaderData.package_only ? 'Kyllä' : 'Ei'}</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Runkonumero:</TableCell>
-                            <TableCell sx={{ border: 0 }}>{loaderData.frame_number}</TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            {/* Bike Storage information */}
-            <TableContainer component={Paper} sx={{ padding: '2rem', marginBottom: '20px' }}>
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                    <TableBody>
-                        <TableRow>
-                            <TableCell colSpan={7}>Varaston tiedot</TableCell>
-                            <TableCell align="right">
-                                <Button>Tähän varastosiirto / muokkaus</Button>
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell sx={{ fontWeight: 'bold', border: 0 }}>ID:</TableCell>
-                            <TableCell sx={{ border: 0 }}>{loaderData.storage.id}</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Käytössä:</TableCell>
-                            <TableCell sx={{ border: 0 }}>{loaderData.storage.in_use ? 'Kyllä' : 'Ei'}</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varaston nimi:</TableCell>
-                            <TableCell sx={{ border: 0 }}>{loaderData.storage.name}</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varaston osoite</TableCell>
-                            <TableCell sx={{ border: 0 }}>{loaderData.storage.address}</TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
+            {/* Option B */}
+            <TableContainer component={Paper} sx={{ padding: '2rem' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                    {/* Bike Model information */}
+                    <Box sx={{ display: 'flex', flexDirection: 'column', flex: 0.5, marginRight: '2em' }}>
+                        <Table sx={{ minWidth: 300 }} aria-label="customized table">
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Nimi:</TableCell>
+                                    <TableCell>{loaderData.bike.name}</TableCell>
+                                    <TableCell align="right">
+                                        <Button>Vaihda pyörän malli</Button>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Merkki:</TableCell>
+                                    <TableCell>{loaderData.bike.brand.name}</TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Tyyppi:</TableCell>
+                                    <TableCell>{loaderData.bike.type.name}</TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Koko:</TableCell>
+                                    <TableCell>{loaderData.bike.size.name}</TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Väri:</TableCell>
+                                    <TableCell>{loaderData.bike.color.name}</TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Kuvaus:</TableCell>
+                                    <TableCell colSpan={2} sx={{ border: 0 }}>
+                                        {loaderData.bike.description}
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </Box>
+
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            flex: 0.5,
+                            marginLeft: '2em',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Table sx={{ minWidth: 300 }} aria-label="customized table">
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Runkonumero:</TableCell>
+                                    <TableCell>{loaderData.frame_number}</TableCell>
+                                    <TableCell align="right">
+                                        <Button>Muokkaa runkonumeroa</Button>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varattu Pakettiin:</TableCell>
+                                    <TableCell sx={{ border: 0 }}>{loaderData.package_only ? 'Kyllä' : 'Ei'}</TableCell>
+                                    <TableCell sx={{ border: 0 }}></TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+
+                        {/* Bike Storage information */}
+                        <Table sx={{ minWidth: 300 }} aria-label="customized table">
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Varaston nimi:</TableCell>
+                                    <TableCell>{loaderData.storage.name}</TableCell>
+                                    <TableCell align="right">
+                                        <Button>Vaihda varastoa</Button>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varaston osoite</TableCell>
+                                    <TableCell sx={{ border: 0 }}>{loaderData.storage.address}</TableCell>
+                                    <TableCell sx={{ border: 0 }}></TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </Box>
+                </Box>
             </TableContainer>
         </>
     );
