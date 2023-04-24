@@ -279,10 +279,6 @@ function Routes() {
                                     path: ':uid/:token',
                                     element: <PasswordResetNavigate />,
                                 },
-                                {
-                                    path: 'palautusonnistui',
-                                    element: <ResetSuccessful />,
-                                },
                             ],
                         },
                     ],

@@ -1,4 +1,4 @@
-import { Container, Grid, Typography, Button } from '@mui/material';
+import { Container, Grid, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import TypographyHeading from '../../TypographyHeading';
 
