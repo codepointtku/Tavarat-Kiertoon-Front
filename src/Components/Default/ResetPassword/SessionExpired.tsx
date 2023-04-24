@@ -1,20 +1,9 @@
-import { useEffect } from 'react';
 import { Container, Grid, Button } from '@mui/material';
-import { Link, useActionData, useNavigate, generatePath } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import TypographyHeading from '../../TypographyHeading';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
-interface ResponseStatus {
-    type: string;
-    status: boolean;
-}
-
-function ResetSuccessful() {
-    const navigate = useNavigate();
-    const responseStatus = useActionData() as ResponseStatus;
-    useEffect(() => {
-        responseStatus?.type === 'outdatedtoken' &&
-            navigate(generatePath('/salasananpalautus/sessiovanhentunut'), { replace: true });
-    }, []);
+function SessionExpired() {
     return (
         <Container>
             <Grid
@@ -30,7 +19,10 @@ function ResetSuccessful() {
                 gap={2}
             >
                 <Grid item>
-                    <TypographyHeading text="Salasana palautettu onnistuneesti" />
+                    <TypographyHeading text="Sessio on vanhentunut" />
+                </Grid>
+                <Grid item>
+                    <SentimentVeryDissatisfiedIcon />
                 </Grid>
                 <Grid item>
                     <Button component={Link} to="/" sx={{ width: 200, p: 2 }}>
@@ -42,4 +34,4 @@ function ResetSuccessful() {
     );
 }
 
-export default ResetSuccessful;
+export default SessionExpired;

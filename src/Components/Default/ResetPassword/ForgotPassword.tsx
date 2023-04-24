@@ -8,8 +8,8 @@ import TypographyTitle from '../../TypographyTitle';
 import TypographyHeading from '../../TypographyHeading';
 
 interface ResponseStatus {
-    type: 'string';
-    status: Boolean;
+    type: string;
+    status: boolean;
 }
 
 function ForgotPassword() {
