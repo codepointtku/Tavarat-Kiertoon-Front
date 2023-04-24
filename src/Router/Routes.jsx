@@ -80,7 +80,6 @@ import {
     shoppingCartLoader,
     bikesListLoader,
     shoppingProcessLoader,
-    bulletinSubjectLoader,
 } from './loaders';
 
 import {
@@ -362,7 +361,6 @@ function Routes() {
                         {
                             path: 'tiedotteet/luo',
                             element: <NewAnnouncement />,
-                            loader: bulletinSubjectLoader,
                             action: async ({ request }) => createBulletinAction(auth, setAuth, request),
                         },
                         {
