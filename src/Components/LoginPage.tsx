@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useContext, useState } from 'react';
-import { Link, useSubmit, Form, useActionData } from 'react-router-dom';
+import { Link, useSubmit, Form, useActionData, useFetcher } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import {
@@ -40,9 +40,14 @@ interface StatusData {
 
 function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
     const { register, handleSubmit } = useForm<FormValues>();
-    const submit = useSubmit();
-    const responseStatus = useActionData() as StatusData;
+    // const submit = useSubmit();
+    // const responseStatus = useActionData() as StatusData;
     const { auth } = useContext(AuthContext);
+    const fetcher = useFetcher();
+    const responseStatus = fetcher.data;
+    // console.log('fetcher data', fetcher.data);
+
+    console.log('responseStatus', responseStatus);
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -52,7 +57,7 @@ function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
 
     const onSubmit: SubmitHandler<FormValues> = async (data) => {
         const formData = { ...data };
-        submit(formData, {
+        fetcher.submit(formData, {
             method: 'post',
             action: '/',
         });
@@ -61,17 +66,19 @@ function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
     return (
         <>
             {auth.username ? (
-                <Welcome auth={auth} setCurrentOpenDrawer={0} showCloseDrawerButton={false} />
+                <>
+                    {responseStatus?.type === 'login' && responseStatus?.status && (
+                        <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={3000} redirectUrl={-1} />
+                    )}
+                    <Welcome auth={auth} setCurrentOpenDrawer={''} showCloseDrawerButton={false} />
+                </>
             ) : (
                 <>
                     {responseStatus?.type === 'login' && !responseStatus?.status && (
                         <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" timer={3000} />
                     )}
-                    {responseStatus?.type === 'login' && responseStatus?.status && (
-                        <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={3000} />
-                    )}
 
-                    <Container maxWidth="xs" component={Form} onSubmit={handleSubmit(onSubmit)}>
+                    <Container maxWidth="xs" component={fetcher.Form} onSubmit={handleSubmit(onSubmit)}>
                         <Box
                             sx={{
                                 marginTop: 2,
