@@ -62,45 +62,56 @@ function AddToCartButton({ size, id, groupId, count }) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
             {cart?.products?.some((product) => product['group_id'] === groupId) ? (
-                <Box sx={{ backgroundColor: 'primary.main', borderRadius: 1, height: 30 }}>
-                    <form onSubmit={handleSubmit(() => onSubmit('add', itemAmount))}>
-                        <IconButton
-                            size="small"
-                            sx={{ color: 'background.default', padding: 0, mr: 1, ml: 0.5 }}
-                            onClick={() => setItemAmount((itemAmount) => itemAmount - 1)}
-                        >
-                            <RemoveCircleOutlineIcon />
-                        </IconButton>
-                        <Input
-                            sx={{ mt: 1 / 4 }}
-                            inputProps={{
-                                style: {
-                                    width: 30,
-                                    padding: 0,
-                                    textAlign: 'center',
-                                },
-                            }}
-                            {...register('itemAmount', {
-                                required: true,
-                                maxLength: 3,
-                                validate: {
-                                    greaterOrEqualToOne: (v) => v >= 1,
-                                    lessOrEqualToCount: (v) => v <= count,
-                                    isEmpty: (v) => v === '',
-                                },
-                            })}
-                            value={itemAmount}
-                            onChange={(SelectChangeEvent) => setItemAmount(Number(SelectChangeEvent.target.value))}
-                            disableUnderline
-                        />
-                        <IconButton
-                            size="small"
-                            sx={{ color: 'background.default', padding: 0, ml: 1, mr: 0.5 }}
-                            onClick={() => setItemAmount((itemAmount) => itemAmount + 1)}
-                        >
-                            <AddCircleOutlineIcon />
-                        </IconButton>
-                    </form>
+                <Box
+                    sx={{
+                        backgroundColor: 'primary.main',
+                        borderRadius: 1,
+                        p: 0.1,
+                        height: 30,
+                        boxShadow: '0rem 0.05rem 0.2rem 0rem grey',
+                    }}
+                >
+                    <IconButton
+                        size="small"
+                        sx={{ color: 'background.default', padding: 0, mr: 1, ml: 0.5 }}
+                        onClick={() => setItemAmount((itemAmount) => itemAmount - 1)}
+                    >
+                        <RemoveCircleOutlineIcon />
+                    </IconButton>
+                    <Input
+                        sx={{ mt: 1 / 4 }}
+                        inputProps={{
+                            style: {
+                                width: 30,
+                                padding: 0,
+                                textAlign: 'center',
+                            },
+                        }}
+                        // {...register('itemAmount', {
+                        //     required: true,
+                        //     maxLength: 3,
+                        //     validate: {
+                        //         greaterOrEqualToOne: (v) => v >= 1,
+                        //         lessOrEqualToCount: (v) => v <= count,
+                        //         isEmpty: (v) => v === '',
+                        //     },
+                        // })}
+                        value={itemAmount}
+                        onChange={(SelectChangeEvent) => setItemAmount(Number(SelectChangeEvent.target.value))}
+                        disableUnderline
+                    />
+                    <IconButton
+                        size="small"
+                        sx={{ color: 'background.default', padding: 0, ml: 1, mr: 0.5 }}
+                        onClick={() => setItemAmount((itemAmount) => itemAmount + 1)}
+                    >
+                        <AddCircleOutlineIcon />
+                    </IconButton>
+                    {/* <form onSubmit={handleSubmit(() => onSubmit('add', itemAmount))}>
+                        <Button size={size} aria-label="add more of same item to shopping cart" type="submit">
+                            Muuta määrää
+                        </Button>
+                    </form> */}
                 </Box>
             ) : (
                 <form onSubmit={handleSubmit(() => onSubmit('add', itemAmount))}>
@@ -108,7 +119,6 @@ function AddToCartButton({ size, id, groupId, count }) {
                         size={size}
                         aria-label="add to shopping cart"
                         startIcon={<AddShoppingCartOutlinedIcon />}
-                        {...register('itemAmount')}
                         type="submit"
                         // onClick={() => handleClickAddToCartBtn('add', itemAmount)}
                     >
