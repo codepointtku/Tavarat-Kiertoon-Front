@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { useStateMachine } from 'little-state-machine';
-import { Typography, TextField, Grid, MenuItem, Box, Alert } from '@mui/material';
+import { Typography, TextField, Grid, MenuItem, Box, Alert, OutlinedInput } from '@mui/material';
 
 import CartButtons from './CartButtons';
 import Update from './Update';
@@ -136,6 +136,10 @@ function ContactsAndDelivery() {
                     {errors.deliveryMethod && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                 </Grid>
             </Grid>
+            <Typography variant="h4" sx={{ mt: 5, mb: 2, color: 'primary.main' }}>
+                Lisätietoa
+            </Typography>
+            <OutlinedInput placeholder="Lisätietoa toimituksesta..." sx={{ width: 400 }} multiline />
             <Box
                 sx={{
                     p: 5,
