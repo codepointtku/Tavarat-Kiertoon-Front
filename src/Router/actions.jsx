@@ -289,6 +289,21 @@ const confirmationAction = async (auth, setAuth, request) => {
     return { type: 'post', status: true };
 };
 
+const testiKirjauduActioni = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    if (request.method === 'POST') {
+        console.log('request === post');
+        const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
+            username: formData.get('email'),
+            password: formData.get('password'),
+        });
+        // hmm?
+        // return { type: 'login', status: false };
+        console.log('testin response', response);
+        return 'jaahas';
+    }
+};
+
 export {
     userSignupAction,
     frontPageActions,
@@ -303,4 +318,5 @@ export {
     cartViewAction,
     bikeOrderAction,
     confirmationAction,
+    testiKirjauduActioni,
 };

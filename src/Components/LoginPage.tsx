@@ -54,7 +54,7 @@ function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
         const formData = { ...data };
         submit(formData, {
             method: 'post',
-            action: '/',
+            action: '/kirjaudu',
         });
     };
 
