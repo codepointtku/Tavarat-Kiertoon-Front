@@ -1,7 +1,6 @@
 import { Container, Grid, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import TypographyHeading from '../../TypographyHeading';
-import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 function SessionExpired() {
     return (
@@ -20,9 +19,6 @@ function SessionExpired() {
             >
                 <Grid item>
                     <TypographyHeading text="Sessio on vanhentunut" />
-                </Grid>
-                <Grid item>
-                    <SentimentVeryDissatisfiedIcon />
                 </Grid>
                 <Grid item>
                     <Button component={Link} to="/" sx={{ width: 200, p: 2 }}>

@@ -5,7 +5,6 @@ import { Typography, Box, Container, TextField, Button, Alert, Avatar, AlertTitl
 import KeyIcon from '@mui/icons-material/Key';
 import BackButton from '../../BackButton';
 import TypographyTitle from '../../TypographyTitle';
-import TypographyHeading from '../../TypographyHeading';
 
 interface ResponseStatus {
     type: string;
@@ -61,7 +60,9 @@ function ForgotPassword() {
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
                 {responseStatus?.status ? (
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <TypographyHeading text="Salasanan palautuslinkki lähetetty onnistuneesti!" />
+                        <Typography variant="h5" fontWeight="fontWeightMediumBold" gutterBottom>
+                            Salasanan palautuslinkki lähetetty sähköpostiin onnistuneesti!
+                        </Typography>
                     </Box>
                 ) : (
                     <Box sx={{ width: 600 }}>
