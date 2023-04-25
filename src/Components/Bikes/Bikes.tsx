@@ -14,11 +14,11 @@ export interface bikeInterface {
     id: number;
     number: string;
     package_only: boolean;
-    state: string; // "AVAILABLE"
+    state: string; // "AVAILABLE" | "MAINTENANCE" | "RENTED" | "RETIRED"
     storage: storageInterface;
 }
 
-interface bikeModelInterface {
+export interface bikeModelInterface {
     brand: { id: number; name: string };
     color: { id: number; name: string };
     description: string;
@@ -28,7 +28,7 @@ interface bikeModelInterface {
     type: { id: number; name: string };
 }
 
-interface storageInterface {
+export interface storageInterface {
     address: string;
     id: number;
     in_use: boolean;
@@ -43,7 +43,6 @@ interface storageInterface {
  */
 export default function Bikes() {
     const loaderData = useLoaderData() as bikeInterface[];
-    // console.log('### Bikes', loaderData);
 
     return (
         <>

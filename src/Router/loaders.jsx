@@ -215,6 +215,7 @@ const bikesDefaultLoader = async (auth, setAuth) => {
  */
 const bikesListLoader = async (auth, setAuth) => {
     const { data } = await apiCall(auth, setAuth, '/bikes/stock', 'get');
+    console.log('### bikesListLoader', data);
     return data;
 };
 
@@ -227,8 +228,12 @@ const bikesListLoader = async (auth, setAuth) => {
  * @returns
  */
 const bikeLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'get');
-    return data;
+    const [{ data: bikeData }, { data: bikeModelsData }, { data: storagesData }] = await Promise.all([
+        apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'get'),
+        apiCall(auth, setAuth, '/bikes/models/', 'get'),
+        apiCall(auth, setAuth, '/storages/', 'get'),
+    ]);
+    return { bikeData, bikeModelsData, storagesData };
 };
 
 // get bulletin subjects
