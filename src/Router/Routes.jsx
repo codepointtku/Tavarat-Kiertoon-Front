@@ -51,7 +51,7 @@ import DeliveryView from '../Components/DeliveryView';
 import ForgotPassword from '../Components/Default/ResetPassword/ForgotPassword';
 import ResetPassword from '../Components/Default/ResetPassword/ResetPassword';
 import ResetSuccessful from '../Components/Default/ResetPassword/ResetSuccessful';
-import SessionExpired from '../Components/Default/ResetPassword/SessionExpired';
+import LinkExpired from '../Components/Default/ResetPassword/LinkExpired';
 import PasswordResetNavigate from '../Components/Default/ResetPassword/PasswordResetNavigate';
 
 import InstructionsPage from '../Components/Default/Instructions/InstructionsPage';
@@ -282,8 +282,8 @@ function Routes() {
                                     action: async ({ request }) => resetPasswordAction(auth, setAuth, request),
                                 },
                                 {
-                                    path: 'sessiovanhentunut',
-                                    element: <SessionExpired />,
+                                    path: 'linkexpired',
+                                    element: <LinkExpired />,
                                 },
                                 {
                                     path: ':uid/:token',

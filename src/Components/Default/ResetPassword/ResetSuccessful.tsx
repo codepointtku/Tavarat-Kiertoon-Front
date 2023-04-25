@@ -13,7 +13,7 @@ function ResetSuccessful() {
     const responseStatus = useActionData() as ResponseStatus;
     useEffect(() => {
         responseStatus?.type === 'outdatedtoken' &&
-            navigate(generatePath('/salasananpalautus/sessiovanhentunut'), { replace: true });
+            navigate(generatePath('/salasananpalautus/linkexpired'), { replace: true });
     }, []);
     return (
         <Container>
