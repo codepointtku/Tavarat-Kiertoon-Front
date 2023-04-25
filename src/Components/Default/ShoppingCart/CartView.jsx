@@ -19,8 +19,7 @@ function CartView() {
             : submit({ id }, { method: 'delete', action: '/ostoskori/' });
     };
 
-    const onSubmit = (data) => {
-        alert(JSON.stringify(data));
+    const onSubmit = () => {
         navigate('/ostoskori/vaihe2');
     };
 
