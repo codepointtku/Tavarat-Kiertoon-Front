@@ -61,7 +61,12 @@ function ContactsAndDelivery() {
             </Typography>
             <Grid container spacing={4}>
                 <Grid item>
-                    <TextField label="Etunimi" variant="outlined" {...register('firstName', { required: true })} />
+                    <TextField
+                        label="Etunimi"
+                        variant="outlined"
+                        // autoComplete="given-name"
+                        {...register('firstName', { required: true })}
+                    />
                     {errors.firstName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                 </Grid>
                 <Grid item>
@@ -155,6 +160,7 @@ function ContactsAndDelivery() {
                 placeholder="Lisätietoa toimituksesta..."
                 sx={{ width: 400 }}
                 multiline
+                rows={5}
             />
             <Box
                 sx={{
