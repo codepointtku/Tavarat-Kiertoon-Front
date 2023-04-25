@@ -12,6 +12,7 @@ import Update from './Update';
 function ContactsAndDelivery() {
     const user = useRouteLoaderData('shoppingCart');
     const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
+    const [selectedMethod, setSelectedMethod] = useState('shipping');
     const {
         register,
         handleSubmit,
@@ -129,10 +130,18 @@ function ContactsAndDelivery() {
                 )}
                 <Grid item>
                     <TextField
+                        {...register('deliveryMethod', { required: true })}
                         label="Toimitustapa"
                         variant="outlined"
-                        {...register('deliveryMethod', { required: true })}
-                    />
+                        value={selectedMethod}
+                        onChange={(SelectChangeEvent) => {
+                            setSelectedMethod(SelectChangeEvent.target.value);
+                        }}
+                        select
+                    >
+                        <MenuItem value="shipping">Kuljetus</MenuItem>
+                        <MenuItem value="pickup">Nouto</MenuItem>
+                    </TextField>
                     {errors.deliveryMethod && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                 </Grid>
             </Grid>

@@ -315,8 +315,9 @@ const confirmationAction = async (auth, setAuth, request) => {
         contact: formData.get('email'),
         delivery_address: formData.get('deliveryAddress'),
         phone_number: formData.get('phoneNumber'),
-        status: 'Delivery',
+        status: 'Waiting',
         user: formData.get('id'),
+        order_info: formData.get('orderInfo'),
         // products: formData.get('productIds'),
     });
     if (response.status === 200) {
