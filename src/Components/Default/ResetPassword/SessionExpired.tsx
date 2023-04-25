@@ -18,7 +18,7 @@ function SessionExpired() {
                 gap={2}
             >
                 <Grid item>
-                    <TypographyHeading text="Sessio on vanhentunut" />
+                    <TypographyHeading text="Sessio on valitettavasti vanhentunut!" />
                 </Grid>
                 <Grid item>
                     <Button component={Link} to="/" sx={{ width: 200, p: 2 }}>
