@@ -139,7 +139,14 @@ function ContactsAndDelivery() {
             <Typography variant="h4" sx={{ mt: 5, mb: 2, color: 'primary.main' }}>
                 Lisätietoa
             </Typography>
-            <OutlinedInput placeholder="Lisätietoa toimituksesta..." sx={{ width: 400 }} multiline />
+            <OutlinedInput
+                {...register('orderInfo', {
+                    maxLength: 255,
+                })}
+                placeholder="Lisätietoa toimituksesta..."
+                sx={{ width: 400 }}
+                multiline
+            />
             <Box
                 sx={{
                     p: 5,
