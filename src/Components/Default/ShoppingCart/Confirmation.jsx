@@ -15,8 +15,8 @@ function Confirmation() {
     const order = 'order';
 
     const onSubmit = async () => {
-        const { email, deliveryAddress, phoneNumber } = state;
-        submit({ deliveryAddress, email, phoneNumber, id }, { method: 'post', action: '/ostoskori/vaihe3' });
+        const { email, deliveryAddress, phoneNumber, orderInfo } = state;
+        submit({ deliveryAddress, email, phoneNumber, id, orderInfo }, { method: 'post', action: '/ostoskori/vaihe3' });
         submit({ order }, { method: 'put', action: '/' });
     };
 
