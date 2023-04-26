@@ -67,7 +67,7 @@ function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
             {auth.username ? (
                 <>
                     {responseStatus?.type === 'login' && responseStatus?.status && (
-                        <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={3000} redirectUrl={-1} />
+                        <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={2000} redirectUrl={-1} />
                     )}
                     <Welcome auth={auth} setCurrentOpenDrawer={''} showCloseDrawerButton={false} />
                 </>
