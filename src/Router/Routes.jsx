@@ -104,6 +104,7 @@ import {
     confirmationAction,
     resetEmailAction,
     resetPasswordAction,
+    modifyBikeAction,
 } from './actions';
 
 createStore({});
@@ -491,9 +492,9 @@ function Routes() {
                                         },
                                         {
                                             path: ':id',
-                                            // loader: async ({ params }) => bikeTestLoader(params),
-                                            loader: async ({ params }) => bikeLoader(auth, setAuth, params),
                                             element: <ModifyBikePage />,
+                                            loader: async ({ params }) => bikeLoader(auth, setAuth, params),
+                                            action: async ({ request, params }) => modifyBikeAction(auth, setAuth, request, params),
                                         },
                                     ],
                                 },

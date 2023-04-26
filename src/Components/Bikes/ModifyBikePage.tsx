@@ -11,9 +11,10 @@ import {
     TableCell,
     TableContainer,
     TableRow,
+    TextField,
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
-import { Form, Link } from 'react-router-dom';
+import { Form, Link, useSubmit } from 'react-router-dom';
 import type { bikeInterface, bikeModelInterface, storageInterface } from './Bikes';
 import { useLoaderData } from 'react-router';
 import { useState } from 'react';
@@ -36,6 +37,7 @@ export default function ModifyBikePage() {
     const [storageState, setStorageState] = useState('');
     const [bikeModelState, setBikeModelState] = useState('');
     const [bikeState, setBikeState] = useState(bikeData);
+    const [frameNumberState, setFrameNumberState] = useState(bikeData.frame_number)
 
     // storage change handler: used for selecting the correct storage
     const handleStorageChange = (event: SelectChangeEvent) => {
@@ -45,7 +47,6 @@ export default function ModifyBikePage() {
                 ...bikeState,
                 storage: storage,
             };
-            console.log('### newStorage', newBike.bike.name, newBike.storage.name);
             setBikeState(newBike);
         }
         setStorageState(event.target.value as string);
@@ -59,169 +60,185 @@ export default function ModifyBikePage() {
                 ...bikeState,
                 bike: bikeModel,
             };
-            console.log('### newBikeModel', newBike.bike.name, newBike.storage.name);
             setBikeState(newBike);
         }
         setBikeModelState(event.target.value as string);
     };
 
+    const handleFrameNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFrameNumberState(event.target.value as string)
+    }
+
+    // Form controls
+    const submit = useSubmit();
+    const onSubmit = () => {
+        // send only id from bike and storage
+        const submitData = { ...bikeState, bike: bikeState.bike.id, storage: bikeState.storage.id, frame_number: frameNumberState }
+        submit(submitData, {
+            method: 'put',
+            action: `/pyorat/pyoravarasto/muokkaa/${bikeState.id}`
+        });
+    }
+
     // RENDER
     return (
         <>
-            {/* Button to go back to all bikes listing */}
-            <Box width="100%" textAlign="right" marginBottom="1em" marginTop="-2em" marginRight="2em">
-                <Button to={`/pyorat/pyoravarasto`} component={Link}>
-                    Takaisin Pyörät listaukseen
-                </Button>
-            </Box>
-            {/* Heading */}
-            <Box component={Paper} width="100%" textAlign="center" marginBottom="20px">
-                <h3>
-                    Pyörän <i>{bikeData.frame_number}</i> tiedot
-                </h3>
-            </Box>
-
-            {/* Information area */}
             <TableContainer component={Paper} sx={{ padding: '2rem' }}>
-                <Box component={Form} sx={{ display: 'flex', flexDirection: 'row' }}>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            flex: 0.5,
-                            marginRight: '2em',
-                            minWidth: 500,
-                        }}
-                    >
-                        {/*
-                         * Bike Model information
-                         */}
-                        <Table aria-label="customized table">
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Nimi:</TableCell>
-                                    <TableCell>{bikeData.bike.name}</TableCell>
-                                    <TableCell align="right">
-                                        <FormControl>
-                                            <InputLabel id="change-bike-model-label">Vaihda pyörämalli</InputLabel>
-                                            <Select
-                                                labelId="change-bike-model-label"
-                                                id="change-bike-model"
-                                                value={bikeModelState}
-                                                label="Vaihda pyörämalli"
-                                                onChange={handleBikeModelChange}
-                                                sx={{ width: '200px' }}
-                                            >
-                                                {bikeModelsData.map((bikeModel) => {
-                                                    return (
-                                                        <MenuItem key={bikeModel.id} value={bikeModel.id}>
-                                                            {bikeModel.name}
-                                                        </MenuItem>
-                                                    );
-                                                })}
-                                            </Select>
-                                        </FormControl>
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Merkki:</TableCell>
-                                    <TableCell>{bikeData.bike.brand.name}</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Tyyppi:</TableCell>
-                                    <TableCell>{bikeData.bike.type.name}</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Koko:</TableCell>
-                                    <TableCell>{bikeData.bike.size.name}</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Väri:</TableCell>
-                                    <TableCell>{bikeData.bike.color.name}</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Kuvaus:</TableCell>
-                                    <TableCell colSpan={2} sx={{ border: 0 }}>
-                                        {bikeData.bike.description}
-                                    </TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
+                {/* Header */}
+                <Box width="100%" textAlign="center" marginBottom="20px" paddingBottom="20px" borderBottom="1px solid lightgray">
+                    <h3>
+                        Pyörän <i>{bikeState.frame_number}</i> tiedot
+                    </h3>
+                </Box>
+
+                {/* Information area */}
+                <Box component={Form} onSubmit={() => onSubmit()}>
+                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                flex: 0.5,
+                                marginRight: '2em',
+                                minWidth: 500,
+                            }}
+                        >
+                            {/*
+                             * Bike Model information
+                             */}
+                            <Table aria-label="customized table">
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell sx={{ fontWeight: 'bold' }}>Nimi:</TableCell>
+                                        <TableCell>{bikeState.bike.name}</TableCell>
+                                        <TableCell align="right">
+                                            <FormControl>
+                                                <InputLabel id="change-bike-model-label">Vaihda pyörämalli</InputLabel>
+                                                <Select
+                                                    labelId="change-bike-model-label"
+                                                    id="change-bike-model"
+                                                    value={bikeModelState}
+                                                    label="Vaihda pyörämalli"
+                                                    onChange={handleBikeModelChange}
+                                                    sx={{ width: '200px' }}
+                                                >
+                                                    {bikeModelsData.map((bikeModel) => {
+                                                        return (
+                                                            <MenuItem key={bikeModel.id} value={bikeModel.id}>
+                                                                {bikeModel.name}
+                                                            </MenuItem>
+                                                        );
+                                                    })}
+                                                </Select>
+                                            </FormControl>
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell sx={{ fontWeight: 'bold' }}>Merkki:</TableCell>
+                                        <TableCell>{bikeState.bike.brand.name}</TableCell>
+                                        <TableCell></TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell sx={{ fontWeight: 'bold' }}>Tyyppi:</TableCell>
+                                        <TableCell>{bikeState.bike.type.name}</TableCell>
+                                        <TableCell></TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell sx={{ fontWeight: 'bold' }}>Koko:</TableCell>
+                                        <TableCell>{bikeState.bike.size.name}</TableCell>
+                                        <TableCell></TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell sx={{ fontWeight: 'bold' }}>Väri:</TableCell>
+                                        <TableCell>{bikeState.bike.color.name}</TableCell>
+                                        <TableCell></TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Kuvaus:</TableCell>
+                                        <TableCell colSpan={2} sx={{ border: 0 }}>
+                                            {bikeState.bike.description}
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </Box>
+
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                flex: 0.5,
+                                marginLeft: '2em',
+                                justifyContent: 'space-between',
+                                minWidth: 500,
+                            }}
+                        >
+                            {/*
+                             * Bike information
+                             */}
+                            <Table aria-label="customized table">
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell sx={{ fontWeight: 'bold' }}>Runkonumero:</TableCell>
+                                        <TableCell colSpan={2}>
+                                            <TextField
+                                                label="Muokkaa runkonumeroa"
+                                                value={frameNumberState}
+                                                fullWidth
+                                                onChange={handleFrameNumberChange}
+                                            />
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varattu Pakettiin:</TableCell>
+                                        <TableCell sx={{ border: 0 }}>{bikeState.package_only ? 'Kyllä' : 'Ei'}</TableCell>
+                                        <TableCell sx={{ border: 0 }}></TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+
+                            {/*
+                             * Bike Storage information
+                             */}
+                            <Table aria-label="customized table">
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell sx={{ fontWeight: 'bold' }}>Varaston nimi:</TableCell>
+                                        <TableCell>{bikeState.storage.name}</TableCell>
+                                        <TableCell align="right">
+                                            <FormControl>
+                                                <InputLabel id="change-bike-storage-label">Vaihda varasto</InputLabel>
+                                                <Select
+                                                    labelId="change-bike-storage-label"
+                                                    id="change-bike-storage"
+                                                    value={storageState}
+                                                    label="Vaihda varasto"
+                                                    onChange={handleStorageChange}
+                                                    sx={{ width: '200px' }}
+                                                >
+                                                    {storagesData.map((storage) => {
+                                                        return (
+                                                            <MenuItem key={storage.id} value={storage.id}>
+                                                                {storage.name}
+                                                            </MenuItem>
+                                                        );
+                                                    })}
+                                                </Select>
+                                            </FormControl>
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varaston osoite</TableCell>
+                                        <TableCell sx={{ border: 0 }}>{bikeState.storage.address}</TableCell>
+                                        <TableCell sx={{ border: 0 }}></TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </Box>
                     </Box>
-
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            flex: 0.5,
-                            marginLeft: '2em',
-                            justifyContent: 'space-between',
-                            minWidth: 500,
-                        }}
-                    >
-                        {/*
-                         * Bike information
-                         */}
-                        <Table aria-label="customized table">
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Runkonumero:</TableCell>
-                                    <TableCell>{bikeData.frame_number}</TableCell>
-                                    <TableCell align="right">
-                                        <Button variant="outlined" sx={{ padding: '15px' }}>
-                                            Muokkaa runkonumeroa
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varattu Pakettiin:</TableCell>
-                                    <TableCell sx={{ border: 0 }}>{bikeData.package_only ? 'Kyllä' : 'Ei'}</TableCell>
-                                    <TableCell sx={{ border: 0 }}></TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-
-                        {/*
-                         * Bike Storage information
-                         */}
-                        <Table aria-label="customized table">
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Varaston nimi:</TableCell>
-                                    <TableCell>{bikeData.storage.name}</TableCell>
-                                    <TableCell align="right">
-                                        <FormControl>
-                                            <InputLabel id="change-bike-storage-label">Vaihda varasto</InputLabel>
-                                            <Select
-                                                labelId="change-bike-storage-label"
-                                                id="change-bike-storage"
-                                                value={storageState}
-                                                label="Vaihda varasto"
-                                                onChange={handleStorageChange}
-                                                sx={{ width: '200px' }}
-                                            >
-                                                {storagesData.map((storage) => {
-                                                    return (
-                                                        <MenuItem key={storage.id} value={storage.id}>
-                                                            {storage.name}
-                                                        </MenuItem>
-                                                    );
-                                                })}
-                                            </Select>
-                                        </FormControl>
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varaston osoite</TableCell>
-                                    <TableCell sx={{ border: 0 }}>{bikeData.storage.address}</TableCell>
-                                    <TableCell sx={{ border: 0 }}></TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
+                    <Box width="100%" display="flex" justifyContent="space-evenly" marginTop="20px" paddingTop="20px" borderTop="1px solid lightgray">
+                        <Button to={`/pyorat/pyoravarasto`} component={Link} sx={{padding: "20px"}}>Palaa pyörälistaan tallentamatta</Button>
+                        <Button type="submit" sx={{padding: "20px"}}>Tallenna muutokset ja palaa listaan</Button>
                     </Box>
                 </Box>
             </TableContainer>

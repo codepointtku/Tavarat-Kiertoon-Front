@@ -215,12 +215,11 @@ const bikesDefaultLoader = async (auth, setAuth) => {
  */
 const bikesListLoader = async (auth, setAuth) => {
     const { data } = await apiCall(auth, setAuth, '/bikes/stock', 'get');
-    console.log('### bikesListLoader', data);
     return data;
 };
 
 /**
- * Get a single bike
+ * Get information needed to modify a single bike
  *
  * @param {*} auth
  * @param {*} setAuth

@@ -319,6 +319,20 @@ const resetPasswordAction = async (auth, setAuth, request) => {
     return { type: 'passwordreset', status: false };
 };
 
+/**
+ * modifyBikeAction
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} request
+ * @param {*} params
+ */
+const modifyBikeAction = async (auth, setAuth, request, params) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, `/bikes/stock/${params.id}/`, 'put', formData);
+    console.log('### modifyBikeAction response.status', response.status)
+}
+
 export {
     userSignupAction,
     frontPageActions,
@@ -335,4 +349,5 @@ export {
     confirmationAction,
     resetEmailAction,
     resetPasswordAction,
+    modifyBikeAction,
 };
