@@ -33,10 +33,10 @@ interface FormValues {
     password: string;
 }
 
-interface StatusData {
-    type: string;
-    status: boolean;
-}
+// interface StatusData {
+//     type: string;
+//     status: boolean;
+// }
 
 function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
     const { register, handleSubmit } = useForm<FormValues>();
@@ -69,7 +69,7 @@ function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
                     {responseStatus?.type === 'login' && responseStatus?.status && (
                         <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={2000} redirectUrl={-1} />
                     )}
-                    <Welcome auth={auth} setCurrentOpenDrawer={''} showCloseDrawerButton={false} />
+                    <Welcome auth={auth} />
                 </>
             ) : (
                 <>
