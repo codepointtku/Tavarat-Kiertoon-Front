@@ -11,52 +11,32 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 function AddToCartButton({ size, id, groupId, count }) {
     const submit = useSubmit();
     const { cart } = useRouteLoaderData('frontPage');
-    const [itemAmount, setItemAmount] = useState(1);
+    const [amount, setAmount] = useState(1);
     const [searchParams] = useSearchParams();
-    const { register, handleSubmit } = useForm();
+    const { handleSubmit } = useForm();
 
-    // function handleChange(SelectChangeEvent) {
-    //     const input = SelectChangeEvent.target.value;
-    //     if ((input >= 1 && input <= count) || input === '') {
-    //         setItemAmount(input);
-    //     }
-    // }
+    function handleOnClick(action) {
+        console.log(amount);
+        action === 'add'
+            ? setAmount(amount >= 1 && amount < count ? amount + 1 : amount - 1)
+            : setAmount(amount >= 1 && amount < count ? amount - 1 : amount + 1);
+    }
 
-    // const handleClickAddToCartBtn = async (action, amount) => {
-    //     action === 'remove'
-    //         ? submit(
-    //               { id, amount },
-    //               {
-    //                   method: 'delete',
-    //                   action: '/?' + searchParams.toString(),
-    //               }
-    //           )
-    //         : submit(
-    //               { id, amount },
-    //               {
-    //                   method: 'put',
-    //                   action: '/?' + searchParams.toString(),
-    //               }
-    //           );
-    // };
+    function handleChange(event) {
+        const input = event.target.value;
+        if ((input >= 1 && input <= count) || input === '') {
+            setAmount(Number(input));
+        }
+    }
 
-    const onSubmit = async (action, amount) => {
-        console.log(action, amount);
-        action === 'remove'
-            ? submit(
-                  { id, amount },
-                  {
-                      method: 'delete',
-                      action: '/?' + searchParams.toString(),
-                  }
-              )
-            : submit(
-                  { id, amount },
-                  {
-                      method: 'put',
-                      action: '/?' + searchParams.toString(),
-                  }
-              );
+    const onSubmit = async () => {
+        submit(
+            { id, amount },
+            {
+                method: 'put',
+                action: '/?' + searchParams.toString(),
+            }
+        );
     };
 
     return (
@@ -74,7 +54,7 @@ function AddToCartButton({ size, id, groupId, count }) {
                     <IconButton
                         size="small"
                         sx={{ color: 'background.default', padding: 0, mr: 1, ml: 0.5 }}
-                        onClick={() => setItemAmount((itemAmount) => itemAmount - 1)}
+                        onClick={() => handleOnClick('remove')}
                     >
                         <RemoveCircleOutlineIcon />
                     </IconButton>
@@ -87,34 +67,25 @@ function AddToCartButton({ size, id, groupId, count }) {
                                 textAlign: 'center',
                             },
                         }}
-                        // {...register('itemAmount', {
-                        //     required: true,
-                        //     maxLength: 3,
-                        //     validate: {
-                        //         greaterOrEqualToOne: (v) => v >= 1,
-                        //         lessOrEqualToCount: (v) => v <= count,
-                        //         isEmpty: (v) => v === '',
-                        //     },
-                        // })}
-                        value={itemAmount}
-                        onChange={(SelectChangeEvent) => setItemAmount(Number(SelectChangeEvent.target.value))}
+                        value={amount}
+                        onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
                         disableUnderline
                     />
                     <IconButton
                         size="small"
                         sx={{ color: 'background.default', padding: 0, ml: 1, mr: 0.5 }}
-                        onClick={() => setItemAmount((itemAmount) => itemAmount + 1)}
+                        onClick={() => handleOnClick('add')}
                     >
                         <AddCircleOutlineIcon />
                     </IconButton>
-                    {/* <form onSubmit={handleSubmit(() => onSubmit('add', itemAmount))}>
+                    <form onSubmit={handleSubmit(() => onSubmit())}>
                         <Button size={size} aria-label="add more of same item to shopping cart" type="submit">
                             Muuta määrää
                         </Button>
-                    </form> */}
+                    </form>
                 </Box>
             ) : (
-                <form onSubmit={handleSubmit(() => onSubmit('add', itemAmount))}>
+                <form onSubmit={handleSubmit(() => onSubmit())}>
                     <Button
                         size={size}
                         aria-label="add to shopping cart"
