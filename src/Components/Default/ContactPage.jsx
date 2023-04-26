@@ -25,7 +25,7 @@ import TypographyTitle from '../TypographyTitle';
 function Hero() {
     return (
         <>
-            <Grid container id="back-btn-avatar-wrapper">
+            <Grid container className="back-btn-avatar-wrapper">
                 <Grid item xs={4}>
                     <BackButton />
                 </Grid>
