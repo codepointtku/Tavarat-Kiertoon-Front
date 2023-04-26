@@ -59,7 +59,7 @@ function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
         const formData = { ...data };
         fetcher.submit(formData, {
             method: 'post',
-            action: '/',
+            action: '/kirjaudu',
         });
     };
 

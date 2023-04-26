@@ -94,6 +94,7 @@ import {
     createBulletinAction,
     bikeOrderAction,
     confirmationAction,
+    testiKirjauduActioni,
 } from './actions';
 
 createStore({});
@@ -232,6 +233,7 @@ function Routes() {
                         {
                             path: '/kirjaudu',
                             element: <LoginPage />,
+                            action: async ({ request }) => testiKirjauduActioni(auth, setAuth, request),
                         },
                         {
                             path: 'rekisteroidy',
