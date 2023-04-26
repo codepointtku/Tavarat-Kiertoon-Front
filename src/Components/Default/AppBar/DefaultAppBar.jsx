@@ -27,7 +27,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AuthContext from '../../../Context/AuthContext';
 import Welcome from './Welcome';
 import ProductInCart from './ProductInCart';
-import LoginForm from './LoginForm';
+import LoginDrawer from './LoginDrawer';
 import CloseDrawerButton from './CloseDrawerButton';
 
 //
@@ -216,7 +216,7 @@ function DefaultAppBar() {
                 {auth.username ? (
                     <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} showCloseDrawerButton={true} auth={auth} />
                 ) : (
-                    <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} notLoggedIn={notLoggedIn} />
+                    <LoginDrawer setCurrentOpenDrawer={setCurrentOpenDrawer} notLoggedIn={notLoggedIn} />
                 )}
                 <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>

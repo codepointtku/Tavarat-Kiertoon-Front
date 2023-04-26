@@ -25,7 +25,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import AlertBox from '../../AlertBox';
 
-function LoginForm({ setCurrentOpenDrawer, notLoggedIn }) {
+function LoginDrawer({ setCurrentOpenDrawer, notLoggedIn }) {
     const { register, handleSubmit } = useForm();
     const submit = useSubmit();
     const responseStatus = useActionData();
@@ -145,4 +145,4 @@ function LoginForm({ setCurrentOpenDrawer, notLoggedIn }) {
     );
 }
 
-export default LoginForm;
+export default LoginDrawer;
