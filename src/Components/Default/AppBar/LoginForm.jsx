@@ -116,7 +116,13 @@ function LoginForm({ setCurrentOpenDrawer, notLoggedIn }) {
                             Sisään
                         </Button>
                     </Box>
-                    <MuiLink variant="body2" component={Link} to="/doesnotexist/" sx={{ display: 'block', mt: 4 }}>
+                    <MuiLink
+                        variant="body2"
+                        component={Link}
+                        to="unohtunutsalasana"
+                        onClick={() => setCurrentOpenDrawer('')}
+                        sx={{ display: 'block', mt: 4 }}
+                    >
                         Unohtunut salasana?
                     </MuiLink>
 
