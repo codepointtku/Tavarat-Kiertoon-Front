@@ -46,8 +46,7 @@ function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
     const fetcher = useFetcher();
     const responseStatus = fetcher.data;
     // console.log('fetcher data', fetcher.data);
-
-    console.log('responseStatus', responseStatus);
+    // console.log('responseStatus', responseStatus);
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
