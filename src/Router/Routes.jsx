@@ -49,6 +49,12 @@ import BackgroundInfo from '../Components/Default/Backgroundinfo';
 import Announcements from '../Components/Default/Announcements';
 import DeliveryView from '../Components/DeliveryView';
 
+import ForgotPassword from '../Components/Default/ResetPassword/ForgotPassword';
+import ResetPassword from '../Components/Default/ResetPassword/ResetPassword';
+import ResetSuccessful from '../Components/Default/ResetPassword/ResetSuccessful';
+import LinkExpired from '../Components/Default/ResetPassword/LinkExpired';
+import PasswordResetNavigate from '../Components/Default/ResetPassword/PasswordResetNavigate';
+
 import InstructionsPage from '../Components/Default/Instructions/InstructionsPage';
 import GuideCommon from '../Components/Default/Instructions/GuideCommon';
 import GuideAccount from '../Components/Default/Instructions/GuideAccount';
@@ -94,6 +100,8 @@ import {
     createBulletinAction,
     bikeOrderAction,
     confirmationAction,
+    resetEmailAction,
+    resetPasswordAction,
 } from './actions';
 
 createStore({});
@@ -255,6 +263,34 @@ function Routes() {
                             path: 'otayhteytta',
                             element: <ContactPage />,
                             action: async ({ request }) => contactAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'unohtunutsalasana',
+                            element: <ForgotPassword />,
+                            action: async ({ request }) => resetEmailAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'salasananpalautus',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <ResetPassword />,
+                                },
+                                {
+                                    path: 'salasanapalautettu',
+                                    element: <ResetSuccessful />,
+                                    action: async ({ request }) => resetPasswordAction(auth, setAuth, request),
+                                },
+                                {
+                                    path: 'linkexpired',
+                                    element: <LinkExpired />,
+                                },
+                                {
+                                    path: ':uid/:token',
+                                    element: <PasswordResetNavigate />,
+                                },
+                            ],
                         },
                     ],
                 },
