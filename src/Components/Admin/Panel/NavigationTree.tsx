@@ -83,11 +83,6 @@ function NavigationTree() {
         messagingNavList: false,
     });
 
-    // unethical dummy state-thing
-    const [openStoragesNavList, setOpenStoragesNavList] = React.useState(false);
-    const [openBulletinsNavList, setOpenBulletinsNavList] = React.useState(false);
-    const [openMessagingNavList, setOpenMessagingNavList] = React.useState(false);
-
     // tilaukset
     const ordersListItems = (
         <Box
@@ -263,18 +258,18 @@ function NavigationTree() {
     const storagesListItems = (
         <Box
             sx={{
-                bgcolor: openStoragesNavList ? 'rgba(71, 98, 130, 0.2)' : null,
-                pb: openStoragesNavList ? 2 : 0,
+                bgcolor: open.storagesNavList ? 'rgba(71, 98, 130, 0.2)' : null,
+                pb: open.storagesNavList ? 2 : 0,
             }}
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpenStoragesNavList(!openStoragesNavList)}
+                onClick={() => setOpen((open) => ({ ...open, storagesNavList: !open.storagesNavList }))}
                 sx={{
                     px: 3,
                     pt: 2.5,
-                    pb: openStoragesNavList ? 0 : 2.5,
-                    '&:hover, &:focus': { '& svg': { opacity: openStoragesNavList ? 1 : 0 } },
+                    pb: open.storagesNavList ? 0 : 2.5,
+                    '&:hover, &:focus': { '& svg': { opacity: open.storagesNavList ? 1 : 0 } },
                 }}
             >
                 <ListItemText
@@ -290,7 +285,7 @@ function NavigationTree() {
                         noWrap: true,
                         fontSize: 12,
                         lineHeight: '16px',
-                        color: openStoragesNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
+                        color: open.storagesNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
                     }}
                     sx={{ my: 0 }}
                 />
@@ -298,12 +293,12 @@ function NavigationTree() {
                     sx={{
                         mr: -1,
                         opacity: 0,
-                        transform: openStoragesNavList ? 'rotate(-180deg)' : 'rotate(0)',
+                        transform: open.storagesNavList ? 'rotate(-180deg)' : 'rotate(0)',
                         transition: '0.2s',
                     }}
                 />
             </ListItemButton>
-            {openStoragesNavList &&
+            {open.storagesNavList &&
                 varastot.map((item) => (
                     <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
@@ -320,18 +315,18 @@ function NavigationTree() {
     const bulletinsListItems = (
         <Box
             sx={{
-                bgcolor: openBulletinsNavList ? 'rgba(71, 98, 130, 0.2)' : null,
-                pb: openBulletinsNavList ? 2 : 0,
+                bgcolor: open.bulletinsNavList ? 'rgba(71, 98, 130, 0.2)' : null,
+                pb: open.bulletinsNavList ? 2 : 0,
             }}
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpenBulletinsNavList(!openBulletinsNavList)}
+                onClick={() => setOpen((open) => ({ ...open, bulletinsNavList: !open.bulletinsNavList }))}
                 sx={{
                     px: 3,
                     pt: 2.5,
-                    pb: openBulletinsNavList ? 0 : 2.5,
-                    '&:hover, &:focus': { '& svg': { opacity: openBulletinsNavList ? 1 : 0 } },
+                    pb: open.bulletinsNavList ? 0 : 2.5,
+                    '&:hover, &:focus': { '& svg': { opacity: open.bulletinsNavList ? 1 : 0 } },
                 }}
             >
                 <ListItemText
@@ -347,7 +342,7 @@ function NavigationTree() {
                         noWrap: true,
                         fontSize: 12,
                         lineHeight: '16px',
-                        color: openBulletinsNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
+                        color: open.bulletinsNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
                     }}
                     sx={{ my: 0 }}
                 />
@@ -355,12 +350,12 @@ function NavigationTree() {
                     sx={{
                         mr: -1,
                         opacity: 0,
-                        transform: openBulletinsNavList ? 'rotate(-180deg)' : 'rotate(0)',
+                        transform: open.bulletinsNavList ? 'rotate(-180deg)' : 'rotate(0)',
                         transition: '0.2s',
                     }}
                 />
             </ListItemButton>
-            {openBulletinsNavList &&
+            {open.bulletinsNavList &&
                 tiedotteet.map((item) => (
                     <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
@@ -377,18 +372,18 @@ function NavigationTree() {
     const messagingListItems = (
         <Box
             sx={{
-                bgcolor: openMessagingNavList ? 'rgba(71, 98, 130, 0.2)' : null,
-                pb: openMessagingNavList ? 2 : 0,
+                bgcolor: open.messagingNavList ? 'rgba(71, 98, 130, 0.2)' : null,
+                pb: open.messagingNavList ? 2 : 0,
             }}
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpenMessagingNavList(!openMessagingNavList)}
+                onClick={() => setOpen((open) => ({ ...open, messagingNavList: !open.messagingNavList }))}
                 sx={{
                     px: 3,
                     pt: 2.5,
-                    pb: openMessagingNavList ? 0 : 2.5,
-                    '&:hover, &:focus': { '& svg': { opacity: openMessagingNavList ? 1 : 0 } },
+                    pb: open.messagingNavList ? 0 : 2.5,
+                    '&:hover, &:focus': { '& svg': { opacity: open.messagingNavList ? 1 : 0 } },
                 }}
             >
                 <ListItemText
@@ -404,7 +399,7 @@ function NavigationTree() {
                         noWrap: true,
                         fontSize: 12,
                         lineHeight: '16px',
-                        color: openMessagingNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
+                        color: open.messagingNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
                     }}
                     sx={{ my: 0 }}
                 />
@@ -412,12 +407,12 @@ function NavigationTree() {
                     sx={{
                         mr: -1,
                         opacity: 0,
-                        transform: openMessagingNavList ? 'rotate(-180deg)' : 'rotate(0)',
+                        transform: open.messagingNavList ? 'rotate(-180deg)' : 'rotate(0)',
                         transition: '0.2s',
                     }}
                 />
             </ListItemButton>
-            {openMessagingNavList &&
+            {open.messagingNavList &&
                 viestit.map((item) => (
                     <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
