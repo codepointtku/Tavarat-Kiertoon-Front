@@ -28,6 +28,7 @@ import AuthContext from '../../../Context/AuthContext';
 import Welcome from './Welcome';
 import ProductInCart from './ProductInCart';
 import LoginForm from './LoginForm';
+import CloseDrawerButton from './CloseDrawerButton';
 
 //
 
@@ -208,6 +209,7 @@ function DefaultAppBar() {
                         </Button>
                     </ListItem>
                 </List>
+                <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
@@ -216,6 +218,7 @@ function DefaultAppBar() {
                 ) : (
                     <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} notLoggedIn={notLoggedIn} />
                 )}
+                <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>
         </Box>
     );

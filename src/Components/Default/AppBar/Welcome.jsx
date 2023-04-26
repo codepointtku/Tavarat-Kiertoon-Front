@@ -2,9 +2,8 @@ import { Form, useSubmit } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { Typography, Button, Container, Box } from '@mui/material';
-import CloseDrawerButton from './CloseDrawerButton';
 
-function Welcome({ auth, setCurrentOpenDrawer, showCloseDrawerButton }) {
+function Welcome({ auth }) {
     const { handleSubmit } = useForm();
     const submit = useSubmit();
 
@@ -24,8 +23,6 @@ function Welcome({ auth, setCurrentOpenDrawer, showCloseDrawerButton }) {
                 <Button sx={{ mt: 5, mb: 5 }} type="submit" fullWidth>
                     Kirjaudu ulos
                 </Button>
-
-                {showCloseDrawerButton && <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />}
             </Box>
         </Container>
     );

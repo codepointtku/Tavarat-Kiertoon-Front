@@ -24,7 +24,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import AlertBox from '../../AlertBox';
-import CloseDrawerButton from './CloseDrawerButton';
 
 function LoginForm({ setCurrentOpenDrawer, notLoggedIn }) {
     const { register, handleSubmit } = useForm();
@@ -140,7 +139,6 @@ function LoginForm({ setCurrentOpenDrawer, notLoggedIn }) {
                             Kirjautuminen vaaditaan ostoskorin käyttöön
                         </Alert>
                     )}
-                    <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
                 </Box>
             </Container>
         </>
