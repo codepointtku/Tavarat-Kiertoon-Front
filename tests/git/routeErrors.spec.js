@@ -219,3 +219,27 @@ test.describe('bikepackets', () => {
         await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
     });
 });
+test.describe('passwordreset', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/salasananpalautus');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+    });
+});
+test.describe('passwordresetsuccessful', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/salasananpalautus/salasanapalautettu');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+    });
+});
+test.describe('linkexpired', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/salasananpalautus/linkexpired');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+    });
+});
+test.describe('pwdresetsession', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/salasananpalautus/asd/das');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+    });
+});
