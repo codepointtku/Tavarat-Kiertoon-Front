@@ -57,7 +57,7 @@ function LoginForm({ setCurrentOpenDrawer, notLoggedIn }) {
                 <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={3000} />
             )}
 
-            <Container maxWidth="xs" component={Form} onSubmit={handleSubmit(onSubmit)}>
+            {/* <Container maxWidth="xs" component={Form} onSubmit={handleSubmit(onSubmit)}>
                 <Box
                     sx={{
                         marginTop: 2,
@@ -134,13 +134,13 @@ function LoginForm({ setCurrentOpenDrawer, notLoggedIn }) {
                     >
                         Luo uusi tunnus
                     </Button>
-                    {notLoggedIn && (
-                        <Alert severity="error" sx={{ mt: 5, mb: 5, fontWeight: 'bold' }}>
-                            Kirjautuminen vaaditaan ostoskorin käyttöön
-                        </Alert>
-                    )}
                 </Box>
-            </Container>
+                {notLoggedIn && (
+                    <Alert severity="error" sx={{ mt: 5, mb: 5, fontWeight: 'bold' }}>
+                        Kirjautuminen vaaditaan ostoskorin käyttöön
+                    </Alert>
+                )}
+            </Container> */}
         </>
     );
 }
