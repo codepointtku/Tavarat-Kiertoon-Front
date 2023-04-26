@@ -79,7 +79,7 @@ function AddToCartButton({ size, id, groupId, count }) {
                         <RemoveCircleOutlineIcon />
                     </IconButton>
                     <Input
-                        sx={{ mt: 1 / 4 }}
+                        sx={{ mt: 1 / 4, border: 1, borderColor: 'white', borderRadius: 1 }}
                         inputProps={{
                             style: {
                                 width: 30,
