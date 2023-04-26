@@ -1,22 +1,60 @@
-import { Typography, Box, Link } from '@mui/material';
-import Container from '@mui/material/Container';
+import { Typography, Box, Link, Grid, Avatar } from '@mui/material';
 
-function BackgroundInfo() {
+import AgricultureIcon from '@mui/icons-material/Agriculture';
+
+import Container from '@mui/material/Container';
+import BackButton from '../BackButton';
+import TypographyTitle from '../TypographyTitle';
+
+function Hero() {
+    return (
+        <>
+            <Grid container className="back-btn-avatar-wrapper">
+                <Grid item xs={4}>
+                    <BackButton />
+                </Grid>
+                <Grid
+                    item
+                    xs={4}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Avatar
+                        sx={{
+                            bgcolor: 'secondary.dark',
+                            width: 48,
+                            height: 48,
+                        }}
+                    >
+                        <AgricultureIcon />
+                    </Avatar>
+                </Grid>
+                <Grid item xs={4} />
+            </Grid>
+            <Box id="hero-texts-wrapper" p="1rem">
+                <TypographyTitle text="Tavarat Kiertoon tausta" />
+                <Typography sx={{ mt: '1rem' }} textAlign="center">
+                    Ohessa lyhyt historiikki mistä, miksi ja miten ja mikä juttu.
+                </Typography>
+            </Box>
+        </>
+    );
+}
+
+function ContentText() {
     return (
         <Container>
             <Box sx={{ p: 2 }}>
-                <Typography variant="h4" aling="center" color="primary.main">
-                    Tausta
-                </Typography>
-            </Box>
-            <Box sx={{ p: 2 }}>
                 <Typography variant="body2">
-                    Tavarat kiertoon – kierrätysjärjestelmän taustalla on Turun kaupungin kestävän kehityksen
+                    Tavarat Kiertoon -kierrätysjärjestelmän taustalla on Turun kaupungin kestävän kehityksen
                     budjetoinnissa tehty työ materiaalikierron edistämiseksi eri toimialojen välillä, Sivistystoimialan
                     varastojen inventointitarve sekä Turun resurssiviisaustyö yhdessä Sitran kanssa. Keskeisinä
                     tavoitteina on edesauttaa kaupungin sisäistä resurssiviisautta, lisätä näkyvyyttä, parantaa
                     päätöksentekoa ja vähentää ulkoisia ostoja. Kierrätysjärjestelmä toteutetaan avoimella
-                    lähdekoodilla, jolloin sen laaja‐alainen hyödyntäminen on mahdollista eri tahoille.
+                    lähdekoodilla, jolloin sen laaja-alainen hyödyntäminen on mahdollista eri tahoille.
                 </Typography>
             </Box>
             <Box sx={{ p: 2 }}>
@@ -31,9 +69,9 @@ function BackgroundInfo() {
             </Box>
             <Box sx={{ p: 2 }}>
                 <Typography variant="body2">
-                    Pilotin seuraavassa vaiheessa, 1.6.2016 alkaen, Tavarat kiertoon – kierrätysjärjestelmään
-                    kehitettiin käyttäjäystävällinen mobiilisovellus, jonka avulla kenen tahansa on helppo lisätä
-                    yksikkönsä ylimääräinen irtaimisto järjestelmään. Näin saadaan sujuvasti kerättyä tieto kaupungin
+                    Pilotin seuraavassa vaiheessa, 1.6.2016 alkaen, Tavarat kiertoon-kierrätysjärjestelmään kehitettiin
+                    käyttäjäystävällinen mobiilisovellus, jonka avulla kenen tahansa on helppo lisätä yksikkönsä
+                    ylimääräinen irtaimisto järjestelmään. Näin saadaan sujuvasti kerättyä tieto kaupungin
                     ylimääräisistä huonekaluista, laitteista, kirjoista ja lukuisista muista käyttökelpoisista esineistä
                     kaikkien nähtäville. Jatkossa tavoitteena on, että Turun kaupungin yksiköt tuovat itse ylimääräiset
                     huonekalut järjestelmään, eikä niitä tarvitse välttämättä siirtää keskitettyyn varastoon.
@@ -65,6 +103,15 @@ function BackgroundInfo() {
                     <Link href="mailto: kaj-michael.lang@turku.fi">kaj-michael.lang@turku.fi</Link>
                 </Typography>
             </Box>
+        </Container>
+    );
+}
+
+function BackgroundInfo() {
+    return (
+        <Container maxWidth="lg">
+            <Hero />
+            <ContentText />
         </Container>
     );
 }
