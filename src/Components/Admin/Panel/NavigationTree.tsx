@@ -73,22 +73,17 @@ const FireNav = styled(List)<{ component?: React.ElementType }>({
     },
 });
 
-// type StateStuff = {
-//     ordersNavList: boolean;
-//     productsNavList: boolean;
-//     usersNavList: boolean;
-//     bulletinsNavList: boolean;
-//     messagingNavList: boolean;
-// }
-
 function NavigationTree() {
-    // const tila: StateStuff = {ordersNavList: false, productsNavList: false, usersNavList: false, bulletinsNavList: false, messagingNavList: false}
-    // const [open, setOpen] = React.useState(tila);
+    const [open, setOpen] = React.useState({
+        ordersNavList: false,
+        productsNavList: false,
+        usersNavList: false,
+        storagesNavList: false,
+        bulletinsNavList: false,
+        messagingNavList: false,
+    });
 
     // unethical dummy state-thing
-    const [openOrdersNavList, setOpenOrdersNavList] = React.useState(false);
-    const [openProductsNavList, setOpenProductsNavList] = React.useState(false);
-    const [openUsersNavList, setOpenUsersNavList] = React.useState(false);
     const [openStoragesNavList, setOpenStoragesNavList] = React.useState(false);
     const [openBulletinsNavList, setOpenBulletinsNavList] = React.useState(false);
     const [openMessagingNavList, setOpenMessagingNavList] = React.useState(false);
@@ -97,19 +92,18 @@ function NavigationTree() {
     const ordersListItems = (
         <Box
             sx={{
-                bgcolor: openOrdersNavList ? 'rgba(71, 98, 130, 0.2)' : null,
-                pb: openOrdersNavList ? 2 : 0,
+                bgcolor: open.ordersNavList ? 'rgba(71, 98, 130, 0.2)' : null,
+                pb: open.ordersNavList ? 2 : 0,
             }}
         >
             <ListItemButton
                 alignItems="flex-start"
-                // onClick={() => setOpen({ ...tila, [tila.ordersNavList]: !tila.ordersNavList })}
-                onClick={() => setOpenOrdersNavList(!openOrdersNavList)}
+                onClick={() => setOpen((open) => ({ ...open, ordersNavList: !open.ordersNavList }))}
                 sx={{
                     px: 3,
                     pt: 2.5,
-                    pb: openOrdersNavList ? 0 : 2.5,
-                    '&:hover, &:focus': { '& svg': { opacity: openOrdersNavList ? 1 : 0 } },
+                    pb: open.ordersNavList ? 0 : 2.5,
+                    '&:hover, &:focus': { '& svg': { opacity: open.ordersNavList ? 1 : 0 } },
                 }}
             >
                 <ListItemText
@@ -125,7 +119,7 @@ function NavigationTree() {
                         noWrap: true,
                         fontSize: 12,
                         lineHeight: '16px',
-                        color: openOrdersNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
+                        color: open.ordersNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
                     }}
                     sx={{ my: 0 }}
                 />
@@ -133,12 +127,12 @@ function NavigationTree() {
                     sx={{
                         mr: -1,
                         opacity: 0,
-                        transform: openOrdersNavList ? 'rotate(-180deg)' : 'rotate(0)',
+                        transform: open.ordersNavList ? 'rotate(-180deg)' : 'rotate(0)',
                         transition: '0.2s',
                     }}
                 />
             </ListItemButton>
-            {openOrdersNavList &&
+            {open.ordersNavList &&
                 data.map((item) => (
                     <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
@@ -155,18 +149,18 @@ function NavigationTree() {
     const productsListItems = (
         <Box
             sx={{
-                bgcolor: openProductsNavList ? 'rgba(71, 98, 130, 0.2)' : null,
-                pb: openProductsNavList ? 2 : 0,
+                bgcolor: open.productsNavList ? 'rgba(71, 98, 130, 0.2)' : null,
+                pb: open.productsNavList ? 2 : 0,
             }}
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpenProductsNavList(!openProductsNavList)}
+                onClick={() => setOpen((open) => ({ ...open, productsNavList: !open.productsNavList }))}
                 sx={{
                     px: 3,
                     pt: 2.5,
-                    pb: openProductsNavList ? 0 : 2.5,
-                    '&:hover, &:focus': { '& svg': { opacity: openProductsNavList ? 1 : 0 } },
+                    pb: open.productsNavList ? 0 : 2.5,
+                    '&:hover, &:focus': { '& svg': { opacity: open.productsNavList ? 1 : 0 } },
                 }}
             >
                 <ListItemText
@@ -182,7 +176,7 @@ function NavigationTree() {
                         noWrap: true,
                         fontSize: 12,
                         lineHeight: '16px',
-                        color: openProductsNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
+                        color: open.productsNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
                     }}
                     sx={{ my: 0 }}
                 />
@@ -190,12 +184,12 @@ function NavigationTree() {
                     sx={{
                         mr: -1,
                         opacity: 0,
-                        transform: openProductsNavList ? 'rotate(-180deg)' : 'rotate(0)',
+                        transform: open.productsNavList ? 'rotate(-180deg)' : 'rotate(0)',
                         transition: '0.2s',
                     }}
                 />
             </ListItemButton>
-            {openProductsNavList &&
+            {open.productsNavList &&
                 tuotteet.map((item) => (
                     <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
@@ -212,18 +206,18 @@ function NavigationTree() {
     const usersListItems = (
         <Box
             sx={{
-                bgcolor: openUsersNavList ? 'rgba(71, 98, 130, 0.2)' : null,
-                pb: openUsersNavList ? 2 : 0,
+                bgcolor: open.usersNavList ? 'rgba(71, 98, 130, 0.2)' : null,
+                pb: open.usersNavList ? 2 : 0,
             }}
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpenUsersNavList(!openUsersNavList)}
+                onClick={() => setOpen((open) => ({ ...open, usersNavList: !open.usersNavList }))}
                 sx={{
                     px: 3,
                     pt: 2.5,
-                    pb: openUsersNavList ? 0 : 2.5,
-                    '&:hover, &:focus': { '& svg': { opacity: openUsersNavList ? 1 : 0 } },
+                    pb: open.usersNavList ? 0 : 2.5,
+                    '&:hover, &:focus': { '& svg': { opacity: open.usersNavList ? 1 : 0 } },
                 }}
             >
                 <ListItemText
@@ -239,7 +233,7 @@ function NavigationTree() {
                         noWrap: true,
                         fontSize: 12,
                         lineHeight: '16px',
-                        color: openUsersNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
+                        color: open.usersNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
                     }}
                     sx={{ my: 0 }}
                 />
@@ -247,12 +241,12 @@ function NavigationTree() {
                     sx={{
                         mr: -1,
                         opacity: 0,
-                        transform: openUsersNavList ? 'rotate(-180deg)' : 'rotate(0)',
+                        transform: open.usersNavList ? 'rotate(-180deg)' : 'rotate(0)',
                         transition: '0.2s',
                     }}
                 />
             </ListItemButton>
-            {openUsersNavList &&
+            {open.usersNavList &&
                 kayttajat.map((item) => (
                     <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
