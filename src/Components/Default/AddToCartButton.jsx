@@ -80,7 +80,14 @@ function AddToCartButton({ size, id, groupId, count }) {
                         <RemoveIcon />
                     </IconButton>
                     <Input
-                        sx={{ mt: 1 / 4, border: 1, borderColor: 'white', borderRadius: 1 }}
+                        sx={{
+                            mt: 1 / 4,
+                            border: 1,
+                            borderColor: 'white',
+                            backgroundColor: 'white',
+                            color: 'primary.main',
+                            borderRadius: 1,
+                        }}
                         inputProps={{
                             style: {
                                 width: 30,
