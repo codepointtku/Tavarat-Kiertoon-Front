@@ -4,25 +4,29 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { useStateMachine } from 'little-state-machine';
-import { Typography, TextField, Grid, MenuItem, Box, Alert, OutlinedInput } from '@mui/material';
+import { Typography, TextField, Grid, MenuItem, Box, Alert, OutlinedInput, Button } from '@mui/material';
 
 import CartButtons from './CartButtons';
 import Update from './Update';
+import AutoFilled from './AutoFilled';
 
 function ContactsAndDelivery() {
     const user = useRouteLoaderData('shoppingCart');
     const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
     const [selectedMethod, setSelectedMethod] = useState('shipping');
+    const [isSamePerson, setIsSamePerson] = useState(false);
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
     const { actions } = useStateMachine({ Update });
+    const fullname = user.name.split(' ');
     // console.log('update state: ', state, 'update actions: ', actions);
 
     const navigate = useNavigate();
     const onSubmit = (data) => {
+        alert(JSON.stringify(data));
         actions.Update(data);
         navigate('/ostoskori/vaihe3');
     };
@@ -30,6 +34,7 @@ function ContactsAndDelivery() {
         setSelectedAddress(SelectChangeEvent.target.value);
     };
     const correctAddress = user.address_list?.filter((address) => address.address === selectedAddress);
+    console.log(isSamePerson);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -56,43 +61,50 @@ function ContactsAndDelivery() {
                     <Typography variant="h6">Puh. numero: {user.phone_number}</Typography>
                 </Box>
             </Box>
+            <Grid gap={2} sx={{ mb: 2 }} container>
+                <Grid item>
+                    <Typography variant="h6">Vastaanottaja sama kuin tilaaja?</Typography>
+                </Grid>
+                <Grid item>
+                    <Button onClick={() => setIsSamePerson((value) => !value)}>Täytä tiedot samoina</Button>
+                </Grid>
+            </Grid>
             <Typography variant="h4" sx={{ marginBottom: 2, color: 'primary.main' }}>
                 Vastaanottajan yhteystiedot
             </Typography>
-            <Grid container spacing={4}>
-                <Grid item>
-                    <TextField
-                        label="Etunimi"
-                        variant="outlined"
-                        // autoComplete="given-name"
-                        {...register('firstName', { required: true })}
-                    />
-                    {errors.firstName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
+            {!isSamePerson ? (
+                <Grid container spacing={4}>
+                    <Grid item>
+                        <TextField label="Etunimi" variant="outlined" {...register('firstName', { required: true })} />
+                        {errors.firstName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
+                    </Grid>
+                    <Grid item>
+                        <TextField label="Sukunimi" variant="outlined" {...register('lastName', { required: true })} />
+                        {errors.lastName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            label="Sähköposti"
+                            variant="outlined"
+                            {...register('email', {
+                                required: true,
+                                pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/,
+                            })}
+                        />
+                        {errors.email && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            label="Puh. numero"
+                            variant="outlined"
+                            {...register('phoneNumber', { required: true, pattern: { value: /^[0-9]+$/ } })}
+                        />
+                        {errors.phoneNumber && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
+                    </Grid>
                 </Grid>
-                <Grid item>
-                    <TextField label="Sukunimi" variant="outlined" {...register('lastName', { required: true })} />
-                    {errors.lastName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
-                </Grid>
-                <Grid item>
-                    <TextField
-                        label="Sähköposti"
-                        variant="outlined"
-                        {...register('email', {
-                            required: true,
-                            pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/,
-                        })}
-                    />
-                    {errors.email && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
-                </Grid>
-                <Grid item>
-                    <TextField
-                        label="Puh. numero"
-                        variant="outlined"
-                        {...register('phoneNumber', { required: true, pattern: { value: /^[0-9]+$/ } })}
-                    />
-                    {errors.phoneNumber && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
-                </Grid>
-            </Grid>
+            ) : (
+                <AutoFilled user={user} actions={actions} />
+            )}
             <Typography variant="h4" sx={{ marginTop: 5, marginBottom: 2, color: 'primary.main' }}>
                 Toimitus
             </Typography>
