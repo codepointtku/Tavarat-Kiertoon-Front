@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSubmit, useRouteLoaderData, useSearchParams, useActionData } from 'react-router-dom';
+import { useSubmit, useRouteLoaderData, useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Box, Button, Input, IconButton } from '@mui/material';
 
@@ -10,16 +10,11 @@ import RemoveIcon from '@mui/icons-material/Remove';
 
 function AddToCartButton({ size, id, groupId, count }) {
     const submit = useSubmit();
-    const responseStatus = useActionData();
     const { cart } = useRouteLoaderData('frontPage');
     const [amount, setAmount] = useState(1);
     const [addedToCart, setAddedToCart] = useState(false);
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
-
-    useEffect(() => {
-        responseStatus?.type === 'update' && responseStatus?.status && setAddedToCart(true);
-    }, [responseStatus]);
 
     function addAmount() {
         if (amount === count) {
@@ -62,6 +57,7 @@ function AddToCartButton({ size, id, groupId, count }) {
                 action: '/?' + searchParams.toString(),
             }
         );
+        setAddedToCart(true);
     };
 
     return (
@@ -135,6 +131,8 @@ function AddToCartButton({ size, id, groupId, count }) {
 AddToCartButton.propTypes = {
     size: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
+    groupId: PropTypes.string.isRequired,
+    count: PropTypes.number.isRequired,
 };
 
 export default AddToCartButton;
