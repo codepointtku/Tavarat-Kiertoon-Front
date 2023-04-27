@@ -12,7 +12,6 @@ import {
     InputAdornment,
     IconButton,
     Avatar,
-    Typography,
     Stack,
     Grid,
 } from '@mui/material';
@@ -28,7 +27,6 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import BackButton from '../../BackButton';
 import AlertBox from '../../AlertBox';
 import TypographyTitle from '../../TypographyTitle';
-import TypographyHeading from '../../TypographyHeading';
 
 function Hero() {
     return (
