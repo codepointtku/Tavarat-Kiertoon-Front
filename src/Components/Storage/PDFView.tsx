@@ -16,7 +16,7 @@ export interface IProduct {
     id: number;
     measurements: string | null; // JTo: Check this
     name: string;
-    pictures: { key: number; picture_address: string }[];
+    pictures: { id: number; picture_address: string }[];
     price: number;
     shelf_id: string | null; // JTo: Check this
     storage_name: string;
