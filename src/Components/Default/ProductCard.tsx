@@ -28,7 +28,7 @@ interface Props {
     measurements: number;
     weight: number;
     count: number;
-    pictures: string[];
+    pictures: { id: number; picture_address: string }[];
 }
 
 function ProductCard({
@@ -69,12 +69,12 @@ function ProductCard({
                         activeIndicatorIconButtonProps={{ style: { color: '#009bd8' } }}
                     >
                         {pictures.map((picture) => (
-                            <Box key={picture} component={Link} to={`/tuotteet/${id}`} color="inherit">
+                            <Box key={picture.picture_address} component={Link} to={`/tuotteet/${id}`} color="inherit">
                                 <CardMedia
                                     component={Box}
                                     sx={{ position: 'relative', alt: 'kuva' }}
                                     height={200}
-                                    image={`${window.location.protocol}//${window.location.hostname}:8000/media/${picture}`}
+                                    image={`${window.location.protocol}//${window.location.hostname}:8000/media/${picture.picture_address}`}
                                 >
                                     {openInfo && (
                                         <Grid
