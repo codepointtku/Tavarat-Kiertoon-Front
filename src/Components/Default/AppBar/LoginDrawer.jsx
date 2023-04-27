@@ -24,25 +24,26 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import AlertBox from '../../AlertBox';
+import LoginForm from '../../LoginForm';
 
 function LoginDrawer({ setCurrentOpenDrawer, notLoggedIn }) {
-    const { register, handleSubmit } = useForm();
-    const submit = useSubmit();
-    const responseStatus = useActionData();
+    // const { register, handleSubmit } = useForm();
+    // const submit = useSubmit();
+    // const responseStatus = useActionData();
 
-    const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
+    // const [showPassword, setShowPassword] = useState(false);
+    // const handleClickShowPassword = () => setShowPassword((show) => !show);
+    // const handleMouseDownPassword = (event) => {
+    //     event.preventDefault();
+    // };
 
-    const onSubmit = async (data) => {
-        const formData = { ...data };
-        submit(formData, {
-            method: 'post',
-            action: '/',
-        });
-    };
+    // const onSubmit = async (data) => {
+    //     const formData = { ...data };
+    //     submit(formData, {
+    //         method: 'post',
+    //         action: '/',
+    //     });
+    // };
 
     const handleClickCloseDrawer = () => {
         setCurrentOpenDrawer('');
@@ -50,12 +51,14 @@ function LoginDrawer({ setCurrentOpenDrawer, notLoggedIn }) {
 
     return (
         <>
-            {responseStatus?.type === 'login' && !responseStatus?.status && (
+            <LoginForm redirectUrl={'/'} />
+
+            {/* {responseStatus?.type === 'login' && !responseStatus?.status && (
                 <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" timer={3000} />
             )}
             {responseStatus?.type === 'login' && responseStatus?.status && (
                 <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={3000} />
-            )}
+            )} */}
 
             {/* <Container maxWidth="xs" component={Form} onSubmit={handleSubmit(onSubmit)}>
                 <Box
