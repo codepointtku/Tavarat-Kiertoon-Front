@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import { Box, Button, Input, IconButton } from '@mui/material';
 
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 function AddToCartButton({ size, id, groupId, count }) {
     const submit = useSubmit();
@@ -56,7 +56,7 @@ function AddToCartButton({ size, id, groupId, count }) {
                         sx={{ color: 'background.default', padding: 0, mr: 1, ml: 0.5 }}
                         onClick={() => handleOnClick('remove')}
                     >
-                        <RemoveCircleOutlineIcon />
+                        <RemoveIcon />
                     </IconButton>
                     <Input
                         sx={{ mt: 1 / 4, border: 1, borderColor: 'white', borderRadius: 1 }}
@@ -76,7 +76,7 @@ function AddToCartButton({ size, id, groupId, count }) {
                         sx={{ color: 'background.default', padding: 0, ml: 1, mr: 0.5 }}
                         onClick={() => handleOnClick('add')}
                     >
-                        <AddCircleOutlineIcon />
+                        <AddIcon />
                     </IconButton>
                     <form onSubmit={handleSubmit(() => onSubmit())}>
                         <Button size={size} aria-label="add more of same item to shopping cart" type="submit">
