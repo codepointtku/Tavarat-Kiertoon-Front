@@ -162,7 +162,7 @@ export default function BikesPage() {
 
         submit(formData, {
             method: 'post',
-            action: '/pyorat',
+            action: '/pyorat?index',
         });
 
         // Show Thank You modal visible

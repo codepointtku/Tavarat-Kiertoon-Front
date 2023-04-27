@@ -451,7 +451,6 @@ function Routes() {
                 // bikes routes
                 {
                     path: 'pyorat',
-                    action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                     element: (
                         <ThemeProvider theme={bikeTheme}>
                             <BikesLayout />
@@ -462,7 +461,7 @@ function Routes() {
                             index: true,
                             element: <BikesPage />,
                             loader: bikesDefaultLoader,
-                            shouldRevalidate: () => false,
+                            action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                         },
                         {
                             path: 'pyoravarasto',
@@ -470,7 +469,6 @@ function Routes() {
                             children: [
                                 {
                                     index: true,
-                                    // loader: bikesDefaultLoader,
                                     loader: async () => bikesListLoader(auth, setAuth),
                                     element: <Bikes />,
                                 },
@@ -494,7 +492,8 @@ function Routes() {
                                             path: ':id',
                                             element: <ModifyBikePage />,
                                             loader: async ({ params }) => bikeLoader(auth, setAuth, params),
-                                            action: async ({ request, params }) => modifyBikeAction(auth, setAuth, request, params),
+                                            action: async ({ request, params }) =>
+                                                modifyBikeAction(auth, setAuth, request, params),
                                         },
                                     ],
                                 },
