@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { useState } from 'react';
 import { Link, useSubmit, Form, useActionData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -14,6 +13,8 @@ import {
     IconButton,
     Avatar,
     Typography,
+    Stack,
+    Grid,
 } from '@mui/material';
 
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
@@ -26,30 +27,41 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import BackButton from '../../BackButton';
 import AlertBox from '../../AlertBox';
+import TypographyTitle from '../../TypographyTitle';
+import TypographyHeading from '../../TypographyHeading';
 
 function Hero() {
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-            }}
-        >
-            <Avatar
-                sx={{
-                    mt: 1,
-                    bgcolor: 'secondary.main',
-                    width: 64,
-                    height: 64,
-                }}
-            >
-                <VpnKeyIcon />
-            </Avatar>
-            <Typography mt={1} mb={2} variant="h5">
-                Luo uusi käyttäjätili
-            </Typography>
-        </Box>
+        <>
+            <Grid container className="back-btn-avatar-wrapper">
+                <Grid item xs={4}>
+                    <BackButton />
+                </Grid>
+                <Grid
+                    item
+                    xs={4}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Avatar
+                        sx={{
+                            bgcolor: 'secondary.dark',
+                            width: 48,
+                            height: 48,
+                        }}
+                    >
+                        <VpnKeyIcon />
+                    </Avatar>
+                </Grid>
+                <Grid item xs={4} />
+            </Grid>
+            <Box sx={{ mt: 2, mb: 2 }}>
+                <TypographyTitle text="Luo uusi käyttäjätili" />
+            </Box>
+        </>
     );
 }
 
@@ -92,16 +104,7 @@ function UserForm() {
                 component={Form}
                 onSubmit={handleSubmit(onSubmit)}
             >
-                <Box
-                    id="signupform-user-fields"
-                    sx={{
-                        paddingBottom: 4,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                >
+                <Stack id="signupform-user-fields">
                     <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
                         <InputLabel htmlFor="outlined-adornment-email">Sähköpostiosoite</InputLabel>
                         <OutlinedInput
@@ -117,36 +120,33 @@ function UserForm() {
                             }
                         />
                     </FormControl>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-firstname">Etunimi</InputLabel>
-                        <OutlinedInput
-                            {...register('firstname')}
-                            id="outlined-adornment-firstname"
-                            type="text"
-                            label="Etunimi"
-                            placeholder="Tonipal"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <Person2Icon />
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-lastname">Sukunimi</InputLabel>
-                        <OutlinedInput
-                            {...register('lastname')}
-                            id="outlined-adornment-lastname"
-                            type="text"
-                            label="Sukunimi"
-                            placeholder="Kahville"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <Person2Icon />
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
+                    <Stack direction="row">
+                        <FormControl sx={{ mt: 1, mr: 1 }} variant="outlined" fullWidth required>
+                            <InputLabel htmlFor="outlined-adornment-firstname">Etunimi</InputLabel>
+                            <OutlinedInput
+                                {...register('firstname')}
+                                id="outlined-adornment-firstname"
+                                type="text"
+                                label="Etunimi"
+                                placeholder="Tonipal"
+                            />
+                        </FormControl>
+                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                            <InputLabel htmlFor="outlined-adornment-lastname">Sukunimi</InputLabel>
+                            <OutlinedInput
+                                {...register('lastname')}
+                                id="outlined-adornment-lastname"
+                                type="text"
+                                label="Sukunimi"
+                                placeholder="Kahville"
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <Person2Icon />
+                                    </InputAdornment>
+                                }
+                            />
+                        </FormControl>
+                    </Stack>
                     <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
                         <InputLabel htmlFor="outlined-adornment-phonenumber">Puhelinnumero</InputLabel>
                         <OutlinedInput
@@ -162,51 +162,49 @@ function UserForm() {
                             }
                         />
                     </FormControl>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-address">Osoite</InputLabel>
-                        <OutlinedInput
-                            {...register('address')}
-                            id="outlined-adornment-address"
-                            type="text"
-                            label="Osoite"
-                            placeholder="Kahvikuja 5 as. 666"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <HomeIcon />
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-zipcode">Postinumero</InputLabel>
-                        <OutlinedInput
-                            {...register('zipcode')}
-                            id="outlined-adornment-zipcode"
-                            type="text"
-                            label="Postinumero"
-                            placeholder="20100"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <HomeIcon />
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-town">Kaupunki</InputLabel>
-                        <OutlinedInput
-                            {...register('town')}
-                            id="outlined-adornment-town"
-                            type="text"
-                            label="Kaupunki"
-                            placeholder="Turku"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <HomeIcon />
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
+
+                    <Stack direction="row">
+                        <FormControl sx={{ mt: 1, mr: 1 }} variant="outlined" fullWidth required>
+                            <InputLabel htmlFor="outlined-adornment-address">Osoite</InputLabel>
+                            <OutlinedInput
+                                {...register('address')}
+                                id="outlined-adornment-address"
+                                type="text"
+                                label="Osoite"
+                                placeholder="Kahvikuja 5 as. 1"
+                                // endAdornment={
+                                //     <InputAdornment position="end">
+                                //         <HomeIcon />
+                                //     </InputAdornment>
+                                // }
+                            />
+                        </FormControl>
+                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                            <InputLabel htmlFor="outlined-adornment-zipcode">Postinumero</InputLabel>
+                            <OutlinedInput
+                                {...register('zipcode')}
+                                id="outlined-adornment-zipcode"
+                                type="text"
+                                label="Postinumero"
+                                placeholder="20100"
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <HomeIcon />
+                                    </InputAdornment>
+                                }
+                            />
+                        </FormControl>
+                        {/* <FormControl sx={{ mt: 1 }} variant="outlined" required>
+                            <InputLabel htmlFor="outlined-adornment-town">Kaupunki</InputLabel>
+                            <OutlinedInput
+                                {...register('town')}
+                                id="outlined-adornment-town"
+                                type="text"
+                                label="Kaupunki"
+                                placeholder="Turku"
+                            />
+                        </FormControl> */}
+                    </Stack>
                     <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
                         <InputLabel htmlFor="outlined-adornment-password">Salasana</InputLabel>
                         <OutlinedInput
@@ -247,13 +245,12 @@ function UserForm() {
                         to="/ohjeet/tili/kayttaja"
                         sx={{ mb: 2 }}
                         size="small"
-                        variant="outlined"
+                        variant="text"
                         endIcon={<HelpOutlineIcon />}
                     >
                         Ohjeet
                     </Button>
-                    <BackButton />
-                </Box>
+                </Stack>
             </Container>
         </>
     );
@@ -261,10 +258,10 @@ function UserForm() {
 
 function UserSignupForm() {
     return (
-        <>
+        <Container maxWidth="md">
             <Hero />
             <UserForm />
-        </>
+        </Container>
     );
 }
 
