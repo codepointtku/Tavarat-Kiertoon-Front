@@ -40,6 +40,7 @@ function LoginForm(redirectUrl: Props) {
     const { auth } = useContext(AuthContext);
     const fetcher = useFetcher();
     const responseStatus = fetcher.data;
+    console.log('responseStatus', responseStatus);
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -52,6 +53,8 @@ function LoginForm(redirectUrl: Props) {
             method: 'post',
             action: '/',
         });
+        // fetcher.load('/');
+        // fetcher.load('/?index');
     };
 
     return (
