@@ -113,8 +113,7 @@ function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
     const submit = useSubmit();
-    const amount = 0;
-    const { cart } = useLoaderData();
+    const { cart, products } = useLoaderData();
 
     const drawerOpen = (drawer) => () => {
         notLoggedIn && setNotLoggedIn(false);
@@ -186,8 +185,8 @@ function DefaultAppBar() {
                             Ostoskorisi on tyhjä.
                         </Typography>
                     )}
-                    {cart?.products?.map((product) => (
-                        <ProductInCart key={product.id} text={product.name} index={product.id} />
+                    {products?.map((product) => (
+                        <ProductInCart key={product.id} text={product.name} count={product.count} index={product.id} />
                     ))}
                     {cart?.products?.length > 0 && (
                         <ListItem
