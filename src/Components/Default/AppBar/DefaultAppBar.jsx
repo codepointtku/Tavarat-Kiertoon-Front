@@ -113,6 +113,7 @@ function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
     const submit = useSubmit();
+    const amount = 0;
     const { cart } = useLoaderData();
 
     const drawerOpen = (drawer) => () => {
@@ -135,7 +136,7 @@ function DefaultAppBar() {
     }
 
     function handleClick() {
-        submit('', { method: 'put', action: '/' });
+        submit({ amount }, { method: 'put', action: '/' });
     }
 
     return (
