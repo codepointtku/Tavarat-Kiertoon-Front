@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useContext, useState } from 'react';
 import { Link, useSubmit, Form, useActionData, useFetcher } from 'react-router-dom';
-import { SubmitHandler, useForm, SubmitValues } from 'react-hook-form';
+import { SubmitHandler, useForm, FieldValues } from 'react-hook-form';
 
 import {
     Avatar,
@@ -54,7 +54,7 @@ function LoginPage({ notLoggedIn }: { notLoggedIn: boolean }) {
         event.preventDefault();
     };
 
-    const onSubmit: SubmitHandler<FormValues> = async (formData: SubmitValues) => {
+    const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
         fetcher.submit(formData, {
             method: 'post',
             action: '/',
