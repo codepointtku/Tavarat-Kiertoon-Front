@@ -20,7 +20,7 @@ function CartView() {
     };
 
     const onSubmit = (data) => {
-        alert(JSON.stringify(data));
+        // alert(JSON.stringify(data));
         navigate('/ostoskori/vaihe2');
     };
 
