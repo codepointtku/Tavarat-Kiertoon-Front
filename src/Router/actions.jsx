@@ -7,7 +7,6 @@ const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : -1;
-    console.log(amount);
     if (request.method === 'POST') {
         if (auth.username) {
             const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
@@ -36,7 +35,7 @@ const frontPageActions = async (auth, setAuth, request) => {
         if (!id) {
             // clear cart if no id is being sent or clear cart and return "type: orderCreated" when a new order is created.
             const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
-                products: '',
+                amount,
             });
             if (formData.has('order')) {
                 return { type: 'orderCreated', status: true };
@@ -320,7 +319,38 @@ const confirmationAction = async (auth, setAuth, request) => {
     if (response.status === 200) {
         return { type: 'post', status: true };
     }
-    return { type: 'post', status: true };
+    return { type: 'post', status: false };
+};
+
+/**
+ * sends email for resetting user password
+ */
+
+const resetEmailAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/users/password/resetemail/', 'post', {
+        username: formData.get('username'),
+    });
+    if (response.status === 200) {
+        return { type: 'emailsent', status: true };
+    }
+    return { type: 'emailsent', status: false };
+};
+
+const resetPasswordAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, 'users/password/reset/', 'post', {
+        new_password: formData.get('new_password'),
+        new_password_again: formData.get('new_password_again'),
+        uid: formData.get('uid'),
+        token: formData.get('token'),
+    });
+    if (response.status === 200) {
+        return { type: 'passwordreset', status: true };
+    } else if (response.status === 204) {
+        return { type: 'outdatedtoken', status: true };
+    }
+    return { type: 'passwordreset', status: false };
 };
 
 export {
@@ -338,4 +368,6 @@ export {
     cartViewAction,
     bikeOrderAction,
     confirmationAction,
+    resetEmailAction,
+    resetPasswordAction,
 };

@@ -32,7 +32,7 @@ function ProductDetails() {
         group_id: groupId,
     } = data;
     // console.log('data @ productDetails', data);
-    const [image, setImage] = useState(data.pictures[0]);
+    const [image, setImage] = useState(data.pictures[0].picture_address);
     const { auth } = useContext(AuthContext);
 
     return (
@@ -53,10 +53,13 @@ function ProductDetails() {
                             <>
                                 <ImageList cols={6} rowHeight={164}>
                                     {data.pictures.map((pic) => (
-                                        <ImageListItem key={pic} onClick={() => setImage(pic)}>
+                                        <ImageListItem
+                                            key={pic.picture_address}
+                                            onClick={() => setImage(pic.picture_address)}
+                                        >
                                             <img
-                                                src={`${window.location.protocol}//${window.location.hostname}:8000/media/${pic}`}
-                                                srcSet={`${window.location.protocol}//${window.location.hostname}:8000/media/${pic}`}
+                                                src={`${window.location.protocol}//${window.location.hostname}:8000/media/${pic.picture_address}`}
+                                                srcSet={`${window.location.protocol}//${window.location.hostname}:8000/media/${pic.picture_address}`}
                                                 alt="kuva"
                                                 loading="lazy"
                                             />
