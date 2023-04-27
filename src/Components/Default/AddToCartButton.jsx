@@ -15,11 +15,27 @@ function AddToCartButton({ size, id, groupId, count }) {
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
 
+    function addAmount() {
+        if (amount === count) {
+            setAmount(amount);
+        } else {
+            setAmount(amount + 1);
+        }
+    }
+
+    function removeAmount() {
+        if (amount === 1) {
+            setAmount(amount);
+        } else {
+            setAmount(amount - 1);
+        }
+    }
+
     function handleOnClick(action) {
         console.log(amount);
-        action === 'add'
-            ? setAmount(amount >= 1 && amount < count ? amount + 1 : amount - 1)
-            : setAmount(amount >= 1 && amount < count ? amount - 1 : amount + 1);
+        if (amount >= 1 && amount <= count) {
+            action === 'add' ? addAmount() : removeAmount();
+        }
     }
 
     function handleChange(event) {
