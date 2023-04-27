@@ -35,7 +35,6 @@ function AddToCartButton({ size, id, groupId, count }) {
     }
 
     function handleOnClick(action) {
-        console.log(amount);
         if (amount >= 1 && amount <= count) {
             action === 'add' ? addAmount() : removeAmount();
         }

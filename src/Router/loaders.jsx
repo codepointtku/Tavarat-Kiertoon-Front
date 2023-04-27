@@ -41,9 +41,10 @@ const shoppingCartLoader = async (auth, setAuth) => {
         }
 
         cartItem.count += 1;
-        // console.log(cartItems);
         return cartItems;
     }, []);
+
+    console.log(products);
 
     return { products, cart };
 };
