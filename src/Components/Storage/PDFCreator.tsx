@@ -183,20 +183,22 @@ function PDFDocument({ order }: IPDFDocument) {
     );
 
     // Product card
-    const productCard = (product: IProduct) => (
-        <View style={styles.productCard} key={product.id}>
-            <Image src={`${baseUrl}/media/${product.pictures[0]}`} style={styles.productImg} />
+    const productCard = (product: IProduct) => {
+        return (
+            <View style={styles.productCard} key={product.id}>
+                <Image src={`${baseUrl}/media/${product.pictures[0].picture_address}`} style={styles.productImg} />
 
-            <Text style={{ fontSize: '12', marginBottom: '5px' }}>
-                {product.name}: {product.numberOfProducts} kpl.
-            </Text>
-            <Text style={{ fontSize: '10', marginBottom: '5px' }}>Tuotenro: {product.group_id}</Text>
-            <Text style={{ fontSize: '10', marginBottom: '5px' }}>
-                Sijainti: {product.storage_name}
-                {product.shelf_id ? ` / ${product.shelf_id}` : ''}
-            </Text>
-        </View>
-    );
+                <Text style={{ fontSize: '12', marginBottom: '5px' }}>
+                    {product.name}: {product.numberOfProducts} kpl.
+                </Text>
+                <Text style={{ fontSize: '10', marginBottom: '5px' }}>Tuotenro: {product.group_id}</Text>
+                <Text style={{ fontSize: '10', marginBottom: '5px' }}>
+                    Sijainti: {product.storage_name}
+                    {product.shelf_id ? ` / ${product.shelf_id}` : ''}
+                </Text>
+            </View>
+        );
+    };
 
     const headerSection = (page: number) => (
         <View style={{ fontSize: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>

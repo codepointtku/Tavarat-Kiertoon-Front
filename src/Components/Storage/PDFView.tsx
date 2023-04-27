@@ -16,7 +16,7 @@ export interface IProduct {
     id: number;
     measurements: string | null; // JTo: Check this
     name: string;
-    pictures: string[];
+    pictures: { id: number; picture_address: string }[];
     price: number;
     shelf_id: string | null; // JTo: Check this
     storage_name: string;
@@ -39,7 +39,6 @@ export interface ILoaderData {
 export interface IPDFDocument {
     order: ILoaderData;
 }
-
 
 /**
  * View for creating PDF document
