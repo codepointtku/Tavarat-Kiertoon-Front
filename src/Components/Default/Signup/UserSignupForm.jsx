@@ -194,17 +194,17 @@ function UserForm() {
                                 }
                             />
                         </FormControl>
-                        {/* <FormControl sx={{ mt: 1 }} variant="outlined" required>
-                            <InputLabel htmlFor="outlined-adornment-town">Kaupunki</InputLabel>
-                            <OutlinedInput
-                                {...register('town')}
-                                id="outlined-adornment-town"
-                                type="text"
-                                label="Kaupunki"
-                                placeholder="Turku"
-                            />
-                        </FormControl> */}
                     </Stack>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" required>
+                        <InputLabel htmlFor="outlined-adornment-town">Kaupunki</InputLabel>
+                        <OutlinedInput
+                            {...register('town')}
+                            id="outlined-adornment-town"
+                            type="text"
+                            label="Kaupunki"
+                            placeholder="Turku"
+                        />
+                    </FormControl>
                     <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
                         <InputLabel htmlFor="outlined-adornment-password">Salasana</InputLabel>
                         <OutlinedInput
