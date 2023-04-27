@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSubmit, useRouteLoaderData, useSearchParams } from 'react-router-dom';
+import { useSubmit, useRouteLoaderData, useSearchParams, useActionData } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Box, Button, Input, IconButton } from '@mui/material';
 
@@ -10,16 +10,23 @@ import RemoveIcon from '@mui/icons-material/Remove';
 
 function AddToCartButton({ size, id, groupId, count }) {
     const submit = useSubmit();
+    const responseStatus = useActionData();
     const { cart } = useRouteLoaderData('frontPage');
     const [amount, setAmount] = useState(1);
+    const [addedToCart, setAddedToCart] = useState(false);
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
+
+    useEffect(() => {
+        responseStatus?.type === 'update' && responseStatus?.status && setAddedToCart(true);
+    }, [responseStatus]);
 
     function addAmount() {
         if (amount === count) {
             setAmount(amount);
         } else {
             setAmount(amount + 1);
+            setAddedToCart(false);
         }
     }
 
@@ -28,6 +35,7 @@ function AddToCartButton({ size, id, groupId, count }) {
             setAmount(amount);
         } else {
             setAmount(amount - 1);
+            setAddedToCart(false);
         }
     }
 
@@ -42,6 +50,7 @@ function AddToCartButton({ size, id, groupId, count }) {
         const input = event.target.value;
         if ((input >= 1 && input <= count) || input === '') {
             setAmount(Number(input));
+            setAddedToCart(false);
         }
     }
 
@@ -95,7 +104,13 @@ function AddToCartButton({ size, id, groupId, count }) {
                         <AddIcon />
                     </IconButton>
                     <form onSubmit={handleSubmit(() => onSubmit())}>
-                        <Button size={size} aria-label="add more of same item to shopping cart" type="submit">
+                        <Button
+                            size={size}
+                            sx={{ mt: 1 / 2 }}
+                            aria-label="add more of same item to shopping cart"
+                            type="submit"
+                            disabled={addedToCart}
+                        >
                             Muuta määrää
                         </Button>
                     </form>
