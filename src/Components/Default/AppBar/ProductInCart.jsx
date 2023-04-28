@@ -5,7 +5,7 @@ import { ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton, Input
 
 import InboxIcon from '@mui/icons-material/Inbox';
 import MailIcon from '@mui/icons-material/Mail';
-// import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
@@ -64,9 +64,15 @@ function ProductInCart({ text, index, count }) {
                 <ListItemText primary={text} />
                 {hoveredOver && (
                     <>
-                        <IconButton onClick={() => handleClick('remove')}>
-                            <RemoveIcon />
-                        </IconButton>
+                        {amount === 1 ? (
+                            <IconButton onClick={() => handleClick('remove')}>
+                                <DeleteIcon />
+                            </IconButton>
+                        ) : (
+                            <IconButton onClick={() => handleClick('remove')}>
+                                <RemoveIcon />
+                            </IconButton>
+                        )}
                         <Input
                             inputProps={{ style: { width: 30, textAlign: 'center' } }}
                             value={amount}
