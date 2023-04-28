@@ -126,7 +126,7 @@ function UserForm() {
                                 id="outlined-adornment-firstname"
                                 type="text"
                                 label="Etunimi"
-                                placeholder="Tonipal"
+                                placeholder="Etunimi"
                             />
                         </FormControl>
                         <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
@@ -136,7 +136,7 @@ function UserForm() {
                                 id="outlined-adornment-lastname"
                                 type="text"
                                 label="Sukunimi"
-                                placeholder="Kahville"
+                                placeholder="Sukunimi"
                                 endAdornment={
                                     <InputAdornment position="end">
                                         <Person2Icon />
@@ -152,7 +152,7 @@ function UserForm() {
                             id="outlined-adornment-phonenumber"
                             type="text"
                             label="Puhelinnumero"
-                            placeholder="010 111 1111"
+                            placeholder="050 400 3000"
                             endAdornment={
                                 <InputAdornment position="end">
                                     <PhoneIcon />
