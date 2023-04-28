@@ -1,4 +1,4 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Paper, Table, TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
 import StyledTableCell from '../StyledTableCell';
 
 export default function BikePackets() {
@@ -16,16 +16,7 @@ export default function BikePackets() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    <TableRow>
-                        <StyledTableCell component="th" scope="row">
-                            asdasd
-                        </StyledTableCell>
-                        <StyledTableCell align="right">asdasd</StyledTableCell>
-                        <StyledTableCell align="right">asdasd</StyledTableCell>
-                        <StyledTableCell align="right">asdasd</StyledTableCell>
-                        <StyledTableCell align="right">asdasd</StyledTableCell>
-                        <StyledTableCell align="right">asdasd</StyledTableCell>
-                    </TableRow>
+                    <TableRow></TableRow>
                 </TableBody>
             </Table>
         </TableContainer>
