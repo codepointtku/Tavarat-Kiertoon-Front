@@ -57,39 +57,48 @@ function ShoppingCart() {
 
     // useLoaderData tuotenimi ja tuotemäärä
     return (
-        <Container
-            sx={{ border: 3, borderStyle: 'solid', borderRadius: 3, p: 20, paddingBottom: 5, margin: '3.125rem 0rem' }}
-        >
-            <Box
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Container
                 sx={{
-                    border: 1,
+                    border: 3,
                     borderStyle: 'solid',
                     borderRadius: 3,
-                    borderColor: 'gray',
-                    padding: 10,
-                    marginBottom: 10,
+                    p: 20,
+                    paddingBottom: 5,
+                    margin: '3.125rem 0rem',
                 }}
             >
-                <Stepper
+                <Box
                     sx={{
-                        '& .Mui-disabled': { opacity: 0.5 },
+                        border: 1,
+                        borderStyle: 'solid',
+                        borderRadius: 3,
+                        borderColor: 'gray',
+                        padding: 10,
+                        marginBottom: 10,
                     }}
-                    activeStep={setStep()}
-                    connector={<CartStepConnector />}
-                    alternativeLabel
                 >
-                    {steps.map((label, index) => {
-                        const stepProps = {};
-                        return (
-                            <Step key={label} {...stepProps}>
-                                <StepLabel StepIconComponent={() => iconDecider(index)}>{label}</StepLabel>
-                            </Step>
-                        );
-                    })}
-                </Stepper>
-            </Box>
-            <Outlet />
-        </Container>
+                    <Stepper
+                        sx={{
+                            '& .Mui-disabled': { opacity: 0.5 },
+                        }}
+                        activeStep={setStep()}
+                        connector={<CartStepConnector />}
+                        alternativeLabel
+                    >
+                        {steps.map((label, index) => {
+                            const stepProps = {};
+                            return (
+                                <Step key={label} {...stepProps}>
+                                    <StepLabel StepIconComponent={() => iconDecider(index)}>{label}</StepLabel>
+                                </Step>
+                            );
+                        })}
+                    </Stepper>
+                </Box>
+                <Outlet />
+            </Container>
+        </Box>
     );
 }
 
