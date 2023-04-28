@@ -143,6 +143,7 @@ function Routes() {
                         {
                             index: true,
                             element: <DefaultView />,
+                            id: 'products',
                             loader: async ({ request }) => productListLoader(auth, setAuth, request),
                         },
                         {

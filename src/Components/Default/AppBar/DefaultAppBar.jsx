@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { useLoaderData, useNavigate, useSubmit } from 'react-router-dom';
+import { useLoaderData, useNavigate, useSubmit, useRouteLoaderData } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
@@ -114,6 +114,8 @@ function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
     const submit = useSubmit();
+    const amount = 0;
+    const allProducts = useRouteLoaderData('products');
     const { cart, products } = useLoaderData();
 
     const drawerOpen = (drawer) => () => {
@@ -191,15 +193,22 @@ function DefaultAppBar() {
                             Ostoskorisi on tyhjä.
                         </Typography>
                     )}
-                    {products?.map((product) => (
-                        <ProductInCart
-                            key={product.id}
-                            text={product.name}
-                            count={product.count}
-                            index={product.id}
-                            setChangeAmount={setChangeAmount}
-                        />
-                    ))}
+                    {products?.map((cartProduct) => {
+                        const productsInCart = allProducts.filter(
+                            (product) => product.group_id === cartProduct.group_id
+                        );
+                        console.log(productsInCart[0].amount);
+                        return (
+                            <ProductInCart
+                                key={cartProduct.id}
+                                text={cartProduct.name}
+                                count={cartProduct.count}
+                                index={cartProduct.id}
+                                amountInStorage={productsInCart[0].amount}
+                                setChangeAmount={setChangeAmount}
+                            />
+                        );
+                    })}
                     {cart?.products?.length > 0 && (
                         <>
                             {changeAmount && (
