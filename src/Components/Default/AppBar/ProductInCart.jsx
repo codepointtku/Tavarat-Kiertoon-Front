@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
-function ProductInCart({ text, index, count }) {
+function ProductInCart({ text, index, count, setChangeAmount }) {
     const [hoveredOver, setHoveredOver] = useState(false);
     const [amount, setAmount] = useState(count);
     const submit = useSubmit();
@@ -23,6 +23,7 @@ function ProductInCart({ text, index, count }) {
             setAmount(amount);
         } else {
             setAmount(amount + 1);
+            setChangeAmount(true);
         }
     }
 
@@ -31,6 +32,7 @@ function ProductInCart({ text, index, count }) {
             setAmount(amount);
         } else {
             setAmount(amount - 1);
+            setChangeAmount(true);
         }
     }
 
@@ -44,6 +46,7 @@ function ProductInCart({ text, index, count }) {
         const input = event.target.value;
         if ((input >= 1 && input <= count) || input === '') {
             setAmount(Number(input));
+            setChangeAmount(true);
         }
     }
 
