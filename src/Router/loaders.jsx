@@ -44,8 +44,6 @@ const shoppingCartLoader = async (auth, setAuth) => {
         return cartItems;
     }, []);
 
-    console.log(products);
-
     return { products, cart };
 };
 
