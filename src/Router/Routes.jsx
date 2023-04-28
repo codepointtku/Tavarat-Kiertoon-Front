@@ -474,6 +474,7 @@ function Routes() {
                                 },
                                 {
                                     path: 'pyorapaketit',
+                                    loader: bikesListLoader,
                                     element: <BikePackets />,
                                 },
                             ],
