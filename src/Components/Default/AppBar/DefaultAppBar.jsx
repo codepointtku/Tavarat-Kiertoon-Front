@@ -110,6 +110,7 @@ const toolBarHover = {
 function DefaultAppBar() {
     const { auth } = useContext(AuthContext);
     const [notLoggedIn, setNotLoggedIn] = useState(false);
+    const [changeAmount, setChangeAmount] = useState(false);
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
     const submit = useSubmit();
@@ -136,6 +137,11 @@ function DefaultAppBar() {
 
     function handleClick() {
         submit({ amount }, { method: 'put', action: '/' });
+    }
+
+    function handleSubmit() {
+        submit();
+        setChangeAmount(false);
     }
 
     return (
@@ -186,19 +192,45 @@ function DefaultAppBar() {
                         </Typography>
                     )}
                     {products?.map((product) => (
-                        <ProductInCart key={product.id} text={product.name} count={product.count} index={product.id} />
+                        <ProductInCart
+                            key={product.id}
+                            text={product.name}
+                            count={product.count}
+                            index={product.id}
+                            setChangeAmount={setChangeAmount}
+                        />
                     ))}
                     {cart?.products?.length > 0 && (
-                        <ListItem
-                            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}
-                        >
-                            <Button color="error" startIcon={<DeleteIcon />} onClick={handleClick}>
-                                <ListItemText
-                                    primary="Tyhjennä ostoskori"
-                                    primaryTypographyProps={{ fontWeight: 'bold' }}
-                                />
-                            </Button>
-                        </ListItem>
+                        <>
+                            {changeAmount && (
+                                <ListItem
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        mt: 2,
+                                        mb: 2,
+                                    }}
+                                >
+                                    <Button onClick={handleSubmit}>
+                                        <ListItemText
+                                            primary="Muuta määrää"
+                                            primaryTypographyProps={{ fontWeight: 'bold' }}
+                                        />
+                                    </Button>
+                                </ListItem>
+                            )}
+                            <ListItem
+                                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}
+                            >
+                                <Button color="error" startIcon={<DeleteIcon />} onClick={handleClick}>
+                                    <ListItemText
+                                        primary="Tyhjennä ostoskori"
+                                        primaryTypographyProps={{ fontWeight: 'bold' }}
+                                    />
+                                </Button>
+                            </ListItem>
+                        </>
                     )}
                 </List>
                 <Divider />
