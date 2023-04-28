@@ -9,17 +9,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
-function ProductInCart({ text, index, count, setChangeAmount }) {
+function ProductInCart({ text, index, count, amountInStorage, setChangeAmount }) {
     const [hoveredOver, setHoveredOver] = useState(false);
     const [amount, setAmount] = useState(count);
     const submit = useSubmit();
 
-    // useEffect(() => {
-    //     submit({ index, amount }, { method: 'put', action: '/' });
-    // }, [amount]);
-
     function addAmount() {
-        if (amount === count) {
+        if (amount === amountInStorage) {
             setAmount(amount);
         } else {
             setAmount(amount + 1);
@@ -37,14 +33,14 @@ function ProductInCart({ text, index, count, setChangeAmount }) {
     }
 
     function handleClick(action) {
-        if (amount >= 1 && amount <= count) {
+        if (amount >= 1 && amount <= amountInStorage) {
             action === 'add' ? addAmount() : removeAmount();
         }
     }
 
     function handleChange(event) {
         const input = event.target.value;
-        if ((input >= 1 && input <= count) || input === '') {
+        if ((input >= 1 && input <= amountInStorage) || input === '') {
             setAmount(Number(input));
             setChangeAmount(true);
         }
@@ -68,8 +64,8 @@ function ProductInCart({ text, index, count, setChangeAmount }) {
                 {hoveredOver && (
                     <>
                         {amount === 1 ? (
-                            <IconButton onClick={() => handleClick('remove')}>
-                                <DeleteIcon />
+                            <IconButton onClick={() => handleSubmit()}>
+                                <DeleteIcon sx={{ color: 'red' }} />
                             </IconButton>
                         ) : (
                             <IconButton onClick={() => handleClick('remove')}>
@@ -82,13 +78,10 @@ function ProductInCart({ text, index, count, setChangeAmount }) {
                             onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
                             disableUnderline
                         />
-                        <IconButton onClick={() => handleClick('add')}>
+                        <IconButton onClick={() => handleClick('add')} disabled={amount === amountInStorage}>
                             <AddIcon />
                         </IconButton>
                     </>
-                    // <IconButton onClick={handleClick}>
-                    //     <DeleteIcon sx={{ color: 'red' }} />
-                    // </IconButton>
                 )}
             </ListItemButton>
         </ListItem>
@@ -99,6 +92,7 @@ ProductInCart.propTypes = {
     text: PropTypes.string.isRequired,
     index: PropTypes.number.isRequired,
     count: PropTypes.number.isRequired,
+    amountInStorage: PropTypes.number.isRequired,
 };
 
 export default ProductInCart;
