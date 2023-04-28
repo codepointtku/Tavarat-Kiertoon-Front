@@ -21,7 +21,7 @@ function ContactsAndDelivery() {
         formState: { errors },
     } = useForm();
     const { actions } = useStateMachine({ Update });
-    const fullname = user.name.split(' ');
+    // const fullname = user.name.split(' ');
     // console.log('update state: ', state, 'update actions: ', actions);
 
     const navigate = useNavigate();
@@ -75,11 +75,19 @@ function ContactsAndDelivery() {
             {!isSamePerson ? (
                 <Grid container spacing={4}>
                     <Grid item>
-                        <TextField label="Etunimi" variant="outlined" {...register('firstName', { required: true })} />
+                        <TextField
+                            label="Etunimi"
+                            variant="outlined"
+                            {...register('firstName', { required: true, maxLength: 255 })}
+                        />
                         {errors.firstName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                     </Grid>
                     <Grid item>
-                        <TextField label="Sukunimi" variant="outlined" {...register('lastName', { required: true })} />
+                        <TextField
+                            label="Sukunimi"
+                            variant="outlined"
+                            {...register('lastName', { required: true, maxLength: 255 })}
+                        />
                         {errors.lastName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                     </Grid>
                     <Grid item>
@@ -89,6 +97,7 @@ function ContactsAndDelivery() {
                             {...register('email', {
                                 required: true,
                                 pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/,
+                                maxLength: 255,
                             })}
                         />
                         {errors.email && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
@@ -97,7 +106,10 @@ function ContactsAndDelivery() {
                         <TextField
                             label="Puh. numero"
                             variant="outlined"
-                            {...register('phoneNumber', { required: true, pattern: { value: /^[0-9]+$/ } })}
+                            {...register('phoneNumber', {
+                                required: true,
+                                pattern: { value: /^[0-9]+$/, maxLength: 255 },
+                            })}
                         />
                         {errors.phoneNumber && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                     </Grid>
