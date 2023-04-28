@@ -12,10 +12,11 @@ function AddExistingItem({ item, setTab }) {
     return (
         <>
             <h3>Lisää Esine viivakoodin lukemisen perusteella</h3>
+            {/* TODO: kenttä modify_date: true lisättävä tuotetta muokattaessa! (päivittää modified_date -kentän)*/}
             <Button
                 onClick={() =>
                     navigate(generatePath('/varasto/koodinlukija'), {
-                        state: { ...item, oldItem: true, returnpath: '/varasto/luo' },
+                        state: { ...item, oldItem: true, returnpath: '/varasto/tuotteet/luo' },
                     })
                 }
             >
@@ -50,7 +51,7 @@ function AddExistingItem({ item, setTab }) {
             <Button
                 onClick={() => {
                     setTab(1);
-                    navigate(generatePath('/varasto/luo'), {
+                    navigate(generatePath('/varasto/tuotteet/luo'), {
                         replace: true,
                         state: { ...location.state, barcode: barCode, id: itemId, oldItem: true },
                     });

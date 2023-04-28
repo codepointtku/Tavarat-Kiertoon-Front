@@ -22,7 +22,16 @@ function ProductDetails() {
     const data = useLoaderData();
     const { id: productId } = useParams();
 
-    const { name: productName, free_description: description, date, category, barcode } = data;
+    const {
+        name: productName,
+        free_description: description,
+        date,
+        category,
+        barcode,
+        amount,
+        group_id: groupId,
+    } = data;
+    // console.log('data @ productDetails', data);
     const [image, setImage] = useState(data.pictures[0].picture_address);
     const { auth } = useContext(AuthContext);
 
@@ -60,6 +69,9 @@ function ProductDetails() {
                                 <Typography gutterBottom variant="h5" component="div">
                                     {productName}
                                 </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {amount > 0 ? `Saatavilla: ${amount} kpl` : 'Ei saatavilla'}
+                                </Typography>
                                 {/* show id if component used in storageview or admin */}
                                 {auth.storage || auth.admin ? (
                                     <Typography variant="body6" color="text.secondary">
@@ -90,7 +102,12 @@ function ProductDetails() {
                             </>
                         </CardContent>
                         <CardActions>
-                            <AddToCartButton size="medium" id={Number(productId)} productName={productName} />
+                            <AddToCartButton
+                                size="medium"
+                                id={Number(productId)}
+                                productName={productName}
+                                groupId={groupId}
+                            />
                         </CardActions>
                     </Card>
                 </Grid>

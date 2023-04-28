@@ -22,6 +22,8 @@ import OrdersList from '../Components/Storage/OrdersList';
 import OrderView from '../Components/Storage/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
 import QrScanner from '../Components/Storage/QrScanner';
+import StorageProducts from '../Components/Storage/StorageProducts';
+import AddNewItem from '../Components/Storage/AddNewItem';
 
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
@@ -30,7 +32,6 @@ import NewAnnouncement from '../Components/Admin/NewAnnouncement';
 import StoragesList from '../Components/Admin/StoragesList';
 import StorageEdit from '../Components/Admin/StorageEdit';
 import AddStorage from '../Components/Admin/AddStorage';
-import AddItem from '../Components/Storage/AddItem';
 
 import PDFView from '../Components/Storage/PDFView';
 
@@ -68,7 +69,6 @@ import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
 
 import {
-    addItemLoader,
     orderEditLoader,
     ordersListLoader,
     orderViewLoader,
@@ -81,6 +81,7 @@ import {
     userEditLoader,
     usersListLoader,
     userSignupLoader,
+    storageProductsLoader,
     shoppingCartLoader,
     bikesListLoader,
     shoppingProcessLoader,
@@ -91,8 +92,9 @@ import {
     userSignupAction,
     contactAction,
     orderEditAction,
-    storageEditAction,
     storageCreateAction,
+    storageEditAction,
+    addProductAction,
     frontPageActions,
     userEditAction,
     cartViewAction,
@@ -346,9 +348,16 @@ function Routes() {
                             ],
                         },
                         {
-                            path: 'luo',
-                            element: <AddItem />,
-                            loader: addItemLoader,
+                            path: 'tuotteet',
+                            id: 'storageProducts',
+                            element: <StorageProducts />,
+                            loader: async ({ request }) => storageProductsLoader(auth, setAuth, request),
+                        },
+                        {
+                            path: 'tuotteet/luo',
+                            element: <AddNewItem />,
+                            loader: async ({ request }) => storageProductsLoader(auth, setAuth, request),
+                            action: async ({ request }) => addProductAction(auth, setAuth, request),
                         },
                         {
                             path: 'koodinlukija',
@@ -411,6 +420,11 @@ function Routes() {
                                     action: async ({ request, params }) =>
                                         storageEditAction(auth, setAuth, request, params),
                                 },
+                                {
+                                    path: 'luo',
+                                    element: <AddStorage />,
+                                    action: async ({ request }) => storageCreateAction(auth, setAuth, request),
+                                },
                             ],
                         },
                         // NOTE : JTo : 'users' paths need to be checked once users are enabled in back-end
@@ -432,11 +446,6 @@ function Routes() {
                                         userEditAction(auth, setAuth, request, params),
                                 },
                             ],
-                        },
-                        {
-                            path: 'varastot/luo',
-                            element: <AddStorage />,
-                            action: async ({ request }) => storageCreateAction(auth, setAuth, request),
                         },
                         {
                             path: 'hakemukset',

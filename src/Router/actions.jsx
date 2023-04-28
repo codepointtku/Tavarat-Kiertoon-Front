@@ -153,6 +153,40 @@ const orderEditAction = async (auth, setAuth, request, params) => {
 };
 
 /*
+creates new product
+*/
+const addProductAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+    console.log('formData actionissa :', formData);
+    console.log('formData.get name actionissa :', formData.get('name'));
+    console.log('formData.get pictures actionissa :', formData.get('pictures'));
+
+    const response = await apiCall(auth, setAuth, '/storage/products/', 'post', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    console.log('response actionissa :', response);
+    if (response.status === 200) {
+        return { type: 'post', status: true };
+    }
+    return { type: 'post', status: false };
+
+    // placeholder
+    // // id haettava editointia varten
+    // if (request.method === 'PUT') {
+    //     const response = await axios.put(
+    //         'http://localhost:8000/products/:id',
+    //         formData
+    //     );
+    //     console.log(response);
+    //     if (response.status === 201) {
+    //         return 'Tuote lisätty';
+    //     }
+    //     return 'Virhe lisättäessä tuotetta';
+    // }
+};
+
+/*
 creates new storage
 */
 const storageCreateAction = async (auth, setAuth, request) => {
@@ -204,7 +238,7 @@ const userEditAction = async (auth, setAuth, request, params) => {
 
 const itemCreateAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/products/', 'post', formData, {
+    const response = await apiCall(auth, setAuth, '/storage/products/', 'post', formData, {
         headers: { 'content-type': 'multipart/form-data' },
     });
     if (response.status === 200) {
@@ -228,7 +262,7 @@ const createBulletinAction = async (auth, setAuth, request) => {
 
 const itemUpdateAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/products/', 'put', formData);
+    const response = await apiCall(auth, setAuth, '/storage/products/', 'put', formData);
     if (response.status === 200) {
         return { type: 'updateitem', status: true };
     }
@@ -327,6 +361,7 @@ export {
     orderEditAction,
     storageCreateAction,
     storageEditAction,
+    addProductAction,
     createBulletinAction,
     userEditAction,
     itemCreateAction,

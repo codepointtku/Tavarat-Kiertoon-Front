@@ -137,16 +137,24 @@ const orderEditLoader = async (auth, setAuth, params) => {
 /**
  * Get all categories and storages
  */
-const addItemLoader = async () => {
-    const dataList = [];
-    let { data } = await axios.get('http://localhost:8000/categories/');
-    dataList.push(data);
-    data = await axios.get('http://localhost:8000/storages/');
-    dataList.push(data.data);
-    if (dataList) {
-        return dataList;
+const storageProductsLoader = async (auth, setAuth, request) => {
+    // const url new URLSearchParams(request).get('search');
+    const url = new URL(request.url);
+    const search = url.searchParams.get('search');
+    console.log('search @ storageProductsLoaders:', search);
+
+    if (search) {
+        const [{ data: storages }, { data: products }] = await Promise.all([
+            axios.get('http://localhost:8000/storages/'),
+            axios.get(`http://localhost:8000/products/?search=${search}`),
+        ]);
+        return { storages, products };
     }
-    return null;
+    const [{ data: storages }, { data: products }] = await Promise.all([
+        axios.get('http://localhost:8000/storages/'),
+        axios.get('http://localhost:8000/products/'),
+    ]);
+    return { storages, products };
 };
 
 /**
@@ -228,7 +236,7 @@ export {
     ordersListLoader,
     orderViewLoader,
     orderEditLoader,
-    addItemLoader,
+    storageProductsLoader,
     pdfViewLoader,
     storagesListLoader,
     storageEditLoader,

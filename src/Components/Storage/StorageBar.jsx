@@ -11,15 +11,15 @@ export default function StorageBar() {
 
     const pages = [
         { name: 'Tilaukset', path: '/varasto/0/delivery?page=0&rows=5' },
-        { name: 'Luo tuote', path: '/varasto/luo' },
+        { name: 'Tuotteet', path: '/varasto/tuotteet' },
     ];
 
     const location = useLocation();
     const { id } = useParams();
 
     useEffect(() => {
-        if (location.pathname.startsWith('/varasto/luo')) {
-            setCurrentPage('Lisää tuote');
+        if (location.pathname.startsWith('/varasto/tuotteet')) {
+            setCurrentPage('Tuotteet');
         } else if (location.pathname.startsWith(`/varasto/tilaus/${id}`)) {
             setCurrentPage(`Tilaus: ${id}`);
         } else if (location.pathname.startsWith('/varasto')) {

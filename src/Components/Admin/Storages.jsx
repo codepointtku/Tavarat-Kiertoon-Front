@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Table, TableBody, TableContainer, TableHead, TableRow, TableCell, Button, Paper } from '@mui/material';
 import StyledTableCell from '../StyledTableCell';
 
