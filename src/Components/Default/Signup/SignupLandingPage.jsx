@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { Avatar, Grid, Button, Card, CardActionArea, Container, Paper, Typography, Box } from '@mui/material';
+import { Avatar, Grid, Button, Card, CardActionArea, Container, Typography, Box } from '@mui/material';
 
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
@@ -150,12 +150,10 @@ function SignUpHero() {
 
 function SignupLandingPage() {
     return (
-        <Paper id="signup-landingpage-backdrop" sx={{ marginTop: 1, marginBottom: 1 }}>
-            <Container id="signup-landingpage-container" maxWidth="md">
-                <SignUpHero />
-                <SignUpCards />
-            </Container>
-        </Paper>
+        <Container id="signup-landingpage-container" maxWidth="md">
+            <SignUpHero />
+            <SignUpCards />
+        </Container>
     );
 }
 
