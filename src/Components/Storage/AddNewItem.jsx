@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 // add new item
-import { useRouteLoaderData, useLoaderData, useSubmit, Form } from 'react-router-dom';
+import { useRouteLoaderData, useLoaderData, useSubmit, Form, useNavigate, useActionData } from 'react-router-dom';
 // import Barcode from 'react-barcode';
 import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import imageCompression from 'browser-image-compression';
@@ -12,8 +12,10 @@ function AddNewItem() {
     const { storages } = useLoaderData();
     console.log('categories:', categories, 'storages:', storages);
     const submit = useSubmit();
+    const actionData = useActionData();
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
+
     const {
         register,
         handleSubmit,
@@ -66,11 +68,12 @@ function AddNewItem() {
             headers: { 'Content-Type': 'multipart/form-data' },
         }); */
 
-        submit(formData, {
+        await submit(formData, {
             method: 'post',
             action: '/varasto/tuotteet/luo/',
             encType: 'multipart/form-data',
         });
+        navigate('/varasto/tuotteet/');
     };
 
     const uploadFile = async (files) => {
@@ -120,11 +123,15 @@ function AddNewItem() {
                     <TextField
                         type="text"
                         placeholder="barcode"
-                        {...register('barcode', { required: true, max: 12, min: 1 })}
+                        {...register('barcode', {
+                            required: true,
+                            maxLength: 12,
+                            minLength: 1,
+                        })}
                         // disabled
                         // id="outlined-disabled"
                         label="Viivakoodi"
-                        defaultValue="testiviivakoodi"
+                        defaultValue="1234"
                     >
                         viivakoodi
                     </TextField>

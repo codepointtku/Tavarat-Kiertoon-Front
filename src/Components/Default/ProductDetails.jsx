@@ -31,7 +31,6 @@ function ProductDetails() {
         amount,
         group_id: groupId,
     } = data;
-    // console.log('data @ productDetails', data);
     const [image, setImage] = useState(data.pictures[0].picture_address);
     const { auth } = useContext(AuthContext);
 

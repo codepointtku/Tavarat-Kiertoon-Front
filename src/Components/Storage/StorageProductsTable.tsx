@@ -65,23 +65,30 @@ function StorageProductsTable() {
                 <TableHead>
                     <TableRow>
                         <StyledTableCell>
-                            Viivakoodi
+                            {/* Viivakoodi */}
                             {/* todo: searchbar peruskomponentti tuotteiden hakua varten */}
                             <Form onSubmit={handleSubmit(handleBarcodeSearch)}>
                                 {/* todo: näytä vain hakuikoni kunnes painetaan, jolloin tekstikenttä laajenee/aktivoituu */}
                                 <TextField
                                     type="search"
                                     {...register('searchString')}
-                                    placeholder="Viivakoodi / tuoteID"
+                                    placeholder="Viivakoodi / tuoteID / nimi"
                                     sx={{ backgroundColor: 'white' }}
+                                    size="medium"
                                 />
-                                <Button type="submit" variant="contained" color="primary">
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    size="large"
+                                    sx={{ marginLeft: 1, padding: 1.5 }}
+                                >
                                     Hae
                                 </Button>
                                 {/* todo:linkki viivakoodiskanneriin */}
-                                <IconButton fontSize="large" variant="contained" aria-label="barcode search">
+                                {/* <IconButton fontSize="large" variant="contained" aria-label="barcode search">
                                     <QrCodeScannerIcon sx={{ color: 'white' }} />
-                                </IconButton>
+                                </IconButton> */}
                             </Form>
                         </StyledTableCell>
                         <StyledTableCell align="right">Tuotenimi</StyledTableCell>
