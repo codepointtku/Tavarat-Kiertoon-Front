@@ -116,7 +116,7 @@ function Routes() {
             id: 'root',
             loader: async () => rootLoader(auth, setAuth),
             // Loads data only at first page load, not with every route
-            shouldRevalidate: () => false,
+            shouldRevalidate: (formAction, actionResult) => actionResult?.type === 'login' && actionResult?.status,
             children: [
                 // main routes
                 {
