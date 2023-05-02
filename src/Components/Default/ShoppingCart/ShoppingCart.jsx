@@ -17,8 +17,8 @@ function iconDecider(index) {
             sx={{
                 borderRadius: '50%',
                 backgroundColor: 'primary.main',
-                width: 43,
-                height: 43,
+                width: 50,
+                height: 50,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',

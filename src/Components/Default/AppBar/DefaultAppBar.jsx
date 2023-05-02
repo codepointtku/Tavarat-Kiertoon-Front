@@ -86,13 +86,13 @@ Drawer.propTypes = {
     onClose: PropTypes.func.isRequired,
 };
 
-const StyledBadge = styled(Badge)(({ theme, isAnimated }) => ({
+const StyledBadge = styled(Badge)(({ theme, isanimated }) => ({
     '& .MuiBadge-badge': {
         color: theme.palette.primary.contrastText,
         right: -8,
         border: `0.1rem solid ${theme.palette.background.paper}`,
         backgroundColor: theme.palette.error.main,
-        animationName: isAnimated ? 'idle' : 'badgePulse',
+        animationName: isanimated ? 'idle' : 'badgePulse',
         animationDuration: '1s',
     },
     '@keyframes badgePulse': {
@@ -186,7 +186,7 @@ function DefaultAppBar() {
                     <Stack direction="row" spacing={4}>
                         <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
                             <StyledBadge
-                                isAnimated={productsLength === cart?.products?.length}
+                                isanimated={productsLength === cart?.products?.length ? 1 : 0}
                                 badgeContent={cart?.products?.length}
                                 anchorOrigin={{
                                     vertical: 'top',
