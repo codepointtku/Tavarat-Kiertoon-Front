@@ -1,6 +1,7 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import StyledTableCell from '../StyledTableCell';
 import { useLoaderData } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export default function BikePackets() {
     const loaderData = useLoaderData();
@@ -25,7 +26,13 @@ export default function BikePackets() {
                             <TableCell align="right"> {packet.id} </TableCell>
                             <TableCell align="right"> {packet.name} </TableCell>
                             <TableCell align="right">
-                                <Button>Muokkaa</Button>
+                                <Button
+                                    color="primary"
+                                    to={`/pyorat/pyoravarasto/paketinmuokkaus/${packet.id}`}
+                                    component={Link}
+                                >
+                                    Muokkaa
+                                </Button>
                             </TableCell>
                         </TableRow>
                     ))}

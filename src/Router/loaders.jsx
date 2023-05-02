@@ -201,6 +201,14 @@ const bikesListLoader = async (auth, setAuth) => {
     const { data } = await apiCall(auth, setAuth, '/bikes', 'get');
     return data;
 };
+/**
+ * Get one bikepacket
+ */
+// const bikePacketLoader = async (auth, setAuth, params) => {
+//     const { data } = await apiCall(auth, setAuth, `/bikes/asdasdasdasd${params.id}`, 'get');
+//     return data;
+// };
+
 // get bulletin subjects
 const bulletinSubjectLoader = async (auth, setAuth) => {
     const { data } = await apiCall(auth, setAuth, '/bulletin_subjects', 'get');

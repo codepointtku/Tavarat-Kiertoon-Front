@@ -61,6 +61,7 @@ import GuideOrdering from '../Components/Default/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Default/Instructions/GuideShipping';
 import GuideBikes from '../Components/Default/Instructions/GuideBikes';
 
+import ModifyBikeOrder from '../Components/Bikes/ModifyBikeOrder';
 import BikesPage from '../Components/Bikes/BikesPage';
 import Bikes from '../Components/Bikes/Bikes';
 import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
@@ -476,6 +477,17 @@ function Routes() {
                                     path: 'pyorapaketit',
                                     loader: bikesListLoader,
                                     element: <BikePackets />,
+                                },
+
+                                {
+                                    path: 'paketinmuokkaus',
+
+                                    element: <ModifyBikeOrder />,
+                                    children: [
+                                        {
+                                            path: ':id',
+                                        },
+                                    ],
                                 },
                             ],
                         },
