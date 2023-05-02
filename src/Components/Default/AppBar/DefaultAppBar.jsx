@@ -1,4 +1,5 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import { useTimeout } from 'react-use';
 import { useLoaderData, useNavigate, useSubmit, useRouteLoaderData } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -87,12 +88,26 @@ Drawer.propTypes = {
     onClose: PropTypes.func.isRequired,
 };
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
+const StyledBadge = styled(Badge)(({ theme, isAnimated }) => ({
     '& .MuiBadge-badge': {
+        color: theme.palette.primary.contrastText,
         right: -8,
         border: `0.1rem solid ${theme.palette.background.paper}`,
-        backgroundColor: `${theme.palette.error.main}`,
+        backgroundColor: theme.palette.error.main,
+        animationName: isAnimated ? 'idle' : 'badgePulse',
+        animationDuration: '1s',
     },
+    '@keyframes badgePulse': {
+        from: {
+            fontSize: '100%',
+            color: 'white',
+        },
+        to: {
+            fontSize: '125%',
+            color: theme.palette.primary.main,
+        },
+    },
+    '@keyframes idle': { '100%': {} },
 }));
 
 const iconHover = {
@@ -117,6 +132,15 @@ function DefaultAppBar() {
     const amount = 0;
     const allProducts = useRouteLoaderData('products');
     const { cart, products } = useLoaderData();
+    const [productsLength, setProductsLength] = useState(cart?.products?.length);
+
+    useEffect(() => {
+        if (cart?.products?.length !== productsLength) {
+            setTimeout(() => {
+                setProductsLength(cart?.products?.length);
+            }, 3000);
+        }
+    }, [cart?.products?.length]);
 
     const drawerOpen = (drawer) => () => {
         notLoggedIn && setNotLoggedIn(false);
@@ -162,25 +186,24 @@ function DefaultAppBar() {
             >
                 <Toolbar>
                     <Stack direction="row" spacing={4}>
-                        <Tooltip title="Ostoskori">
-                            <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
-                                <StyledBadge
-                                    badgeContent={cart?.products?.length}
-                                    sx={{ color: 'primary.contrastText' }}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                >
-                                    <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
-                                </StyledBadge>
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Kirjautuminen">
-                            <IconButton onClick={drawerOpen('account')} sx={iconHover}>
-                                <AccountCircleOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
-                            </IconButton>
-                        </Tooltip>
+                        <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
+                            <StyledBadge
+                                isAnimated={productsLength === cart?.products?.length}
+                                badgeContent={cart?.products?.length}
+                                // sx={{
+                                //     color: 'primary.contrastText',
+                                // }}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                            >
+                                <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
+                            </StyledBadge>
+                        </IconButton>
+                        <IconButton onClick={drawerOpen('account')} sx={iconHover}>
+                            <AccountCircleOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
+                        </IconButton>
                     </Stack>
                 </Toolbar>
             </AppBar>
@@ -194,19 +217,20 @@ function DefaultAppBar() {
                         </Typography>
                     )}
                     {products?.map((cartProduct) => {
-                        const productsInCart = allProducts.filter(
+                        const productsInCart = allProducts?.filter(
                             (product) => product.group_id === cartProduct.group_id
                         );
-                        console.log(productsInCart[0].amount);
                         return (
-                            <ProductInCart
-                                key={cartProduct.id}
-                                text={cartProduct.name}
-                                count={cartProduct.count}
-                                index={cartProduct.id}
-                                amountInStorage={productsInCart[0].amount}
-                                setChangeAmount={setChangeAmount}
-                            />
+                            productsInCart && (
+                                <ProductInCart
+                                    key={cartProduct.id}
+                                    text={cartProduct.name}
+                                    count={cartProduct.count}
+                                    index={cartProduct.id}
+                                    amountInStorage={productsInCart[0].amount}
+                                    setChangeAmount={setChangeAmount}
+                                />
+                            )
                         );
                     })}
                     {cart?.products?.length > 0 && (
