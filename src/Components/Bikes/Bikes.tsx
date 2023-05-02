@@ -1,5 +1,5 @@
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { useLoaderData } from 'react-router';
+import { useLoaderData } from 'react-router-dom';
 import StyledTableCell from '../StyledTableCell'; // used in Table Header
 import { Link } from 'react-router-dom';
 import CheckIcon from '@mui/icons-material/Check';
@@ -33,6 +33,17 @@ export interface storageInterface {
     id: number;
     in_use: boolean;
     name: string;
+}
+
+export interface submitDataInterface {
+    bike: number;
+    created_at: string;
+    frame_number: string;
+    id: number;
+    number: string;
+    package_only: boolean;
+    state: string; // "AVAILABLE" | "MAINTENANCE" | "RENTED" | "RETIRED"
+    storage: number;
 }
 
 /**

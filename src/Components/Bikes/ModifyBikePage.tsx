@@ -14,10 +14,21 @@ import {
     TextField,
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
-import { Form, Link, useSubmit } from 'react-router-dom';
+import { Form, Link, redirect, useActionData, useNavigate, useNavigation, useSubmit } from 'react-router-dom';
 import type { bikeInterface, bikeModelInterface, storageInterface } from './Bikes';
-import { useLoaderData } from 'react-router';
-import { useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+
+// interface submitDataInterface {
+//     bike: number;
+//     created_at: string;
+//     frame_number: string;
+//     id: number;
+//     number: string;
+//     package_only: boolean;
+//     state: string; // "AVAILABLE" | "MAINTENANCE" | "RENTED" | "RETIRED"
+//     storage: number;
+// }
 
 /**
  * ModifyBikePage
@@ -37,7 +48,7 @@ export default function ModifyBikePage() {
     const [storageState, setStorageState] = useState('');
     const [bikeModelState, setBikeModelState] = useState('');
     const [bikeState, setBikeState] = useState(bikeData);
-    const [frameNumberState, setFrameNumberState] = useState(bikeData.frame_number)
+    const [frameNumberState, setFrameNumberState] = useState(bikeData.frame_number);
 
     // storage change handler: used for selecting the correct storage
     const handleStorageChange = (event: SelectChangeEvent) => {
@@ -65,34 +76,64 @@ export default function ModifyBikePage() {
         setBikeModelState(event.target.value as string);
     };
 
+    // handler for frame number text field change
     const handleFrameNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFrameNumberState(event.target.value as string)
-    }
+        setFrameNumberState(event.target.value as string);
+    };
 
-    // Form controls
+    // Form submitting
+    const navigate = useNavigate();
     const submit = useSubmit();
-    const onSubmit = () => {
-        // send only id from bike and storage
-        const submitData = { ...bikeState, bike: bikeState.bike.id, storage: bikeState.storage.id, frame_number: frameNumberState }
-        submit(submitData, {
+    const submitHandler = async () => {
+        // only id is used from bike and storage
+        const submitData = {
+            ...bikeState,
+            bike: bikeState.bike.id,
+            storage: bikeState.storage.id,
+            frame_number: frameNumberState,
+        };
+
+        // console.log('### BlaaBlaa', submitData);
+
+        // send
+        await submit(submitData, {
             method: 'put',
-            action: `/pyorat/pyoravarasto/muokkaa/${bikeState.id}`
+            action: `/pyorat/pyoravarasto/muokkaa/${bikeState.id}`,
         });
-    }
+
+        // redirect to list page
+        navigate('/pyorat/pyoravarasto');
+        // setTimeout(() => {
+        //     navigate('/pyorat/pyoravarasto');
+        // }, 1);
+    };
+
+    // const actionData = useActionData();
+    // useEffect(() => {
+    //     if (actionData) {
+    //         navigate('/pyorat/pyoravarasto');
+    //     }
+    // }, [actionData]);
 
     // RENDER
     return (
         <>
             <TableContainer component={Paper} sx={{ padding: '2rem' }}>
                 {/* Header */}
-                <Box width="100%" textAlign="center" marginBottom="20px" paddingBottom="20px" borderBottom="1px solid lightgray">
+                <Box
+                    width="100%"
+                    textAlign="center"
+                    marginBottom="20px"
+                    paddingBottom="20px"
+                    borderBottom="1px solid lightgray"
+                >
                     <h3>
                         Pyörän <i>{bikeState.frame_number}</i> tiedot
                     </h3>
                 </Box>
 
                 {/* Information area */}
-                <Box component={Form} onSubmit={() => onSubmit()}>
+                <Box component={Form} action={`/pyorat/pyoravarasto/muokkaa/${bikeState.id}`} onSubmit={submitHandler}>
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box
                             sx={{
@@ -191,7 +232,9 @@ export default function ModifyBikePage() {
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varattu Pakettiin:</TableCell>
-                                        <TableCell sx={{ border: 0 }}>{bikeState.package_only ? 'Kyllä' : 'Ei'}</TableCell>
+                                        <TableCell sx={{ border: 0 }}>
+                                            {bikeState.package_only ? 'Kyllä' : 'Ei'}
+                                        </TableCell>
                                         <TableCell sx={{ border: 0 }}></TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -236,9 +279,22 @@ export default function ModifyBikePage() {
                             </Table>
                         </Box>
                     </Box>
-                    <Box width="100%" display="flex" justifyContent="space-evenly" marginTop="20px" paddingTop="20px" borderTop="1px solid lightgray">
-                        <Button to={`/pyorat/pyoravarasto`} component={Link} sx={{padding: "20px"}}>Palaa pyörälistaan tallentamatta</Button>
-                        <Button type="submit" sx={{padding: "20px"}}>Tallenna muutokset ja palaa listaan</Button>
+                    <Box
+                        width="100%"
+                        display="flex"
+                        justifyContent="space-evenly"
+                        marginTop="20px"
+                        paddingTop="20px"
+                        borderTop="1px solid lightgray"
+                    >
+                        <Button to={`/pyorat/pyoravarasto`} component={Link} sx={{ padding: '20px' }}>
+                            Palaa pyörälistaan tallentamatta
+                        </Button>
+                        {/* <Button type="submit" sx={{ padding: '20px' }} onClick={() => redirect('/pyorat/pyoravarasto')}> */}
+                        <Button type="submit" sx={{ padding: '20px' }}>
+                            {/* <Button type="submit" sx={{ padding: '20px' }}> */}
+                            Tallenna muutokset ja palaa listaan
+                        </Button>
                     </Box>
                 </Box>
             </TableContainer>

@@ -1,3 +1,4 @@
+import { json, redirect, Router } from 'react-router-dom';
 import apiCall from '../Utils/apiCall';
 
 /**
@@ -330,8 +331,12 @@ const resetPasswordAction = async (auth, setAuth, request) => {
 const modifyBikeAction = async (auth, setAuth, request, params) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, `/bikes/stock/${params.id}/`, 'put', formData);
-    console.log('### modifyBikeAction response.status', response.status)
-}
+    // return redirect('/pyorat/pyoravarasto/');
+    if (response.status === 200) {
+        return { type: 'modifyBikeAction', status: true };
+    }
+    return { type: 'modifyBikeAction', status: false };
+};
 
 export {
     userSignupAction,
