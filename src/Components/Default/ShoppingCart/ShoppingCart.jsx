@@ -17,8 +17,8 @@ function iconDecider(index) {
             sx={{
                 borderRadius: '50%',
                 backgroundColor: 'primary.main',
-                width: 50,
-                height: 50,
+                width: 43,
+                height: 43,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -36,6 +36,7 @@ const CartStepConnector = styled(StepConnector)(({ theme }) => ({
         borderWidth: 'thick',
         borderRadius: 20,
         marginTop: 10,
+        zIndex: -1,
     },
 }));
 
@@ -60,9 +61,9 @@ function ShoppingCart() {
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Container
                 sx={{
-                    border: 3,
+                    border: '0.1rem solid #bfe6f6',
+                    borderRadius: '1rem',
                     borderStyle: 'solid',
-                    borderRadius: 3,
                     p: 20,
                     paddingBottom: 5,
                     margin: '3.125rem 0rem',
@@ -87,9 +88,8 @@ function ShoppingCart() {
                         alternativeLabel
                     >
                         {steps.map((label, index) => {
-                            const stepProps = {};
                             return (
-                                <Step key={label} {...stepProps}>
+                                <Step key={label}>
                                     <StepLabel StepIconComponent={() => iconDecider(index)}>{label}</StepLabel>
                                 </Step>
                             );

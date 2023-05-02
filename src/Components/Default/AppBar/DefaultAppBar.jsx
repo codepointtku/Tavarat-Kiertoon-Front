@@ -1,5 +1,4 @@
 import { useState, useContext, useEffect } from 'react';
-import { useTimeout } from 'react-use';
 import { useLoaderData, useNavigate, useSubmit, useRouteLoaderData } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -190,9 +189,6 @@ function DefaultAppBar() {
                             <StyledBadge
                                 isAnimated={productsLength === cart?.products?.length}
                                 badgeContent={cart?.products?.length}
-                                // sx={{
-                                //     color: 'primary.contrastText',
-                                // }}
                                 anchorOrigin={{
                                     vertical: 'top',
                                     horizontal: 'right',
