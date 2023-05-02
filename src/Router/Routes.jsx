@@ -25,7 +25,7 @@ import QrScanner from '../Components/Storage/QrScanner';
 
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
-import NewAnnouncement from '../Components/Admin/NewAnnouncement';
+import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
 
 import StoragesList from '../Components/Admin/StoragesList';
 import StorageEdit from '../Components/Admin/StorageEdit';
@@ -84,7 +84,6 @@ import {
     shoppingCartLoader,
     bikesListLoader,
     shoppingProcessLoader,
-    bulletinSubjectLoader,
 } from './loaders';
 
 import {
@@ -391,8 +390,7 @@ function Routes() {
                         },
                         {
                             path: 'tiedotteet/luo',
-                            element: <NewAnnouncement />,
-                            loader: bulletinSubjectLoader,
+                            element: <CreateBulletinPost />,
                             action: async ({ request }) => createBulletinAction(auth, setAuth, request),
                         },
                         {

@@ -211,7 +211,11 @@ const itemCreateAction = async (auth, setAuth, request) => {
     }
     return { type: 'createitem', status: false };
 };
-// add new announcement
+
+/**
+ * create new bulletin post
+ */
+
 const createBulletinAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, '/bulletins/', 'post', formData);

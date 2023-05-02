@@ -1,10 +1,12 @@
-import { Container, TextField, Typography, Button, FormControl, Paper } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, useSubmit } from 'react-router-dom';
+
+import { Container, TextField, Typography, Button, FormControl, Paper } from '@mui/material';
+
 import AlertBox from '../AlertBox';
 
-function ContactPage() {
+function CreateBulletinPost() {
     const { register, handleSubmit } = useForm();
     const submit = useSubmit();
     const [success, setSuccess] = useState(false);
@@ -93,4 +95,4 @@ function ContactPage() {
     );
 }
 
-export default ContactPage;
+export default CreateBulletinPost;
