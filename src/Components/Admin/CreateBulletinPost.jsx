@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, useSubmit } from 'react-router-dom';
 
-import { Container, TextField, Typography, Button, FormControl, Paper } from '@mui/material';
+import { Container, TextField, Typography, Button, FormControl, Box } from '@mui/material';
 
 import AlertBox from '../AlertBox';
+import TypographyTitle from '../TypographyTitle';
 
 function CreateBulletinPost() {
     const { register, handleSubmit } = useForm();
@@ -26,31 +27,17 @@ function CreateBulletinPost() {
     };
 
     return (
-        <Paper
-            elevation={3}
-            container="true"
+        <Box
+            id="bulletin-creation-form-container"
             component={Form}
             onSubmit={handleSubmit(onSubmit)}
             autoComplete="off"
-            sx={{
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                mb: 4,
-                width: 1000,
-                marginTop: 4,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                alingSelf: 'center',
-            }}
         >
-            <Typography sx={{ mt: 4 }} variant="h2" color="primary.main">
-                Uusi tiedote
-            </Typography>
+            <TypographyTitle text="Luo uusi tiedote" />
             <Container sx={{ alignItems: 'center' }} maxWidth="md">
                 <FormControl
+                    id="bulletin-creation-formcontrol"
                     sx={{
-                        marginTop: 4,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -69,7 +56,7 @@ function CreateBulletinPost() {
                     <TextField
                         {...register('content')}
                         sx={{ mt: 2 }}
-                        placeholder="Sisältö   "
+                        placeholder="Sisältö"
                         label="Sisältö"
                         required
                         multiline
@@ -91,7 +78,7 @@ function CreateBulletinPost() {
                     )}
                 </FormControl>
             </Container>
-        </Paper>
+        </Box>
     );
 }
 
