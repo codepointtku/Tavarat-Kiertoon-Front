@@ -72,9 +72,6 @@ function UserForm() {
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
-    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-    };
 
     const handleSubmit = createHandleSubmit((data) => {
         const formData = { ...data };
@@ -200,13 +197,12 @@ function UserForm() {
                             id="outlined-adornment-password"
                             type={showPassword ? 'text' : 'password'}
                             label="Salasana"
-                            placeholder="****"
+                            placeholder="Salasanan on oltava vähintään 45 merkkiä pitkä"
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
                                         aria-label="toggle password visibility"
                                         onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
                                         edge="end"
                                     >
                                         {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -222,7 +218,7 @@ function UserForm() {
                             id="outlined-adornment-passwordrepeat"
                             type={showPassword ? 'text' : 'password'}
                             label="Salasana uudelleen"
-                            placeholder="****"
+                            placeholder="**** ****"
                         />
                     </FormControl>
                     <Button sx={{ mt: 3, mb: 3 }} fullWidth type="submit">
