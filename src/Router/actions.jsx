@@ -71,8 +71,25 @@ const frontPageActions = async (auth, setAuth, request) => {
  */
 const userSignupAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
+
+    // käyttäjätiliä luodessa ei saa lähtee username-kenttää
+    if (formData.has('username')) {
+        const response = await apiCall(auth, setAuth, '/users/create/', 'post', {
+            username: formData.get('username'),
+            first_name: formData.get('firstname'),
+            last_name: formData.get('lastname'),
+            email: formData.get('email'),
+            phone_number: formData.get('phonenumber'),
+            password: formData.get('password'),
+            joint_user: formData.get('jointuser'),
+            address: formData.get('address'),
+            zip_code: formData.get('zipcode'),
+            city: formData.get('town'),
+        });
+    }
+
     const response = await apiCall(auth, setAuth, '/users/create/', 'post', {
-        username: formData.get('username'),
+        // username: formData.get('username'),
         first_name: formData.get('firstname'),
         last_name: formData.get('lastname'),
         email: formData.get('email'),
@@ -83,9 +100,13 @@ const userSignupAction = async (auth, setAuth, request) => {
         zip_code: formData.get('zipcode'),
         city: formData.get('town'),
     });
+
+    console.log(response);
+
     if (response.status === 201) {
         return { type: 'create', status: true };
     }
+
     return { type: 'create', status: false };
 };
 

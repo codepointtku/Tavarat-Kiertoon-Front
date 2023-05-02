@@ -7,6 +7,7 @@ import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
 import GiteIcon from '@mui/icons-material/Gite';
 import Person2Icon from '@mui/icons-material/Person2';
+import TypographyTitle from '../../TypographyTitle';
 
 function SignUpCards() {
     const iconHover = {
@@ -97,14 +98,12 @@ function SignUpCards() {
 function HeroText() {
     return (
         <>
-            <Typography variant="h4" gutterBottom>
-                Tervetuloa rekisteröitymään!
-            </Typography>
-            <Typography variant="subtitle2" mb={1}>
+            <TypographyTitle text="Tervetuloa rekisteröitymään!" />
+            <Typography variant="subtitle2" mt={2} mb={1}>
                 Tavarat Kiertoon järjestelmään on mahdollista luoda henkilökohtainen-, tai toimipaikka-kohtainen tili.
             </Typography>
 
-            <Typography variant="body1" mb={1}>
+            <Typography variant="body2" mb={1}>
                 Ole hyvä ja valitse käyttötarkoitukseesi sopivampi tilimuoto.
             </Typography>
             <Button
@@ -134,7 +133,7 @@ function SignUpHero() {
         >
             <Avatar
                 sx={{
-                    mt: 2,
+                    // mt: 2,
                     mb: 2,
                     bgcolor: 'secondary.dark',
                     width: 64,

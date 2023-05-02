@@ -12,10 +12,12 @@ import {
     InputAdornment,
     IconButton,
     Avatar,
-    Stack,
+    Typography,
     Grid,
+    Stack,
 } from '@mui/material';
 
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
@@ -27,6 +29,40 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import BackButton from '../../BackButton';
 import AlertBox from '../../AlertBox';
 import TypographyTitle from '../../TypographyTitle';
+
+import type { userSignupAction } from '../../../Router/actions';
+
+function HeroText() {
+    return (
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginTop: '1rem',
+            }}
+        >
+            <Typography variant="subtitle2" paragraph>
+                Tili on tarkoitettu yhteiskäyttötiliksi toimipaikan henkilökunnan kesken.
+            </Typography>
+            <Typography variant="body2" paragraph>
+                Anna sähköpostiosoitteeksi toimipaikan Tavarat Kiertoon-vastuuhenkilön osoite.
+            </Typography>
+            <Typography variant="body2" paragraph>
+                Tilille on mahdollista kirjautua käyttäjätunnuksella, tai sähköpostiosoitteella.
+            </Typography>
+            <Button
+                component={Link}
+                to="/ohjeet/tili/toimipaikka"
+                size="small"
+                variant="outlined"
+                endIcon={<HelpOutlineIcon />}
+            >
+                Tarkemmat ohjeet
+            </Button>
+        </Box>
+    );
+}
 
 function Hero() {
     return (
@@ -57,63 +93,55 @@ function Hero() {
                 <Grid item xs={4} />
             </Grid>
             <Box sx={{ mt: 2, mb: 2 }}>
-                <TypographyTitle text="Luo uusi käyttäjätili" />
+                <TypographyTitle text="Luo uusi tili toimipaikalle" />
+                <HeroText />
             </Box>
         </>
     );
 }
 
-function UserForm() {
-    const { register, handleSubmit } = useForm();
+function LocationForm() {
+    const { register, handleSubmit: createHandleSubmit } = useForm();
     const submit = useSubmit();
-    const responseStatus = useActionData();
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof userSignupAction>>;
 
     const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
 
-    const onSubmit = (data) => {
-        const formData = { ...data, jointuser: false };
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleSubmit = createHandleSubmit((data) => {
+        const formData = { ...data };
         submit(formData, {
             method: 'post',
-            action: '/rekisteroidy/kayttaja',
+            action: '/rekisteroidy/toimipaikka',
         });
-    };
+    });
 
     return (
         <>
             {responseStatus?.type === 'create' && !responseStatus?.status && (
                 <>
                     <AlertBox text="Tunnuksen luominen epäonnistui" status="error" />
-                    <br />
                 </>
             )}
             {responseStatus?.type === 'create' && responseStatus?.status && (
                 <>
                     <AlertBox text="Tunnuksen luominen onnistui" status="success" />
-                    <br />
                 </>
             )}
-            <Container
-                id="signupform-user-fields-wrapper"
-                maxWidth="sm"
-                component={Form}
-                onSubmit={handleSubmit(onSubmit)}
-            >
-                <Stack id="signupform-user-fields">
+            <Container id="signupform-location-fields-wrapper" maxWidth="sm" component={Form} onSubmit={handleSubmit}>
+                <Stack id="signupform-location-fields">
                     <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-email">Sähköpostiosoite</InputLabel>
+                        <InputLabel htmlFor="outlined-adornment-location">Käyttäjätunnus</InputLabel>
                         <OutlinedInput
-                            {...register('email')}
-                            id="outlined-adornment-email"
+                            {...register('username')}
+                            id="outlined-adornment-location"
                             type="text"
-                            label="Sähköpostiosoite"
-                            placeholder="sinä@turku.fi"
+                            label="Toimipaikka"
+                            placeholder="Käyttäjätunnus yhteiskäyttöön"
                             endAdornment={
                                 <InputAdornment position="end">
-                                    <MailOutlineIcon />
+                                    <SupervisedUserCircleIcon />
                                 </InputAdornment>
                             }
                         />
@@ -126,7 +154,7 @@ function UserForm() {
                                 id="outlined-adornment-firstname"
                                 type="text"
                                 label="Etunimi"
-                                placeholder="Tonipal"
+                                placeholder="Tilin vastuuhenkilön etunimi"
                             />
                         </FormControl>
                         <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
@@ -136,7 +164,7 @@ function UserForm() {
                                 id="outlined-adornment-lastname"
                                 type="text"
                                 label="Sukunimi"
-                                placeholder="Kahville"
+                                placeholder="Tilin vastuuhenkilön sukunimi"
                                 endAdornment={
                                     <InputAdornment position="end">
                                         <Person2Icon />
@@ -145,6 +173,21 @@ function UserForm() {
                             />
                         </FormControl>
                     </Stack>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="outlined-adornment-email">Sähköpostiosoite</InputLabel>
+                        <OutlinedInput
+                            {...register('email')}
+                            id="outlined-adornment-email"
+                            type="text"
+                            label="Sähköpostiosoite"
+                            placeholder="Vastuuhenkilön sähköpostiosoite"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <MailOutlineIcon />
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
                     <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
                         <InputLabel htmlFor="outlined-adornment-phonenumber">Puhelinnumero</InputLabel>
                         <OutlinedInput
@@ -160,24 +203,23 @@ function UserForm() {
                             }
                         />
                     </FormControl>
-
+                    <FormControl sx={{ mt: 1, mr: 1 }} variant="outlined" fullWidth required>
+                        <InputLabel htmlFor="outlined-adornment-address">Osoite</InputLabel>
+                        <OutlinedInput
+                            {...register('address')}
+                            id="outlined-adornment-address"
+                            type="text"
+                            label="Osoite"
+                            placeholder="Toimipaikan katuosoite"
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <HomeIcon />
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
                     <Stack direction="row">
                         <FormControl sx={{ mt: 1, mr: 1 }} variant="outlined" fullWidth required>
-                            <InputLabel htmlFor="outlined-adornment-address">Osoite</InputLabel>
-                            <OutlinedInput
-                                {...register('address')}
-                                id="outlined-adornment-address"
-                                type="text"
-                                label="Osoite"
-                                placeholder="Kahvikuja 5 as. 1"
-                                // endAdornment={
-                                //     <InputAdornment position="end">
-                                //         <HomeIcon />
-                                //     </InputAdornment>
-                                // }
-                            />
-                        </FormControl>
-                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
                             <InputLabel htmlFor="outlined-adornment-zipcode">Postinumero</InputLabel>
                             <OutlinedInput
                                 {...register('zipcode')}
@@ -185,24 +227,19 @@ function UserForm() {
                                 type="text"
                                 label="Postinumero"
                                 placeholder="20100"
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <HomeIcon />
-                                    </InputAdornment>
-                                }
+                            />
+                        </FormControl>
+                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                            <InputLabel htmlFor="outlined-adornment-town">Kaupunki</InputLabel>
+                            <OutlinedInput
+                                {...register('town')}
+                                id="outlined-adornment-town"
+                                type="text"
+                                label="Kaupunki"
+                                placeholder="Turku"
                             />
                         </FormControl>
                     </Stack>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" required>
-                        <InputLabel htmlFor="outlined-adornment-town">Kaupunki</InputLabel>
-                        <OutlinedInput
-                            {...register('town')}
-                            id="outlined-adornment-town"
-                            type="text"
-                            label="Kaupunki"
-                            placeholder="Turku"
-                        />
-                    </FormControl>
                     <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
                         <InputLabel htmlFor="outlined-adornment-password">Salasana</InputLabel>
                         <OutlinedInput
@@ -210,13 +247,12 @@ function UserForm() {
                             id="outlined-adornment-password"
                             type={showPassword ? 'text' : 'password'}
                             label="Salasana"
-                            placeholder="****"
+                            placeholder="Salasanan on oltava vähintään 45 merkkiä pitkä"
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
                                         aria-label="toggle password visibility"
                                         onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
                                         edge="end"
                                     >
                                         {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -225,6 +261,7 @@ function UserForm() {
                             }
                         />
                     </FormControl>
+
                     <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
                         <InputLabel htmlFor="outlined-adornment-passwordrepeat">Salasana uudelleen</InputLabel>
                         <OutlinedInput
@@ -232,21 +269,12 @@ function UserForm() {
                             id="outlined-adornment-passwordrepeat"
                             type={showPassword ? 'text' : 'password'}
                             label="Salasana uudelleen"
-                            placeholder="****"
+                            placeholder="********"
                         />
                     </FormControl>
+
                     <Button sx={{ mt: 3, mb: 3 }} fullWidth type="submit">
                         Rekisteröidy
-                    </Button>
-                    <Button
-                        component={Link}
-                        to="/ohjeet/tili/kayttaja"
-                        sx={{ mb: 2 }}
-                        size="small"
-                        variant="text"
-                        endIcon={<HelpOutlineIcon />}
-                    >
-                        Ohjeet
                     </Button>
                 </Stack>
             </Container>
@@ -254,13 +282,13 @@ function UserForm() {
     );
 }
 
-function UserSignupForm() {
+function LocationSignupForm() {
     return (
-        <Container maxWidth="md">
+        <>
             <Hero />
-            <UserForm />
-        </Container>
+            <LocationForm />
+        </>
     );
 }
 
-export default UserSignupForm;
+export default LocationSignupForm;

@@ -1,11 +1,13 @@
-import PropTypes from 'prop-types';
-
 import { Container } from '@mui/material';
 
 import UserSignupForm from './UserSignupForm';
 import LocationSignupForm from './LocationSignupForm';
 
-function SignupPage({ isLocationForm }) {
+interface Props {
+    isLocationForm: boolean;
+}
+
+function SignupPage({ isLocationForm }: Props) {
     return (
         <Container sx={{ marginTop: 1, marginBottom: 1 }}>
             {isLocationForm ? <LocationSignupForm /> : <UserSignupForm />}
@@ -14,7 +16,3 @@ function SignupPage({ isLocationForm }) {
 }
 
 export default SignupPage;
-
-SignupPage.propTypes = {
-    isLocationForm: PropTypes.bool.isRequired,
-};
