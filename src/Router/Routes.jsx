@@ -32,6 +32,7 @@ import NewAnnouncement from '../Components/Admin/NewAnnouncement';
 import StoragesList from '../Components/Admin/StoragesList';
 import StorageEdit from '../Components/Admin/StorageEdit';
 import AddStorage from '../Components/Admin/AddStorage';
+import EditProduct from '../Components/Admin/EditProduct';
 
 import PDFView from '../Components/Storage/PDFView';
 
@@ -358,6 +359,12 @@ function Routes() {
                             element: <AddNewItem />,
                             loader: async ({ request }) => storageProductsLoader(auth, setAuth, request),
                             action: async ({ request }) => addProductAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'tuotteet/:id/muokkaa',
+                            element: <EditProduct />,
+                            loader: async ({ request, params }) => productDetailsLoader(auth, setAuth, request, params),
+                            // action: async ({ request, params }) => editProductAction(auth, setAuth, request, params),
                         },
                         {
                             path: 'koodinlukija',
