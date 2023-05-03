@@ -58,7 +58,7 @@ function ProductCard({
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Card sx={{ width: 300, height: 375 }}>
+            <Card sx={{ width: 300, height: 365 }}>
                 <CardActionArea component={Box}>
                     <Carousel
                         animation="slide"

@@ -75,6 +75,7 @@ function AddToCartButton({ size, id, groupId, count }) {
                         size="small"
                         sx={{ color: 'background.default', padding: 0, mr: 1, ml: 0.5 }}
                         onClick={() => handleOnClick('remove')}
+                        disabled={amount === 1}
                     >
                         <RemoveIcon />
                     </IconButton>
@@ -102,10 +103,11 @@ function AddToCartButton({ size, id, groupId, count }) {
                         size="small"
                         sx={{ color: 'background.default', padding: 0, ml: 1, mr: 0.5 }}
                         onClick={() => handleOnClick('add')}
+                        disabled={amount === count}
                     >
                         <AddIcon />
                     </IconButton>
-                    <form onSubmit={handleSubmit(() => onSubmit())}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <Button
                             size={size}
                             sx={{ mt: 1 / 2 }}
@@ -118,7 +120,7 @@ function AddToCartButton({ size, id, groupId, count }) {
                     </form>
                 </Box>
             ) : (
-                <form onSubmit={handleSubmit(() => onSubmit())}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <Button
                         size={size}
                         aria-label="add to shopping cart"
