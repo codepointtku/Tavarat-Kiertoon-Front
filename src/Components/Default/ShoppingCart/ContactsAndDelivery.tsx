@@ -8,9 +8,23 @@ import { Typography, TextField, Grid, MenuItem, Box, Alert, OutlinedInput, Butto
 
 import CartButtons from './CartButtons';
 import Update from './Update';
+import type { shoppingProcessLoader } from '../../../Router/loaders';
+import { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
+
+export interface CartFormData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    deliveryAddress: string;
+    zipcode: string;
+    city: string;
+    deliveryMethod: string;
+    orderInfo?: string;
+}
 
 function ContactsAndDelivery() {
-    const user = useRouteLoaderData('shoppingCart');
+    const user = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
     const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
     const [selectedMethod, setSelectedMethod] = useState('shipping');
     const [isSamePerson, setIsSamePerson] = useState(false);
@@ -23,15 +37,17 @@ function ContactsAndDelivery() {
     const { actions } = useStateMachine({ Update });
 
     const navigate = useNavigate();
-    const onSubmit = (data) => {
+    const onSubmit = (data: CartFormData) => {
         alert(JSON.stringify(data));
         actions.Update(data);
         navigate('/ostoskori/vaihe3');
     };
-    const handleChange = (SelectChangeEvent) => {
+    const handleChange = (SelectChangeEvent: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setSelectedAddress(SelectChangeEvent.target.value);
     };
-    const correctAddress = user.address_list?.filter((address) => address.address === selectedAddress);
+    const correctAddress = user.address_list?.filter(
+        (address: { address: string }) => address.address === selectedAddress
+    );
     const fullname = user.name.split(' ');
 
     function handleClick() {
@@ -43,7 +59,7 @@ function ContactsAndDelivery() {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
             <Box
                 sx={{
                     p: 5,
@@ -78,6 +94,7 @@ function ContactsAndDelivery() {
             <Typography variant="h4" sx={{ marginBottom: 2, color: 'primary.main' }}>
                 Vastaanottajan yhteystiedot
             </Typography>
+            {/* fix shrink */}
             <Grid container spacing={4}>
                 <Grid item>
                     <TextField
@@ -120,7 +137,8 @@ function ContactsAndDelivery() {
                         InputLabelProps={{ shrink: isSamePerson }}
                         {...register('phoneNumber', {
                             required: true,
-                            pattern: { value: /^[0-9]+$/, maxLength: 255 },
+                            pattern: /^[0-9]+$/,
+                            maxLength: 255,
                         })}
                     />
                     {errors.phoneNumber && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
@@ -136,10 +154,10 @@ function ContactsAndDelivery() {
                         variant="outlined"
                         value={selectedAddress}
                         {...register('deliveryAddress', { required: true })}
-                        onChange={handleChange}
+                        onChange={() => handleChange}
                         select
                     >
-                        {user.address_list?.map((a) => (
+                        {user.address_list?.map((a: { address: string; id: number }) => (
                             <MenuItem value={a.address} key={a.id}>
                                 {a.address}
                             </MenuItem>

@@ -1,16 +1,24 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSubmit, useRouteLoaderData, useSearchParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { Box, Button, Input, IconButton } from '@mui/material';
+import { OverridableStringUnion } from '@material-ui/types';
+import { Box, Button, Input, IconButton, ButtonPropsSizeOverrides } from '@mui/material';
 
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { string } from 'prop-types';
 
-function AddToCartButton({ size, id, groupId, count }) {
+interface Props {
+    size?: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides> | undefined;
+    id: number & string;
+    groupId: string;
+    count: number;
+}
+
+function AddToCartButton({ size, id, groupId, count }: Props) {
     const submit = useSubmit();
-    const { cart } = useRouteLoaderData('frontPage');
+    const { cart }: any = useRouteLoaderData('frontPage');
     const [amount, setAmount] = useState(1);
     const [addedToCart, setAddedToCart] = useState(false);
     const [searchParams] = useSearchParams();
@@ -34,15 +42,16 @@ function AddToCartButton({ size, id, groupId, count }) {
         }
     }
 
-    function handleOnClick(action) {
+    function handleOnClick(action: string) {
         if (amount >= 1 && amount <= count) {
             action === 'add' ? addAmount() : removeAmount();
         }
     }
 
-    function handleChange(event) {
-        const input = event.target.value;
-        if ((input >= 1 && input <= count) || input === '') {
+    function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+        const _input = event.target.value;
+        const input: number = +_input;
+        if ((input >= 1 && input <= count) || _input === '') {
             setAmount(Number(input));
             setAddedToCart(false);
         }
@@ -61,7 +70,7 @@ function AddToCartButton({ size, id, groupId, count }) {
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
-            {cart?.products?.some((product) => product['group_id'] === groupId) ? (
+            {cart?.products?.some((product: { group_id: string }) => product['group_id'] === groupId) ? (
                 <Box
                     sx={{
                         backgroundColor: 'primary.main',
@@ -135,12 +144,5 @@ function AddToCartButton({ size, id, groupId, count }) {
         </Box>
     );
 }
-
-AddToCartButton.propTypes = {
-    size: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
-    groupId: PropTypes.string.isRequired,
-    count: PropTypes.number.isRequired,
-};
 
 export default AddToCartButton;
