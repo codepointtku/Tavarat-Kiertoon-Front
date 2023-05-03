@@ -144,7 +144,7 @@ function UserForm() {
                             id="outlined-adornment-phonenumber"
                             type="text"
                             label="Puhelinnumero"
-                            placeholder="010 111 1111"
+                            placeholder="010 123 1234"
                             endAdornment={
                                 <InputAdornment position="end">
                                     <PhoneIcon />
