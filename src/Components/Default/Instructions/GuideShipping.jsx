@@ -1,34 +1,9 @@
-import { Avatar, Container, Grid, Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
-import BackButton from '../../BackButton';
-
-function Hero() {
-    return (
-        <>
-            <Grid container>
-                <Grid item xs={6} md={6} mt={2} mb={2}>
-                    <BackButton />
-                </Grid>
-                <Grid item xs={6} md={6} mt={2} mb={2}>
-                    <Avatar
-                        sx={{
-                            bgcolor: 'secondary.dark',
-                            width: 48,
-                            height: 48,
-                        }}
-                    >
-                        <LocalShippingIcon fontSize="large" />
-                    </Avatar>
-                </Grid>
-            </Grid>
-            <Typography variant="h4" color="primary.main" textAlign="center">
-                Noutokuljetuksen ohjeet
-            </Typography>
-        </>
-    );
-}
+import HeroHeader from '../../HeroHeader';
+import HeroText from '../../HeroText';
 
 function Shipping() {
     return (
@@ -47,8 +22,8 @@ function Shipping() {
 function GuideShipping() {
     return (
         <Container maxWidth="lg">
-            <Hero />
-            <Shipping />
+            <HeroHeader Icon={<LocalShippingIcon />} />
+            <HeroText title="Noutokuljetuksen ohjeet" subtitle="moro" secondaryText="terveee" /> <Shipping />
         </Container>
     );
 }
