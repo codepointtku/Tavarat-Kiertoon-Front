@@ -1,16 +1,14 @@
-/* eslint-disable */
-
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { Avatar, Box, Container, Grid, Link as MuiLink, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Container, Link as MuiLink, Tab, Tabs, Typography } from '@mui/material';
 
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
-import BackButton from '../../BackButton';
+import HeroHeader from '../../HeroHeader';
 
 function Ordering() {
     return (
@@ -83,51 +81,33 @@ function Shipping() {
     );
 }
 
-function Hero() {
+function HeroText() {
     return (
-        <>
-            <Grid container>
-                <Grid item xs={6} md={6} mt={2} mb={2}>
-                    <BackButton />
-                </Grid>
-                <Grid item xs={6} md={6} mt={2} mb={2}>
-                    <Avatar
-                        sx={{
-                            bgcolor: 'secondary.dark',
-                            width: 48,
-                            height: 48,
-                        }}
-                    >
-                        <ShoppingCartCheckoutIcon fontSize="large" />
-                    </Avatar>
-                </Grid>
-            </Grid>
-            <Box
-                sx={{
-                    mb: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                <Typography variant="h4" color="primary.main" mb={2}>
-                    Tilaaminen & Kuljetus
-                </Typography>
+        <Box
+            sx={{
+                mb: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            <Typography variant="h4" color="primary.main" mb={2}>
+                Tilaaminen & Kuljetus
+            </Typography>
 
-                <Typography variant="subtitle2">
-                    Alla on ohjeet tilaamiseen, sekä tietoa kuljetuksesta. Jos etsimäsi tietoa ei löydy tästä tai{' '}
-                    <MuiLink component={Link} to="/ohjeet">
-                        Ohje
-                    </MuiLink>
-                    -sivulta, voit olla meihin yhteydessä{' '}
-                    <MuiLink component={Link} to="/otayhteytta">
-                        täältä
-                    </MuiLink>
-                    .
-                </Typography>
-            </Box>
-        </>
+            <Typography variant="subtitle2">
+                Alla on ohjeet tilaamiseen, sekä tietoa kuljetuksesta. Jos etsimäsi tietoa ei löydy tästä tai{' '}
+                <MuiLink component={Link} to="/ohjeet">
+                    Ohje
+                </MuiLink>
+                -sivulta, voit olla meihin yhteydessä{' '}
+                <MuiLink component={Link} to="/otayhteytta">
+                    täältä
+                </MuiLink>
+                .
+            </Typography>
+        </Box>
     );
 }
 
@@ -183,7 +163,8 @@ function TitleTabs() {
 function GuideOrdering() {
     return (
         <Container maxWidth="lg">
-            <Hero />
+            <HeroHeader Icon={<ShoppingCartCheckoutIcon />} />
+            <HeroText />
             <TitleTabs />
         </Container>
     );

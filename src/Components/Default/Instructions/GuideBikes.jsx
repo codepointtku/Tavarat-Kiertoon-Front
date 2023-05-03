@@ -1,16 +1,15 @@
-/* eslint-disable */
-
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { Avatar, Box, Container, Grid, Tabs, Tab, Typography } from '@mui/material';
+import { Box, Container, Tabs, Tab, Typography } from '@mui/material';
 
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import InfoIcon from '@mui/icons-material/Info';
 import RuleIcon from '@mui/icons-material/Rule';
 
-import BackButton from '../../BackButton';
+import HeroHeader from '../../HeroHeader';
+import HeroText from '../../HeroText';
 
 function BikesHelp() {
     return (
@@ -32,32 +31,6 @@ function BikesRules() {
             </Typography>
             <Typography gutterBottom>Sääntöjä</Typography>
             <Typography gutterBottom>Lisää sääntöjä</Typography>
-        </>
-    );
-}
-
-function Hero() {
-    return (
-        <>
-            <Grid container>
-                <Grid item xs={6} md={6} mt={2} mb={2}>
-                    <BackButton />
-                </Grid>
-                <Grid item xs={6} md={6} mt={2} mb={2}>
-                    <Avatar
-                        sx={{
-                            bgcolor: 'secondary.dark',
-                            width: 48,
-                            height: 48,
-                        }}
-                    >
-                        <DirectionsBikeIcon fontSize="large" />
-                    </Avatar>
-                </Grid>
-            </Grid>
-            <Typography variant="h4" color="primary.main" textAlign="center">
-                Pyörät Kiertoon
-            </Typography>
         </>
     );
 }
@@ -114,7 +87,8 @@ function TitleTabs() {
 function GuideBikes() {
     return (
         <Container maxWidth="lg">
-            <Hero />
+            <HeroHeader Icon={<DirectionsBikeIcon />} />
+            <HeroText title="Pyörät kiertoon" />
             <TitleTabs />
         </Container>
     );
