@@ -69,39 +69,28 @@ const frontPageActions = async (auth, setAuth, request) => {
 /**
  * creates new user
  */
+
 const userSignupAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
 
-    // käyttäjätiliä luodessa ei saa lähtee username-kenttää
-    if (formData.has('username')) {
-        const response = await apiCall(auth, setAuth, '/users/create/', 'post', {
-            username: formData.get('username'),
-            first_name: formData.get('firstname'),
-            last_name: formData.get('lastname'),
-            email: formData.get('email'),
-            phone_number: formData.get('phonenumber'),
-            password: formData.get('password'),
-            joint_user: formData.get('jointuser'),
-            address: formData.get('address'),
-            zip_code: formData.get('zipcode'),
-            city: formData.get('town'),
-        });
-    }
-
-    const response = await apiCall(auth, setAuth, '/users/create/', 'post', {
-        // username: formData.get('username'),
+    let userObject = {
         first_name: formData.get('firstname'),
         last_name: formData.get('lastname'),
         email: formData.get('email'),
         phone_number: formData.get('phonenumber'),
         password: formData.get('password'),
-        joint_user: formData.get('jointuser'),
         address: formData.get('address'),
         zip_code: formData.get('zipcode'),
         city: formData.get('town'),
-    });
+    };
 
-    console.log(response);
+    if (formData.has('username')) {
+        userObject = { ...userObject, username: formData.get('username') };
+    }
+
+    console.log(userObject);
+
+    const response = await apiCall(auth, setAuth, '/users/create/', 'post', userObject);
 
     if (response.status === 201) {
         return { type: 'create', status: true };
