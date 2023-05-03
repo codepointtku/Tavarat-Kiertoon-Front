@@ -71,9 +71,17 @@ const frontPageActions = async (auth, setAuth, request) => {
  */
 
 const userSignupAction = async (auth, setAuth, request) => {
+    // both single user signup form, and location signup form use this same action
+    // and url in backend.
+
+    // a single user does not have an username -- email-value is copied to username-value in BE.
+
+    // this action defaults without username-field.
+    // if username-field exists in the formData, its value is appended and sent with the apiCall.
+
     const formData = await request.formData();
 
-    let userObject = {
+    let userSignUpValues = {
         first_name: formData.get('firstname'),
         last_name: formData.get('lastname'),
         email: formData.get('email'),
@@ -85,12 +93,10 @@ const userSignupAction = async (auth, setAuth, request) => {
     };
 
     if (formData.has('username')) {
-        userObject = { ...userObject, username: formData.get('username') };
+        userSignUpValues = { ...userSignUpValues, username: formData.get('username') };
     }
 
-    console.log(userObject);
-
-    const response = await apiCall(auth, setAuth, '/users/create/', 'post', userObject);
+    const response = await apiCall(auth, setAuth, '/users/create/', 'post', userSignUpValues);
 
     if (response.status === 201) {
         return { type: 'create', status: true };
