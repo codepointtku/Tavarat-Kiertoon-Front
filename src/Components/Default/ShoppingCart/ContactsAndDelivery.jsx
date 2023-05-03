@@ -20,9 +20,7 @@ function ContactsAndDelivery() {
         handleSubmit,
         formState: { errors },
     } = useForm();
-    const { actions } = useStateMachine({ Update });
-    // const fullname = user.name.split(' ');
-    // console.log('update state: ', state, 'update actions: ', actions);
+    const { actions, state } = useStateMachine({ Update });
 
     const navigate = useNavigate();
     const onSubmit = (data) => {
@@ -34,7 +32,6 @@ function ContactsAndDelivery() {
         setSelectedAddress(SelectChangeEvent.target.value);
     };
     const correctAddress = user.address_list?.filter((address) => address.address === selectedAddress);
-    console.log(isSamePerson);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

@@ -12,6 +12,7 @@ function Confirmation() {
     const { products } = useRouteLoaderData('frontPage');
     const { id } = useRouteLoaderData('shoppingCart');
     const submit = useSubmit();
+    // laita order tekstinä vain submittiin.
     const order = 'order';
 
     const onSubmit = async () => {
