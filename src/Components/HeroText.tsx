@@ -12,8 +12,12 @@ function HeroText({ title, subtitle, secondaryText }: Props) {
         <Box id="hero-texts-wrapper" p="1rem">
             <TypographyTitle text={title} />
             <Stack alignItems="center" mt="1rem">
-                <Typography variant="subtitle2">{subtitle}</Typography>
-                <Typography variant="body2">{secondaryText}</Typography>
+                <Typography textAlign="center" variant="subtitle2" gutterBottom>
+                    {subtitle}
+                </Typography>
+                <Typography textAlign="center" variant="body2">
+                    {secondaryText}
+                </Typography>
             </Stack>
         </Box>
     );
