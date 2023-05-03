@@ -10,6 +10,7 @@ import {
     Container,
     Grid,
     Link as MuiLink,
+    Stack,
     Typography,
 } from '@mui/material';
 
@@ -17,15 +18,24 @@ import ChatIcon from '@mui/icons-material/Chat';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import BackButton from '../../BackButton';
+import TypographyTitle from '../../TypographyTitle';
 
 function Hero() {
     return (
         <>
-            <Grid container>
-                <Grid item xs={6} md={6} mt={2} mb={2}>
+            <Grid container className="back-btn-avatar-wrapper">
+                <Grid item xs={4}>
                     <BackButton />
                 </Grid>
-                <Grid item xs={6} md={6} mt={2} mb={2}>
+                <Grid
+                    item
+                    xs={4}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
                     <Avatar
                         sx={{
                             bgcolor: 'secondary.dark',
@@ -36,35 +46,74 @@ function Hero() {
                         <ChatIcon fontSize="large" />
                     </Avatar>
                 </Grid>
+                <Grid item xs={4} />
             </Grid>
-
-            <Box
-                sx={{
-                    mb: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                <Typography variant="h4" color="primary.main" mb={2}>
-                    Yleiset ohjeet
-                </Typography>
-
-                <Typography variant="subtitle2" mb={2}>
-                    Alla on usein kysyttyjä kysymyksiä vastauksineen. Jos etsimäsi tietoa ei löydy tästä tai{' '}
-                    <MuiLink component={Link} to="/ohjeet">
-                        Ohje
-                    </MuiLink>
-                    -sivulta, voit olla meihin yhteydessä{' '}
-                    <MuiLink component={Link} to="/otayhteytta">
-                        täältä.
-                    </MuiLink>
-                </Typography>
+            <Box id="hero-texts-wrapper" p="1rem">
+                <TypographyTitle text="Yleiset ohjeet" />
+                <Stack alignItems="center" mt="1rem">
+                    <Typography variant="subtitle2">
+                        Alla on usein kysyttyjä kysymyksiä vastauksineen. Jos etsimäsi tietoa ei löydy tästä tai{' '}
+                        <MuiLink component={Link} to="/ohjeet">
+                            Ohje
+                        </MuiLink>
+                        -sivulta, voit olla meihin yhteydessä{' '}
+                        <MuiLink component={Link} to="/otayhteytta">
+                            täältä.
+                        </MuiLink>
+                    </Typography>
+                </Stack>
             </Box>
         </>
     );
 }
+
+// function Hero() {
+//     return (
+//         <>
+//             <Grid container>
+//                 <Grid item xs={6} md={6} mt={2} mb={2}>
+//                     <BackButton />
+//                 </Grid>
+//                 <Grid item xs={6} md={6} mt={2} mb={2}>
+//                     <Avatar
+//                         sx={{
+//                             bgcolor: 'secondary.dark',
+//                             width: 48,
+//                             height: 48,
+//                         }}
+//                     >
+//                         <ChatIcon fontSize="large" />
+//                     </Avatar>
+//                 </Grid>
+//             </Grid>
+
+//             <Box
+//                 sx={{
+//                     mb: 2,
+//                     display: 'flex',
+//                     flexDirection: 'column',
+//                     justifyContent: 'center',
+//                     alignItems: 'center',
+//                 }}
+//             >
+//                 <Typography variant="h4" color="primary.main" mb={2}>
+//                     Yleiset ohjeet
+//                 </Typography>
+
+//                 <Typography variant="subtitle2" mb={2}>
+//                     Alla on usein kysyttyjä kysymyksiä vastauksineen. Jos etsimäsi tietoa ei löydy tästä tai{' '}
+//                     <MuiLink component={Link} to="/ohjeet">
+//                         Ohje
+//                     </MuiLink>
+//                     -sivulta, voit olla meihin yhteydessä{' '}
+//                     <MuiLink component={Link} to="/otayhteytta">
+//                         täältä.
+//                     </MuiLink>
+//                 </Typography>
+//             </Box>
+//         </>
+//     );
+// }
 
 function FAQAccordions() {
     const [expanded, setExpanded] = useState(false);
