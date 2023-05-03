@@ -1,48 +1,30 @@
-import { Avatar, Box, Grid, Stack, Typography } from '@mui/material';
+import { Avatar, Grid } from '@mui/material';
+
 import BackButton from './BackButton';
-import TypographyTitle from './TypographyTitle';
 
 interface Props {
-    icon: string;
-    title: string;
-    subtitle: string;
+    Icon: React.ReactNode;
 }
 
-function Hero({ icon, title, subtitle }: Props) {
+function Hero({ Icon }: Props) {
     return (
-        <>
-            <Grid container className="back-btn-avatar-wrapper">
-                <Grid item xs={4}>
-                    <BackButton />
-                </Grid>
-                <Grid
-                    item
-                    xs={4}
+        <Grid container className="back-btn-avatar-wrapper">
+            <Grid item xs={4}>
+                <BackButton />
+            </Grid>
+            <Grid item xs={4} justifyContent="center" alignItems="center">
+                <Avatar
                     sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        bgcolor: 'secondary.dark',
+                        width: 48,
+                        height: 48,
                     }}
                 >
-                    <Avatar
-                        sx={{
-                            bgcolor: 'secondary.dark',
-                            width: 48,
-                            height: 48,
-                        }}
-                    >
-                        {icon}
-                    </Avatar>
-                </Grid>
-                <Grid item xs={4} />
+                    {Icon}
+                </Avatar>
             </Grid>
-            <Box id="hero-texts-wrapper" p="1rem">
-                <TypographyTitle text={title} />
-                <Stack alignItems="center" mt="1rem">
-                    <Typography variant="subtitle2">{subtitle}</Typography>
-                </Stack>
-            </Box>
-        </>
+            <Grid item xs={4} />
+        </Grid>
     );
 }
 
