@@ -48,7 +48,7 @@ function StorageProductsTable() {
     console.log('categories:', categories);
     console.log('storages:', storages);
     console.log('products:', products);
-    console.log('products.results:', products.results);
+    console.log('products.results:', products?.results);
 
     // const search = watch('searchString');
 
@@ -131,7 +131,7 @@ function StorageProductsTable() {
                         <StyledTableRow key={product.id}>
                             <StyledTableCell component="th" scope="row">
                                 {/* TODO: varastopuolen tuotesivu, ProductDetails komponenttia hyödyntäen */}
-                                <Link to={`/varasto/tuotteet/${product.id}`}>{product.barcode}</Link>
+                                <Link to={`/varasto/tuotteet/${product.id}/muokkaa`}>{product.barcode}</Link>
                                 <Button variant="outlined" color="primary" sx={{ marginLeft: 2 }}>
                                     Muokkaa
                                 </Button>
