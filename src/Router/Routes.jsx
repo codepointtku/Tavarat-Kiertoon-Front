@@ -45,7 +45,7 @@ import SignupPage from '../Components/Default/Signup/SignupPage';
 import ContactPage from '../Components/Default/ContactPage';
 import Stats from '../Components/Admin/Stats/Stats';
 import BackgroundInfo from '../Components/Default/Backgroundinfo';
-import Bulletins from '../Components/Default/Announcements';
+import Bulletins from '../Components/Default/BulletinsPage';
 import DeliveryView from '../Components/DeliveryView';
 
 import ForgotPassword from '../Components/Default/ResetPassword/ForgotPassword';

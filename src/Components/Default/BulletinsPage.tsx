@@ -7,6 +7,8 @@ import BackButton from '../BackButton';
 import BulletinCard from './BulletinCard';
 import TypographyTitle from '../TypographyTitle';
 
+import type { rootLoader } from '../../Router/loaders';
+
 function Hero() {
     return (
         <>
@@ -46,13 +48,17 @@ function Hero() {
 }
 
 function BulletinCards() {
-    const { bulletins } = useRouteLoaderData('root');
+    const { bulletins } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
 
-    const cards = bulletins.map((item) => (
+    const cards = bulletins.map((item: any) => (
         <BulletinCard key={item.id} title={item.title} date={item.date} content={item.content} />
     ));
 
-    return <Stack sx={{ m: '0 0 1rem 0' }}>{cards}</Stack>;
+    return (
+        <Stack id="bulletin-cards-column-stacker" sx={{ m: '0 0 1rem 0' }}>
+            {cards}
+        </Stack>
+    );
 }
 
 function Bulletins() {

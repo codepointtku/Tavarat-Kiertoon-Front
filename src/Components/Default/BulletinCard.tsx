@@ -1,12 +1,16 @@
-import PropTypes from 'prop-types';
-
 import { Paper, Typography } from '@mui/material';
 
 import TypographyHeading from '../TypographyHeading';
 
-function BulletinCard({ title, date, content }) {
+interface Props {
+    title: string;
+    date: string;
+    content: string;
+}
+
+function BulletinCard({ title, date, content }: Props) {
     return (
-        <Paper sx={{ mt: '1rem', p: '1rem' }}>
+        <Paper elevation={6} sx={{ mb: '2rem', p: '1rem' }}>
             <TypographyHeading text={title} />
             <Typography variant="subtitle1" sx={{ color: 'text.hint' }}>
                 {date}
@@ -16,12 +20,4 @@ function BulletinCard({ title, date, content }) {
     );
 }
 
-BulletinCard.propTypes = {
-    title: PropTypes.string.isRequired,
-    date: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired,
-};
-
 export default BulletinCard;
-
-// work in progress
