@@ -1,4 +1,4 @@
-import { json, redirect, Router } from 'react-router-dom';
+import { redirect } from 'react-router-dom';
 import apiCall from '../Utils/apiCall';
 
 /**
@@ -328,7 +328,7 @@ const resetPasswordAction = async (auth, setAuth, request) => {
  * @param {*} request
  * @param {*} params
  */
-const modifyBikeAction = async (auth, setAuth, request, params) => {
+const modifyBikeAction2 = async (auth, setAuth, request, params) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, `/bikes/stock/${params.id}/`, 'put', formData);
     // return redirect('/pyorat/pyoravarasto/');
@@ -336,6 +336,21 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
         return { type: 'modifyBikeAction', status: true };
     }
     return { type: 'modifyBikeAction', status: false };
+};
+
+const modifyBikeAction = async (auth, setAuth, request, params) => {
+    const data = await request.formData();
+    const submission = {
+        number: '0000000001',
+        bike: data.get('changeBikeModel'),
+        frame_number: data.get('changeFrameNumber'),
+        storage: data.get('changeBikeStorage'),
+    };
+
+    const response = await apiCall(auth, setAuth, `/bikes/stock/${params.id}/`, 'put', submission);
+    console.log('### modifyBikeAction TEST', response);
+
+    return redirect('/pyorat/pyoravarasto');
 };
 
 export {

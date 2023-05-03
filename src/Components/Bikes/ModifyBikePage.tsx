@@ -18,6 +18,8 @@ import { Form, Link, redirect, useActionData, useNavigate, useNavigation, useSub
 import type { bikeInterface, bikeModelInterface, storageInterface } from './Bikes';
 import { useLoaderData } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { type } from '@testing-library/user-event/dist/type';
 
 // interface submitDataInterface {
 //     bike: number;
@@ -82,31 +84,31 @@ export default function ModifyBikePage() {
     };
 
     // Form submitting
-    const navigate = useNavigate();
-    const submit = useSubmit();
-    const submitHandler = async () => {
-        // only id is used from bike and storage
-        const submitData = {
-            ...bikeState,
-            bike: bikeState.bike.id,
-            storage: bikeState.storage.id,
-            frame_number: frameNumberState,
-        };
+    // const navigate = useNavigate();
+    // const submit = useSubmit();
+    // const submitHandler = async () => {
+    // only id is used from bike and storage
+    // const submitData = {
+    //     ...bikeState,
+    //     bike: bikeState.bike.id,
+    //     storage: bikeState.storage.id,
+    //     frame_number: frameNumberState,
+    // };
 
-        // console.log('### BlaaBlaa', submitData);
+    // console.log('### BlaaBlaa', submitData);
 
-        // send
-        await submit(submitData, {
-            method: 'put',
-            action: `/pyorat/pyoravarasto/muokkaa/${bikeState.id}`,
-        });
+    // send
+    // await submit(submitData, {
+    //     method: 'put',
+    //     action: `/pyorat/pyoravarasto/muokkaa/${bikeState.id}`,
+    // });
 
-        // redirect to list page
-        navigate('/pyorat/pyoravarasto');
-        // setTimeout(() => {
-        //     navigate('/pyorat/pyoravarasto');
-        // }, 1);
-    };
+    // redirect to list page
+    // navigate('/pyorat/pyoravarasto');
+    // setTimeout(() => {
+    //     navigate('/pyorat/pyoravarasto');
+    // }, 1);
+    // };
 
     // const actionData = useActionData();
     // useEffect(() => {
@@ -114,6 +116,28 @@ export default function ModifyBikePage() {
     //         navigate('/pyorat/pyoravarasto');
     //     }
     // }, [actionData]);
+
+    // https://react-hook-form.com/api/useform/register/
+    type FormValues = {
+        firstName: string;
+        lastName: string;
+    };
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<FormValues>({
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+        },
+    });
+
+    console.log('errors', errors);
+
+    register('firstName', { required: true });
+    register('lastName', { maxLength: 25 });
 
     // RENDER
     return (
@@ -133,7 +157,13 @@ export default function ModifyBikePage() {
                 </Box>
 
                 {/* Information area */}
-                <Box component={Form} action={`/pyorat/pyoravarasto/muokkaa/${bikeState.id}`} onSubmit={submitHandler}>
+                <Box
+                    component={Form}
+                    // method="put"
+                    // action={`/pyorat/pyoravarasto/muokkaa/${bikeState.id}`}
+                    // onSubmit={submitHandler}
+                    onSubmit={handleSubmit((data) => console.log(data))}
+                >
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box
                             sx={{
@@ -158,6 +188,7 @@ export default function ModifyBikePage() {
                                                 <Select
                                                     labelId="change-bike-model-label"
                                                     id="change-bike-model"
+                                                    name="changeBikeModel"
                                                     value={bikeModelState}
                                                     label="Vaihda pyörämalli"
                                                     onChange={handleBikeModelChange}
@@ -224,6 +255,7 @@ export default function ModifyBikePage() {
                                         <TableCell colSpan={2}>
                                             <TextField
                                                 label="Muokkaa runkonumeroa"
+                                                name="changeFrameNumber"
                                                 value={frameNumberState}
                                                 fullWidth
                                                 onChange={handleFrameNumberChange}
@@ -254,6 +286,7 @@ export default function ModifyBikePage() {
                                                 <Select
                                                     labelId="change-bike-storage-label"
                                                     id="change-bike-storage"
+                                                    name="changeBikeStorage"
                                                     value={storageState}
                                                     label="Vaihda varasto"
                                                     onChange={handleStorageChange}
