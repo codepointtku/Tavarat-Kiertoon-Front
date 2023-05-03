@@ -55,7 +55,7 @@ function BulletinCards() {
     ));
 
     return (
-        <Stack id="bulletin-cards-column-stacker" sx={{ m: '0 0 1rem 0' }}>
+        <Stack id="bulletin-cards-column-stacker" sx={{ m: '1rem 0 1rem 0' }}>
             {cards}
         </Stack>
     );

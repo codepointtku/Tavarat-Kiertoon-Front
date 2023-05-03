@@ -1,4 +1,4 @@
-import { Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 
 import TypographyHeading from '../TypographyHeading';
 
@@ -10,12 +10,16 @@ interface Props {
 
 function BulletinCard({ title, date, content }: Props) {
     return (
-        <Paper elevation={6} sx={{ mb: '2rem', p: '1rem' }}>
+        <Paper id="bulletin-card-paper-backdrop" elevation={6} sx={{ mb: '2rem', p: '2rem' }}>
             <TypographyHeading text={title} />
-            <Typography variant="subtitle1" sx={{ color: 'text.hint' }}>
+            <Typography variant="caption" sx={{ color: 'text.hintContrast', mt: '0.5rem' }}>
                 {date}
             </Typography>
-            <Typography variant="body1">{content}</Typography>
+            <Box id="bulletin-content-text-indent-container" sx={{ m: '1rem 2rem 0 2rem' }}>
+                <Typography id="bulletin-content-text-typography" variant="body1">
+                    {content}
+                </Typography>
+            </Box>
         </Paper>
     );
 }
