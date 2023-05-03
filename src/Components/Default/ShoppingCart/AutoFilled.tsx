@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Grid, TextField } from '@mui/material';
 
 interface Props {
@@ -6,22 +7,36 @@ interface Props {
 }
 
 function AutoFilled({ user, actions }: Props) {
-    console.log(actions);
+    const elementChildren = document.getElementsByName('inputValues');
+    console.log(elementChildren.length);
+    useEffect(() => {
+        // elementChildren.map((child, i) =>
+        //     actions.Update(
+        //         i === 0
+        //             ? `firstName: ${child.value}`
+        //             : i === 1
+        //             ? `lastName: ${child.value}`
+        //             : i === 2
+        //             ? `email: ${child.value}`
+        //             : i === 3 && `phoneNumber: ${child.value}`
+        //     )
+        // );
+    }, []);
     const fullname = user.name.split(' ');
 
     return (
         <Grid container spacing={4}>
             <Grid item>
-                <TextField label="Etunimi" variant="outlined" value={fullname[0]} />
+                <TextField label="Etunimi" name="inputValues" variant="outlined" value={fullname[0]} />
             </Grid>
             <Grid item>
-                <TextField label="Sukunimi" variant="outlined" value={fullname[1]} />
+                <TextField label="Sukunimi" name="inputValues" variant="outlined" value={fullname[1]} />
             </Grid>
             <Grid item>
-                <TextField label="Sähköposti" variant="outlined" value={user.email} />
+                <TextField label="Sähköposti" name="inputValues" variant="outlined" value={user.email} />
             </Grid>
             <Grid item>
-                <TextField label="Puh. numero" variant="outlined" value={user.phone_number} />
+                <TextField label="Puh. numero" name="inputValues" variant="outlined" value={user.phone_number} />
             </Grid>
         </Grid>
     );
