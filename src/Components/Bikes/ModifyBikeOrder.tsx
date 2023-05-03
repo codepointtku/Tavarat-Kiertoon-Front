@@ -6,17 +6,20 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import StyledTableCell from '../StyledTableCell';
+import { Button } from '@mui/material';
+import { useLoaderData } from 'react-router';
 
 export default function ModifyBikeOrder() {
-    // const loaderData = useLoaderData();
+    const { packet, models } = useLoaderData();
 
     // const packet = loaderData.packages;
 
-    // console.log(packet);
+    // console.log(packet, models);
 
     return (
         <TableContainer component={Paper} sx={{ padding: '2rem' }}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                <Button> muokkaa </Button>
                 <TableHead>
                     <TableRow>
                         <StyledTableCell align="right">nimi</StyledTableCell>
@@ -27,19 +30,18 @@ export default function ModifyBikeOrder() {
                         <StyledTableCell align="right">kuvaus</StyledTableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
-                    {/* {packages.map((packet) => ( */}
-                    <TableRow>
-                        <TableCell align="right"> placeholder </TableCell>
+                {/* <TableBody> */}
+                {/* {packages.map((packet) => ( */}
+                {/* <TableRow>
+                        <TableCell align="right"> </TableCell>
                         <TableCell align="right"> place </TableCell>
                         <TableCell align="right">holder</TableCell>
                         <TableCell align="right">holder</TableCell>
                         <TableCell align="right">holder</TableCell>
                         <TableCell align="right">holder</TableCell>
-                    </TableRow>
-
-                    {/* ))} */}
-                </TableBody>
+                    </TableRow> */}
+                {/* ))} */}
+                {/* </TableBody> */}
             </Table>
         </TableContainer>
     );

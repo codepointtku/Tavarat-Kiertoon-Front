@@ -204,10 +204,13 @@ const bikesListLoader = async (auth, setAuth) => {
 /**
  * Get one bikepacket
  */
-// const bikePacketLoader = async (auth, setAuth, params) => {
-//     const { data } = await apiCall(auth, setAuth, `/bikes/asdasdasdasd${params.id}`, 'get');
-//     return data;
-// };
+const bikePacketLoader = async (auth, setAuth, params) => {
+    const [{ data: packet }, { data: models }] = await Promise.all([
+        apiCall(auth, setAuth, `/bikes/packages/${params.id}`, 'get'),
+        apiCall(auth, setAuth, `/bikes/models/`, 'get'),
+    ]);
+    return { packet, models };
+};
 
 // get bulletin subjects
 const bulletinSubjectLoader = async (auth, setAuth) => {
@@ -229,6 +232,7 @@ const shoppingProcessLoader = async (auth, setAuth) => {
 };
 
 export {
+    bikePacketLoader,
     bulletinSubjectLoader,
     rootLoader,
     productListLoader,

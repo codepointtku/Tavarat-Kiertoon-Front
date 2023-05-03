@@ -69,6 +69,7 @@ import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
 
 import {
+    bikePacketLoader,
     addItemLoader,
     orderEditLoader,
     ordersListLoader,
@@ -482,10 +483,13 @@ function Routes() {
                                 {
                                     path: 'paketinmuokkaus',
 
-                                    element: <ModifyBikeOrder />,
+                                    element: <Outlet />,
                                     children: [
                                         {
                                             path: ':id',
+                                            element: <ModifyBikeOrder />,
+                                            loader: async ({ params }) => bikePacketLoader(auth, setAuth, params),
+                                            // action
                                         },
                                     ],
                                 },
