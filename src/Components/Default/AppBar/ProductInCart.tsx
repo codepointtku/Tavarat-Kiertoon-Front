@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useSubmit } from 'react-router-dom';
 import { ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton, Input } from '@mui/material';
@@ -9,7 +8,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
-function ProductInCart({ text, index, count, amountInStorage, setChangeAmount }) {
+interface Props {
+    text: string;
+    index: number & string;
+    count: number;
+    amountInStorage: number;
+    setChangeAmount: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function ProductInCart({ text, index, count, amountInStorage, setChangeAmount }: Props) {
     const [hoveredOver, setHoveredOver] = useState(false);
     const [amount, setAmount] = useState(count);
     const submit = useSubmit();
@@ -32,15 +39,16 @@ function ProductInCart({ text, index, count, amountInStorage, setChangeAmount })
         }
     }
 
-    function handleClick(action) {
+    function handleClick(action: string) {
         if (amount >= 1 && amount <= amountInStorage) {
             action === 'add' ? addAmount() : removeAmount();
         }
     }
 
-    function handleChange(event) {
-        const input = event.target.value;
-        if ((input >= 1 && input <= amountInStorage) || input === '') {
+    function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+        const _input = event.target.value;
+        const input: number = +_input;
+        if ((input >= 1 && input <= amountInStorage) || _input === '') {
             setAmount(Number(input));
             setChangeAmount(true);
         }
@@ -87,12 +95,5 @@ function ProductInCart({ text, index, count, amountInStorage, setChangeAmount })
         </ListItem>
     );
 }
-
-ProductInCart.propTypes = {
-    text: PropTypes.string.isRequired,
-    index: PropTypes.number.isRequired,
-    count: PropTypes.number.isRequired,
-    amountInStorage: PropTypes.number.isRequired,
-};
 
 export default ProductInCart;

@@ -10,7 +10,9 @@ import {
     Typography,
     Tooltip,
     Grid,
+    ButtonPropsSizeOverrides,
 } from '@mui/material';
+import { OverridableStringUnion } from '@material-ui/types';
 import Carousel from 'react-material-ui-carousel';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
@@ -164,7 +166,17 @@ function ProductCard({
                         >
                             <InfoOutlinedIcon fontSize="small" />
                         </Button>
-                        <AddToCartButton size="small" id={id} groupId={groupId} count={count} />
+                        <AddToCartButton
+                            size={
+                                'small' as OverridableStringUnion<
+                                    'small' | 'medium' | 'large',
+                                    ButtonPropsSizeOverrides
+                                >
+                            }
+                            id={id as number & string}
+                            groupId={groupId}
+                            count={count}
+                        />
                     </CardActions>
                 </Box>
             </Card>

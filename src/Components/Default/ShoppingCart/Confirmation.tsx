@@ -5,13 +5,29 @@ import { useForm } from 'react-hook-form';
 
 import Update from './Update';
 import CartButtons from './CartButtons';
+import type { shoppingCartLoader } from '../../../Router/loaders';
+import type { shoppingProcessLoader } from '../../../Router/loaders';
+
+interface CartState {
+    state: {
+        email: string;
+        deliveryAddress: string;
+        deliveryMethod: string;
+        phoneNumber: string;
+        orderInfo: string;
+        firstName: string;
+        lastName: string;
+        zipcode: string;
+        city: string;
+    };
+}
 
 function Confirmation() {
     const { handleSubmit, register } = useForm();
-    const { state } = useStateMachine({ Update });
-    const { products } = useRouteLoaderData('frontPage');
-    const { id } = useRouteLoaderData('shoppingCart');
     const submit = useSubmit();
+    const { state } = useStateMachine({ Update }) as unknown as CartState;
+    const { products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
+    const { id } = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
     // laita order tekstinä vain submittiin.
     const order = 'order';
 
@@ -78,7 +94,7 @@ function Confirmation() {
                     Tilaustiedot
                 </Typography>
                 <List>
-                    {products?.map((item) => (
+                    {products?.map((item: { id: number; count: number; name: string }) => (
                         <ListItem key={item.id} disableGutters disablePadding>
                             <ListItemText primary={`${item.count}x ${item.name}`} />
                         </ListItem>
