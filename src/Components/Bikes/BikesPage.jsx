@@ -53,8 +53,6 @@ export default function BikesPage() {
     const containerRef = useRef(null);
 
     const loaderData = useLoaderData();
-    console.log('### BikesPage', loaderData);
-
     const minDate = parseISO(loaderData.date_info.available_from);
     const maxDate = parseISO(loaderData.date_info.available_to);
     const bikes = [
