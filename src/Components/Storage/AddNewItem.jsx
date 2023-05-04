@@ -1,6 +1,15 @@
 /* eslint-disable react/jsx-props-no-spreading */
 // add new item
-import { useRouteLoaderData, useLoaderData, useSubmit, Form, useNavigate, useActionData } from 'react-router-dom';
+import {
+    useRouteLoaderData,
+    useLoaderData,
+    useSubmit,
+    Form,
+    useNavigate,
+    useActionData,
+    generatePath,
+    useLocation,
+} from 'react-router-dom';
 // import Barcode from 'react-barcode';
 import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import imageCompression from 'browser-image-compression';
@@ -13,6 +22,7 @@ function AddNewItem() {
     console.log('categories:', categories, 'storages:', storages);
     const submit = useSubmit();
     const actionData = useActionData();
+    const location = useLocation();
 
     const navigate = useNavigate();
 
@@ -135,7 +145,7 @@ function AddNewItem() {
                     >
                         viivakoodi
                     </TextField>
-                    {/* <CardActions>
+                    <CardActions>
                         <Button
                             size="large"
                             onClick={() =>
@@ -147,7 +157,7 @@ function AddNewItem() {
                             Koodinlukija
                         </Button>
                         {item.barcode.length > 0 && <Barcode value={item.barcode} format="CODE39" />}
-                    </CardActions> */}
+                    </CardActions>
 
                     <TextField
                         id="outlined-select"
