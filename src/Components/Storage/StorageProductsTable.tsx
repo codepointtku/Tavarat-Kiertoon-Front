@@ -15,7 +15,7 @@ import {
     Button,
     Typography,
 } from '@mui/material';
-import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
+// import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import TablePaginationActions from '../TablePaginationActions';
 import StyledTableCell from '../StyledTableCell';
 import StyledTableRow from '../StyledTableRow';
@@ -45,7 +45,7 @@ function StorageProductsTable() {
     const { categories } = useRouteLoaderData('root') as RouteLoaderData;
     const { storages, products } = useLoaderData() as LoaderData;
     const { register, handleSubmit, watch } = useForm();
-    // todo: fill search field with search param if scanned with qrcodescanner
+    // todo: fill search field with search param if scanned with qrcodescanner or entered with link
 
     console.log('categories:', categories);
     console.log('storages:', storages);
@@ -65,11 +65,12 @@ function StorageProductsTable() {
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
                     <TableRow>
+                        <StyledTableCell>Viivakoodi</StyledTableCell>
                         <StyledTableCell>
                             {/* Viivakoodi */}
                             {/* todo: searchbar peruskomponentti tuotteiden hakua varten */}
                             <Form onSubmit={handleSubmit(handleBarcodeSearch)}>
-                                {/* todo: näytä vain hakuikoni kunnes painetaan, jolloin tekstikenttä laajenee/aktivoituu */}
+                                {/* todo: näytä vain hakuikoni kunnes painetaan, jolloin tekstikenttä laajenee/aktivoituu? */}
                                 <TextField
                                     type="search"
                                     {...register('searchString')}
@@ -86,10 +87,6 @@ function StorageProductsTable() {
                                 >
                                     Hae
                                 </Button>
-                                {/* todo:linkki viivakoodiskanneriin */}
-                                {/* <IconButton fontSize="large" variant="contained" aria-label="barcode search">
-                                    <QrCodeScannerIcon sx={{ color: 'white' }} />
-                                </IconButton> */}
                             </Form>
                         </StyledTableCell>
                         <StyledTableCell align="right">Tuotenimi</StyledTableCell>
@@ -100,32 +97,7 @@ function StorageProductsTable() {
                         {/* <StyledTableCell align="right">Varastopaikka</StyledTableCell> */}
                     </TableRow>
                 </TableHead>
-                {/* <TableBody>
-                    {(rowsPerPage > 0
-                        ? products.results.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : products.results
-                    ).map((row) => (
-                        <StyledTableRow key={row.id}>
-                            <StyledTableCell component="th" scope="row">
-                                <Link to={`/varasto/tilaus/${row.id}?page=0&rows=5`}>{row.id}</Link>
-                            </StyledTableCell>
-                            <StyledTableCell align="right">{row.status}</StyledTableCell>
-                            <StyledTableCell align="right">{row.delivery_address}</StyledTableCell>
-                            <StyledTableCell align="right">{row.user}</StyledTableCell>
-                            <StyledTableCell align="right">{row.contact}</StyledTableCell>
-                            <StyledTableCell align="right">{row.delivery_date}</StyledTableCell>
-                        </StyledTableRow>
-                    ))}
-
-                    {emptyRows > 0 && (
-                        <StyledTableRow style={{ height: 53 * emptyRows }}>
-                            <StyledTableCell colSpan={6} />
-                        </StyledTableRow>
-                    )}
-                </TableBody> */}
-
                 {/* todo: näytä nollasaldoiset tuotteet -ruksi */}
-                {/* todo: sama groupid- stackkaa tuotteet */}
                 {/* todo: näytä tilauksille varatut tuotteet ja kplmäärä? */}
                 {products?.results.length === 0 ? (
                     // todo: tyylittely
@@ -139,7 +111,9 @@ function StorageProductsTable() {
                                 <StyledTableCell component="th" scope="row">
                                     {/* TODO: varastopuolen tuotesivu, ProductDetails komponenttia hyödyntäen */}
                                     <Link to={`/varasto/tuotteet/${product.id}/muokkaa`}>{product.barcode}</Link>
-                                    <Button variant="outlined" color="primary" sx={{ marginLeft: 2 }}>
+                                </StyledTableCell>
+                                <StyledTableCell>
+                                    <Button variant="outlined" color="primary" sx={{ paddingRight: 6, paddingLeft: 6 }}>
                                         Muokkaa
                                     </Button>
                                 </StyledTableCell>

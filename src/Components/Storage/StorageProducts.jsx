@@ -21,6 +21,9 @@ function StorageProducts() {
     const { categories } = useRouteLoaderData('root');
     const { storages, products } = useLoaderData();
     const [qrSearchOpen, setQrSearchOpen] = useState(false);
+    // todo: lisää tulosten sivutus
+    // const params = searchParams.getAll('search', 'rows', 'page', 'all');
+    // console.log('params:', params);
 
     console.log('categories:', categories);
     console.log('storages:', storages);
@@ -97,7 +100,9 @@ function StorageProducts() {
             </Grid>
 
             <StorageProductsTable
-            // page={usedParams.page} rowsPerPage={usedParams.rows} setUsedParams={setUsedParams}
+            // page={.page}
+            // rowsPerPage={.rows}
+            // setUsedParams={setSearchParams}
             />
         </>
     );
