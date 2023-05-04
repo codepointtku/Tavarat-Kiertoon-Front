@@ -84,7 +84,6 @@ const productListLoader = async (auth, setAuth, request) => {
  * Get one product
  */
 const productDetailsLoader = async (auth, setAuth, params) => {
-    console.log('params @ productDetailsLoader:', params);
     const { data } = await apiCall(auth, setAuth, `/products/${params.id}`, 'get');
     return data;
 };

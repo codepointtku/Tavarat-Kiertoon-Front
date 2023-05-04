@@ -17,7 +17,7 @@ import {
 import AuthContext from '../../Context/AuthContext';
 import BackButton from '../BackButton';
 
-function ProductDetails() {
+function EditProduct() {
     const data = useLoaderData();
     const { id: productId } = useParams();
 
@@ -107,4 +107,4 @@ function ProductDetails() {
     );
 }
 
-export default ProductDetails;
+export default EditProduct;

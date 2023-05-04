@@ -24,6 +24,7 @@ import OrderEdit from '../Components/Storage/OrderEdit';
 import QrScanner from '../Components/Storage/QrScanner';
 import StorageProducts from '../Components/Storage/StorageProducts';
 import AddNewItem from '../Components/Storage/AddNewItem';
+import EditProduct from '../Components/Storage/EditProduct';
 
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
@@ -32,7 +33,6 @@ import NewAnnouncement from '../Components/Admin/NewAnnouncement';
 import StoragesList from '../Components/Admin/StoragesList';
 import StorageEdit from '../Components/Admin/StorageEdit';
 import AddStorage from '../Components/Admin/AddStorage';
-import EditProduct from '../Components/Admin/EditProduct';
 
 import PDFView from '../Components/Storage/PDFView';
 
@@ -363,7 +363,7 @@ function Routes() {
                         {
                             path: 'tuotteet/:id/muokkaa',
                             element: <EditProduct />,
-                            loader: async ({ request, params }) => productDetailsLoader(auth, setAuth, request, params),
+                            loader: async ({ params }) => productDetailsLoader(auth, setAuth, params),
                             // action: async ({ request, params }) => editProductAction(auth, setAuth, request, params),
                         },
                         {
