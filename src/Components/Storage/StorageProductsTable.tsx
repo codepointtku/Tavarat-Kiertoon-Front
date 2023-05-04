@@ -13,6 +13,7 @@ import {
     TextField,
     IconButton,
     Button,
+    Typography,
 } from '@mui/material';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import TablePaginationActions from '../TablePaginationActions';
@@ -40,10 +41,11 @@ interface LoaderData {
 }
 
 function StorageProductsTable() {
+    const [searchParams, setSearchParams] = useSearchParams();
     const { categories } = useRouteLoaderData('root') as RouteLoaderData;
     const { storages, products } = useLoaderData() as LoaderData;
     const { register, handleSubmit, watch } = useForm();
-    const [searchParams, setSearchParams] = useSearchParams();
+    // todo: fill search field with search param if scanned with qrcodescanner
 
     console.log('categories:', categories);
     console.log('storages:', storages);
@@ -54,7 +56,6 @@ function StorageProductsTable() {
 
     const handleBarcodeSearch = (formData) => {
         console.log('handleBarcodeSearch', formData);
-        // setUsedParams(search);
         setSearchParams({ search: formData.searchString });
     };
 
@@ -126,29 +127,36 @@ function StorageProductsTable() {
                 {/* todo: näytä nollasaldoiset tuotteet -ruksi */}
                 {/* todo: sama groupid- stackkaa tuotteet */}
                 {/* todo: näytä tilauksille varatut tuotteet ja kplmäärä? */}
-                <TableBody>
-                    {products?.results?.map((product) => (
-                        <StyledTableRow key={product.id}>
-                            <StyledTableCell component="th" scope="row">
-                                {/* TODO: varastopuolen tuotesivu, ProductDetails komponenttia hyödyntäen */}
-                                <Link to={`/varasto/tuotteet/${product.id}/muokkaa`}>{product.barcode}</Link>
-                                <Button variant="outlined" color="primary" sx={{ marginLeft: 2 }}>
-                                    Muokkaa
-                                </Button>
-                            </StyledTableCell>
-                            <StyledTableCell align="right">
-                                {/* todo: link to working product page with storage related info and edit functionality */}
-                                <Link to={`/varasto/tuotteet/${product.id}`}>{product.name}</Link>
-                            </StyledTableCell>
-                            <StyledTableCell align="right">{product.amount}</StyledTableCell>
-                            <StyledTableCell align="right">{product.storage_name}</StyledTableCell>
-                            <StyledTableCell align="right">{categories[product.category].name}</StyledTableCell>
-                            <StyledTableCell align="right">
-                                {new Date(product.modified_date).toLocaleDateString('fi-FI')}
-                            </StyledTableCell>
-                        </StyledTableRow>
-                    ))}
-                </TableBody>
+                {products?.results.length === 0 ? (
+                    // todo: tyylittely
+                    <Typography padding={3} fontSize={24}>
+                        Ei hakutuloksia...
+                    </Typography>
+                ) : (
+                    <TableBody>
+                        {products?.results?.map((product) => (
+                            <StyledTableRow key={product.id}>
+                                <StyledTableCell component="th" scope="row">
+                                    {/* TODO: varastopuolen tuotesivu, ProductDetails komponenttia hyödyntäen */}
+                                    <Link to={`/varasto/tuotteet/${product.id}/muokkaa`}>{product.barcode}</Link>
+                                    <Button variant="outlined" color="primary" sx={{ marginLeft: 2 }}>
+                                        Muokkaa
+                                    </Button>
+                                </StyledTableCell>
+                                <StyledTableCell align="right">
+                                    {/* todo: link to working product page with storage related info and edit functionality */}
+                                    <Link to={`/varasto/tuotteet/${product.id}`}>{product.name}</Link>
+                                </StyledTableCell>
+                                <StyledTableCell align="right">{product.amount}</StyledTableCell>
+                                <StyledTableCell align="right">{product.storage_name}</StyledTableCell>
+                                <StyledTableCell align="right">{categories[product.category].name}</StyledTableCell>
+                                <StyledTableCell align="right">
+                                    {new Date(product.modified_date).toLocaleDateString('fi-FI')}
+                                </StyledTableCell>
+                            </StyledTableRow>
+                        ))}
+                    </TableBody>
+                )}
                 {/* <TableFooter>
                     <TableRow>
                         <TablePagination
