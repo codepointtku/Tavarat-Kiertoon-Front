@@ -1,48 +1,10 @@
-import { Typography, Box, Link, Grid, Avatar } from '@mui/material';
+import { Typography, Box, Link } from '@mui/material';
 
 import AgricultureIcon from '@mui/icons-material/Agriculture';
 
 import Container from '@mui/material/Container';
-import BackButton from '../BackButton';
-import TypographyTitle from '../TypographyTitle';
-
-function Hero() {
-    return (
-        <>
-            <Grid container className="back-btn-avatar-wrapper">
-                <Grid item xs={4}>
-                    <BackButton />
-                </Grid>
-                <Grid
-                    item
-                    xs={4}
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Avatar
-                        sx={{
-                            bgcolor: 'secondary.dark',
-                            width: 48,
-                            height: 48,
-                        }}
-                    >
-                        <AgricultureIcon />
-                    </Avatar>
-                </Grid>
-                <Grid item xs={4} />
-            </Grid>
-            <Box id="hero-texts-wrapper" p="1rem">
-                <TypographyTitle text="Tavarat Kiertoon tausta" />
-                <Typography sx={{ mt: '1rem' }} textAlign="center">
-                    Ohessa lyhyt historiikki mistä, miksi ja miten ja mikä juttu.
-                </Typography>
-            </Box>
-        </>
-    );
-}
+import HeroHeader from '../HeroHeader';
+import HeroText from '../HeroText';
 
 function ContentText() {
     return (
@@ -110,7 +72,11 @@ function ContentText() {
 function BackgroundInfo() {
     return (
         <Container maxWidth="lg">
-            <Hero />
+            <HeroHeader Icon={<AgricultureIcon />} />
+            <HeroText
+                title="Tavarat Kiertoon tausta"
+                text="Ohessa lyhyt historiikki mistä, miksi ja miten ja mikä juttu."
+            />
             <ContentText />
         </Container>
     );
