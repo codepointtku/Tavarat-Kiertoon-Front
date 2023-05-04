@@ -26,6 +26,7 @@ import QrScanner from '../Components/Storage/QrScanner';
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
 import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
+import Stats from '../Components/Admin/Stats/Stats';
 
 import StoragesList from '../Components/Admin/StoragesList';
 import StorageEdit from '../Components/Admin/StorageEdit';
@@ -42,11 +43,11 @@ import Confirmation from '../Components/Default/ShoppingCart/Confirmation';
 
 import SignupLandingPage from '../Components/Default/Signup/SignupLandingPage';
 import SignupPage from '../Components/Default/Signup/SignupPage';
+
 import ContactPage from '../Components/Default/ContactPage';
-import Stats from '../Components/Admin/Stats/Stats';
-import BackgroundInfo from '../Components/Default/Backgroundinfo';
 import Bulletins from '../Components/Default/BulletinsPage';
 import DeliveryView from '../Components/DeliveryView';
+import BackgroundInfo from '../Components/Default/BackgroundInfo';
 
 import ForgotPassword from '../Components/Default/ResetPassword/ForgotPassword';
 import ResetPassword from '../Components/Default/ResetPassword/ResetPassword';

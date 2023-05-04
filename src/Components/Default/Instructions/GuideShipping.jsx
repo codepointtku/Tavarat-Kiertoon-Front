@@ -24,7 +24,7 @@ function GuideShipping() {
             <HeroText
                 title="Noutokuljetuksen ohjeet"
                 subtitle="Voit tilata kierrätyskelpoiselle tavarallesi noutokuljetuksen."
-                secondaryText="Huomioi, jos tavara on huonokuntoista, perimme siitä jätekäsittelymaksun."
+                text="Huomioi, jos tavara on huonokuntoista, perimme siitä jätekäsittelymaksun."
             />
             <Shipping />
         </Container>
