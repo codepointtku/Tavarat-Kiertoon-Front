@@ -25,7 +25,7 @@ test.describe('toimitus', () => {
 test.describe('taustatietoa', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/taustatietoa');
-        await expect(page.getByText('Etsimääsi sijaintia /backgroundinfo')).not.toBeVisible();
+        await expect(page.getByText('Etsimääsi sijaintia /taustatietoa')).not.toBeVisible();
     });
 });
 
