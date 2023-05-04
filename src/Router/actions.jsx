@@ -328,28 +328,18 @@ const resetPasswordAction = async (auth, setAuth, request) => {
  * @param {*} request
  * @param {*} params
  */
-const modifyBikeAction2 = async (auth, setAuth, request, params) => {
-    const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, `/bikes/stock/${params.id}/`, 'put', formData);
-    // return redirect('/pyorat/pyoravarasto/');
-    if (response.status === 200) {
-        return { type: 'modifyBikeAction', status: true };
-    }
-    return { type: 'modifyBikeAction', status: false };
-};
-
 const modifyBikeAction = async (auth, setAuth, request, params) => {
+    // collect data that needs to be sent to backend
     const data = await request.formData();
     const submission = {
-        number: '0000000001',
         bike: data.get('changeBikeModel'),
         frame_number: data.get('changeFrameNumber'),
+        number: data.get('changeBikeNumber'),
         storage: data.get('changeBikeStorage'),
     };
 
-    const response = await apiCall(auth, setAuth, `/bikes/stock/${params.id}/`, 'put', submission);
-    console.log('### modifyBikeAction TEST', response);
-
+    // send data and redirect back to bike list
+    await apiCall(auth, setAuth, `/bikes/stock/${params.id}/`, 'put', submission);
     return redirect('/pyorat/pyoravarasto');
 };
 

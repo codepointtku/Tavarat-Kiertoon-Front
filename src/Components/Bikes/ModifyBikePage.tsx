@@ -14,23 +14,11 @@ import {
     TextField,
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
-import { Form, Link, redirect, useActionData, useNavigate, useNavigation, useSubmit } from 'react-router-dom';
+import { Form, Link } from 'react-router-dom';
 import type { bikeInterface, bikeModelInterface, storageInterface } from './Bikes';
 import { useLoaderData } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { type } from '@testing-library/user-event/dist/type';
+import { useState } from 'react';
 
-// interface submitDataInterface {
-//     bike: number;
-//     created_at: string;
-//     frame_number: string;
-//     id: number;
-//     number: string;
-//     package_only: boolean;
-//     state: string; // "AVAILABLE" | "MAINTENANCE" | "RENTED" | "RETIRED"
-//     storage: number;
-// }
 
 /**
  * ModifyBikePage
@@ -46,11 +34,12 @@ export default function ModifyBikePage() {
         storagesData: storageInterface[];
     };
 
-    // states
-    const [storageState, setStorageState] = useState('');
-    const [bikeModelState, setBikeModelState] = useState('');
+    // states needed for the form data
+    const [storageState, setStorageState] = useState(bikeData.storage.id.toString());
+    const [bikeModelState, setBikeModelState] = useState(bikeData.bike.id.toString());
     const [bikeState, setBikeState] = useState(bikeData);
     const [frameNumberState, setFrameNumberState] = useState(bikeData.frame_number);
+    const [bikeNumberState, setBikeNumberState] = useState(bikeData.number);
 
     // storage change handler: used for selecting the correct storage
     const handleStorageChange = (event: SelectChangeEvent) => {
@@ -61,8 +50,8 @@ export default function ModifyBikePage() {
                 storage: storage,
             };
             setBikeState(newBike);
+            setStorageState(newBike.storage.id.toString());
         }
-        setStorageState(event.target.value as string);
     };
 
     // bike model change handler: used for changing the model of the bike
@@ -74,8 +63,8 @@ export default function ModifyBikePage() {
                 bike: bikeModel,
             };
             setBikeState(newBike);
+            setBikeModelState(newBike.bike.id.toString());
         }
-        setBikeModelState(event.target.value as string);
     };
 
     // handler for frame number text field change
@@ -83,61 +72,11 @@ export default function ModifyBikePage() {
         setFrameNumberState(event.target.value as string);
     };
 
-    // Form submitting
-    // const navigate = useNavigate();
-    // const submit = useSubmit();
-    // const submitHandler = async () => {
-    // only id is used from bike and storage
-    // const submitData = {
-    //     ...bikeState,
-    //     bike: bikeState.bike.id,
-    //     storage: bikeState.storage.id,
-    //     frame_number: frameNumberState,
-    // };
-
-    // console.log('### BlaaBlaa', submitData);
-
-    // send
-    // await submit(submitData, {
-    //     method: 'put',
-    //     action: `/pyorat/pyoravarasto/muokkaa/${bikeState.id}`,
-    // });
-
-    // redirect to list page
-    // navigate('/pyorat/pyoravarasto');
-    // setTimeout(() => {
-    //     navigate('/pyorat/pyoravarasto');
-    // }, 1);
-    // };
-
-    // const actionData = useActionData();
-    // useEffect(() => {
-    //     if (actionData) {
-    //         navigate('/pyorat/pyoravarasto');
-    //     }
-    // }, [actionData]);
-
-    // https://react-hook-form.com/api/useform/register/
-    type FormValues = {
-        firstName: string;
-        lastName: string;
+    // handler for bike number text field change
+    // Note! Field is not rendered when modifying the bike but the value is still needed
+    const handleBikeNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setBikeNumberState(event.target.value as string);
     };
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<FormValues>({
-        defaultValues: {
-            firstName: '',
-            lastName: '',
-        },
-    });
-
-    console.log('errors', errors);
-
-    register('firstName', { required: true });
-    register('lastName', { maxLength: 25 });
 
     // RENDER
     return (
@@ -156,13 +95,13 @@ export default function ModifyBikePage() {
                     </h3>
                 </Box>
 
-                {/* Information area */}
+                {/*
+                  * Form area
+                  */}
                 <Box
                     component={Form}
-                    // method="put"
-                    // action={`/pyorat/pyoravarasto/muokkaa/${bikeState.id}`}
-                    // onSubmit={submitHandler}
-                    onSubmit={handleSubmit((data) => console.log(data))}
+                    method="put"
+                    action={`/pyorat/pyoravarasto/muokkaa/${bikeState.id}`}
                 >
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box
@@ -262,6 +201,24 @@ export default function ModifyBikePage() {
                                             />
                                         </TableCell>
                                     </TableRow>
+                                    {/*
+                                      * When editing bike this row is not visible
+                                      * Unfortenately field can not be disabled cause the value is still used in form
+                                      * When adding new bike this field needs to be shown
+                                      */}
+                                    <TableRow style={{ display: "none" }}>
+                                        <TableCell sx={{ fontWeight: 'bold' }}>Numero:</TableCell>
+                                        <TableCell colSpan={2}>
+                                            <TextField
+                                                label="Muokkaa Numeroa"
+                                                name="changeBikeNumber"
+                                                value={bikeNumberState}
+                                                fullWidth
+                                                onChange={handleBikeNumberChange}
+                                                // disabled
+                                            />
+                                        </TableCell>
+                                    </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varattu Pakettiin:</TableCell>
                                         <TableCell sx={{ border: 0 }}>
@@ -323,9 +280,7 @@ export default function ModifyBikePage() {
                         <Button to={`/pyorat/pyoravarasto`} component={Link} sx={{ padding: '20px' }}>
                             Palaa pyörälistaan tallentamatta
                         </Button>
-                        {/* <Button type="submit" sx={{ padding: '20px' }} onClick={() => redirect('/pyorat/pyoravarasto')}> */}
                         <Button type="submit" sx={{ padding: '20px' }}>
-                            {/* <Button type="submit" sx={{ padding: '20px' }}> */}
                             Tallenna muutokset ja palaa listaan
                         </Button>
                     </Box>
