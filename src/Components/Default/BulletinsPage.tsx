@@ -1,51 +1,13 @@
-import { Avatar, Box, Container, Grid, Stack, Typography } from '@mui/material';
+import { Container, Stack } from '@mui/material';
 import { useRouteLoaderData } from 'react-router-dom';
 
 import FeedIcon from '@mui/icons-material/Feed';
 
-import BackButton from '../BackButton';
 import BulletinCard from './BulletinCard';
-import TypographyTitle from '../TypographyTitle';
+import HeroHeader from '../HeroHeader';
+import HeroText from '../HeroText';
 
 import type { rootLoader } from '../../Router/loaders';
-
-function Hero() {
-    return (
-        <>
-            <Grid container className="back-btn-avatar-wrapper">
-                <Grid item xs={4}>
-                    <BackButton />
-                </Grid>
-                <Grid
-                    item
-                    xs={4}
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Avatar
-                        sx={{
-                            bgcolor: 'secondary.dark',
-                            width: 48,
-                            height: 48,
-                        }}
-                    >
-                        <FeedIcon />
-                    </Avatar>
-                </Grid>
-                <Grid item xs={4} />
-            </Grid>
-            <Box id="hero-texts-wrapper" p="1rem">
-                <TypographyTitle text="Tiedotteet" />
-                <Typography sx={{ mt: '1rem' }} textAlign="center">
-                    Lue täältä uusimmat Tavarat Kiertoon tiedotteet ja uutiset
-                </Typography>
-            </Box>
-        </>
-    );
-}
 
 function BulletinCards() {
     const { bulletins } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
@@ -64,7 +26,8 @@ function BulletinCards() {
 function Bulletins() {
     return (
         <Container maxWidth="lg">
-            <Hero />
+            <HeroHeader Icon={<FeedIcon />} />
+            <HeroText title="Tiedotteet" text="Lue täältä uusimmat Tavarat Kiertoon tiedotteet ja uutiset" />
             <BulletinCards />
         </Container>
     );
