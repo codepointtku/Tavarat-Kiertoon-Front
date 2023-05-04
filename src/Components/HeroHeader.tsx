@@ -17,7 +17,7 @@ interface Props {
 
 function HeroHeader({ Icon }: Props) {
     return (
-        <Grid container className="back-btn-avatar-wrapper">
+        <Grid container className="back-btn-avatar-wrapper-hero-header">
             <Grid item xs={4}>
                 <BackButton />
             </Grid>
