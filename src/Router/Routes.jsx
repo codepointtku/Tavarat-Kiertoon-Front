@@ -23,7 +23,6 @@ import OrderView from '../Components/Storage/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
 import QrScanner from '../Components/Storage/QrScanner';
 
-import AdminPanel from '../Components/Admin/Panel/AdminPanel';
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
 import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
@@ -107,9 +106,8 @@ import {
     resetPasswordAction,
     modifyBikeAction,
 } from './actions';
-import ComponentContainer from '../Components/Admin/Panel/ComponentContainer';
+
 import Overview from '../Components/Admin/Panel/Overview/Overview';
-import Summary from '../Components/Admin/Panel/Overview/Summary';
 import PageTest from '../Components/Admin/Panel/PageTest';
 
 createStore({});
@@ -408,7 +406,7 @@ function Routes() {
                         },
                         {
                             path: 'tiedotteet',
-                            element: <Announcements />,
+                            element: <Bulletins />,
                         },
 
                         {
