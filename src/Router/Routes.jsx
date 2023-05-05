@@ -47,7 +47,7 @@ import SignupPage from '../Components/Default/Signup/SignupPage';
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
 import DeliveryView from '../Components/DeliveryView';
-import BackgroundInfo from '../Components/Default/BackgroundInfo';
+import BgInfo from '../Components/Default/BgInfo';
 
 import ForgotPassword from '../Components/Default/ResetPassword/ForgotPassword';
 import ResetPassword from '../Components/Default/ResetPassword/ResetPassword';
@@ -200,7 +200,7 @@ function Routes() {
                         },
                         {
                             path: 'taustatietoa',
-                            element: <BackgroundInfo />,
+                            element: <BgInfo />,
                         },
                         {
                             path: 'tilastot',

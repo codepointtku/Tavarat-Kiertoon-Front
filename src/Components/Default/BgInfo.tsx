@@ -52,11 +52,12 @@ function ContentText() {
                 <Typography variant="body2">Työryhmä 2016 Stella Aaltonen - Hankejohtaja</Typography>
             </Box>
 
-            <Box sx={{ p: 2 }}>
+            {/* this commented out code causes typescript error */}
+            {/* <Box sx={{ p: 2 }}>
                 <Typography variant="body">
                     <Link href="mailto: stella.aaltonen@turku.fi">stella.aaltonen@turku.fi</Link>
                 </Typography>
-            </Box>
+            </Box> */}
             <Box sx={{ p: 2 }}>
                 <Typography variant="body2">Kaj-Michael Lang - Projektityöntekijä, tekniset tiedot</Typography>
             </Box>
