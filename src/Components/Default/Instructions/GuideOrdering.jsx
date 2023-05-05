@@ -9,6 +9,7 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 import HeroHeader from '../../HeroHeader';
+import HeroText from '../../HeroText';
 
 function Ordering() {
     return (
@@ -81,36 +82,6 @@ function Shipping() {
     );
 }
 
-function HeroText() {
-    return (
-        <Box
-            sx={{
-                mb: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            <Typography variant="h4" color="primary.main" mb={2}>
-                Tilaaminen & Kuljetus
-            </Typography>
-
-            <Typography variant="subtitle2">
-                Alla on ohjeet tilaamiseen, sekä tietoa kuljetuksesta. Jos etsimäsi tietoa ei löydy tästä tai{' '}
-                <MuiLink component={Link} to="/ohjeet">
-                    Ohje
-                </MuiLink>
-                -sivulta, voit olla meihin yhteydessä{' '}
-                <MuiLink component={Link} to="/otayhteytta">
-                    täältä
-                </MuiLink>
-                .
-            </Typography>
-        </Box>
-    );
-}
-
 function TabPage(props) {
     const { children, value, name, ...other } = props;
 
@@ -160,11 +131,28 @@ function TitleTabs() {
     );
 }
 
+function CustomHeroText() {
+    return (
+        <Typography variant="subtitle2" textAlign="center" mb="1rem">
+            Jos etsimäsi tietoa ei löydy tästä tai{' '}
+            <MuiLink component={Link} to="/ohjeet">
+                Ohje
+            </MuiLink>
+            -sivulta, voit olla meihin yhteydessä{' '}
+            <MuiLink component={Link} to="/otayhteytta">
+                täältä
+            </MuiLink>
+            .
+        </Typography>
+    );
+}
+
 function GuideOrdering() {
     return (
         <Container maxWidth="lg">
             <HeroHeader Icon={<ShoppingCartCheckoutIcon />} />
-            <HeroText />
+            <HeroText title="Tilaaminen & Kuljetus" subtitle="Alla on ohjeet tilaamiseen, sekä tietoa kuljetuksesta." />
+            <CustomHeroText />
             <TitleTabs />
         </Container>
     );
