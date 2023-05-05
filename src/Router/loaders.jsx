@@ -235,12 +235,6 @@ const bikeLoader = async (auth, setAuth, params) => {
     return { bikeData, bikeModelsData, storagesData };
 };
 
-// get bulletin subjects
-const bulletinSubjectLoader = async (auth, setAuth) => {
-    const { data } = await apiCall(auth, setAuth, '/bulletin_subjects', 'get');
-    return data;
-};
-
 /**
  * returns null load
  */
@@ -255,7 +249,6 @@ const shoppingProcessLoader = async (auth, setAuth) => {
 };
 
 export {
-    bulletinSubjectLoader,
     rootLoader,
     productListLoader,
     productDetailsLoader,

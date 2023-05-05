@@ -1,22 +1,22 @@
 import { Typography, Box, Link } from '@mui/material';
-import Container from '@mui/material/Container';
 
-function BackgroundInfo() {
+import AgricultureIcon from '@mui/icons-material/Agriculture';
+
+import Container from '@mui/material/Container';
+import HeroHeader from '../HeroHeader';
+import HeroText from '../HeroText';
+
+function ContentText() {
     return (
         <Container>
             <Box sx={{ p: 2 }}>
-                <Typography variant="h4" aling="center" color="primary.main">
-                    Tausta
-                </Typography>
-            </Box>
-            <Box sx={{ p: 2 }}>
                 <Typography variant="body2">
-                    Tavarat kiertoon – kierrätysjärjestelmän taustalla on Turun kaupungin kestävän kehityksen
+                    Tavarat Kiertoon -kierrätysjärjestelmän taustalla on Turun kaupungin kestävän kehityksen
                     budjetoinnissa tehty työ materiaalikierron edistämiseksi eri toimialojen välillä, Sivistystoimialan
                     varastojen inventointitarve sekä Turun resurssiviisaustyö yhdessä Sitran kanssa. Keskeisinä
                     tavoitteina on edesauttaa kaupungin sisäistä resurssiviisautta, lisätä näkyvyyttä, parantaa
                     päätöksentekoa ja vähentää ulkoisia ostoja. Kierrätysjärjestelmä toteutetaan avoimella
-                    lähdekoodilla, jolloin sen laaja‐alainen hyödyntäminen on mahdollista eri tahoille.
+                    lähdekoodilla, jolloin sen laaja-alainen hyödyntäminen on mahdollista eri tahoille.
                 </Typography>
             </Box>
             <Box sx={{ p: 2 }}>
@@ -31,9 +31,9 @@ function BackgroundInfo() {
             </Box>
             <Box sx={{ p: 2 }}>
                 <Typography variant="body2">
-                    Pilotin seuraavassa vaiheessa, 1.6.2016 alkaen, Tavarat kiertoon – kierrätysjärjestelmään
-                    kehitettiin käyttäjäystävällinen mobiilisovellus, jonka avulla kenen tahansa on helppo lisätä
-                    yksikkönsä ylimääräinen irtaimisto järjestelmään. Näin saadaan sujuvasti kerättyä tieto kaupungin
+                    Pilotin seuraavassa vaiheessa, 1.6.2016 alkaen, Tavarat kiertoon-kierrätysjärjestelmään kehitettiin
+                    käyttäjäystävällinen mobiilisovellus, jonka avulla kenen tahansa on helppo lisätä yksikkönsä
+                    ylimääräinen irtaimisto järjestelmään. Näin saadaan sujuvasti kerättyä tieto kaupungin
                     ylimääräisistä huonekaluista, laitteista, kirjoista ja lukuisista muista käyttökelpoisista esineistä
                     kaikkien nähtäville. Jatkossa tavoitteena on, että Turun kaupungin yksiköt tuovat itse ylimääräiset
                     huonekalut järjestelmään, eikä niitä tarvitse välttämättä siirtää keskitettyyn varastoon.
@@ -52,11 +52,12 @@ function BackgroundInfo() {
                 <Typography variant="body2">Työryhmä 2016 Stella Aaltonen - Hankejohtaja</Typography>
             </Box>
 
-            <Box sx={{ p: 2 }}>
+            {/* this commented out code causes typescript error */}
+            {/* <Box sx={{ p: 2 }}>
                 <Typography variant="body">
                     <Link href="mailto: stella.aaltonen@turku.fi">stella.aaltonen@turku.fi</Link>
                 </Typography>
-            </Box>
+            </Box> */}
             <Box sx={{ p: 2 }}>
                 <Typography variant="body2">Kaj-Michael Lang - Projektityöntekijä, tekniset tiedot</Typography>
             </Box>
@@ -65,6 +66,19 @@ function BackgroundInfo() {
                     <Link href="mailto: kaj-michael.lang@turku.fi">kaj-michael.lang@turku.fi</Link>
                 </Typography>
             </Box>
+        </Container>
+    );
+}
+
+function BackgroundInfo() {
+    return (
+        <Container maxWidth="lg">
+            <HeroHeader Icon={<AgricultureIcon />} />
+            <HeroText
+                title="Tavarat Kiertoon tausta"
+                text="Ohessa lyhyt historiikki mistä, miksi ja miten ja mikä juttu."
+            />
+            <ContentText />
         </Container>
     );
 }
