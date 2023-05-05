@@ -22,7 +22,7 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
     const [amountN, setAmountN] = useState(1);
     const [addedToCart, setAddedToCart] = useState(false);
     const [searchParams] = useSearchParams();
-    const { handleSubmit } = useForm();
+    const { handleSubmit, register } = useForm();
 
     function addAmount() {
         if (amountN === count) {
@@ -72,52 +72,54 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
             {cart?.products?.some((product: { group_id: string }) => product['group_id'] === groupId) ? (
-                <Box
-                    sx={{
-                        backgroundColor: 'primary.main',
-                        borderRadius: 1,
-                        p: 0.1,
-                        height: 30,
-                        boxShadow: '0rem 0.05rem 0.2rem 0rem grey',
-                    }}
-                >
-                    <IconButton
-                        size="small"
-                        sx={{ color: 'background.default', padding: 0, mr: 1, ml: 0.5 }}
-                        onClick={() => handleOnClick('remove')}
-                        disabled={amountN === 1}
-                    >
-                        <RemoveIcon />
-                    </IconButton>
-                    <Input
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Box
                         sx={{
-                            mt: 1 / 4,
-                            border: 1,
-                            borderColor: 'white',
-                            backgroundColor: 'white',
-                            color: 'primary.main',
+                            backgroundColor: 'primary.main',
                             borderRadius: 1,
+                            p: 0.1,
+                            height: 30,
+                            maxWidth: 111,
+                            boxShadow: '0rem 0.05rem 0.2rem 0rem grey',
                         }}
-                        inputProps={{
-                            style: {
-                                width: 30,
-                                padding: 0,
-                                textAlign: 'center',
-                            },
-                        }}
-                        value={amountN}
-                        onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
-                        disableUnderline
-                    />
-                    <IconButton
-                        size="small"
-                        sx={{ color: 'background.default', padding: 0, ml: 1, mr: 0.5 }}
-                        onClick={() => handleOnClick('add')}
-                        disabled={amountN === count}
                     >
-                        <AddIcon />
-                    </IconButton>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <IconButton
+                            size="small"
+                            sx={{ color: 'background.default', padding: 0, mr: 1, ml: 0.5 }}
+                            onClick={() => handleOnClick('remove')}
+                            disabled={amountN === 1}
+                        >
+                            <RemoveIcon />
+                        </IconButton>
+                        <Input
+                            sx={{
+                                mt: 1 / 4,
+                                border: 1,
+                                borderColor: 'white',
+                                backgroundColor: 'white',
+                                color: 'primary.main',
+                                borderRadius: 1,
+                            }}
+                            inputProps={{
+                                style: {
+                                    width: 30,
+                                    padding: 0,
+                                    textAlign: 'center',
+                                },
+                            }}
+                            {...register('amount')}
+                            value={amountN}
+                            onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
+                            disableUnderline
+                        />
+                        <IconButton
+                            size="small"
+                            sx={{ color: 'background.default', padding: 0, ml: 1, mr: 0.5 }}
+                            onClick={() => handleOnClick('add')}
+                            disabled={amountN === count}
+                        >
+                            <AddIcon />
+                        </IconButton>
                         <Button
                             size={size}
                             sx={{ mt: 1 / 2 }}
@@ -127,8 +129,8 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
                         >
                             Muuta määrää
                         </Button>
-                    </form>
-                </Box>
+                    </Box>
+                </form>
             ) : (
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Button
