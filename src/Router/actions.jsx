@@ -240,7 +240,7 @@ const itemCreateAction = async (auth, setAuth, request) => {
     const response = await apiCall(auth, setAuth, '/storage/products/', 'post', formData, {
         headers: { 'content-type': 'multipart/form-data' },
     });
-    if (response.status === 200) {
+    if (response.status === 201) {
         return { type: 'createitem', status: true };
     }
     return { type: 'createitem', status: false };
