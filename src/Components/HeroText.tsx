@@ -9,7 +9,7 @@ interface Props {
 
 function HeroText({ title, subtitle, text }: Props) {
     return (
-        <Box id="hero-texts-wrapper" p="1rem">
+        <Box id="hero-texts-wrapper" m="1rem 0 1rem 0">
             <TypographyTitle text={title} />
             <Stack alignItems="center" mt="1rem">
                 <Typography textAlign="center" variant="subtitle2" gutterBottom>
