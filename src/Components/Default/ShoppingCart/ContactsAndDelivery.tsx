@@ -41,9 +41,6 @@ function ContactsAndDelivery() {
         actions.Update(data);
         navigate('/ostoskori/vaihe3');
     };
-    const handleChange = (SelectChangeEvent: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setSelectedAddress(SelectChangeEvent.target.value);
-    };
     const correctAddress = user.address_list?.filter(
         (address: { address: string }) => address.address === selectedAddress
     );
@@ -156,7 +153,9 @@ function ContactsAndDelivery() {
                         variant="outlined"
                         value={selectedAddress}
                         {...register('deliveryAddress', { required: true })}
-                        onChange={() => handleChange}
+                        onChange={(SelectChangeEvent) => {
+                            setSelectedAddress(SelectChangeEvent.target.value);
+                        }}
                         select
                     >
                         {user.address_list?.map((a: { address: string; id: number }) => (
