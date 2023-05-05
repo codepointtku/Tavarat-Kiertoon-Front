@@ -27,7 +27,6 @@ function ContactsAndDelivery() {
     const user = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
     const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
     const [selectedMethod, setSelectedMethod] = useState('shipping');
-    const [isSamePerson, setIsSamePerson] = useState(false);
     const {
         register,
         handleSubmit,
@@ -51,7 +50,6 @@ function ContactsAndDelivery() {
     const fullname = user.name.split(' ');
 
     function handleClick() {
-        setIsSamePerson(true);
         setValue('firstName', fullname[0]);
         setValue('lastName', fullname[1]);
         setValue('email', user.email);
@@ -99,8 +97,9 @@ function ContactsAndDelivery() {
                 <Grid item>
                     <TextField
                         label="Etunimi"
+                        placeholder="Etunimi"
                         variant="outlined"
-                        InputLabelProps={{ shrink: isSamePerson }}
+                        InputLabelProps={{ shrink: true }}
                         {...register('firstName', {
                             required: true,
                             maxLength: 255,
@@ -111,8 +110,9 @@ function ContactsAndDelivery() {
                 <Grid item>
                     <TextField
                         label="Sukunimi"
+                        placeholder="Sukunimi"
                         variant="outlined"
-                        InputLabelProps={{ shrink: isSamePerson }}
+                        InputLabelProps={{ shrink: true }}
                         {...register('lastName', { required: true, maxLength: 255 })}
                     />
                     {errors.lastName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
@@ -120,8 +120,9 @@ function ContactsAndDelivery() {
                 <Grid item>
                     <TextField
                         label="Sähköposti"
+                        placeholder="Sähköposti"
                         variant="outlined"
-                        InputLabelProps={{ shrink: isSamePerson }}
+                        InputLabelProps={{ shrink: true }}
                         {...register('email', {
                             required: true,
                             pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/,
@@ -133,8 +134,9 @@ function ContactsAndDelivery() {
                 <Grid item>
                     <TextField
                         label="Puh. numero"
+                        placeholder="Puh. numero"
                         variant="outlined"
-                        InputLabelProps={{ shrink: isSamePerson }}
+                        InputLabelProps={{ shrink: true }}
                         {...register('phoneNumber', {
                             required: true,
                             pattern: /^[0-9]+$/,
