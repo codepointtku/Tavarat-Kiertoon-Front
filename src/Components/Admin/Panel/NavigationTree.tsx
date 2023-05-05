@@ -21,43 +21,7 @@ import People from '@mui/icons-material/People';
 import PermMedia from '@mui/icons-material/PermMedia';
 import Dns from '@mui/icons-material/Dns';
 import Public from '@mui/icons-material/Public';
-
-const data = [
-    { icon: <People />, label: 'Tarkastele' },
-    { icon: <Dns />, label: 'Muokkaa' },
-    { icon: <PermMedia />, label: 'Lisää uusi' },
-    { icon: <Public />, label: 'Jotain' },
-];
-
-const tuotteet = [
-    { icon: <People />, label: 'Tarkastele' },
-    { icon: <Dns />, label: 'Muokkaa' },
-    { icon: <PermMedia />, label: 'Lisää uusi' },
-    { icon: <Public />, label: 'Jotain' },
-];
-
-const kayttajat = [
-    { icon: <People />, label: 'Tarkastele' },
-    { icon: <Dns />, label: 'Muokkaa' },
-    { icon: <PermMedia />, label: 'Lisää uusi' },
-    { icon: <Public />, label: 'Hakemukset' },
-];
-
-const varastot = [
-    { icon: <People />, label: 'Tarkastele' },
-    { icon: <Dns />, label: 'Muokkaa' },
-    { icon: <PermMedia />, label: 'Lisää uusi' },
-];
-
-const tiedotteet = [
-    { icon: <People />, label: 'Tarkastele' },
-    { icon: <PermMedia />, label: 'Luo uusi' },
-];
-
-const viestit = [
-    { icon: <People />, label: 'Saapuneet' },
-    { icon: <PermMedia />, label: 'Aiheet' },
-];
+import { ListItemButtonLink } from '../../MUILinkComponents';
 
 const FireNav = styled(List)<{ component?: React.ElementType }>({
     '& .MuiListItemButton-root': {
@@ -72,6 +36,43 @@ const FireNav = styled(List)<{ component?: React.ElementType }>({
         fontSize: 20,
     },
 });
+
+const data = [
+    { icon: <People />, label: 'Tarkastele', to: '/tilaukset' },
+    { icon: <Dns />, label: 'Muokkaa', to: '/tilauksetmuokkaa' },
+    { icon: <PermMedia />, label: 'Lisää uusi', to: '/tilauksetlisaa' },
+    { icon: <Public />, label: 'Jotain', to: '/tilauksetjotain' },
+];
+
+const tuotteet = [
+    { icon: <People />, label: 'Tarkastele', to: '/placeholder' },
+    { icon: <Dns />, label: 'Muokkaa', to: '/placeholder' },
+    { icon: <PermMedia />, label: 'Lisää uusi', to: '/placeholder' },
+    { icon: <Public />, label: 'Jotain', to: '/placeholder' },
+];
+
+const kayttajat = [
+    { icon: <People />, label: 'Tarkastele', to: '/placeholder' },
+    { icon: <Dns />, label: 'Muokkaa', to: '/placeholder' },
+    { icon: <PermMedia />, label: 'Lisää uusi', to: '/placeholder' },
+    { icon: <Public />, label: 'Hakemukset', to: '/placeholder' },
+];
+
+const varastot = [
+    { icon: <People />, label: 'Tarkastele', to: '/placeholder' },
+    { icon: <Dns />, label: 'Muokkaa', to: '/placeholder' },
+    { icon: <PermMedia />, label: 'Lisää uusi', to: '/placeholder' },
+];
+
+const tiedotteet = [
+    { icon: <People />, label: 'Tarkastele', to: '/placeholder' },
+    { icon: <PermMedia />, label: 'Luo uusi', to: '/placeholder' },
+];
+
+const viestit = [
+    { icon: <People />, label: 'Saapuneet', to: '/placeholder' },
+    { icon: <PermMedia />, label: 'Aiheet', to: '/placeholder' },
+];
 
 function NavigationTree() {
     const [open, setOpen] = React.useState({
@@ -109,7 +110,7 @@ function NavigationTree() {
                         lineHeight: '20px',
                         mb: '2px',
                     }}
-                    secondary="Tilauksien hallinta..."
+                    secondary="Tilauksien hallinta"
                     secondaryTypographyProps={{
                         noWrap: true,
                         fontSize: 12,
@@ -129,13 +130,17 @@ function NavigationTree() {
             </ListItemButton>
             {open.ordersNavList &&
                 data.map((item) => (
-                    <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
+                    <ListItemButtonLink
+                        to={item.to}
+                        key={item.label}
+                        sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}
+                    >
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
                         <ListItemText
                             primary={item.label}
                             primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }}
                         />
-                    </ListItemButton>
+                    </ListItemButtonLink>
                 ))}
         </Box>
     );
@@ -186,13 +191,17 @@ function NavigationTree() {
             </ListItemButton>
             {open.productsNavList &&
                 tuotteet.map((item) => (
-                    <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
+                    <ListItemButtonLink
+                        to={item.to}
+                        key={item.label}
+                        sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}
+                    >
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
                         <ListItemText
                             primary={item.label}
                             primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }}
                         />
-                    </ListItemButton>
+                    </ListItemButtonLink>
                 ))}
         </Box>
     );
@@ -243,13 +252,17 @@ function NavigationTree() {
             </ListItemButton>
             {open.usersNavList &&
                 kayttajat.map((item) => (
-                    <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
+                    <ListItemButtonLink
+                        to={item.to}
+                        key={item.label}
+                        sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}
+                    >
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
                         <ListItemText
                             primary={item.label}
                             primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }}
                         />
-                    </ListItemButton>
+                    </ListItemButtonLink>
                 ))}
         </Box>
     );
@@ -300,13 +313,17 @@ function NavigationTree() {
             </ListItemButton>
             {open.storagesNavList &&
                 varastot.map((item) => (
-                    <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
+                    <ListItemButtonLink
+                        to={item.to}
+                        key={item.label}
+                        sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}
+                    >
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
                         <ListItemText
                             primary={item.label}
                             primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }}
                         />
-                    </ListItemButton>
+                    </ListItemButtonLink>
                 ))}
         </Box>
     );
@@ -357,13 +374,17 @@ function NavigationTree() {
             </ListItemButton>
             {open.bulletinsNavList &&
                 tiedotteet.map((item) => (
-                    <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
+                    <ListItemButtonLink
+                        to={item.to}
+                        key={item.label}
+                        sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}
+                    >
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
                         <ListItemText
                             primary={item.label}
                             primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }}
                         />
-                    </ListItemButton>
+                    </ListItemButtonLink>
                 ))}
         </Box>
     );
@@ -414,13 +435,17 @@ function NavigationTree() {
             </ListItemButton>
             {open.messagingNavList &&
                 viestit.map((item) => (
-                    <ListItemButton key={item.label} sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}>
+                    <ListItemButtonLink
+                        to={item.to}
+                        key={item.label}
+                        sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}
+                    >
                         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
                         <ListItemText
                             primary={item.label}
                             primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }}
                         />
-                    </ListItemButton>
+                    </ListItemButtonLink>
                 ))}
         </Box>
     );
