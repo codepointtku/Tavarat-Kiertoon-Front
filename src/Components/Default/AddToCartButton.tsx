@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSubmit, useRouteLoaderData, useSearchParams } from 'react-router-dom';
 import { OverridableStringUnion } from '@material-ui/types';
@@ -22,7 +22,12 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
     const [amountN, setAmountN] = useState(1);
     const [addedToCart, setAddedToCart] = useState(false);
     const [searchParams] = useSearchParams();
-    const { handleSubmit, register } = useForm();
+    const { handleSubmit, register, resetField, getValues } = useForm();
+
+    useEffect(() => {
+        console.log(getValues('amount'));
+        cart?.products?.length === 0 && resetField('amount');
+    }, [cart?.products?.length]);
 
     function addAmount() {
         if (amountN === count) {

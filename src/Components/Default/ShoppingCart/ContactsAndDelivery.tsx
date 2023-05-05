@@ -156,6 +156,7 @@ function ContactsAndDelivery() {
                         onChange={(SelectChangeEvent) => {
                             setSelectedAddress(SelectChangeEvent.target.value);
                         }}
+                        fullWidth
                         select
                     >
                         {user.address_list?.map((a: { address: string; id: number }) => (
@@ -201,6 +202,17 @@ function ContactsAndDelivery() {
                     </TextField>
                     {errors.deliveryMethod && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                 </Grid>
+                {selectedMethod === 'pickup' && (
+                    <Grid item>
+                        <TextField
+                            type="datetime-local"
+                            label="Noutoaika"
+                            variant="outlined"
+                            placeholder="Noutoaika"
+                            InputLabelProps={{ shrink: true }}
+                        />
+                    </Grid>
+                )}
             </Grid>
             <Typography variant="h4" sx={{ mt: 5, mb: 2, color: 'primary.main' }}>
                 Lisätietoa
