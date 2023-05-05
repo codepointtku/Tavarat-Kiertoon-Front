@@ -52,21 +52,21 @@ const tuotteet = [
 ];
 
 const kayttajat = [
-    { icon: <People />, label: 'Tarkastele', to: '/placeholder' },
+    { icon: <People />, label: 'Tarkastele', to: '/admin/kayttajat' },
     { icon: <Dns />, label: 'Muokkaa', to: '/placeholder' },
     { icon: <PermMedia />, label: 'Lisää uusi', to: '/placeholder' },
-    { icon: <Public />, label: 'Hakemukset', to: '/placeholder' },
+    { icon: <Public />, label: 'Hakemukset', to: '/admin/hakemukset' },
 ];
 
 const varastot = [
-    { icon: <People />, label: 'Tarkastele', to: '/placeholder' },
-    { icon: <Dns />, label: 'Muokkaa', to: '/placeholder' },
-    { icon: <PermMedia />, label: 'Lisää uusi', to: '/placeholder' },
+    { icon: <People />, label: 'Tarkastele', to: '/admin/varastot' },
+    // { icon: <Dns />, label: 'Muokkaa', to: '/placeholder' },
+    { icon: <PermMedia />, label: 'Lisää uusi', to: '/admin/varastot/luo' },
 ];
 
 const tiedotteet = [
-    { icon: <People />, label: 'Tarkastele', to: '/placeholder' },
-    { icon: <PermMedia />, label: 'Luo uusi', to: '/placeholder' },
+    { icon: <People />, label: 'Tarkastele', to: '/admin/tiedotteet' },
+    { icon: <PermMedia />, label: 'Luo uusi', to: '/admin/tiedotteet/luo' },
 ];
 
 const viestit = [

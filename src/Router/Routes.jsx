@@ -406,65 +406,74 @@ function Routes() {
                             path: 'tilastot',
                             element: <Stats />,
                         },
+                        {
+                            path: 'tiedotteet',
+                            element: <Announcements />,
+                        },
+
+                        {
+                            path: 'tiedotteet/luo',
+                            element: <NewAnnouncement />,
+                            loader: bulletinSubjectLoader,
+                            action: async ({ request }) => createBulletinAction(auth, setAuth, request),
+                        },
+
+                        {
+                            path: 'varastot',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <StoragesList />,
+                                    loader: async () => storagesListLoader(auth, setAuth),
+                                },
+                                {
+                                    path: ':id',
+                                    element: <StorageEdit />,
+                                    loader: async ({ params }) => storageEditLoader(auth, setAuth, params),
+                                    action: async ({ request, params }) =>
+                                        storageEditAction(auth, setAuth, request, params),
+                                },
+                            ],
+                        },
+
+                        {
+                            path: 'varastot/luo',
+                            element: <AddStorage />,
+                            action: async ({ request }) => storageCreateAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'kayttajat',
+                            element: <UsersList />,
+                            loader: async () => usersListLoader(auth, setAuth),
+                        },
+
+                        // NOTE : JTo : 'users' paths need to be checked once users are enabled in back-end
+                        // {
+                        //     path: 'users',
+                        //     element: <Outlet />,
+                        //     children: [
+                        //         {
+                        //             index: true,
+                        //             element: <UsersList />,
+                        //             id: 'users',
+                        //             loader: async () => usersListLoader(auth, setAuth),
+                        //         },
+                        //         {
+                        //             path: ':id',
+                        //             element: <UserEdit />,
+                        //             loader: async ({ params }) => userEditLoader(auth, setAuth, params),
+                        //             action: async ({ request, params }) =>
+                        //                 userEditAction(auth, setAuth, request, params),
+                        //         },
+                        //     ],
+                        // },
+
+                        {
+                            path: 'hakemukset',
+                            element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
+                        },
                     ],
-
-                    // {
-                    //     path: 'tiedotteet/luo',
-                    //     element: <NewAnnouncement />,
-                    //     loader: bulletinSubjectLoader,
-                    //     action: async ({ request }) => createBulletinAction(auth, setAuth, request),
-                    // },
-
-                    // {
-                    //     path: 'varastot',
-                    //     element: <Outlet />,
-                    //     children: [
-                    //         {
-                    //             index: true,
-                    //             element: <StoragesList />,
-                    //             loader: async () => storagesListLoader(auth, setAuth),
-                    //         },
-                    //         {
-                    //             path: ':id',
-                    //             element: <StorageEdit />,
-                    //             loader: async ({ params }) => storageEditLoader(auth, setAuth, params),
-                    //             action: async ({ request, params }) =>
-                    //                 storageEditAction(auth, setAuth, request, params),
-                    //         },
-                    //     ],
-                    // },
-
-                    // NOTE : JTo : 'users' paths need to be checked once users are enabled in back-end
-                    // {
-                    //     path: 'users',
-                    //     element: <Outlet />,
-                    //     children: [
-                    //         {
-                    //             index: true,
-                    //             element: <UsersList />,
-                    //             id: 'users',
-                    //             loader: async () => usersListLoader(auth, setAuth),
-                    //         },
-                    //         {
-                    //             path: ':id',
-                    //             element: <UserEdit />,
-                    //             loader: async ({ params }) => userEditLoader(auth, setAuth, params),
-                    //             action: async ({ request, params }) =>
-                    //                 userEditAction(auth, setAuth, request, params),
-                    //         },
-                    //     ],
-                    // },
-
-                    // {
-                    //     path: 'varastot/luo',
-                    //     element: <AddStorage />,
-                    //     action: async ({ request }) => storageCreateAction(auth, setAuth, request),
-                    // },
-
-                    // {
-                    //     path: 'hakemukset',
-                    //     element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
-                    // },
                 },
                 // bikes routes
                 {
