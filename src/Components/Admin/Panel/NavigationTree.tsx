@@ -38,7 +38,7 @@ const FireNav = styled(List)<{ component?: React.ElementType }>({
 });
 
 const data = [
-    { icon: <People />, label: 'Tarkastele', to: '/tilaukset' },
+    { icon: <People />, label: 'Tarkastele', to: '/admin/pagetest' },
     { icon: <Dns />, label: 'Muokkaa', to: '/tilauksetmuokkaa' },
     { icon: <PermMedia />, label: 'Lisää uusi', to: '/tilauksetlisaa' },
     { icon: <Public />, label: 'Jotain', to: '/tilauksetjotain' },
@@ -484,7 +484,7 @@ function NavigationTree() {
                         </ListItemButton>
                         <Divider />
                         <ListItem component="div" disablePadding>
-                            <ListItemButton sx={{ height: 56 }}>
+                            <ListItemButtonLink to="/admin" sx={{ height: 56 }}>
                                 <ListItemIcon>
                                     <Home color="primary" />
                                 </ListItemIcon>
@@ -496,7 +496,7 @@ function NavigationTree() {
                                         variant: 'body2',
                                     }}
                                 />
-                            </ListItemButton>
+                            </ListItemButtonLink>
                             <Tooltip title="Projektin asetukset">
                                 <IconButton
                                     size="large"

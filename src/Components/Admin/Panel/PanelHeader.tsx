@@ -84,7 +84,7 @@ function PanelHeader() {
                 <Box id="vertical-spacer" sx={{ margin: '0 4rem 0 0', padding: '1rem', flexGrow: 1 }} />
                 <Box id="statistics" sx={{ margin: '0 1rem 0 1rem' }}>
                     <Tooltip title="Tarkastele tilastoja">
-                        <IconButton component={Link} to="/tilastot">
+                        <IconButton component={Link} to="/admin/tilastot">
                             <QueryStatsIcon sx={{ color: 'primary.contrastText' }} />
                         </IconButton>
                     </Tooltip>
