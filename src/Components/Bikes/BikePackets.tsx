@@ -5,10 +5,9 @@ import { Link } from 'react-router-dom';
 
 export default function BikePackets() {
     const loaderData = useLoaderData();
+    console.log('###', loaderData);
 
     const packages = loaderData.packages;
-
-    console.log(packages);
 
     return (
         <TableContainer component={Paper} sx={{ padding: '2rem' }}>

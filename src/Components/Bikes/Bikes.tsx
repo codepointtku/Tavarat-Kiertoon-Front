@@ -54,6 +54,7 @@ export interface submitDataInterface {
  */
 export default function Bikes() {
     const loaderData = useLoaderData() as bikeInterface[];
+    console.log('loaderData', loaderData);
 
     return (
         <>

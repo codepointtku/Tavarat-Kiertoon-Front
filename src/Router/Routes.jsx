@@ -70,7 +70,7 @@ import BikeRentals from '../Components/Bikes/BikeRentals';
 import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 
 import {
-    bikePacketLoader,
+    bikesPacketLoader,
     addItemLoader,
     orderEditLoader,
     ordersListLoader,
@@ -480,7 +480,7 @@ function Routes() {
                                 },
                                 {
                                     path: 'pyorapaketit',
-                                    loader: bikesListLoader,
+                                    loader: bikesPacketLoader,
                                     element: <BikePackets />,
                                 },
                                 {

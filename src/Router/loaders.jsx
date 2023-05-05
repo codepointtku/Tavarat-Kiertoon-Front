@@ -217,6 +217,16 @@ const bikesListLoader = async (auth, setAuth) => {
     const { data } = await apiCall(auth, setAuth, '/bikes/stock', 'get');
     return data;
 };
+/**
+ * Get one bikepacket
+ */
+const bikesPacketLoader = async (auth, setAuth, params) => {
+    const [{ data: packet }, { data: models }] = await Promise.all([
+        apiCall(auth, setAuth, `/bikes/packages/${params.id}`, 'get'),
+        apiCall(auth, setAuth, `/bikes/models/`, 'get'),
+    ]);
+    return { packet, models };
+};
 
 /**
  * Get information needed to modify a single bike
@@ -255,7 +265,7 @@ const shoppingProcessLoader = async (auth, setAuth) => {
 };
 
 export {
-    bikePacketLoader,
+    bikesPacketLoader,
     bulletinSubjectLoader,
     rootLoader,
     productListLoader,
