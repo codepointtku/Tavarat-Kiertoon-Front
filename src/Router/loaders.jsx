@@ -195,21 +195,44 @@ const userEditLoader = async (auth, setAuth, params) => {
 };
 
 /**
- * Get all bikes
+ * Get lists of bikes and packets for front page
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @returns
  */
-const bikesListLoader = async (auth, setAuth) => {
+const bikesDefaultLoader = async (auth, setAuth) => {
     const { data } = await apiCall(auth, setAuth, '/bikes', 'get');
     return data;
 };
+
 /**
- * Get one bikepacket
+ * Get list of all bikes
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @returns
  */
-const bikePacketLoader = async (auth, setAuth, params) => {
-    const [{ data: packet }, { data: models }] = await Promise.all([
-        apiCall(auth, setAuth, `/bikes/packages/${params.id}`, 'get'),
-        apiCall(auth, setAuth, `/bikes/models/`, 'get'),
+const bikesListLoader = async (auth, setAuth) => {
+    const { data } = await apiCall(auth, setAuth, '/bikes/stock', 'get');
+    return data;
+};
+
+/**
+ * Get information needed to modify a single bike
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} params
+ * @returns
+ */
+const bikeLoader = async (auth, setAuth, params) => {
+    const [{ data: bikeData }, { data: bikeModelsData }, { data: storagesData }] = await Promise.all([
+        apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'get'),
+        apiCall(auth, setAuth, '/bikes/models/', 'get'),
+        apiCall(auth, setAuth, '/storages/', 'get'),
     ]);
-    return { packet, models };
+    return { bikeData, bikeModelsData, storagesData };
 };
 
 // get bulletin subjects
@@ -247,7 +270,9 @@ export {
     usersListLoader,
     userEditLoader,
     userSignupLoader,
+    bikesDefaultLoader,
     bikesListLoader,
+    bikeLoader,
     shoppingCartLoader,
     shoppingProcessLoader,
 };

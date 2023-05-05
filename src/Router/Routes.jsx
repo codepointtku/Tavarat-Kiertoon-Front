@@ -67,6 +67,7 @@ import Bikes from '../Components/Bikes/Bikes';
 import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
+import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 
 import {
     bikePacketLoader,
@@ -84,7 +85,9 @@ import {
     usersListLoader,
     userSignupLoader,
     shoppingCartLoader,
+    bikesDefaultLoader,
     bikesListLoader,
+    bikeLoader,
     shoppingProcessLoader,
     bulletinSubjectLoader,
 } from './loaders';
@@ -103,6 +106,7 @@ import {
     confirmationAction,
     resetEmailAction,
     resetPasswordAction,
+    modifyBikeAction,
 } from './actions';
 
 createStore({});
@@ -449,7 +453,6 @@ function Routes() {
                 // bikes routes
                 {
                     path: 'pyorat',
-                    action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                     element: (
                         <ThemeProvider theme={bikeTheme}>
                             <BikesLayout />
@@ -459,8 +462,8 @@ function Routes() {
                         {
                             index: true,
                             element: <BikesPage />,
-                            loader: bikesListLoader,
-                            shouldRevalidate: () => false,
+                            loader: bikesDefaultLoader,
+                            action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                         },
                         {
                             path: 'pyoravarasto',
@@ -468,6 +471,7 @@ function Routes() {
                             children: [
                                 {
                                     index: true,
+                                    loader: async () => bikesListLoader(auth, setAuth),
                                     element: <Bikes />,
                                 },
                                 {
@@ -479,17 +483,20 @@ function Routes() {
                                     loader: bikesListLoader,
                                     element: <BikePackets />,
                                 },
-
                                 {
-                                    path: 'paketinmuokkaus',
-
+                                    path: 'muokkaa',
                                     element: <Outlet />,
                                     children: [
                                         {
+                                            index: true,
+                                            element: <Navigate to="/pyorat/pyoravarasto" />,
+                                        },
+                                        {
                                             path: ':id',
-                                            element: <ModifyBikeOrder />,
-                                            loader: async ({ params }) => bikePacketLoader(auth, setAuth, params),
-                                            // action
+                                            element: <ModifyBikePage />,
+                                            loader: async ({ params }) => bikeLoader(auth, setAuth, params),
+                                            action: async ({ request, params }) =>
+                                                modifyBikeAction(auth, setAuth, request, params),
                                         },
                                     ],
                                 },
