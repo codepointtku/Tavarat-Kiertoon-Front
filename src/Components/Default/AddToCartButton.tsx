@@ -7,7 +7,7 @@ import { Box, Button, Input, IconButton, ButtonPropsSizeOverrides } from '@mui/m
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { string } from 'prop-types';
+import type { shoppingCartLoader } from '../../Router/loaders';
 
 interface Props {
     size?: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides> | undefined;
@@ -18,32 +18,32 @@ interface Props {
 
 function AddToCartButton({ size, id, groupId, count }: Props) {
     const submit = useSubmit();
-    const { cart }: any = useRouteLoaderData('frontPage');
-    const [amount, setAmount] = useState(1);
+    const { cart } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
+    const [amountN, setAmountN] = useState(1);
     const [addedToCart, setAddedToCart] = useState(false);
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
 
     function addAmount() {
-        if (amount === count) {
-            setAmount(amount);
+        if (amountN === count) {
+            setAmountN(amountN);
         } else {
-            setAmount(amount + 1);
+            setAmountN(amountN + 1);
             setAddedToCart(false);
         }
     }
 
     function removeAmount() {
-        if (amount === 1) {
-            setAmount(amount);
+        if (amountN === 1) {
+            setAmountN(amountN);
         } else {
-            setAmount(amount - 1);
+            setAmountN(amountN - 1);
             setAddedToCart(false);
         }
     }
 
     function handleOnClick(action: string) {
-        if (amount >= 1 && amount <= count) {
+        if (amountN >= 1 && amountN <= count) {
             action === 'add' ? addAmount() : removeAmount();
         }
     }
@@ -52,12 +52,13 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
         const _input = event.target.value;
         const input: number = +_input;
         if ((input >= 1 && input <= count) || _input === '') {
-            setAmount(Number(input));
+            setAmountN(Number(input));
             setAddedToCart(false);
         }
     }
 
     const onSubmit = async () => {
+        const amount = amountN.toString();
         submit(
             { id, amount },
             {
@@ -84,7 +85,7 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
                         size="small"
                         sx={{ color: 'background.default', padding: 0, mr: 1, ml: 0.5 }}
                         onClick={() => handleOnClick('remove')}
-                        disabled={amount === 1}
+                        disabled={amountN === 1}
                     >
                         <RemoveIcon />
                     </IconButton>
@@ -104,7 +105,7 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
                                 textAlign: 'center',
                             },
                         }}
-                        value={amount}
+                        value={amountN}
                         onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
                         disableUnderline
                     />
@@ -112,7 +113,7 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
                         size="small"
                         sx={{ color: 'background.default', padding: 0, ml: 1, mr: 0.5 }}
                         onClick={() => handleOnClick('add')}
-                        disabled={amount === count}
+                        disabled={amountN === count}
                     >
                         <AddIcon />
                     </IconButton>
