@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-// add new item
+import { useState } from 'react';
 import {
     useRouteLoaderData,
     useLoaderData,
@@ -7,24 +7,27 @@ import {
     Form,
     useNavigate,
     useActionData,
-    generatePath,
     useLocation,
 } from 'react-router-dom';
 // import Barcode from 'react-barcode';
-import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
+import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Modal, Typography } from '@mui/material';
 import imageCompression from 'browser-image-compression';
 
 import { useForm } from 'react-hook-form';
+import Html5QrcodePlugin from '../../Utils/qrcodeScanner';
+import Barcode from 'react-barcode';
+import TypographyTitle from '../TypographyTitle';
 
 function AddNewItem() {
     const { categories } = useRouteLoaderData('root');
-    const { storages } = useLoaderData();
-    console.log('categories:', categories, 'storages:', storages);
+    const { storages, colors } = useLoaderData();
+    console.log('categories:', categories, 'storages:', storages, 'colors:', colors);
     const submit = useSubmit();
     const actionData = useActionData();
     const location = useLocation();
-
     const navigate = useNavigate();
+
+    const [qrSearchOpen, setQrSearchOpen] = useState(false);
 
     const {
         register,
@@ -63,6 +66,7 @@ function AddNewItem() {
     // });
 
     const description = watch('description');
+    const barcode = watch('barcode');
 
     const onSubmit = async (data) => {
         const formData = new FormData();
@@ -86,31 +90,54 @@ function AddNewItem() {
         navigate('/varasto/tuotteet/');
     };
 
-    const uploadFile = async (files) => {
-        const options = {
-            maxSizeMB: 1,
-            useWebWorker: true,
-        };
+    // const uploadFile = async (files) => {
+    //     const options = {
+    //         maxSizeMB: 1,
+    //         useWebWorker: true,
+    //     };
 
-        const uploads = await Promise.all(Object.values(files).map(async (file) => imageCompression(file, options)));
-        // // some code from kuvatestit branch, could be reused if pictures need to be sent before sending whole form:
-        // // bring images to back-end with a call, then setItems into images brought back.
-        // console.log(uploads);
-        // const response = await axios.post('http://localhost:8000/pictures/', uploads, {
-        //     headers: { 'content-type': 'multipart/form-data' },
-        // });
-        // console.log('axios pictures post', response.data);
-        // setValue('pictures', response.data);
-        setValue('pictures', uploads);
+    //     const uploads = await Promise.all(Object.values(files).map(async (file) => imageCompression(file, options)));
+    //     // // some code from kuvatestit branch, could be reused if pictures need to be sent before sending whole form:
+    //     // // bring images to back-end with a call, then setItems into images brought back.
+    //     // console.log(uploads);
+    //     // const response = await axios.post('http://localhost:8000/pictures/', uploads, {
+    //     //     headers: { 'content-type': 'multipart/form-data' },
+    //     // });
+    //     // console.log('axios pictures post', response.data);
+    //     // setValue('pictures', response.data);
+    //     setValue('pictures', uploads);
+    // };
+
+    // QR code scanner
+    const onNewScanResult = (decodedText, decodedResult) => {
+        setQrSearchOpen(false);
+        setValue('barcode', decodedText);
     };
 
     return (
-        <Card sx={{ maxWidth: '60vw' }}>
-            <h2 align="center" style={{ textDecoration: 'underline' }}>
-                Uusi tuote
-            </h2>
+        <Card>
+            <Modal
+                open={qrSearchOpen}
+                onClose={() => {
+                    setQrSearchOpen(false);
+                }}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box width={700}>
+                    <Html5QrcodePlugin
+                        fps={10}
+                        qrbox={250}
+                        disableFlip={false}
+                        qrCodeSuccessCallback={onNewScanResult}
+                    />
+                </Box>
+            </Modal>
+            <Box padding={2}>
+                <TypographyTitle text="Uusi tuote" />
+            </Box>
+
             <Box
-                align="center"
                 component={Form}
                 onSubmit={handleSubmit(onSubmit)}
                 sx={{
@@ -129,7 +156,7 @@ function AddNewItem() {
                         // error={!!errors.name}
                         // helperText={errors.name?.message || `${name?.length || 0}/255`}
                     />
-                    <Typography>{errors.name?.message}</Typography>
+                    {/* <Typography>{errors.name?.message}</Typography> */}
                     <TextField
                         type="text"
                         placeholder="barcode"
@@ -143,20 +170,13 @@ function AddNewItem() {
                         label="Viivakoodi"
                         defaultValue="1234"
                     >
-                        viivakoodi
+                        Viivakoodi
                     </TextField>
                     <CardActions>
-                        <Button
-                            size="large"
-                            onClick={() =>
-                                navigate(generatePath('/varasto/koodinlukija'), {
-                                    state: { ...item, returnpath: '/varasto/luo' },
-                                })
-                            }
-                        >
-                            Koodinlukija
+                        <Button size="large" onClick={() => setQrSearchOpen(true)}>
+                            Viivakoodinlukija
                         </Button>
-                        {item.barcode.length > 0 && <Barcode value={item.barcode} format="CODE39" />}
+                        {barcode?.length > 0 && <Barcode value={barcode} format="CODE39" height={32} fontSize={14} />}
                     </CardActions>
 
                     <TextField
@@ -181,7 +201,6 @@ function AddNewItem() {
                     >
                         {categories?.map((category) => (
                             <MenuItem
-                                // tähän funktio joka asettaa valuen setValue('category_name', category.id)
                                 onClick={() => setValue('category', category.id)}
                                 key={category.id}
                                 value={category.name}
@@ -193,15 +212,16 @@ function AddNewItem() {
                     <TextField
                         type="number"
                         label="Määrä"
-                        placeholder="amount"
-                        {...register('amount', { required: true, max: 10000, min: 1 })}
-                    />
+                        placeholder="Määrä"
+                        {...register('amount', { required: true, max: 1000, min: 1 })}
+                    ></TextField>
                     {/* todo värikenttä, uuden värin lisäys mahdollisuus, backend hyväksyy stringin ja luo uuden ellei ole olemassa. Lisäkenttä lisää uusi väri */}
                     <TextField
                         id="filled-helperText"
                         label="Vapaa Kuvaus"
                         {...register('free_description', { required: false, max: 1000 })}
                         multiline
+                        minRows={4}
                         helperText={`${description?.length || '0'}/1000`}
                         defaultValue="vapaa kuvaus testi"
                     />
