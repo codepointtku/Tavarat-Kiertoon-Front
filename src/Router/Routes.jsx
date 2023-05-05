@@ -480,7 +480,7 @@ function Routes() {
                                 },
                                 {
                                     path: 'pyorapaketit',
-                                    loader: bikesPacketLoader,
+                                    loader: async () => bikesPacketLoader(auth, setAuth),
                                     element: <BikePackets />,
                                 },
                                 {

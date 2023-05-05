@@ -7,7 +7,7 @@ export default function BikePackets() {
     const loaderData = useLoaderData();
     console.log('###', loaderData);
 
-    const packages = loaderData.packages;
+    const packages = loaderData.packet;
 
     return (
         <TableContainer component={Paper} sx={{ padding: '2rem' }}>
