@@ -22,19 +22,27 @@ interface CartState {
     };
 }
 
+interface SubmitFunction {
+    (
+        SubmitTarget:
+            | string
+            | { deliveryAddress: string; email: string; phoneNumber: string; id: any; orderInfo: string },
+        options: { method: string; action: string }
+    ): any;
+}
+
 function Confirmation() {
     const { handleSubmit, register } = useForm();
-    const submit = useSubmit();
+    const submit = useSubmit() as unknown as SubmitFunction;
     const { state } = useStateMachine({ Update }) as unknown as CartState;
     const { products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const { id } = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
     // laita order tekstinä vain submittiin.
-    const order = 'order';
 
     const onSubmit = async () => {
         const { email, deliveryAddress, phoneNumber, orderInfo } = state;
         submit({ deliveryAddress, email, phoneNumber, id, orderInfo }, { method: 'post', action: '/ostoskori/vaihe3' });
-        submit({ order }, { method: 'put', action: '/' });
+        submit('order', { method: 'put', action: '/' });
     };
 
     return (

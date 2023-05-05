@@ -1,6 +1,5 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, ReactNode } from 'react';
 import { useLoaderData, useNavigate, useSubmit, useRouteLoaderData } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 import {
     AppBar,
@@ -16,6 +15,7 @@ import {
     ListItem,
     ListItemText,
     Typography,
+    Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -28,6 +28,8 @@ import AuthContext from '../../../Context/AuthContext';
 import Welcome from './Welcome';
 import ProductInCart from './ProductInCart';
 import LoginForm from './LoginForm';
+import type { shoppingCartLoader } from '../../../Router/loaders';
+import type { productListLoader } from '../../../Router/loaders';
 
 //
 
@@ -49,9 +51,21 @@ function DrawerHeader() {
     );
 }
 
+interface DrawerProps {
+    currentOpenDrawer: string;
+    name: string;
+    onClose: () => void;
+    children: ReactNode;
+}
+
+interface StyledBadge {
+    isanimated: number;
+    theme?: Theme;
+}
+
 const drawerWidth = 490;
 
-function Drawer({ currentOpenDrawer, name, onClose, children }) {
+function Drawer({ currentOpenDrawer, name, onClose, children }: DrawerProps) {
     const handleClose = () => {
         onClose();
     };
@@ -79,19 +93,12 @@ function Drawer({ currentOpenDrawer, name, onClose, children }) {
     );
 }
 
-Drawer.propTypes = {
-    currentOpenDrawer: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    children: PropTypes.node.isRequired,
-    onClose: PropTypes.func.isRequired,
-};
-
-const StyledBadge = styled(Badge)(({ theme, isanimated }) => ({
+const StyledBadge = styled(Badge)(({ theme, isanimated }: StyledBadge) => ({
     '& .MuiBadge-badge': {
-        color: theme.palette.primary.contrastText,
+        color: theme?.palette.primary.contrastText,
         right: -8,
-        border: `0.1rem solid ${theme.palette.background.paper}`,
-        backgroundColor: theme.palette.error.main,
+        border: `0.1rem solid ${theme?.palette.background.paper}`,
+        backgroundColor: theme?.palette.error.main,
         animationName: isanimated ? 'idle' : 'badgePulse',
         animationDuration: '1s',
     },
@@ -102,7 +109,7 @@ const StyledBadge = styled(Badge)(({ theme, isanimated }) => ({
         },
         to: {
             fontSize: '125%',
-            color: theme.palette.primary.main,
+            color: theme?.palette.primary.main,
         },
     },
     '@keyframes idle': { '100%': {} },
@@ -120,16 +127,26 @@ const toolBarHover = {
     },
 };
 
+interface CartProduct {
+    id: number & string;
+    count: number;
+    name: string;
+    group_id: number;
+}
+
+interface SubmitFunction {
+    (SubmitTarget: string, options: { method: string; action: string }): any;
+}
+
 function DefaultAppBar() {
     const { auth } = useContext(AuthContext);
     const [notLoggedIn, setNotLoggedIn] = useState(false);
     const [changeAmount, setChangeAmount] = useState(false);
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
-    const submit = useSubmit();
-    const amount = 0;
-    const allProducts = useRouteLoaderData('products');
-    const { cart, products } = useLoaderData();
+    const submit = useSubmit() as unknown as SubmitFunction;
+    const allProducts = useRouteLoaderData('products') as Awaited<ReturnType<typeof productListLoader>>;
+    const { cart, products } = useLoaderData() as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const [productsLength, setProductsLength] = useState(cart?.products?.length);
 
     useEffect(() => {
@@ -140,7 +157,7 @@ function DefaultAppBar() {
         }
     }, [cart?.products?.length]);
 
-    const drawerOpen = (drawer) => () => {
+    const drawerOpen = (drawer: string) => () => {
         notLoggedIn && setNotLoggedIn(false);
         if (currentOpenDrawer === drawer) {
             setCurrentOpenDrawer('');
@@ -160,11 +177,11 @@ function DefaultAppBar() {
     }
 
     function handleClick() {
-        submit({ amount }, { method: 'put', action: '/' });
+        submit('a', { method: 'put', action: '/' });
     }
 
     function handleSubmit() {
-        submit();
+        // submit();
         setChangeAmount(false);
     }
 
@@ -211,9 +228,9 @@ function DefaultAppBar() {
                             Ostoskorisi on tyhjä.
                         </Typography>
                     )}
-                    {products?.map((cartProduct) => {
+                    {products?.map((cartProduct: CartProduct) => {
                         const productsInCart = allProducts?.filter(
-                            (product) => product.group_id === cartProduct.group_id
+                            (product: { group_id: number }) => product.group_id === cartProduct.group_id
                         );
                         return (
                             productsInCart && (
