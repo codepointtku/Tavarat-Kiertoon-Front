@@ -2,68 +2,13 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, useSubmit } from 'react-router-dom';
 
-import {
-    Container,
-    TextField,
-    Typography,
-    Button,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    Grid,
-    Avatar,
-    Box,
-} from '@mui/material';
+import { Container, TextField, Button, FormControl, InputLabel, Select, MenuItem, Grid } from '@mui/material';
 
 import MailIcon from '@mui/icons-material/Mail';
 
 import AlertBox from '../AlertBox';
-import BackButton from '../BackButton';
-import TypographyTitle from '../TypographyTitle';
-
-function Hero() {
-    return (
-        <>
-            <Grid container className="back-btn-avatar-wrapper">
-                <Grid item xs={4}>
-                    <BackButton />
-                </Grid>
-                <Grid
-                    item
-                    xs={4}
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Avatar
-                        sx={{
-                            bgcolor: 'secondary.dark',
-                            width: 48,
-                            height: 48,
-                        }}
-                    >
-                        <MailIcon />
-                    </Avatar>
-                </Grid>
-                <Grid item xs={4} />
-            </Grid>
-            <Box id="hero-texts-wrapper" p="1rem">
-                <TypographyTitle text="Ota yhteyttä" />
-                <Typography sx={{ mt: '1rem' }} textAlign="center">
-                    Tällä lomakkeella voit lähettää terveisiä, risuja ja ruusuja, tai selvittää tilaukseenne liittyviä
-                    mahdollisia kysymyksiä.
-                </Typography>
-                <Typography textAlign="center">
-                    Koulutetut apinamme pyrkivät vastaamaan viesteihin ilmoittamaasi sähköpostiin noin 4 sekunnin
-                    kuluessa.
-                </Typography>
-            </Box>
-        </>
-    );
-}
+import HeroHeader from '../HeroHeader';
+import HeroText from '../HeroText';
 
 function ContactForm() {
     const { register, handleSubmit, watch } = useForm();
@@ -184,7 +129,12 @@ function ContactForm() {
 function ContactPage() {
     return (
         <Container maxWidth="lg">
-            <Hero />
+            <HeroHeader Icon={<MailIcon />} />
+            <HeroText
+                title="Ota yhteyttä"
+                text="Tällä lomakkeella voit lähettää terveisiä, risuja ja ruusuja, tai selvittää tilaukseenne liittyviä
+                    mahdollisia kysymyksiä."
+            />
             <ContactForm />
         </Container>
     );
