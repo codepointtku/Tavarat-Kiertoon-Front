@@ -5,37 +5,31 @@ import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
-    Box,
     Container,
     Grid,
     Link as MuiLink,
-    Stack,
     Typography,
 } from '@mui/material';
 
 import ChatIcon from '@mui/icons-material/Chat';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import TypographyTitle from '../../TypographyTitle';
 import HeroHeader from '../../HeroHeader';
+import HeroText from '../../HeroText';
 
-function HeroText() {
+function CustomHeroText() {
     return (
-        <Box id="hero-texts-wrapper" p="1rem">
-            <TypographyTitle text="Yleiset ohjeet" />
-            <Stack alignItems="center" mt="1rem">
-                <Typography variant="subtitle2">
-                    Alla on usein kysyttyjä kysymyksiä vastauksineen. Jos etsimäsi tietoa ei löydy tästä tai{' '}
-                    <MuiLink component={Link} to="/ohjeet">
-                        Ohje
-                    </MuiLink>
-                    -sivulta, voit olla meihin yhteydessä{' '}
-                    <MuiLink component={Link} to="/otayhteytta">
-                        täältä.
-                    </MuiLink>
-                </Typography>
-            </Stack>
-        </Box>
+        <Typography variant="subtitle2" textAlign="center" mb="2rem">
+            Jos etsimäsi tietoa ei löydy tästä tai{' '}
+            <MuiLink component={Link} to="/ohjeet">
+                Ohje
+            </MuiLink>
+            -sivulta, voit olla meihin yhteydessä{' '}
+            <MuiLink component={Link} to="/otayhteytta">
+                täältä
+            </MuiLink>
+            .
+        </Typography>
     );
 }
 
@@ -288,7 +282,8 @@ function FAQView() {
     return (
         <Container maxWidth="lg">
             <HeroHeader Icon={<ChatIcon />} />
-            <HeroText />
+            <HeroText title="Yleiset ohjeet" subtitle="Alle on koottu usein kysyttyjä kysymyksiä vastauksineen." />
+            <CustomHeroText />
             <FAQAccordions />
         </Container>
     );
