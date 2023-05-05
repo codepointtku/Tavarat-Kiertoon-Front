@@ -144,17 +144,19 @@ const storageProductsLoader = async (auth, setAuth, request) => {
     console.log('search @ storageProductsLoaders:', search);
 
     if (search) {
-        const [{ data: storages }, { data: products }] = await Promise.all([
+        const [{ data: storages }, { data: colors }, { data: products }] = await Promise.all([
             axios.get('http://localhost:8000/storages/'),
+            axios.get('http://localhost:8000/colors/'),
             axios.get(`http://localhost:8000/storage/products/?search=${search}`),
         ]);
         return { storages, products };
     }
-    const [{ data: storages }, { data: products }] = await Promise.all([
+    const [{ data: storages }, { data: colors }, { data: products }] = await Promise.all([
         axios.get('http://localhost:8000/storages/'),
-        axios.get('http://localhost:8000/products/'),
+        axios.get('http://localhost:8000/colors/'),
+        axios.get('http://localhost:8000/storage/products/'),
     ]);
-    return { storages, products };
+    return { storages, colors, products };
 };
 
 /**
