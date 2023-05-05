@@ -26,7 +26,8 @@ import QrScanner from '../Components/Storage/QrScanner';
 import AdminPanel from '../Components/Admin/Panel/AdminPanel';
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
-import NewAnnouncement from '../Components/Admin/NewAnnouncement';
+import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
+import Stats from '../Components/Admin/Stats/Stats';
 
 import StoragesList from '../Components/Admin/StoragesList';
 import StorageEdit from '../Components/Admin/StorageEdit';
@@ -43,11 +44,11 @@ import Confirmation from '../Components/Default/ShoppingCart/Confirmation';
 
 import SignupLandingPage from '../Components/Default/Signup/SignupLandingPage';
 import SignupPage from '../Components/Default/Signup/SignupPage';
+
 import ContactPage from '../Components/Default/ContactPage';
-import Stats from '../Components/Admin/Stats/Stats';
-import BackgroundInfo from '../Components/Default/Backgroundinfo';
-import Announcements from '../Components/Default/Announcements';
+import Bulletins from '../Components/Default/BulletinsPage';
 import DeliveryView from '../Components/DeliveryView';
+import BgInfo from '../Components/Default/BgInfo';
 
 import ForgotPassword from '../Components/Default/ResetPassword/ForgotPassword';
 import ResetPassword from '../Components/Default/ResetPassword/ResetPassword';
@@ -88,7 +89,6 @@ import {
     bikesListLoader,
     bikeLoader,
     shoppingProcessLoader,
-    bulletinSubjectLoader,
 } from './loaders';
 
 import {
@@ -209,7 +209,7 @@ function Routes() {
                         },
                         {
                             path: 'taustatietoa',
-                            element: <BackgroundInfo />,
+                            element: <BgInfo />,
                         },
                         {
                             path: 'tilastot',
@@ -243,7 +243,7 @@ function Routes() {
                         },
                         {
                             path: '/tiedotteet',
-                            element: <Announcements />,
+                            element: <Bulletins />,
                         },
                         {
                             path: 'rekisteroidy',
@@ -413,8 +413,7 @@ function Routes() {
 
                         {
                             path: 'tiedotteet/luo',
-                            element: <NewAnnouncement />,
-                            loader: bulletinSubjectLoader,
+                            element: <CreateBulletinPost />,
                             action: async ({ request }) => createBulletinAction(auth, setAuth, request),
                         },
 

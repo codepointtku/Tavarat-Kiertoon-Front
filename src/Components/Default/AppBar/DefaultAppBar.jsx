@@ -28,6 +28,7 @@ import AuthContext from '../../../Context/AuthContext';
 import Welcome from './Welcome';
 import ProductInCart from './ProductInCart';
 import LoginForm from './LoginForm';
+import Tooltip from '../../Tooltip';
 
 //
 
@@ -154,21 +155,25 @@ function DefaultAppBar() {
             >
                 <Toolbar>
                     <Stack direction="row" spacing={4}>
-                        <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
-                            <StyledBadge
-                                badgeContent={cart?.products?.length}
-                                sx={{ color: 'primary.contrastText' }}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                            >
-                                <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
-                            </StyledBadge>
-                        </IconButton>
-                        <IconButton onClick={drawerOpen('account')} sx={iconHover}>
-                            <AccountCircleOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
-                        </IconButton>
+                        <Tooltip title="Ostoskori">
+                            <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
+                                <StyledBadge
+                                    badgeContent={cart?.products?.length}
+                                    sx={{ color: 'primary.contrastText' }}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                >
+                                    <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
+                                </StyledBadge>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Kirjautuminen">
+                            <IconButton onClick={drawerOpen('account')} sx={iconHover}>
+                                <AccountCircleOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
+                            </IconButton>
+                        </Tooltip>
                     </Stack>
                 </Toolbar>
             </AppBar>

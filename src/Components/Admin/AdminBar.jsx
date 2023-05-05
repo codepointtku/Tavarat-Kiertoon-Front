@@ -29,29 +29,27 @@ export default function AdminBar() {
     }, [location]);
 
     return (
-        <Box id="moro" sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        <Link to="/admin/varastot" style={{ color: 'white' }}>
-                            Admin
-                        </Link>
-                        <Typography variant="subtitle2">{currentPage}</Typography>
-                    </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page.name}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                                to={page.path}
-                                component={Link}
-                            >
-                                {page.name}
-                            </Button>
-                        ))}
-                    </Box>
-                </Toolbar>
-            </AppBar>
-        </Box>
+        <AppBar position="static">
+            <Toolbar>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    <Link to="/admin/varastot" style={{ color: 'white' }}>
+                        Admin
+                    </Link>
+                    <Typography variant="subtitle2">{currentPage}</Typography>
+                </Typography>
+                <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
+                    {pages.map((page) => (
+                        <Button
+                            key={page.name}
+                            sx={{ my: 2, color: 'white', display: 'block' }}
+                            to={page.path}
+                            component={Link}
+                        >
+                            {page.name}
+                        </Button>
+                    ))}
+                </Box>
+            </Toolbar>
+        </AppBar>
     );
 }
