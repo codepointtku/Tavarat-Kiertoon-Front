@@ -239,7 +239,7 @@ function DefaultAppBar() {
                                     text={cartProduct.name}
                                     count={cartProduct.count}
                                     index={cartProduct.id}
-                                    amountInStorage={productsInCart[0].amount}
+                                    amountInStorage={productsInCart[0]?.amount}
                                     setChangeAmount={setChangeAmount}
                                 />
                             )
