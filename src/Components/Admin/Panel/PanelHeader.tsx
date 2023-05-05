@@ -91,21 +91,27 @@ function PanelHeader() {
                 </Box>
                 <Search />
                 <Box id="notifs" sx={{ margin: '0 1rem 0 1rem' }}>
-                    <IconButton>
-                        <Badge badgeContent={4} color="error">
-                            <NotificationsNoneIcon sx={{ color: 'primary.contrastText' }} />
-                        </Badge>
-                    </IconButton>
+                    <Tooltip title="Ilmoitukset">
+                        <IconButton>
+                            <Badge badgeContent={4} color="error">
+                                <NotificationsNoneIcon sx={{ color: 'primary.contrastText' }} />
+                            </Badge>
+                        </IconButton>
+                    </Tooltip>
                 </Box>
                 <Box id="mail" sx={{ margin: '0 1rem 0 1rem' }}>
-                    <IconButton>
-                        <Badge badgeContent={3} color="error">
-                            <MailIcon sx={{ color: 'primary.contrastText' }} />
-                        </Badge>
-                    </IconButton>
+                    <Tooltip title="Uudet viestit">
+                        <IconButton>
+                            <Badge badgeContent={3} color="error">
+                                <MailIcon sx={{ color: 'primary.contrastText' }} />
+                            </Badge>
+                        </IconButton>
+                    </Tooltip>
                 </Box>
                 <Box id="avatar" sx={{ margin: '0 1rem 0 1rem' }}>
-                    <Avatar sx={{ bgcolor: 'success.dark' }}>A</Avatar>
+                    <Tooltip title="Kirjautuminen">
+                        <Avatar sx={{ bgcolor: 'success.dark' }}>A</Avatar>
+                    </Tooltip>
                 </Box>
             </Box>
         </Box>
