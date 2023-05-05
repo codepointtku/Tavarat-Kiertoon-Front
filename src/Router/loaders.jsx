@@ -146,7 +146,7 @@ const storageProductsLoader = async (auth, setAuth, request) => {
     if (search) {
         const [{ data: storages }, { data: products }] = await Promise.all([
             axios.get('http://localhost:8000/storages/'),
-            axios.get(`http://localhost:8000/products/?search=${search}`),
+            axios.get(`http://localhost:8000/storage/products/?search=${search}`),
         ]);
         return { storages, products };
     }
