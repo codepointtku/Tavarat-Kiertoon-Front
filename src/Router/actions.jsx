@@ -1,3 +1,4 @@
+import { redirect } from 'react-router-dom';
 import apiCall from '../Utils/apiCall';
 
 /**
@@ -7,7 +8,6 @@ const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : -1;
-    console.log(amount);
     if (request.method === 'POST') {
         if (auth.username) {
             const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
@@ -36,7 +36,7 @@ const frontPageActions = async (auth, setAuth, request) => {
         if (!id) {
             // clear cart if no id is being sent or clear cart and return "type: orderCreated" when a new order is created.
             const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
-                products: '',
+                amount,
             });
             if (formData.has('order')) {
                 return { type: 'orderCreated', status: true };
@@ -70,23 +70,39 @@ const frontPageActions = async (auth, setAuth, request) => {
 /**
  * creates new user
  */
+
 const userSignupAction = async (auth, setAuth, request) => {
+    // both single user signup form, and location signup form use this same action
+    // and url in backend.
+
+    // a single user does not have an username -- email-value is copied to username-value in BE.
+
+    // this action defaults without username-field.
+    // if username-field exists in the formData, its value is appended and sent with the apiCall.
+
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/users/create/', 'post', {
-        username: formData.get('username'),
+
+    let userSignUpValues = {
         first_name: formData.get('firstname'),
         last_name: formData.get('lastname'),
         email: formData.get('email'),
         phone_number: formData.get('phonenumber'),
         password: formData.get('password'),
-        joint_user: formData.get('jointuser'),
         address: formData.get('address'),
         zip_code: formData.get('zipcode'),
         city: formData.get('town'),
-    });
+    };
+
+    if (formData.has('username')) {
+        userSignUpValues = { ...userSignUpValues, username: formData.get('username') };
+    }
+
+    const response = await apiCall(auth, setAuth, '/users/create/', 'post', userSignUpValues);
+
     if (response.status === 201) {
         return { type: 'create', status: true };
     }
+
     return { type: 'create', status: false };
 };
 
@@ -212,7 +228,11 @@ const itemCreateAction = async (auth, setAuth, request) => {
     }
     return { type: 'createitem', status: false };
 };
-// add new announcement
+
+/**
+ * create new bulletin post
+ */
+
 const createBulletinAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, '/bulletins/', 'post', formData);
@@ -286,7 +306,61 @@ const confirmationAction = async (auth, setAuth, request) => {
     if (response.status === 200) {
         return { type: 'post', status: true };
     }
-    return { type: 'post', status: true };
+    return { type: 'post', status: false };
+};
+
+/**
+ * sends email for resetting user password
+ */
+
+const resetEmailAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/users/password/resetemail/', 'post', {
+        username: formData.get('username'),
+    });
+    if (response.status === 200) {
+        return { type: 'emailsent', status: true };
+    }
+    return { type: 'emailsent', status: false };
+};
+
+const resetPasswordAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, 'users/password/reset/', 'post', {
+        new_password: formData.get('new_password'),
+        new_password_again: formData.get('new_password_again'),
+        uid: formData.get('uid'),
+        token: formData.get('token'),
+    });
+    if (response.status === 200) {
+        return { type: 'passwordreset', status: true };
+    } else if (response.status === 204) {
+        return { type: 'outdatedtoken', status: true };
+    }
+    return { type: 'passwordreset', status: false };
+};
+
+/**
+ * modifyBikeAction
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} request
+ * @param {*} params
+ */
+const modifyBikeAction = async (auth, setAuth, request, params) => {
+    // collect data that needs to be sent to backend
+    const data = await request.formData();
+    const submission = {
+        bike: data.get('changeBikeModel'),
+        frame_number: data.get('changeFrameNumber'),
+        number: data.get('changeBikeNumber'),
+        storage: data.get('changeBikeStorage'),
+    };
+
+    // send data and redirect back to bike list
+    await apiCall(auth, setAuth, `/bikes/stock/${params.id}/`, 'put', submission);
+    return redirect('/pyorat/pyoravarasto');
 };
 
 export {
@@ -303,4 +377,7 @@ export {
     cartViewAction,
     bikeOrderAction,
     confirmationAction,
+    resetEmailAction,
+    resetPasswordAction,
+    modifyBikeAction,
 };

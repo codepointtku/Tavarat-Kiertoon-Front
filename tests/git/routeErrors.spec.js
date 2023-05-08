@@ -25,7 +25,7 @@ test.describe('toimitus', () => {
 test.describe('taustatietoa', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/taustatietoa');
-        await expect(page.getByText('Etsimääsi sijaintia /backgroundinfo')).not.toBeVisible();
+        await expect(page.getByText('Etsimääsi sijaintia /taustatietoa')).not.toBeVisible();
     });
 });
 
@@ -195,31 +195,45 @@ test.describe('bikes', () => {
         await expect(page.getByText('Etsimääsi sijaintia /pyorat')).not.toBeVisible();
     });
 });
-
 test.describe('bikewarehouse', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/pyorat/pyoravarasto');
         await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto')).not.toBeVisible();
     });
 });
-
 test.describe('bikeorder', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/pyorat/pyoravarasto/pyoratilaukset');
         await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyoratilaukset')).not.toBeVisible();
     });
 });
-
 test.describe('bikepackets', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/pyorat/pyoravarasto/pyorapaketit');
         await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
     });
 });
-
-test.describe('profilepage', () => {
+test.describe('passwordreset', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/profiili');
-        await expect(page.getByText('Etsimääsi sijaintia /profiili')).not.toBeVisible();
+        await page.goto('/salasananpalautus');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+    });
+});
+test.describe('passwordresetsuccessful', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/salasananpalautus/salasanapalautettu');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+    });
+});
+test.describe('linkexpired', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/salasananpalautus/linkexpired');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+    });
+});
+test.describe('pwdresetsession', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/salasananpalautus/asd/das');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
     });
 });

@@ -1,17 +1,16 @@
-/* eslint-disable */
-
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { Avatar, Box, Container, Grid, Link as MuiLink, Typography, Tabs, Tab } from '@mui/material';
+import { Box, Container, Link as MuiLink, Typography, Tabs, Tab } from '@mui/material';
 
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import GiteIcon from '@mui/icons-material/Gite';
 import Person2Icon from '@mui/icons-material/Person2';
 
-import BackButton from '../../BackButton';
+import HeroHeader from '../../HeroHeader';
+import HeroText from '../../HeroText';
 
 function SignupHelp() {
     return (
@@ -155,32 +154,6 @@ function LocationAccountHelp() {
         </>
     );
 }
-
-function Hero() {
-    return (
-        <>
-            <Grid container>
-                <Grid item xs={6} md={6} mt={2} mb={2}>
-                    <BackButton />
-                </Grid>
-                <Grid item xs={6} md={6} mt={2} mb={2}>
-                    <Avatar
-                        sx={{
-                            bgcolor: 'secondary.dark',
-                            width: 48,
-                            height: 48,
-                        }}
-                    >
-                        <HelpOutlineIcon fontSize="large" />
-                    </Avatar>
-                </Grid>
-            </Grid>
-            <Typography variant="h4" color="primary.main" textAlign="center">
-                Rekisteröitymisen ja tilien ohjeet
-            </Typography>
-        </>
-    );
-}
 function TabPage(props) {
     const { children, value, name, ...other } = props;
 
@@ -237,7 +210,8 @@ function TitleTabs() {
 function GuideAccount() {
     return (
         <Container maxWidth="lg">
-            <Hero />
+            <HeroHeader Icon={<HelpOutlineIcon />} />
+            <HeroText title="Rekisteröitymisen ja tilien ohjeet" />
             <TitleTabs />
         </Container>
     );

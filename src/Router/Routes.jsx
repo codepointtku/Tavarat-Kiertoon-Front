@@ -25,7 +25,8 @@ import QrScanner from '../Components/Storage/QrScanner';
 
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
-import NewAnnouncement from '../Components/Admin/NewAnnouncement';
+import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
+import Stats from '../Components/Admin/Stats/Stats';
 
 import StoragesList from '../Components/Admin/StoragesList';
 import StorageEdit from '../Components/Admin/StorageEdit';
@@ -40,14 +41,19 @@ import ContactsAndDelivery from '../Components/Default/ShoppingCart/ContactsAndD
 import CartView from '../Components/Default/ShoppingCart/CartView';
 import Confirmation from '../Components/Default/ShoppingCart/Confirmation';
 
-import SignupLandingPage from '../Components/Signup/SignupLandingPage';
-import SignupPage from '../Components/Signup/SignupPage';
-import UserProfilePage from '../Components/Default/Profilepage/UserProfilePage';
-import ContactPage from '../Components/ContactPage';
-import Stats from '../Components/Stats/Stats';
-import BackgroundInfo from '../Components/Backgroundinfo';
-import Announcements from '../Components/Announcements';
+import SignupLandingPage from '../Components/Default/Signup/SignupLandingPage';
+import SignupPage from '../Components/Default/Signup/SignupPage';
+
+import ContactPage from '../Components/Default/ContactPage';
+import Bulletins from '../Components/Default/BulletinsPage';
 import DeliveryView from '../Components/DeliveryView';
+import BgInfo from '../Components/Default/BgInfo';
+
+import ForgotPassword from '../Components/Default/ResetPassword/ForgotPassword';
+import ResetPassword from '../Components/Default/ResetPassword/ResetPassword';
+import ResetSuccessful from '../Components/Default/ResetPassword/ResetSuccessful';
+import LinkExpired from '../Components/Default/ResetPassword/LinkExpired';
+import PasswordResetNavigate from '../Components/Default/ResetPassword/PasswordResetNavigate';
 
 import InstructionsPage from '../Components/Default/Instructions/InstructionsPage';
 import GuideCommon from '../Components/Default/Instructions/GuideCommon';
@@ -61,6 +67,7 @@ import Bikes from '../Components/Bikes/Bikes';
 import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
+import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 
 import {
     addItemLoader,
@@ -77,11 +84,10 @@ import {
     usersListLoader,
     userSignupLoader,
     shoppingCartLoader,
+    bikesDefaultLoader,
     bikesListLoader,
-    contactsAndDeliveryLoader,
-    userInfoLoader,
+    bikeLoader,
     shoppingProcessLoader,
-    bulletinSubjectLoader,
 } from './loaders';
 
 import {
@@ -96,6 +102,9 @@ import {
     createBulletinAction,
     bikeOrderAction,
     confirmationAction,
+    resetEmailAction,
+    resetPasswordAction,
+    modifyBikeAction,
 } from './actions';
 
 createStore({});
@@ -195,7 +204,7 @@ function Routes() {
                         },
                         {
                             path: 'taustatietoa',
-                            element: <BackgroundInfo />,
+                            element: <BgInfo />,
                         },
                         {
                             path: 'tilastot',
@@ -229,7 +238,7 @@ function Routes() {
                         },
                         {
                             path: '/tiedotteet',
-                            element: <Announcements />,
+                            element: <Bulletins />,
                         },
                         {
                             path: 'rekisteroidy',
@@ -259,9 +268,32 @@ function Routes() {
                             action: async ({ request }) => contactAction(auth, setAuth, request),
                         },
                         {
-                            path: 'profiili',
-                            element: <UserProfilePage />,
-                            loader: userInfoLoader,
+                            path: 'unohtunutsalasana',
+                            element: <ForgotPassword />,
+                            action: async ({ request }) => resetEmailAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'salasananpalautus',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <ResetPassword />,
+                                },
+                                {
+                                    path: 'salasanapalautettu',
+                                    element: <ResetSuccessful />,
+                                    action: async ({ request }) => resetPasswordAction(auth, setAuth, request),
+                                },
+                                {
+                                    path: 'linkexpired',
+                                    element: <LinkExpired />,
+                                },
+                                {
+                                    path: ':uid/:token',
+                                    element: <PasswordResetNavigate />,
+                                },
+                            ],
                         },
                     ],
                 },
@@ -363,8 +395,7 @@ function Routes() {
                         },
                         {
                             path: 'tiedotteet/luo',
-                            element: <NewAnnouncement />,
-                            loader: bulletinSubjectLoader,
+                            element: <CreateBulletinPost />,
                             action: async ({ request }) => createBulletinAction(auth, setAuth, request),
                         },
                         {
@@ -419,7 +450,6 @@ function Routes() {
                 // bikes routes
                 {
                     path: 'pyorat',
-                    action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                     element: (
                         <ThemeProvider theme={bikeTheme}>
                             <BikesLayout />
@@ -429,8 +459,8 @@ function Routes() {
                         {
                             index: true,
                             element: <BikesPage />,
-                            loader: bikesListLoader,
-                            shouldRevalidate: () => false,
+                            loader: bikesDefaultLoader,
+                            action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                         },
                         {
                             path: 'pyoravarasto',
@@ -438,6 +468,7 @@ function Routes() {
                             children: [
                                 {
                                     index: true,
+                                    loader: async () => bikesListLoader(auth, setAuth),
                                     element: <Bikes />,
                                 },
                                 {
@@ -447,6 +478,23 @@ function Routes() {
                                 {
                                     path: 'pyorapaketit',
                                     element: <BikePackets />,
+                                },
+                                {
+                                    path: 'muokkaa',
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <Navigate to="/pyorat/pyoravarasto" />,
+                                        },
+                                        {
+                                            path: ':id',
+                                            element: <ModifyBikePage />,
+                                            loader: async ({ params }) => bikeLoader(auth, setAuth, params),
+                                            action: async ({ request, params }) =>
+                                                modifyBikeAction(auth, setAuth, request, params),
+                                        },
+                                    ],
                                 },
                             ],
                         },
