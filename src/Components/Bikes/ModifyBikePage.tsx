@@ -1,7 +1,10 @@
 import {
     Box,
     Button,
+    Checkbox,
     FormControl,
+    FormGroup,
+    FormControlLabel,
     InputLabel,
     MenuItem,
     Paper,
@@ -43,6 +46,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     const [bikeState, setBikeState] = useState(bikeData);
     const [frameNumberState, setFrameNumberState] = useState(createNewBike ? '' : bikeData.frame_number);
     const [bikeNumberState, setBikeNumberState] = useState(createNewBike ? '' : bikeData.number);
+    const [packageOnly, setPackageOnly] = useState(createNewBike ? false : bikeData.package_only);
 
     // storage change handler: used for selecting the correct storage
     const handleStorageChange = (event: SelectChangeEvent) => {
@@ -81,6 +85,10 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
         setBikeNumberState(event.target.value as string);
     };
 
+    const handlePackageOnly = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPackageOnly(event.target.checked);
+    };
+
     // RENDER
     return (
         <>
@@ -101,7 +109,13 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                 {/*
                  * Form area
                  */}
-                <Box component={Form} method="put" action={`/pyorat/pyoravarasto/muokkaa/${bikeState.id}`}>
+                <Box
+                    component={Form}
+                    method={createNewBike ? 'post' : 'put'}
+                    action={
+                        createNewBike ? `/pyorat/pyoravarasto/lisaa/` : `/pyorat/pyoravarasto/muokkaa/${bikeState.id}`
+                    }
+                >
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box
                             sx={{
@@ -224,7 +238,12 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varattu Pakettiin:</TableCell>
                                         <TableCell sx={{ border: 0 }}>
-                                            {bikeState.package_only ? 'Kyllä' : 'Ei'}
+                                            {/* {bikeState.package_only ? 'Kyllä' : 'Ei'} */}
+                                            <Checkbox
+                                                checked={packageOnly}
+                                                onChange={handlePackageOnly}
+                                                inputProps={{ 'aria-label': 'controlled' }}
+                                            />
                                         </TableCell>
                                         <TableCell sx={{ border: 0 }}></TableCell>
                                     </TableRow>
