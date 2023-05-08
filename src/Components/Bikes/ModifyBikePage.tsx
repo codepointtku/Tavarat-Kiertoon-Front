@@ -19,6 +19,9 @@ import type { bikeInterface, bikeModelInterface, storageInterface } from './Bike
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
 
+interface ModifyBikePageInterface {
+    createNewBike: boolean;
+}
 
 /**
  * ModifyBikePage
@@ -26,7 +29,7 @@ import { useState } from 'react';
  *
  * @returns JSX.Element
  */
-export default function ModifyBikePage() {
+export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterface) {
     // get data for current bike, all bikeModels and all storages
     const { bikeData, bikeModelsData, storagesData } = useLoaderData() as {
         bikeData: bikeInterface;
@@ -35,11 +38,11 @@ export default function ModifyBikePage() {
     };
 
     // states needed for the form data
-    const [storageState, setStorageState] = useState(bikeData.storage.id.toString());
-    const [bikeModelState, setBikeModelState] = useState(bikeData.bike.id.toString());
+    const [storageState, setStorageState] = useState(createNewBike ? '' : bikeData.storage.id.toString());
+    const [bikeModelState, setBikeModelState] = useState(createNewBike ? '' : bikeData.bike.id.toString());
     const [bikeState, setBikeState] = useState(bikeData);
-    const [frameNumberState, setFrameNumberState] = useState(bikeData.frame_number);
-    const [bikeNumberState, setBikeNumberState] = useState(bikeData.number);
+    const [frameNumberState, setFrameNumberState] = useState(createNewBike ? '' : bikeData.frame_number);
+    const [bikeNumberState, setBikeNumberState] = useState(createNewBike ? '' : bikeData.number);
 
     // storage change handler: used for selecting the correct storage
     const handleStorageChange = (event: SelectChangeEvent) => {
@@ -96,13 +99,9 @@ export default function ModifyBikePage() {
                 </Box>
 
                 {/*
-                  * Form area
-                  */}
-                <Box
-                    component={Form}
-                    method="put"
-                    action={`/pyorat/pyoravarasto/muokkaa/${bikeState.id}`}
-                >
+                 * Form area
+                 */}
+                <Box component={Form} method="put" action={`/pyorat/pyoravarasto/muokkaa/${bikeState.id}`}>
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box
                             sx={{
@@ -146,22 +145,22 @@ export default function ModifyBikePage() {
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Merkki:</TableCell>
-                                        <TableCell>{bikeState.bike.brand.name}</TableCell>
+                                        <TableCell>{bikeState.bike.brand?.name}</TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Tyyppi:</TableCell>
-                                        <TableCell>{bikeState.bike.type.name}</TableCell>
+                                        <TableCell>{bikeState.bike.type?.name}</TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Koko:</TableCell>
-                                        <TableCell>{bikeState.bike.size.name}</TableCell>
+                                        <TableCell>{bikeState.bike.size?.name}</TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Väri:</TableCell>
-                                        <TableCell>{bikeState.bike.color.name}</TableCell>
+                                        <TableCell>{bikeState.bike.color?.name}</TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
@@ -191,7 +190,7 @@ export default function ModifyBikePage() {
                                 <TableBody>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Runkonumero:</TableCell>
-                                        <TableCell colSpan={2}>
+                                        <TableCell colSpan={2} align="right">
                                             <TextField
                                                 label="Muokkaa runkonumeroa"
                                                 name="changeFrameNumber"
@@ -202,11 +201,15 @@ export default function ModifyBikePage() {
                                         </TableCell>
                                     </TableRow>
                                     {/*
-                                      * When editing bike this row is not visible
-                                      * Unfortenately field can not be disabled cause the value is still used in form
-                                      * When adding new bike this field needs to be shown
-                                      */}
-                                    <TableRow style={{ display: "none" }}>
+                                     * When editing bike this row is not visible
+                                     * Unfortenately field can not be disabled cause the value is still used in form
+                                     * When adding new bike this field needs to be shown
+                                     */}
+                                    <TableRow
+                                        style={{
+                                            display: createNewBike ? '' : 'none',
+                                        }}
+                                    >
                                         <TableCell sx={{ fontWeight: 'bold' }}>Numero:</TableCell>
                                         <TableCell colSpan={2}>
                                             <TextField
@@ -215,7 +218,6 @@ export default function ModifyBikePage() {
                                                 value={bikeNumberState}
                                                 fullWidth
                                                 onChange={handleBikeNumberChange}
-                                                // disabled
                                             />
                                         </TableCell>
                                     </TableRow>
