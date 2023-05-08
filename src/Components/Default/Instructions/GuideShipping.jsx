@@ -1,45 +1,18 @@
-import { Avatar, Container, Grid, Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
-import BackButton from '../../BackButton';
-
-function Hero() {
-    return (
-        <>
-            <Grid container>
-                <Grid item xs={6} md={6} mt={2} mb={2}>
-                    <BackButton />
-                </Grid>
-                <Grid item xs={6} md={6} mt={2} mb={2}>
-                    <Avatar
-                        sx={{
-                            bgcolor: 'secondary.dark',
-                            width: 48,
-                            height: 48,
-                        }}
-                    >
-                        <LocalShippingIcon fontSize="large" />
-                    </Avatar>
-                </Grid>
-            </Grid>
-            <Typography variant="h4" color="primary.main" textAlign="center">
-                Noutokuljetuksen ohjeet
-            </Typography>
-        </>
-    );
-}
+import HeroHeader from '../../HeroHeader';
+import HeroText from '../../HeroText';
+import TypographyHeading from '../../TypographyHeading';
 
 function Shipping() {
     return (
         <>
-            <Typography variant="h5" color="primary.main" gutterBottom>
-                Noutokuljetuksen tilaaminen
-            </Typography>
-            <Typography gutterBottom>Voit tilata kierrätyskelpoiselle tavarallesi noutokuljetuksen.</Typography>
-            <Typography gutterBottom>
-                Huomioi, jos tavara on huonokuntoista, perimme siitä jätekäsittelymaksun.
-            </Typography>
+            <TypographyHeading text="Noutokuljetuksen tilaaminen" />
+            <Typography gutterBottom>Vaihe 1: Soita toimistoon</Typography>
+            <Typography gutterBottom>Vaihe 2: Lopeta puhelu</Typography>
+            <Typography gutterBottom>Vaihe 3: Odota</Typography>
         </>
     );
 }
@@ -47,7 +20,12 @@ function Shipping() {
 function GuideShipping() {
     return (
         <Container maxWidth="lg">
-            <Hero />
+            <HeroHeader Icon={<LocalShippingIcon />} />
+            <HeroText
+                title="Noutokuljetuksen ohjeet"
+                subtitle="Voit tilata kierrätyskelpoiselle tavarallesi noutokuljetuksen."
+                text="Huomioi, jos tavara on huonokuntoista, perimme siitä jätekäsittelymaksun."
+            />
             <Shipping />
         </Container>
     );
