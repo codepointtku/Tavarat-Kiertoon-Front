@@ -1,26 +1,20 @@
-/* eslint-disable react/jsx-props-no-spreading */
-
-import {
-    Container,
-    TextField,
-    Typography,
-    Button,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    Grid,
-} from '@mui/material';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, useSubmit } from 'react-router-dom';
-import { useState } from 'react';
-import AlertBox from '../AlertBox';
 
-function ContactPage() {
+import { Container, TextField, Button, FormControl, InputLabel, Select, MenuItem, Grid } from '@mui/material';
+
+import MailIcon from '@mui/icons-material/Mail';
+
+import AlertBox from '../AlertBox';
+import HeroHeader from '../HeroHeader';
+import HeroText from '../HeroText';
+
+function ContactForm() {
     const { register, handleSubmit, watch } = useForm();
     const submit = useSubmit();
     const [success, setSuccess] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSubmitting] = useState(false);
 
     const subject = watch('subject');
 
@@ -34,108 +28,115 @@ function ContactPage() {
     };
 
     return (
-        <Grid
-            container
+        <Container
+            id="contact-form-container"
+            maxWidth="md"
             component={Form}
             onSubmit={handleSubmit(onSubmit)}
             autoComplete="off"
-            sx={{
-                width: 1000,
-                marginTop: 4,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-            }}
         >
-            <Typography variant="h3" color="primary.main">
-                Ota yhteyttä
-            </Typography>
-            <Container sx={{ alignItems: 'center' }} maxWidth="md">
-                <FormControl
+            <FormControl
+                id="contact-form-form-controller"
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}
+            >
+                <TextField
+                    {...register('name')}
+                    sx={{ mt: 2 }}
+                    label="Nimesi"
+                    placeholder="Nimi"
+                    fullWidth
+                    inputProps={{ title: 'Etu- ja sukunimi', minLength: '2', maxLength: '50' }}
+                    required
+                />
+
+                <TextField
+                    {...register('email')}
+                    sx={{ mt: 2 }}
+                    label="Sähköpostisi"
+                    fullWidth
+                    inputProps={{
+                        title: 'vaatii @turku.fi päätteen',
+                        pattern: '.+@turku\\.fi$',
+                    }}
+                    required
+                    placeholder="@turku.fi"
+                />
+
+                <Grid container>
+                    <Grid item xs={12}>
+                        <FormControl fullWidth required sx={{ mt: 2 }}>
+                            <InputLabel>Viestin aihe</InputLabel>
+                            <Select
+                                {...register('subject')}
+                                labelId="select-label"
+                                defaultValue=""
+                                label="Viestin aihe"
+                            >
+                                <MenuItem value="Yleinen palaute">Yleinen palaute</MenuItem>
+                                <MenuItem value="Tilaukset">Tilaukset</MenuItem>
+                                <MenuItem value="Tekninen ongelma">Tekninen ongelma</MenuItem>
+                                <MenuItem value="Kehitysehdotukset">Kehitysehdotukset</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                        {subject === 'Tilaukset' && (
+                            <TextField
+                                {...register('order_id')}
+                                sx={{ mt: 2 }}
+                                label="Tilausnumero"
+                                placeholder="1234"
+                                required
+                                type="number"
+                            />
+                        )}
+                    </Grid>
+                </Grid>
+
+                <TextField
+                    {...register('message')}
+                    sx={{ mt: 2 }}
+                    placeholder="Viesti"
+                    label="Viesti"
+                    required
+                    multiline
+                    inputProps={{ minLength: '5' }}
+                    fullWidth
+                    rows={6}
+                />
+                <Button
+                    disabled={isSubmitting}
+                    type="submit"
                     sx={{
-                        marginTop: 4,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
+                        mt: 2,
+                        mb: 2,
                     }}
                 >
-                    <TextField
-                        {...register('name')}
-                        sx={{ mt: 2 }}
-                        label="Nimesi"
-                        placeholder="Etunimi Sukunimi"
-                        fullWidth
-                        inputProps={{ title: 'Etu ja Sukunimi', minLength: '4', maxLength: '50' }}
-                        required
-                    />
+                    Lähetä viesti
+                </Button>
+                {success && (
+                    <AlertBox text="Lähetetty! Kiitos viestistäsi!" timer={3000} status="success" redirectUrl="/" />
+                )}
+            </FormControl>
+        </Container>
+    );
+}
 
-                    <TextField
-                        {...register('email')}
-                        sx={{ mt: 2 }}
-                        label="Sähköpostisi"
-                        fullWidth
-                        inputProps={{
-                            title: 'vaatii @turku.fi päätteen',
-                            pattern: '.+@turku\\.fi$',
-                        }}
-                        required
-                        placeholder="@turku.fi"
-                    />
-
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <FormControl fullWidth required sx={{ mt: 2 }}>
-                                <InputLabel>Aihe</InputLabel>
-                                <Select {...register('subject')} labelId="select-label" defaultValue="" label="Aihe">
-                                    <MenuItem value="Yleinen palaute">Yleinen palaute</MenuItem>
-                                    <MenuItem value="Tilaukset">Tilaukset</MenuItem>
-                                    <MenuItem value="Tekninen ongelma">Tekninen ongelma</MenuItem>
-                                    <MenuItem value="Kehitysehdotukset">Kehitysehdotukset</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
-                            {subject === 'Tilaukset' && (
-                                <TextField
-                                    {...register('order_id')}
-                                    sx={{ mt: 2 }}
-                                    label="Tilausnumero"
-                                    placeholder="1234"
-                                    required
-                                    type="number"
-                                />
-                            )}
-                        </Grid>
-                    </Grid>
-
-                    <TextField
-                        {...register('message')}
-                        sx={{ mt: 2 }}
-                        placeholder="Viesti"
-                        label="Viesti"
-                        required
-                        multiline
-                        inputProps={{ minLength: '5' }}
-                        fullWidth
-                        rows={6}
-                    />
-                    <Button
-                        disabled={isSubmitting}
-                        type="submit"
-                        style={{ width: 200 }}
-                        sx={{
-                            mt: 2,
-                            mb: 2,
-                        }}
-                    >
-                        Lähetä viesti
-                    </Button>
-                    {success && <AlertBox text="Lomake lähetetty!" timer={1500} status="success" redirectUrl="/" />}
-                </FormControl>
-            </Container>
-        </Grid>
+function ContactPage() {
+    return (
+        <Container maxWidth="lg">
+            <HeroHeader Icon={<MailIcon />} />
+            <HeroText
+                title="Ota yhteyttä"
+                text="Tällä lomakkeella voit lähettää terveisiä, risuja ja ruusuja, tai selvittää tilaukseenne liittyviä
+                    mahdollisia kysymyksiä."
+            />
+            <ContactForm />
+        </Container>
     );
 }
 

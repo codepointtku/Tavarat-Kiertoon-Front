@@ -28,7 +28,8 @@ import EditProduct from '../Components/Storage/EditProduct';
 
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
-import NewAnnouncement from '../Components/Admin/NewAnnouncement';
+import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
+import Stats from '../Components/Admin/Stats/Stats';
 
 import StoragesList from '../Components/Admin/StoragesList';
 import StorageEdit from '../Components/Admin/StorageEdit';
@@ -44,11 +45,11 @@ import Confirmation from '../Components/Default/ShoppingCart/Confirmation';
 
 import SignupLandingPage from '../Components/Default/Signup/SignupLandingPage';
 import SignupPage from '../Components/Default/Signup/SignupPage';
+
 import ContactPage from '../Components/Default/ContactPage';
-import Stats from '../Components/Admin/Stats/Stats';
-import BackgroundInfo from '../Components/Default/Backgroundinfo';
-import Announcements from '../Components/Default/Announcements';
+import Bulletins from '../Components/Default/BulletinsPage';
 import DeliveryView from '../Components/DeliveryView';
+import BgInfo from '../Components/Default/BgInfo';
 
 import ForgotPassword from '../Components/Default/ResetPassword/ForgotPassword';
 import ResetPassword from '../Components/Default/ResetPassword/ResetPassword';
@@ -68,6 +69,7 @@ import Bikes from '../Components/Bikes/Bikes';
 import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
+import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 
 import {
     orderEditLoader,
@@ -84,9 +86,10 @@ import {
     userSignupLoader,
     storageProductsLoader,
     shoppingCartLoader,
+    bikesDefaultLoader,
     bikesListLoader,
+    bikeLoader,
     shoppingProcessLoader,
-    bulletinSubjectLoader,
 } from './loaders';
 
 import {
@@ -104,6 +107,7 @@ import {
     confirmationAction,
     resetEmailAction,
     resetPasswordAction,
+    modifyBikeAction,
 } from './actions';
 
 createStore({});
@@ -203,7 +207,7 @@ function Routes() {
                         },
                         {
                             path: 'taustatietoa',
-                            element: <BackgroundInfo />,
+                            element: <BgInfo />,
                         },
                         {
                             path: 'tilastot',
@@ -237,7 +241,7 @@ function Routes() {
                         },
                         {
                             path: '/tiedotteet',
-                            element: <Announcements />,
+                            element: <Bulletins />,
                         },
                         {
                             path: 'rekisteroidy',
@@ -407,8 +411,7 @@ function Routes() {
                         },
                         {
                             path: 'tiedotteet/luo',
-                            element: <NewAnnouncement />,
-                            loader: bulletinSubjectLoader,
+                            element: <CreateBulletinPost />,
                             action: async ({ request }) => createBulletinAction(auth, setAuth, request),
                         },
                         {
@@ -463,7 +466,6 @@ function Routes() {
                 // bikes routes
                 {
                     path: 'pyorat',
-                    action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                     element: (
                         <ThemeProvider theme={bikeTheme}>
                             <BikesLayout />
@@ -473,8 +475,8 @@ function Routes() {
                         {
                             index: true,
                             element: <BikesPage />,
-                            loader: bikesListLoader,
-                            shouldRevalidate: () => false,
+                            loader: bikesDefaultLoader,
+                            action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                         },
                         {
                             path: 'pyoravarasto',
@@ -482,6 +484,7 @@ function Routes() {
                             children: [
                                 {
                                     index: true,
+                                    loader: async () => bikesListLoader(auth, setAuth),
                                     element: <Bikes />,
                                 },
                                 {
@@ -491,6 +494,23 @@ function Routes() {
                                 {
                                     path: 'pyorapaketit',
                                     element: <BikePackets />,
+                                },
+                                {
+                                    path: 'muokkaa',
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <Navigate to="/pyorat/pyoravarasto" />,
+                                        },
+                                        {
+                                            path: ':id',
+                                            element: <ModifyBikePage />,
+                                            loader: async ({ params }) => bikeLoader(auth, setAuth, params),
+                                            action: async ({ request, params }) =>
+                                                modifyBikeAction(auth, setAuth, request, params),
+                                        },
+                                    ],
                                 },
                             ],
                         },
