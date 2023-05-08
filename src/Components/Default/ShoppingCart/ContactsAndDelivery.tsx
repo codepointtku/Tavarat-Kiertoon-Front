@@ -147,7 +147,7 @@ function ContactsAndDelivery() {
                 Toimitus
             </Typography>
             <Grid container spacing={4}>
-                <Grid item>
+                <Grid item xs={2.5}>
                     <TextField
                         label="Toimitusosoite"
                         variant="outlined"
@@ -186,7 +186,7 @@ function ContactsAndDelivery() {
                         </Grid>
                     </>
                 )}
-                <Grid item>
+                <Grid item xs={2.5}>
                     <TextField
                         {...register('deliveryMethod', { required: true })}
                         label="Toimitustapa"
@@ -195,6 +195,7 @@ function ContactsAndDelivery() {
                         onChange={(SelectChangeEvent) => {
                             setSelectedMethod(SelectChangeEvent.target.value);
                         }}
+                        fullWidth
                         select
                     >
                         <MenuItem value="shipping">Kuljetus</MenuItem>
