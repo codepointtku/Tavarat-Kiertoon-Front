@@ -20,12 +20,14 @@ function ProductInCart({ text, index, count, amountInStorage, setChangeAmount }:
     const [hoveredOver, setHoveredOver] = useState(false);
     const [amount, setAmount] = useState(count);
     const submit = useSubmit();
+    const updatedProducts = [] as {}[];
 
     function addAmount() {
         if (amount === amountInStorage) {
             setAmount(amount);
         } else {
             setAmount(amount + 1);
+            updatedProducts.push({ name: text, amount: amount });
             setChangeAmount(true);
         }
     }
@@ -35,6 +37,7 @@ function ProductInCart({ text, index, count, amountInStorage, setChangeAmount }:
             setAmount(amount);
         } else {
             setAmount(amount - 1);
+            updatedProducts.push({ name: text, amount: amount });
             setChangeAmount(true);
         }
     }
@@ -50,6 +53,7 @@ function ProductInCart({ text, index, count, amountInStorage, setChangeAmount }:
         const input: number = +_input;
         if ((input >= 1 && input <= amountInStorage) || _input === '') {
             setAmount(Number(input));
+            updatedProducts.push({ name: text, amount: amount });
             setChangeAmount(true);
         }
     }
