@@ -5,8 +5,6 @@ import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
-    Avatar,
-    Box,
     Container,
     Grid,
     Link as MuiLink,
@@ -16,53 +14,22 @@ import {
 import ChatIcon from '@mui/icons-material/Chat';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import BackButton from '../../BackButton';
+import HeroHeader from '../../HeroHeader';
+import HeroText from '../../HeroText';
 
-function Hero() {
+function CustomHeroText() {
     return (
-        <>
-            <Grid container>
-                <Grid item xs={6} md={6} mt={2} mb={2}>
-                    <BackButton />
-                </Grid>
-                <Grid item xs={6} md={6} mt={2} mb={2}>
-                    <Avatar
-                        sx={{
-                            bgcolor: 'secondary.dark',
-                            width: 48,
-                            height: 48,
-                        }}
-                    >
-                        <ChatIcon fontSize="large" />
-                    </Avatar>
-                </Grid>
-            </Grid>
-
-            <Box
-                sx={{
-                    mb: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                <Typography variant="h4" color="primary.main" mb={2}>
-                    Yleiset ohjeet
-                </Typography>
-
-                <Typography variant="subtitle2" mb={2}>
-                    Alla on usein kysyttyjä kysymyksiä vastauksineen. Jos etsimäsi tietoa ei löydy tästä tai{' '}
-                    <MuiLink component={Link} to="/ohjeet">
-                        Ohje
-                    </MuiLink>
-                    -sivulta, voit olla meihin yhteydessä{' '}
-                    <MuiLink component={Link} to="/otayhteytta">
-                        täältä.
-                    </MuiLink>
-                </Typography>
-            </Box>
-        </>
+        <Typography variant="subtitle2" textAlign="center" mb="2rem">
+            Jos etsimäsi tietoa ei löydy tästä tai{' '}
+            <MuiLink component={Link} to="/ohjeet">
+                Ohje
+            </MuiLink>
+            -sivulta, voit olla meihin yhteydessä{' '}
+            <MuiLink component={Link} to="/otayhteytta">
+                täältä
+            </MuiLink>
+            .
+        </Typography>
     );
 }
 
@@ -314,7 +281,9 @@ function FAQAccordions() {
 function FAQView() {
     return (
         <Container maxWidth="lg">
-            <Hero />
+            <HeroHeader Icon={<ChatIcon />} />
+            <HeroText title="Yleiset ohjeet" subtitle="Alle on koottu usein kysyttyjä kysymyksiä vastauksineen." />
+            <CustomHeroText />
             <FAQAccordions />
         </Container>
     );
