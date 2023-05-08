@@ -1,18 +1,16 @@
-import { Outlet } from 'react-router';
 import { Box, Stack } from '@mui/material';
 
-// import AdminBar from '../Components/Admin/AdminBar';
 import Header from './Components/Header';
-import Footer from './Components/Footer';
 import AdminPanel from '../Components/Admin/Panel/AdminPanel';
+import Footer from './Components/Footer';
 
 // admin Layout
 
 function AdminLayout() {
     return (
-        <Stack id="admin-view-stack" sx={{ minHeight: ['100vh', '100svh'] }}>
+        <Stack id="admin-view-layout-stack" sx={{ minHeight: ['100vh', '100svh'] }}>
             <Header />
-            <Box id="admin-layout-content-container" sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
+            <Box id="admin-layout-admin-panel-container" sx={{ display: 'flex', flex: 1 }}>
                 <main>
                     <AdminPanel />
                 </main>
