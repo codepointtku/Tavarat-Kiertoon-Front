@@ -24,7 +24,7 @@ import OrderEdit from '../Components/Storage/OrderEdit';
 import QrScanner from '../Components/Storage/QrScanner';
 
 import UsersList from '../Components/Admin/UsersList';
-import UserEdit from '../Components/Admin/UserEdit';
+// import UserEdit from '../Components/Admin/UserEdit';
 import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
 import Stats from '../Components/Admin/Stats/Stats';
 
@@ -80,7 +80,7 @@ import {
     rootLoader,
     storagesListLoader,
     storageEditLoader,
-    userEditLoader,
+    // userEditLoader,
     usersListLoader,
     userSignupLoader,
     shoppingCartLoader,
@@ -97,7 +97,7 @@ import {
     storageEditAction,
     storageCreateAction,
     frontPageActions,
-    userEditAction,
+    // userEditAction,
     cartViewAction,
     createBulletinAction,
     bikeOrderAction,
@@ -109,6 +109,8 @@ import {
 
 import Overview from '../Components/Admin/Panel/Overview/Overview';
 import PageTest from '../Components/Admin/Panel/PageTest';
+
+import HasRole from '../Utils/HasRole';
 
 createStore({});
 
@@ -310,7 +312,7 @@ function Routes() {
                     ),
                     errorElement: (
                         <ThemeProvider theme={storageTheme}>
-                            <ErrorBoundary />,
+                            <ErrorBoundary />
                         </ThemeProvider>
                     ),
                     children: [
@@ -382,9 +384,11 @@ function Routes() {
                 {
                     path: 'admin',
                     element: (
-                        <ThemeProvider theme={adminTheme}>
-                            <AdminLayout />
-                        </ThemeProvider>
+                        <HasRole role="admin_group" fallback={<Navigate to="/" />}>
+                            <ThemeProvider theme={adminTheme}>
+                                <AdminLayout />
+                            </ThemeProvider>
+                        </HasRole>
                     ),
                     errorElement: (
                         <ThemeProvider theme={adminTheme}>
@@ -484,7 +488,7 @@ function Routes() {
                         {
                             index: true,
                             element: <BikesPage />,
-                            loader: bikesDefaultLoader,
+                            loader: async () => bikesDefaultLoader(auth, setAuth),
                             action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                         },
                         {
