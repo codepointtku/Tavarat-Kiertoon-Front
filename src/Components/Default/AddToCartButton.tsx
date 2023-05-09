@@ -17,7 +17,7 @@ interface Props {
 
 function AddToCartButton({ size, id, groupId, count }: Props) {
     const submit = useSubmit();
-    const { cart } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
+    const { cart, products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const [addedToCart, setAddedToCart] = useState(false);
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
@@ -25,6 +25,8 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
     // useEffect(() => {
     //     cart?.products?.length === 0 && resetField('amount');
     // }, [cart?.products?.length]);
+
+    const product = products.find((product: { id: number }) => product.id === id);
 
     const onSubmit = async () => {
         submit(
@@ -40,7 +42,7 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
             {cart?.products?.some((product: { group_id: string }) => product['group_id'] === groupId) ? (
-                <AddMoreToCart id={id} count={count} size={size} />
+                <AddMoreToCart id={id} maxCount={count} size={size} count={product?.count} />
             ) : (
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Button

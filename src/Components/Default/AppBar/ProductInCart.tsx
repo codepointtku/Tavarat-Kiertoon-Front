@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSubmit } from 'react-router-dom';
-import { ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton, Input } from '@mui/material';
+import { ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton, Input, Button } from '@mui/material';
 
 import InboxIcon from '@mui/icons-material/Inbox';
 import MailIcon from '@mui/icons-material/Mail';
@@ -13,37 +13,33 @@ interface Props {
     index: number & string;
     count: number;
     amountInStorage: number;
-    setChangeAmount: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function ProductInCart({ text, index, count, amountInStorage, setChangeAmount }: Props) {
-    const [hoveredOver, setHoveredOver] = useState(false);
-    const [amount, setAmount] = useState(count);
+function ProductInCart({ text, index, count, amountInStorage }: Props) {
+    const [changeAmount, setChangeAmount] = useState(false);
+    const [amountN, setAmountN] = useState(count);
     const submit = useSubmit();
-    const updatedProducts = [] as {}[];
 
     function addAmount() {
-        if (amount === amountInStorage) {
-            setAmount(amount);
+        if (amountN === amountInStorage) {
+            setAmountN(amountN);
         } else {
-            setAmount(amount + 1);
-            updatedProducts.push({ name: text, amount: amount });
+            setAmountN(amountN + 1);
             setChangeAmount(true);
         }
     }
 
     function removeAmount() {
-        if (amount === 1) {
-            setAmount(amount);
+        if (amountN === 1) {
+            setAmountN(amountN);
         } else {
-            setAmount(amount - 1);
-            updatedProducts.push({ name: text, amount: amount });
+            setAmountN(amountN - 1);
             setChangeAmount(true);
         }
     }
 
     function handleClick(action: string) {
-        if (amount >= 1 && amount <= amountInStorage) {
+        if (amountN >= 1 && amountN <= amountInStorage) {
             action === 'add' ? addAmount() : removeAmount();
         }
     }
@@ -52,17 +48,17 @@ function ProductInCart({ text, index, count, amountInStorage, setChangeAmount }:
         const _input = event.target.value;
         const input: number = +_input;
         if ((input >= 1 && input <= amountInStorage) || _input === '') {
-            setAmount(Number(input));
-            updatedProducts.push({ name: text, amount: amount });
+            setAmountN(Number(input));
             setChangeAmount(true);
         }
     }
 
     const handleSubmit = () => {
+        const amount = amountN.toString();
         submit(
-            { index },
+            { index, amount },
             {
-                method: 'delete',
+                method: 'put',
                 action: '/',
             }
         );
@@ -70,31 +66,36 @@ function ProductInCart({ text, index, count, amountInStorage, setChangeAmount }:
 
     return (
         <ListItem key={text} sx={{ height: 50 }} disablePadding>
-            <ListItemButton onMouseOver={() => setHoveredOver(true)} onMouseOut={() => setHoveredOver(false)}>
+            <ListItemButton>
                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                 <ListItemText primary={text} />
-                {hoveredOver && (
-                    <>
-                        {amount === 1 ? (
-                            <IconButton onClick={() => handleSubmit()}>
-                                <DeleteIcon sx={{ color: 'red' }} />
-                            </IconButton>
-                        ) : (
-                            <IconButton onClick={() => handleClick('remove')}>
-                                <RemoveIcon />
-                            </IconButton>
-                        )}
-                        <Input
-                            inputProps={{ style: { width: 30, textAlign: 'center' } }}
-                            value={amount}
-                            onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
-                            disableUnderline
-                        />
-                        <IconButton onClick={() => handleClick('add')} disabled={amount === amountInStorage}>
-                            <AddIcon />
-                        </IconButton>
-                    </>
+                {amountN === 1 ? (
+                    <IconButton onClick={() => handleSubmit()}>
+                        <DeleteIcon sx={{ color: 'red' }} />
+                    </IconButton>
+                ) : (
+                    <IconButton onClick={() => handleClick('remove')}>
+                        <RemoveIcon />
+                    </IconButton>
                 )}
+                <Input
+                    inputProps={{ style: { width: 30, textAlign: 'center' } }}
+                    value={amountN}
+                    onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
+                    disableUnderline
+                />
+                <IconButton onClick={() => handleClick('add')} disabled={amountN === amountInStorage}>
+                    <AddIcon />
+                </IconButton>
+                <Button
+                    size="small"
+                    sx={{ ml: 2 }}
+                    aria-label="add more of same item to shopping cart"
+                    type="submit"
+                    disabled={changeAmount}
+                >
+                    Muuta määrää
+                </Button>
             </ListItemButton>
         </ListItem>
     );

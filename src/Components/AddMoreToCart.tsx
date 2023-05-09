@@ -10,22 +10,23 @@ import RemoveIcon from '@mui/icons-material/Remove';
 interface Props {
     size?: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides> | undefined;
     id: number & string;
-    count: number;
+    maxCount: number;
+    count?: number;
     inOrderingProcess?: boolean | undefined;
 }
 
-function AddMoreToCart({ count, id, size, inOrderingProcess }: Props) {
+function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) {
     const submit = useSubmit();
-    const [amountN, setAmountN] = useState(1);
+    const [amountN, setAmountN] = useState(count ?? 1);
     const [addedToCart, setAddedToCart] = useState(false);
     const [searchParams] = useSearchParams();
     const { handleSubmit, register } = useForm();
 
     function addAmount() {
-        if (amountN === count) {
+        if (amountN === maxCount) {
             setAmountN(amountN);
         } else {
-            setAmountN(amountN + 1);
+            setAmountN((amountN) => amountN + 1);
             setAddedToCart(false);
         }
     }
@@ -34,13 +35,13 @@ function AddMoreToCart({ count, id, size, inOrderingProcess }: Props) {
         if (amountN === 1) {
             setAmountN(amountN);
         } else {
-            setAmountN(amountN - 1);
+            setAmountN((amountN) => amountN - 1);
             setAddedToCart(false);
         }
     }
 
     function handleOnClick(action: string) {
-        if (amountN >= 1 && amountN <= count) {
+        if (amountN >= 1 && amountN <= maxCount) {
             action === 'add' ? addAmount() : removeAmount();
         }
     }
@@ -48,7 +49,7 @@ function AddMoreToCart({ count, id, size, inOrderingProcess }: Props) {
     function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const _input = event.target.value;
         const input: number = +_input;
-        if ((input >= 1 && input <= count) || _input === '') {
+        if ((input >= 1 && input <= maxCount) || _input === '') {
             setAmountN(Number(input));
             setAddedToCart(false);
         }
@@ -112,7 +113,7 @@ function AddMoreToCart({ count, id, size, inOrderingProcess }: Props) {
                         size="small"
                         sx={{ color: 'background.default', padding: 0, ml: 1, mr: 0.5 }}
                         onClick={() => handleOnClick('add')}
-                        disabled={amountN === count}
+                        disabled={amountN === maxCount}
                     >
                         <AddIcon />
                     </IconButton>
