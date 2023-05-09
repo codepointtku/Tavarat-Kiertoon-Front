@@ -23,7 +23,7 @@ const adminLogOut = async (auth, setAuth, request) => {
 const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
-    const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : -1;
+    const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : 0;
     if (request.method === 'POST') {
         if (auth.username) {
             const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
@@ -70,6 +70,7 @@ const frontPageActions = async (auth, setAuth, request) => {
         return { type: 'update', status: false };
     }
     if (request.method === 'DELETE') {
+        console.log('went into DELETE if block', 'amount: ', amount);
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
             products: id,
             amount,
