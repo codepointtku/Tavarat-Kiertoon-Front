@@ -16,16 +16,18 @@ interface Props {
 }
 
 function ProductInCart({ text, index, count, amountInStorage }: Props) {
-    const [changeAmount, setChangeAmount] = useState(false);
+    const [changeAmount, setChangeAmount] = useState(true);
     const [amountN, setAmountN] = useState(count);
     const submit = useSubmit();
+
+    console.log(changeAmount);
 
     function addAmount() {
         if (amountN === amountInStorage) {
             setAmountN(amountN);
         } else {
             setAmountN(amountN + 1);
-            setChangeAmount(true);
+            setChangeAmount(false);
         }
     }
 
@@ -34,7 +36,7 @@ function ProductInCart({ text, index, count, amountInStorage }: Props) {
             setAmountN(amountN);
         } else {
             setAmountN(amountN - 1);
-            setChangeAmount(true);
+            setChangeAmount(false);
         }
     }
 
@@ -49,19 +51,24 @@ function ProductInCart({ text, index, count, amountInStorage }: Props) {
         const input: number = +_input;
         if ((input >= 1 && input <= amountInStorage) || _input === '') {
             setAmountN(Number(input));
-            setChangeAmount(true);
+            setChangeAmount(false);
         }
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = (action: string) => {
         const amount = amountN.toString();
-        submit(
-            { index, amount },
-            {
-                method: 'put',
-                action: '/',
-            }
-        );
+        if (action === 'add') {
+            submit(
+                { index, amount },
+                {
+                    method: 'put',
+                    action: '/',
+                }
+            );
+            setChangeAmount(true);
+        } else if (action === 'remove') {
+            submit({ index }, { method: 'delete', action: '/' });
+        }
     };
 
     return (
@@ -70,7 +77,7 @@ function ProductInCart({ text, index, count, amountInStorage }: Props) {
                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                 <ListItemText primary={text} />
                 {amountN === 1 ? (
-                    <IconButton onClick={() => handleSubmit()}>
+                    <IconButton onClick={() => handleSubmit('remove')}>
                         <DeleteIcon sx={{ color: 'red' }} />
                     </IconButton>
                 ) : (
@@ -91,7 +98,7 @@ function ProductInCart({ text, index, count, amountInStorage }: Props) {
                     size="small"
                     sx={{ ml: 2 }}
                     aria-label="add more of same item to shopping cart"
-                    type="submit"
+                    onClick={() => handleSubmit('add')}
                     disabled={changeAmount}
                 >
                     Muuta määrää
