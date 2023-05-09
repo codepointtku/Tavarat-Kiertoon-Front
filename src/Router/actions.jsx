@@ -357,6 +357,7 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
         frame_number: data.get('changeFrameNumber'),
         number: data.get('changeBikeNumber'),
         storage: data.get('changeBikeStorage'),
+        state: data.get('changeBikeStatus'),
         package_only: packageOnly === null ? false : packageOnly // from checkbox value seems to be 'on' or null
     };
 
@@ -374,6 +375,7 @@ const createNewBikeAction = async (auth, setAuth, request) => {
         frame_number: data.get('changeFrameNumber'),
         number: data.get('changeBikeNumber'),
         storage: data.get('changeBikeStorage'),
+        state: data.get('changeBikeStatus'),
         package_only: packageOnly === null ? false : packageOnly // from checkbox value seems to be 'on' or null
     };
 

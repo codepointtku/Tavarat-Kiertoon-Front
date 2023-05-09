@@ -46,7 +46,9 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     const [frameNumberState, setFrameNumberState] = useState(createNewBike ? '' : bikeData.frame_number);
     const [bikeNumberState, setBikeNumberState] = useState(createNewBike ? '' : bikeData.number);
     const [packageOnly, setPackageOnly] = useState(createNewBike ? false : bikeData.package_only);
+    const [statusState, setStatusState] = useState(createNewBike ? "AVAILABLE" : bikeData.state)
 
+    const currentBikeStatus = ["AVAILABLE" , "MAINTENANCE" , "RENTED" , "RETIRED"]
 
     // storage change handler: used for selecting the correct storage
     const handleStorageChange = (event: SelectChangeEvent) => {
@@ -91,6 +93,10 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
         setPackageOnly(event.target.checked);
     };
 
+    const handleStatusChange = (event: SelectChangeEvent) => {
+        setStatusState(event.target.value)
+    }
+
     // RENDER
     return (
         <>
@@ -104,7 +110,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                     borderBottom="1px solid lightgray"
                 >
                     <h3>
-                        Pyörän <i>{bikeState.frame_number}</i> tiedot
+                        {createNewBike ? "Luo uusi pyörä" : "Muokkaa pyörän tietoja"}
                     </h3>
                 </Box>
 
@@ -206,14 +212,16 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                 <TableBody>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Runkonumero:</TableCell>
-                                        <TableCell colSpan={2} align="right">
-                                            <TextField
-                                                label="Muokkaa runkonumeroa"
-                                                name="changeFrameNumber"
-                                                value={frameNumberState}
-                                                fullWidth
-                                                onChange={handleFrameNumberChange}
-                                            />
+                                        <TableCell colSpan={3} align="right">
+                                            <FormControl>
+                                                <TextField
+                                                    label="Muokkaa runkonumeroa"
+                                                    name="changeFrameNumber"
+                                                    value={frameNumberState}
+                                                    fullWidth
+                                                    onChange={handleFrameNumberChange}
+                                                />
+                                            </FormControl>
                                         </TableCell>
                                     </TableRow>
                                     {/*
@@ -227,28 +235,54 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                         }}
                                     >
                                         <TableCell sx={{ fontWeight: 'bold' }}>Numero:</TableCell>
-                                        <TableCell colSpan={2}>
-                                            <TextField
-                                                label="Muokkaa Numeroa"
-                                                name="changeBikeNumber"
-                                                value={bikeNumberState}
-                                                fullWidth
-                                                onChange={handleBikeNumberChange}
-                                            />
+                                        <TableCell colSpan={3} align='right'>
+                                            <FormControl>
+                                                <TextField
+                                                    label="Muokkaa Numeroa"
+                                                    name="changeBikeNumber"
+                                                    value={bikeNumberState}
+                                                    fullWidth
+                                                    onChange={handleBikeNumberChange}
+                                                />
+                                            </FormControl>
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varattu Pakettiin:</TableCell>
                                         <TableCell sx={{ border: 0 }}>
                                             {/* {bikeState.package_only ? 'Kyllä' : 'Ei'} */}
-                                            <Checkbox
-                                                checked={packageOnly}
-                                                onChange={handlePackageOnly}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                                name="changePackageOnly"
-                                            />
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={packageOnly}
+                                                    onChange={handlePackageOnly}
+                                                    inputProps={{ 'aria-label': 'controlled' }}
+                                                    name="changePackageOnly"
+                                                />
+                                            </FormControl>
                                         </TableCell>
-                                        <TableCell sx={{ border: 0 }}></TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Tila:</TableCell>
+                                        <TableCell sx={{ border: 0 }}>
+                                            <FormControl>
+                                                <InputLabel id="change-bike-status-label">Vaihda Pyörän Tilaa</InputLabel>
+                                                <Select
+                                                    labelId="change-bike-status-label"
+                                                    id="change-bike-status"
+                                                    name="changeBikeStatus"
+                                                    value={statusState}
+                                                    label="Vaihda Pyörän Tilaa"
+                                                    onChange={handleStatusChange}
+                                                    sx={{ width: '200px' }}
+                                                >
+                                                    {currentBikeStatus.map((status) => {
+                                                        return (
+                                                            <MenuItem key={status} value={status}>
+                                                                {status}
+                                                            </MenuItem>
+                                                        );
+                                                    })}
+                                                </Select>
+                                            </FormControl>
+                                        </TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
