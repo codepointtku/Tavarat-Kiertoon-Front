@@ -3,8 +3,6 @@ import {
     Button,
     Checkbox,
     FormControl,
-    FormGroup,
-    FormControlLabel,
     InputLabel,
     MenuItem,
     Paper,
@@ -28,8 +26,9 @@ interface ModifyBikePageInterface {
 
 /**
  * ModifyBikePage
- * View that allows user to modify bike info
+ * View that allows user to modify bike info or create a new bike.
  *
+ * @param createNewBike boolean : true = creates a new bike : false = modifies an existing bike
  * @returns JSX.Element
  */
 export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterface) {
@@ -47,6 +46,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     const [frameNumberState, setFrameNumberState] = useState(createNewBike ? '' : bikeData.frame_number);
     const [bikeNumberState, setBikeNumberState] = useState(createNewBike ? '' : bikeData.number);
     const [packageOnly, setPackageOnly] = useState(createNewBike ? false : bikeData.package_only);
+
 
     // storage change handler: used for selecting the correct storage
     const handleStorageChange = (event: SelectChangeEvent) => {
@@ -85,6 +85,8 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
         setBikeNumberState(event.target.value as string);
     };
 
+    // handler for package_only tab.
+    // JTo: Not completely sure if this is needed here or not
     const handlePackageOnly = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPackageOnly(event.target.checked);
     };
@@ -243,6 +245,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                                 checked={packageOnly}
                                                 onChange={handlePackageOnly}
                                                 inputProps={{ 'aria-label': 'controlled' }}
+                                                name="changePackageOnly"
                                             />
                                         </TableCell>
                                         <TableCell sx={{ border: 0 }}></TableCell>
