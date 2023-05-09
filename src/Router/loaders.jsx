@@ -240,6 +240,7 @@ const createNewBikeLoader = async (auth, setAuth) => {
         apiCall(auth, setAuth, '/bikes/models/', 'get'),
         apiCall(auth, setAuth, '/storages/', 'get'),
     ]);
+    // Empty bike to show in the page before information is added
     const bikeData = {
         bike: '',
         frame_number: '',

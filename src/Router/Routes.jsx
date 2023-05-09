@@ -106,7 +106,7 @@ import {
     resetEmailAction,
     resetPasswordAction,
     modifyBikeAction,
-    addNewBikeAction,
+    createNewBikeAction,
 } from './actions';
 
 createStore({});
@@ -502,7 +502,7 @@ function Routes() {
                                     path: 'lisaa',
                                     element: <ModifyBikePage createNewBike={true} />,
                                     loader: async () => createNewBikeLoader(auth, setAuth),
-                                    action: async ({ request }) => addNewBikeAction(auth, setAuth, request),
+                                    action: async ({ request }) => createNewBikeAction(auth, setAuth, request),
                                 },
                             ],
                         },

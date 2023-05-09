@@ -365,7 +365,7 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
     return redirect('/pyorat/pyoravarasto');
 };
 
-const addNewBikeAction = async (auth, setAuth, request) => {
+const createNewBikeAction = async (auth, setAuth, request) => {
     // collect data that needs to be sent to backend
     const data = await request.formData();
     const packageOnly =  data.get('changePackageOnly')
@@ -399,5 +399,5 @@ export {
     resetEmailAction,
     resetPasswordAction,
     modifyBikeAction,
-    addNewBikeAction,
+    createNewBikeAction,
 };
