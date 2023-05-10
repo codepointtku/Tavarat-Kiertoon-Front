@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 import {
     Box,
@@ -12,6 +13,10 @@ import {
     IconButton,
     Tooltip,
 } from '@mui/material/';
+
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 import ArrowRight from '@mui/icons-material/ArrowRight';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
@@ -84,6 +89,33 @@ function NavigationTree() {
         messagingNavList: false,
     });
 
+    const handleCloseNavList = () => {
+        setOpen({
+            ordersNavList: false,
+            productsNavList: false,
+            usersNavList: false,
+            storagesNavList: false,
+            bulletinsNavList: false,
+            messagingNavList: false,
+        });
+    };
+
+    // custom drop down menu (settings menu):
+    const [settingsDropDownMenuOpen, setSettingsDropDownMenuOpen] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+    const handleClickSettingsDropDownMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setSettingsDropDownMenuOpen(!settingsDropDownMenuOpen);
+        setAnchorEl(event.currentTarget);
+        // console.log(anchorEl);
+    };
+
+    const handleClose = () => {
+        setSettingsDropDownMenuOpen(!settingsDropDownMenuOpen);
+        setAnchorEl(null);
+    };
+
+    // navigation bar list items (links):
     // tilaukset
     const ordersListItems = (
         <Box
@@ -463,7 +495,7 @@ function NavigationTree() {
                     },
                     palette: {
                         mode: 'dark',
-                        primary: { main: 'rgb(102, 157, 246)' },
+                        primary: { main: 'rgb(102, 157, 246)' }, // #669DF6 hex
                         background: { paper: 'rgb(5, 30, 52)' },
                     },
                 })}
@@ -497,40 +529,60 @@ function NavigationTree() {
                                     }}
                                 />
                             </ListItemButtonLink>
-                            <Tooltip title="Projektin asetukset">
-                                <IconButton
-                                    size="large"
-                                    sx={{
-                                        '& svg': {
-                                            color: 'rgba(255,255,255,0.8)',
-                                            transition: '0.2s',
-                                            transform: 'translateX(0) rotate(0)',
+                            <IconButton
+                                id="settings-icon-button"
+                                aria-controls={settingsDropDownMenuOpen ? 'settings-dropdown-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={settingsDropDownMenuOpen ? 'true' : undefined}
+                                onClick={handleClickSettingsDropDownMenu}
+                                size="large"
+                                sx={{
+                                    '& svg': {
+                                        color: 'rgba(255,255,255,0.8)',
+                                        transition: '0.2s',
+                                        transform: 'translateX(0) rotate(0)',
+                                    },
+                                    '&:hover, &:focus': {
+                                        bgcolor: 'unset',
+                                        '& svg:first-of-type': {
+                                            transform: 'translateX(-4px) rotate(-20deg)',
                                         },
-                                        '&:hover, &:focus': {
-                                            bgcolor: 'unset',
-                                            '& svg:first-of-type': {
-                                                transform: 'translateX(-4px) rotate(-20deg)',
-                                            },
-                                            '& svg:last-of-type': {
-                                                right: 0,
-                                                opacity: 1,
-                                            },
+                                        '& svg:last-of-type': {
+                                            right: 0,
+                                            opacity: 1,
                                         },
-                                        '&:after': {
-                                            content: '""',
-                                            position: 'absolute',
-                                            height: '80%',
-                                            display: 'block',
-                                            left: 0,
-                                            width: '1px',
-                                            bgcolor: 'divider',
-                                        },
-                                    }}
-                                >
+                                    },
+                                    '&:after': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        height: '80%',
+                                        display: 'block',
+                                        left: 0,
+                                        width: '1px',
+                                        bgcolor: 'divider',
+                                    },
+                                }}
+                            >
+                                <Tooltip title="Paneelin asetukset">
                                     <Settings />
-                                    <ArrowRight sx={{ position: 'absolute', right: 4, opacity: 0 }} />
-                                </IconButton>
-                            </Tooltip>
+                                </Tooltip>
+                                <Menu
+                                    id="settings-dropdown-menu"
+                                    anchorEl={anchorEl}
+                                    open={settingsDropDownMenuOpen}
+                                    onClose={handleClose}
+                                >
+                                    <MenuItem onClick={handleCloseNavList} divider>
+                                        Sulje kaikki valikot
+                                    </MenuItem>
+                                    <MenuItem onClick={handleClose} divider>
+                                        Merkitse kaikki luetuksi
+                                    </MenuItem>
+                                    <MenuItem onClick={handleClose}>Siirry varastonäkymään</MenuItem>
+                                </Menu>
+
+                                <ArrowRight sx={{ position: 'absolute', right: 4, opacity: 0 }} />
+                            </IconButton>
                         </ListItem>
                         <Divider />
                         {ordersListItems}
