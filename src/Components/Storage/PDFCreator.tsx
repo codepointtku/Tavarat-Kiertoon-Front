@@ -191,7 +191,7 @@ function PDFDocument({ order }: IPDFDocument) {
                 <Text style={{ fontSize: '12', marginBottom: '5px' }}>
                     {product.name}: {product.numberOfProducts} kpl.
                 </Text>
-                <Text style={{ fontSize: '10', marginBottom: '5px' }}>Tuotenro: {product.group_id}</Text>
+                <Text style={{ fontSize: '10', marginBottom: '5px' }}>Viivakoodi: {product.barcode}</Text>
                 <Text style={{ fontSize: '10', marginBottom: '5px' }}>
                     Sijainti: {product.storage_name}
                     {product.shelf_id ? ` / ${product.shelf_id}` : ''}
@@ -200,6 +200,7 @@ function PDFDocument({ order }: IPDFDocument) {
         );
     };
 
+    // top row header with page numbers etc.
     const headerSection = (page: number) => (
         <View style={{ fontSize: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
             <View style={{ flex: 1, alignItems: 'flex-start' }}>
