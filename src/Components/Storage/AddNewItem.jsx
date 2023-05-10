@@ -9,7 +9,6 @@ import {
     useActionData,
     useLocation,
 } from 'react-router-dom';
-// import Barcode from 'react-barcode';
 import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Modal, Typography } from '@mui/material';
 import imageCompression from 'browser-image-compression';
 
@@ -36,6 +35,7 @@ function AddNewItem() {
         setValue,
         formState: { errors, isValid },
     } = useForm({
+        mode: 'onTouched',
         defaultValues: {
             amount: 1,
             available: true,
@@ -114,6 +114,8 @@ function AddNewItem() {
         setValue('barcode', decodedText);
     };
 
+    console.log('errors', errors);
+
     return (
         <Card>
             <Modal
@@ -121,8 +123,6 @@ function AddNewItem() {
                 onClose={() => {
                     setQrSearchOpen(false);
                 }}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
             >
                 <Box width={700}>
                     <Html5QrcodePlugin
@@ -149,28 +149,45 @@ function AddNewItem() {
                     <TextField
                         type="text"
                         placeholder="name"
-                        {...register('name', { required: 'Nimi on pakollinen', max: 255, min: 3 })}
+                        {...register('name', {
+                            required: { value: true, message: 'Nimi on pakollinen' },
+                            maxLength: { value: 255, message: 'Nimi on liian pitkä, maksimi 255 merkkiä' },
+                            minLength: { value: 3, message: 'Nimi on liian lyhyt, minimi 3 merkkiä' },
+                        })}
                         label="Nimi"
                         multiline
-                        defaultValue="testinimi"
+                        // defaultValue=""
                         inputProps={{ title: 'Nimi', maxLength: '255', minLength: '3' }}
                         required
-                        // error={!!errors.name}
-                        // helperText={errors.name?.message || `${name?.length || 0}/255`}
+                        error={!!errors.name}
+                        helperText={errors.name?.message}
                     />
-                    {/* <Typography>{errors.name?.message}</Typography> */}
                     <TextField
                         type="text"
-                        placeholder="barcode"
+                        placeholder="viivakoodi"
                         {...register('barcode', {
-                            required: true,
-                            maxLength: 12,
+                            required: {
+                                value: true,
+                                message: 'Viivakoodi on pakollinen',
+                            },
                             minLength: 1,
+                            maxLength: { value: 12, message: 'Viivakoodi on liian pitkä, maksimi 12 merkkiä' },
+                            pattern: {
+                                value: /^[A-Za-z0-9\-.*$/+%\s]+$/gu,
+                                message:
+                                    'Viivakoodityypin CODE39 sallitut kirjaimet: Numerot, Englanninkieliset aakkoset, merkit -  .  *  /  +  %  sekä välilyönti',
+                            },
                         })}
-                        // disabled
-                        // id="outlined-disabled"
                         label="Viivakoodi"
-                        defaultValue="1234"
+                        // defaultValue="1234"
+                        error={!!errors.barcode}
+                        helperText={errors.barcode?.message}
+                        inputProps={{
+                            title: 'Viivakoodi',
+                            minLength: '1',
+                            maxLength: '12',
+                        }}
+                        required
                     >
                         Viivakoodi
                     </TextField>
