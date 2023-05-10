@@ -351,15 +351,36 @@ const resetPasswordAction = async (auth, setAuth, request) => {
 const modifyBikeAction = async (auth, setAuth, request, params) => {
     // collect data that needs to be sent to backend
     const data = await request.formData();
+    const packageOnly =  data.get('changePackageOnly')
     const submission = {
         bike: data.get('changeBikeModel'),
         frame_number: data.get('changeFrameNumber'),
         number: data.get('changeBikeNumber'),
         storage: data.get('changeBikeStorage'),
+        state: data.get('changeBikeStatus'),
+        package_only: packageOnly === null ? false : packageOnly // from checkbox value seems to be 'on' or null
     };
 
     // send data and redirect back to bike list
     await apiCall(auth, setAuth, `/bikes/stock/${params.id}/`, 'put', submission);
+    return redirect('/pyorat/pyoravarasto');
+};
+
+const createNewBikeAction = async (auth, setAuth, request) => {
+    // collect data that needs to be sent to backend
+    const data = await request.formData();
+    const packageOnly =  data.get('changePackageOnly')
+    const submission = {
+        bike: data.get('changeBikeModel'),
+        frame_number: data.get('changeFrameNumber'),
+        number: data.get('changeBikeNumber'),
+        storage: data.get('changeBikeStorage'),
+        state: data.get('changeBikeStatus'),
+        package_only: packageOnly === null ? false : packageOnly // from checkbox value seems to be 'on' or null
+    };
+
+    // send data and redirect back to bike list
+    await apiCall(auth, setAuth, `/bikes/stock`, 'post', submission);
     return redirect('/pyorat/pyoravarasto');
 };
 
@@ -380,4 +401,5 @@ export {
     resetEmailAction,
     resetPasswordAction,
     modifyBikeAction,
+    createNewBikeAction,
 };
