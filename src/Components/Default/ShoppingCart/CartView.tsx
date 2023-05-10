@@ -1,4 +1,4 @@
-import { useNavigate, useRouteLoaderData } from 'react-router-dom';
+import { useNavigate, useRouteLoaderData, useLoaderData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Grid, Typography, ButtonPropsSizeOverrides } from '@mui/material';
 
@@ -6,21 +6,19 @@ import CartButtons from './CartButtons';
 import AddMoreToCart from '../../AddMoreToCart';
 import { OverridableStringUnion } from '@material-ui/types';
 import type { shoppingCartLoader } from '../../../Router/loaders';
-import type { productListLoader } from '../../../Router/loaders';
+import type { cartViewLoader } from '../../../Router/loaders';
 
 function CartView() {
     const navigate = useNavigate();
+    const amountList = useLoaderData() as Awaited<ReturnType<typeof cartViewLoader>>;
     const { products: cartProducts } = useRouteLoaderData('frontPage') as Awaited<
         ReturnType<typeof shoppingCartLoader>
     >;
-    const products = useRouteLoaderData('products') as Awaited<ReturnType<typeof productListLoader>>;
     const { handleSubmit } = useForm();
 
     const onSubmit = () => {
         navigate('/ostoskori/vaihe2');
     };
-
-    console.log(products);
 
     return (
         <>
@@ -33,20 +31,25 @@ function CartView() {
                     ))}
                 </Grid>
                 <Grid container direction="column" gap={1.5} sx={{ width: 'auto' }}>
-                    {cartProducts?.map((item: { id: string & number; count: number }) => (
-                        <AddMoreToCart
-                            key={item.id}
-                            id={item.id}
-                            count={item.count}
-                            size={
-                                'small' as OverridableStringUnion<
-                                    'small' | 'medium' | 'large',
-                                    ButtonPropsSizeOverrides
-                                >
-                            }
-                            inOrderingProcess={true}
-                        />
-                    ))}
+                    {cartProducts?.map((item: { id: string & number; count: number }) => {
+                        const product = amountList.find((p: { id: number }) => p.id === item.id);
+                        console.log(product, cartProducts);
+                        return (
+                            <AddMoreToCart
+                                key={item.id}
+                                id={item.id}
+                                count={item.count}
+                                maxCount={product?.amount}
+                                size={
+                                    'small' as OverridableStringUnion<
+                                        'small' | 'medium' | 'large',
+                                        ButtonPropsSizeOverrides
+                                    >
+                                }
+                                inOrderingProcess={true}
+                            />
+                        );
+                    })}
                 </Grid>
             </Grid>
             <hr />

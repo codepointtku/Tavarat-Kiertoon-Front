@@ -26,7 +26,7 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
     //     cart?.products?.length === 0 && resetField('amount');
     // }, [cart?.products?.length]);
 
-    const product = products.find((product: { id: number }) => product.id === id);
+    const product = products?.find((product: { id: number }) => product.id === id);
 
     const onSubmit = async () => {
         submit(
