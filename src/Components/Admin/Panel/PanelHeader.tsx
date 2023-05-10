@@ -90,8 +90,8 @@ function PanelHeader() {
                 boxShadow: 0,
             }}
         >
-            <Toolbar>
-                <Stack direction="row">
+            <Toolbar id="admin-panel-appbar-toolbar">
+                <Stack id="appbar-icons-stack-row" direction="row" alignItems="center">
                     <Box id="statistics" sx={{ margin: '0 1rem 0 0rem' }}>
                         <Tooltip title="Tarkastele tilastoja">
                             <IconButton component={Link} to="/admin/tilastot">
