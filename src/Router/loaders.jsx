@@ -235,6 +235,23 @@ const bikeLoader = async (auth, setAuth, params) => {
     return { bikeData, bikeModelsData, storagesData };
 };
 
+const createNewBikeLoader = async (auth, setAuth) => {
+    const [{ data: bikeModelsData }, { data: storagesData }] = await Promise.all([
+        apiCall(auth, setAuth, '/bikes/models/', 'get'),
+        apiCall(auth, setAuth, '/storages/', 'get'),
+    ]);
+    // Empty bike to show in the page before information is added
+    const bikeData = {
+        bike: '',
+        frame_number: '',
+        number: '',
+        package_only: false,
+        state: 'AVAILABLE',
+        storage: '',
+    };
+    return { bikeData, bikeModelsData, storagesData };
+};
+
 /**
  * returns null load
  */
@@ -265,6 +282,7 @@ export {
     bikesDefaultLoader,
     bikesListLoader,
     bikeLoader,
+    createNewBikeLoader,
     shoppingCartLoader,
     shoppingProcessLoader,
 };
