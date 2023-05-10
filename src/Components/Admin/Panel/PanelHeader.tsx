@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AppBar, Avatar, Badge, Box, IconButton, InputBase, Stack, Toolbar, Typography } from '@mui/material';
+import { AppBar, Avatar, Badge, Box, IconButton, InputBase, Stack, Toolbar } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
@@ -63,8 +63,12 @@ function PanelHeader() {
     return (
         <AppBar
             id="admin-panel-appbar"
-            // position="static"
-            sx={{ width: 'min-content', backgroundColor: 'primary.main', padding: '1rem', boxShadow: 0 }}
+            sx={{
+                width: 'min-content',
+                backgroundColor: 'primary.main',
+                padding: '1rem',
+                boxShadow: 0,
+            }}
         >
             <Toolbar>
                 <Stack direction="row">

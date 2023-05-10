@@ -22,7 +22,7 @@ function ForgotPassword() {
 
     const onSubmit = (data: any) => {
         const { username } = data;
-        submit({ username }, { method: 'post', action: 'unohtunutsalasana' });
+        submit({ username }, { method: 'post' });
     };
 
     return (

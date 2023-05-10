@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
 
 import { Box, Button, ButtonGroup } from '@mui/material';
 
-import AuthContext from '../../Context/AuthContext';
+import HasRole from '../../Utils/HasRole';
 
 function LinkBar() {
     return (
@@ -58,8 +57,6 @@ function AuthedLinkBar() {
 }
 
 function NavigationBar() {
-    const { auth } = useContext(AuthContext);
-
     return (
         <Box
             id="navbar-container"
@@ -72,7 +69,10 @@ function NavigationBar() {
             }}
         >
             <LinkBar />
-            {auth.storage && <AuthedLinkBar />}
+            <HasRole role="storage_group">
+                <AuthedLinkBar />
+            </HasRole>
+            {/* <HasRole role="admin_group">admin linkit</HasRole> */}
         </Box>
     );
 }
