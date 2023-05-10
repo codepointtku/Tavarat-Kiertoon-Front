@@ -24,7 +24,7 @@ import OrderEdit from '../Components/Storage/OrderEdit';
 import QrScanner from '../Components/Storage/QrScanner';
 
 import UsersList from '../Components/Admin/UsersList';
-// import UserEdit from '../Components/Admin/UserEdit';
+import UserEdit from '../Components/Admin/UserEdit';
 import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
 import Stats from '../Components/Admin/Stats/Stats';
 
@@ -80,7 +80,7 @@ import {
     rootLoader,
     storagesListLoader,
     storageEditLoader,
-    // userEditLoader,
+    userEditLoader,
     usersListLoader,
     userSignupLoader,
     shoppingCartLoader,
@@ -98,7 +98,7 @@ import {
     storageEditAction,
     storageCreateAction,
     frontPageActions,
-    // userEditAction,
+    userEditAction,
     cartViewAction,
     createBulletinAction,
     bikeOrderAction,
@@ -452,25 +452,25 @@ function Routes() {
                         },
 
                         // NOTE : JTo : 'users' paths need to be checked once users are enabled in back-end
-                        // {
-                        //     path: 'users',
-                        //     element: <Outlet />,
-                        //     children: [
-                        //         {
-                        //             index: true,
-                        //             element: <UsersList />,
-                        //             id: 'users',
-                        //             loader: async () => usersListLoader(auth, setAuth),
-                        //         },
-                        //         {
-                        //             path: ':id',
-                        //             element: <UserEdit />,
-                        //             loader: async ({ params }) => userEditLoader(auth, setAuth, params),
-                        //             action: async ({ request, params }) =>
-                        //                 userEditAction(auth, setAuth, request, params),
-                        //         },
-                        //     ],
-                        // },
+                        {
+                            path: 'users',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <UsersList />,
+                                    id: 'users',
+                                    loader: async () => usersListLoader(auth, setAuth),
+                                },
+                                {
+                                    path: ':id',
+                                    element: <UserEdit />,
+                                    loader: async ({ params }) => userEditLoader(auth, setAuth, params),
+                                    action: async ({ request, params }) =>
+                                        userEditAction(auth, setAuth, request, params),
+                                },
+                            ],
+                        },
 
                         {
                             path: 'hakemukset',
