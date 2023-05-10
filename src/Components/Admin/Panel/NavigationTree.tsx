@@ -41,20 +41,20 @@ const data = [
     { icon: <People />, label: 'Tarkastele', to: '/admin/pagetest' },
     { icon: <Dns />, label: 'Muokkaa', to: '/tilauksetmuokkaa' },
     { icon: <PermMedia />, label: 'Lisää uusi', to: '/tilauksetlisaa' },
-    { icon: <Public />, label: 'Jotain', to: '/tilauksetjotain' },
+    // { icon: <Public />, label: 'Jotain', to: '/tilauksetjotain' },
 ];
 
 const tuotteet = [
     { icon: <People />, label: 'Tarkastele', to: '/placeholder' },
     { icon: <Dns />, label: 'Muokkaa', to: '/placeholder' },
     { icon: <PermMedia />, label: 'Lisää uusi', to: '/placeholder' },
-    { icon: <Public />, label: 'Jotain', to: '/placeholder' },
+    // { icon: <Public />, label: 'Jotain', to: '/placeholder' },
 ];
 
 const kayttajat = [
     { icon: <People />, label: 'Tarkastele', to: '/admin/kayttajat' },
-    { icon: <Dns />, label: 'Muokkaa', to: '/placeholder' },
-    { icon: <PermMedia />, label: 'Lisää uusi', to: '/placeholder' },
+    // { icon: <Dns />, label: 'Muokkaa', to: '/placeholder' },
+    // { icon: <PermMedia />, label: 'Lisää uusi', to: '/placeholder' },
     { icon: <Public />, label: 'Hakemukset', to: '/admin/hakemukset' },
 ];
 
@@ -171,7 +171,7 @@ function NavigationTree() {
                         lineHeight: '20px',
                         mb: '2px',
                     }}
-                    secondary="Tuotteiden hallinta..."
+                    secondary="Tuotteiden hallinta"
                     secondaryTypographyProps={{
                         noWrap: true,
                         fontSize: 12,
@@ -232,7 +232,7 @@ function NavigationTree() {
                         lineHeight: '20px',
                         mb: '2px',
                     }}
-                    secondary="Käyttäjien hallinta..."
+                    secondary="Käyttäjien hallinta"
                     secondaryTypographyProps={{
                         noWrap: true,
                         fontSize: 12,
@@ -354,7 +354,7 @@ function NavigationTree() {
                         lineHeight: '20px',
                         mb: '2px',
                     }}
-                    secondary="Tiedotteiden hallinta..."
+                    secondary="Tiedotteiden hallinta"
                     secondaryTypographyProps={{
                         noWrap: true,
                         fontSize: 12,
@@ -415,7 +415,7 @@ function NavigationTree() {
                         lineHeight: '20px',
                         mb: '2px',
                     }}
-                    secondary="Viestien hallinta..."
+                    secondary="Viestien hallinta"
                     secondaryTypographyProps={{
                         noWrap: true,
                         fontSize: 12,
