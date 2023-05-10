@@ -65,7 +65,7 @@ function AddNewItem() {
     //     }
     // });
 
-    const description = watch('description');
+    const description = watch('free_description');
     const barcode = watch('barcode');
 
     const onSubmit = async (data) => {
@@ -153,6 +153,8 @@ function AddNewItem() {
                         label="Nimi"
                         multiline
                         defaultValue="testinimi"
+                        inputProps={{ title: 'Nimi', maxLength: '255', minLength: '3' }}
+                        required
                         // error={!!errors.name}
                         // helperText={errors.name?.message || `${name?.length || 0}/255`}
                     />
@@ -178,7 +180,7 @@ function AddNewItem() {
                         </Button>
                         {barcode?.length > 0 && <Barcode value={barcode} format="CODE39" height={32} fontSize={14} />}
                     </CardActions>
-
+                    {/* TODO default varastosijainti sama kuin varastokäyttäjän sijainti? */}
                     <TextField
                         id="outlined-select"
                         select
@@ -219,17 +221,20 @@ function AddNewItem() {
                     <TextField
                         id="filled-helperText"
                         label="Vapaa Kuvaus"
-                        {...register('free_description', { required: false, max: 1000 })}
+                        {...register('free_description', { required: true, minLength: 2, maxLength: 1000 })}
                         multiline
                         minRows={4}
                         helperText={`${description?.length || '0'}/1000`}
                         defaultValue="vapaa kuvaus testi"
+                        inputProps={{ title: 'Vapaa kuvaus', minLength: '2', maxLength: '1000' }}
+                        required
+                        error={!!errors.free_description}
                     />
                     <CardActions>
                         <Button variant="contained" component="label" size="large">
                             Lisää kuvat
                             <input
-                                {...register('pictures')}
+                                {...register('pictures', { required: true })}
                                 // setValue in uploadFile
                                 // onChange={(event) => {
                                 //     uploadFile(event.target.files);
