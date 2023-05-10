@@ -20,8 +20,6 @@ function ProductInCart({ text, index, count, amountInStorage }: Props) {
     const [amountN, setAmountN] = useState(count);
     const submit = useSubmit();
 
-    console.log(changeAmount);
-
     function addAmount() {
         if (amountN === amountInStorage) {
             setAmountN(amountN);

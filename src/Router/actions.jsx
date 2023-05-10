@@ -70,7 +70,6 @@ const frontPageActions = async (auth, setAuth, request) => {
         return { type: 'update', status: false };
     }
     if (request.method === 'DELETE') {
-        console.log('went into DELETE if block', 'amount: ', amount);
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
             products: id,
             amount,

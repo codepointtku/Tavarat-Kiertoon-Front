@@ -269,6 +269,11 @@ const adminInboxLoader = async (auth, setAuth) => {
     return messages;
 };
 
+const cartViewLoader = async (auth, setAuth) => {
+    const { data: amountList } = await apiCall(auth, setAuth, '/shopping_cart/available_amount/', 'get');
+    return amountList;
+};
+
 export {
     rootLoader,
     productListLoader,
@@ -290,4 +295,5 @@ export {
     shoppingCartLoader,
     shoppingProcessLoader,
     adminInboxLoader,
+    cartViewLoader,
 };
