@@ -56,6 +56,7 @@ function ProductInCart({ text, index, count, amountInStorage }: Props) {
                     action: '/',
                 }
             );
+            setSelectedAmount(amountN);
             setChangeAmount(true);
         } else if (action === 'remove') {
             submit({ index }, { method: 'delete', action: '/' });
