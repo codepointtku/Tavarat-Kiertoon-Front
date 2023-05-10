@@ -18,24 +18,17 @@ interface Props {
 function ProductInCart({ text, index, count, amountInStorage }: Props) {
     const [changeAmount, setChangeAmount] = useState(true);
     const [amountN, setAmountN] = useState(count);
+    const [selectedAmount, setSelectedAmount] = useState(count);
     const submit = useSubmit();
 
     function addAmount() {
-        if (amountN === amountInStorage) {
-            setAmountN(amountN);
-        } else {
-            setAmountN(amountN + 1);
-            setChangeAmount(false);
-        }
+        setAmountN(amountN + 1);
+        amountN + 1 === selectedAmount ? setChangeAmount(true) : setChangeAmount(false);
     }
 
     function removeAmount() {
-        if (amountN === 1) {
-            setAmountN(amountN);
-        } else {
-            setAmountN(amountN - 1);
-            setChangeAmount(false);
-        }
+        setAmountN(amountN - 1);
+        amountN - 1 === selectedAmount ? setChangeAmount(true) : setChangeAmount(false);
     }
 
     function handleClick(action: string) {
@@ -49,7 +42,7 @@ function ProductInCart({ text, index, count, amountInStorage }: Props) {
         const input: number = +_input;
         if ((input >= 1 && input <= amountInStorage) || _input === '') {
             setAmountN(Number(input));
-            setChangeAmount(false);
+            input === selectedAmount ? setChangeAmount(true) : setChangeAmount(false);
         }
     }
 
