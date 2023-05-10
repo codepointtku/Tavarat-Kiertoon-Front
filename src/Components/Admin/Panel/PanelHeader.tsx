@@ -1,11 +1,16 @@
+import * as React from 'react';
 import { Link } from 'react-router-dom';
+
 import { AppBar, Avatar, Badge, Box, IconButton, InputBase, Stack, Toolbar } from '@mui/material';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { styled, alpha } from '@mui/material/styles';
 
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import MailIcon from '@mui/icons-material/Mail';
+
 import Tooltip from '../../Tooltip';
 
 function Search() {
@@ -60,6 +65,21 @@ function Search() {
 }
 
 function PanelHeader() {
+    // custom drop down menu (settings menu):
+    const [avatarDropDownMenu, setAvatarDropDownMenu] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+    const handleClickAvatarDropDownMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAvatarDropDownMenu(!avatarDropDownMenu);
+        setAnchorEl(event.currentTarget);
+        // console.log(anchorEl);
+    };
+
+    const handleClose = () => {
+        setAvatarDropDownMenu(!avatarDropDownMenu);
+        setAnchorEl(null);
+    };
+
     return (
         <AppBar
             id="admin-panel-appbar"
@@ -72,7 +92,7 @@ function PanelHeader() {
         >
             <Toolbar>
                 <Stack direction="row">
-                    <Box id="statistics" sx={{ margin: '0 1rem 0 1rem' }}>
+                    <Box id="statistics" sx={{ margin: '0 1rem 0 0rem' }}>
                         <Tooltip title="Tarkastele tilastoja">
                             <IconButton component={Link} to="/admin/tilastot">
                                 <QueryStatsIcon sx={{ color: 'primary.contrastText' }} />
@@ -99,9 +119,25 @@ function PanelHeader() {
                         </Tooltip>
                     </Box>
                     <Box id="avatar" sx={{ margin: '0 1rem 0 1rem' }}>
-                        <Tooltip title="Kirjautuminen">
+                        {/* <Tooltip title="Kirjautuminen"> */}
+                        <IconButton onClick={handleClickAvatarDropDownMenu}>
                             <Avatar sx={{ bgcolor: 'success.dark' }}>A</Avatar>
-                        </Tooltip>
+                            <Menu
+                                id="avatar-dropdown-menu"
+                                anchorEl={anchorEl}
+                                open={avatarDropDownMenu}
+                                onClose={handleClose}
+                            >
+                                <MenuItem onClick={handleClose} divider>
+                                    Moro
+                                </MenuItem>
+                                <MenuItem onClick={handleClose} divider>
+                                    Poro
+                                </MenuItem>
+                                <MenuItem onClick={handleClose}>Kirjaudu ulos</MenuItem>
+                            </Menu>
+                        </IconButton>
+                        {/* </Tooltip> */}
                     </Box>
                 </Stack>
             </Toolbar>

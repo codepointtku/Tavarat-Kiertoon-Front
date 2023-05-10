@@ -9,14 +9,11 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
+    Menu,
+    MenuItem,
     Paper,
     IconButton,
-    Tooltip,
 } from '@mui/material/';
-
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 
 import ArrowRight from '@mui/icons-material/ArrowRight';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
@@ -26,23 +23,11 @@ import People from '@mui/icons-material/People';
 import PermMedia from '@mui/icons-material/PermMedia';
 import Dns from '@mui/icons-material/Dns';
 import Public from '@mui/icons-material/Public';
+
+import Tooltip from '../../Tooltip';
 import { ListItemButtonLink } from '../../MUILinkComponents';
 
-const FireNav = styled(List)<{ component?: React.ElementType }>({
-    '& .MuiListItemButton-root': {
-        paddingLeft: 24,
-        paddingRight: 24,
-    },
-    '& .MuiListItemIcon-root': {
-        minWidth: 0,
-        marginRight: 16,
-    },
-    '& .MuiSvgIcon-root': {
-        fontSize: 20,
-    },
-});
-
-const data = [
+const tilaukset = [
     { icon: <People />, label: 'Tarkastele', to: '/admin/pagetest' },
     { icon: <Dns />, label: 'Muokkaa', to: '/tilauksetmuokkaa' },
     { icon: <PermMedia />, label: 'Lisää uusi', to: '/tilauksetlisaa' },
@@ -79,6 +64,20 @@ const viestit = [
     { icon: <PermMedia />, label: 'Aiheet', to: '/placeholder' },
 ];
 
+const FireNav = styled(List)<{ component?: React.ElementType }>({
+    '& .MuiListItemButton-root': {
+        paddingLeft: 24,
+        paddingRight: 24,
+    },
+    '& .MuiListItemIcon-root': {
+        minWidth: 0,
+        marginRight: 16,
+    },
+    '& .MuiSvgIcon-root': {
+        fontSize: 20,
+    },
+});
+
 function NavigationTree() {
     const [open, setOpen] = React.useState({
         ordersNavList: false,
@@ -100,7 +99,7 @@ function NavigationTree() {
         });
     };
 
-    // custom drop down menu (settings menu):
+    // drop down menu (settings menu):
     const [settingsDropDownMenuOpen, setSettingsDropDownMenuOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -161,7 +160,7 @@ function NavigationTree() {
                 />
             </ListItemButton>
             {open.ordersNavList &&
-                data.map((item) => (
+                tilaukset.map((item) => (
                     <ListItemButtonLink
                         to={item.to}
                         key={item.label}
