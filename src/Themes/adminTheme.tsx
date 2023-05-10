@@ -10,7 +10,7 @@ const adminTheme = createTheme({
             // main: '#e50064',
             main: '#051e34',
             light: '#f8c2d9',
-            dark: '#f8c2d9',
+            dark: '#476282',
             contrastText: '#ffffff',
         },
         secondary: {
@@ -18,7 +18,7 @@ const adminTheme = createTheme({
             main: '#e50064',
         },
         text: {
-            primary: '#fff',
+            primary: '#000',
             secondary: '#0062ae',
             disabled: '#404040',
         },
