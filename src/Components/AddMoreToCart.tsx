@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSubmit, useSearchParams } from 'react-router-dom';
+import { useSearchParams, useFetcher } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { OverridableStringUnion } from '@material-ui/types';
@@ -16,7 +16,7 @@ interface Props {
 }
 
 function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) {
-    const submit = useSubmit();
+    const fetcher = useFetcher();
     const [amountN, setAmountN] = useState(count ?? 1);
     const [addedToCart, setAddedToCart] = useState(false);
     const [searchParams] = useSearchParams();
@@ -57,7 +57,7 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) 
 
     const onSubmit = async () => {
         const amount = amountN.toString();
-        submit(
+        fetcher.submit(
             { id, amount },
             {
                 method: 'put',
