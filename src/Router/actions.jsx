@@ -396,7 +396,7 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     };
 
     // send data and redirect back to bike list
-    await apiCall(auth, setAuth, `/bikes/stock`, 'post', submission);
+    await apiCall(auth, setAuth, `/bikes/stock/`, 'post', submission);
     return redirect('/pyorat/pyoravarasto');
 };
 
