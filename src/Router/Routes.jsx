@@ -414,13 +414,11 @@ function Routes() {
                             path: 'tiedotteet',
                             element: <Bulletins />,
                         },
-
                         {
                             path: 'tiedotteet/luo',
                             element: <CreateBulletinPost />,
                             action: async ({ request }) => createBulletinAction(auth, setAuth, request),
                         },
-
                         {
                             path: 'varastot',
                             element: <Outlet />,
@@ -439,7 +437,6 @@ function Routes() {
                                 },
                             ],
                         },
-
                         {
                             path: 'varastot/luo',
                             element: <AddStorage />,
@@ -447,19 +444,12 @@ function Routes() {
                         },
                         {
                             path: 'kayttajat',
-                            element: <UsersList />,
-                            loader: async () => usersListLoader(auth, setAuth),
-                        },
-
-                        // NOTE : JTo : 'users' paths need to be checked once users are enabled in back-end
-                        {
-                            path: 'users',
                             element: <Outlet />,
                             children: [
                                 {
                                     index: true,
                                     element: <UsersList />,
-                                    id: 'users',
+                                    id: 'kayttajat',
                                     loader: async () => usersListLoader(auth, setAuth),
                                 },
                                 {
@@ -471,7 +461,6 @@ function Routes() {
                                 },
                             ],
                         },
-
                         {
                             path: 'hakemukset',
                             element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
