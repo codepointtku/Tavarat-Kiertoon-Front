@@ -33,7 +33,6 @@ function CartView() {
                 <Grid container direction="column" gap={1.5} sx={{ width: 'auto' }}>
                     {cartProducts?.map((item: { id: string & number; group_id: number; count: number }) => {
                         const product = amountList.find((p: { id: number }) => p.id == item.group_id);
-                        console.log(product);
                         return (
                             <AddMoreToCart
                                 key={item.id}
