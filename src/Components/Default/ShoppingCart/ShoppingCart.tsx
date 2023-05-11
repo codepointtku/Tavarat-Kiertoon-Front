@@ -67,6 +67,7 @@ function ShoppingCart() {
                     borderRadius: '1rem',
                     borderStyle: 'solid',
                     p: 20,
+                    pt: 5,
                     paddingBottom: 5,
                     margin: '3.125rem 0rem',
                 }}
@@ -77,8 +78,8 @@ function ShoppingCart() {
                         borderStyle: 'solid',
                         borderRadius: 3,
                         borderColor: 'gray',
-                        padding: 10,
-                        marginBottom: 10,
+                        p: 5,
+                        marginBottom: 5,
                     }}
                 >
                     <Stepper

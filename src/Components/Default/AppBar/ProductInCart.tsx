@@ -1,10 +1,18 @@
 import { useState } from 'react';
 import { useSubmit } from 'react-router-dom';
-import { ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton, Input, Button } from '@mui/material';
+import {
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    IconButton,
+    Input,
+    Button,
+    Typography,
+} from '@mui/material';
 
 import InboxIcon from '@mui/icons-material/Inbox';
 import MailIcon from '@mui/icons-material/Mail';
-import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
@@ -21,8 +29,6 @@ function ProductInCart({ text, index, count, maxCount }: Props) {
     const [selectedAmount, setSelectedAmount] = useState(count);
     const submit = useSubmit();
 
-    console.log(maxCount);
-
     function addAmount() {
         setAmountN(amountN + 1);
         amountN + 1 === selectedAmount ? setChangeAmount(true) : setChangeAmount(false);
@@ -34,7 +40,7 @@ function ProductInCart({ text, index, count, maxCount }: Props) {
     }
 
     function handleClick(action: string) {
-        if (amountN >= 1 && amountN <= maxCount) {
+        if (amountN >= 0 && amountN <= maxCount) {
             action === 'add' ? addAmount() : removeAmount();
         }
     }
@@ -42,7 +48,7 @@ function ProductInCart({ text, index, count, maxCount }: Props) {
     function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const _input = event.target.value;
         const input: number = +_input;
-        if ((input >= 1 && input <= maxCount) || _input === '') {
+        if ((input >= 0 && input <= maxCount) || _input === '') {
             setAmountN(Number(input));
             input === selectedAmount ? setChangeAmount(true) : setChangeAmount(false);
         }
@@ -70,15 +76,9 @@ function ProductInCart({ text, index, count, maxCount }: Props) {
             <ListItemButton>
                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                 <ListItemText primary={text} />
-                {amountN === 1 ? (
-                    <IconButton onClick={() => handleSubmit('remove')}>
-                        <DeleteIcon sx={{ color: 'red' }} />
-                    </IconButton>
-                ) : (
-                    <IconButton onClick={() => handleClick('remove')}>
-                        <RemoveIcon />
-                    </IconButton>
-                )}
+                <IconButton onClick={() => handleClick('remove')} disabled={amountN === 0}>
+                    <RemoveIcon />
+                </IconButton>
                 <Input
                     inputProps={{ style: { width: 30, textAlign: 'center' } }}
                     value={amountN}
@@ -89,13 +89,21 @@ function ProductInCart({ text, index, count, maxCount }: Props) {
                     <AddIcon />
                 </IconButton>
                 <Button
+                    color={amountN === 0 ? 'error' : 'primary'}
                     size="small"
-                    sx={{ ml: 2 }}
+                    sx={{
+                        ml: 2,
+                        width: '7rem',
+                    }}
                     aria-label="add more of same item to shopping cart"
                     onClick={() => handleSubmit('add')}
                     disabled={changeAmount}
                 >
-                    Muuta määrää
+                    {amountN === 0 ? (
+                        <Typography variant="inherit">Poista tuote</Typography>
+                    ) : (
+                        <Typography variant="inherit">Muuta määrää</Typography>
+                    )}
                 </Button>
             </ListItemButton>
         </ListItem>

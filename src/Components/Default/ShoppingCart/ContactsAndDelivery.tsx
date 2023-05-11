@@ -64,15 +64,14 @@ function ContactsAndDelivery() {
                     mb: 5,
                     maxWidth: 800,
                     borderStyle: 'solid',
-                    borderRadius: 5,
+                    borderRadius: '1rem',
                     borderColor: 'primary.main',
-                    backgroundColor: 'secondary.light',
                 }}
             >
-                <Typography variant="h4" align="center" sx={{ mb: 2, fontWeight: 'bold' }}>
+                <Typography variant="h4" sx={{ mb: 2 }}>
                     Tilaajan yhteystiedot
                 </Typography>
-                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Typography variant="h6">Nimi: {user.name}</Typography>
                     <Typography variant="h6">Sähköposti: {user.email}</Typography>
                     <Typography variant="h6">Puh. numero: {user.phone_number}</Typography>
@@ -236,7 +235,6 @@ function ContactsAndDelivery() {
                     borderStyle: 'solid',
                     borderWidth: 5,
                     borderColor: 'secondary.dark',
-                    backgroundColor: 'primary.light',
                 }}
             >
                 Toimituksessa kestää keskimäärin 1-2 viikkoa.
