@@ -3,7 +3,7 @@ import { useSearchParams, useFetcher } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { OverridableStringUnion } from '@material-ui/types';
-import { IconButton, Box, Input, Button, ButtonPropsSizeOverrides } from '@mui/material';
+import { IconButton, Box, Input, Button, ButtonPropsSizeOverrides, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
@@ -114,12 +114,21 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) 
                 </Box>
                 <Button
                     size={size}
-                    sx={{ mt: !inOrderingProcess ? 1 / 2 : 0, ml: inOrderingProcess ? 2 : 0 }}
+                    sx={{
+                        mt: !inOrderingProcess ? 1 / 2 : 0,
+                        ml: inOrderingProcess ? 2 : 0,
+                        backgroundColor: amountN === 0 ? 'error.main' : 'primary.main',
+                        width: '7rem',
+                    }}
                     aria-label="add more of same item to shopping cart"
                     type="submit"
                     disabled={addedToCart}
                 >
-                    Muuta määrää
+                    {amountN === 0 ? (
+                        <Typography variant="inherit">Poista tuote</Typography>
+                    ) : (
+                        <Typography variant="inherit">Muuta määrää</Typography>
+                    )}
                 </Button>
             </Box>
         </form>
