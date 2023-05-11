@@ -109,6 +109,7 @@ import {
     modifyBikeAction,
     createNewBikeAction,
     adminLogOut,
+    deleteBikeAction,
 } from './actions';
 
 import Overview from '../Components/Admin/Panel/Overview/Overview';
@@ -523,6 +524,13 @@ function Routes() {
                                             loader: async ({ params }) => bikeLoader(auth, setAuth, params),
                                             action: async ({ request, params }) =>
                                                 modifyBikeAction(auth, setAuth, request, params),
+                                            children: [
+                                                {
+                                                    path: 'poista',
+                                                    action: async ({ params }) =>
+                                                        deleteBikeAction(auth, setAuth, params),
+                                                },
+                                            ],
                                         },
                                     ],
                                 },
