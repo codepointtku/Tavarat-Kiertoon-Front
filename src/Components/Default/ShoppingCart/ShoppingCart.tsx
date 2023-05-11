@@ -36,6 +36,8 @@ const CartStepConnector = styled(StepConnector)(({ theme }) => ({
         borderWidth: 'thick',
         borderRadius: 20,
         marginTop: 10,
+        marginRight: 4,
+        marginLeft: 3,
         zIndex: -1,
     },
 }));
