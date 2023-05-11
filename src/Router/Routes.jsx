@@ -43,6 +43,7 @@ import Confirmation from '../Components/Default/ShoppingCart/Confirmation';
 
 import SignupLandingPage from '../Components/Default/Signup/SignupLandingPage';
 import SignupPage from '../Components/Default/Signup/SignupPage';
+import Activation from '../Components/Default/Signup/Activation';
 
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
@@ -296,6 +297,10 @@ function Routes() {
                                     element: <PasswordResetNavigate />,
                                 },
                             ],
+                        },
+                        {
+                            path: 'aktivointi',
+                            element: <Activation />,
                         },
                     ],
                 },
