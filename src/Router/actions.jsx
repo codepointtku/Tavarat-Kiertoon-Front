@@ -1,6 +1,22 @@
 import { redirect } from 'react-router-dom';
 import apiCall from '../Utils/apiCall';
 
+const adminLogOut = async (auth, setAuth, request) => {
+    console.log('kick ban!!111');
+    const formData = await request.formData();
+    if (request.method === 'POST') {
+        if (auth.username) {
+            const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
+                formData,
+            });
+            if (response.status === 200) {
+                return { type: 'logout', status: true };
+            }
+            return { type: 'logout', status: false };
+        }
+    }
+};
+
 /**
  * logins or logouts user, adds a product to shopping cart and deletes product from shopping cart
  */
@@ -351,14 +367,14 @@ const resetPasswordAction = async (auth, setAuth, request) => {
 const modifyBikeAction = async (auth, setAuth, request, params) => {
     // collect data that needs to be sent to backend
     const data = await request.formData();
-    const packageOnly =  data.get('changePackageOnly')
+    const packageOnly = data.get('changePackageOnly');
     const submission = {
         bike: data.get('changeBikeModel'),
         frame_number: data.get('changeFrameNumber'),
         number: data.get('changeBikeNumber'),
         storage: data.get('changeBikeStorage'),
         state: data.get('changeBikeStatus'),
-        package_only: packageOnly === null ? false : packageOnly // from checkbox value seems to be 'on' or null
+        package_only: packageOnly === null ? false : packageOnly, // from checkbox value seems to be 'on' or null
     };
 
     // send data and redirect back to bike list
@@ -369,14 +385,14 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
 const createNewBikeAction = async (auth, setAuth, request) => {
     // collect data that needs to be sent to backend
     const data = await request.formData();
-    const packageOnly =  data.get('changePackageOnly')
+    const packageOnly = data.get('changePackageOnly');
     const submission = {
         bike: data.get('changeBikeModel'),
         frame_number: data.get('changeFrameNumber'),
         number: data.get('changeBikeNumber'),
         storage: data.get('changeBikeStorage'),
         state: data.get('changeBikeStatus'),
-        package_only: packageOnly === null ? false : packageOnly // from checkbox value seems to be 'on' or null
+        package_only: packageOnly === null ? false : packageOnly, // from checkbox value seems to be 'on' or null
     };
 
     // send data and redirect back to bike list
@@ -402,4 +418,5 @@ export {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
+    adminLogOut,
 };

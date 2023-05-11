@@ -107,6 +107,7 @@ import {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
+    adminLogOut,
 } from './actions';
 
 import Overview from '../Components/Admin/Panel/Overview/Overview';
@@ -397,6 +398,7 @@ function Routes() {
                             <ErrorBoundary />,
                         </ThemeProvider>
                     ),
+                    action: async ({ request }) => adminLogOut(auth, setAuth, request),
                     children: [
                         {
                             index: true,
