@@ -7,6 +7,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 interface Props {
     backText: string;
     forwardText: string;
+    cartEmpty?: boolean;
 }
 
 interface CustomButtonProps extends ButtonProps {
@@ -23,11 +24,11 @@ const LinkButton: FC<CustomButtonProps> = ({ component, to, backText }) => {
     );
 };
 
-function CartButtons({ backText, forwardText }: Props) {
+function CartButtons({ backText, forwardText, cartEmpty }: Props) {
     return (
         <Grid container justifyContent="space-between" sx={{ marginTop: 5 }}>
             <LinkButton component={Link} to={-1} backText={backText} />
-            <Button type="submit" variant="contained" endIcon={<ArrowForwardIcon />}>
+            <Button type="submit" variant="contained" disabled={cartEmpty} endIcon={<ArrowForwardIcon />}>
                 {forwardText}
             </Button>
         </Grid>

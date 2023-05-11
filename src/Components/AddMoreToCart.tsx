@@ -114,10 +114,10 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) 
                 </Box>
                 <Button
                     size={size}
+                    color={amountN === 0 ? 'error' : 'primary'}
                     sx={{
                         mt: !inOrderingProcess ? 1 / 2 : 0,
                         ml: inOrderingProcess ? 2 : 0,
-                        backgroundColor: amountN === 0 ? 'error.main' : 'primary.main',
                         width: '7rem',
                     }}
                     aria-label="add more of same item to shopping cart"

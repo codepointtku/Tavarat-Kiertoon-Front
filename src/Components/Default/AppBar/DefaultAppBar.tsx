@@ -30,6 +30,7 @@ import ProductInCart from './ProductInCart';
 import LoginForm from './LoginForm';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
+import { set } from 'date-fns';
 
 //
 
@@ -146,6 +147,7 @@ function DefaultAppBar() {
     const submit = useSubmit() as unknown as SubmitFunction;
     const { cart, products, amountList } = useLoaderData() as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const [productsLength, setProductsLength] = useState(cart?.products?.length);
+    const [cartEmpty, setCartEmpty] = useState(false);
 
     useEffect(() => {
         if (cart?.products?.length !== productsLength) {
@@ -169,8 +171,12 @@ function DefaultAppBar() {
             setCurrentOpenDrawer('account');
             setNotLoggedIn(true);
         } else {
-            setCurrentOpenDrawer('');
-            navigate('/ostoskori');
+            if (cart?.products?.length === 0) {
+                setCartEmpty(true);
+            } else {
+                setCurrentOpenDrawer('');
+                navigate('/ostoskori');
+            }
         }
     }
 
@@ -222,9 +228,17 @@ function DefaultAppBar() {
                 {/* tähän oma komponentti.. */}
                 <List>
                     {cart?.products?.length === 0 && (
-                        <Typography variant="h6" align="center">
-                            Ostoskorisi on tyhjä.
-                        </Typography>
+                        <>
+                            {cartEmpty ? (
+                                <Typography variant="h6" align="center" sx={{ color: 'error.main' }}>
+                                    Et voi siirtyä kassalle tyhjällä ostoskorilla.
+                                </Typography>
+                            ) : (
+                                <Typography variant="h6" align="center">
+                                    Ostoskorisi on tyhjä.
+                                </Typography>
+                            )}
+                        </>
                     )}
                     {products?.map((cartProduct: CartProduct) => {
                         const product = amountList.find((p: { id: number }) => p.id == cartProduct.group_id);

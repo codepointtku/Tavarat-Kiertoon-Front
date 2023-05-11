@@ -6,6 +6,7 @@ import CartButtons from './CartButtons';
 import AddMoreToCart from '../../AddMoreToCart';
 import { OverridableStringUnion } from '@material-ui/types';
 import type { shoppingCartLoader } from '../../../Router/loaders';
+import TypographyHeading from '../../TypographyHeading';
 
 function CartView() {
     const navigate = useNavigate();
@@ -21,37 +22,43 @@ function CartView() {
     return (
         <>
             <Grid container direction="row" justifyContent="space-around">
-                <Grid container direction="column" sx={{ width: 'auto' }}>
-                    {cartProducts?.map((item: { name: string; id: number }) => (
-                        <Typography variant="h6" sx={{ p: 0.5 }} key={item.id}>
-                            {item.name}
-                        </Typography>
-                    ))}
-                </Grid>
-                <Grid container direction="column" gap={1.5} sx={{ width: 'auto' }}>
-                    {cartProducts?.map((item: { id: string & number; group_id: number; count: number }) => {
-                        const product = amountList.find((p: { id: number }) => p.id == item.group_id);
-                        return (
-                            <AddMoreToCart
-                                key={item.id}
-                                id={item.id}
-                                count={item.count}
-                                maxCount={product?.amount}
-                                size={
-                                    'small' as OverridableStringUnion<
-                                        'small' | 'medium' | 'large',
-                                        ButtonPropsSizeOverrides
-                                    >
-                                }
-                                inOrderingProcess={true}
-                            />
-                        );
-                    })}
-                </Grid>
+                {cartProducts?.length === 0 ? (
+                    <TypographyHeading text="Ostoskorisi on tyhjä. Meneppäs lisäämään tuotteita." />
+                ) : (
+                    <>
+                        <Grid container direction="column" sx={{ width: 'auto' }}>
+                            {cartProducts?.map((item: { name: string; id: number }) => (
+                                <Typography variant="h6" sx={{ p: 0.5 }} key={item.id}>
+                                    {item.name}
+                                </Typography>
+                            ))}
+                        </Grid>
+                        <Grid container direction="column" gap={1.5} sx={{ width: 'auto' }}>
+                            {cartProducts?.map((item: { id: string & number; group_id: number; count: number }) => {
+                                const product = amountList.find((p: { id: number }) => p.id == item.group_id);
+                                return (
+                                    <AddMoreToCart
+                                        key={item.id}
+                                        id={item.id}
+                                        count={item.count}
+                                        maxCount={product?.amount}
+                                        size={
+                                            'small' as OverridableStringUnion<
+                                                'small' | 'medium' | 'large',
+                                                ButtonPropsSizeOverrides
+                                            >
+                                        }
+                                        inOrderingProcess={true}
+                                    />
+                                );
+                            })}
+                        </Grid>
+                    </>
+                )}
             </Grid>
             <hr />
             <form onSubmit={handleSubmit(onSubmit)}>
-                <CartButtons backText="Jatka ostoksia" forwardText="Seuraava" />
+                <CartButtons backText="Jatka ostoksia" forwardText="Seuraava" cartEmpty={cartProducts?.length === 0} />
             </form>
         </>
     );
