@@ -299,7 +299,7 @@ function Routes() {
                             ],
                         },
                         {
-                            path: 'aktivointi',
+                            path: 'aktivointi/:uid/:token',
                             element: <Activation />,
                         },
                     ],

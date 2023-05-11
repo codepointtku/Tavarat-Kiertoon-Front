@@ -39,7 +39,7 @@ function ResetPassword() {
             token &&
             submit(
                 { new_password, new_password_again, uid, token },
-                { method: 'post', action: 'salasananpalautus/salasanapalautettu' }
+                { method: 'post', action: '/salasananpalautus/salasanapalautettu/' }
             );
     };
 
