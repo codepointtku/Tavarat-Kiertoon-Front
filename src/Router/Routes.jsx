@@ -87,6 +87,7 @@ import {
     bikesDefaultLoader,
     bikesListLoader,
     bikeLoader,
+    createNewBikeLoader,
     shoppingProcessLoader,
     cartViewLoader,
 } from './loaders';
@@ -106,6 +107,7 @@ import {
     resetEmailAction,
     resetPasswordAction,
     modifyBikeAction,
+    createNewBikeAction,
 } from './actions';
 
 createStore({});
@@ -492,12 +494,18 @@ function Routes() {
                                         },
                                         {
                                             path: ':id',
-                                            element: <ModifyBikePage />,
+                                            element: <ModifyBikePage createNewBike={false} />,
                                             loader: async ({ params }) => bikeLoader(auth, setAuth, params),
                                             action: async ({ request, params }) =>
                                                 modifyBikeAction(auth, setAuth, request, params),
                                         },
                                     ],
+                                },
+                                {
+                                    path: 'lisaa',
+                                    element: <ModifyBikePage createNewBike={true} />,
+                                    loader: async () => createNewBikeLoader(auth, setAuth),
+                                    action: async ({ request }) => createNewBikeAction(auth, setAuth, request),
                                 },
                             ],
                         },
