@@ -19,7 +19,7 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) 
     const fetcher = useFetcher();
     const [amountN, setAmountN] = useState(count ?? 1);
     const [selectedAmount, setSelectedAmount] = useState(count ?? 1);
-    const [addedToCart, setAddedToCart] = useState(false);
+    const [addedToCart, setAddedToCart] = useState(true);
     const [searchParams] = useSearchParams();
     const { handleSubmit, register } = useForm();
 
