@@ -5,9 +5,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import StyledTableCell from '../StyledTableCell';
 import { useLoaderData } from 'react-router';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import { Form } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
@@ -68,6 +67,7 @@ export default function ModifyBikeOrder() {
                                             // value={packet.name}
                                             name="changePacketName"
                                             fullWidth
+                                            label="Muokkaa nimeä"
                                         />
                                     </TableCell>
                                     <TableCell>asdasd</TableCell>
@@ -87,11 +87,16 @@ export default function ModifyBikeOrder() {
                                         />
                                     </TableCell>
                                 </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Pyörät: </TableCell>
-                                    <TableCell>tyyppi: {packet.bikes[0].bike}</TableCell>
-                                    <TableCell>määrä: {packet.bikes[0].amount}</TableCell>
-                                </TableRow>
+
+                                {packet.bikes.map((packet, index) => (
+                                    <TableRow key={packet.bike}>
+                                        <TableCell sx={{ fontWeight: 'bold' }}>
+                                            {index === 0 ? 'Pyörät: ' : ''}
+                                        </TableCell>
+                                        <TableCell>Tyyppi: {packet.bike}</TableCell>
+                                        <TableCell>Määrä: {packet.amount}</TableCell>
+                                    </TableRow>
+                                ))}
                             </TableBody>
                         </Table>
                     </Box>
