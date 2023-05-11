@@ -90,6 +90,7 @@ import {
     bikeLoader,
     shoppingProcessLoader,
     bulletinSubjectLoader,
+    modifyBikeOrderLoader,
 } from './loaders';
 
 import {
@@ -483,6 +484,23 @@ function Routes() {
                                     loader: async () => bikesPacketLoader(auth, setAuth),
                                     element: <BikePackets />,
                                 },
+
+                                {
+                                    path: 'muokkaapaketti',
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <Navigate to="/pyorat/pyoravarasto/muokkaapaketti" />,
+                                        },
+                                        {
+                                            path: ':id',
+                                            element: <ModifyBikeOrder />,
+                                            loader: async ({ params }) => modifyBikeOrderLoader(auth, setAuth, params),
+                                        },
+                                    ],
+                                },
+
                                 {
                                     path: 'muokkaa',
                                     element: <Outlet />,

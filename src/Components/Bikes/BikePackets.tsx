@@ -27,7 +27,7 @@ export default function BikePackets() {
                             <TableCell align="right">
                                 <Button
                                     color="primary"
-                                    to={`/pyorat/pyoravarasto/paketinmuokkaus/${packet.id}`}
+                                    to={`/pyorat/pyoravarasto/muokkaapaketti/${packet.id}`}
                                     component={Link}
                                 >
                                     Muokkaa

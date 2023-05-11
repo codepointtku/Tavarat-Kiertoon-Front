@@ -7,45 +7,96 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import StyledTableCell from '../StyledTableCell';
 import { useLoaderData } from 'react-router';
-import { Button } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
+import { Form } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 export default function ModifyBikeOrder() {
     const { packet, models } = useLoaderData();
+    const { register, handleSubmit } = useForm();
+    // const submit = useSubmit();
+    // const [success, setSuccess, isSubmitting, setIsSubmitting] = useState(false);
+    // const onSubmit = (data) => {
+    //     const formData = { ...data, category: 'category' };
 
-    // const handleEditBike = (id) => {
-    //     // Handle editing of a bike with the given id
+    //     setIsSubmitting(true);
+
+    //     submit(formData, {
+    //         method: 'post',
+    //         // action: ',
+    //     });
+
+    //     setSuccess(true);
     // };
 
     return (
         <TableContainer component={Paper} sx={{ padding: '2rem' }}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                <TableHead>
-                    <TableRow>
-                        <StyledTableCell align="right">nimi</StyledTableCell>
-                        <StyledTableCell align="right">id</StyledTableCell>
-                        <StyledTableCell align="right">kuvaus</StyledTableCell>
-                        <StyledTableCell align="right">koko</StyledTableCell>
-                        <StyledTableCell align="right">väri</StyledTableCell>
-                        <StyledTableCell align="right">tyyppi</StyledTableCell>
-                        <StyledTableCell align="right">muokkaa</StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {models.map((bike) => (
-                        <TableRow key={bike.id}>
-                            <TableCell align="right">{bike.name}</TableCell>
-                            <TableCell align="right">{bike.id}</TableCell>
-                            <TableCell align="right">{bike.description}</TableCell>
-                            <TableCell align="right">{bike.size}</TableCell>
-                            <TableCell align="right">{bike.color}</TableCell>
-                            <TableCell align="right">{bike.type}</TableCell>
-                            <TableCell align="right">
-                                <Button onClick={() => handleEditBike(bike.id)}>Muokkaa</Button>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+            <Box
+                width="100%"
+                textAlign="center"
+                marginBottom="20px"
+                paddingBottom="20px"
+                borderBottom="1px solid lightgray"
+            >
+                <h3>
+                    <i>Muokkaa pakettia</i>
+                </h3>
+            </Box>
+            <Box
+                component={Form}
+                // onSubmit={handleSubmit(onSubmit)}
+                method="put"
+                // action={`/pyorat/pyoravarasto/muokkaapaketti/${packet.id}`}
+            >
+                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            flex: 0.5,
+                            marginRight: '2em',
+                            minWidth: 500,
+                        }}
+                    >
+                        <Table>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Nimi:</TableCell>
+                                    <TableCell colSpan={2}>
+                                        <TextField
+                                            {...register('name')}
+                                            // value={packet.name}
+                                            name="changePacketName"
+                                            fullWidth
+                                        />
+                                    </TableCell>
+                                    <TableCell>asdasd</TableCell>
+                                    <TableCell>asdasd</TableCell>
+                                    <TableCell>asdasd</TableCell>
+                                    <TableCell>asdasd</TableCell>
+                                    <TableCell>asdasd</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>kuvaus:</TableCell>
+                                    <TableCell colSpan={2}>
+                                        <TextField
+                                            {...register('description')}
+                                            label="Muokkaa kuvausta"
+                                            name="changePacketDescription"
+                                            fullWidth
+                                        />
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Pyörät: </TableCell>
+                                    <TableCell>tyyppi: {packet.bikes[0].bike}</TableCell>
+                                    <TableCell>määrä: {packet.bikes[0].amount}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </Box>
+                </Box>
+            </Box>
         </TableContainer>
     );
 }

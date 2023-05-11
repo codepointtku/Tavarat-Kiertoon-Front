@@ -19,7 +19,6 @@ import type { bikeInterface, bikeModelInterface, storageInterface } from './Bike
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
 
-
 /**
  * ModifyBikePage
  * View that allows user to modify bike info
@@ -96,13 +95,9 @@ export default function ModifyBikePage() {
                 </Box>
 
                 {/*
-                  * Form area
-                  */}
-                <Box
-                    component={Form}
-                    method="put"
-                    action={`/pyorat/pyoravarasto/muokkaa/${bikeState.id}`}
-                >
+                 * Form area
+                 */}
+                <Box component={Form} method="put" action={`/pyorat/pyoravarasto/muokkaa/${bikeState.id}`}>
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box
                             sx={{
@@ -202,11 +197,11 @@ export default function ModifyBikePage() {
                                         </TableCell>
                                     </TableRow>
                                     {/*
-                                      * When editing bike this row is not visible
-                                      * Unfortenately field can not be disabled cause the value is still used in form
-                                      * When adding new bike this field needs to be shown
-                                      */}
-                                    <TableRow style={{ display: "none" }}>
+                                     * When editing bike this row is not visible
+                                     * Unfortenately field can not be disabled cause the value is still used in form
+                                     * When adding new bike this field needs to be shown
+                                     */}
+                                    <TableRow style={{ display: 'none' }}>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Numero:</TableCell>
                                         <TableCell colSpan={2}>
                                             <TextField

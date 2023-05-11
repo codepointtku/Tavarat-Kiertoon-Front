@@ -218,11 +218,21 @@ const bikesListLoader = async (auth, setAuth) => {
     return data;
 };
 /**
- * Get one bikepacket
+ * Get all bikepackets and models
  */
 const bikesPacketLoader = async (auth, setAuth) => {
     const [{ data: packet }, { data: models }] = await Promise.all([
         apiCall(auth, setAuth, `/bikes/packages/`, 'get'),
+        apiCall(auth, setAuth, `/bikes/models/`, 'get'),
+    ]);
+    return { packet, models };
+};
+/**
+ * Get one bikepacket and all models
+ */
+const modifyBikeOrderLoader = async (auth, setAuth, params) => {
+    const [{ data: packet }, { data: models }] = await Promise.all([
+        apiCall(auth, setAuth, `/bikes/packages/${params.id}`, 'get'),
         apiCall(auth, setAuth, `/bikes/models/`, 'get'),
     ]);
     return { packet, models };
@@ -285,4 +295,5 @@ export {
     bikeLoader,
     shoppingCartLoader,
     shoppingProcessLoader,
+    modifyBikeOrderLoader,
 };
