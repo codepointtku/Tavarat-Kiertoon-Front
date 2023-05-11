@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 import {
@@ -13,6 +14,7 @@ import {
     MenuItem,
     Paper,
     IconButton,
+    // Checkbox,
 } from '@mui/material/';
 
 import ArrowRight from '@mui/icons-material/ArrowRight';
@@ -26,7 +28,9 @@ import Public from '@mui/icons-material/Public';
 
 import Tooltip from '../../Tooltip';
 import { ListItemButtonLink } from '../../MUILinkComponents';
+// import { Check } from '@mui/icons-material';
 
+// list item links data (mapped out variables)
 const tilaukset = [
     { icon: <People />, label: 'Tarkastele', to: '/admin/pagetest' },
     { icon: <Dns />, label: 'Muokkaa', to: '/tilauksetmuokkaa' },
@@ -78,6 +82,11 @@ const FireNav = styled(List)<{ component?: React.ElementType }>({
     },
 });
 
+// function Test() {
+//     <Checkbox />;
+// }
+
+// main
 function NavigationTree() {
     const [open, setOpen] = React.useState({
         ordersNavList: false,
@@ -88,7 +97,8 @@ function NavigationTree() {
         messagingNavList: false,
     });
 
-    const handleCloseNavList = () => {
+    // ux functions
+    const handleCloseFullNavList = () => {
         setOpen({
             ordersNavList: false,
             productsNavList: false,
@@ -99,6 +109,21 @@ function NavigationTree() {
         });
     };
 
+    const handleOpenFullNavList = () => {
+        setOpen({
+            ordersNavList: true,
+            productsNavList: true,
+            usersNavList: true,
+            storagesNavList: true,
+            bulletinsNavList: true,
+            messagingNavList: true,
+        });
+    };
+
+    // const handleCheckKeepFullNavListOpen = () => {
+    // checkbox
+    // }
+
     // drop down menu (settings menu):
     const [settingsDropDownMenuOpen, setSettingsDropDownMenuOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -106,7 +131,6 @@ function NavigationTree() {
     const handleClickSettingsDropDownMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
         setSettingsDropDownMenuOpen(!settingsDropDownMenuOpen);
         setAnchorEl(event.currentTarget);
-        // console.log(anchorEl);
     };
 
     const handleClose = () => {
@@ -324,7 +348,7 @@ function NavigationTree() {
                         lineHeight: '20px',
                         mb: '2px',
                     }}
-                    secondary="Varastojen hallinta..."
+                    secondary="Varastojen hallinta"
                     secondaryTypographyProps={{
                         noWrap: true,
                         fontSize: 12,
@@ -569,15 +593,33 @@ function NavigationTree() {
                                     id="settings-dropdown-menu"
                                     anchorEl={anchorEl}
                                     open={settingsDropDownMenuOpen}
-                                    onClose={handleClose}
+                                    // onClose={handleClose}
                                 >
-                                    <MenuItem onClick={handleCloseNavList} divider>
+                                    <MenuItem onClick={handleCloseFullNavList} divider>
                                         Sulje kaikki valikot
                                     </MenuItem>
-                                    <MenuItem onClick={handleClose} divider>
-                                        Merkitse kaikki luetuksi
+                                    <MenuItem onClick={handleOpenFullNavList} divider>
+                                        {/* <> */}
+                                        Avaa kaikki valikot
+                                        {/* checkbox component here */}
+                                        {/* <Test /> */}
+                                        {/* <Checkbox /> */}
+                                        {/* </> */}
                                     </MenuItem>
-                                    <MenuItem onClick={handleClose}>Siirry varastonäkymään</MenuItem>
+                                    <Tooltip
+                                        position="right"
+                                        title="Nollaa kaikki ilmoitukset, viestit ja uutiset nähdyiksi"
+                                    >
+                                        <MenuItem onClick={handleClose} divider>
+                                            Merkitse kaikki luetuksi
+                                            {/* component here */}
+                                        </MenuItem>
+                                    </Tooltip>
+                                    <Tooltip position="right" title="Siirtyy varastohenkilökunnan käyttöliittymään">
+                                        <MenuItem onClick={handleClose} component={Link} to="/varasto">
+                                            Siirry varastonäkymään
+                                        </MenuItem>
+                                    </Tooltip>
                                 </Menu>
 
                                 <ArrowRight sx={{ position: 'absolute', right: 4, opacity: 0 }} />
