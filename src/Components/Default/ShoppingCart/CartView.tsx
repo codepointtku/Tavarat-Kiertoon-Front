@@ -1,4 +1,4 @@
-import { useNavigate, useRouteLoaderData, useLoaderData } from 'react-router-dom';
+import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Grid, Typography, ButtonPropsSizeOverrides } from '@mui/material';
 
@@ -6,12 +6,10 @@ import CartButtons from './CartButtons';
 import AddMoreToCart from '../../AddMoreToCart';
 import { OverridableStringUnion } from '@material-ui/types';
 import type { shoppingCartLoader } from '../../../Router/loaders';
-import type { cartViewLoader } from '../../../Router/loaders';
 
 function CartView() {
     const navigate = useNavigate();
-    const amountList = useLoaderData() as Awaited<ReturnType<typeof cartViewLoader>>;
-    const { products: cartProducts } = useRouteLoaderData('frontPage') as Awaited<
+    const { products: cartProducts, amountList } = useRouteLoaderData('frontPage') as Awaited<
         ReturnType<typeof shoppingCartLoader>
     >;
     const { handleSubmit } = useForm();

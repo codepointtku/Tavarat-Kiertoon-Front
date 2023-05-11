@@ -89,7 +89,6 @@ import {
     bikeLoader,
     createNewBikeLoader,
     shoppingProcessLoader,
-    cartViewLoader,
 } from './loaders';
 
 import {
@@ -227,7 +226,6 @@ function Routes() {
                                 {
                                     path: '/ostoskori/',
                                     element: <CartView />,
-                                    loader: async () => cartViewLoader(auth, setAuth),
                                     action: async ({ request }) => cartViewAction(auth, setAuth, request),
                                 },
                                 {
