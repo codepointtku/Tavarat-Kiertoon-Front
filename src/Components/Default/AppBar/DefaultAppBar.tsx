@@ -173,6 +173,7 @@ function DefaultAppBar() {
             if (cart?.products?.length === 0) {
                 setCartEmpty(true);
             } else {
+                setCartEmpty(false);
                 setCurrentOpenDrawer('');
                 navigate('/ostoskori');
             }
