@@ -12,14 +12,16 @@ interface Props {
     text: string;
     index: number & string;
     count: number;
-    amountInStorage: number;
+    maxCount: number;
 }
 
-function ProductInCart({ text, index, count, amountInStorage }: Props) {
+function ProductInCart({ text, index, count, maxCount }: Props) {
     const [changeAmount, setChangeAmount] = useState(true);
     const [amountN, setAmountN] = useState(count);
     const [selectedAmount, setSelectedAmount] = useState(count);
     const submit = useSubmit();
+
+    console.log(maxCount);
 
     function addAmount() {
         setAmountN(amountN + 1);
@@ -32,7 +34,7 @@ function ProductInCart({ text, index, count, amountInStorage }: Props) {
     }
 
     function handleClick(action: string) {
-        if (amountN >= 1 && amountN <= amountInStorage) {
+        if (amountN >= 1 && amountN <= maxCount) {
             action === 'add' ? addAmount() : removeAmount();
         }
     }
@@ -40,7 +42,7 @@ function ProductInCart({ text, index, count, amountInStorage }: Props) {
     function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const _input = event.target.value;
         const input: number = +_input;
-        if ((input >= 1 && input <= amountInStorage) || _input === '') {
+        if ((input >= 1 && input <= maxCount) || _input === '') {
             setAmountN(Number(input));
             input === selectedAmount ? setChangeAmount(true) : setChangeAmount(false);
         }
@@ -83,7 +85,7 @@ function ProductInCart({ text, index, count, amountInStorage }: Props) {
                     onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
                     disableUnderline
                 />
-                <IconButton onClick={() => handleClick('add')} disabled={amountN === amountInStorage}>
+                <IconButton onClick={() => handleClick('add')} disabled={amountN === maxCount}>
                     <AddIcon />
                 </IconButton>
                 <Button

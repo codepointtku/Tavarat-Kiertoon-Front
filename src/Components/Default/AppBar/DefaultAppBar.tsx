@@ -144,8 +144,7 @@ function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
     const submit = useSubmit() as unknown as SubmitFunction;
-    const allProducts = useRouteLoaderData('products') as Awaited<ReturnType<typeof productListLoader>>;
-    const { cart, products } = useLoaderData() as Awaited<ReturnType<typeof shoppingCartLoader>>;
+    const { cart, products, amountList } = useLoaderData() as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const [productsLength, setProductsLength] = useState(cart?.products?.length);
 
     useEffect(() => {
@@ -223,19 +222,15 @@ function DefaultAppBar() {
                         </Typography>
                     )}
                     {products?.map((cartProduct: CartProduct) => {
-                        const productsInCart = allProducts?.filter(
-                            (product: { group_id: number }) => product.group_id === cartProduct.group_id
-                        );
+                        const product = amountList.find((p: { id: number }) => p.id == cartProduct.group_id);
                         return (
-                            productsInCart && (
-                                <ProductInCart
-                                    key={cartProduct.id}
-                                    text={cartProduct.name}
-                                    count={cartProduct.count}
-                                    index={cartProduct.id}
-                                    amountInStorage={productsInCart[0]?.amount}
-                                />
-                            )
+                            <ProductInCart
+                                key={cartProduct.id}
+                                text={cartProduct.name}
+                                count={cartProduct.count}
+                                index={cartProduct.id}
+                                maxCount={product?.amount}
+                            />
                         );
                     })}
                     {cart?.products?.length > 0 && (

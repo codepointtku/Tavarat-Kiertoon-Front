@@ -236,7 +236,6 @@ function Routes() {
                                 {
                                     path: '/ostoskori/',
                                     element: <CartView />,
-                                    loader: async () => cartViewLoader(auth, setAuth),
                                     action: async ({ request }) => cartViewAction(auth, setAuth, request),
                                 },
                                 {
