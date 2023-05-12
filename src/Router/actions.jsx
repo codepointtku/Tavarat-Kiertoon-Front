@@ -7,7 +7,7 @@ import apiCall from '../Utils/apiCall';
 const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
-    const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : -1;
+    const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : 0;
     if (request.method === 'POST') {
         if (auth.username) {
             const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
@@ -36,7 +36,7 @@ const frontPageActions = async (auth, setAuth, request) => {
         if (!id) {
             // clear cart if no id is being sent or clear cart and return "type: orderCreated" when a new order is created.
             const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
-                amount,
+                amount: -1,
             });
             if (formData.has('order')) {
                 return { type: 'orderCreated', status: true };
@@ -333,8 +333,9 @@ const confirmationAction = async (auth, setAuth, request) => {
         contact: formData.get('email'),
         delivery_address: formData.get('deliveryAddress'),
         phone_number: formData.get('phoneNumber'),
-        status: 'Delivery',
+        status: 'Waiting',
         user: formData.get('id'),
+        order_info: formData.get('orderInfo'),
         // products: formData.get('productIds'),
     });
     if (response.status === 200) {
@@ -385,14 +386,14 @@ const resetPasswordAction = async (auth, setAuth, request) => {
 const modifyBikeAction = async (auth, setAuth, request, params) => {
     // collect data that needs to be sent to backend
     const data = await request.formData();
-    const packageOnly =  data.get('changePackageOnly')
+    const packageOnly = data.get('changePackageOnly');
     const submission = {
         bike: data.get('changeBikeModel'),
         frame_number: data.get('changeFrameNumber'),
         number: data.get('changeBikeNumber'),
         storage: data.get('changeBikeStorage'),
         state: data.get('changeBikeStatus'),
-        package_only: packageOnly === null ? false : packageOnly // from checkbox value seems to be 'on' or null
+        package_only: packageOnly === null ? false : packageOnly, // from checkbox value seems to be 'on' or null
     };
 
     // send data and redirect back to bike list
@@ -403,18 +404,23 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
 const createNewBikeAction = async (auth, setAuth, request) => {
     // collect data that needs to be sent to backend
     const data = await request.formData();
-    const packageOnly =  data.get('changePackageOnly')
+    const packageOnly = data.get('changePackageOnly');
     const submission = {
         bike: data.get('changeBikeModel'),
         frame_number: data.get('changeFrameNumber'),
         number: data.get('changeBikeNumber'),
         storage: data.get('changeBikeStorage'),
         state: data.get('changeBikeStatus'),
-        package_only: packageOnly === null ? false : packageOnly // from checkbox value seems to be 'on' or null
+        package_only: packageOnly === null ? false : packageOnly, // from checkbox value seems to be 'on' or null
     };
 
     // send data and redirect back to bike list
-    await apiCall(auth, setAuth, `/bikes/stock`, 'post', submission);
+    await apiCall(auth, setAuth, `/bikes/stock/`, 'post', submission);
+    return redirect('/pyorat/pyoravarasto');
+};
+
+const deleteBikeAction = async (auth, setAuth, params) => {
+    await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     return redirect('/pyorat/pyoravarasto');
 };
 
@@ -437,4 +443,5 @@ export {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
+    deleteBikeAction,
 };
