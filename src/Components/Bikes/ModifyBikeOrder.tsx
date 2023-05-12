@@ -142,11 +142,7 @@ export default function ModifyBikeOrder() {
                                                 </Stack>
                                             </Box>
                                         </TableCell>
-                                        <TableCell>
-                                            <IconButton onClick={() => handleRemoveBike(index)}>
-                                                <RemoveCircleOutlineRoundedIcon />
-                                            </IconButton>
-                                        </TableCell>
+                                        <TableCell></TableCell>
                                         <TableCell align="left"></TableCell>
                                         <TableCell>
                                             Väri:{models.find((model) => model.id === packet.bike).color.name}
