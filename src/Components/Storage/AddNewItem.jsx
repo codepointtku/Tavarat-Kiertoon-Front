@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
     useRouteLoaderData,
     useLoaderData,
@@ -9,24 +10,24 @@ import {
     useActionData,
     useLocation,
 } from 'react-router-dom';
-import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Modal, Typography } from '@mui/material';
-import imageCompression from 'browser-image-compression';
 
-import { useForm } from 'react-hook-form';
+import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Modal, Typography } from '@mui/material';
+
+import imageCompression from 'browser-image-compression';
 import Html5QrcodePlugin from '../../Utils/qrcodeScanner';
 import Barcode from 'react-barcode';
+
 import TypographyTitle from '../TypographyTitle';
 
 function AddNewItem() {
+    const [qrScanOpen, setQrScanOpen] = useState(false);
     const { categories } = useRouteLoaderData('root');
     const { storages, colors } = useLoaderData();
     console.log('categories:', categories, 'storages:', storages, 'colors:', colors);
     const submit = useSubmit();
-    const actionData = useActionData();
-    const location = useLocation();
     const navigate = useNavigate();
-
-    const [qrSearchOpen, setQrSearchOpen] = useState(false);
+    // const actionData = useActionData();
+    // const location = useLocation();
 
     const {
         register,
@@ -35,6 +36,7 @@ function AddNewItem() {
         setValue,
         formState: { errors, isValid },
     } = useForm({
+        // validates and shows errors when fields have been touched and lost focus
         mode: 'onTouched',
         defaultValues: {
             amount: 1,
@@ -110,7 +112,7 @@ function AddNewItem() {
 
     // QR code scanner
     const onNewScanResult = (decodedText, decodedResult) => {
-        setQrSearchOpen(false);
+        setQrScanOpen(false);
         setValue('barcode', decodedText);
     };
 
@@ -119,10 +121,11 @@ function AddNewItem() {
     return (
         <Card>
             <Modal
-                open={qrSearchOpen}
+                open={qrScanOpen}
                 onClose={() => {
-                    setQrSearchOpen(false);
+                    setQrScanOpen(false);
                 }}
+                justifyContent="center"
             >
                 <Box width={700}>
                     <Html5QrcodePlugin
@@ -192,7 +195,7 @@ function AddNewItem() {
                         Viivakoodi
                     </TextField>
                     <CardActions>
-                        <Button size="large" onClick={() => setQrSearchOpen(true)}>
+                        <Button size="large" onClick={() => setQrScanOpen(true)}>
                             Viivakoodinlukija
                         </Button>
                         {barcode?.length > 0 && <Barcode value={barcode} format="CODE39" height={32} fontSize={14} />}
@@ -218,21 +221,54 @@ function AddNewItem() {
                         {...register('category_name', { required: true })}
                         defaultValue=""
                     >
-                        {categories?.map((category) => (
-                            <MenuItem
-                                onClick={() => setValue('category', category.id)}
-                                key={category.id}
-                                value={category.name}
-                            >
-                                {category.name}
-                            </MenuItem>
-                        ))}
+                        <MenuItem
+                        // onClick={() => setValue()}
+                        // key={category.id}
+                        // value={category.name}
+                        >
+                            <Button variant="contained">Luo uusi</Button>
+                        </MenuItem>
+                        {categories?.map((category) =>
+                            category.level == 0 || category.level === 1 ? (
+                                <MenuItem
+                                    // onClick={() => setValue('category', category.id)}
+                                    key={category.id}
+                                    value={category.name}
+                                    sx={{ color: 'red' }}
+                                >
+                                    {category.name}
+                                </MenuItem>
+                            ) : (
+                                <MenuItem
+                                    onClick={() => setValue('category', category.id)}
+                                    key={category.id}
+                                    value={category.name}
+                                >
+                                    {category.name}
+                                </MenuItem>
+                            )
+                        )}
                     </TextField>
                     <TextField
                         type="number"
                         label="Määrä"
                         placeholder="Määrä"
-                        {...register('amount', { required: true, max: 1000, min: 1 })}
+                        {...register('amount', {
+                            required: { value: true, message: 'Määrä on pakollinen' },
+                            max: { value: 1000, message: '1000 on maksimimäärä' },
+                            min: { value: 1, message: '1 on minimimäärä' },
+                            pattern: { value: '[0-9]*', message: 'Määrä on numero' },
+                        })}
+                        inputProps={{
+                            inputMode: 'numeric',
+                            pattern: '[0-9]*',
+                            title: 'Määrä',
+                            min: '1',
+                            max: '1000',
+                            required: true,
+                        }}
+                        error={!!errors.amount}
+                        helperText={errors.amount?.message}
                     ></TextField>
                     {/* todo värikenttä, uuden värin lisäys mahdollisuus, backend hyväksyy stringin ja luo uuden ellei ole olemassa. Lisäkenttä lisää uusi väri */}
                     <TextField
@@ -264,7 +300,11 @@ function AddNewItem() {
                         </Button>
                     </CardActions>
                     <CardActions>
-                        <Button size="large" type="submit" disabled={!isValid}>
+                        <Button
+                            size="large"
+                            type="submit"
+                            // disabled={!isValid}
+                        >
                             Lisää tuote
                         </Button>
                     </CardActions>
