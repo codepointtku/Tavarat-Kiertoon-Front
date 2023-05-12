@@ -108,6 +108,7 @@ import {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
+    activationAction,
 } from './actions';
 
 createStore({});
@@ -301,6 +302,7 @@ function Routes() {
                         {
                             path: 'aktivointi/:uid/:token',
                             element: <Activation />,
+                            action: async ({ request }) => activationAction(auth, setAuth, request),
                         },
                     ],
                 },
