@@ -386,7 +386,7 @@ const createNewBikeAction = async (auth, setAuth, request) => {
 
 const activationAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, 'users/activate/', 'post', {
+    const response = await apiCall(auth, setAuth, '/users/activate/', 'post', {
         uid: formData.get('uid'),
         token: formData.get('token'),
     });
