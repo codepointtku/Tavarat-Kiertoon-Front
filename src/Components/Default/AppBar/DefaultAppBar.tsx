@@ -1,6 +1,5 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect, type ReactNode } from 'react';
 import { useLoaderData, useNavigate, useSubmit } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 import {
     AppBar,
@@ -16,6 +15,7 @@ import {
     ListItem,
     ListItemText,
     Typography,
+    type Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -29,6 +29,7 @@ import Welcome from './Welcome';
 import ProductInCart from './ProductInCart';
 import LoginDrawer from './LoginDrawer';
 import CloseDrawerButton from './CloseDrawerButton';
+import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
 
 //
@@ -51,9 +52,21 @@ function DrawerHeader() {
     );
 }
 
+interface DrawerProps {
+    currentOpenDrawer: string;
+    name: string;
+    onClose: () => void;
+    children: ReactNode;
+}
+
+interface StyledBadgeInterface {
+    isanimated: number;
+    theme?: Theme;
+}
+
 const drawerWidth = 490;
 
-function Drawer({ currentOpenDrawer, name, onClose, children }) {
+function Drawer({ currentOpenDrawer, name, onClose, children }: DrawerProps) {
     const handleClose = () => {
         onClose();
     };
@@ -81,19 +94,26 @@ function Drawer({ currentOpenDrawer, name, onClose, children }) {
     );
 }
 
-Drawer.propTypes = {
-    currentOpenDrawer: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    children: PropTypes.node.isRequired,
-    onClose: PropTypes.func.isRequired,
-};
-
-const StyledBadge = styled(Badge)(({ theme }) => ({
+const StyledBadge = styled(Badge)(({ theme, isanimated }: StyledBadgeInterface) => ({
     '& .MuiBadge-badge': {
+        color: theme?.palette.primary.contrastText,
         right: -8,
-        border: `0.1rem solid ${theme.palette.background.paper}`,
-        backgroundColor: `${theme.palette.error.main}`,
+        border: `0.1rem solid ${theme?.palette.background.paper}`,
+        backgroundColor: theme?.palette.error.main,
+        animationName: isanimated ? 'idle' : 'badgePulse',
+        animationDuration: '1s',
     },
+    '@keyframes badgePulse': {
+        from: {
+            fontSize: '100%',
+            color: 'white',
+        },
+        to: {
+            fontSize: '125%',
+            color: theme?.palette.primary.main,
+        },
+    },
+    '@keyframes idle': { '100%': {} },
 }));
 
 const iconHover = {
@@ -108,16 +128,36 @@ const toolBarHover = {
     },
 };
 
+interface CartProduct {
+    id: number & string;
+    count: number;
+    name: string;
+    group_id: number;
+}
+
+interface SubmitFunction {
+    (SubmitTarget: string, options: { method: string; action: string }): any;
+}
+
 function DefaultAppBar() {
     const { auth } = useContext(AuthContext);
     const [notLoggedIn, setNotLoggedIn] = useState(false);
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
-    const submit = useSubmit();
-    const amount = 0;
-    const { cart } = useLoaderData();
+    const submit = useSubmit() as unknown as SubmitFunction;
+    const { cart, products, amountList } = useLoaderData() as Awaited<ReturnType<typeof shoppingCartLoader>>;
+    const [productsLength, setProductsLength] = useState(cart?.products?.length);
+    const [cartEmpty, setCartEmpty] = useState(false);
 
-    const drawerOpen = (drawer) => () => {
+    useEffect(() => {
+        if (cart?.products?.length !== productsLength) {
+            setTimeout(() => {
+                setProductsLength(cart?.products?.length);
+            }, 3000);
+        }
+    }, [cart?.products?.length]);
+
+    const drawerOpen = (drawer: string) => () => {
         notLoggedIn && setNotLoggedIn(false);
         if (currentOpenDrawer === drawer) {
             setCurrentOpenDrawer('');
@@ -131,13 +171,18 @@ function DefaultAppBar() {
             setCurrentOpenDrawer('account');
             setNotLoggedIn(true);
         } else {
-            setCurrentOpenDrawer('');
-            navigate('/ostoskori');
+            if (cart?.products?.length === 0) {
+                setCartEmpty(true);
+            } else {
+                setCartEmpty(false);
+                setCurrentOpenDrawer('');
+                navigate('/ostoskori');
+            }
         }
     }
 
     function handleClick() {
-        submit({ amount }, { method: 'put', action: '/' });
+        submit('a', { method: 'put', action: '/' });
     }
 
     return (
@@ -159,6 +204,7 @@ function DefaultAppBar() {
                         <Tooltip title="Ostoskori">
                             <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
                                 <StyledBadge
+                                    isanimated={productsLength === cart?.products?.length ? 1 : 0}
                                     badgeContent={cart?.products?.length}
                                     sx={{ color: 'primary.contrastText' }}
                                     anchorOrigin={{
@@ -183,13 +229,30 @@ function DefaultAppBar() {
                 {/* tähän oma komponentti.. */}
                 <List>
                     {cart?.products?.length === 0 && (
-                        <Typography variant="h6" align="center">
-                            Ostoskorisi on tyhjä.
-                        </Typography>
+                        <>
+                            {cartEmpty ? (
+                                <Typography variant="h6" align="center" sx={{ color: 'error.main' }}>
+                                    Et voi siirtyä kassalle tyhjällä ostoskorilla.
+                                </Typography>
+                            ) : (
+                                <Typography variant="h6" align="center">
+                                    Ostoskorisi on tyhjä.
+                                </Typography>
+                            )}
+                        </>
                     )}
-                    {cart?.products?.map((product) => (
-                        <ProductInCart key={product.id} text={product.name} index={product.id} />
-                    ))}
+                    {products?.map((cartProduct: CartProduct) => {
+                        const product = amountList.find((p: { id: number }) => p.id == cartProduct.group_id);
+                        return (
+                            <ProductInCart
+                                key={cartProduct.id}
+                                text={cartProduct.name}
+                                count={cartProduct.count}
+                                index={cartProduct.id}
+                                maxCount={product?.amount}
+                            />
+                        );
+                    })}
                     {cart?.products?.length > 0 && (
                         <ListItem
                             sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}
