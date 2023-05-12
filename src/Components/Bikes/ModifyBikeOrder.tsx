@@ -6,14 +6,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useLoaderData } from 'react-router';
-import { Box, IconButton, Stack, TextField } from '@mui/material';
+import { Box, IconButton, Stack, TextField, Typography } from '@mui/material';
 import { Form } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 // import AddIcon from '@mui/icons-material/Add';
 // import RemoveIcon from '@mui/icons-material/Remove';
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 
 export default function ModifyBikeOrder() {
     const { packet, models } = useLoaderData();
@@ -122,26 +122,32 @@ export default function ModifyBikeOrder() {
                                         </TableCell>
 
                                         <TableCell>
-                                            <Stack direction="row">
-                                                <IconButton onClick={() => handleRemoveBike(index)}>
-                                                    <RemoveCircleOutlineRoundedIcon />
-                                                </IconButton>
-                                                Määrä: {amount[index]}
-                                                <IconButton onClick={() => handleAddBike(index)}>
-                                                    <AddCircleOutlineIcon />
-                                                </IconButton>
-                                            </Stack>
+                                            <Box>
+                                                <Stack justifyContent="center" direction="row">
+                                                    <IconButton
+                                                        color="primary"
+                                                        onClick={() => handleRemoveBike('remove', index)}
+                                                    >
+                                                        <RemoveCircleOutlineRoundedIcon />
+                                                    </IconButton>
+                                                    <Typography variant="h6" sx={{ p: 0.5 }}>
+                                                        {amount[index]}
+                                                    </Typography>
+                                                    <IconButton
+                                                        color="primary"
+                                                        onClick={() => handleAddBike('add', index)}
+                                                    >
+                                                        <AddCircleRoundedIcon />
+                                                    </IconButton>
+                                                </Stack>
+                                            </Box>
                                         </TableCell>
                                         <TableCell>
                                             <IconButton onClick={() => handleRemoveBike(index)}>
                                                 <RemoveCircleOutlineRoundedIcon />
                                             </IconButton>
                                         </TableCell>
-                                        <TableCell align="left">
-                                            <IconButton onClick={() => handleAddBike(index)}>
-                                                <AddCircleOutlineIcon />
-                                            </IconButton>
-                                        </TableCell>
+                                        <TableCell align="left"></TableCell>
                                         <TableCell>
                                             Väri:{models.find((model) => model.id === packet.bike).color.name}
                                         </TableCell>
