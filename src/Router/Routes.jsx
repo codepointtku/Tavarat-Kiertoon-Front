@@ -107,6 +107,7 @@ import {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
+    deleteBikeAction,
 } from './actions';
 
 createStore({});
@@ -495,6 +496,13 @@ function Routes() {
                                             loader: async ({ params }) => bikeLoader(auth, setAuth, params),
                                             action: async ({ request, params }) =>
                                                 modifyBikeAction(auth, setAuth, request, params),
+                                            children: [
+                                                {
+                                                    path: 'poista',
+                                                    action: async ({ params }) =>
+                                                        deleteBikeAction(auth, setAuth, params),
+                                                },
+                                            ],
                                         },
                                     ],
                                 },
