@@ -1,16 +1,23 @@
 import { useEffect } from 'react';
-import { useSubmit } from 'react-router-dom';
+import { useSubmit, useParams } from 'react-router-dom';
 import { Container, Grid, Button } from '@mui/material';
 import TypographyHeading from '../../TypographyHeading';
 import { Link } from 'react-router-dom';
 
+interface Params {
+    uid: string;
+    token: string;
+}
+
 function Activation() {
     const submit = useSubmit();
+    const { uid, token } = useParams() as unknown as Params;
+
     useEffect(() => {
-        submit({}, { method: 'post', action: '/aktivointi/:uid/:token/' });
+        submit({ uid, token }, { method: 'post', action: `/aktivointi/${uid}/${token}` });
     }, []);
     return (
-        <Container onLoad={() => console.log('Testing TESITING')}>
+        <Container>
             <Grid
                 sx={{
                     border: '0.1rem solid #bfe6f6',
