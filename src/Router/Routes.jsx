@@ -68,6 +68,7 @@ import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
 import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
+import BikeModels from '../Components/Bikes/BikeModels';
 
 import {
     addItemLoader,
@@ -511,6 +512,10 @@ function Routes() {
                                     element: <ModifyBikePage createNewBike={true} />,
                                     loader: async () => createNewBikeLoader(auth, setAuth),
                                     action: async ({ request }) => createNewBikeAction(auth, setAuth, request),
+                                },
+                                {
+                                    path: 'pyoramallit',
+                                    element: <BikeModels />,
                                 },
                             ],
                         },

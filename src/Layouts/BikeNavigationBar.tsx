@@ -15,6 +15,9 @@ function BikeLinkBar() {
                 <Button component={Link} to="">
                     <PedalBikeIcon />
                 </Button>
+                <Button component={Link} to="pyoramallit">
+                    Pyörämallit
+                </Button>
                 <Button component={Link} to="pyoratilaukset">
                     Pyörätilaukset
                 </Button>
