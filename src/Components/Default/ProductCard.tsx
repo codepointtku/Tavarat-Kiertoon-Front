@@ -10,7 +10,9 @@ import {
     Typography,
     Tooltip,
     Grid,
+    ButtonPropsSizeOverrides,
 } from '@mui/material';
+import { OverridableStringUnion } from '@material-ui/types';
 import Carousel from 'react-material-ui-carousel';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
@@ -58,7 +60,7 @@ function ProductCard({
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Card sx={{ width: 300 }}>
+            <Card sx={{ width: 300, height: 365 }}>
                 <CardActionArea component={Box}>
                     <Carousel
                         animation="slide"
@@ -164,7 +166,17 @@ function ProductCard({
                         >
                             <InfoOutlinedIcon fontSize="small" />
                         </Button>
-                        <AddToCartButton size="small" id={id} groupId={groupId} count={count} />
+                        <AddToCartButton
+                            size={
+                                'small' as OverridableStringUnion<
+                                    'small' | 'medium' | 'large',
+                                    ButtonPropsSizeOverrides
+                                >
+                            }
+                            id={id as number & string}
+                            groupId={groupId}
+                            count={count}
+                        />
                     </CardActions>
                 </Box>
             </Card>
