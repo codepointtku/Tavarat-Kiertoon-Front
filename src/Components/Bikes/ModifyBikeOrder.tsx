@@ -6,7 +6,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useLoaderData } from 'react-router';
-import { Box, IconButton, TextField } from '@mui/material';
+import { Box, IconButton, Stack, TextField } from '@mui/material';
 import { Form } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
@@ -120,11 +120,23 @@ export default function ModifyBikeOrder() {
                                         <TableCell>
                                             merkki: {models.find((model) => model.id === packet.bike).brand.name}
                                         </TableCell>
-                                        <TableCell></TableCell>
-                                        <IconButton onClick={() => handleRemoveBike(index)}>
-                                            <RemoveCircleOutlineRoundedIcon />
-                                        </IconButton>
-                                        <TableCell>Määrä: {amount[index]}</TableCell>
+
+                                        <TableCell>
+                                            <Stack direction="row">
+                                                <IconButton onClick={() => handleRemoveBike(index)}>
+                                                    <RemoveCircleOutlineRoundedIcon />
+                                                </IconButton>
+                                                Määrä: {amount[index]}
+                                                <IconButton onClick={() => handleAddBike(index)}>
+                                                    <AddCircleOutlineIcon />
+                                                </IconButton>
+                                            </Stack>
+                                        </TableCell>
+                                        <TableCell>
+                                            <IconButton onClick={() => handleRemoveBike(index)}>
+                                                <RemoveCircleOutlineRoundedIcon />
+                                            </IconButton>
+                                        </TableCell>
                                         <TableCell align="left">
                                             <IconButton onClick={() => handleAddBike(index)}>
                                                 <AddCircleOutlineIcon />
