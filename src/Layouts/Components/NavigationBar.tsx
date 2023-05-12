@@ -1,8 +1,11 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useActionData } from 'react-router-dom';
 
 import { Box, Button, ButtonGroup } from '@mui/material';
 
 import HasRole from '../../Utils/HasRole';
+
+import type { frontPageActions } from '../../Router/actions';
 
 function LinkBar() {
     return (
@@ -42,21 +45,26 @@ function AuthedLinkBar() {
                 aria-label="authed navigation link buttons"
                 sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
             >
-                <Button component={Link} to="/tilastot">
-                    Tilastot
-                </Button>
-                <Button component={Link} to="/varasto">
-                    Varaston hallintanäkymä
-                </Button>
-                <Button component={Link} to="/admin">
-                    Sivuston hallintanäkymä
-                </Button>
+                <HasRole role={'admin_group' || 'storage_group'}>
+                    <Button component={Link} to="/varasto">
+                        Varaston hallintanäkymä
+                    </Button>
+                </HasRole>
+                <HasRole role="admin_group">
+                    <Button component={Link} to="/admin">
+                        Sivuston hallintanäkymä
+                    </Button>
+                </HasRole>
             </ButtonGroup>
         </Box>
     );
 }
 
 function NavigationBar() {
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof frontPageActions>>;
+
+    useEffect(() => {}, [responseStatus]);
+
     return (
         <Box
             id="navbar-container"
@@ -69,10 +77,9 @@ function NavigationBar() {
             }}
         >
             <LinkBar />
-            <HasRole role="storage_group">
+            <HasRole role={'admin_group' || 'storage_group'}>
                 <AuthedLinkBar />
             </HasRole>
-            {/* <HasRole role="admin_group">admin linkit</HasRole> */}
         </Box>
     );
 }
