@@ -287,7 +287,6 @@ const shoppingProcessLoader = async (auth, setAuth) => {
 
 export {
     bikesPacketLoader,
-    bulletinSubjectLoader,
     rootLoader,
     productListLoader,
     productDetailsLoader,

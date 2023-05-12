@@ -91,7 +91,6 @@ import {
     bikeLoader,
     createNewBikeLoader,
     shoppingProcessLoader,
-    bulletinSubjectLoader,
     modifyBikeOrderLoader,
 } from './loaders';
 
