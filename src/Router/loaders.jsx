@@ -255,10 +255,21 @@ const bikeLoader = async (auth, setAuth, params) => {
     return { bikeData, bikeModelsData, storagesData };
 };
 
-// get bulletin subjects
-const bulletinSubjectLoader = async (auth, setAuth) => {
-    const { data } = await apiCall(auth, setAuth, '/bulletin_subjects', 'get');
-    return data;
+const createNewBikeLoader = async (auth, setAuth) => {
+    const [{ data: bikeModelsData }, { data: storagesData }] = await Promise.all([
+        apiCall(auth, setAuth, '/bikes/models/', 'get'),
+        apiCall(auth, setAuth, '/storages/', 'get'),
+    ]);
+    // Empty bike to show in the page before information is added
+    const bikeData = {
+        bike: '',
+        frame_number: '',
+        number: '',
+        package_only: false,
+        state: 'AVAILABLE',
+        storage: '',
+    };
+    return { bikeData, bikeModelsData, storagesData };
 };
 
 /**
@@ -293,6 +304,7 @@ export {
     bikesDefaultLoader,
     bikesListLoader,
     bikeLoader,
+    createNewBikeLoader,
     shoppingCartLoader,
     shoppingProcessLoader,
     modifyBikeOrderLoader,

@@ -59,11 +59,7 @@ export default function Bikes() {
     return (
         <>
             <Box width="100%" textAlign="right" marginBottom="1em" marginTop="-2em" marginRight="2em">
-                <Button
-                    onClick={() => {
-                        console.log(`Lisää uusi pyörä`);
-                    }}
-                >
+                <Button component={Link} to="/pyorat/pyoravarasto/lisaa">
                     Lisää uusi pyörä
                 </Button>
             </Box>

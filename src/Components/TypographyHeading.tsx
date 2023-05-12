@@ -6,7 +6,7 @@ interface Props {
 
 function TypographyHeading({ text }: Props) {
     return (
-        <Typography variant="h5" color="primary.main" gutterBottom>
+        <Typography variant="h5" color="primary.main">
             {text}
         </Typography>
     );
