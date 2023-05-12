@@ -204,7 +204,8 @@ function ContactsAndDelivery() {
                 {selectedMethod === 'pickup' && (
                     <Grid item>
                         <TextField
-                            type="datetime-local"
+                            {...register('fetchDate')}
+                            type="date"
                             label="Noutoaika"
                             variant="outlined"
                             placeholder="Noutoaika"
