@@ -34,8 +34,9 @@ export default function ModifyBikeOrder() {
 
     //     setSuccess(true);
     // };
+    // function with a parameter arrey of bikeModels
 
-    console.log(amount);
+    console.log('models', models);
     console.log('packet.bikes', packet.bikes);
 
     const handleAddBike = (index: number) => {
@@ -93,11 +94,11 @@ export default function ModifyBikeOrder() {
                                             label="Muokkaa nimeä"
                                         />
                                     </TableCell>
-                                    <TableCell>asdasd</TableCell>
-                                    <TableCell>asdasd</TableCell>
-                                    <TableCell>asdasd</TableCell>
-                                    <TableCell>asdasd</TableCell>
-                                    <TableCell>asdasd</TableCell>
+                                    <TableCell>1</TableCell>
+                                    <TableCell>2</TableCell>
+                                    <TableCell>3</TableCell>
+                                    <TableCell>4</TableCell>
+                                    <TableCell>5</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold' }}>kuvaus:</TableCell>
@@ -116,17 +117,31 @@ export default function ModifyBikeOrder() {
                                         <TableCell sx={{ fontWeight: 'bold' }}>
                                             {index === 0 ? 'Pyörät: ' : ''}
                                         </TableCell>
-                                        <TableCell>Tyyppi: {packet.bike}</TableCell>
                                         <TableCell>
-                                            <IconButton onClick={() => handleRemoveBike(index)}>
-                                                <RemoveCircleOutlineRoundedIcon />
-                                            </IconButton>
+                                            merkki: {models.find((model) => model.id === packet.bike).brand.name}
                                         </TableCell>
+                                        <TableCell></TableCell>
+                                        <IconButton onClick={() => handleRemoveBike(index)}>
+                                            <RemoveCircleOutlineRoundedIcon />
+                                        </IconButton>
                                         <TableCell>Määrä: {amount[index]}</TableCell>
                                         <TableCell align="left">
                                             <IconButton onClick={() => handleAddBike(index)}>
                                                 <AddCircleOutlineIcon />
                                             </IconButton>
+                                        </TableCell>
+                                        <TableCell>
+                                            Väri:{models.find((model) => model.id === packet.bike).color.name}
+                                        </TableCell>
+                                        <TableCell>
+                                            Malli:{models.find((model) => model.id === packet.bike).type.name}
+                                        </TableCell>
+
+                                        <TableCell>
+                                            nimi:{models.find((model) => model.id === packet.bike).name}
+                                        </TableCell>
+                                        <TableCell>
+                                            Kuvaus:{models.find((model) => model.id === packet.bike).description}
                                         </TableCell>
                                     </TableRow>
                                 ))}
