@@ -23,7 +23,7 @@ const adminLogOut = async (auth, setAuth, request) => {
 const frontPageActions = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
-    const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : -1;
+    const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : 0;
     if (request.method === 'POST') {
         if (auth.username) {
             const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
@@ -52,7 +52,7 @@ const frontPageActions = async (auth, setAuth, request) => {
         if (!id) {
             // clear cart if no id is being sent or clear cart and return "type: orderCreated" when a new order is created.
             const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
-                amount,
+                amount: -1,
             });
             if (formData.has('order')) {
                 return { type: 'orderCreated', status: true };
@@ -315,8 +315,9 @@ const confirmationAction = async (auth, setAuth, request) => {
         contact: formData.get('email'),
         delivery_address: formData.get('deliveryAddress'),
         phone_number: formData.get('phoneNumber'),
-        status: 'Delivery',
+        status: 'Waiting',
         user: formData.get('id'),
+        order_info: formData.get('orderInfo'),
         // products: formData.get('productIds'),
     });
     if (response.status === 200) {
@@ -396,7 +397,12 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     };
 
     // send data and redirect back to bike list
-    await apiCall(auth, setAuth, `/bikes/stock`, 'post', submission);
+    await apiCall(auth, setAuth, `/bikes/stock/`, 'post', submission);
+    return redirect('/pyorat/pyoravarasto');
+};
+
+const deleteBikeAction = async (auth, setAuth, params) => {
+    await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     return redirect('/pyorat/pyoravarasto');
 };
 
@@ -418,5 +424,6 @@ export {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
+    deleteBikeAction,
     adminLogOut,
 };

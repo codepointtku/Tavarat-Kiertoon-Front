@@ -5,18 +5,34 @@ import { useForm } from 'react-hook-form';
 
 import Update from './Update';
 import CartButtons from './CartButtons';
+import type { shoppingCartLoader } from '../../../Router/loaders';
+import type { shoppingProcessLoader } from '../../../Router/loaders';
+
+interface CartState {
+    state: {
+        email: string;
+        deliveryAddress: string;
+        deliveryMethod: string;
+        phoneNumber: string;
+        orderInfo: string;
+        firstName: string;
+        lastName: string;
+        zipcode: string;
+        city: string;
+    };
+}
 
 function Confirmation() {
     const { handleSubmit, register } = useForm();
-    const { state } = useStateMachine({ Update });
-    const { products } = useRouteLoaderData('frontPage');
-    const { id } = useRouteLoaderData('shoppingCart');
     const submit = useSubmit();
-    const order = 'order';
+    const { state } = useStateMachine({ Update }) as unknown as CartState;
+    const { products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
+    const { id } = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
+    let order: string;
 
     const onSubmit = async () => {
-        const { email, deliveryAddress, phoneNumber } = state;
-        submit({ deliveryAddress, email, phoneNumber, id }, { method: 'post', action: '/ostoskori/vaihe3' });
+        const { email, deliveryAddress, phoneNumber, orderInfo } = state;
+        submit({ deliveryAddress, email, phoneNumber, id, orderInfo }, { method: 'post', action: '/ostoskori/vaihe3' });
         submit({ order }, { method: 'put', action: '/' });
     };
 
@@ -77,7 +93,7 @@ function Confirmation() {
                     Tilaustiedot
                 </Typography>
                 <List>
-                    {products?.map((item) => (
+                    {products?.map((item: { id: number; count: number; name: string }) => (
                         <ListItem key={item.id} disableGutters disablePadding>
                             <ListItemText primary={`${item.count}x ${item.name}`} />
                         </ListItem>
