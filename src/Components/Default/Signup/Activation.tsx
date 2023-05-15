@@ -32,7 +32,7 @@ function Activation() {
                 gap={2}
             >
                 <Grid item>
-                    <TypographyHeading text="Käyttäjä aktivoitu onnistuneesti" />
+                    <TypographyHeading text="Käyttäjä aktivoitu onnistuneesti!" />
                 </Grid>
                 <Grid item>
                     <Button component={Link} to="/" sx={{ width: 200, p: 2 }}>
