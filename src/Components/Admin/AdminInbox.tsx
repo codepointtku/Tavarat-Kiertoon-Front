@@ -1,5 +1,5 @@
 import { useLoaderData } from 'react-router-dom';
-import { Stack } from '@mui/system';
+import { Stack, Grid } from '@mui/material';
 import HeroText from '../HeroText';
 import BulletinCard from '../Default/BulletinCard';
 import type { adminInboxLoader } from '../../Router/loaders';
@@ -17,12 +17,12 @@ function AdminInbox() {
     ));
 
     return (
-        <>
+        <Grid direction="column" alignItems="center" container>
             <HeroText title="Saapuneet viestit" />
             <Stack id="admin-messages-stack" sx={{ m: '1rem 0 1rem 0' }}>
                 {messageCards}
             </Stack>
-        </>
+        </Grid>
     );
 }
 
