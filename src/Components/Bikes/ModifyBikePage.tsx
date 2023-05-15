@@ -19,6 +19,7 @@ import { Form, Link } from 'react-router-dom';
 import type { bikeInterface, bikeModelInterface, storageInterface } from './Bikes';
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
+import DeleteBikeModal from './DeleteBikeModal';
 
 interface ModifyBikePageInterface {
     createNewBike: boolean;
@@ -46,9 +47,10 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     const [frameNumberState, setFrameNumberState] = useState(createNewBike ? '' : bikeData.frame_number);
     const [bikeNumberState, setBikeNumberState] = useState(createNewBike ? '' : bikeData.number);
     const [packageOnly, setPackageOnly] = useState(createNewBike ? false : bikeData.package_only);
-    const [statusState, setStatusState] = useState(createNewBike ? "AVAILABLE" : bikeData.state)
+    const [statusState, setStatusState] = useState(createNewBike ? 'AVAILABLE' : bikeData.state);
+    const [renderDeleteBikeModal, setRenderDeleteBikeModal] = useState(false);
 
-    const currentBikeStatus = ["AVAILABLE" , "MAINTENANCE" , "RENTED" , "RETIRED"]
+    const currentBikeStatus = ['AVAILABLE', 'MAINTENANCE', 'RENTED', 'RETIRED'];
 
     // storage change handler: used for selecting the correct storage
     const handleStorageChange = (event: SelectChangeEvent) => {
@@ -94,8 +96,8 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     };
 
     const handleStatusChange = (event: SelectChangeEvent) => {
-        setStatusState(event.target.value)
-    }
+        setStatusState(event.target.value);
+    };
 
     // RENDER
     return (
@@ -109,9 +111,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                     paddingBottom="20px"
                     borderBottom="1px solid lightgray"
                 >
-                    <h3>
-                        {createNewBike ? "Luo uusi pyörä" : "Muokkaa pyörän tietoja"}
-                    </h3>
+                    <h3>{createNewBike ? 'Luo uusi pyörä' : 'Muokkaa pyörän tietoja'}</h3>
                 </Box>
 
                 {/*
@@ -235,7 +235,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                         }}
                                     >
                                         <TableCell sx={{ fontWeight: 'bold' }}>Numero:</TableCell>
-                                        <TableCell colSpan={3} align='right'>
+                                        <TableCell colSpan={3} align="right">
                                             <FormControl>
                                                 <TextField
                                                     label="Muokkaa Numeroa"
@@ -261,9 +261,11 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                             </FormControl>
                                         </TableCell>
                                         <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Tila:</TableCell>
-                                        <TableCell sx={{ border: 0 }}>
+                                        <TableCell sx={{ border: 0 }} align="right">
                                             <FormControl>
-                                                <InputLabel id="change-bike-status-label">Vaihda Pyörän Tilaa</InputLabel>
+                                                <InputLabel id="change-bike-status-label">
+                                                    Vaihda Pyörän Tilaa
+                                                </InputLabel>
                                                 <Select
                                                     labelId="change-bike-status-label"
                                                     id="change-bike-status"
@@ -338,11 +340,21 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                         <Button to={`/pyorat/pyoravarasto`} component={Link} sx={{ padding: '20px' }}>
                             Palaa pyörälistaan tallentamatta
                         </Button>
+                        {!createNewBike && (
+                            <Button color="error" onClick={() => setRenderDeleteBikeModal(true)}>
+                                Poista tämä pyörä
+                            </Button>
+                        )}
                         <Button type="submit" sx={{ padding: '20px' }}>
                             Tallenna muutokset ja palaa listaan
                         </Button>
                     </Box>
                 </Box>
+                <DeleteBikeModal
+                    renderModal={renderDeleteBikeModal}
+                    setRenderModal={setRenderDeleteBikeModal}
+                    bikeId={bikeData.id}
+                />
             </TableContainer>
         </>
     );

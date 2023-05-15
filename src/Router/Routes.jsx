@@ -109,6 +109,7 @@ import {
     modifyBikeAction,
     createNewBikeAction,
     activationAction,
+    deleteBikeAction,
 } from './actions';
 
 createStore({});
@@ -136,6 +137,7 @@ function Routes() {
                         {
                             index: true,
                             element: <DefaultView />,
+                            id: 'products',
                             loader: async ({ request }) => productListLoader(auth, setAuth, request),
                         },
                         {
@@ -222,7 +224,7 @@ function Routes() {
                                 </StateMachineProvider>
                             ),
                             id: 'shoppingCart',
-                            loader: shoppingProcessLoader,
+                            loader: async () => shoppingProcessLoader(auth, setAuth),
                             children: [
                                 {
                                     path: '/ostoskori/',
@@ -502,6 +504,13 @@ function Routes() {
                                             loader: async ({ params }) => bikeLoader(auth, setAuth, params),
                                             action: async ({ request, params }) =>
                                                 modifyBikeAction(auth, setAuth, request, params),
+                                            children: [
+                                                {
+                                                    path: 'poista',
+                                                    action: async ({ params }) =>
+                                                        deleteBikeAction(auth, setAuth, params),
+                                                },
+                                            ],
                                         },
                                     ],
                                 },
