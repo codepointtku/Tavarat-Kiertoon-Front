@@ -28,7 +28,8 @@ import Public from '@mui/icons-material/Public';
 
 import Tooltip from '../../Tooltip';
 import { ListItemButtonLink } from '../../MUILinkComponents';
-// import { Check } from '@mui/icons-material';
+
+//
 
 // list item links data (mapped out variables)
 const tilaukset = [
@@ -64,8 +65,8 @@ const tiedotteet = [
 ];
 
 const viestit = [
-    { icon: <People />, label: 'Saapuneet', to: '/placeholder' },
-    { icon: <PermMedia />, label: 'Aiheet', to: '/placeholder' },
+    { icon: <People />, label: 'Saapuneet', to: '/admin/saapuneet' },
+    // { icon: <PermMedia />, label: 'Aiheet', to: '/placeholder' },
 ];
 
 const FireNav = styled(List)<{ component?: React.ElementType }>({
@@ -81,10 +82,6 @@ const FireNav = styled(List)<{ component?: React.ElementType }>({
         fontSize: 20,
     },
 });
-
-// function Test() {
-//     <Checkbox />;
-// }
 
 // main
 function NavigationTree() {
@@ -119,10 +116,6 @@ function NavigationTree() {
             messagingNavList: true,
         });
     };
-
-    // const handleCheckKeepFullNavListOpen = () => {
-    // checkbox
-    // }
 
     // drop down menu (settings menu):
     const [settingsDropDownMenuOpen, setSettingsDropDownMenuOpen] = React.useState(false);
@@ -599,12 +592,7 @@ function NavigationTree() {
                                         Sulje kaikki valikot
                                     </MenuItem>
                                     <MenuItem onClick={handleOpenFullNavList} divider>
-                                        {/* <> */}
                                         Avaa kaikki valikot
-                                        {/* checkbox component here */}
-                                        {/* <Test /> */}
-                                        {/* <Checkbox /> */}
-                                        {/* </> */}
                                     </MenuItem>
                                     <Tooltip
                                         position="right"

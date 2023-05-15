@@ -89,6 +89,7 @@ import {
     bikeLoader,
     createNewBikeLoader,
     shoppingProcessLoader,
+    adminInboxLoader,
 } from './loaders';
 
 import {
@@ -114,6 +115,7 @@ import Overview from '../Components/Admin/Panel/Overview/Overview';
 import PageTest from '../Components/Admin/Panel/PageTest';
 
 import HasRole from '../Utils/HasRole';
+import AdminInbox from '../Components/Admin/AdminInbox';
 
 createStore({});
 
@@ -412,15 +414,7 @@ function Routes() {
                             path: 'tilastot',
                             element: <Stats />,
                         },
-                        {
-                            path: 'tiedotteet',
-                            element: <Bulletins />,
-                        },
-                        {
-                            path: 'tiedotteet/luo',
-                            element: <CreateBulletinPost />,
-                            action: async ({ request }) => createBulletinAction(auth, setAuth, request),
-                        },
+
                         {
                             path: 'varastot',
                             element: <Outlet />,
@@ -466,6 +460,20 @@ function Routes() {
                         {
                             path: 'hakemukset',
                             element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
+                        },
+                        {
+                            path: 'tiedotteet',
+                            element: <Bulletins />,
+                        },
+                        {
+                            path: 'tiedotteet/luo',
+                            element: <CreateBulletinPost />,
+                            action: async ({ request }) => createBulletinAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'saapuneet',
+                            element: <AdminInbox />,
+                            loader: adminInboxLoader,
                         },
                     ],
                 },
