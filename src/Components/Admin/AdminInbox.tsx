@@ -1,5 +1,7 @@
+import HeroText from '../HeroText';
+
 function AdminInbox() {
-    return <p>Inboxi</p>;
+    return <HeroText title="Saapuneet viestit" />;
 }
 
 export default AdminInbox;
