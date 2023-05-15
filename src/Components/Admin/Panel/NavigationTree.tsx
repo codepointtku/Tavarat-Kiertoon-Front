@@ -14,17 +14,32 @@ import {
     MenuItem,
     Paper,
     IconButton,
-    // Checkbox,
 } from '@mui/material/';
 
 import ArrowRight from '@mui/icons-material/ArrowRight';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import Home from '@mui/icons-material/Home';
 import Settings from '@mui/icons-material/Settings';
+import ExpandIcon from '@mui/icons-material/Expand';
+import VerticalAlignCenterIcon from '@mui/icons-material/VerticalAlignCenter';
+// import ImportExportIcon from '@mui/icons-material/ImportExport';
+import MarkChatReadIcon from '@mui/icons-material/MarkChatRead';
+import LogoutIcon from '@mui/icons-material/Logout';
+
 import People from '@mui/icons-material/People';
-import PermMedia from '@mui/icons-material/PermMedia';
-import Dns from '@mui/icons-material/Dns';
 import Public from '@mui/icons-material/Public';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import EditIcon from '@mui/icons-material/Edit';
+// import NotesIcon from '@mui/icons-material/Notes';
+// import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import DomainIcon from '@mui/icons-material/Domain';
+import DomainAddIcon from '@mui/icons-material/DomainAdd';
+import MailIcon from '@mui/icons-material/Mail';
 
 import Tooltip from '../../Tooltip';
 import { ListItemButtonLink } from '../../MUILinkComponents';
@@ -33,43 +48,38 @@ import { ListItemButtonLink } from '../../MUILinkComponents';
 
 // list item links data (mapped out variables)
 const tilaukset = [
-    { icon: <People />, label: 'Tarkastele', to: '/admin/pagetest' },
-    { icon: <Dns />, label: 'Muokkaa', to: '/tilauksetmuokkaa' },
-    { icon: <PermMedia />, label: 'Lisää uusi', to: '/tilauksetlisaa' },
-    // { icon: <Public />, label: 'Jotain', to: '/tilauksetjotain' },
+    { icon: <AutoStoriesIcon />, label: 'Tarkastele', to: '/admin/pagetest' },
+    { icon: <EditIcon />, label: 'Muokkaa', to: '/tilauksetmuokkaa' },
+    { icon: <PostAddIcon />, label: 'Lisää uusi', to: '/tilauksetlisaa' },
 ];
 
 const tuotteet = [
-    { icon: <People />, label: 'Tarkastele', to: '/placeholder' },
-    { icon: <Dns />, label: 'Muokkaa', to: '/placeholder' },
-    { icon: <PermMedia />, label: 'Lisää uusi', to: '/placeholder' },
-    // { icon: <Public />, label: 'Jotain', to: '/placeholder' },
+    { icon: <ManageSearchIcon />, label: 'Tarkastele', to: '/placeholder' },
+    { icon: <EditIcon />, label: 'Muokkaa', to: '/placeholder' },
+    { icon: <PlaylistAddIcon />, label: 'Lisää uusi', to: '/placeholder' },
 ];
 
 const kayttajat = [
     { icon: <People />, label: 'Tarkastele', to: '/admin/kayttajat' },
-    // { icon: <Dns />, label: 'Muokkaa', to: '/placeholder' },
-    // { icon: <PermMedia />, label: 'Lisää uusi', to: '/placeholder' },
     { icon: <Public />, label: 'Hakemukset', to: '/admin/hakemukset' },
 ];
 
 const varastot = [
-    { icon: <People />, label: 'Tarkastele', to: '/admin/varastot' },
-    // { icon: <Dns />, label: 'Muokkaa', to: '/placeholder' },
-    { icon: <PermMedia />, label: 'Lisää uusi', to: '/admin/varastot/luo' },
+    { icon: <DomainIcon />, label: 'Tarkastele', to: '/admin/varastot' },
+    { icon: <DomainAddIcon />, label: 'Lisää uusi', to: '/admin/varastot/luo' },
 ];
 
 const tiedotteet = [
-    { icon: <People />, label: 'Tarkastele', to: '/admin/tiedotteet' },
-    { icon: <PermMedia />, label: 'Luo uusi', to: '/admin/tiedotteet/luo' },
+    { icon: <LibraryBooksIcon />, label: 'Tarkastele', to: '/admin/tiedotteet' },
+    { icon: <LibraryAddIcon />, label: 'Luo uusi', to: '/admin/tiedotteet/luo' },
 ];
 
 const viestit = [
-    { icon: <People />, label: 'Saapuneet', to: '/admin/saapuneet' },
+    { icon: <MailIcon />, label: 'Saapuneet', to: '/admin/saapuneet' },
     // { icon: <PermMedia />, label: 'Aiheet', to: '/placeholder' },
 ];
 
-const FireNav = styled(List)<{ component?: React.ElementType }>({
+const NavStyles = styled(List)<{ component?: React.ElementType }>({
     '& .MuiListItemButton-root': {
         paddingLeft: 24,
         paddingRight: 24,
@@ -516,9 +526,9 @@ function NavigationTree() {
                     },
                 })}
             >
-                <Paper elevation={0} sx={{ maxWidth: 256 }}>
-                    <FireNav component="nav" disablePadding>
-                        <ListItemButton component="a" href="/admin">
+                <Paper id="admin-navtree-paper" elevation={0} sx={{ maxWidth: 256 }}>
+                    <NavStyles id="admin-navtree-styles-wrapper" component="nav" disablePadding>
+                        <ListItemButton id="admin-panel-refresh-linkbtn" component="a" href="/admin">
                             <ListItemText
                                 sx={{ my: 0 }}
                                 primary="Hallintapaneeli"
@@ -532,7 +542,7 @@ function NavigationTree() {
                         </ListItemButton>
                         <Divider />
                         <ListItem component="div" disablePadding>
-                            <ListItemButtonLink to="/admin" sx={{ height: 56 }}>
+                            <ListItemButtonLink id="overview-link" to="/admin" sx={{ height: 56 }}>
                                 <ListItemIcon>
                                     <Home color="primary" />
                                 </ListItemIcon>
@@ -580,36 +590,41 @@ function NavigationTree() {
                                 }}
                             >
                                 <Tooltip title="Paneelin asetukset">
-                                    <Settings />
+                                    <Settings id="settings-icon" />
                                 </Tooltip>
-                                <Menu
-                                    id="settings-dropdown-menu"
-                                    anchorEl={anchorEl}
-                                    open={settingsDropDownMenuOpen}
-                                    // onClose={handleClose}
-                                >
+                                <Menu id="settings-dropdown-menu" anchorEl={anchorEl} open={settingsDropDownMenuOpen}>
                                     <MenuItem onClick={handleCloseFullNavList} divider>
-                                        Sulje kaikki valikot
+                                        <ListItemText>Sulje kaikki valikot</ListItemText>
+                                        <ListItemIcon>
+                                            <VerticalAlignCenterIcon sx={{ marginLeft: '1rem' }} />
+                                        </ListItemIcon>
                                     </MenuItem>
                                     <MenuItem onClick={handleOpenFullNavList} divider>
-                                        Avaa kaikki valikot
+                                        <ListItemText>Avaa kaikki valikot</ListItemText>
+                                        <ListItemIcon>
+                                            <ExpandIcon sx={{ marginLeft: '1rem' }} />
+                                        </ListItemIcon>
                                     </MenuItem>
                                     <Tooltip
                                         position="right"
                                         title="Nollaa kaikki ilmoitukset, viestit ja uutiset nähdyiksi"
                                     >
                                         <MenuItem onClick={handleClose} divider>
-                                            Merkitse kaikki luetuksi
-                                            {/* component here */}
+                                            <ListItemText>Merkitse kaikki luetuksi</ListItemText>
+                                            <ListItemIcon>
+                                                <MarkChatReadIcon sx={{ marginLeft: '1rem' }} />
+                                            </ListItemIcon>
                                         </MenuItem>
                                     </Tooltip>
                                     <Tooltip position="right" title="Siirtyy varastohenkilökunnan käyttöliittymään">
                                         <MenuItem onClick={handleClose} component={Link} to="/varasto">
-                                            Siirry varastonäkymään
+                                            <ListItemText>Siirry varastonäkymään</ListItemText>
+                                            <ListItemIcon>
+                                                <LogoutIcon sx={{ marginLeft: '1rem' }} />
+                                            </ListItemIcon>
                                         </MenuItem>
                                     </Tooltip>
                                 </Menu>
-
                                 <ArrowRight sx={{ position: 'absolute', right: 4, opacity: 0 }} />
                             </IconButton>
                         </ListItem>
@@ -620,7 +635,7 @@ function NavigationTree() {
                         {storagesListItems}
                         {bulletinsListItems}
                         {messagingListItems}
-                    </FireNav>
+                    </NavStyles>
                 </Paper>
             </ThemeProvider>
         </Box>
