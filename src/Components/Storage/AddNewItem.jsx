@@ -77,7 +77,7 @@ function AddNewItem() {
         });
         Object.values(data.pictures).forEach((value) => formData.append('pictures[]', value));
 
-        console.log(formData.get('pictures'));
+        console.log('pictures AddNewItemissä', formData.get('pictures'));
         console.log('onSubmit formData:', formData);
 
         /* await apiCall(auth, setAuth, '/products/', 'post', formData, {

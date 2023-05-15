@@ -44,7 +44,7 @@ function StorageProductsTable() {
     const [searchParams, setSearchParams] = useSearchParams();
     const { categories } = useRouteLoaderData('root') as RouteLoaderData;
     const { storages, products } = useLoaderData() as LoaderData;
-    const { register, handleSubmit, watch } = useForm();
+    const { register, handleSubmit, watch } = useForm({ defaultValues: { searchString: searchParams.get('search') } });
     // todo: fill search field with search param if scanned with qrcodescanner or entered with link
 
     console.log('categories:', categories);
@@ -119,7 +119,7 @@ function StorageProductsTable() {
                                 </StyledTableCell>
                                 <StyledTableCell align="right">
                                     {/* todo: link to working product page with storage related info and edit functionality */}
-                                    <Link to={`/varasto/tuotteet/${product.id}`}>{product.name}</Link>
+                                    <Link to={`/varasto/tuotteet/${product.id}/muokkaa`}>{product.name}</Link>
                                 </StyledTableCell>
                                 <StyledTableCell align="right">{product.amount}</StyledTableCell>
                                 <StyledTableCell align="right">{product.storage_name}</StyledTableCell>
