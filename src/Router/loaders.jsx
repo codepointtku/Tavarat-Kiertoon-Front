@@ -252,6 +252,11 @@ const createNewBikeLoader = async (auth, setAuth) => {
     return { bikeData, bikeModelsData, storagesData };
 };
 
+const bikeModelsLoader = async (auth, setAuth) => {
+    const { data } = await apiCall(auth, setAuth, `/bikes/models/`, 'get');
+    return data;
+};
+
 /**
  * returns null load
  */
@@ -283,6 +288,7 @@ export {
     bikesListLoader,
     bikeLoader,
     createNewBikeLoader,
+    bikeModelsLoader,
     shoppingCartLoader,
     shoppingProcessLoader,
 };

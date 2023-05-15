@@ -89,6 +89,7 @@ import {
     bikesListLoader,
     bikeLoader,
     createNewBikeLoader,
+    bikeModelsLoader,
     shoppingProcessLoader,
 } from './loaders';
 
@@ -517,6 +518,7 @@ function Routes() {
                                 {
                                     path: 'pyoramallit',
                                     element: <BikeModels />,
+                                    loader: async () => bikeModelsLoader(auth, setAuth),
                                 },
                             ],
                         },
