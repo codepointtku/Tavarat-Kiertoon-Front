@@ -10,6 +10,8 @@ interface Message {
     message: string;
     id: string;
     status: string;
+    name: string;
+    email: string;
 }
 
 function AdminInbox() {
@@ -18,10 +20,12 @@ function AdminInbox() {
         <MessageCard
             key={message.id}
             id={message.id}
-            status={message.status}
+            currentStatus={message.status}
             subject={message.subject}
             date={message.date}
             message={message.message}
+            name={message.name}
+            email={message.email}
         />
     ));
 

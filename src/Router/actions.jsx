@@ -408,8 +408,12 @@ const deleteBikeAction = async (auth, setAuth, params) => {
 
 const adminInboxAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, 'contact_forms', 'put', {
-        id: formData.get('id'),
+    const id = formData.get('id');
+    const response = await apiCall(auth, setAuth, `/contact_forms/${id}/`, 'put', {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        subject: formData.get('subject'),
+        message: formData.get('message'),
         status: formData.get('status'),
     });
     if (response.status === 200) {

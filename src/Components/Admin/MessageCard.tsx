@@ -8,14 +8,16 @@ interface Props {
     date: string;
     message: string;
     id: string;
-    status: string;
+    currentStatus: string;
+    name: string;
+    email: string;
 }
 
-function MessageCard({ subject, date, message, id, status }: Props) {
+function MessageCard({ subject, date, message, id, currentStatus, name, email }: Props) {
     const submit = useSubmit();
 
-    function handleSubmit() {
-        submit({ id, status }, { method: 'put', action: '/admin/saapuneet' });
+    function handleSubmit(status: string) {
+        submit({ id, status, subject, message, name, email }, { method: 'put', action: '/admin/saapuneet' });
     }
 
     return (
@@ -33,7 +35,7 @@ function MessageCard({ subject, date, message, id, status }: Props) {
                     <TypographyHeading text={subject} />
                 </Grid>
                 <Grid item>
-                    <Button onClick={() => handleSubmit()}>
+                    <Button onClick={() => handleSubmit('Read')}>
                         {/* <Typography variant="inherit">Merkitse lukemattomaksi</Typography> */}
                         <Typography variant="inherit">Merkitse luetuksi</Typography>
                     </Button>
