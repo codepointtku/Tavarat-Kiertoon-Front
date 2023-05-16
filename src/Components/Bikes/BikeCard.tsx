@@ -49,7 +49,7 @@ export default function BikeCard({
 
     return (
         <Card sx={{ my: 1, display: 'flex', flexDirection: 'row', height: '220px' }}>
-            <CardMedia sx={{ width: '220px', height: '220px' }} component="img" alt="kuva" image="br.jpg" />
+            <CardMedia sx={{ width: '220px', height: '220px' }} component="img" alt="kuva" image="/br.jpg" />
             <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Typography variant="h6">{bike.name}</Typography>
                 <Box sx={{ mb: 1 }}>
