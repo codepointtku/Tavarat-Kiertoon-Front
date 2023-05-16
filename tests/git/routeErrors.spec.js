@@ -160,17 +160,17 @@ test.describe('admin', () => {
     });
 });
 
-test.describe('users', () => {
+test.describe('kayttajat', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('admin/users');
+        await page.goto('admin/kayttajat');
         await expect(page.getByText('Etsimääsi sijaintia /admin/users')).not.toBeVisible();
     });
 });
 
-test.describe('user', () => {
+test.describe('kayttaja', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('admin/users/0');
-        await expect(page.getByText('Etsimääsi sijaintia /admin/users/0')).not.toBeVisible();
+        await page.goto('admin/kayttajat/0');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/kayttajat/0')).not.toBeVisible();
     });
 });
 

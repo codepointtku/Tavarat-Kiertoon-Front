@@ -1,6 +1,22 @@
 import { redirect } from 'react-router-dom';
 import apiCall from '../Utils/apiCall';
 
+const adminLogOut = async (auth, setAuth, request) => {
+    console.log('kick ban!!111');
+    const formData = await request.formData();
+    if (request.method === 'POST') {
+        if (auth.username) {
+            const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
+                formData,
+            });
+            if (response.status === 200) {
+                return { type: 'logout', status: true };
+            }
+            return { type: 'logout', status: false };
+        }
+    }
+};
+
 /**
  * logins or logouts user, adds a product to shopping cart and deletes product from shopping cart
  */
@@ -423,4 +439,5 @@ export {
     modifyBikeAction,
     createNewBikeAction,
     deleteBikeAction,
+    adminLogOut,
 };
