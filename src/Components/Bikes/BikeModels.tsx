@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { useLoaderData } from 'react-router';
 import type { bikeModelInterface } from './Bikes';
+import { Link } from 'react-router-dom';
 
 /**
  * List all Bike models.
@@ -24,7 +25,7 @@ function BikeModels() {
 
     return (
         <div>
-            <Typography variant="h3" align="center" color="primary.main" mb="4rem">
+            <Typography variant="h3" align="center" color="primary.main" mb="2rem">
                 Pyörämallit
             </Typography>
 
@@ -59,7 +60,9 @@ function BikeModels() {
                                             alt="Bike Model"
                                         />
                                         <Button
-                                            onClick={() => console.log('Klikkasit "Muokkaa" nappia')}
+                                            to={`/pyorat/pyoravarasto/muokkaapyoramalli/${model.id}`}
+                                            component={Link}
+                                            // onClick={() => console.log('Klikkasit "Muokkaa" nappia')}
                                             sx={{ width: '10rem', marginTop: '1rem' }}
                                         >
                                             Muokkaa

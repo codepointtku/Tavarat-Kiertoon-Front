@@ -1,4 +1,15 @@
-import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import {
+    Box,
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+} from '@mui/material';
 import { useLoaderData } from 'react-router-dom';
 import StyledTableCell from '../StyledTableCell'; // used in Table Header
 import { Link } from 'react-router-dom';
@@ -57,6 +68,10 @@ export default function Bikes() {
 
     return (
         <>
+            <Typography variant="h3" align="center" color="primary.main" width="100%">
+                Kaikki Pyörät
+            </Typography>
+
             <Box width="100%" textAlign="right" marginBottom="1em" marginTop="-2em" marginRight="2em">
                 <Button component={Link} to="/pyorat/pyoravarasto/lisaa">
                     Lisää uusi pyörä

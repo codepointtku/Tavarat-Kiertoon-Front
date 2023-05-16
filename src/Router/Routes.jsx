@@ -69,6 +69,7 @@ import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
 import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 import BikeModels from '../Components/Bikes/BikeModels';
+import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
 
 import {
     addItemLoader,
@@ -90,6 +91,7 @@ import {
     bikeLoader,
     createNewBikeLoader,
     bikeModelsLoader,
+    bikeSingleModelLoader,
     shoppingProcessLoader,
 } from './loaders';
 
@@ -519,6 +521,21 @@ function Routes() {
                                     path: 'pyoramallit',
                                     element: <BikeModels />,
                                     loader: async () => bikeModelsLoader(auth, setAuth),
+                                },
+                                {
+                                    path: 'muokkaapyoramalli',
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <Navigate to="pyorat/pyoravarasto/pyoramallit" />,
+                                        },
+                                        {
+                                            path: ':id',
+                                            element: <ModifyBikeModelPage />,
+                                            loader: async ({ params }) => bikeSingleModelLoader(auth, setAuth, params),
+                                        },
+                                    ],
                                 },
                             ],
                         },

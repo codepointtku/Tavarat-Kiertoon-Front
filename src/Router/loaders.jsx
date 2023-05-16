@@ -252,8 +252,28 @@ const createNewBikeLoader = async (auth, setAuth) => {
     return { bikeData, bikeModelsData, storagesData };
 };
 
+/**
+ * Get ALL Bike Models
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @returns
+ */
 const bikeModelsLoader = async (auth, setAuth) => {
     const { data } = await apiCall(auth, setAuth, `/bikes/models/`, 'get');
+    return data;
+};
+
+/**
+ * Get a single Bike Model based on ID
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} params
+ * @returns
+ */
+const bikeSingleModelLoader = async (auth, setAuth, params) => {
+    const { data } = await apiCall(auth, setAuth, `/bikes/models/${params.id}`, 'get');
     return data;
 };
 
@@ -289,6 +309,7 @@ export {
     bikeLoader,
     createNewBikeLoader,
     bikeModelsLoader,
+    bikeSingleModelLoader,
     shoppingCartLoader,
     shoppingProcessLoader,
 };

@@ -13,6 +13,7 @@ import {
     TableContainer,
     TableRow,
     TextField,
+    Typography,
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
 import { Form, Link } from 'react-router-dom';
@@ -102,18 +103,11 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     // RENDER
     return (
         <>
-            <TableContainer component={Paper} sx={{ padding: '2rem' }}>
-                {/* Header */}
-                <Box
-                    width="100%"
-                    textAlign="center"
-                    marginBottom="20px"
-                    paddingBottom="20px"
-                    borderBottom="1px solid lightgray"
-                >
-                    <h3>{createNewBike ? 'Luo uusi pyörä' : 'Muokkaa pyörän tietoja'}</h3>
-                </Box>
+            <Typography variant="h3" align="center" color="primary.main" mb="2rem" width="100%">
+                {createNewBike ? 'Luo uusi pyörä' : 'Muokkaa pyörän tietoja'}
+            </Typography>
 
+            <TableContainer component={Paper} sx={{ padding: '2rem' }}>
                 {/*
                  * Form area
                  */}
@@ -337,7 +331,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                         paddingTop="20px"
                         borderTop="1px solid lightgray"
                     >
-                        <Button to={`/pyorat/pyoravarasto`} component={Link} sx={{ padding: '20px' }}>
+                        <Button to={`/pyorat/pyoravarasto`} component={Link} sx={{ padding: '1rem' }}>
                             Palaa pyörälistaan tallentamatta
                         </Button>
                         {!createNewBike && (
@@ -345,7 +339,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                 Poista tämä pyörä
                             </Button>
                         )}
-                        <Button type="submit" sx={{ padding: '20px' }}>
+                        <Button type="submit" sx={{ padding: '1rem' }}>
                             Tallenna muutokset ja palaa listaan
                         </Button>
                     </Box>
