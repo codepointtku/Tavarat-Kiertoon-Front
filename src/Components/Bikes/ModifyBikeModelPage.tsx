@@ -3,6 +3,12 @@ import { useLoaderData } from 'react-router';
 import type { bikeModelInterface } from './Bikes';
 import { Link } from 'react-router-dom';
 
+interface colorInterface {
+    id: number;
+    name: string;
+    default: boolean;
+}
+
 /**
  * Modify a single Bike Model.
  * Note! This feature is propably rarely (or never) used
@@ -10,7 +16,8 @@ import { Link } from 'react-router-dom';
  * @returns
  */
 function ModifyBikeModelPage() {
-    const bikeModel = useLoaderData() as bikeModelInterface;
+    const { bikeModel, colors } = useLoaderData() as { bikeModel: bikeModelInterface; colors: colorInterface[] };
+    console.log('### colors', colors);
 
     return (
         <>
@@ -36,6 +43,14 @@ function ModifyBikeModelPage() {
                             image="/br.jpg"
                             alt="Bike Model"
                         />
+                        {/* 
+                        "name" is generated automatically from other values
+                        "brand.name" is a text field
+                        "color.name" is a <Select> field allowing all colors with default set to "true"
+                        "size.name" is a number field. inch mark (") needs to be added later
+                        "type.name" is a text field
+                        "description" is a text field 
+                        */}
                         <Grid container flexDirection="row" spacing={2} paddingTop="1rem">
                             <Grid item xs={6}>
                                 <TextField label="Nimi" fullWidth value={bikeModel.name} />
