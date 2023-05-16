@@ -125,7 +125,12 @@ function StorageProductsTable() {
                                 <StyledTableCell align="right">{product.storage_name}</StyledTableCell>
                                 <StyledTableCell align="right">{categories[product.category].name}</StyledTableCell>
                                 <StyledTableCell align="right">
-                                    {new Date(product.modified_date).toLocaleDateString('fi-FI')}
+                                    {new Date(product.modified_date).toLocaleTimeString('fi-FI', {
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                    }) +
+                                        ' / ' +
+                                        new Date(product.modified_date).toLocaleDateString('fi-FI')}
                                 </StyledTableCell>
                             </StyledTableRow>
                         ))}
