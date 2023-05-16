@@ -7,9 +7,11 @@ interface Props {
     subject: string;
     date: string;
     message: string;
+    id: number;
+    status: string;
 }
 
-function MessageCard({ subject, date, message }: Props) {
+function MessageCard({ subject, date, message, id, status }: Props) {
     const submit = useSubmit();
 
     function handleSubmit() {
