@@ -7,13 +7,12 @@ import {
     useSubmit,
     Form,
     useNavigate,
-    useActionData,
-    useLocation,
+    // useActionData,
 } from 'react-router-dom';
 
-import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Modal, Typography } from '@mui/material';
+import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Modal } from '@mui/material';
 
-import imageCompression from 'browser-image-compression';
+// import imageCompression from 'browser-image-compression';
 import Html5QrcodePlugin from '../../Utils/qrcodeScanner';
 import Barcode from 'react-barcode';
 
@@ -27,14 +26,17 @@ function AddNewItem() {
     const submit = useSubmit();
     const navigate = useNavigate();
     // const actionData = useActionData();
-    // const location = useLocation();
 
     const {
         register,
         handleSubmit,
         watch,
         setValue,
-        formState: { errors, isValid },
+        formState: {
+            errors,
+            // isValid can be used in disabling submit button
+            // isValid,
+        },
     } = useForm({
         // validates and shows errors when fields have been touched and lost focus
         mode: 'onTouched',
@@ -45,10 +47,11 @@ function AddNewItem() {
             shelf_id: '',
             measurements: 'wrdrqwf',
             weight: 0.0,
-            storages: 1,
-            color_name: 'Vihreä',
-            color: 1,
+            // storages: 1,
             // pictures: [1],
+            // name: '',
+            // barcode: '',
+            // location: 'testi',
         },
     });
 
@@ -89,8 +92,11 @@ function AddNewItem() {
             action: '/varasto/tuotteet/luo/',
             encType: 'multipart/form-data',
         });
+        // todo change redirect to useActionData
         navigate('/varasto/tuotteet/');
     };
+
+    // // TODO: add image compression
 
     // const uploadFile = async (files) => {
     //     const options = {
@@ -150,24 +156,27 @@ function AddNewItem() {
             >
                 <CardContent>
                     <TextField
+                        id="name"
                         type="text"
-                        placeholder="name"
+                        label="Nimi *"
+                        placeholder="Nimi *"
+                        multiline
                         {...register('name', {
                             required: { value: true, message: 'Nimi on pakollinen' },
                             maxLength: { value: 255, message: 'Nimi on liian pitkä, maksimi 255 merkkiä' },
                             minLength: { value: 3, message: 'Nimi on liian lyhyt, minimi 3 merkkiä' },
                         })}
-                        label="Nimi"
-                        multiline
-                        // defaultValue=""
-                        inputProps={{ title: 'Nimi', maxLength: '255', minLength: '3' }}
+                        // Needs to be required: false to disable browser error message
+                        inputProps={{ required: true }}
                         required
                         error={!!errors.name}
                         helperText={errors.name?.message}
                     />
                     <TextField
+                        id="barcode"
                         type="text"
-                        placeholder="viivakoodi"
+                        label="Viivakoodi"
+                        placeholder="viivakoodi *"
                         {...register('barcode', {
                             required: {
                                 value: true,
@@ -181,15 +190,9 @@ function AddNewItem() {
                                     'Viivakoodityypin CODE39 sallitut kirjaimet: Numerot, Englanninkieliset aakkoset, merkit -  .  *  /  +  %  sekä välilyönti',
                             },
                         })}
-                        label="Viivakoodi"
-                        // defaultValue="1234"
                         error={!!errors.barcode}
                         helperText={errors.barcode?.message}
-                        inputProps={{
-                            title: 'Viivakoodi',
-                            minLength: '1',
-                            maxLength: '12',
-                        }}
+                        inputProps={{ required: true }}
                         required
                     >
                         Viivakoodi
@@ -200,56 +203,66 @@ function AddNewItem() {
                         </Button>
                         {barcode?.length > 0 && <Barcode value={barcode} format="CODE39" height={32} fontSize={14} />}
                     </CardActions>
-                    {/* TODO default varastosijainti sama kuin varastokäyttäjän sijainti? */}
                     <TextField
-                        id="outlined-select"
+                        id="storage-select"
                         select
                         label="Sijainti"
-                        {...register('storage_name', { required: true })}
-                        defaultValue="Kahvivarasto"
+                        {...register('storages', { required: true })}
+                        //  TODO default varastosijainti sama kuin varastokäyttäjätilin sijainti?
+                        // defaultValue={}
+                        inputProps={{ required: true }}
+                        required
                     >
                         {storages?.map((location) => (
-                            <MenuItem key={location.id} value={location.name}>
+                            <MenuItem key={location.id} value={location.id}>
                                 {location.name}
                             </MenuItem>
                         ))}
                     </TextField>
                     <TextField
-                        id="outlined-select"
+                        id="category-select"
                         select
                         label="Kategoria"
-                        {...register('category_name', { required: true })}
-                        defaultValue=""
+                        {...register('category', { required: true })}
+                        inputProps={{ required: true }}
+                        required
+                    >
+                        {/* TODO Uusia kategorioita voi luoda vain admin, huomautus varastokäyttäjälle? */}
+                        {categories?.map((category) => (
+                            <MenuItem
+                                onClick={() => setValue('category', category.id)}
+                                key={category.id}
+                                value={category.id}
+                            >
+                                {category.name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    {/* TODO värikenttä, uuden värin lisäys mahdollisuus, backend hyväksyy(?) stringin ja luo uuden ellei ole olemassa. Lisäkenttä lisää uusi väri */}
+                    <TextField
+                        id="color-select"
+                        select
+                        label="Väri"
+                        {...register('color', { required: true })}
+                        inputProps={{ required: true }}
+                        required
                     >
                         <MenuItem
                         // onClick={() => setValue()}
-                        // key={category.id}
-                        // value={category.name}
+                        // key={color.id}
+                        // value={color.name}
                         >
+                            {/* TODO värin nimen oltava muotoa iso alkukirjain, ilman välejä, muutettava oikeaksi ennen lähetystä jottei tule "meren sininen" ja "Merensininen" */}
                             <Button variant="contained">Luo uusi</Button>
                         </MenuItem>
-                        {categories?.map((category) =>
-                            category.level == 0 || category.level === 1 ? (
-                                <MenuItem
-                                    // onClick={() => setValue('category', category.id)}
-                                    key={category.id}
-                                    value={category.name}
-                                    sx={{ color: 'red' }}
-                                >
-                                    {category.name}
-                                </MenuItem>
-                            ) : (
-                                <MenuItem
-                                    onClick={() => setValue('category', category.id)}
-                                    key={category.id}
-                                    value={category.name}
-                                >
-                                    {category.name}
-                                </MenuItem>
-                            )
-                        )}
+                        {colors?.map((color) => (
+                            <MenuItem onClick={() => setValue('color', color.id)} key={color.id} value={color.name}>
+                                {color.name}
+                            </MenuItem>
+                        ))}
                     </TextField>
                     <TextField
+                        id="amount"
                         type="number"
                         label="Määrä"
                         placeholder="Määrä"
@@ -270,15 +283,13 @@ function AddNewItem() {
                         error={!!errors.amount}
                         helperText={errors.amount?.message}
                     ></TextField>
-                    {/* todo värikenttä, uuden värin lisäys mahdollisuus, backend hyväksyy stringin ja luo uuden ellei ole olemassa. Lisäkenttä lisää uusi väri */}
                     <TextField
-                        id="filled-helperText"
+                        id="description"
                         label="Vapaa Kuvaus"
-                        {...register('free_description', { required: true, minLength: 2, maxLength: 1000 })}
                         multiline
                         minRows={4}
-                        helperText={`${description?.length || '0'}/1000`}
-                        defaultValue="vapaa kuvaus testi"
+                        {...register('free_description', { required: true, minLength: 2, maxLength: 1000 })}
+                        helperText={`${description?.length || 0}/1000`}
                         inputProps={{ title: 'Vapaa kuvaus', minLength: '2', maxLength: '1000' }}
                         required
                         error={!!errors.free_description}
@@ -313,19 +324,5 @@ function AddNewItem() {
         </Card>
     );
 }
-
-AddNewItem.propTypes = {
-    // item: PropTypes.shape({
-    //     id: PropTypes.number,
-    //     barcode: PropTypes.string,
-    //     name: PropTypes.string,
-    //     category: PropTypes.string,
-    //     location: PropTypes.string,
-    //     free_description: PropTypes.string,
-    //     isOld: PropTypes.bool,
-    // }).isRequired,
-    // setItem: PropTypes.func.isRequired,
-    // uploadFile: PropTypes.func.isRequired,
-};
 
 export default AddNewItem;
