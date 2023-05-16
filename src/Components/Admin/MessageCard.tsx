@@ -27,7 +27,7 @@ function MessageCard({ subject, date, message, id, currentStatus, name, email }:
             sx={{
                 mb: '2rem',
                 p: '2rem',
-                // opacity: 1,
+                opacity: currentStatus === 'Read' ? 0.4 : 1,
             }}
         >
             <Grid container justifyContent="space-between">
@@ -35,9 +35,12 @@ function MessageCard({ subject, date, message, id, currentStatus, name, email }:
                     <TypographyHeading text={subject} />
                 </Grid>
                 <Grid item>
-                    <Button onClick={() => handleSubmit('Read')}>
-                        {/* <Typography variant="inherit">Merkitse lukemattomaksi</Typography> */}
-                        <Typography variant="inherit">Merkitse luetuksi</Typography>
+                    <Button onClick={() => handleSubmit(currentStatus === 'Read' ? 'Not read' : 'Read')}>
+                        {currentStatus === 'Read' ? (
+                            <Typography variant="inherit">Merkitse lukemattomaksi</Typography>
+                        ) : (
+                            <Typography variant="inherit">Merkitse luetuksi</Typography>
+                        )}
                     </Button>
                 </Grid>
             </Grid>

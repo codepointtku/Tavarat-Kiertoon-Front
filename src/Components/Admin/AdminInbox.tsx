@@ -16,7 +16,7 @@ interface Message {
 
 function AdminInbox() {
     const messages = useLoaderData() as Awaited<ReturnType<typeof adminInboxLoader>>;
-    const messageCards = messages.map((message: Message) => (
+    const messageCards = messages.results.map((message: Message) => (
         <MessageCard
             key={message.id}
             id={message.id}
