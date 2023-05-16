@@ -1,12 +1,9 @@
-import { useEffect } from 'react';
-import { generatePath, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 function PasswordResetNavigate() {
-    const navigate = useNavigate();
     const { uid, token } = useParams();
-    useEffect(() => {
-        navigate(generatePath('/salasananpalautus'), { replace: true, state: { uid, token } });
-    }, []);
+
+    return <Navigate to="/salasananpalautus" replace state={{ uid, token }} />;
 }
 
 export default PasswordResetNavigate;

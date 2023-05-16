@@ -275,6 +275,11 @@ const shoppingProcessLoader = async (auth, setAuth) => {
     return user;
 };
 
+const adminInboxLoader = async (auth, setAuth) => {
+    const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
+    return messages;
+};
+
 export {
     rootLoader,
     productListLoader,
@@ -295,4 +300,5 @@ export {
     createNewBikeLoader,
     shoppingCartLoader,
     shoppingProcessLoader,
+    adminInboxLoader,
 };
