@@ -31,7 +31,7 @@ export interface bikeInterface {
 
 export interface bikeModelInterface {
     brand: { id: number; name: string };
-    color: { id: number; name: string };
+    color: { id: number; name: string; default: boolean };
     description: string;
     id: number;
     name: string;
@@ -65,6 +65,7 @@ export interface submitDataInterface {
  */
 export default function Bikes() {
     const loaderData = useLoaderData() as bikeInterface[];
+    console.log('###', loaderData);
 
     return (
         <>
