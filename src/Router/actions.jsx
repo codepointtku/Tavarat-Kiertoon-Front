@@ -406,6 +406,10 @@ const deleteBikeAction = async (auth, setAuth, params) => {
     return redirect('/pyorat/pyoravarasto');
 };
 
+const adminInboxAction = async (auth, setAuth, request) => {
+    const formData = request.formData;
+};
+
 export {
     userSignupAction,
     frontPageActions,
@@ -426,4 +430,5 @@ export {
     createNewBikeAction,
     adminLogOut,
     deleteBikeAction,
+    adminInboxAction,
 };

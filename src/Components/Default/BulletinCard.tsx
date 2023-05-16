@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Box, Paper, Typography, Button, Grid } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 
 import TypographyHeading from '../TypographyHeading';
 
@@ -7,35 +6,19 @@ interface Props {
     title: string;
     date: string;
     content: string;
-    isRead?: boolean;
-    setIsRead?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function BulletinCard({ title, date, content }: Props) {
-    const [isRead, setIsRead] = useState(false);
-
     return (
         <Paper
             id="bulletin-card-paper-backdrop"
             elevation={6}
-            sx={{ mb: '2rem', p: '2rem', opacity: isRead ? 0.2 : 1 }}
+            sx={{
+                mb: '2rem',
+                p: '2rem',
+            }}
         >
-            <Grid container justifyContent="space-between">
-                <Grid item>
-                    <TypographyHeading text={title} />
-                </Grid>
-                {!isRead && (
-                    <Grid item>
-                        <Button onClick={() => setIsRead && setIsRead((isRead) => !isRead)}>
-                            {isRead ? (
-                                <Typography variant="inherit">Merkitse lukemattomaksi</Typography>
-                            ) : (
-                                <Typography variant="inherit">Merkitse luetuksi</Typography>
-                            )}
-                        </Button>
-                    </Grid>
-                )}
-            </Grid>
+            <TypographyHeading text={title} />
             <Typography variant="caption" sx={{ color: 'text.hintContrast', mt: '0.5rem' }}>
                 {date}
             </Typography>

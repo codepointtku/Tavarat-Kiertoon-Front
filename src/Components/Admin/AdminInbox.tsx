@@ -1,7 +1,7 @@
 import { useLoaderData } from 'react-router-dom';
 import { Stack, Grid, Container } from '@mui/material';
 import HeroText from '../HeroText';
-import BulletinCard from '../Default/BulletinCard';
+import MessageCard from './MessageCard';
 import type { adminInboxLoader } from '../../Router/loaders';
 
 interface Message {
@@ -13,7 +13,7 @@ interface Message {
 function AdminInbox() {
     const messages = useLoaderData() as Awaited<ReturnType<typeof adminInboxLoader>>;
     const messageCards = messages.map((message: Message) => (
-        <BulletinCard title={message.subject} date={message.date} content={message.message} />
+        <MessageCard subject={message.subject} date={message.date} message={message.message} />
     ));
 
     return (
