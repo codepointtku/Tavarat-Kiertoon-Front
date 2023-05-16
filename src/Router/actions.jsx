@@ -407,7 +407,15 @@ const deleteBikeAction = async (auth, setAuth, params) => {
 };
 
 const adminInboxAction = async (auth, setAuth, request) => {
-    const formData = request.formData;
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, 'contact_forms', 'put', {
+        id: formData.get('id'),
+        status: formData.get('status'),
+    });
+    if (response.status === 200) {
+        return { type: 'markasread', status: true };
+    }
+    return { type: 'markasread', status: false };
 };
 
 export {

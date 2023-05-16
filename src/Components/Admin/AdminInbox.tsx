@@ -8,13 +8,12 @@ interface Message {
     subject: string;
     date: string;
     message: string;
-    id: number;
+    id: string;
     status: string;
 }
 
 function AdminInbox() {
     const messages = useLoaderData() as Awaited<ReturnType<typeof adminInboxLoader>>;
-    console.log(messages);
     const messageCards = messages.map((message: Message) => (
         <MessageCard
             key={message.id}

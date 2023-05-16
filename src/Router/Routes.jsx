@@ -90,7 +90,6 @@ import {
     createNewBikeLoader,
     shoppingProcessLoader,
     adminInboxLoader,
-    cartViewLoader,
 } from './loaders';
 
 import {
@@ -111,6 +110,7 @@ import {
     createNewBikeAction,
     adminLogOut,
     deleteBikeAction,
+    adminInboxAction,
 } from './actions';
 
 import Overview from '../Components/Admin/Panel/Overview/Overview';
@@ -477,6 +477,7 @@ function Routes() {
                             path: 'saapuneet',
                             element: <AdminInbox />,
                             loader: adminInboxLoader,
+                            action: async ({ request }) => adminInboxAction(auth, setAuth, request),
                         },
                     ],
                 },
