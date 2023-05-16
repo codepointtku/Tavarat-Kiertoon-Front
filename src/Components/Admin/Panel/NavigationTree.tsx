@@ -65,7 +65,7 @@ const tiedotteet = [
 ];
 
 const viestit = [
-    { icon: <People />, label: 'Saapuneet', to: '/admin/saapuneet' },
+    { icon: <People />, label: 'Saapuneet', to: '/admin/saapuneet/' },
     // { icon: <PermMedia />, label: 'Aiheet', to: '/placeholder' },
 ];
 

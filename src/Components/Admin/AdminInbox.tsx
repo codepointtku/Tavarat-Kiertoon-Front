@@ -1,5 +1,5 @@
-import { useLoaderData } from 'react-router-dom';
-import { Stack, Grid, Container } from '@mui/material';
+import { useLoaderData, useNavigate } from 'react-router-dom';
+import { Stack, Grid, Container, ButtonGroup, Button, Box } from '@mui/material';
 import HeroText from '../HeroText';
 import MessageCard from './MessageCard';
 import type { adminInboxLoader } from '../../Router/loaders';
@@ -15,6 +15,7 @@ interface Message {
 }
 
 function AdminInbox() {
+    const navigate = useNavigate();
     const messages = useLoaderData() as Awaited<ReturnType<typeof adminInboxLoader>>;
     const messageCards = messages.results.map((message: Message) => (
         <MessageCard
@@ -30,8 +31,14 @@ function AdminInbox() {
     ));
 
     return (
-        <Container maxWidth="lg" component={Grid} direction="column" alignItems="center" container>
+        <Container maxWidth="lg" component={Grid} direction="column" container>
             <HeroText title="Saapuneet viestit" />
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <ButtonGroup variant="contained" aria-label="read-and-unread-buttons" size="large">
+                    <Button onClick={() => navigate('/admin/saapuneet/?=Luetut')}>Luetut</Button>
+                    <Button onClick={() => navigate('/admin/saapuneet/?=Lukemattomat')}>Lukemattomat</Button>
+                </ButtonGroup>
+            </Box>
             <Stack id="admin-messages-stack" sx={{ m: '1rem 0 1rem 0' }}>
                 {messageCards}
             </Stack>

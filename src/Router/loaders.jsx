@@ -265,7 +265,14 @@ const shoppingProcessLoader = async (auth, setAuth) => {
     return user;
 };
 
-const adminInboxLoader = async (auth, setAuth) => {
+const adminInboxLoader = async (auth, setAuth, request) => {
+    if (request.url.includes('Luetut')) {
+        const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/?status=Read', 'get');
+        return messages;
+    } else if (request.url.includes('Lukemattomat')) {
+        const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/?status=Not%20read', 'get');
+        return messages;
+    }
     const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
     return messages;
 };
