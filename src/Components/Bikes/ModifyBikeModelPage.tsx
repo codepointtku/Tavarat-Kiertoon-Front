@@ -1,9 +1,11 @@
 import { Box, Button, Card, CardMedia, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useLoaderData } from 'react-router';
-import type { bikeModelInterface } from './Bikes';
-import { Link } from 'react-router-dom';
+import { Form, Link } from 'react-router-dom';
 import { useState } from 'react';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
+// interface(s)
+import type { bikeModelInterface } from './Bikes';
 interface colorInterface {
     id: number;
     name: string;
@@ -18,17 +20,38 @@ interface colorInterface {
  */
 function ModifyBikeModelPage() {
     const { bikeModel, colors } = useLoaderData() as { bikeModel: bikeModelInterface; colors: colorInterface[] };
-    console.log('### colors', colors);
 
-    const [ colorState, setColorState ] = useState(bikeModel.color.id)
+    // hook form functions and default values
+    const {register, handleSubmit, watch} = useForm({
+        defaultValues: {
+            bikeModelName: bikeModel.name as string,
+            bikeModelBrandName: bikeModel.brand.name as string,
+            bikeModelColor: bikeModel.color.id as number,
+            bikeModelSizeName: bikeModel.size.name as string,
+            bikeModelTypeName: bikeModel.type.name as string,
+            bikeModelDescription: bikeModel.description as string
+        }
+    });
 
+    const onSubmit = (data: FieldValues) => {
+        console.log('### ModifyBikeModelPage', data)
+    }
+
+    // RENDER
     return (
         <>
             <Typography variant="h3" align="center" color="primary.main" mb="2rem" width="100%">
                 Muokkaa pyörämallia
             </Typography>
 
-            <Box display="flex" width="100%" alignItems="center" flexDirection="column">
+            <Box
+                display="flex"
+                width="100%"
+                alignItems="center"
+                flexDirection="column"
+                component={Form}
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 <Card
                     sx={{
                         display: 'flex',
@@ -56,17 +79,31 @@ function ModifyBikeModelPage() {
                         */}
                         <Grid container flexDirection="row" spacing={2} paddingTop="1rem">
                             <Grid item xs={6}>
-                                <TextField label="Nimi" fullWidth value={bikeModel.name} />
+                                <TextField
+                                    label="Nimi"
+                                    value={watch("bikeModelName")}
+                                    {...register("bikeModelName")}
+                                    fullWidth
+                                />
                             </Grid>
+                            <Grid item xs={6}/>
                             <Grid item xs={6}>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField label="Merkki" fullWidth value={bikeModel.brand.name} />
+                                <TextField
+                                    label="Merkki"
+                                    value={watch("bikeModelBrandName")}
+                                    {...register("bikeModelBrandName")}
+                                    fullWidth
+                                />
                             </Grid>
                             <Grid item xs={6}>
                                 <FormControl fullWidth>
                                     <InputLabel id="bike-model-color">Väri</InputLabel>
-                                    <Select id="bike-model-color" label="Color" value={colorState}>
+                                    <Select
+                                        id="bike-model-color"
+                                        label="Color"
+                                        {...register("bikeModelColor")}
+                                        value={watch("bikeModelColor")}
+                                    >
                                         {colors.map( (color) => {
                                             return(
                                                 <MenuItem key={color.id} value={color.id}>{color.name}</MenuItem>
@@ -76,13 +113,28 @@ function ModifyBikeModelPage() {
                                 </FormControl>
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField label="Koko" fullWidth value={bikeModel.size.name} />
+                                <TextField
+                                    label="Koko"
+                                    value={watch("bikeModelSizeName")}
+                                    {...register("bikeModelSizeName")}
+                                    fullWidth
+                                />
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField label="Tyyppi" fullWidth value={bikeModel.type.name} />
+                                <TextField
+                                    label="Tyyppi"
+                                    value={watch("bikeModelTypeName")}
+                                    {...register("bikeModelTypeName")}
+                                    fullWidth
+                                />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField label="Kuvaus" fullWidth value={bikeModel.description} />
+                                <TextField
+                                    label="Kuvaus"
+                                    value={watch("bikeModelDescription")}
+                                    {...register("bikeModelDescription")}
+                                    fullWidth
+                                />
                             </Grid>
                         </Grid>
                     </Box>
@@ -102,10 +154,7 @@ function ModifyBikeModelPage() {
                     >
                         Poista
                     </Button>
-                    <Button
-                        onClick={() => console.log('### ModifyBikeModelPage: Painoit TALLENNA JA PALAA nappia')}
-                        sx={{ width: '12rem', padding: '1rem' }}
-                    >
+                    <Button type='submit' sx={{ width: '12rem', padding: '1rem' }}>
                         Tallenna ja palaa
                     </Button>
                 </Box>
