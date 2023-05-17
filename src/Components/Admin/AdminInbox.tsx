@@ -1,19 +1,7 @@
-import { useLoaderData, useNavigate } from 'react-router-dom';
-import {
-    Stack,
-    Grid,
-    Container,
-    ButtonGroup,
-    Button,
-    // IconButton,
-    Box,
-    Pagination,
-    Paper,
-} from '@mui/material';
+import { useLoaderData, useSearchParams } from 'react-router-dom';
+import { Stack, Grid, Container, ButtonGroup, Button, Box, Pagination } from '@mui/material';
 import HeroText from '../HeroText';
 import MessageCard from './MessageCard';
-// import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-// import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import type { adminInboxLoader } from '../../Router/loaders';
 import useCustomSearchParams from '../../Hooks/useCustomSearchParams';
 
@@ -28,7 +16,7 @@ interface Message {
 }
 
 function AdminInbox() {
-    const navigate = useNavigate();
+    let [searchParams, setSearchParams] = useSearchParams();
     const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });
     const messages = useLoaderData() as Awaited<ReturnType<typeof adminInboxLoader>>;
     const pageCount = Math.ceil(messages.count / 5);
@@ -54,10 +42,10 @@ function AdminInbox() {
             <HeroText title="Saapuneet viestit" />
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <ButtonGroup variant="contained" aria-label="read-and-unread-buttons" size="large">
-                    <Button onClick={() => navigate('/admin/saapuneet/')}>Saapuneet</Button>
-                    <Button onClick={() => navigate('/admin/saapuneet/?=Luetut')}>Luetut</Button>
-                    <Button onClick={() => navigate('/admin/saapuneet/?=Lukemattomat')}>Lukemattomat</Button>
-                    <Button onClick={() => navigate('/admin/saapuneet/?=Hoidetut')}>Hoidetut</Button>
+                    <Button onClick={() => setSearchParams('')}>Saapuneet</Button>
+                    <Button onClick={() => setSearchParams('Luetut')}>Luetut</Button>
+                    <Button onClick={() => setSearchParams('Lukemattomat')}>Lukemattomat</Button>
+                    <Button onClick={() => setSearchParams('Hoidetut')}>Hoidetut</Button>
                 </ButtonGroup>
             </Box>
             <Stack id="admin-messages-stack" sx={{ m: '1rem 0 1rem 0' }}>
