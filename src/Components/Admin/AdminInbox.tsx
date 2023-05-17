@@ -1,8 +1,21 @@
 import { useLoaderData, useNavigate } from 'react-router-dom';
-import { Stack, Grid, Container, ButtonGroup, Button, Box } from '@mui/material';
+import {
+    Stack,
+    Grid,
+    Container,
+    ButtonGroup,
+    Button,
+    // IconButton,
+    Box,
+    Pagination,
+    Paper,
+} from '@mui/material';
 import HeroText from '../HeroText';
 import MessageCard from './MessageCard';
+// import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+// import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import type { adminInboxLoader } from '../../Router/loaders';
+import useCustomSearchParams from '../../Hooks/useCustomSearchParams';
 
 interface Message {
     subject: string;
@@ -16,7 +29,9 @@ interface Message {
 
 function AdminInbox() {
     const navigate = useNavigate();
+    const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });
     const messages = useLoaderData() as Awaited<ReturnType<typeof adminInboxLoader>>;
+    const pageCount = Math.ceil(messages.count / 5);
     const messageCards = messages.results.map((message: Message) => (
         <MessageCard
             key={message.id}
@@ -29,6 +44,10 @@ function AdminInbox() {
             email={message.email}
         />
     ));
+
+    function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
+        setUsedParams && setUsedParams('page', newPage);
+    }
 
     return (
         <Container maxWidth="lg" component={Grid} direction="column" container>
@@ -44,8 +63,29 @@ function AdminInbox() {
             <Stack id="admin-messages-stack" sx={{ m: '1rem 0 1rem 0' }}>
                 {messageCards}
             </Stack>
+            <Grid justifyContent="center" container>
+                <Pagination
+                    size="large"
+                    color="primary"
+                    count={pageCount}
+                    onChange={handlePageChange}
+                    showFirstButton
+                    showLastButton
+                />
+            </Grid>
         </Container>
     );
 }
 
 export default AdminInbox;
+
+{
+    /* <Grid container justifyContent="space-between">
+                <IconButton color="inherit" size="large">
+                    <ArrowBackIosNewIcon />
+                </IconButton>
+                <IconButton color="inherit" size="large">
+                    <ArrowForwardIosIcon />
+                </IconButton>
+            </Grid> */
+}

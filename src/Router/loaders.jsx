@@ -266,6 +266,8 @@ const shoppingProcessLoader = async (auth, setAuth) => {
 };
 
 const adminInboxLoader = async (auth, setAuth, request) => {
+    const searchParams = new URL(request.url).searchParams;
+    console.log(searchParams.get('page'));
     if (request.url.includes('Luetut')) {
         const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/?status=Read', 'get');
         return messages;
@@ -274,6 +276,14 @@ const adminInboxLoader = async (auth, setAuth, request) => {
         return messages;
     } else if (request.url.includes('Hoidetut')) {
         const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/?status=Handled', 'get');
+        return messages;
+    } else if (searchParams.has('page')) {
+        const { data: messages } = await apiCall(
+            auth,
+            setAuth,
+            `/contact_forms/?page=${searchParams.get('page')}`,
+            'get'
+        );
         return messages;
     }
     const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
