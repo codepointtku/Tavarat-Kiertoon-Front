@@ -1,7 +1,8 @@
-import { Box, Button, Card, CardMedia, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardMedia, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useLoaderData } from 'react-router';
 import type { bikeModelInterface } from './Bikes';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 interface colorInterface {
     id: number;
@@ -18,6 +19,8 @@ interface colorInterface {
 function ModifyBikeModelPage() {
     const { bikeModel, colors } = useLoaderData() as { bikeModel: bikeModelInterface; colors: colorInterface[] };
     console.log('### colors', colors);
+
+    const [ colorState, setColorState ] = useState(bikeModel.color.id)
 
     return (
         <>
@@ -43,24 +46,34 @@ function ModifyBikeModelPage() {
                             image="/br.jpg"
                             alt="Bike Model"
                         />
-                        {/* 
+                        {/*
                         "name" is generated automatically from other values
                         "brand.name" is a text field
                         "color.name" is a <Select> field allowing all colors with default set to "true"
                         "size.name" is a number field. inch mark (") needs to be added later
                         "type.name" is a text field
-                        "description" is a text field 
+                        "description" is a text field
                         */}
                         <Grid container flexDirection="row" spacing={2} paddingTop="1rem">
                             <Grid item xs={6}>
                                 <TextField label="Nimi" fullWidth value={bikeModel.name} />
                             </Grid>
-                            <Grid item xs={6} />
+                            <Grid item xs={6}>
+                            </Grid>
                             <Grid item xs={6}>
                                 <TextField label="Merkki" fullWidth value={bikeModel.brand.name} />
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField label="Väri" fullWidth value={bikeModel.color.name} />
+                                <FormControl fullWidth>
+                                    <InputLabel id="bike-model-color">Väri</InputLabel>
+                                    <Select id="bike-model-color" label="Color" value={colorState}>
+                                        {colors.map( (color) => {
+                                            return(
+                                                <MenuItem key={color.id} value={color.id}>{color.name}</MenuItem>
+                                            )
+                                        })}
+                                    </Select>
+                                </FormControl>
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField label="Koko" fullWidth value={bikeModel.size.name} />
