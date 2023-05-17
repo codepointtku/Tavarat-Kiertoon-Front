@@ -119,6 +119,7 @@ import {
     createNewBikeAction,
     deleteBikeAction,
     adminLogOut,
+    modifyBikeModelAction,
 } from './actions';
 
 createStore({});
@@ -560,6 +561,7 @@ function Routes() {
                                             path: ':id',
                                             element: <ModifyBikeModelPage />,
                                             loader: async ({ params }) => bikeSingleModelLoader(auth, setAuth, params),
+                                            action: async ({ request }) => modifyBikeModelAction(auth, setAuth, request),
                                         },
                                     ],
                                 },

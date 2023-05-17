@@ -406,6 +406,13 @@ const deleteBikeAction = async (auth, setAuth, params) => {
     return redirect('/pyorat/pyoravarasto');
 };
 
+const modifyBikeModelAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/bikes/models/', 'post', formData);
+    return response.data || null;
+};
+
+
 export {
     userSignupAction,
     frontPageActions,
@@ -426,4 +433,5 @@ export {
     createNewBikeAction,
     deleteBikeAction,
     adminLogOut,
+    modifyBikeModelAction,
 };

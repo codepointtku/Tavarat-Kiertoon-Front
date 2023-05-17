@@ -1,8 +1,7 @@
 import { Box, Button, Card, CardMedia, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useLoaderData } from 'react-router';
-import { Form, Link } from 'react-router-dom';
-import { useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { Form, Link, useSubmit } from 'react-router-dom';
+import { FieldValues, useForm } from 'react-hook-form';
 
 // interface(s)
 import type { bikeModelInterface } from './Bikes';
@@ -33,8 +32,14 @@ function ModifyBikeModelPage() {
         }
     });
 
+    // submit the form data
+    const submit = useSubmit()
     const onSubmit = (data: FieldValues) => {
         console.log('### ModifyBikeModelPage', data)
+        submit(data, {
+            method: 'post',
+            action: `/pyorat/pyoravarasto/muokkaapyoramalli/${bikeModel.id}`,
+        });
     }
 
     // RENDER
