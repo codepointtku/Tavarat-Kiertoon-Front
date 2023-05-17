@@ -198,10 +198,10 @@ const addProductAction = async (auth, setAuth, request) => {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
     console.log('response actionissa :', response);
-    if (response.status === 200) {
-        return { type: 'post', status: true };
+    if (response.status === 201) {
+        return { type: 'createProduct', status: true };
     }
-    return { type: 'post', status: false };
+    return { type: 'createProduct', status: false };
 
     // placeholder
     // // id haettava editointia varten
