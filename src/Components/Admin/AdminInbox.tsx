@@ -35,8 +35,10 @@ function AdminInbox() {
             <HeroText title="Saapuneet viestit" />
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <ButtonGroup variant="contained" aria-label="read-and-unread-buttons" size="large">
+                    <Button onClick={() => navigate('/admin/saapuneet/')}>Saapuneet</Button>
                     <Button onClick={() => navigate('/admin/saapuneet/?=Luetut')}>Luetut</Button>
                     <Button onClick={() => navigate('/admin/saapuneet/?=Lukemattomat')}>Lukemattomat</Button>
+                    <Button onClick={() => navigate('/admin/saapuneet/?=Hoidetut')}>Hoidetut</Button>
                 </ButtonGroup>
             </Box>
             <Stack id="admin-messages-stack" sx={{ m: '1rem 0 1rem 0' }}>

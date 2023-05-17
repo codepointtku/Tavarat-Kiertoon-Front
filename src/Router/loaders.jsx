@@ -272,6 +272,9 @@ const adminInboxLoader = async (auth, setAuth, request) => {
     } else if (request.url.includes('Lukemattomat')) {
         const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/?status=Not%20read', 'get');
         return messages;
+    } else if (request.url.includes('Hoidetut')) {
+        const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/?status=Handled', 'get');
+        return messages;
     }
     const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
     return messages;
