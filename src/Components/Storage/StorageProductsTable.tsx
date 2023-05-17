@@ -1,5 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { Form, Link, useLoaderData, useRouteLoaderData, useSearchParams } from 'react-router-dom';
+import {
+    Form,
+    Link,
+    useLoaderData,
+    useRouteLoaderData,
+    useSearchParams,
+    type URLSearchParamsInit,
+} from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
     Table,
@@ -16,34 +23,22 @@ import {
     Typography,
 } from '@mui/material';
 // import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
+import ClearIcon from '@mui/icons-material/Clear';
+
 import TablePaginationActions from '../TablePaginationActions';
 import StyledTableCell from '../StyledTableCell';
 import StyledTableRow from '../StyledTableRow';
 
-interface RouteLoaderData {
-    categories: [
-        {
-            id: number;
-            product_count: string;
-            name: string;
-            lft: number;
-            rght: number;
-            tree_id: number;
-            level: number;
-            parent: number;
-        }
-    ];
-}
+import { type storageProductsLoader, type rootLoader } from '../../Router/loaders';
 
-interface LoaderData {
-    storages: string[];
-    products: string[];
+interface Search {
+    searchString: string | null;
 }
 
 function StorageProductsTable() {
     const [searchParams, setSearchParams] = useSearchParams();
-    const { categories } = useRouteLoaderData('root') as RouteLoaderData;
-    const { storages, products } = useLoaderData() as LoaderData;
+    const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
+    const { storages, products } = useLoaderData() as Awaited<ReturnType<typeof storageProductsLoader>>;
     const { register, handleSubmit, watch } = useForm({ defaultValues: { searchString: searchParams.get('search') } });
     // todo: fill search field with search param if scanned with qrcodescanner or entered with link
 
@@ -54,9 +49,9 @@ function StorageProductsTable() {
 
     // const search = watch('searchString');
 
-    const handleBarcodeSearch = (formData) => {
+    const handleBarcodeSearch = (formData: Search) => {
         console.log('handleBarcodeSearch', formData);
-        setSearchParams({ search: formData.searchString });
+        setSearchParams({ search: formData.searchString as string });
     };
 
     return (
@@ -77,7 +72,9 @@ function StorageProductsTable() {
                                     placeholder="Viivakoodi / tuoteID / nimi"
                                     sx={{ backgroundColor: 'white' }}
                                     size="medium"
-                                />
+                                >
+                                    <IconButton children={<ClearIcon />} />
+                                </TextField>
                                 <Button
                                     type="submit"
                                     variant="contained"
@@ -113,7 +110,13 @@ function StorageProductsTable() {
                                     <Link to={`/varasto/tuotteet/${product.id}/muokkaa`}>{product.barcode}</Link>
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                    <Button variant="outlined" color="primary" sx={{ paddingRight: 6, paddingLeft: 6 }}>
+                                    <Button
+                                        component={Link}
+                                        to={`/varasto/tuotteet/${product.id}/muokkaa`}
+                                        variant="outlined"
+                                        color="primary"
+                                        sx={{ paddingRight: 6, paddingLeft: 6 }}
+                                    >
                                         Muokkaa
                                     </Button>
                                 </StyledTableCell>
@@ -129,7 +132,7 @@ function StorageProductsTable() {
                                         hour: '2-digit',
                                         minute: '2-digit',
                                     }) +
-                                        ' / ' +
+                                        '   ' +
                                         new Date(product.modified_date).toLocaleDateString('fi-FI')}
                                 </StyledTableCell>
                             </StyledTableRow>
