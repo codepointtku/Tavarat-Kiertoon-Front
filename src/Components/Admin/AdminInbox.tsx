@@ -66,14 +66,3 @@ function AdminInbox() {
 }
 
 export default AdminInbox;
-
-{
-    /* <Grid container justifyContent="space-between">
-                <IconButton color="inherit" size="large">
-                    <ArrowBackIosNewIcon />
-                </IconButton>
-                <IconButton color="inherit" size="large">
-                    <ArrowForwardIosIcon />
-                </IconButton>
-            </Grid> */
-}

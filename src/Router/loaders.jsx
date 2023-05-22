@@ -267,14 +267,21 @@ const shoppingProcessLoader = async (auth, setAuth) => {
 
 const adminInboxLoader = async (auth, setAuth, request) => {
     const searchParams = new URL(request.url).searchParams;
-    if (searchParams.has('Luetut')) {
-        const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/?status=Read', 'get');
-        return messages;
-    } else if (searchParams.has('Lukemattomat')) {
-        const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/?status=Not%20read', 'get');
-        return messages;
-    } else if (searchParams.has('Hoidetut')) {
-        const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/?status=Handled', 'get');
+    const status = searchParams.has('Luetut')
+        ? 'Read'
+        : searchParams.has('Lukemattomat')
+        ? 'Not%20read'
+        : searchParams.has('Hoidetut') && 'Handled';
+
+    if (status) {
+        const { data: messages } = await apiCall(
+            auth,
+            setAuth,
+            searchParams.has('page')
+                ? `/contact_forms/?page=${searchParams.get('page')}&status=${status}`
+                : `/contact_forms/?status=${status}`,
+            'get'
+        );
         return messages;
     } else if (searchParams.has('page') && searchParams.get('page') != 0) {
         const { data: messages } = await apiCall(
