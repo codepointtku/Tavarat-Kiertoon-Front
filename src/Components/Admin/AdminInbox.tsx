@@ -7,7 +7,7 @@ import useCustomSearchParams from '../../Hooks/useCustomSearchParams';
 
 interface Message {
     subject: string;
-    date: string;
+    date: Date & string;
     message: string;
     id: string;
     status: string;
@@ -21,18 +21,24 @@ function AdminInbox() {
     const messages = useLoaderData() as Awaited<ReturnType<typeof adminInboxLoader>>;
     const pageCount = Math.ceil(messages.count / 5);
     const url = window.location.href;
-    const messageCards = messages.results.map((message: Message) => (
-        <MessageCard
-            key={message.id}
-            id={message.id}
-            currentStatus={message.status}
-            subject={message.subject}
-            date={message.date}
-            message={message.message}
-            name={message.name}
-            email={message.email}
-        />
-    ));
+    const messageCards = messages.results.map((message: Message) => {
+        const date = new Date(message.date);
+        const dateInfo = [];
+        dateInfo.push(date.toLocaleDateString());
+        dateInfo.push(date.toLocaleTimeString());
+        return (
+            <MessageCard
+                key={message.id}
+                id={message.id}
+                currentStatus={message.status}
+                subject={message.subject}
+                date={dateInfo}
+                message={message.message}
+                name={message.name}
+                email={message.email}
+            />
+        );
+    });
 
     function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
         setUsedParams && setUsedParams('page', newPage);
