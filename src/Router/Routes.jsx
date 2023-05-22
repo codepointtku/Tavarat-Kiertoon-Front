@@ -5,6 +5,7 @@ import { ThemeProvider } from '@mui/material';
 
 import AuthContext from '../Context/AuthContext';
 import ErrorBoundary from './ErrorBoundary';
+import HasRole from '../Utils/HasRole';
 
 import DefaultView from '../Views/DefaultView';
 
@@ -22,6 +23,10 @@ import OrdersList from '../Components/Storage/OrdersList';
 import OrderView from '../Components/Storage/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
 import QrScanner from '../Components/Storage/QrScanner';
+
+import Overview from '../Components/Admin/Panel/Overview/Overview';
+import PageTest from '../Components/Admin/Panel/PageTest';
+import AdminInbox from '../Components/Admin/AdminInbox';
 
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
@@ -92,6 +97,7 @@ import {
     createNewBikeLoader,
     shoppingProcessLoader,
     modifyBikeOrderLoader,
+    adminInboxLoader,
 } from './loaders';
 
 import {
@@ -110,6 +116,8 @@ import {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
+    deleteBikeAction,
+    adminLogOut,
 } from './actions';
 
 createStore({});
@@ -137,6 +145,7 @@ function Routes() {
                         {
                             index: true,
                             element: <DefaultView />,
+                            id: 'products',
                             loader: async ({ request }) => productListLoader(auth, setAuth, request),
                         },
                         {
@@ -223,7 +232,7 @@ function Routes() {
                                 </StateMachineProvider>
                             ),
                             id: 'shoppingCart',
-                            loader: shoppingProcessLoader,
+                            loader: async () => shoppingProcessLoader(auth, setAuth),
                             children: [
                                 {
                                     path: '/ostoskori/',
@@ -312,7 +321,7 @@ function Routes() {
                     ),
                     errorElement: (
                         <ThemeProvider theme={storageTheme}>
-                            <ErrorBoundary />,
+                            <ErrorBoundary />
                         </ThemeProvider>
                     ),
                     children: [
@@ -384,24 +393,53 @@ function Routes() {
                 {
                     path: 'admin',
                     element: (
-                        <ThemeProvider theme={adminTheme}>
-                            <AdminLayout />
-                        </ThemeProvider>
+                        <HasRole role="admin_group" fallback={<Navigate to="/" />}>
+                            <ThemeProvider theme={adminTheme}>
+                                <AdminLayout />
+                            </ThemeProvider>
+                        </HasRole>
                     ),
                     errorElement: (
                         <ThemeProvider theme={adminTheme}>
                             <ErrorBoundary />,
                         </ThemeProvider>
                     ),
+                    action: async ({ request }) => adminLogOut(auth, setAuth, request),
                     children: [
                         {
                             index: true,
-                            element: <Navigate to="varastot" />,
+                            element: <Overview />,
                         },
                         {
-                            path: 'tiedotteet/luo',
-                            element: <CreateBulletinPost />,
-                            action: async ({ request }) => createBulletinAction(auth, setAuth, request),
+                            path: 'pagetest',
+                            element: <PageTest />,
+                        },
+                        {
+                            path: 'tilastot',
+                            element: <Stats />,
+                        },
+                        {
+                            path: 'kayttajat',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <UsersList />,
+                                    id: 'kayttajat',
+                                    loader: async () => usersListLoader(auth, setAuth),
+                                },
+                                {
+                                    path: ':id',
+                                    element: <UserEdit />,
+                                    loader: async ({ params }) => userEditLoader(auth, setAuth, params),
+                                    action: async ({ request, params }) =>
+                                        userEditAction(auth, setAuth, request, params),
+                                },
+                            ],
+                        },
+                        {
+                            path: 'hakemukset',
+                            element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
                         },
                         {
                             path: 'varastot',
@@ -421,34 +459,24 @@ function Routes() {
                                 },
                             ],
                         },
-                        // NOTE : JTo : 'users' paths need to be checked once users are enabled in back-end
-                        {
-                            path: 'users',
-                            element: <Outlet />,
-                            children: [
-                                {
-                                    index: true,
-                                    element: <UsersList />,
-                                    id: 'users',
-                                    loader: async () => usersListLoader(auth, setAuth),
-                                },
-                                {
-                                    path: ':id',
-                                    element: <UserEdit />,
-                                    loader: async ({ params }) => userEditLoader(auth, setAuth, params),
-                                    action: async ({ request, params }) =>
-                                        userEditAction(auth, setAuth, request, params),
-                                },
-                            ],
-                        },
                         {
                             path: 'varastot/luo',
                             element: <AddStorage />,
                             action: async ({ request }) => storageCreateAction(auth, setAuth, request),
                         },
                         {
-                            path: 'hakemukset',
-                            element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
+                            path: 'tiedotteet',
+                            element: <Bulletins />,
+                        },
+                        {
+                            path: 'tiedotteet/luo',
+                            element: <CreateBulletinPost />,
+                            action: async ({ request }) => createBulletinAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'saapuneet',
+                            element: <AdminInbox />,
+                            loader: adminInboxLoader,
                         },
                     ],
                 },
@@ -464,7 +492,7 @@ function Routes() {
                         {
                             index: true,
                             element: <BikesPage />,
-                            loader: bikesDefaultLoader,
+                            loader: async () => bikesDefaultLoader(auth, setAuth),
                             action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                         },
                         {
@@ -516,6 +544,13 @@ function Routes() {
                                             loader: async ({ params }) => bikeLoader(auth, setAuth, params),
                                             action: async ({ request, params }) =>
                                                 modifyBikeAction(auth, setAuth, request, params),
+                                            children: [
+                                                {
+                                                    path: 'poista',
+                                                    action: async ({ params }) =>
+                                                        deleteBikeAction(auth, setAuth, params),
+                                                },
+                                            ],
                                         },
                                     ],
                                 },
