@@ -171,7 +171,8 @@ const storageEditLoader = async (auth, setAuth, params) => {
 };
 
 /**
- * Get all users
+ * Get all users.
+ * Used in src/Components/Admin/UserList.jsx
  */
 const usersListLoader = async (auth, setAuth) => {
     const { data: users } = await apiCall(auth, setAuth, '/users', 'get');
@@ -179,7 +180,9 @@ const usersListLoader = async (auth, setAuth) => {
 };
 
 /**
- * Get one user
+ * Get one user and all auth groups in separate apicalls, combine these responses into an array.
+ * Array item 0 === user data, item 1 === auth groups.
+ * Used in src/Components/Admin/UserEdit.jsx
  */
 const userEditLoader = async (auth, setAuth, params) => {
     const dataList = [];
