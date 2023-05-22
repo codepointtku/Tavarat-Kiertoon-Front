@@ -5,6 +5,7 @@ import { ThemeProvider } from '@mui/material';
 
 import AuthContext from '../Context/AuthContext';
 import ErrorBoundary from './ErrorBoundary';
+import HasRole from '../Utils/HasRole';
 
 import DefaultView from '../Views/DefaultView';
 
@@ -22,6 +23,10 @@ import OrdersList from '../Components/Storage/OrdersList';
 import OrderView from '../Components/Storage/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
 import QrScanner from '../Components/Storage/QrScanner';
+
+import Overview from '../Components/Admin/Panel/Overview/Overview';
+import PageTest from '../Components/Admin/Panel/PageTest';
+import AdminInbox from '../Components/Admin/AdminInbox';
 
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
@@ -112,12 +117,6 @@ import {
     deleteBikeAction,
     adminInboxAction,
 } from './actions';
-
-import Overview from '../Components/Admin/Panel/Overview/Overview';
-import PageTest from '../Components/Admin/Panel/PageTest';
-
-import HasRole from '../Utils/HasRole';
-import AdminInbox from '../Components/Admin/AdminInbox';
 
 createStore({});
 
@@ -417,30 +416,6 @@ function Routes() {
                             path: 'tilastot',
                             element: <Stats />,
                         },
-
-                        {
-                            path: 'varastot',
-                            element: <Outlet />,
-                            children: [
-                                {
-                                    index: true,
-                                    element: <StoragesList />,
-                                    loader: async () => storagesListLoader(auth, setAuth),
-                                },
-                                {
-                                    path: ':id',
-                                    element: <StorageEdit />,
-                                    loader: async ({ params }) => storageEditLoader(auth, setAuth, params),
-                                    action: async ({ request, params }) =>
-                                        storageEditAction(auth, setAuth, request, params),
-                                },
-                            ],
-                        },
-                        {
-                            path: 'varastot/luo',
-                            element: <AddStorage />,
-                            action: async ({ request }) => storageCreateAction(auth, setAuth, request),
-                        },
                         {
                             path: 'kayttajat',
                             element: <Outlet />,
@@ -463,6 +438,29 @@ function Routes() {
                         {
                             path: 'hakemukset',
                             element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
+                        },
+                        {
+                            path: 'varastot',
+                            element: <Outlet />,
+                            children: [
+                                {
+                                    index: true,
+                                    element: <StoragesList />,
+                                    loader: async () => storagesListLoader(auth, setAuth),
+                                },
+                                {
+                                    path: ':id',
+                                    element: <StorageEdit />,
+                                    loader: async ({ params }) => storageEditLoader(auth, setAuth, params),
+                                    action: async ({ request, params }) =>
+                                        storageEditAction(auth, setAuth, request, params),
+                                },
+                            ],
+                        },
+                        {
+                            path: 'varastot/luo',
+                            element: <AddStorage />,
+                            action: async ({ request }) => storageCreateAction(auth, setAuth, request),
                         },
                         {
                             path: 'tiedotteet',
