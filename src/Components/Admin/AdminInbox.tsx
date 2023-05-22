@@ -20,6 +20,7 @@ function AdminInbox() {
     const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });
     const messages = useLoaderData() as Awaited<ReturnType<typeof adminInboxLoader>>;
     const pageCount = Math.ceil(messages.count / 5);
+    const url = window.location.href;
     const messageCards = messages.results.map((message: Message) => (
         <MessageCard
             key={message.id}
@@ -42,10 +43,33 @@ function AdminInbox() {
             <HeroText title="Saapuneet viestit" />
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <ButtonGroup variant="contained" aria-label="read-and-unread-buttons" size="large">
-                    <Button onClick={() => setSearchParams('')}>Saapuneet</Button>
-                    <Button onClick={() => setSearchParams('Luetut')}>Luetut</Button>
-                    <Button onClick={() => setSearchParams('Lukemattomat')}>Lukemattomat</Button>
-                    <Button onClick={() => setSearchParams('Hoidetut')}>Hoidetut</Button>
+                    <Button
+                        sx={{
+                            backgroundColor:
+                                url.endsWith('saapuneet') || url.includes('saapuneet?page') ? '#476282' : 'primary',
+                        }}
+                        onClick={() => setSearchParams('')}
+                    >
+                        Saapuneet
+                    </Button>
+                    <Button
+                        sx={{ backgroundColor: searchParams.has('Luetut') ? '#476282' : 'primary' }}
+                        onClick={() => setSearchParams('Luetut')}
+                    >
+                        Luetut
+                    </Button>
+                    <Button
+                        sx={{ backgroundColor: searchParams.has('Lukemattomat') ? '#476282' : 'primary' }}
+                        onClick={() => setSearchParams('Lukemattomat')}
+                    >
+                        Lukemattomat
+                    </Button>
+                    <Button
+                        sx={{ backgroundColor: searchParams.has('Hoidetut') ? '#476282' : 'primary' }}
+                        onClick={() => setSearchParams('Hoidetut')}
+                    >
+                        Hoidetut
+                    </Button>
                 </ButtonGroup>
             </Box>
             <Stack id="admin-messages-stack" sx={{ m: '1rem 0 1rem 0' }}>
