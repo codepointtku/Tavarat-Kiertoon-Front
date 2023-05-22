@@ -16,7 +16,7 @@ function BulletinCard({ title, date, content }: Props) {
                 {date}
             </Typography>
             <Box id="bulletin-content-text-indent-container" sx={{ m: '1rem 2rem 0 2rem' }}>
-                <Typography id="bulletin-content-text-typography" variant="body1">
+                <Typography id="bulletin-content-text-typography" variant="body1" sx={{ wordWrap: 'break-word' }}>
                     {content}
                 </Typography>
             </Box>
