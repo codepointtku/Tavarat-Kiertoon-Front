@@ -5,18 +5,7 @@ import { Form, useSubmit } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
 
-import {
-    Box,
-    Button,
-    // Grid,
-    Container,
-    Checkbox,
-    FormControlLabel,
-    Stack,
-    TextField,
-} from '@mui/material';
-
-import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
+import { Box, Button, Container, Checkbox, FormControlLabel, Stack, TextField } from '@mui/material';
 
 import AlertBox from '../AlertBox';
 import ConfirmWindow from './ConfirmWindow';
@@ -44,7 +33,6 @@ function UserEdit() {
         mode: 'onTouched',
         defaultValues: {
             ...userInfo,
-            // groups: ['user_group'],
             groups: { user_group: true },
         },
     });
@@ -115,41 +103,52 @@ function UserEdit() {
                 <Stack id="user-edit-stack-column">
                     <TypographyTitle text="Muokkaa käyttäjän x tietoja" />
                     <Box id="user-edition-wrapper-form-component" component={Form} onSubmit={handleSubmit}>
-                        <Stack id="user-edition-fields-stack-column" sx={{ border: '8px solid blue', padding: '1rem' }}>
+                        <Stack id="user-edition-fields-stack-column" sx={{ padding: '1rem' }}>
                             <TextField
-                                id="name"
+                                id="textfield-fname"
                                 type="text"
-                                label="Nimi"
-                                placeholder="Käyttäjän nimi"
+                                label="Etunimi"
+                                placeholder="Käyttäjän etunimi"
                                 {...register('first_name', {
                                     required: { value: true, message: 'Käyttäjän nimi ei voi olla tyhjä' },
-                                    maxLength: { value: 255, message: 'Nimi on liian pitkä, maksimi 255 merkkiä' },
-                                    minLength: { value: 3, message: 'Nimi on liian lyhyt, minimi 3 merkkiä' },
+                                    maxLength: { value: 50, message: 'Etunimi on liian pitkä, maksimi 50 merkkiä' },
                                 })}
                                 // Needs to be required: false to disable browser error message
                                 inputProps={{ required: false }}
                                 required
                                 error={!!formState.errors.first_name}
                                 helperText={formState.errors.first_name?.message || ' '}
-                                sx={{ border: '1px solid cyan' }}
+                            />
+
+                            <TextField
+                                id="textfield-lname"
+                                type="text"
+                                label="Sukunimi"
+                                placeholder="Käyttäjän sukunimi"
+                                {...register('last_name', {
+                                    required: { value: true, message: 'Käyttäjän sukunimi ei voi olla tyhjä' },
+                                    maxLength: { value: 50, message: 'Sukunimi on liian pitkä, maksimi 50 merkkiä' },
+                                })}
+                                inputProps={{ required: false }}
+                                required
+                                error={!!formState.errors.last_name}
+                                helperText={formState.errors.last_name?.message || ' '}
                             />
 
                             <TextField
                                 id="phone_number"
                                 type="text"
                                 label="Puhelinnumero"
-                                placeholder="Käyttäjän puhveli numero"
+                                placeholder="Käyttäjän puhelinnumero"
                                 {...register('phone_number', {
-                                    required: { value: true, message: 'Käyttäjän puhnro ei voi olla tyhjä' },
-                                    maxLength: { value: 255, message: 'Puhelinnumero ei oo noi pitkä hei' },
+                                    required: { value: true, message: 'Käyttäjän puhelinnumero ei voi olla tyhjä' },
+                                    maxLength: { value: 30, message: 'Puhelinnumero ei oo noi pitkä hei' },
                                     minLength: { value: 3, message: 'Puhelinnnumero ei oo kyl ton pitune oikeesti' },
                                 })}
-                                // Needs to be required: false to disable browser error message
                                 inputProps={{ required: false }}
                                 required
                                 error={!!formState.errors.phone_number}
                                 helperText={formState.errors.phone_number?.message}
-                                sx={{ pb: 10, border: '1px solid lightgreen' }}
                             />
 
                             {/* <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
