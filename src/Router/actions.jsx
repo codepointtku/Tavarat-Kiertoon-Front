@@ -419,9 +419,16 @@ const deleteBulletinAction = async (auth, setAuth, request) => {
     return { type: 'deleted', status: false };
 };
 
+/**
+ * modifies a bulletin
+ */
+
 const modifyBulletinAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'put', {});
+    const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'put', {
+        title: formData.get('title'),
+        content: formData.get('content'),
+    });
     if (response.status === 200) {
         return { type: 'modified', status: true };
     }

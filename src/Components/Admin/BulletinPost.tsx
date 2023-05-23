@@ -32,7 +32,7 @@ function BulletinPost({ title, date, content, id }: Props) {
                     <TypographyHeading text={title} />
                 </Grid>
                 <Grid item>
-                    <Button sx={{ mr: 2 }} onClick={() => navigate('muokkaa')}>
+                    <Button sx={{ mr: 2 }} onClick={() => navigate('muokkaa', { state: { id, title } })}>
                         Muokkaa
                     </Button>
                     <Button color="error" onClick={() => handleSubmit()}>

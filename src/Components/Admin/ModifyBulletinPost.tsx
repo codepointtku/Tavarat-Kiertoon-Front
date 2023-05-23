@@ -1,26 +1,53 @@
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Form, useSubmit, useLocation } from 'react-router-dom';
+
 import { Box, Container, FormControl, Stack, TextField, Button } from '@mui/material';
 import TypographyTitle from '../TypographyTitle';
 import AlertBox from '../AlertBox';
-import { Form } from 'react-router-dom';
+import { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
+
+interface FormData extends SubmitHandler<FieldValues> {
+    title: string;
+    content: string;
+    category: string;
+}
 
 function ModifyBulletinPost() {
     const [success, setSuccess] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const { register, handleSubmit } = useForm();
+    const submit = useSubmit();
+    const location = useLocation();
+
+    const onSubmit = (data: { title: string; content: string }) => {
+        const formData = { ...data, category: 'category', id: location.state.id };
+
+        setIsSubmitting(true);
+
+        submit(formData, {
+            method: 'put',
+            action: '/admin/tiedotteet/muokkaa',
+        });
+
+        setSuccess(true);
+    };
+
     return (
         <Stack sx={{ p: 5 }}>
             <TypographyTitle text="Muokkaa tiedotetta" />
+
             <Box
                 id="bulletin-modification-form-component"
                 component={Form}
-                // onSubmit={handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(onSubmit as FormData)}
                 autoComplete="off"
             >
                 <Container maxWidth="md">
                     <Stack id="bulletin-modification-column-stacker">
                         <FormControl id="bulletin-modification-formcontrol">
                             <TextField
-                                // {...register('title')}
+                                {...register('title')}
                                 sx={{ mt: 2 }}
                                 label="Uusi otsikko"
                                 placeholder="Uusi otsikko"
@@ -30,7 +57,7 @@ function ModifyBulletinPost() {
                             />
 
                             <TextField
-                                // {...register('content')}
+                                {...register('content')}
                                 sx={{ mt: 2 }}
                                 label="Uusi sisältö"
                                 placeholder="Uusi sisältö"
@@ -49,7 +76,12 @@ function ModifyBulletinPost() {
                 </Container>
             </Box>
             {success && (
-                <AlertBox text="Tiedote lisätty onnistuneesti" status="success" redirectUrl="/admin" timer={1500} />
+                <AlertBox
+                    text="Tiedote lisätty onnistuneesti"
+                    status="success"
+                    redirectUrl="/admin/tiedotteet"
+                    timer={1500}
+                />
             )}
         </Stack>
     );
