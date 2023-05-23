@@ -35,6 +35,18 @@ interface Search {
     searchString: string | null;
 }
 
+interface Product {
+    id: number;
+    name: string;
+    barcode: string;
+    category: number;
+    storage: number;
+    amount: number;
+    storage_name: string;
+    created: string;
+    modified_date: string;
+}
+
 function StorageProductsTable() {
     const [searchParams, setSearchParams] = useSearchParams();
     const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
@@ -42,10 +54,10 @@ function StorageProductsTable() {
     const { register, handleSubmit, watch } = useForm({ defaultValues: { searchString: searchParams.get('search') } });
     // todo: fill search field with search param if scanned with qrcodescanner or entered with link
 
-    console.log('categories:', categories);
-    console.log('storages:', storages);
-    console.log('products:', products);
-    console.log('products.results:', products?.results);
+    // console.log('categories:', categories);
+    // console.log('storages:', storages);
+    // console.log('products:', products);
+    // console.log('products.results:', products?.results);
 
     // const search = watch('searchString');
 
@@ -103,7 +115,7 @@ function StorageProductsTable() {
                     </Typography>
                 ) : (
                     <TableBody>
-                        {products?.results?.map((product) => (
+                        {products?.results?.map((product: Product) => (
                             <StyledTableRow key={product.id}>
                                 <StyledTableCell component="th" scope="row">
                                     {/* TODO: varastopuolen tuotesivu, ProductDetails komponenttia hyödyntäen */}
