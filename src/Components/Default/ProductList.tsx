@@ -1,9 +1,9 @@
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 
 import { Box, Divider, Grid, Typography } from '@mui/material';
+import type { productListLoader } from '../../Router/loaders';
 import TypographyHeading from '../TypographyHeading';
 import ProductCard from './ProductCard';
-import { productListLoader } from '../../Router/loaders';
 
 function SearchResultMessage() {
     const [searchParams] = useSearchParams();
@@ -58,7 +58,7 @@ function ProductList() {
 
     return products?.length ? (
         <Grid container spacing={2}>
-            {products.map((product) => (
+            {products.map((product: any) => (
                 <Grid item key={product.id} xs={13} sm={7} md={5} lg={4} xl={3}>
                     <ProductCard
                         id={product.id}
