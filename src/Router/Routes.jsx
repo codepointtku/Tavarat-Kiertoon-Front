@@ -115,6 +115,7 @@ import {
     createNewBikeAction,
     deleteBikeAction,
     adminLogOut,
+    bulletinsAction,
 } from './actions';
 
 createStore({});
@@ -464,6 +465,7 @@ function Routes() {
                         {
                             path: 'tiedotteet',
                             element: <Bulletins />,
+                            action: async ({ request }) => bulletinsAction(auth, setAuth, request),
                         },
                         {
                             path: 'tiedotteet/luo',

@@ -16,7 +16,14 @@ function BulletinCards() {
     const { bulletins } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
 
     const cards = bulletins.map((item: any) => (
-        <BulletinCard key={item.id} title={item.title} date={item.date} content={item.content} auth={auth} />
+        <BulletinCard
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            date={item.date}
+            content={item.content}
+            auth={auth}
+        />
     ));
 
     return (

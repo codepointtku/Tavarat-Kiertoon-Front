@@ -406,6 +406,14 @@ const deleteBikeAction = async (auth, setAuth, params) => {
     return redirect('/pyorat/pyoravarasto');
 };
 
+const bulletinsAction = async (auth, setAuth, request) => {
+    const formData = request.formData();
+    const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'put');
+    if (response.status === 200) {
+        return { type: 'bulletinmodified', status: true };
+    }
+};
+
 export {
     userSignupAction,
     frontPageActions,
@@ -426,4 +434,5 @@ export {
     createNewBikeAction,
     deleteBikeAction,
     adminLogOut,
+    bulletinsAction,
 };

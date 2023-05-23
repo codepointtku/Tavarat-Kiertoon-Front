@@ -7,14 +7,17 @@ interface Props {
     title: string;
     date: string;
     content: string;
+    id: string;
     auth?: { admin_group: boolean };
 }
 
-function BulletinCard({ title, date, content, auth }: Props) {
+function BulletinCard({ title, date, content, id, auth }: Props) {
     const submit = useSubmit();
 
     function handleSubmit(action: string) {
-        // action === "modify" ? submit({}, {})
+        action === 'modify'
+            ? submit({ id, title, content }, { method: 'put', action: 'tiedotteet' })
+            : submit({ id }, { method: 'put', action: 'tiedotteet' });
     }
     return (
         <Paper id="bulletin-card-paper-backdrop" elevation={6} sx={{ mb: '2rem', p: '2rem' }}>
