@@ -30,6 +30,7 @@ import AdminInbox from '../Components/Admin/AdminInbox';
 
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
+import BulletinPosts from '../Components/Admin/BulletinPosts';
 import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
 import ModifyBulletinPost from '../Components/Admin/ModifyBulletinPost';
 import Stats from '../Components/Admin/Stats/Stats';
@@ -133,7 +134,7 @@ function Routes() {
             loader: async () => rootLoader(auth, setAuth),
             // Loads data only at first page load, not with every route
             shouldRevalidate: ({ currentUrl }) => {
-                return currentUrl.pathname === '/admin/tiedotteet';
+                return currentUrl.pathname === '/admin/tiedotteet/';
             },
             children: [
                 // main routes
@@ -468,7 +469,7 @@ function Routes() {
                         },
                         {
                             path: 'tiedotteet',
-                            element: <Bulletins />,
+                            element: <BulletinPosts />,
                             action: async ({ request }) => deleteBulletinAction(auth, setAuth, request),
                         },
                         {
