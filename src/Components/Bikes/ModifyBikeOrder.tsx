@@ -6,7 +6,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useLoaderData } from 'react-router';
-import { Box, IconButton, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, IconButton, Stack, TextField, Typography } from '@mui/material';
 import { Form } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
@@ -15,9 +15,52 @@ import { useState } from 'react';
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 
+interface LoaderDataInterface {
+    packet: PacketInterface;
+    models: ModelInterface[];
+}
+
+interface PacketInterface {
+    id: number;
+    name: string;
+    description: string;
+    bikes: BikeInterface[];
+}
+
+interface BikeInterface {
+    id: number;
+    name: string;
+    description: string;
+}
+interface ModelInterface {
+    id: number;
+    name: string;
+    description: string;
+    type: {
+        id: number;
+        name: string;
+    };
+    color: {
+        id: number;
+        name: string;
+    };
+    brand: {
+        id: number;
+        name: string;
+    };
+    size: {
+        id: number;
+        name: string;
+    };
+}
 export default function ModifyBikeOrder() {
-    const { packet, models } = useLoaderData();
-    const { register, handleSubmit } = useForm();
+    const { packet, models } = useLoaderData() as LoaderDataInterface;
+    const { register, watch, handleSubmit } = useForm({
+        defaultValues: {
+            packetDescription: packet.description,
+            packetName: packet.name,
+        },
+    });
     // const submit = useSubmit();
     // const [isSubmitting, setIsSubmitting] = useState(false);
     // const [success, setSuccess] = useState(false);
@@ -34,7 +77,6 @@ export default function ModifyBikeOrder() {
 
     //     setSuccess(true);
     // };
-    // function with a parameter arrey of bikeModels
 
     console.log('models', models);
     console.log('packet.bikes', packet.bikes);
@@ -62,7 +104,7 @@ export default function ModifyBikeOrder() {
                 borderBottom="1px solid lightgray"
             >
                 <h3>
-                    <i>Muokkaa pakettia</i>
+                    <i>Muokkaa {packet.name}a</i>
                 </h3>
             </Box>
             <Box
@@ -87,11 +129,11 @@ export default function ModifyBikeOrder() {
                                     <TableCell sx={{ fontWeight: 'bold' }}>Nimi:</TableCell>
                                     <TableCell colSpan={3}>
                                         <TextField
-                                            {...register('name')}
-                                            // value={packet.name}
+                                            multiline
+                                            {...register('packetName')}
+                                            value={watch('packetName')}
                                             name="changePacketName"
                                             fullWidth
-                                            label="Muokkaa nimeä"
                                         />
                                     </TableCell>
                                     <TableCell>1</TableCell>
@@ -102,11 +144,13 @@ export default function ModifyBikeOrder() {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold' }}>kuvaus:</TableCell>
-                                    <TableCell colSpan={3}>
+                                    <TableCell colSpan={8}>
                                         <TextField
-                                            {...register('description')}
-                                            label="Muokkaa kuvausta"
-                                            name="changePacketDescription"
+                                            rows={2}
+                                            {...register('packetDescription')}
+                                            value={watch('packetDescription')}
+                                            multiline
+                                            name="packetDescription"
                                             fullWidth
                                         />
                                     </TableCell>
@@ -162,6 +206,9 @@ export default function ModifyBikeOrder() {
                             </TableBody>
                         </Table>
                     </Box>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '2em' }}>
+                    <Button type="submit">Lähetä</Button>
                 </Box>
             </Box>
         </TableContainer>
