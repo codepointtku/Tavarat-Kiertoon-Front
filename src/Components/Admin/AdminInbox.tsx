@@ -3,7 +3,6 @@ import { Stack, Grid, Container, ButtonGroup, Button, Box, Pagination } from '@m
 import HeroText from '../HeroText';
 import MessageCard from './MessageCard';
 import type { adminInboxLoader } from '../../Router/loaders';
-import useCustomSearchParams from '../../Hooks/useCustomSearchParams';
 
 interface Message {
     subject: string;
@@ -16,8 +15,7 @@ interface Message {
 }
 
 function AdminInbox() {
-    let [searchParams, setSearchParams] = useSearchParams();
-    const [usedParams, setUsedParams] = useCustomSearchParams({ page: 0, rows: 5 });
+    const [searchParams, setSearchParams] = useSearchParams();
     const messages = useLoaderData() as Awaited<ReturnType<typeof adminInboxLoader>>;
     const pageCount = Math.ceil(messages.count / 5);
     const url = window.location.href;
@@ -41,7 +39,7 @@ function AdminInbox() {
     });
 
     function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
-        setUsedParams && setUsedParams('page', newPage);
+        setSearchParams({ page: String(newPage) });
     }
 
     return (

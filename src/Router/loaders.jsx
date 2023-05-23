@@ -274,6 +274,7 @@ const adminInboxLoader = async (auth, setAuth, request) => {
         : searchParams.has('Hoidetut') && 'Handled';
 
     if (status) {
+        console.log('ollaan iffissä', status);
         const { data: messages } = await apiCall(
             auth,
             setAuth,
@@ -284,6 +285,8 @@ const adminInboxLoader = async (auth, setAuth, request) => {
         );
         return messages;
     } else if (searchParams.has('page') && searchParams.get('page') != 0) {
+        console.log('ollaan elseiffissä', status);
+
         const { data: messages } = await apiCall(
             auth,
             setAuth,
@@ -292,6 +295,7 @@ const adminInboxLoader = async (auth, setAuth, request) => {
         );
         return messages;
     }
+    console.log('ollaan perus');
     const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
     return messages;
 };
