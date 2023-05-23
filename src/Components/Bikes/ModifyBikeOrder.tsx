@@ -97,7 +97,7 @@ export default function ModifyBikeOrder() {
                 paddingBottom="20px"
                 borderBottom="1px solid lightgray"
             >
-                <Typography variant="h4" component="h1">
+                <Typography variant="h4" component="h1" sx={{ fontFamily: 'Montserrat', color: 'primary.main' }}>
                     Muokkaa {packet.name}a
                 </Typography>
             </Box>
@@ -115,7 +115,7 @@ export default function ModifyBikeOrder() {
                         <Table>
                             <TableBody>
                                 <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Nimi:</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>Nimi:</TableCell>
                                     <TableCell colSpan={3}>
                                         <TextField
                                             multiline
@@ -128,7 +128,7 @@ export default function ModifyBikeOrder() {
                                     <TableCell colSpan={5}></TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Kuvaus:</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>Kuvaus:</TableCell>
                                     <TableCell colSpan={8}>
                                         <TextField
                                             rows={2}
@@ -143,7 +143,7 @@ export default function ModifyBikeOrder() {
 
                                 {bikesState.map((packet, index) => (
                                     <TableRow key={packet.bike}>
-                                        <TableCell sx={{ fontWeight: 'bold' }}>
+                                        <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>
                                             {index === 0 ? 'Pyörät: ' : ''}
                                         </TableCell>
                                         <TableCell>
@@ -196,7 +196,12 @@ export default function ModifyBikeOrder() {
                     </Box>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '2em' }}>
-                    <Button type="submit" variant="contained" color="primary">
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        sx={{ fontFamily: 'Montserrat', fontWeight: 'bold' }}
+                    >
                         Lähetä
                     </Button>
                 </Box>
