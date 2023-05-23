@@ -180,8 +180,13 @@ export default function ModifyBikeOrder() {
                                             Kuvaus: {models.find((model) => model.id === packet.bike)?.description}
                                         </TableCell>
                                         <TableCell>
-                                            <IconButton aria-label="remove" onClick={() => handleRemovePacket(index)}>
+                                            <IconButton
+                                                sx={{ color: 'primary.main' }}
+                                                aria-label="remove"
+                                                onClick={() => handleRemovePacket(index)}
+                                            >
                                                 <DeleteIcon />
+                                                Poista
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
