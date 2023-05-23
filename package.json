@@ -42,7 +42,7 @@
     "scripts": {
         "start": "npm ci && vite",
         "dev": "npm install && npm run api:download-schema && npm run api:generate && vite",
-        "build": "npm run api:generate && tsc & vite build",
+        "build": "npm run api:generate && tsc && vite build",
         "api:download-schema": "curl http://localhost:8000/schema/ --output src/api/schema.yaml",
         "api:generate": "openapi-generator-cli generate",
         "lint": "eslint src --fix",
