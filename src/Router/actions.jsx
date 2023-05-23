@@ -406,12 +406,24 @@ const deleteBikeAction = async (auth, setAuth, params) => {
     return redirect('/pyorat/pyoravarasto');
 };
 
+/**
+ * modifies or deletes bulletins
+ */
+
 const bulletinsAction = async (auth, setAuth, request) => {
-    const formData = request.formData();
-    const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'put');
-    if (response.status === 200) {
-        return { type: 'bulletinmodified', status: true };
+    const formData = await request.formData();
+    if (request.method === 'PUT') {
+        const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'put', {});
+        if (response.status === 200) {
+            return { type: 'modified', status: true };
+        }
+        return { type: 'modified', status: false };
     }
+    const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'delete');
+    if (response.status === 204) {
+        return { type: 'deleted', status: true };
+    }
+    return { type: 'deleted', status: false };
 };
 
 export {

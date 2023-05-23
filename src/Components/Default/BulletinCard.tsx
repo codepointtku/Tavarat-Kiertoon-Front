@@ -16,8 +16,8 @@ function BulletinCard({ title, date, content, id, auth }: Props) {
 
     function handleSubmit(action: string) {
         action === 'modify'
-            ? submit({ id, title, content }, { method: 'put', action: 'tiedotteet' })
-            : submit({ id }, { method: 'put', action: 'tiedotteet' });
+            ? submit({ id, title, content }, { method: 'put', action: '/admin/tiedotteet/' })
+            : submit({ id }, { method: 'delete', action: '/admin/tiedotteet/' });
     }
     return (
         <Paper id="bulletin-card-paper-backdrop" elevation={6} sx={{ mb: '2rem', p: '2rem' }}>
