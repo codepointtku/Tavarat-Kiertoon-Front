@@ -31,6 +31,7 @@ import AdminInbox from '../Components/Admin/AdminInbox';
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
 import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
+import ModifyBulletinPost from '../Components/Admin/ModifyBulletinPost';
 import Stats from '../Components/Admin/Stats/Stats';
 
 import StoragesList from '../Components/Admin/StoragesList';
@@ -115,7 +116,8 @@ import {
     createNewBikeAction,
     deleteBikeAction,
     adminLogOut,
-    bulletinsAction,
+    deleteBulletinAction,
+    modifyBulletinAction,
 } from './actions';
 
 createStore({});
@@ -465,7 +467,12 @@ function Routes() {
                         {
                             path: 'tiedotteet',
                             element: <Bulletins />,
-                            action: async ({ request }) => bulletinsAction(auth, setAuth, request),
+                            action: async ({ request }) => deleteBulletinAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'tiedotteet/muokkaa',
+                            element: <ModifyBulletinPost />,
+                            action: async ({ request }) => modifyBulletinAction(auth, setAuth, request),
                         },
                         {
                             path: 'tiedotteet/luo',

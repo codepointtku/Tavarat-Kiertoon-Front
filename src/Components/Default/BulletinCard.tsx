@@ -1,5 +1,6 @@
+// import { useEffect, useState } from 'react';
 import { Box, Paper, Typography, Grid, Button } from '@mui/material';
-import { useSubmit } from 'react-router-dom';
+import { useSubmit, useNavigate } from 'react-router-dom';
 
 import TypographyHeading from '../TypographyHeading';
 
@@ -13,12 +14,12 @@ interface Props {
 
 function BulletinCard({ title, date, content, id, auth }: Props) {
     const submit = useSubmit();
+    const navigate = useNavigate();
 
-    function handleSubmit(action: string) {
-        action === 'modify'
-            ? submit({ id, title, content }, { method: 'put', action: '/admin/tiedotteet/' })
-            : submit({ id }, { method: 'delete', action: '/admin/tiedotteet/' });
+    function handleSubmit() {
+        submit({ id }, { method: 'delete', action: '/admin/tiedotteet/' });
     }
+
     return (
         <Paper id="bulletin-card-paper-backdrop" elevation={6} sx={{ mb: '2rem', p: '2rem' }}>
             {auth?.admin_group && (
@@ -27,10 +28,10 @@ function BulletinCard({ title, date, content, id, auth }: Props) {
                         <TypographyHeading text={title} />
                     </Grid>
                     <Grid item>
-                        <Button sx={{ mr: 2 }} onClick={() => handleSubmit('modify')}>
+                        <Button sx={{ mr: 2 }} onClick={() => navigate('muokkaa')}>
                             Muokkaa
                         </Button>
-                        <Button color="error" onClick={() => handleSubmit('remove')}>
+                        <Button color="error" onClick={() => handleSubmit()}>
                             Poista
                         </Button>
                     </Grid>
