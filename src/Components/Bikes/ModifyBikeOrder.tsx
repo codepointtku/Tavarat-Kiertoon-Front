@@ -10,10 +10,9 @@ import { Box, Button, IconButton, Stack, TextField, Typography } from '@mui/mate
 import { Form } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-// import AddIcon from '@mui/icons-material/Add';
-// import RemoveIcon from '@mui/icons-material/Remove';
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface LoaderDataInterface {
     packet: PacketInterface;
@@ -29,9 +28,10 @@ interface PacketInterface {
 
 interface BikeInterface {
     id: number;
-    name: string;
-    description: string;
+    bike: number;
+    amount: number;
 }
+
 interface ModelInterface {
     id: number;
     name: string;
@@ -53,6 +53,7 @@ interface ModelInterface {
         name: string;
     };
 }
+
 export default function ModifyBikeOrder() {
     const { packet, models } = useLoaderData() as LoaderDataInterface;
     const { register, watch, handleSubmit } = useForm({
@@ -61,31 +62,14 @@ export default function ModifyBikeOrder() {
             packetName: packet.name,
         },
     });
-    // const submit = useSubmit();
-    // const [isSubmitting, setIsSubmitting] = useState(false);
-    // const [success, setSuccess] = useState(false);
     const [amount, setAmount] = useState(packet.bikes.map((packet) => packet.amount));
-    // const onSubmit = (data) => {
-    //     const formData = { ...data, category: 'category' };
-
-    //     setIsSubmitting(true);
-
-    //     submit(formData, {
-    //         method: 'post',
-    //         // action: ',
-    //     });
-
-    //     setSuccess(true);
-    // };
-
-    console.log('models', models);
-    console.log('packet.bikes', packet.bikes);
 
     const handleAddBike = (index: number) => {
         const newAmount = [...amount];
         newAmount[index] += 1;
         setAmount(newAmount);
     };
+
     const handleRemoveBike = (index: number) => {
         const newAmount = [...amount];
         if (newAmount[index] > 0) {
@@ -103,16 +87,11 @@ export default function ModifyBikeOrder() {
                 paddingBottom="20px"
                 borderBottom="1px solid lightgray"
             >
-                <h3>
-                    <i>Muokkaa {packet.name}a</i>
-                </h3>
+                <Typography variant="h4" component="h1">
+                    Muokkaa {packet.name}a
+                </Typography>
             </Box>
-            <Box
-                component={Form}
-                // onSubmit={handleSubmit(onSubmit)}
-                method="put"
-                // action={`/pyorat/pyoravarasto/muokkaapaketti/${packet.id}`}
-            >
+            <Box component={Form} method="put">
                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                     <Box
                         sx={{
@@ -136,14 +115,10 @@ export default function ModifyBikeOrder() {
                                             fullWidth
                                         />
                                     </TableCell>
-                                    <TableCell>1</TableCell>
-                                    <TableCell>2</TableCell>
-                                    <TableCell>3</TableCell>
-                                    <TableCell>4</TableCell>
-                                    <TableCell>5</TableCell>
+                                    <TableCell colSpan={5}></TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>kuvaus:</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Kuvaus:</TableCell>
                                     <TableCell colSpan={8}>
                                         <TextField
                                             rows={2}
@@ -162,44 +137,42 @@ export default function ModifyBikeOrder() {
                                             {index === 0 ? 'Pyörät: ' : ''}
                                         </TableCell>
                                         <TableCell>
-                                            merkki: {models.find((model) => model.id === packet.bike).brand.name}
+                                            Merkki: {models.find((model) => model.id === packet.bike)?.brand.name}
                                         </TableCell>
 
                                         <TableCell>
                                             <Box>
                                                 <Stack justifyContent="center" direction="row">
-                                                    <IconButton
-                                                        color="primary"
-                                                        onClick={() => handleRemoveBike('remove', index)}
-                                                    >
+                                                    <IconButton color="primary" onClick={() => handleRemoveBike(index)}>
                                                         <RemoveCircleOutlineRoundedIcon />
                                                     </IconButton>
                                                     <Typography variant="h6" sx={{ p: 0.5 }}>
                                                         {amount[index]}
                                                     </Typography>
-                                                    <IconButton
-                                                        color="primary"
-                                                        onClick={() => handleAddBike('add', index)}
-                                                    >
+                                                    <IconButton color="primary" onClick={() => handleAddBike(index)}>
                                                         <AddCircleRoundedIcon />
                                                     </IconButton>
                                                 </Stack>
                                             </Box>
                                         </TableCell>
-                                        <TableCell></TableCell>
-                                        <TableCell align="left"></TableCell>
+                                        <TableCell colSpan={5}></TableCell>
                                         <TableCell>
-                                            Väri:{models.find((model) => model.id === packet.bike).color.name}
+                                            Väri: {models.find((model) => model.id === packet.bike)?.color.name}
                                         </TableCell>
                                         <TableCell>
-                                            Malli:{models.find((model) => model.id === packet.bike).type.name}
+                                            Malli: {models.find((model) => model.id === packet.bike)?.type.name}
                                         </TableCell>
 
                                         <TableCell>
-                                            nimi:{models.find((model) => model.id === packet.bike).name}
+                                            Nimi: {models.find((model) => model.id === packet.bike)?.name}
                                         </TableCell>
                                         <TableCell>
-                                            Kuvaus:{models.find((model) => model.id === packet.bike).description}
+                                            Kuvaus: {models.find((model) => model.id === packet.bike)?.description}
+                                        </TableCell>
+                                        <TableCell>
+                                            <IconButton color="primary" onClick={() => handleAddBike(index)}>
+                                                <DeleteIcon /> poista
+                                            </IconButton>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -208,7 +181,9 @@ export default function ModifyBikeOrder() {
                     </Box>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '2em' }}>
-                    <Button type="submit">Lähetä</Button>
+                    <Button type="submit" variant="contained" color="primary">
+                        Lähetä
+                    </Button>
                 </Box>
             </Box>
         </TableContainer>
