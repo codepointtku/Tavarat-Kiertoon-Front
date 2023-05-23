@@ -1,4 +1,4 @@
-// import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Box, Paper, Typography, Grid, Button } from '@mui/material';
 import { useSubmit, useNavigate } from 'react-router-dom';
 
@@ -13,11 +13,13 @@ interface Props {
 }
 
 function BulletinCard({ title, date, content, id, auth }: Props) {
+    const [isSubmitted, setIsSubmitted] = useState(false);
     const submit = useSubmit();
     const navigate = useNavigate();
 
     function handleSubmit() {
         submit({ id }, { method: 'delete', action: '/admin/tiedotteet/' });
+        setIsSubmitted(true);
     }
 
     return (
