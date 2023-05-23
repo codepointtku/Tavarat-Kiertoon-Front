@@ -63,13 +63,15 @@ export default function ModifyBikeOrder() {
         },
     });
     const [amount, setAmount] = useState(packet.bikes.map((packet) => packet.amount));
+    const [bikesState, setBikesState] = useState(packet.bikes);
 
     const handleAddBike = (index: number) => {
-        const newAmount = [...amount];
-        newAmount[index] += 1;
-        setAmount(newAmount);
+        setBikesState((prevState) => {
+            const newState = [...prevState];
+            newState[index].amount += 1;
+            return newState;
+        });
     };
-
     const handleRemoveBike = (index: number) => {
         const newAmount = [...amount];
         if (newAmount[index] > 0) {
@@ -77,7 +79,15 @@ export default function ModifyBikeOrder() {
             setAmount(newAmount);
         }
     };
-
+    const handleRemovePacket = (index: number) => {
+        const newBikes = [...bikesState];
+        newBikes.splice(index, 1);
+        setBikesState(newBikes);
+        const newAmount = [...amount];
+        newAmount.splice(index, 1);
+        setAmount(newAmount);
+    };
+    console.log('bikes', bikesState);
     return (
         <TableContainer component={Paper} sx={{ padding: '2rem' }}>
             <Box
@@ -131,7 +141,7 @@ export default function ModifyBikeOrder() {
                                     </TableCell>
                                 </TableRow>
 
-                                {packet.bikes.map((packet, index) => (
+                                {bikesState.map((packet, index) => (
                                     <TableRow key={packet.bike}>
                                         <TableCell sx={{ fontWeight: 'bold' }}>
                                             {index === 0 ? 'Pyörät: ' : ''}
@@ -170,8 +180,8 @@ export default function ModifyBikeOrder() {
                                             Kuvaus: {models.find((model) => model.id === packet.bike)?.description}
                                         </TableCell>
                                         <TableCell>
-                                            <IconButton color="primary" onClick={() => handleAddBike(index)}>
-                                                <DeleteIcon /> poista
+                                            <IconButton aria-label="remove" onClick={() => handleRemovePacket(index)}>
+                                                <DeleteIcon />
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
