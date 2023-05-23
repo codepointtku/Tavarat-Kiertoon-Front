@@ -39,7 +39,14 @@ function AdminInbox() {
     });
 
     function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
-        setSearchParams({ page: String(newPage) });
+        console.log(searchParams);
+        let assignedParams;
+        if (searchParams.has('Lukemattomat' || 'Luetut' || 'Hoidetut')) {
+            assignedParams = { page: String(newPage), ...searchParams };
+        } else {
+            assignedParams = { page: String(newPage) };
+        }
+        setSearchParams(assignedParams);
     }
 
     return (
