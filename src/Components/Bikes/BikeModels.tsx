@@ -12,7 +12,7 @@ import {
     Typography,
 } from '@mui/material';
 import { useLoaderData } from 'react-router';
-import type { bikeModelInterface } from './Bikes';
+import type { BikeModelInterface } from './Bikes';
 import { Link } from 'react-router-dom';
 
 /**
@@ -21,7 +21,7 @@ import { Link } from 'react-router-dom';
  * @returns
  */
 function BikeModels() {
-    const models = useLoaderData() as bikeModelInterface[];
+    const models = useLoaderData() as BikeModelInterface[];
 
     return (
         <div>
@@ -49,7 +49,6 @@ function BikeModels() {
                                     border: '0px solid black',
                                     padding: '1rem',
                                 }}
-                                // elevation={0}
                             >
                                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -62,7 +61,6 @@ function BikeModels() {
                                         <Button
                                             to={`/pyorat/pyoravarasto/muokkaapyoramalli/${model.id}`}
                                             component={Link}
-                                            // onClick={() => console.log('Klikkasit "Muokkaa" nappia')}
                                             sx={{ width: '10rem', marginTop: '1rem' }}
                                         >
                                             Muokkaa

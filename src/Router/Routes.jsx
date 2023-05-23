@@ -561,7 +561,8 @@ function Routes() {
                                             path: ':id',
                                             element: <ModifyBikeModelPage />,
                                             loader: async ({ params }) => bikeSingleModelLoader(auth, setAuth, params),
-                                            action: async ({ request }) => modifyBikeModelAction(auth, setAuth, request),
+                                            action: async ({ request, params }) =>
+                                                modifyBikeModelAction(auth, setAuth, request, params),
                                         },
                                     ],
                                 },

@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
 import { Form, Link } from 'react-router-dom';
-import type { bikeInterface, bikeModelInterface, storageInterface } from './Bikes';
+import type { BikeInterface, BikeModelInterface, StorageInterface } from './Bikes';
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
 import DeleteBikeModal from './DeleteBikeModal';
@@ -36,9 +36,9 @@ interface ModifyBikePageInterface {
 export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterface) {
     // get data for current bike, all bikeModels and all storages
     const { bikeData, bikeModelsData, storagesData } = useLoaderData() as {
-        bikeData: bikeInterface;
-        bikeModelsData: bikeModelInterface[];
-        storagesData: storageInterface[];
+        bikeData: BikeInterface;
+        bikeModelsData: BikeModelInterface[];
+        storagesData: StorageInterface[];
     };
 
     // states needed for the form data

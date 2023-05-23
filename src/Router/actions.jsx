@@ -406,12 +406,22 @@ const deleteBikeAction = async (auth, setAuth, params) => {
     return redirect('/pyorat/pyoravarasto');
 };
 
-const modifyBikeModelAction = async (auth, setAuth, request) => {
-    const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/bikes/models/', 'post', formData);
+const modifyBikeModelAction = async (auth, setAuth, request, params) => {
+    const data = await request.formData();
+    const formData = {
+        name: data.get('bikeModelName'),
+        description: data.get('bikeModelDescription'),
+        color: data.get('bikeModelColorId'),
+        // type: data.get('bikeModelTypeName'),
+        // brand: data.get('bikeModelBrandName'),
+        // size: data.get('bikeModelSizeName'),
+        type: '1',
+        brand: '1',
+        size: '1',
+    };
+    const response = await apiCall(auth, setAuth, `/bikes/models/${params.id}/`, 'put', formData);
     return response.data || null;
 };
-
 
 export {
     userSignupAction,

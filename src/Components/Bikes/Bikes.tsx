@@ -18,18 +18,18 @@ import CheckIcon from '@mui/icons-material/Check';
 /**
  * interface for a single bike
  */
-export interface bikeInterface {
-    bike: bikeModelInterface;
+export interface BikeInterface {
+    bike: BikeModelInterface;
     created_at: string;
     frame_number: string;
     id: number;
     number: string;
     package_only: boolean;
     state: string; // "AVAILABLE" | "MAINTENANCE" | "RENTED" | "RETIRED"
-    storage: storageInterface;
+    storage: StorageInterface;
 }
 
-export interface bikeModelInterface {
+export interface BikeModelInterface {
     brand: { id: number; name: string };
     color: { id: number; name: string; default: boolean };
     description: string;
@@ -39,14 +39,14 @@ export interface bikeModelInterface {
     type: { id: number; name: string };
 }
 
-export interface storageInterface {
+export interface StorageInterface {
     address: string;
     id: number;
     in_use: boolean;
     name: string;
 }
 
-export interface submitDataInterface {
+export interface SubmitDataInterface {
     bike: number;
     created_at: string;
     frame_number: string;
@@ -64,7 +64,7 @@ export interface submitDataInterface {
  * @returns JSX.Element
  */
 export default function Bikes() {
-    const loaderData = useLoaderData() as bikeInterface[];
+    const loaderData = useLoaderData() as BikeInterface[];
 
     return (
         <>
