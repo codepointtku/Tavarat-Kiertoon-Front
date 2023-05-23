@@ -22,8 +22,8 @@ function ModifyBulletinPost() {
                             <TextField
                                 // {...register('title')}
                                 sx={{ mt: 2 }}
-                                label="Otsikko"
-                                placeholder="Otsikko"
+                                label="Uusi otsikko"
+                                placeholder="Uusi otsikko"
                                 fullWidth
                                 inputProps={{ title: 'Otsikko', minLength: '4', maxLength: '50' }}
                                 required
@@ -32,8 +32,8 @@ function ModifyBulletinPost() {
                             <TextField
                                 // {...register('content')}
                                 sx={{ mt: 2 }}
-                                label="Sisältö"
-                                placeholder="Sisältö"
+                                label="Uusi sisältö"
+                                placeholder="Uusi sisältö"
                                 multiline
                                 rows={6}
                                 fullWidth
