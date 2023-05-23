@@ -8,9 +8,6 @@
 # generated
 /src/api/client
 
-# temp
-src/api/schema.yaml
-
 # testing
 /coverage
 

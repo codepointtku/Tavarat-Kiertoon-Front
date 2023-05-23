@@ -25,14 +25,14 @@ test.describe('toimitus', () => {
 test.describe('taustatietoa', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/taustatietoa');
-        await expect(page.getByText('Etsimääsi sijaintia /backgroundinfo')).not.toBeVisible();
+        await expect(page.getByText('Etsimääsi sijaintia /taustatietoa')).not.toBeVisible();
     });
 });
 
-test.describe('stats', () => {
+test.describe('tilastot', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/stats');
-        await expect(page.getByText('Etsimääsi sijaintia /stats')).not.toBeVisible();
+        await page.goto('/tilastot');
+        await expect(page.getByText('Etsimääsi sijaintia /tilastot')).not.toBeVisible();
     });
 });
 
@@ -40,6 +40,12 @@ test.describe('tiedotteet', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/tiedotteet');
         await expect(page.getByText('Etsimääsi sijaintia /tiedotteet')).not.toBeVisible();
+    });
+});
+test.describe('luotiedote', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tiedotteet/luo');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/tiedotteet/luo')).not.toBeVisible();
     });
 });
 
@@ -148,17 +154,17 @@ test.describe('admin', () => {
     });
 });
 
-test.describe('users', () => {
+test.describe('kayttajat', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('admin/users');
+        await page.goto('admin/kayttajat');
         await expect(page.getByText('Etsimääsi sijaintia /admin/users')).not.toBeVisible();
     });
 });
 
-test.describe('user', () => {
+test.describe('kayttaja', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('admin/users/0');
-        await expect(page.getByText('Etsimääsi sijaintia /admin/users/0')).not.toBeVisible();
+        await page.goto('admin/kayttajat/0');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/kayttajat/0')).not.toBeVisible();
     });
 });
 
@@ -204,6 +210,30 @@ test.describe('bikeorder', () => {
 test.describe('bikepackets', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/pyorat/pyoravarasto/pyorapaketit');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+    });
+});
+test.describe('passwordreset', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/salasananpalautus');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+    });
+});
+test.describe('passwordresetsuccessful', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/salasananpalautus/salasanapalautettu');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+    });
+});
+test.describe('linkexpired', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/salasananpalautus/linkexpired');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+    });
+});
+test.describe('pwdresetsession', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/salasananpalautus/asd/das');
         await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
     });
 });

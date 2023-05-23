@@ -29,10 +29,10 @@ test.describe('taustatietoa', () => {
     });
 });
 
-test.describe('stats', () => {
+test.describe('tilastot', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/stats');
-        await expect(page.getByText('Virhe sijainnissa /stats')).not.toBeVisible();
+        await page.goto('/tilastot');
+        await expect(page.getByText('Virhe sijainnissa /tilastot')).not.toBeVisible();
     });
 });
 
@@ -148,17 +148,17 @@ test.describe('admin', () => {
     });
 });
 
-test.describe('users', () => {
+test.describe('kayttajat', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('admin/users');
-        await expect(page.getByText('Virhe sijainnissa /admin/users')).not.toBeVisible();
+        await page.goto('admin/kayttajat');
+        await expect(page.getByText('Virhe sijainnissa /admin/kayttajat')).not.toBeVisible();
     });
 });
 
-test.describe('user', () => {
+test.describe('kayttaja', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('admin/users/0');
-        await expect(page.getByText('Virhe sijainnissa /admin/users/0')).not.toBeVisible();
+        await page.goto('admin/kayttajat/0');
+        await expect(page.getByText('Virhe sijainnissa /admin/kayttajat/0')).not.toBeVisible();
     });
 });
 
@@ -199,6 +199,12 @@ test.describe('bikeorders', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/pyorat/pyoravarasto/pyoratilaukset');
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/pyoratilaukset')).not.toBeVisible();
+    });
+});
+test.describe('luotiedote', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tiedotteet/luo');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/tiedotteet/luo')).not.toBeVisible();
     });
 });
 test.describe('bikepackets', () => {
