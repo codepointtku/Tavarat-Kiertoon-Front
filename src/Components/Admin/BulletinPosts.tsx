@@ -19,7 +19,7 @@ function BulletinPosts() {
 
     return (
         <Container maxWidth="lg">
-            <HeroHeader Icon={<FeedIcon />} />
+            <HeroHeader Icon={<FeedIcon />} hideInAdmin={true} />
             <HeroText title="Tiedotteet" />
             <Stack id="bulletin-cards-column-stacker-admin" sx={{ m: '1rem 0 1rem 0' }}>
                 {bulletins.map((bulletin: Bulletin) => (
