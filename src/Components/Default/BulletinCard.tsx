@@ -1,4 +1,5 @@
 import { Box, Paper, Typography, Grid, Button } from '@mui/material';
+import { useSubmit } from 'react-router-dom';
 
 import TypographyHeading from '../TypographyHeading';
 
@@ -6,20 +7,29 @@ interface Props {
     title: string;
     date: string;
     content: string;
-    auth: { admin_group: boolean };
+    auth?: { admin_group: boolean };
 }
 
 function BulletinCard({ title, date, content, auth }: Props) {
+    const submit = useSubmit();
+
+    function handleSubmit(action: string) {
+        // action === "modify" ? submit({}, {})
+    }
     return (
         <Paper id="bulletin-card-paper-backdrop" elevation={6} sx={{ mb: '2rem', p: '2rem' }}>
-            {auth.admin_group && (
+            {auth?.admin_group && (
                 <Grid container justifyContent="space-between">
                     <Grid item>
                         <TypographyHeading text={title} />
                     </Grid>
                     <Grid item>
-                        <Button sx={{ mr: 2 }}>Muokkaa</Button>
-                        <Button color="error">Poista</Button>
+                        <Button sx={{ mr: 2 }} onClick={() => handleSubmit('modify')}>
+                            Muokkaa
+                        </Button>
+                        <Button color="error" onClick={() => handleSubmit('remove')}>
+                            Poista
+                        </Button>
                     </Grid>
                 </Grid>
             )}
