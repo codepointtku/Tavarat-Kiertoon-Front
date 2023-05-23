@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouteLoaderData, useLoaderData, useSubmit, Form, useActionData } from 'react-router-dom';
 
-import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Modal } from '@mui/material';
+import { TextField, Box, MenuItem, Button, Modal, Grid } from '@mui/material';
 
 // import imageCompression from 'browser-image-compression';
 import Html5QrcodePlugin from '../../Utils/qrcodeScanner';
@@ -110,7 +110,7 @@ function AddNewItem() {
     // console.log('errors', errors);
 
     return (
-        <Card>
+        <>
             {actionData?.status === true && (
                 <AlertBox
                     status="success"
@@ -138,11 +138,11 @@ function AddNewItem() {
                     />
                 </Box>
             </Modal>
-            <Box padding={2}>
-                <TypographyTitle text="Uusi tuote" />
-            </Box>
 
-            <Box
+            <Grid
+                container
+                spacing={2}
+                paddingTop={2}
                 component={Form}
                 onSubmit={handleSubmit(onSubmit)}
                 sx={{
@@ -150,7 +150,10 @@ function AddNewItem() {
                 }}
                 autoComplete="off"
             >
-                <CardContent>
+                <Grid item xs={12}>
+                    <TypographyTitle text="Luo uusi tuote" />
+                </Grid>
+                <Grid item xs={6}>
                     <TextField
                         id="name"
                         type="text"
@@ -166,8 +169,10 @@ function AddNewItem() {
                         inputProps={{ required: false }}
                         required
                         error={!!errors.name}
-                        helperText={errors.name?.message}
+                        helperText={errors.name?.message || ' '}
                     />
+                </Grid>
+                <Grid item xs={6}>
                     <TextField
                         // TODO: Mitä tapahtuu jos viivakoodi löytyy jo järjestelmästä? Ohjataanko vanhan tuotteen editointiin?  Mikä response backista
                         id="barcode"
@@ -190,20 +195,20 @@ function AddNewItem() {
                         inputProps={{ required: false }}
                         required
                         error={!!errors.barcode}
-                        helperText={errors.barcode?.message}
+                        helperText={errors.barcode?.message || ' '}
                     >
                         Viivakoodi
                     </TextField>
-                    <CardActions>
-                        <Button size="large" onClick={() => setQrScanOpen(true)}>
-                            Viivakoodinlukija
-                        </Button>
-                        {barcode?.length > 0 && <Barcode value={barcode} format="CODE39" height={32} fontSize={14} />}
-                    </CardActions>
+                </Grid>
+                <Grid item xs={6}>
+                    <Button onClick={() => setQrScanOpen(true)}>Viivakoodinlukija</Button>
+                    {barcode?.length > 0 && <Barcode value={barcode} format="CODE39" height={32} fontSize={14} />}
+                </Grid>
+                <Grid item xs={6}>
                     <TextField
                         id="storage-select"
                         select
-                        label="Sijainti"
+                        label="Varastosijainti"
                         {...register('storages', {
                             required: { value: true, message: 'Varasto on valittava' },
                         })}
@@ -211,7 +216,7 @@ function AddNewItem() {
                         inputProps={{ required: false }}
                         required
                         error={!!errors.storages}
-                        helperText={errors.storages?.message}
+                        helperText={errors.storages?.message || ' '}
                     >
                         {storages?.map((location) => (
                             <MenuItem key={location.id} value={location.id}>
@@ -219,6 +224,8 @@ function AddNewItem() {
                             </MenuItem>
                         ))}
                     </TextField>
+                </Grid>
+                <Grid item xs={6}>
                     <TextField
                         id="category-select"
                         select
@@ -229,7 +236,7 @@ function AddNewItem() {
                         inputProps={{ required: false }}
                         required
                         error={!!errors.category}
-                        helperText={errors.category?.message}
+                        helperText={errors.category?.message || ' '}
                     >
                         {/* TODO Uusia kategorioita voi luoda vain admin, huomautus varastokäyttäjälle? */}
                         {/* TODO kategorian valikkoon valittavaksi vain alimmat kategoriat. ylemmät väliotsikoiksi?  */}
@@ -243,6 +250,8 @@ function AddNewItem() {
                             </MenuItem>
                         ))}
                     </TextField>
+                </Grid>
+                <Grid item xs={6}>
                     <TextField
                         id="color-select"
                         select
@@ -251,7 +260,7 @@ function AddNewItem() {
                         inputProps={{ required: false }}
                         required
                         error={!!errors.color}
-                        helperText={errors.color?.message}
+                        helperText={errors.color?.message || ' '}
                     >
                         {/* TODO värikenttä, uuden värin lisäys mahdollisuus, backend hyväksyy(?) stringin ja luo uuden ellei ole olemassa. Lisäkenttä lisää uusi väri */}
                         {/* TODO uuden värin lisäyksen yhteydessä rootLoaderin on mahdollisesti lauettava uudelleen, jotta uusi väri näkyy heti valikossa */}
@@ -269,6 +278,8 @@ function AddNewItem() {
                             </MenuItem>
                         ))}
                     </TextField>
+                </Grid>
+                <Grid item xs={6}>
                     <TextField
                         id="amount"
                         type="number"
@@ -291,8 +302,11 @@ function AddNewItem() {
                         }}
                         required
                         error={!!errors.amount}
-                        helperText={errors.amount?.message}
+                        helperText={errors.amount?.message || ' '}
                     ></TextField>
+                </Grid>
+
+                <Grid item xs={6}>
                     <TextField
                         id="description"
                         label="Kuvaus"
@@ -308,42 +322,42 @@ function AddNewItem() {
                         error={!!errors.free_description}
                         helperText={errors.free_description?.message || `${description?.length || 0}/1000`}
                     />
-                    <CardActions>
-                        <Button variant="contained" component="label" size="large">
-                            Lisää kuvat
-                            <input
-                                name="pictures"
-                                type="file"
-                                accept="image/*"
-                                multiple
-                                hidden
-                                {...register('pictures', {
-                                    // TODO tarkistettava että kuvatiedostot ovat oikeaa muotoa, ja niitä on 1-6
-                                    required: { value: true, message: 'Tuotteella on oltava vähintään yksi kuva' },
-                                })}
-                                // setValue in uploadFile
-                                // onChange={(event) => {
-                                //     uploadFile(event.target.files);
-                                // }}
-                                // inputProps={{ required: false }}
-                                required
-                                error={!!errors.pictures}
-                                helperText={errors.pictures?.message}
-                            />
-                        </Button>
-                    </CardActions>
-                    <CardActions>
-                        <Button
-                            size="large"
-                            type="submit"
-                            // disabled={!isValid}
-                        >
-                            Lisää tuote
-                        </Button>
-                    </CardActions>
-                </CardContent>
-            </Box>
-        </Card>
+                </Grid>
+                <Grid item xs={6}>
+                    <Button variant="contained" component="label" size="large">
+                        Lisää kuvat
+                        <input
+                            name="pictures"
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            hidden
+                            {...register('pictures', {
+                                // TODO tarkistettava että kuvatiedostot ovat oikeaa muotoa, ja niitä on 1-6
+                                required: { value: true, message: 'Tuotteella on oltava vähintään yksi kuva' },
+                            })}
+                            // setValue in uploadFile
+                            // onChange={(event) => {
+                            //     uploadFile(event.target.files);
+                            // }}
+                            // inputProps={{ required: false }}
+                            required
+                            error={!!errors.pictures}
+                            helperText={errors.pictures?.message || ' '}
+                        />
+                    </Button>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                        size="large"
+                        type="submit"
+                        // disabled={!isValid}
+                    >
+                        Lisää tuote
+                    </Button>
+                </Grid>
+            </Grid>
+        </>
     );
 }
 
