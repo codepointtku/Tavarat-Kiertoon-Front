@@ -266,7 +266,7 @@ const bikeModelsLoader = async (auth, setAuth) => {
 
 /**
  * Get
- *  - a single Bike Model based on ID
+ *  - A single Bike Model based on ID
  *  - list of all colors available
  *
  * @param {*} auth
@@ -275,11 +275,14 @@ const bikeModelsLoader = async (auth, setAuth) => {
  * @returns
  */
 const bikeSingleModelLoader = async (auth, setAuth, params) => {
-    const [{ data: bikeModel }, { data: colors }] = await Promise.all([
+    const [{ data: bikeModel }, { data: colors }, {data: brands}, {data: types}, {data: sizes}] = await Promise.all([
         apiCall(auth, setAuth, `/bikes/models/${params.id}`, 'get'),
         apiCall(auth, setAuth, `/colors`, 'get'),
+        apiCall(auth, setAuth, `/bikes/brand`, 'get'),
+        apiCall(auth, setAuth, `/bikes/type`, 'get'),
+        apiCall(auth, setAuth, `/bikes/size`, 'get'),
     ]);
-    return { bikeModel, colors };
+    return { bikeModel, colors, brands, types, sizes };
 };
 
 /**

@@ -412,12 +412,9 @@ const modifyBikeModelAction = async (auth, setAuth, request, params) => {
         name: data.get('bikeModelName'),
         description: data.get('bikeModelDescription'),
         color: data.get('bikeModelColorId'),
-        // type: data.get('bikeModelTypeName'),
-        // brand: data.get('bikeModelBrandName'),
-        // size: data.get('bikeModelSizeName'),
-        type: '1',
-        brand: '1',
-        size: '1',
+        type: data.get('bikeModelTypeId'),
+        brand: data.get('bikeModelBrandId'),
+        size: data.get('bikeModelSizeId'),
     };
     const response = await apiCall(auth, setAuth, `/bikes/models/${params.id}/`, 'put', formData);
     return response.data || null;

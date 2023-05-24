@@ -23,6 +23,10 @@ interface ColorInterface {
     name: string;
     default: boolean;
 }
+interface NameIdInterface {
+    id: number;
+    name: string;
+}
 
 /**
  * Modify a single Bike Model.
@@ -31,28 +35,47 @@ interface ColorInterface {
  * @returns
  */
 function ModifyBikeModelPage() {
-    const { bikeModel, colors } = useLoaderData() as { bikeModel: BikeModelInterface; colors: ColorInterface[] };
+    const { bikeModel, colors, brands, types, sizes } = useLoaderData() as {
+        bikeModel: BikeModelInterface;
+        colors: ColorInterface[]
+        brands: NameIdInterface[]
+        types: NameIdInterface[]
+        sizes: NameIdInterface[]
+    };
 
     // hook form functions and default values
     const { register, handleSubmit, watch } = useForm({
         defaultValues: {
             bikeModelName: bikeModel.name as string,
             bikeModelBrandName: bikeModel.brand.name as string,
-            // bikeModelColorId: bikeModel.color.id as number,
             bikeModelColorName: bikeModel.color.name as string,
             bikeModelSizeName: bikeModel.size.name as string,
             bikeModelTypeName: bikeModel.type.name as string,
             bikeModelDescription: bikeModel.description as string,
-            // bikeModelNewColor: '' as string,
         },
     });
 
     // submit the form data
     const submit = useSubmit();
     const onSubmit = (data: FieldValues) => {
+        // find correct values based on text fields.
         const color = colors.find((color) => color.name === data.bikeModelColorName) as ColorInterface;
-        console.log('### ModifyBikeModelPage', data, color.id);
-        const formData: FieldValues = { ...data, bikeModelColorId: color.id };
+        const brand = brands.find((brand) => brand.name === data.bikeModelBrandName) as NameIdInterface;
+        const type = types.find((type) => type.name === data.bikeModelTypeName) as NameIdInterface;
+        const size = sizes.find((size) => size.name === data.bikeModelSizeName) as NameIdInterface;
+
+        // collect ids to data to be sent. if value does not exist => new value => needs to be created.
+        // use id value -1 to indicate that since -1 can not be an id of an existing value.
+        // note that new colors can not be created this way ( => color can not be -1 ).
+        const formData: FieldValues = {
+            ...data,
+            bikeModelColorId: color ? color.id : -1,
+            bikeModelBrandId: brand ? brand.id : -1,
+            bikeModelTypeId: type ? type.id : -1,
+            bikeModelSizeId: size ? size.id : -1,
+        };
+
+        console.log('### ModifyBikeModelPage', formData);
 
         submit(formData, {
             method: 'put',
@@ -92,14 +115,6 @@ function ModifyBikeModelPage() {
                             image="/bike.jpg"
                             alt="Bike Model"
                         />
-                        {/*
-                        "name" is generated automatically from other values
-                        "brand.name" is a text field
-                        "color.name" is a <Select> field allowing all colors with default set to "true"
-                        "size.name" is a number field. inch mark (") needs to be added later
-                        "type.name" is a text field
-                        "description" is a text field
-                        */}
                         <Grid container flexDirection="row" spacing={2} paddingTop="1rem">
                             <Grid item xs={6}>
                                 <TextField
@@ -109,23 +124,23 @@ function ModifyBikeModelPage() {
                                     fullWidth
                                 />
                             </Grid>
+                            <Grid item xs={6}></Grid>
                             <Grid item xs={6}>
-                                {/* Testi start */}
-                                Test
-                                {/* Testi end */}
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    label="Merkki"
+                                <Autocomplete
+                                    freeSolo
+                                    id="bike-model-brand-name"
+                                    options={brands.map((brand) => brand.name)}
                                     value={watch('bikeModelBrandName')}
-                                    {...register('bikeModelBrandName')}
-                                    fullWidth
+                                    renderInput={(params) => (
+                                        <TextField {...params} label="Merkki" {...register('bikeModelBrandName')} />
+                                    )}
+                                    sx={{ width: '100%' }}
                                 />
                             </Grid>
                             <Grid item xs={6}>
                                 <Autocomplete
                                     freeSolo
-                                    id="autocomplete-test"
+                                    id="bike-model-color-name"
                                     options={colors.map((color) => color.name)}
                                     value={watch('bikeModelColorName')}
                                     renderInput={(params) => (
@@ -133,42 +148,29 @@ function ModifyBikeModelPage() {
                                     )}
                                     sx={{ width: '100%' }}
                                 />
-
-                                {/* <FormControl fullWidth>
-                                    <InputLabel id="bike-model-color">Väri</InputLabel>
-                                    <Select
-                                        id="bike-model-color"
-                                        label="Color"
-                                        {...register('bikeModelColorId')}
-                                        value={watch('bikeModelColorId')}
-                                    >
-                                        {colors.map((color) => {
-                                            return (
-                                                <MenuItem key={color.id} value={color.id}>
-                                                    {color.name}
-                                                </MenuItem>
-                                            );
-                                        })}
-                                        <MenuItem value={0}>
-                                            <Button>Luo uusi väri</Button>
-                                        </MenuItem>
-                                    </Select>
-                                </FormControl> */}
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField
-                                    label="Koko"
+                                <Autocomplete
+                                    freeSolo
+                                    id="bike-model-size-name"
+                                    options={sizes.map((size) => size.name)}
                                     value={watch('bikeModelSizeName')}
-                                    {...register('bikeModelSizeName')}
-                                    fullWidth
+                                    renderInput={(params) => (
+                                        <TextField {...params} label="Koko" {...register('bikeModelSizeName')} />
+                                    )}
+                                    sx={{ width: '100%' }}
                                 />
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField
-                                    label="Tyyppi"
+                                <Autocomplete
+                                    freeSolo
+                                    id="bike-model-type-name"
+                                    options={types.map((type) => type.name)}
                                     value={watch('bikeModelTypeName')}
-                                    {...register('bikeModelTypeName')}
-                                    fullWidth
+                                    renderInput={(params) => (
+                                        <TextField {...params} label="Tyyppi" {...register('bikeModelTypeName')} />
+                                    )}
+                                    sx={{ width: '100%' }}
                                 />
                             </Grid>
                             <Grid item xs={12}>
