@@ -267,11 +267,12 @@ const shoppingProcessLoader = async (auth, setAuth) => {
 
 const adminInboxLoader = async (auth, setAuth, request) => {
     const searchParams = new URL(request.url).searchParams;
-    const status = searchParams.has('Luetut')
-        ? 'Read'
-        : searchParams.has('Lukemattomat')
-        ? 'Not%20read'
-        : searchParams.has('Hoidetut') && 'Handled';
+    const status =
+        searchParams.get('status') === 'Luetut'
+            ? 'Read'
+            : searchParams.get('status') === 'Lukemattomat'
+            ? 'Not%20read'
+            : searchParams.get('status') === 'Hoidetut' && 'Handled';
 
     if (status) {
         console.log('ollaan iffissä', status);

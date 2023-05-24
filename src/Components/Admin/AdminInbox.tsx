@@ -39,10 +39,10 @@ function AdminInbox() {
     });
 
     function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
-        console.log(searchParams);
         let assignedParams;
-        if (searchParams.has('Lukemattomat' || 'Luetut' || 'Hoidetut')) {
-            assignedParams = { page: String(newPage), ...searchParams };
+        if (searchParams.has('status')) {
+            console.log(...searchParams);
+            assignedParams = { page: String(newPage) };
         } else {
             assignedParams = { page: String(newPage) };
         }
@@ -64,20 +64,20 @@ function AdminInbox() {
                         Saapuneet
                     </Button>
                     <Button
-                        sx={{ backgroundColor: searchParams.has('Luetut') ? '#476282' : 'primary' }}
-                        onClick={() => setSearchParams('Luetut')}
+                        sx={{ backgroundColor: searchParams.get('status') === 'Luetut' ? '#476282' : 'primary' }}
+                        onClick={() => setSearchParams({ status: 'Luetut' })}
                     >
                         Luetut
                     </Button>
                     <Button
-                        sx={{ backgroundColor: searchParams.has('Lukemattomat') ? '#476282' : 'primary' }}
-                        onClick={() => setSearchParams('Lukemattomat')}
+                        sx={{ backgroundColor: searchParams.get('status') === 'Lukemattomat' ? '#476282' : 'primary' }}
+                        onClick={() => setSearchParams({ status: 'Lukemattomat' })}
                     >
                         Lukemattomat
                     </Button>
                     <Button
-                        sx={{ backgroundColor: searchParams.has('Hoidetut') ? '#476282' : 'primary' }}
-                        onClick={() => setSearchParams('Hoidetut')}
+                        sx={{ backgroundColor: searchParams.get('status') === 'Hoidetut' ? '#476282' : 'primary' }}
+                        onClick={() => setSearchParams({ status: 'Hoidetut' })}
                     >
                         Hoidetut
                     </Button>
