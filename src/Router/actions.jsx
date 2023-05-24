@@ -416,8 +416,8 @@ const modifyBikeModelAction = async (auth, setAuth, request, params) => {
         brand: data.get('bikeModelBrandId'),
         size: data.get('bikeModelSizeId'),
     };
-    const response = await apiCall(auth, setAuth, `/bikes/models/${params.id}/`, 'put', formData);
-    return response.data || null;
+    await apiCall(auth, setAuth, `/bikes/models/${params.id}/`, 'put', formData);
+    return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
 
 export {

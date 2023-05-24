@@ -4,11 +4,11 @@ import {
     Button,
     Card,
     CardMedia,
-    // FormControl,
+    FormControl,
     Grid,
-    // InputLabel,
-    // MenuItem,
-    // Select,
+    InputLabel,
+    MenuItem,
+    Select,
     TextField,
     Typography,
 } from '@mui/material';
@@ -48,7 +48,7 @@ function ModifyBikeModelPage() {
         defaultValues: {
             bikeModelName: bikeModel.name as string,
             bikeModelBrandName: bikeModel.brand.name as string,
-            bikeModelColorName: bikeModel.color.name as string,
+            bikeModelColorId: bikeModel.color.id as number,
             bikeModelSizeName: bikeModel.size.name as string,
             bikeModelTypeName: bikeModel.type.name as string,
             bikeModelDescription: bikeModel.description as string,
@@ -59,23 +59,19 @@ function ModifyBikeModelPage() {
     const submit = useSubmit();
     const onSubmit = (data: FieldValues) => {
         // find correct values based on text fields.
-        const color = colors.find((color) => color.name === data.bikeModelColorName) as ColorInterface;
         const brand = brands.find((brand) => brand.name === data.bikeModelBrandName) as NameIdInterface;
         const type = types.find((type) => type.name === data.bikeModelTypeName) as NameIdInterface;
         const size = sizes.find((size) => size.name === data.bikeModelSizeName) as NameIdInterface;
 
         // collect ids to data to be sent. if value does not exist => new value => needs to be created.
         // use id value -1 to indicate that since -1 can not be an id of an existing value.
-        // note that new colors can not be created this way ( => color can not be -1 ).
+        // note that new colors can not be created this way so color is handeled differently.
         const formData: FieldValues = {
             ...data,
-            bikeModelColorId: color ? color.id : -1,
             bikeModelBrandId: brand ? brand.id : -1,
             bikeModelTypeId: type ? type.id : -1,
             bikeModelSizeId: size ? size.id : -1,
         };
-
-        console.log('### ModifyBikeModelPage', formData);
 
         submit(formData, {
             method: 'put',
@@ -138,7 +134,7 @@ function ModifyBikeModelPage() {
                                 />
                             </Grid>
                             <Grid item xs={6}>
-                                <Autocomplete
+                                {/* <Autocomplete
                                     freeSolo
                                     id="bike-model-color-name"
                                     options={colors.map((color) => color.name)}
@@ -147,7 +143,24 @@ function ModifyBikeModelPage() {
                                         <TextField {...params} label="Väri" {...register('bikeModelColorName')} />
                                     )}
                                     sx={{ width: '100%' }}
-                                />
+                                /> */}
+                                <FormControl fullWidth>
+                                    <InputLabel id="bike-model-color-name-label">Väri</InputLabel>
+                                    <Select
+                                        labelId="bike-model-color-name-label"
+                                        id="bike-model-color-name"
+                                        label='Väri'
+                                        {...register('bikeModelColorId')}
+                                        value={watch('bikeModelColorId')}
+
+                                    >
+                                        {colors.map( (color) => {
+                                            return(
+                                                <MenuItem key={color.id} value={color.id}>{color.name}</MenuItem>
+                                            )
+                                        })}
+                                    </Select>
+                                </FormControl>
                             </Grid>
                             <Grid item xs={6}>
                                 <Autocomplete
