@@ -50,11 +50,7 @@ function ModifyBikeModelPage() {
     // submit the form data
     const submit = useSubmit();
     const onSubmit = (data: FieldValues) => {
-        const color = colors.find((color) => color.name === data.bikeModelColorName) as {
-            id: number;
-            name: string;
-            default: boolean;
-        };
+        const color = colors.find((color) => color.name === data.bikeModelColorName) as ColorInterface;
         console.log('### ModifyBikeModelPage', data, color.id);
         const formData: FieldValues = { ...data, bikeModelColorId: color.id };
 
@@ -93,7 +89,7 @@ function ModifyBikeModelPage() {
                         <CardMedia
                             component="img"
                             sx={{ width: 400, marginRight: '1rem' }}
-                            image="/br.jpg"
+                            image="/bike.jpg"
                             alt="Bike Model"
                         />
                         {/*

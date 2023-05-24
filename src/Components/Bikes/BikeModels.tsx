@@ -50,18 +50,18 @@ function BikeModels() {
                                     padding: '1rem',
                                 }}
                             >
-                                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <Box sx={{ display: 'flex', flexDirection: 'row', height: 280 }}>
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                                         <CardMedia
                                             component="img"
-                                            sx={{ width: 250, height: 210, marginRight: '1rem' }}
-                                            image="/br.jpg"
+                                            sx={{ width: 250, marginRight: '1rem' }}
+                                            image="/bike.jpg"
                                             alt="Bike Model"
                                         />
                                         <Button
                                             to={`/pyorat/pyoravarasto/muokkaapyoramalli/${model.id}`}
                                             component={Link}
-                                            sx={{ width: '10rem', marginTop: '1rem' }}
+                                            sx={{ width: '10rem', marginTop: '2rem' }}
                                         >
                                             Muokkaa
                                         </Button>

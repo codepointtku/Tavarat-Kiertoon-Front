@@ -112,7 +112,11 @@ export default function Bikes() {
                                     <TableCell align="right">{bike.package_only ? <CheckIcon /> : ''}</TableCell>
                                     <TableCell align="right">{bike.frame_number}</TableCell>
                                     <TableCell align="right">
-                                        <Button to={`/pyorat/pyoravarasto/muokkaa/${bike.id}`} component={Link}>
+                                        <Button
+                                            to={`/pyorat/pyoravarasto/muokkaa/${bike.id}`}
+                                            component={Link}
+                                            variant='outlined'
+                                        >
                                             Muokkaa
                                         </Button>
                                     </TableCell>
