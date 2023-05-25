@@ -10,7 +10,14 @@ interface Props {
 
 function BulletinCard({ title, date, content }: Props) {
     return (
-        <Paper id="bulletin-card-paper-backdrop" elevation={6} sx={{ mb: '2rem', p: '2rem' }}>
+        <Paper
+            id="bulletin-card-paper-backdrop"
+            elevation={6}
+            sx={{
+                mb: '2rem',
+                p: '2rem',
+            }}
+        >
             <TypographyHeading text={title} />
             <Typography variant="caption" sx={{ color: 'text.hintContrast', mt: '0.5rem' }}>
                 {date}
