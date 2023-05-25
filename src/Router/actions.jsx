@@ -113,10 +113,17 @@ const userSignupAction = async (auth, setAuth, request) => {
         userSignUpValues = { ...userSignUpValues, username: formData.get('username') };
     }
 
-    const response = await apiCall(auth, setAuth, '/users/create/', 'post', userSignUpValues);
+    try {
+        const response = await apiCall(auth, setAuth, '/users/create/', 'post', userSignUpValues);
+        console.log('saatiinko response?', response);
+        return response;
+    } catch (error) {
+        console.log('error', error);
+        // if (error.response.status === 400) {
+        // jos virhe on se, että käyttäjätunnus on jo olemassa, palautetaan
+        // return { type: 'create', status: false };
 
-    if (response.status === 201) {
-        return { type: 'create', status: true };
+        throw error;
     }
 
     return { type: 'create', status: false };

@@ -83,6 +83,9 @@ function UserForm() {
 
     return (
         <>
+            {responseStatus?.type === 'notfun' && !responseStatus?.status && (
+                <AlertBox text="Kaatuuko?" status="error" />
+            )}
             {responseStatus?.type === 'create' && !responseStatus?.status && (
                 <>
                     <AlertBox text="Tunnuksen luominen epäonnistui" status="error" />

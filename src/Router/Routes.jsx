@@ -13,7 +13,6 @@ import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
 import bikeTheme from '../Themes/bikeTheme';
 
-import RootLayout from '../Layouts/RootLayout';
 import BaseLayout from '../Layouts/BaseLayout';
 import StorageLayout from '../Layouts/StorageLayout';
 import AdminLayout from '../Layouts/AdminLayout';
@@ -126,7 +125,7 @@ function Routes() {
     const router = createBrowserRouter([
         {
             path: '/',
-            element: <RootLayout />,
+            element: <BaseLayout />,
             errorElement: <ErrorBoundary />,
             id: 'root',
             loader: async () => rootLoader(auth, setAuth),
@@ -136,7 +135,8 @@ function Routes() {
                 // main routes
                 {
                     path: '/',
-                    element: <BaseLayout />,
+                    element: <Outlet />,
+                    errorElement: <ErrorBoundary />,
                     id: 'frontPage',
                     loader: async () => shoppingCartLoader(auth, setAuth),
                     action: async ({ request }) => frontPageActions(auth, setAuth, request),
