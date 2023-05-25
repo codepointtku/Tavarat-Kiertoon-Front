@@ -22,7 +22,7 @@ function MessageCard({ subject, date, message, id, currentStatus, name, email }:
 
     return (
         <Paper
-            id="message-card-paper-backdrop"
+            className="message-card-paper-backdrop"
             elevation={6}
             sx={{
                 mb: '2rem',
