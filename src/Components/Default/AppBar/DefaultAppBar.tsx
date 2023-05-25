@@ -30,7 +30,6 @@ import ProductInCart from './ProductInCart';
 import LoginForm from './LoginForm';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
-import { set } from 'date-fns';
 
 //
 
@@ -149,6 +148,8 @@ function DefaultAppBar() {
     const [productsLength, setProductsLength] = useState(cart?.products?.length);
     const [cartEmpty, setCartEmpty] = useState(false);
 
+    console.log(amountList);
+
     useEffect(() => {
         if (cart?.products?.length !== productsLength) {
             setTimeout(() => {
@@ -242,7 +243,7 @@ function DefaultAppBar() {
                         </>
                     )}
                     {products?.map((cartProduct: CartProduct) => {
-                        const product = amountList.find((p: { id: number }) => p.id == cartProduct.group_id);
+                        const product = amountList?.find((p: { id: number }) => p.id == cartProduct.group_id);
                         return (
                             <ProductInCart
                                 key={cartProduct.id}
