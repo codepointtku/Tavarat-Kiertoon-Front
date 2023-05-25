@@ -59,26 +59,30 @@ function AdminInbox() {
                     <Button
                         sx={{
                             backgroundColor:
-                                url.endsWith('saapuneet') || url.includes('saapuneet?page') ? '#476282' : 'primary',
+                                url.endsWith('saapuneet') || url.includes('saapuneet?page')
+                                    ? 'primary.dark'
+                                    : 'primary',
                         }}
                         onClick={() => setSearchParams('')}
                     >
                         Saapuneet
                     </Button>
                     <Button
-                        sx={{ backgroundColor: searchParams.get('status') === 'Luetut' ? '#476282' : 'primary' }}
+                        sx={{ backgroundColor: searchParams.get('status') === 'Luetut' ? 'primary.dark' : 'primary' }}
                         onClick={() => setSearchParams({ status: 'Luetut' })}
                     >
                         Luetut
                     </Button>
                     <Button
-                        sx={{ backgroundColor: searchParams.get('status') === 'Lukemattomat' ? '#476282' : 'primary' }}
+                        sx={{
+                            backgroundColor: searchParams.get('status') === 'Lukemattomat' ? 'primary.dark' : 'primary',
+                        }}
                         onClick={() => setSearchParams({ status: 'Lukemattomat' })}
                     >
                         Lukemattomat
                     </Button>
                     <Button
-                        sx={{ backgroundColor: searchParams.get('status') === 'Hoidetut' ? '#476282' : 'primary' }}
+                        sx={{ backgroundColor: searchParams.get('status') === 'Hoidetut' ? 'primary.dark' : 'primary' }}
                         onClick={() => setSearchParams({ status: 'Hoidetut' })}
                     >
                         Hoidetut
