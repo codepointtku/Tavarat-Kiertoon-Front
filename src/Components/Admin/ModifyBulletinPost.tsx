@@ -21,6 +21,12 @@ function ModifyBulletinPost() {
     const location = useLocation();
 
     const onSubmit = (data: { title: string; content: string }) => {
+        console.log(data);
+        if (data.title === '') {
+            data.title = location.state.title;
+        } else if (data.content === '') {
+            data.content = location.state.content;
+        }
         const formData = { ...data, category: 'category', id: location.state.id };
 
         setIsSubmitting(true);
@@ -53,7 +59,6 @@ function ModifyBulletinPost() {
                                 placeholder="Uusi otsikko"
                                 fullWidth
                                 inputProps={{ title: 'Otsikko', minLength: '4', maxLength: '50' }}
-                                required
                             />
 
                             <TextField
@@ -65,7 +70,6 @@ function ModifyBulletinPost() {
                                 rows={6}
                                 fullWidth
                                 inputProps={{ minLength: '5' }}
-                                required
                             />
 
                             <Button disabled={isSubmitting} type="submit" sx={{ mt: 2 }}>
