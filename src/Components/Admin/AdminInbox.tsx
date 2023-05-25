@@ -41,8 +41,10 @@ function AdminInbox() {
     function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
         let assignedParams;
         if (searchParams.has('status')) {
-            console.log(...searchParams);
-            assignedParams = { page: String(newPage) };
+            assignedParams = {
+                status: searchParams.get('status') as string,
+                page: String(newPage),
+            };
         } else {
             assignedParams = { page: String(newPage) };
         }
