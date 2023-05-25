@@ -6,7 +6,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useLoaderData } from 'react-router';
-import { Box, Button, IconButton, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, IconButton, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { Form } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
@@ -64,6 +64,7 @@ export default function ModifyBikeOrder() {
     });
     const [amount, setAmount] = useState(packet.bikes.map((packet) => packet.amount));
     const [bikesState, setBikesState] = useState(packet.bikes);
+    const [selectedModel, setSelectedModel] = useState<number | null>(null);
 
     const handleAddBike = (index: number) => {
         setBikesState((prevState) => {
@@ -71,7 +72,13 @@ export default function ModifyBikeOrder() {
             newState[index].amount += 1;
             return newState;
         });
+        setAmount((prevAmount) => {
+            const newAmount = [...prevAmount];
+            newAmount[index] += 1;
+            return newAmount;
+        });
     };
+
     const handleRemoveBike = (index: number) => {
         const newAmount = [...amount];
         if (newAmount[index] > 0) {
@@ -86,6 +93,19 @@ export default function ModifyBikeOrder() {
         const newAmount = [...amount];
         newAmount.splice(index, 1);
         setAmount(newAmount);
+    };
+    const handleAddModel = (modelId: number) => {
+        const modelToAdd = models.find((model) => model.id === modelId);
+        if (modelToAdd) {
+            const newBike = {
+                id: packet.bikes.length + 1,
+                bike: modelToAdd.id,
+                amount: 1,
+            };
+            setBikesState((prevState) => [...prevState, newBike]);
+            setAmount((prevAmount) => [...prevAmount, 1]);
+            setSelectedModel(null);
+        }
     };
     console.log('bikes', bikesState);
     return (
@@ -191,6 +211,32 @@ export default function ModifyBikeOrder() {
                                         </TableCell>
                                     </TableRow>
                                 ))}
+                                <TableRow>
+                                    <TableCell>
+                                        <Select
+                                            value={selectedModel}
+                                            onChange={(event) => setSelectedModel(event.target.value as number)}
+                                            fullWidth
+                                        >
+                                            {models.map((model) => (
+                                                <MenuItem key={model.id} value={model.id}>
+                                                    {model.name}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </TableCell>
+                                    <TableCell>
+                                        <IconButton
+                                            sx={{ color: 'primary.main' }}
+                                            aria-label="add"
+                                            onClick={() => handleAddModel(selectedModel)}
+                                            disabled={!selectedModel}
+                                        >
+                                            <AddCircleRoundedIcon />
+                                            <Typography variant="body1">Lisää</Typography>
+                                        </IconButton>
+                                    </TableCell>
+                                </TableRow>
                             </TableBody>
                         </Table>
                     </Box>
