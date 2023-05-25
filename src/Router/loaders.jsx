@@ -268,35 +268,31 @@ const shoppingProcessLoader = async (auth, setAuth) => {
 const adminInboxLoader = async (auth, setAuth, request) => {
     const searchParams = new URL(request.url).searchParams;
     const status =
-        searchParams.get('status') === 'Luetut'
+        searchParams.get('tila') === 'Luetut'
             ? 'Read'
-            : searchParams.get('status') === 'Lukemattomat'
+            : searchParams.get('tila') === 'Lukemattomat'
             ? 'Not%20read'
-            : searchParams.get('status') === 'Hoidetut' && 'Handled';
+            : searchParams.get('tila') === 'Hoidetut' && 'Handled';
 
     if (status) {
-        console.log('ollaan iffissä', status);
         const { data: messages } = await apiCall(
             auth,
             setAuth,
-            searchParams.has('page')
-                ? `/contact_forms/?page=${searchParams.get('page')}&status=${status}`
+            searchParams.has('sivu')
+                ? `/contact_forms/?page=${searchParams.get('sivu')}&status=${status}`
                 : `/contact_forms/?status=${status}`,
             'get'
         );
         return messages;
-    } else if (searchParams.has('page') && searchParams.get('page') != 0) {
-        console.log('ollaan elseiffissä', status);
-
+    } else if (searchParams.has('sivu') && searchParams.get('sivu') != 0) {
         const { data: messages } = await apiCall(
             auth,
             setAuth,
-            `/contact_forms/?page=${searchParams.get('page')}`,
+            `/contact_forms/?page=${searchParams.get('sivu')}`,
             'get'
         );
         return messages;
     }
-    console.log('ollaan perus');
     const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
     return messages;
 };

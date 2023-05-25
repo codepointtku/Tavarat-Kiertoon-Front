@@ -40,13 +40,13 @@ function AdminInbox() {
 
     function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
         let assignedParams;
-        if (searchParams.has('status')) {
+        if (searchParams.has('tila')) {
             assignedParams = {
-                status: searchParams.get('status') as string,
-                page: String(newPage),
+                tila: searchParams.get('tila') as string,
+                sivu: String(newPage),
             };
         } else {
-            assignedParams = { page: String(newPage) };
+            assignedParams = { sivu: String(newPage) };
         }
         setSearchParams(assignedParams);
     }
@@ -68,22 +68,22 @@ function AdminInbox() {
                         Saapuneet
                     </Button>
                     <Button
-                        sx={{ backgroundColor: searchParams.get('status') === 'Luetut' ? 'primary.dark' : 'primary' }}
-                        onClick={() => setSearchParams({ status: 'Luetut' })}
+                        sx={{ backgroundColor: searchParams.get('tila') === 'Luetut' ? 'primary.dark' : 'primary' }}
+                        onClick={() => setSearchParams({ tila: 'Luetut' })}
                     >
                         Luetut
                     </Button>
                     <Button
                         sx={{
-                            backgroundColor: searchParams.get('status') === 'Lukemattomat' ? 'primary.dark' : 'primary',
+                            backgroundColor: searchParams.get('tila') === 'Lukemattomat' ? 'primary.dark' : 'primary',
                         }}
-                        onClick={() => setSearchParams({ status: 'Lukemattomat' })}
+                        onClick={() => setSearchParams({ tila: 'Lukemattomat' })}
                     >
                         Lukemattomat
                     </Button>
                     <Button
-                        sx={{ backgroundColor: searchParams.get('status') === 'Hoidetut' ? 'primary.dark' : 'primary' }}
-                        onClick={() => setSearchParams({ status: 'Hoidetut' })}
+                        sx={{ backgroundColor: searchParams.get('tila') === 'Hoidetut' ? 'primary.dark' : 'primary' }}
+                        onClick={() => setSearchParams({ tila: 'Hoidetut' })}
                     >
                         Hoidetut
                     </Button>

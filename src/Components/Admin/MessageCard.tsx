@@ -52,8 +52,11 @@ function MessageCard({ subject, date, message, id, currentStatus, name, email }:
                     {message}
                 </Typography>
             </Box>
-            <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
-                {name} / {email}
+            <Typography variant="caption">
+                Lähettäjä:
+                <Typography variant="caption" sx={{ ml: '0.25rem', fontStyle: 'italic' }}>
+                    {name} / {email}
+                </Typography>
             </Typography>
         </Paper>
     );
