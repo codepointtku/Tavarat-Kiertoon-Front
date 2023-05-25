@@ -27,7 +27,7 @@ function ModifyBulletinPost() {
 
         submit(formData, {
             method: 'put',
-            action: '/admin/tiedotteet/muokkaa',
+            action: '/admin/tiedotteet/',
         });
 
         setSuccess(true);
@@ -80,7 +80,7 @@ function ModifyBulletinPost() {
                     text="Tiedote lisätty onnistuneesti"
                     status="success"
                     redirectUrl="/admin/tiedotteet"
-                    timer={1500}
+                    timer={2000}
                 />
             )}
         </Stack>

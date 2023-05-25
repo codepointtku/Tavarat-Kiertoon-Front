@@ -407,23 +407,18 @@ const deleteBikeAction = async (auth, setAuth, params) => {
 };
 
 /**
- * deletes a bulletin
+ * deletes or modifies a bulletin
  */
 
-const deleteBulletinAction = async (auth, setAuth, request) => {
-    const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'delete');
-    if (response.status === 204) {
-        return { type: 'deleted', status: true };
+const adminBulletinsAction = async (auth, setAuth, request) => {
+    if (request.method === 'DELETE') {
+        const formData = await request.formData();
+        const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'delete');
+        if (response.status === 204) {
+            return { type: 'deleted', status: true };
+        }
+        return { type: 'deleted', status: false };
     }
-    return { type: 'deleted', status: false };
-};
-
-/**
- * modifies a bulletin
- */
-
-const modifyBulletinAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'put', {
         title: formData.get('title'),
@@ -474,8 +469,7 @@ export {
     modifyBikeAction,
     createNewBikeAction,
     adminLogOut,
-    deleteBulletinAction,
-    modifyBulletinAction,
+    adminBulletinsAction,
     deleteBikeAction,
     adminInboxAction,
 };

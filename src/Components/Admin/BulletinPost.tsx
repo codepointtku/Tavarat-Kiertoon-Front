@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Box, Paper, Typography, Grid, Button } from '@mui/material';
 import { useSubmit, useNavigate } from 'react-router-dom';
 
@@ -12,18 +11,12 @@ interface Props {
 }
 
 function BulletinPost({ title, date, content, id }: Props) {
-    const [isSubmitted, setIsSubmitted] = useState(false);
     const submit = useSubmit();
     const navigate = useNavigate();
 
     function handleSubmit() {
-        setIsSubmitted(true);
         submit({ id }, { method: 'delete', action: '/admin/tiedotteet/' });
     }
-
-    useEffect(() => {
-        console.log('isSubmitted value changed', isSubmitted);
-    }, [isSubmitted]);
 
     return (
         <Paper id="bulletin-card-paper-backdrop" elevation={6} sx={{ mb: '2rem', p: '2rem' }}>

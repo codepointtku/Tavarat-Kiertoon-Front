@@ -116,10 +116,9 @@ import {
     modifyBikeAction,
     createNewBikeAction,
     adminLogOut,
-    deleteBulletinAction,
-    modifyBulletinAction,
     deleteBikeAction,
     adminInboxAction,
+    adminBulletinsAction,
 } from './actions';
 
 createStore({});
@@ -471,12 +470,11 @@ function Routes() {
                         {
                             path: 'tiedotteet',
                             element: <BulletinPosts />,
-                            action: async ({ request }) => deleteBulletinAction(auth, setAuth, request),
+                            action: async ({ request }) => adminBulletinsAction(auth, setAuth, request),
                         },
                         {
                             path: 'tiedotteet/muokkaa',
                             element: <ModifyBulletinPost />,
-                            action: async ({ request }) => modifyBulletinAction(auth, setAuth, request),
                         },
                         {
                             path: 'tiedotteet/luo',
