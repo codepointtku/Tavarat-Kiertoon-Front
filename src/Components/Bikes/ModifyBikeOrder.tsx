@@ -18,7 +18,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { Form } from 'react-router-dom';
+import { Form, useSubmit } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
@@ -67,7 +67,24 @@ interface ModelInterface {
 
 export default function ModifyBikeOrder() {
     const { packet, models } = useLoaderData() as LoaderDataInterface;
-    const { register, watch /*handleSubmit*/ } = useForm({
+    const submit = useSubmit();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [success, setSuccess] = useState(false);
+
+    const onSubmit = (data) => {
+        const formData = { ...data, category: 'category' };
+
+        setIsSubmitting(true);
+
+        submit(formData, {
+            method: 'post',
+            action: `/pyorat/pyoravarasto/muokkaapaketti/${packet.id}`,
+        });
+
+        setSuccess(true);
+    };
+
+    const { register, watch, handleSubmit } = useForm({
         defaultValues: {
             packetDescription: packet.description,
             packetName: packet.name,
@@ -116,7 +133,7 @@ export default function ModifyBikeOrder() {
             };
             setBikesState((prevState) => [...prevState, newBike]);
             setAmount((prevAmount) => [...prevAmount, 1]);
-            setSelectedModel(models[0].id);
+            setSelectedModel(null);
         }
     };
     console.log('bikes', bikesState);
@@ -133,7 +150,7 @@ export default function ModifyBikeOrder() {
                     Muokkaa {packet.name}a
                 </Typography>
             </Box>
-            <Box component={Form} method="put">
+            <Box component={Form} method="put" onSubmit={handleSubmit(onSubmit)}>
                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                     <Box
                         sx={{

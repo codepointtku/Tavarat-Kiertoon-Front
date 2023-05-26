@@ -118,6 +118,7 @@ import {
     createNewBikeAction,
     deleteBikeAction,
     adminLogOut,
+    modifyBikeOrderAction,
 } from './actions';
 
 createStore({});
@@ -526,6 +527,8 @@ function Routes() {
                                             path: ':id',
                                             element: <ModifyBikeOrder />,
                                             loader: async ({ params }) => modifyBikeOrderLoader(auth, setAuth, params),
+                                            action: async ({ request, params }) =>
+                                                modifyBikeOrderAction(auth, setAuth, request, params),
                                         },
                                     ],
                                 },
