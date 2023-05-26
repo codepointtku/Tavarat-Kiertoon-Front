@@ -96,6 +96,7 @@ import {
     bikeLoader,
     createNewBikeLoader,
     shoppingProcessLoader,
+    adminLoader,
     adminInboxLoader,
 } from './loaders';
 
@@ -402,11 +403,13 @@ function Routes() {
                             </ThemeProvider>
                         </HasRole>
                     ),
+                    id: 'admin',
                     errorElement: (
                         <ThemeProvider theme={adminTheme}>
                             <ErrorBoundary />,
                         </ThemeProvider>
                     ),
+                    loader: async () => adminLoader(auth, setAuth),
                     action: async ({ request }) => adminLogOut(auth, setAuth, request),
                     children: [
                         {

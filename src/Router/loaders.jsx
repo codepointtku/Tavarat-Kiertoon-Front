@@ -265,6 +265,11 @@ const shoppingProcessLoader = async (auth, setAuth) => {
     return user;
 };
 
+const adminLoader = async (auth, setAuth) => {
+    const { data: user } = await apiCall(auth, setAuth, '/user/', 'get');
+    return user;
+};
+
 const adminInboxLoader = async (auth, setAuth, request) => {
     const searchParams = new URL(request.url).searchParams;
     const status =
@@ -317,5 +322,6 @@ export {
     createNewBikeLoader,
     shoppingCartLoader,
     shoppingProcessLoader,
+    adminLoader,
     adminInboxLoader,
 };
