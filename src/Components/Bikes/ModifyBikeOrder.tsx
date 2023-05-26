@@ -2,11 +2,22 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
+
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useLoaderData } from 'react-router';
-import { Box, Button, IconButton, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    FormControl,
+    IconButton,
+    InputLabel,
+    MenuItem,
+    Select,
+    Stack,
+    TextField,
+    Typography,
+} from '@mui/material';
 import { Form } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
@@ -56,7 +67,7 @@ interface ModelInterface {
 
 export default function ModifyBikeOrder() {
     const { packet, models } = useLoaderData() as LoaderDataInterface;
-    const { register, watch, handleSubmit } = useForm({
+    const { register, watch /*handleSubmit*/ } = useForm({
         defaultValues: {
             packetDescription: packet.description,
             packetName: packet.name,
@@ -64,7 +75,8 @@ export default function ModifyBikeOrder() {
     });
     const [amount, setAmount] = useState(packet.bikes.map((packet) => packet.amount));
     const [bikesState, setBikesState] = useState(packet.bikes);
-    const [selectedModel, setSelectedModel] = useState<number | null>(null);
+
+    const [selectedModel, setSelectedModel] = useState<number>(models[0].id);
 
     const handleAddBike = (index: number) => {
         setBikesState((prevState) => {
@@ -104,7 +116,7 @@ export default function ModifyBikeOrder() {
             };
             setBikesState((prevState) => [...prevState, newBike]);
             setAmount((prevAmount) => [...prevAmount, 1]);
-            setSelectedModel(null);
+            setSelectedModel(models[0].id);
         }
     };
     console.log('bikes', bikesState);
@@ -213,17 +225,27 @@ export default function ModifyBikeOrder() {
                                 ))}
                                 <TableRow>
                                     <TableCell>
-                                        <Select
-                                            value={selectedModel}
-                                            onChange={(event) => setSelectedModel(event.target.value as number)}
-                                            fullWidth
-                                        >
-                                            {models.map((model) => (
-                                                <MenuItem key={model.id} value={model.id}>
-                                                    {model.name}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
+                                        <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
+                                            <InputLabel id="model-label">Valitse malli</InputLabel>
+                                            <Select
+                                                labelId="model-label"
+                                                // value={selectedModel}
+                                                onChange={(event) => setSelectedModel(event.target.value as number)}
+                                                fullWidth
+                                                // displayEmpty
+                                            >
+                                                {!selectedModel && (
+                                                    <MenuItem disabled value="">
+                                                        <em>Valitse malli</em>
+                                                    </MenuItem>
+                                                )}
+                                                {models.map((model) => (
+                                                    <MenuItem key={model.id} value={model.id}>
+                                                        {model.name}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
                                     </TableCell>
                                     <TableCell>
                                         <IconButton
