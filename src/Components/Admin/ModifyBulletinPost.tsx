@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, useSubmit, useLocation } from 'react-router-dom';
 
@@ -16,12 +15,10 @@ interface FormData extends SubmitHandler<FieldValues> {
 }
 
 function ModifyBulletinPost() {
-    const [success, setSuccess] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const {
         register,
         handleSubmit,
-        formState: { dirtyFields },
+        formState: { dirtyFields, isSubmitting, isSubmitted },
     } = useForm({ defaultValues: { title: '', content: '' } });
     const submit = useSubmit();
     const location = useLocation();
@@ -34,14 +31,10 @@ function ModifyBulletinPost() {
         }
         const formData = { ...data, category: 'category', id: location.state.id };
 
-        setIsSubmitting(true);
-
         submit(formData, {
             method: 'put',
             action: '/admin/tiedotteet/',
         });
-
-        setSuccess(true);
     };
 
     return (
@@ -92,7 +85,7 @@ function ModifyBulletinPost() {
                     </Stack>
                 </Container>
             </Box>
-            {success && (
+            {isSubmitted && (
                 <AlertBox
                     text="Tiedote lisätty onnistuneesti"
                     status="success"

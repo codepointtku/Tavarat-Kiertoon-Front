@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, useSubmit, useRouteLoaderData } from 'react-router-dom';
 
@@ -9,22 +8,20 @@ import TypographyTitle from '../TypographyTitle';
 
 function CreateBulletinPost() {
     const user = useRouteLoaderData('admin');
-    const { register, handleSubmit } = useForm();
+    const {
+        register,
+        handleSubmit,
+        formState: { isSubmitting, isSubmitted },
+    } = useForm();
     const submit = useSubmit();
-    const [success, setSuccess] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const onSubmit = (data) => {
         const formData = { ...data, category: 'category', author: user.id };
-
-        setIsSubmitting(true);
 
         submit(formData, {
             method: 'post',
             action: '/admin/tiedotteet/luo',
         });
-
-        setSuccess(true);
     };
 
     return (
@@ -68,8 +65,13 @@ function CreateBulletinPost() {
                     </Stack>
                 </Container>
             </Box>
-            {success && (
-                <AlertBox text="Tiedote lisätty onnistuneesti" status="success" redirectUrl="/admin" timer={1500} />
+            {isSubmitted && (
+                <AlertBox
+                    text="Tiedote lisätty onnistuneesti"
+                    status="success"
+                    redirectUrl="/admin/tiedotteet"
+                    timer={1500}
+                />
             )}
         </>
     );
