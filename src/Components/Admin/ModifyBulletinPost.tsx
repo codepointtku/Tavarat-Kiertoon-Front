@@ -25,7 +25,6 @@ function ModifyBulletinPost() {
     const location = useLocation();
 
     const onSubmit = (data: { title: string; content: string }) => {
-        console.log(data);
         if (data.title === '') {
             data.title = location.state.title;
         } else if (data.content === '') {
@@ -42,8 +41,6 @@ function ModifyBulletinPost() {
 
         setSuccess(true);
     };
-
-    console.log(dirtyFields);
 
     return (
         <Stack sx={{ p: 5 }}>
@@ -91,7 +88,7 @@ function ModifyBulletinPost() {
                 <AlertBox
                     text="Tiedote lisätty onnistuneesti"
                     status="success"
-                    redirectUrl="/admin/tiedotteet"
+                    redirectUrl="/admin/tiedotteet/"
                     timer={2000}
                 />
             )}

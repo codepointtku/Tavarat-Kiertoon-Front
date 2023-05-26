@@ -135,7 +135,7 @@ function Routes() {
             loader: async () => rootLoader(auth, setAuth),
             // Loads data only at first page load, not with every route
             shouldRevalidate: ({ currentUrl }) => {
-                return currentUrl.pathname === '/admin/tiedotteet/';
+                return currentUrl.pathname === '/admin/tiedotteet' || '/admin/tiedotteet/';
             },
             children: [
                 // main routes

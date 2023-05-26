@@ -1,11 +1,10 @@
-import { useEffect } from 'react';
 import { Container, Stack } from '@mui/material';
 import BulletinPost from './BulletinPost';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 import FeedIcon from '@mui/icons-material/Feed';
 
-import { useRouteLoaderData, useActionData } from 'react-router-dom';
+import { useRouteLoaderData } from 'react-router-dom';
 import type { rootLoader } from '../../Router/loaders';
 
 interface Bulletin {
@@ -17,9 +16,6 @@ interface Bulletin {
 
 function BulletinPosts() {
     const { bulletins } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
-    const responseStatus = useActionData();
-
-    useEffect(() => {}, [responseStatus]);
 
     return (
         <Container maxWidth="lg">
