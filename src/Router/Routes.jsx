@@ -48,6 +48,7 @@ import Confirmation from '../Components/Default/ShoppingCart/Confirmation';
 
 import SignupLandingPage from '../Components/Default/Signup/SignupLandingPage';
 import SignupPage from '../Components/Default/Signup/SignupPage';
+import Activation from '../Components/Default/Signup/Activation';
 
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
@@ -113,6 +114,7 @@ import {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
+    activationAction,
     adminLogOut,
     deleteBikeAction,
     adminInboxAction,
@@ -306,6 +308,11 @@ function Routes() {
                                     element: <PasswordResetNavigate />,
                                 },
                             ],
+                        },
+                        {
+                            path: 'aktivointi/:uid/:token',
+                            element: <Activation />,
+                            action: async ({ request }) => activationAction(auth, setAuth, request),
                         },
                     ],
                 },
