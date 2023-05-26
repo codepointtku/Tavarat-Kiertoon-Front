@@ -71,19 +71,6 @@ export default function ModifyBikeOrder() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
 
-    const onSubmit = (data) => {
-        const formData = { ...data, category: 'category' };
-
-        setIsSubmitting(true);
-
-        submit(formData, {
-            method: 'post',
-            action: `/pyorat/pyoravarasto/muokkaapaketti/${packet.id}`,
-        });
-
-        setSuccess(true);
-    };
-
     const { register, watch, handleSubmit } = useForm({
         defaultValues: {
             packetDescription: packet.description,
@@ -135,6 +122,18 @@ export default function ModifyBikeOrder() {
             setAmount((prevAmount) => [...prevAmount, 1]);
             setSelectedModel(null);
         }
+    };
+    const onSubmit = (data) => {
+        const formData = { ...data, category: 'category' };
+
+        setIsSubmitting(true);
+
+        submit(formData, {
+            method: 'post',
+            action: `/pyorat/pyoravarasto/muokkaapaketti/${packet.id}`,
+        });
+
+        setSuccess(true);
     };
     console.log('bikes', bikesState);
     return (
@@ -247,6 +246,7 @@ export default function ModifyBikeOrder() {
                                             <Select
                                                 labelId="model-label"
                                                 // value={selectedModel}
+                                                {...register('bikes')}
                                                 onChange={(event) => setSelectedModel(event.target.value as number)}
                                                 fullWidth
                                                 // displayEmpty
