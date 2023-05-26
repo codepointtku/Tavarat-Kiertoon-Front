@@ -1,6 +1,15 @@
 import axios from 'axios';
 import apiCall from '../Utils/apiCall';
-import { contactsApi, ordersApi, productsApi } from '../api';
+import {
+    bulletinsApi,
+    categoriesApi,
+    colorsApi,
+    contactsApi,
+    ordersApi,
+    productsApi,
+    shoppingCartApi,
+    usersApi,
+} from '../api';
 
 /**
  * Get various defaults for the site
@@ -9,11 +18,11 @@ const rootLoader = async (auth, setAuth) => {
     const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: categoryTree }] =
         await Promise.all([
             contactsApi.contactsList(),
-            apiCall(auth, setAuth, '/colors/', 'get'),
-            apiCall(auth, setAuth, '/categories/', 'get'),
-            apiCall(auth, setAuth, '/bulletins/', 'get'),
-            apiCall(auth, setAuth, '/categories/tree/', 'get'),
-            apiCall(auth, setAuth, '/users/login/refresh/', 'post'),
+            colorsApi.colorsList(),
+            categoriesApi.categoriesList(),
+            bulletinsApi.bulletinsList(),
+            categoriesApi.categoriesTreeRetrieve(),
+            usersApi.usersLoginRefreshCreate(),
         ]);
 
     return { contacts, colors, categories, bulletins, categoryTree };
@@ -23,8 +32,8 @@ const rootLoader = async (auth, setAuth) => {
  * Get shoppingCart for logged in user
  */
 const shoppingCartLoader = async (auth, setAuth) => {
-    const { data: cart } = await apiCall(auth, setAuth, '/shopping_cart/', 'get');
-    const { data: amountList } = await apiCall(auth, setAuth, '/shopping_cart/available_amount/', 'get');
+    const { data: cart } = await shoppingCartApi.shoppingCartRetrieve();
+    const { data: amountList } = await shoppingCartApi.shoppingCartAvailableAmountList();
     // console.log('@shoppingCartLoader, cart.products:', cart?.products);
     // console.log('@shoppingCartLoader, cart:', cart);
 

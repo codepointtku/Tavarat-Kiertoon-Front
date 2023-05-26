@@ -117,11 +117,9 @@ import {
     adminLogOut,
 } from './actions';
 
+import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
+
 createStore({});
-
-import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
-
-import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);

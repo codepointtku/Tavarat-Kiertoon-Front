@@ -1,5 +1,6 @@
 import { redirect } from 'react-router-dom';
 import apiCall from '../Utils/apiCall';
+import { contactFormsApi, contactsApi } from '../api';
 
 const adminLogOut = async (auth, setAuth, request) => {
     console.log('kick ban!!111');
@@ -127,7 +128,8 @@ const userSignupAction = async (auth, setAuth, request) => {
  */
 const contactAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/contact_forms/', 'post', formData);
+    // const response = await apiCall(auth, setAuth, '/contact_forms/', 'post', formData);
+    const response = await contactFormsApi.contactFormsCreate(Object.fromEntries(formData));
     return response.data || null;
 };
 /**
