@@ -480,7 +480,6 @@ export {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
-    adminLogOut,
     adminBulletinsAction,
     activationAction,
     deleteBikeAction,
