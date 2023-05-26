@@ -16,7 +16,11 @@ interface FormData extends SubmitHandler<FieldValues> {
 function ModifyBulletinPost() {
     const [success, setSuccess] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const { register, handleSubmit } = useForm();
+    const {
+        register,
+        handleSubmit,
+        formState: { dirtyFields },
+    } = useForm({ defaultValues: { title: '', content: '' } });
     const submit = useSubmit();
     const location = useLocation();
 
@@ -39,6 +43,8 @@ function ModifyBulletinPost() {
         setSuccess(true);
     };
 
+    console.log(dirtyFields);
+
     return (
         <Stack sx={{ p: 5 }}>
             <TypographyTitle text="Muokkaa tiedotetta" />
@@ -59,6 +65,7 @@ function ModifyBulletinPost() {
                                 placeholder="Uusi otsikko"
                                 fullWidth
                                 inputProps={{ title: 'Otsikko', minLength: '4', maxLength: '50' }}
+                                required={!dirtyFields.content}
                             />
 
                             <TextField
@@ -70,6 +77,7 @@ function ModifyBulletinPost() {
                                 rows={6}
                                 fullWidth
                                 inputProps={{ minLength: '5' }}
+                                required={!dirtyFields.title}
                             />
 
                             <Button disabled={isSubmitting} type="submit" sx={{ mt: 2 }}>
