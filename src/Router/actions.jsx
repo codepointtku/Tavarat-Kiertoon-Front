@@ -455,6 +455,22 @@ const modifyBikeModelAction = async (auth, setAuth, request, params) => {
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
 
+const adminInboxAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const id = formData.get('id');
+    const response = await apiCall(auth, setAuth, `/contact_forms/${id}/`, 'put', {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        subject: formData.get('subject'),
+        message: formData.get('message'),
+        status: formData.get('status'),
+    });
+    if (response.status === 200) {
+        return { type: 'markasread', status: true };
+    }
+    return { type: 'markasread', status: false };
+};
+
 export {
     userSignupAction,
     frontPageActions,
@@ -473,7 +489,8 @@ export {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
-    deleteBikeAction,
     adminLogOut,
     modifyBikeModelAction,
+    deleteBikeAction,
+    adminInboxAction,
 };

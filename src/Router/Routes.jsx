@@ -117,8 +117,9 @@ import {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
-    deleteBikeAction,
     adminLogOut,
+    deleteBikeAction,
+    adminInboxAction,
     modifyBikeModelAction,
 } from './actions';
 
@@ -476,9 +477,10 @@ function Routes() {
                             action: async ({ request }) => createBulletinAction(auth, setAuth, request),
                         },
                         {
-                            path: 'saapuneet',
+                            path: ':saapuneet',
                             element: <AdminInbox />,
-                            loader: adminInboxLoader,
+                            loader: async ({ request }) => adminInboxLoader(auth, setAuth, request),
+                            action: async ({ request }) => adminInboxAction(auth, setAuth, request),
                         },
                     ],
                 },
