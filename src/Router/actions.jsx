@@ -406,16 +406,51 @@ const deleteBikeAction = async (auth, setAuth, params) => {
     return redirect('/pyorat/pyoravarasto');
 };
 
+/**
+ * Modify a single bike.
+ * During modification (or creation) it is possible to create new brandname, size and/or type.
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} request
+ * @param {*} params
+ * @returns
+ */
 const modifyBikeModelAction = async (auth, setAuth, request, params) => {
+    // get data from form
     const data = await request.formData();
+
+    // if selected type, brand or size do not exist they need to be created
+    // need to create new is indicated by setting the bikeModelXXXId to -1 in the form
+    let typeId = data.get('bikeModelTypeId');
+    if (typeId < 0) {
+        const response = await apiCall(auth, setAuth, `/bikes/type/`, 'post', { name: data.get('bikeModelTypeName') });
+        typeId = response.data.id;
+    }
+    let brandId = data.get('bikeModelBrandId');
+    if (brandId < 0) {
+        const response = await apiCall(auth, setAuth, `/bikes/brand/`, 'post', {
+            name: data.get('bikeModelBrandName'),
+        });
+        brandId = response.data.id;
+    }
+    let sizeId = data.get('bikeModelSizeId');
+    if (sizeId < 0) {
+        const response = await apiCall(auth, setAuth, `/bikes/size/`, 'post', { name: data.get('bikeModelSizeName') });
+        sizeId = response.data.id;
+    }
+
+    // collect formData to send
     const formData = {
         name: data.get('bikeModelName'),
         description: data.get('bikeModelDescription'),
         color: data.get('bikeModelColorId'),
-        type: data.get('bikeModelTypeId'),
-        brand: data.get('bikeModelBrandId'),
-        size: data.get('bikeModelSizeId'),
+        type: typeId,
+        brand: brandId,
+        size: sizeId,
     };
+
+    // send data and redirect
     await apiCall(auth, setAuth, `/bikes/models/${params.id}/`, 'put', formData);
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
