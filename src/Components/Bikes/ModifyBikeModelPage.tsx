@@ -37,10 +37,10 @@ interface NameIdInterface {
 function ModifyBikeModelPage() {
     const { bikeModel, colors, brands, types, sizes } = useLoaderData() as {
         bikeModel: BikeModelInterface;
-        colors: ColorInterface[]
-        brands: NameIdInterface[]
-        types: NameIdInterface[]
-        sizes: NameIdInterface[]
+        colors: ColorInterface[];
+        brands: NameIdInterface[];
+        types: NameIdInterface[];
+        sizes: NameIdInterface[];
     };
 
     // hook form functions and default values
@@ -63,19 +63,37 @@ function ModifyBikeModelPage() {
         const type = types.find((type) => type.name === data.bikeModelTypeName) as NameIdInterface;
         const size = sizes.find((size) => size.name === data.bikeModelSizeName) as NameIdInterface;
 
+        /* */
+        const formData = new FormData();
+
+        console.log('### submit 1', formData);
+        Object.keys(data).forEach((key) => {
+            if (key !== 'pictures') formData.append(key, data[key]);
+        });
+        console.log('### submit 2', formData);
+        Object.values(data.pictures).forEach((value) => formData.append('pictures[]', value));
+        console.log('### submit 3', formData);
+
+        formData.append('bikeModelBrandId', (brand ? brand.id : -1).toString());
+        formData.append('bikeModelTypeId', (type ? type.id : -1).toString());
+        formData.append('bikeModelSizeId', (size ? size.id : -1).toString());
+
+        /* */
+
         // collect ids to data to be sent. if value does not exist => new value => needs to be created.
         // use id value -1 to indicate that since -1 can not be an id of an existing value.
         // note that new colors can not be created this way so color is handeled differently.
-        const formData: FieldValues = {
-            ...data,
-            bikeModelBrandId: brand ? brand.id : -1,
-            bikeModelTypeId: type ? type.id : -1,
-            bikeModelSizeId: size ? size.id : -1,
-        };
+        // const formData: FieldValues = {
+        //     ...data,
+        //     bikeModelBrandId: brand ? brand.id : -1,
+        //     bikeModelTypeId: type ? type.id : -1,
+        //     bikeModelSizeId: size ? size.id : -1,
+        // };
 
         submit(formData, {
             method: 'put',
             action: `/pyorat/pyoravarasto/muokkaapyoramalli/${bikeModel.id}`,
+            encType: 'multipart/form-data',
         });
     };
 
@@ -149,15 +167,16 @@ function ModifyBikeModelPage() {
                                     <Select
                                         labelId="bike-model-color-name-label"
                                         id="bike-model-color-name"
-                                        label='Väri'
+                                        label="Väri"
                                         {...register('bikeModelColorId')}
                                         value={watch('bikeModelColorId')}
-
                                     >
-                                        {colors.map( (color) => {
-                                            return(
-                                                <MenuItem key={color.id} value={color.id}>{color.name}</MenuItem>
-                                            )
+                                        {colors.map((color) => {
+                                            return (
+                                                <MenuItem key={color.id} value={color.id}>
+                                                    {color.name}
+                                                </MenuItem>
+                                            );
                                         })}
                                     </Select>
                                 </FormControl>
@@ -214,6 +233,21 @@ function ModifyBikeModelPage() {
                     </Button>
                     <Button type="submit" sx={{ width: '12rem', padding: '1rem' }}>
                         Tallenna ja palaa
+                    </Button>
+                    <Button variant="contained" component="label" size="large">
+                        Lisää kuvat
+                        <input
+                            name="pictures"
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            hidden
+                            {...register('pictures', {
+                                // TODO tarkistettava että kuvatiedostot ovat oikeaa muotoa, ja niitä on 1
+                                required: { value: true, message: 'Tuotteella on oltava vähintään yksi kuva' },
+                            })}
+                            required
+                        />
                     </Button>
                 </Box>
             </Box>

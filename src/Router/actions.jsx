@@ -448,10 +448,24 @@ const modifyBikeModelAction = async (auth, setAuth, request, params) => {
         type: typeId,
         brand: brandId,
         size: sizeId,
+        pictures: data.get('pictures[]'),
     };
 
+    data.append('name', data.get('bikeModelName'));
+    data.append('description', data.get('bikeModelDescription'));
+    data.append('color', data.get('bikeModelColorId'));
+    data.append('type', typeId);
+    data.append('brand', brandId);
+    data.append('size', sizeId);
+
+    console.log('formData actionissa :', data);
+    console.log('formData.get name actionissa :', data.get('name'));
+    console.log('formData.get pictures actionissa :', data.get('pictures[]'));
+
     // send data and redirect
-    await apiCall(auth, setAuth, `/bikes/models/${params.id}/`, 'put', formData);
+    await apiCall(auth, setAuth, `/bikes/models/${params.id}/`, 'put', data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
 
