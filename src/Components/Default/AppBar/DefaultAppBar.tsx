@@ -148,8 +148,6 @@ function DefaultAppBar() {
     const [productsLength, setProductsLength] = useState(cart?.products?.length);
     const [cartEmpty, setCartEmpty] = useState(false);
 
-    console.log(amountList);
-
     useEffect(() => {
         if (cart?.products?.length !== productsLength) {
             setTimeout(() => {
