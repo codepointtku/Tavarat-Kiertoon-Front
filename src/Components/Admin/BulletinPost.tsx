@@ -5,7 +5,7 @@ import TypographyHeading from '../TypographyHeading';
 
 interface Props {
     title: string;
-    date: string;
+    date: string[];
     content: string;
     id: string;
 }
@@ -34,7 +34,7 @@ function BulletinPost({ title, date, content, id }: Props) {
                 </Grid>
             </Grid>
             <Typography variant="caption" sx={{ color: 'text.hintContrast', mt: '0.5rem' }}>
-                {date}
+                {date[0]} {date[1]}
             </Typography>
             <Box id="bulletin-content-text-indent-container" sx={{ m: '1rem 2rem 0 2rem' }}>
                 <Typography id="bulletin-content-text-typography" variant="body1" sx={{ wordWrap: 'break-word' }}>

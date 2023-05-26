@@ -26,15 +26,21 @@ function BulletinPosts() {
             <HeroHeader Icon={<FeedIcon />} hideInAdmin={true} />
             <HeroText title="Tiedotteet" />
             <Stack id="bulletin-cards-column-stacker-admin" sx={{ m: '1rem 0 1rem 0' }}>
-                {bulletins.map((bulletin: Bulletin) => (
-                    <BulletinPost
-                        key={bulletin.id}
-                        id={bulletin.id}
-                        title={bulletin.title}
-                        content={bulletin.content}
-                        date={bulletin.date}
-                    />
-                ))}
+                {bulletins.map((bulletin: Bulletin) => {
+                    const date = new Date(bulletin.date);
+                    const dateInfo = [];
+                    dateInfo.push(date.toLocaleDateString());
+                    dateInfo.push(date.toLocaleTimeString());
+                    return (
+                        <BulletinPost
+                            key={bulletin.id}
+                            id={bulletin.id}
+                            title={bulletin.title}
+                            content={bulletin.content}
+                            date={dateInfo}
+                        />
+                    );
+                })}
             </Stack>
         </Container>
     );
