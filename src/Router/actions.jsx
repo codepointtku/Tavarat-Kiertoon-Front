@@ -401,6 +401,18 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     return redirect('/pyorat/pyoravarasto');
 };
 
+const activationAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/users/activate/', 'post', {
+        uid: formData.get('uid'),
+        token: formData.get('token'),
+    });
+    if (response.status === 200) {
+        return { type: 'userActivation', status: true };
+    }
+    return { type: 'userActivation', status: false };
+};
+
 const deleteBikeAction = async (auth, setAuth, params) => {
     await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     return redirect('/pyorat/pyoravarasto');
@@ -470,6 +482,8 @@ export {
     createNewBikeAction,
     adminLogOut,
     adminBulletinsAction,
+    activationAction,
     deleteBikeAction,
+    adminLogOut,
     adminInboxAction,
 };
