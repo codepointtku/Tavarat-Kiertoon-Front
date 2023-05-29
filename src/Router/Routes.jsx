@@ -50,6 +50,7 @@ import SignupLandingPage from '../Components/Default/Signup/SignupLandingPage';
 import SignupPage from '../Components/Default/Signup/SignupPage';
 import Activation from '../Components/Default/Signup/Activation';
 import EmailChangeSuccessful from '../Components/EmailChangeSuccessful';
+import ChangeEmail from '../Components/ChangeEmail';
 
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
@@ -283,6 +284,7 @@ function Routes() {
                             element: <ContactPage />,
                             action: async ({ request }) => contactAction(auth, setAuth, request),
                         },
+                        { path: 'vaihdaemail', element: <ChangeEmail /> },
                         {
                             path: 'emailvaihto/:token/:uid/:new_email',
                             element: <EmailChangeSuccessful />,
