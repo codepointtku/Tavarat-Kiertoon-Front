@@ -119,6 +119,7 @@ import {
     adminLogOut,
     deleteBikeAction,
     adminInboxAction,
+    emailChangeSuccessfulAction,
 } from './actions';
 
 createStore({});
@@ -282,7 +283,11 @@ function Routes() {
                             element: <ContactPage />,
                             action: async ({ request }) => contactAction(auth, setAuth, request),
                         },
-                        { path: 'emailvaihto', element: <EmailChangeSuccessful /> },
+                        {
+                            path: 'emailvaihto/:token/:uid/:new_email',
+                            element: <EmailChangeSuccessful />,
+                            action: async ({ request }) => emailChangeSuccessfulAction(auth, setAuth, request),
+                        },
                         {
                             path: 'unohtunutsalasana',
                             element: <ForgotPassword />,

@@ -413,6 +413,19 @@ const activationAction = async (auth, setAuth, request) => {
     return { type: 'userActivation', status: false };
 };
 
+const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/users/emailchange/finish/', 'post', {
+        uid: formData.get('uid'),
+        token: formData.get('token'),
+        new_email: formData.get('new_email'),
+    });
+    if (response.status === 204) {
+        return { type: 'emailchangesuccessful', status: true };
+    }
+    return { type: 'emailchangesuccessful', status: false };
+};
+
 const deleteBikeAction = async (auth, setAuth, params) => {
     await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     return redirect('/pyorat/pyoravarasto');
@@ -456,4 +469,5 @@ export {
     deleteBikeAction,
     adminLogOut,
     adminInboxAction,
+    emailChangeSuccessfulAction,
 };
