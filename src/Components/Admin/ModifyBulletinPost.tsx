@@ -39,17 +39,13 @@ function ModifyBulletinPost() {
 
     return (
         <Stack sx={{ p: 5 }}>
-            <Grid container>
-                <Grid item>
-                    <TypographyTitle text={`Muokkaa tiedotetta ${location.state.id}`} />
-                </Grid>
-                <Grid sx={{ pt: 0.5 }} item>
-                    <Tooltip title="Vain yhden kentän muokkaaminen on myös mahdollista" position="right">
-                        <IconButton>
-                            <InfoOutlinedIcon fontSize="inherit" color="primary" />
-                        </IconButton>
-                    </Tooltip>
-                </Grid>
+            <Grid sx={{ ml: 3 }} container>
+                <TypographyTitle text={`Muokkaa tiedotetta ${location.state.id}`} />
+                <Tooltip title="Vain yhden kentän muokkaaminen on myös mahdollista" position="right">
+                    <IconButton>
+                        <InfoOutlinedIcon fontSize="inherit" color="primary" />
+                    </IconButton>
+                </Tooltip>
             </Grid>
             <Box
                 id="bulletin-modification-form-component"

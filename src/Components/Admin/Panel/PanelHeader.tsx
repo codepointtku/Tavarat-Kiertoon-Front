@@ -71,7 +71,6 @@ function PanelHeader() {
     const [avatarDropDownMenu, setAvatarDropDownMenu] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const { messages } = useRouteLoaderData('admin') as Awaited<ReturnType<typeof adminLoader>>;
-    console.log(messages);
 
     const handleClickAvatarDropDownMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAvatarDropDownMenu(!avatarDropDownMenu);
