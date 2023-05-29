@@ -41,7 +41,7 @@ function ModifyBulletinPost() {
         <Stack sx={{ p: 5 }}>
             <Grid container>
                 <Grid item>
-                    <TypographyTitle text="Muokkaa tiedotetta" />
+                    <TypographyTitle text={`Muokkaa tiedotetta ${location.state.id}`} />
                 </Grid>
                 <Grid sx={{ pt: 0.5 }} item>
                     <Tooltip title="Vain yhden kentän muokkaaminen on myös mahdollista" position="right">
