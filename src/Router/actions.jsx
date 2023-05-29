@@ -413,12 +413,24 @@ const activationAction = async (auth, setAuth, request) => {
     return { type: 'userActivation', status: false };
 };
 
+const changeEmailAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    console.log(formData.get('newEmail'));
+    const response = await apiCall(auth, setAuth, '/users/emailchange/', 'post', {
+        new_email: formData.get('newEmail'),
+    });
+    if (response.status === 204) {
+        return { type: 'changeEmail', status: true };
+    }
+    return { type: 'changeEmail', status: false };
+};
+
 const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, '/users/emailchange/finish/', 'post', {
         uid: formData.get('uid'),
         token: formData.get('token'),
-        new_email: formData.get('new_email'),
+        new_email: formData.get('newEmail'),
     });
     if (response.status === 204) {
         return { type: 'emailchangesuccessful', status: true };
@@ -470,4 +482,5 @@ export {
     adminLogOut,
     adminInboxAction,
     emailChangeSuccessfulAction,
+    changeEmailAction,
 };

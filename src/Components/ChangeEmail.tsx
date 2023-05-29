@@ -13,7 +13,7 @@ import {
     OutlinedInput,
     InputLabel,
 } from '@mui/material';
-import LockResetRoundedIcon from '@mui/icons-material/LockResetRounded';
+import EmailIcon from '@mui/icons-material/Email';
 import TypographyTitle from './TypographyTitle';
 
 function ChangeEmail() {
@@ -26,7 +26,8 @@ function ChangeEmail() {
     } = useForm();
 
     const onSubmit = (data: any) => {
-        submit({ data }, { method: 'post', action: '/salasananpalautus/salasanapalautettu/' });
+        const { newEmail } = data;
+        submit({ newEmail }, { method: 'post', action: '/sahkopostinvaihto/' });
     };
 
     return (
@@ -40,7 +41,7 @@ function ChangeEmail() {
                             height: 48,
                         }}
                     >
-                        <LockResetRoundedIcon fontSize="large" />
+                        <EmailIcon fontSize="large" />
                     </Avatar>
                 </Box>
                 <Box sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
@@ -56,7 +57,7 @@ function ChangeEmail() {
                         <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
                             <InputLabel htmlFor="outlined-adornment-new-email">Uusi sähköposti</InputLabel>
                             <OutlinedInput
-                                {...register('new_email', {
+                                {...register('newEmail', {
                                     required: true,
                                     maxLength: 255,
                                 })}

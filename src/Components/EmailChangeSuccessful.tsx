@@ -7,14 +7,14 @@ import { Link } from 'react-router-dom';
 interface Params {
     uid: string;
     token: string;
-    new_email: string;
+    newEmail: string;
 }
 
 function EmailChangeSuccessful() {
     const submit = useSubmit();
-    const { uid, token, new_email } = useParams() as unknown as Params;
+    const { uid, token, newEmail } = useParams() as unknown as Params;
     useEffect(() => {
-        submit({ uid, token, new_email }, { method: 'post', action: `/emailvaihto/${uid}/${token}/${new_email}` });
+        submit({ uid, token, newEmail }, { method: 'post', action: `/emailvaihto/${uid}/${token}/${newEmail}` });
     }, []);
 
     return (
