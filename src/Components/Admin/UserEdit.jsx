@@ -45,8 +45,9 @@ function UserEdit() {
             address: userInfo.address_list[0].address,
             city: userInfo.address_list[0].city,
             zipcode: userInfo.address_list[0].zip_code,
-            // groups: userInfo.groups, // this is an array of group ids, see userInfo.groups
-            groups: { user_group: 1, admin_group: 2, storage_group: 3, bicycle_group: 4 },
+            // groups: [],
+            // groups: userInfo.groups,
+            // groups: { user_group: 1, admin_group: 2, storage_group: 3, bicycle_group: 4 },
         },
     });
 
@@ -305,7 +306,7 @@ function UserEdit() {
                                 // onChange={(event) => {
                                 //     handleChange('groups', event, group);
                                 // }}
-                                checked={true}
+                                // checked={formState?.groups?.includes(1)}
                                 label={'Käyttäjä'}
                                 value={1}
                             />
@@ -319,7 +320,7 @@ function UserEdit() {
                                 //     handleChange('groups', event, group);
                                 // }}
                                 // formState.groups is undefined :(
-                                checked={formState?.groups?.admin_group}
+                                // checked={formState?.groups?.includes(2)}
                                 label={'Ylläpitäjä'}
                                 value={2}
                             />
