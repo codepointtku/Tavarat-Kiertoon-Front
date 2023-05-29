@@ -34,26 +34,29 @@ const rootLoader = async (auth, setAuth) => {
 const shoppingCartLoader = async (auth, setAuth) => {
     const { data: cart } = await shoppingCartApi.shoppingCartRetrieve();
     const { data: amountList } = await shoppingCartApi.shoppingCartAvailableAmountList();
-    // console.log('@shoppingCartLoader, cart.products:', cart?.products);
-    // console.log('@shoppingCartLoader, cart:', cart);
+    console.log('@shoppingCartLoader, cart.product_items:', cart?.product_items);
+    console.log('@shoppingCartLoader, cart:', cart);
 
-    /* eslint-disable no-shadow */
-    // // auth check for future
-    // if (auth.user_group === true){...}
-    const products = cart?.products?.reduce((cartItems, product) => {
-        let cartItem = cartItems.find((cartItem) => cartItem.group_id === product.group_id);
+    // /* eslint-disable no-shadow */
+    // // // auth check for future
+    // // if (auth.user_group === true){...}
 
-        if (!cartItem) {
-            cartItem = {
-                ...product,
-                count: 0,
-            };
-            cartItems.push(cartItem);
-        }
+    // const products = cart?.products?.reduce((cartItems, product) => {
+    //     let cartItem = cartItems.find((cartItem) => cartItem.group_id === product.group_id);
 
-        cartItem.count += 1;
-        return cartItems;
-    }, []);
+    //     if (!cartItem) {
+    //         cartItem = {
+    //             ...product,
+    //             count: 0,
+    //         };
+    //         cartItems.push(cartItem);
+    //     }
+
+    //     cartItem.count += 1;
+    //     return cartItems;
+    // }, []);
+
+    const products = [cart.product_items];
 
     return { products, cart, amountList };
 };

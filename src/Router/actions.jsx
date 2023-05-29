@@ -1,9 +1,8 @@
 import { redirect } from 'react-router-dom';
 import apiCall from '../Utils/apiCall';
-import { contactFormsApi, contactsApi } from '../api';
+import { contactFormsApi, contactsApi, shoppingCartApi } from '../api';
 
 const adminLogOut = async (auth, setAuth, request) => {
-    console.log('kick ban!!111');
     const formData = await request.formData();
     if (request.method === 'POST') {
         if (auth.username) {
@@ -60,8 +59,12 @@ const frontPageActions = async (auth, setAuth, request) => {
             }
             return response;
         }
-        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
-            products: id,
+        // const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+        //     products: id,
+        //     amount,
+        // });
+        const response = await shoppingCartApi.shoppingCartUpdate({
+            product: id,
             amount,
         });
         if (response.status === 202) {
@@ -72,7 +75,7 @@ const frontPageActions = async (auth, setAuth, request) => {
     }
     if (request.method === 'DELETE') {
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
-            products: id,
+            product: id,
             amount,
         });
 
@@ -283,7 +286,7 @@ const cartViewAction = async (auth, setAuth, request) => {
     const id = Number(formData.get('id'));
     if (request.method === 'PUT') {
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
-            products: id,
+            product: id,
             amount,
         });
         // console.log(id, 'put method test', response.status);
@@ -295,7 +298,7 @@ const cartViewAction = async (auth, setAuth, request) => {
     }
     if (request.method === 'DELETE') {
         const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
-            products: id,
+            product: id,
             amount,
         });
 
