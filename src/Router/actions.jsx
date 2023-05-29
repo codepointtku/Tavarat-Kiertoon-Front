@@ -223,7 +223,18 @@ const storageEditAction = async (auth, setAuth, request, params) => {
 
 const userEditAction = async (auth, setAuth, request, params) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, `/users/${params.id}/edit/`, 'put', formData);
+    let response = await apiCall(auth, setAuth, `/users/${params.id}/`, 'put', {
+        first_name: formData.get('first_name'),
+        last_name: formData.get('last_name'),
+        phone_number: formData.get('phone_number'),
+    });
+
+    console.log('...making a new call to groups endpoint...');
+    response = await apiCall(auth, setAuth, `/users/${params.id}/groups/permission/`, 'put', {
+        groups: [formData.get('usergroup'), formData.get('admingroup')],
+    });
+    console.log('...done! sent response obj:', response);
+
     if (response.status === 200) {
         return { type: 'update', status: true };
     }
