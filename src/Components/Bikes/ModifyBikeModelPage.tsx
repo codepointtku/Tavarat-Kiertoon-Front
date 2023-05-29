@@ -52,6 +52,7 @@ function ModifyBikeModelPage() {
             bikeModelSizeName: bikeModel.size.name as string,
             bikeModelTypeName: bikeModel.type.name as string,
             bikeModelDescription: bikeModel.description as string,
+            pictures: null,
         },
     });
 
@@ -63,33 +64,25 @@ function ModifyBikeModelPage() {
         const type = types.find((type) => type.name === data.bikeModelTypeName) as NameIdInterface;
         const size = sizes.find((size) => size.name === data.bikeModelSizeName) as NameIdInterface;
 
-        /* */
+        // collect formData to be sent.
+        // everything except image blob is sent as key-value pairs.
         const formData = new FormData();
-
-        console.log('### submit 1', formData);
         Object.keys(data).forEach((key) => {
             if (key !== 'pictures') formData.append(key, data[key]);
         });
-        console.log('### submit 2', formData);
-        Object.values(data.pictures).forEach((value) => formData.append('pictures[]', value));
-        console.log('### submit 3', formData);
+        Object.values(data.pictures).forEach((value: any) => {
+            formData.append('pictures[]', value);
+        });
 
+        // check brand, type and size values
+        // if value does not exist => new value => needs to be created.
+        // use id value -1 to indicate that since -1 can not be an id of an existing value.
+        // note that new colors can not be created this way so color is handeled differently.
         formData.append('bikeModelBrandId', (brand ? brand.id : -1).toString());
         formData.append('bikeModelTypeId', (type ? type.id : -1).toString());
         formData.append('bikeModelSizeId', (size ? size.id : -1).toString());
 
-        /* */
-
-        // collect ids to data to be sent. if value does not exist => new value => needs to be created.
-        // use id value -1 to indicate that since -1 can not be an id of an existing value.
-        // note that new colors can not be created this way so color is handeled differently.
-        // const formData: FieldValues = {
-        //     ...data,
-        //     bikeModelBrandId: brand ? brand.id : -1,
-        //     bikeModelTypeId: type ? type.id : -1,
-        //     bikeModelSizeId: size ? size.id : -1,
-        // };
-
+        // send the data
         submit(formData, {
             method: 'put',
             action: `/pyorat/pyoravarasto/muokkaapyoramalli/${bikeModel.id}`,
@@ -152,16 +145,6 @@ function ModifyBikeModelPage() {
                                 />
                             </Grid>
                             <Grid item xs={6}>
-                                {/* <Autocomplete
-                                    freeSolo
-                                    id="bike-model-color-name"
-                                    options={colors.map((color) => color.name)}
-                                    value={watch('bikeModelColorName')}
-                                    renderInput={(params) => (
-                                        <TextField {...params} label="Väri" {...register('bikeModelColorName')} />
-                                    )}
-                                    sx={{ width: '100%' }}
-                                /> */}
                                 <FormControl fullWidth>
                                     <InputLabel id="bike-model-color-name-label">Väri</InputLabel>
                                     <Select
@@ -236,18 +219,7 @@ function ModifyBikeModelPage() {
                     </Button>
                     <Button variant="contained" component="label" size="large">
                         Lisää kuvat
-                        <input
-                            name="pictures"
-                            type="file"
-                            accept="image/*"
-                            multiple
-                            hidden
-                            {...register('pictures', {
-                                // TODO tarkistettava että kuvatiedostot ovat oikeaa muotoa, ja niitä on 1
-                                required: { value: true, message: 'Tuotteella on oltava vähintään yksi kuva' },
-                            })}
-                            required
-                        />
+                        <input type="file" accept="image/*" {...register('pictures')} hidden />
                     </Button>
                 </Box>
             </Box>

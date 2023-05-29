@@ -440,27 +440,13 @@ const modifyBikeModelAction = async (auth, setAuth, request, params) => {
         sizeId = response.data.id;
     }
 
-    // collect formData to send
-    const formData = {
-        name: data.get('bikeModelName'),
-        description: data.get('bikeModelDescription'),
-        color: data.get('bikeModelColorId'),
-        type: typeId,
-        brand: brandId,
-        size: sizeId,
-        pictures: data.get('pictures[]'),
-    };
-
+    // append modified data to form data
     data.append('name', data.get('bikeModelName'));
     data.append('description', data.get('bikeModelDescription'));
     data.append('color', data.get('bikeModelColorId'));
     data.append('type', typeId);
     data.append('brand', brandId);
     data.append('size', sizeId);
-
-    console.log('formData actionissa :', data);
-    console.log('formData.get name actionissa :', data.get('name'));
-    console.log('formData.get pictures actionissa :', data.get('pictures[]'));
 
     // send data and redirect
     await apiCall(auth, setAuth, `/bikes/models/${params.id}/`, 'put', data, {
@@ -469,6 +455,13 @@ const modifyBikeModelAction = async (auth, setAuth, request, params) => {
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
 
+/**
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} request
+ * @returns
+ */
 const adminInboxAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = formData.get('id');
