@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 import { useSubmit } from 'react-router-dom';
 
 import {
@@ -7,14 +8,18 @@ import {
     Grid,
     Typography,
     Button,
-    Alert,
     Avatar,
     FormControl,
     OutlinedInput,
     InputLabel,
+    Alert,
 } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import TypographyTitle from './TypographyTitle';
+
+// interface FormValidation extends ReactPortal {
+//     types: { required: string; maxLength: string; pattern: string };
+// }
 
 function ChangeEmail() {
     const submit = useSubmit();
@@ -23,7 +28,7 @@ function ChangeEmail() {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+    } = useForm({});
 
     const onSubmit = (data: any) => {
         const { newEmail } = data;
@@ -55,19 +60,19 @@ function ChangeEmail() {
                             <Typography variant="h6">Syötä uusi sähköposti</Typography>
                         </Grid>
                         <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
-                            <InputLabel htmlFor="outlined-adornment-new-email">Uusi sähköposti</InputLabel>
+                            <InputLabel htmlFor="outlined-input-change-email">Uusi sähköposti</InputLabel>
                             <OutlinedInput
                                 {...register('newEmail', {
                                     required: true,
                                     maxLength: 255,
+                                    pattern: /.+@turku.fi$|.+@edu.turku.fi$/,
                                 })}
-                                id="outlined-adornment-new-email"
+                                id="outlined-input-change-email"
+                                error={errors.newEmail as unknown as boolean}
                                 label="Uusi sähköposti"
                             />
-                            {errors.new_email && (
-                                <Alert severity="error" sx={{ mt: 1 }}>
-                                    Virheellinen syöte
-                                </Alert>
+                            {errors.newEmail && errors.newEmail.type === 'required' && (
+                                <Alert severity="error">Tämä kenttä on täytettävä</Alert>
                             )}
                         </FormControl>
                         <Grid item>
