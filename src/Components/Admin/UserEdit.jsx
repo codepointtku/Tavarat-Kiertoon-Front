@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+// import { useState, useRef } from 'react';
 
 import { useLoaderData, useActionData } from 'react-router';
 import { Form, useSubmit } from 'react-router-dom';
@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { Box, Button, Container, Checkbox, FormControlLabel, Stack, TextField } from '@mui/material';
 
 import AlertBox from '../AlertBox';
-import ConfirmWindow from './ConfirmWindow';
+// import ConfirmWindow from './ConfirmWindow';
 import TypographyTitle from '../TypographyTitle';
 import TypographyHeading from '../TypographyHeading';
 
@@ -25,7 +25,11 @@ function UserEdit() {
     const userInfo = loaderData[0];
     const groups = loaderData[1];
 
-    console.log(userInfo);
+    const responseStatus = useActionData();
+
+    // const [confirmWindowOpen, setConfirmWindowOpen] = useState(false);
+    // const [userState, setUserState] = useState(loaderData[0]);
+    // const eventRef = useRef();
 
     const {
         watch,
@@ -65,29 +69,23 @@ function UserEdit() {
     //     }
     // };
 
-    const responseStatus = useActionData();
+    // const checkChange = (key) => {
+    //     if (userState[key] === loaderData[0][key]) {
+    //         return false;
+    //     }
+    //     return true;
+    // };
 
-    const [isOpen, setIsOpen] = useState(false);
-    const [userState, setUserState] = useState(loaderData[0]);
-    const eventRef = useRef();
+    // const revertChange = (key) => {
+    //     setUserState({ ...userState, [key]: loaderData[0][key] });
+    // };
 
-    const checkChange = (key) => {
-        if (userState[key] === loaderData[0][key]) {
-            return false;
-        }
-        return true;
-    };
-
-    const revertChange = (key) => {
-        setUserState({ ...userState, [key]: loaderData[0][key] });
-    };
-
-    const handleConfirm = (confirm) => {
-        if (confirm) {
-            submit(eventRef.current, { method: 'post' });
-        }
-        setIsOpen(false);
-    };
+    // const handleConfirm = (confirm) => {
+    //     if (confirm) {
+    //         submit(eventRef.current, { method: 'post' });
+    //     }
+    //     setConfirmWindowOpen(false);
+    // };
 
     return (
         <>
@@ -98,16 +96,16 @@ function UserEdit() {
                 <AlertBox text="Käyttäjätiedot tallennettu onnistuneesti" status="success" />
             )}
 
-            <ConfirmWindow
-                open={isOpen}
+            {/* <ConfirmWindow
+                open={confirmWindowOpen}
                 onConfirm={handleConfirm}
                 title="Tallennetaanko käyttäjän tiedot?"
                 content={loaderData[0].name}
-            />
+            /> */}
 
             <Container id="user-edit-form-container-x-center" maxWidth="sm">
                 <Stack id="user-edit-stack-column">
-                    <TypographyTitle text="Muokkaa käyttäjän x tietoja" />
+                    <TypographyTitle text="Käyttäjän tietojen muokkaus" />
                     <Box
                         id="user-edition-wrapper-form-component"
                         component={Form}
