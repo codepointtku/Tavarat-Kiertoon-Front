@@ -1,13 +1,16 @@
 import axios from 'axios';
 import apiCall from '../Utils/apiCall';
 import {
+    bikesApi,
     bulletinsApi,
     categoriesApi,
     colorsApi,
+    contactFormsApi,
     contactsApi,
     ordersApi,
     productsApi,
     shoppingCartApi,
+    storagesApi,
     usersApi,
 } from '../api';
 
@@ -75,6 +78,8 @@ const productListLoader = async (auth, setAuth, request) => {
         });
         url.searchParams.delete('kategoria');
         const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
+        // TODO: not working with productsApi
+        // const { data } = await productsApi.productsList(url.searchParams);
         return data.results;
     }
 
@@ -86,6 +91,8 @@ const productListLoader = async (auth, setAuth, request) => {
         });
         url.searchParams.delete('haku');
         const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
+        // TODO: not working with productsApi
+        // const { data } = await productsApi.productsList(url.searchParams);
         return data.results;
     }
 
@@ -98,7 +105,8 @@ const productListLoader = async (auth, setAuth, request) => {
  * Get one product
  */
 const productDetailsLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, `/products/${params.id}`, 'get');
+    // const { data } = await apiCall(auth, setAuth, `/products/${params.id}`, 'get');
+    const { data } = await productsApi.productsRetrieve(params.id);
     return data;
 };
 
@@ -135,7 +143,9 @@ const ordersListLoader = async (auth, setAuth, params) => {
  * Get one order
  */
 const orderViewLoader = async (auth, setAuth, params) => {
-    const response = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
+    // const response = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
+    const response = await ordersApi.ordersRetrieve(params.id);
+    // TODO: check this later, with pdfViewLoader
     response.data.productList = response.data.products;
     return response.data;
 };
@@ -144,7 +154,8 @@ const orderViewLoader = async (auth, setAuth, params) => {
  * Get one order
  */
 const orderEditLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
+    // const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
+    const { data } = await ordersApi.ordersRetrieve(params.id);
     return data;
 };
 
@@ -166,8 +177,11 @@ const addItemLoader = async () => {
 /**
  * Get one order
  */
+
+// TODO: is this a duplicate of orderEditLoader?
 const pdfViewLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
+    // const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
+    const { data } = await ordersApi.ordersRetrieve(params.id);
     return data;
 };
 
@@ -175,12 +189,14 @@ const pdfViewLoader = async (auth, setAuth, params) => {
  * Get all storages
  */
 const storagesListLoader = async (auth, setAuth) => {
-    const { data } = await apiCall(auth, setAuth, '/storages', 'get');
+    // const { data } = await apiCall(auth, setAuth, '/storages', 'get');
+    const { data } = await storagesApi.storagesList();
     return data;
 };
 
 const storageEditLoader = async (auth, setAuth, params) => {
-    const { data } = await apiCall(auth, setAuth, `/storages/${params.id}`, 'get');
+    // const { data } = await apiCall(auth, setAuth, `/storages/${params.id}`, 'get');
+    const { data } = await storagesApi.storagesRetrieve(params.id);
     return data;
 };
 
@@ -188,7 +204,8 @@ const storageEditLoader = async (auth, setAuth, params) => {
  * Get all users
  */
 const usersListLoader = async (auth, setAuth) => {
-    const { data: users } = await apiCall(auth, setAuth, '/users', 'get');
+    // const { data: users } = await apiCall(auth, setAuth, '/users', 'get');
+    const { data: users } = await usersApi.usersList();
     return users;
 };
 
@@ -197,10 +214,13 @@ const usersListLoader = async (auth, setAuth) => {
  */
 const userEditLoader = async (auth, setAuth, params) => {
     const dataList = [];
-    let { data } = await apiCall(auth, setAuth, `/users/${params.id}`, 'get');
+    // let { data } = await apiCall(auth, setAuth, `/users/${params.id}`, 'get');
+    let { data } = await usersApi.usersRetrieve(params.id);
+    // TODO: check this later seems unnecessarily complicated
     data.groups = data.groups.map((group) => group.id);
     dataList.push(data);
-    data = await apiCall(auth, setAuth, '/users/groups', 'get');
+    // data = await apiCall(auth, setAuth, '/users/groups', 'get');
+    data = await usersApi.usersGroupsList();
     dataList.push(data.data);
     if (dataList) {
         return dataList;
@@ -216,7 +236,8 @@ const userEditLoader = async (auth, setAuth, params) => {
  * @returns
  */
 const bikesDefaultLoader = async (auth, setAuth) => {
-    const { data } = await apiCall(auth, setAuth, '/bikes', 'get');
+    // const { data } = await apiCall(auth, setAuth, '/bikes', 'get');
+    const { data } = await bikesApi.bikesList();
     return data;
 };
 
@@ -228,7 +249,8 @@ const bikesDefaultLoader = async (auth, setAuth) => {
  * @returns
  */
 const bikesListLoader = async (auth, setAuth) => {
-    const { data } = await apiCall(auth, setAuth, '/bikes/stock', 'get');
+    // const { data } = await apiCall(auth, setAuth, '/bikes/stock', 'get');
+    const { data } = await bikesApi.bikesStockList();
     return data;
 };
 
@@ -242,17 +264,22 @@ const bikesListLoader = async (auth, setAuth) => {
  */
 const bikeLoader = async (auth, setAuth, params) => {
     const [{ data: bikeData }, { data: bikeModelsData }, { data: storagesData }] = await Promise.all([
-        apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'get'),
-        apiCall(auth, setAuth, '/bikes/models/', 'get'),
-        apiCall(auth, setAuth, '/storages/', 'get'),
+        // apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'get'),
+        bikesApi.bikesStockRetrieve(params.id),
+        // apiCall(auth, setAuth, '/bikes/models/', 'get'),
+        bikesApi.bikesModelsList(),
+        // apiCall(auth, setAuth, '/storages/', 'get'),
+        storagesApi.storagesList(),
     ]);
     return { bikeData, bikeModelsData, storagesData };
 };
 
 const createNewBikeLoader = async (auth, setAuth) => {
     const [{ data: bikeModelsData }, { data: storagesData }] = await Promise.all([
-        apiCall(auth, setAuth, '/bikes/models/', 'get'),
-        apiCall(auth, setAuth, '/storages/', 'get'),
+        // apiCall(auth, setAuth, '/bikes/models/', 'get'),
+        bikesApi.bikesModelsList(),
+        // apiCall(auth, setAuth, '/storages/', 'get'),
+        storagesApi.storagesList(),
     ]);
     // Empty bike to show in the page before information is added
     const bikeData = {
@@ -275,12 +302,14 @@ const userSignupLoader = async () => null;
  * Gets user info for shopping cart process
  */
 const shoppingProcessLoader = async (auth, setAuth) => {
-    const { data: user } = await apiCall(auth, setAuth, '/user/', 'get');
+    // const { data: user } = await apiCall(auth, setAuth, '/user/', 'get');
+    const { data: user } = await usersApi.usersMeRetrieve();
     return user;
 };
 
 const adminInboxLoader = async (auth, setAuth) => {
-    const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
+    // const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
+    const { data: messages } = await contactFormsApi.contactFormsList();
     return messages;
 };
 
