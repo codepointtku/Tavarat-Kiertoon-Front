@@ -401,9 +401,37 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     return redirect('/pyorat/pyoravarasto');
 };
 
+const activationAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/users/activate/', 'post', {
+        uid: formData.get('uid'),
+        token: formData.get('token'),
+    });
+    if (response.status === 200) {
+        return { type: 'userActivation', status: true };
+    }
+    return { type: 'userActivation', status: false };
+};
+
 const deleteBikeAction = async (auth, setAuth, params) => {
     await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     return redirect('/pyorat/pyoravarasto');
+};
+
+const adminInboxAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const id = formData.get('id');
+    const response = await apiCall(auth, setAuth, `/contact_forms/${id}/`, 'put', {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        subject: formData.get('subject'),
+        message: formData.get('message'),
+        status: formData.get('status'),
+    });
+    if (response.status === 200) {
+        return { type: 'markasread', status: true };
+    }
+    return { type: 'markasread', status: false };
 };
 
 export {
@@ -424,6 +452,8 @@ export {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
+    activationAction,
     deleteBikeAction,
     adminLogOut,
+    adminInboxAction,
 };

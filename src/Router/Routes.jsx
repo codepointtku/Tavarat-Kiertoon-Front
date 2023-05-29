@@ -48,6 +48,7 @@ import Confirmation from '../Components/Default/ShoppingCart/Confirmation';
 
 import SignupLandingPage from '../Components/Default/Signup/SignupLandingPage';
 import SignupPage from '../Components/Default/Signup/SignupPage';
+import Activation from '../Components/Default/Signup/Activation';
 
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
@@ -113,8 +114,10 @@ import {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
-    deleteBikeAction,
+    activationAction,
     adminLogOut,
+    deleteBikeAction,
+    adminInboxAction,
 } from './actions';
 
 createStore({});
@@ -306,6 +309,11 @@ function Routes() {
                                 },
                             ],
                         },
+                        {
+                            path: 'aktivointi/:uid/:token',
+                            element: <Activation />,
+                            action: async ({ request }) => activationAction(auth, setAuth, request),
+                        },
                     ],
                 },
                 // storage routes
@@ -471,9 +479,10 @@ function Routes() {
                             action: async ({ request }) => createBulletinAction(auth, setAuth, request),
                         },
                         {
-                            path: 'saapuneet',
+                            path: ':saapuneet',
                             element: <AdminInbox />,
-                            loader: adminInboxLoader,
+                            loader: async ({ request }) => adminInboxLoader(auth, setAuth, request),
+                            action: async ({ request }) => adminInboxAction(auth, setAuth, request),
                         },
                     ],
                 },
