@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useSubmit, Link, useActionData } from 'react-router-dom';
+import { useSubmit, Link, useActionData, useRouteLoaderData } from 'react-router-dom';
 
 import { AppBar, Avatar, Badge, Box, IconButton, InputBase, Menu, MenuItem, Stack, Toolbar } from '@mui/material';
 
@@ -14,6 +14,7 @@ import Tooltip from '../../Tooltip';
 import AlertBox from '../../AlertBox';
 
 import type { adminLogOut } from '../../../Router/actions';
+import type { adminLoader } from '../../../Router/loaders';
 
 function Search() {
     const Search = styled('div')(({ theme }) => ({
@@ -69,6 +70,8 @@ function Search() {
 function PanelHeader() {
     const [avatarDropDownMenu, setAvatarDropDownMenu] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const { messages } = useRouteLoaderData('admin') as Awaited<ReturnType<typeof adminLoader>>;
+    console.log(messages);
 
     const handleClickAvatarDropDownMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAvatarDropDownMenu(!avatarDropDownMenu);
@@ -127,7 +130,7 @@ function PanelHeader() {
                         <Box id="mail" sx={{ margin: '0 1rem 0 1rem' }}>
                             <Tooltip title="Uudet viestit">
                                 <IconButton>
-                                    <Badge badgeContent={3} color="error">
+                                    <Badge badgeContent={messages.count} color="error">
                                         <MailIcon sx={{ color: 'primary.contrastText' }} />
                                     </Badge>
                                 </IconButton>

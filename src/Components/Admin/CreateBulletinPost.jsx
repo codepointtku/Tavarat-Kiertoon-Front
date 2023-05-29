@@ -7,7 +7,7 @@ import AlertBox from '../AlertBox';
 import TypographyTitle from '../TypographyTitle';
 
 function CreateBulletinPost() {
-    const user = useRouteLoaderData('admin');
+    const { user } = useRouteLoaderData('admin');
     const {
         register,
         handleSubmit,

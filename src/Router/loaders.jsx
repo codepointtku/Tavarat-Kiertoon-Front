@@ -266,8 +266,12 @@ const shoppingProcessLoader = async (auth, setAuth) => {
 };
 
 const adminLoader = async (auth, setAuth) => {
-    const { data: user } = await apiCall(auth, setAuth, '/user/', 'get');
-    return user;
+    const [{ data: user }, { data: messages }] = await Promise.all([
+        apiCall(auth, setAuth, '/user/', 'get'),
+        apiCall(auth, setAuth, '/contact_forms/', 'get'),
+    ]);
+
+    return { user, messages };
 };
 
 const adminInboxLoader = async (auth, setAuth, request) => {
