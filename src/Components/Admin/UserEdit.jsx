@@ -25,7 +25,10 @@ function UserEdit() {
     const userInfo = loaderData[0];
     const groups = loaderData[1];
 
+    console.log(userInfo);
+
     const {
+        watch,
         register,
         handleSubmit: createHandleSubmit,
         formState,
@@ -33,6 +36,9 @@ function UserEdit() {
         mode: 'onTouched',
         defaultValues: {
             ...userInfo,
+            address: userInfo.address_list[0].address,
+            city: userInfo.address_list[0].city,
+            zipcode: userInfo.address_list[0].zip_code,
             groups: { user_group: true },
         },
     });
@@ -102,126 +108,190 @@ function UserEdit() {
             <Container id="user-edit-form-container-x-center" maxWidth="sm">
                 <Stack id="user-edit-stack-column">
                     <TypographyTitle text="Muokkaa käyttäjän x tietoja" />
-                    <Box id="user-edition-wrapper-form-component" component={Form} onSubmit={handleSubmit}>
+                    <Box
+                        id="user-edition-wrapper-form-component"
+                        component={Form}
+                        onSubmit={handleSubmit}
+                        sx={{ marginTop: '1rem' }}
+                    >
                         <Stack id="user-edition-fields-stack-column" sx={{ padding: '1rem' }}>
                             <TextField
-                                id="textfield-fname"
+                                id="textfield-username"
                                 type="text"
-                                label="Etunimi"
-                                placeholder="Käyttäjän etunimi"
-                                {...register('first_name', {
-                                    required: { value: true, message: 'Käyttäjän nimi ei voi olla tyhjä' },
-                                    maxLength: { value: 50, message: 'Etunimi on liian pitkä, maksimi 50 merkkiä' },
+                                label="Käyttäjätunnus"
+                                placeholder="Käyttäjätunnus"
+                                {...register('username', {
+                                    required: { value: true, message: 'Käyttäjätunnus ei voi olla tyhjä' },
+                                    maxLength: { value: 50, message: 'Tunnus on liian pitkä, maksimi 50 merkkiä' },
                                 })}
                                 // Needs to be required: false to disable browser error message
                                 inputProps={{ required: false }}
                                 required
-                                error={!!formState.errors.first_name}
-                                helperText={formState.errors.first_name?.message || ' '}
+                                error={!!formState.errors.username}
+                                helperText={formState.errors.username?.message || ' '}
                             />
 
                             <TextField
-                                id="textfield-lname"
+                                id="textfield-useremail"
                                 type="text"
-                                label="Sukunimi"
-                                placeholder="Käyttäjän sukunimi"
-                                {...register('last_name', {
-                                    required: { value: true, message: 'Käyttäjän sukunimi ei voi olla tyhjä' },
-                                    maxLength: { value: 50, message: 'Sukunimi on liian pitkä, maksimi 50 merkkiä' },
+                                label="Sähköpostiosoite"
+                                placeholder="Sähköpostiosoite"
+                                {...register('email', {
+                                    required: { value: true, message: 'Sähköpostiosoite ei voi olla tyhjä' },
+                                    maxLength: {
+                                        value: 50,
+                                        message: 'Sähköpostiosoite on liian pitkä, maksimi 50 merkkiä',
+                                    },
                                 })}
                                 inputProps={{ required: false }}
                                 required
-                                error={!!formState.errors.last_name}
-                                helperText={formState.errors.last_name?.message || ' '}
+                                error={!!formState.errors.email}
+                                helperText={formState.errors.email?.message || ' '}
                             />
+
+                            <Stack direction="row" spacing={1}>
+                                <TextField
+                                    id="textfield-fname"
+                                    type="text"
+                                    label="Etunimi"
+                                    placeholder="Käyttäjän etunimi"
+                                    {...register('first_name', {
+                                        required: { value: true, message: 'Käyttäjän nimi ei voi olla tyhjä' },
+                                        maxLength: { value: 50, message: 'Etunimi on liian pitkä, maksimi 50 merkkiä' },
+                                    })}
+                                    inputProps={{ required: false }}
+                                    required
+                                    error={!!formState.errors.first_name}
+                                    helperText={formState.errors.first_name?.message || ' '}
+                                />
+
+                                <TextField
+                                    id="textfield-lname"
+                                    type="text"
+                                    label="Sukunimi"
+                                    placeholder="Käyttäjän sukunimi"
+                                    {...register('last_name', {
+                                        required: { value: true, message: 'Käyttäjän sukunimi ei voi olla tyhjä' },
+                                        maxLength: {
+                                            value: 50,
+                                            message: 'Sukunimi on liian pitkä, maksimi 50 merkkiä',
+                                        },
+                                    })}
+                                    inputProps={{ required: false }}
+                                    required
+                                    error={!!formState.errors.last_name}
+                                    helperText={formState.errors.last_name?.message || ' '}
+                                />
+                            </Stack>
 
                             <TextField
                                 id="phone_number"
                                 type="text"
                                 label="Puhelinnumero"
-                                placeholder="Käyttäjän puhelinnumero"
+                                placeholder="Käyttäjän puhelinnumero, esim. 040 1234567"
                                 {...register('phone_number', {
                                     required: { value: true, message: 'Käyttäjän puhelinnumero ei voi olla tyhjä' },
-                                    maxLength: { value: 30, message: 'Puhelinnumero ei oo noi pitkä hei' },
-                                    minLength: { value: 3, message: 'Puhelinnnumero ei oo kyl ton pitune oikeesti' },
+                                    maxLength: { value: 30, message: 'Puhelinnumero on liian pitkä' },
+                                    minLength: {
+                                        value: 11,
+                                        message: 'Puhelinnumero on 11 merkkiä pitkä, muodossa 040 1234567',
+                                    },
                                 })}
                                 inputProps={{ required: false }}
                                 required
                                 error={!!formState.errors.phone_number}
-                                helperText={formState.errors.phone_number?.message}
+                                helperText={formState.errors.phone_number?.message || ' '}
                             />
 
-                            {/* <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
-                                <InputLabel htmlFor="user-edition-field-username">Muokkaa käyttäjänimeä</InputLabel>
-                                <OutlinedInput
-                                    {...register('username')}
-                                    id="user-edition-field-username"
+                            <Box id="user-address-info-wrapper">
+                                <TypographyHeading text="Käyttäjän osoitetiedot" />
+                                <TextField
+                                    id="address"
                                     type="text"
-                                    label="Käyttäjänimi"
-                                    placeholder="joku@turku.fi"
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <DriveFileRenameOutlineIcon />
-                                        </InputAdornment>
-                                    }
+                                    label="Käyttäjän ensimmäinen osoite"
+                                    placeholder="Käyttäjän osoite"
+                                    fullWidth
+                                    value={watch('address')}
+                                    {...register('address', {
+                                        required: { value: true, message: 'Käyttäjän osoite ei voi olla tyhjä' },
+                                        maxLength: { value: 100, message: 'Osoite on liian pitkä' },
+                                        minLength: {
+                                            value: 1,
+                                            message: 'Tavaran vastaanotto-osoite on vaadittu',
+                                        },
+                                    })}
+                                    inputProps={{ required: false }}
+                                    required
+                                    error={!!formState.errors.address}
+                                    helperText={formState.errors.address?.message || ' '}
+                                    sx={{ marginTop: '1rem' }}
                                 />
-                            </FormControl>
+                                <Stack direction="row" spacing={1}>
+                                    <TextField
+                                        id="address"
+                                        type="text"
+                                        label="Kaupunki"
+                                        placeholder="Kaupunki"
+                                        value={watch('city')}
+                                        {...register('city', {
+                                            required: { value: true, message: 'Kaupunki ei voi olla tyhjä' },
+                                            maxLength: { value: 100, message: 'Kaupunki on liian pitkä' },
+                                            minLength: {
+                                                value: 1,
+                                                message: 'Tavaran vastaanotto-osoite on vaadittu',
+                                            },
+                                        })}
+                                        inputProps={{ required: false }}
+                                        required
+                                        error={!!formState.errors.city}
+                                        helperText={formState.errors.city?.message || ' '}
+                                    />
 
-                            <FormControl sx={{ mt: 1 }} variant="outlined">
-                                <InputLabel htmlFor="user-edition-field-email">Muokkaa sähköpostiosoitetta</InputLabel>
-                                <OutlinedInput
-                                    {...register('email')}
-                                    id="user-edition-field-email"
-                                    type="text"
-                                    label="Sähköpostiosoite"
-                                    placeholder="joku@turku.fi"
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <DriveFileRenameOutlineIcon />
-                                        </InputAdornment>
-                                    }
-                                />
-                            </FormControl>
-
-                            <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
-                                <InputLabel htmlFor="user-edition-field-address">Muokkaa osoitetta</InputLabel>
-                                <OutlinedInput
-                                    {...register('address_list.0.address')}
-                                    id="user-edition-field-address"
-                                    type="text"
-                                    label="Tavaran vastaanotto-osoite"
-                                    placeholder="Katu 123"
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <DriveFileRenameOutlineIcon />
-                                        </InputAdornment>
-                                    }
-                                />
-                            </FormControl> */}
+                                    <TextField
+                                        id="zipcode"
+                                        type="text"
+                                        label="Postinumero"
+                                        placeholder="Postinumero"
+                                        value={watch('zipcode')}
+                                        {...register('zipcode', {
+                                            required: { value: true, message: 'Postinumero ei voi olla tyhjä' },
+                                            maxLength: { value: 5, message: 'Postinumero on liian pitkä' },
+                                            minLength: {
+                                                value: 1,
+                                                message: 'Osoitteen postinumero on vaadittu',
+                                            },
+                                        })}
+                                        inputProps={{ required: false }}
+                                        required
+                                        error={!!formState.errors.zipcode}
+                                        helperText={formState.errors.zipcode?.message || ' '}
+                                    />
+                                </Stack>
+                            </Box>
                         </Stack>
-                        <Stack id="usergroups-edit-stack-column">
+                        <Box id="user-edition-checkboxes-wrapper">
                             <TypographyHeading text="Käyttäjän käyttöoikeudet" />
-                            {/* <Box id="user-edition-checkboxes"> */}
-                            {groups.map((group) => (
-                                <FormControlLabel
-                                    sx={{ border: '1px solid black' }}
-                                    name={`groups.${group.name}`}
-                                    key={group.id}
-                                    {...register(`groups.${group.name}`)}
-                                    // onChange={(event) => {
-                                    //     handleChange('groups', event, group);
-                                    // }}
-                                    // checked={userState.groups.includes(group.id)}
-                                    control={<Checkbox />}
-                                    label={groupNames[group.name]}
-                                    value={group.name}
-                                />
-                            ))}
-                            {/* </Box> */}
-                            <Button sx={{ mt: 3, mb: 3 }} fullWidth type="submit">
-                                Hyväksy ja tallenna muutokset
-                            </Button>
-                        </Stack>
+                            <Stack id="usergroups-checkboxes-stack-column">
+                                {groups.map((group) => (
+                                    <FormControlLabel
+                                        sx={{ margin: 0 }}
+                                        name={`groups.${group.name}`}
+                                        key={group.id}
+                                        {...register(`groups.${group.name}`)}
+                                        // onChange={(event) => {
+                                        //     handleChange('groups', event, group);
+                                        // }}
+                                        // checked={userState.groups.includes(group.id)}
+                                        control={<Checkbox />}
+                                        label={groupNames[group.name]}
+                                        value={group.name}
+                                    />
+                                ))}
+                            </Stack>
+                        </Box>
+                        <Button id="save-changes-btn" fullWidth type="submit" sx={{ marginTop: '1rem' }}>
+                            Hyväksy ja tallenna muutokset
+                        </Button>
                     </Box>
                 </Stack>
             </Container>
