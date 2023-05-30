@@ -1,11 +1,15 @@
 // import { useState, useRef } from 'react';
+import { Fragment } from 'react';
 
 import { useLoaderData, useActionData } from 'react-router';
 import { Form, useSubmit } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
 
-import { Box, Button, Container, Checkbox, FormControlLabel, Stack, TextField } from '@mui/material';
+import { Box, Button, Container, Checkbox, FormControlLabel, Stack, TextField, Typography } from '@mui/material';
+
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 
 import AlertBox from '../AlertBox';
 // import ConfirmWindow from './ConfirmWindow';
@@ -25,9 +29,6 @@ function UserEdit() {
     const userInfo = loaderData[0];
     const allGroups = loaderData[1];
 
-    // console.log('userinfo:', userInfo);
-    console.log('allGroups:', allGroups);
-
     const responseStatus = useActionData();
 
     // const [confirmWindowOpen, setConfirmWindowOpen] = useState(false);
@@ -35,20 +36,13 @@ function UserEdit() {
     // const eventRef = useRef();
 
     const {
-        watch,
         register,
         handleSubmit: createHandleSubmit,
-        formState,
+        formState: { errors: formStateErrors, isDirty },
     } = useForm({
         mode: 'onTouched',
         defaultValues: {
             ...userInfo,
-            address: userInfo.address_list[0].address,
-            city: userInfo.address_list[0].city,
-            zipcode: userInfo.address_list[0].zip_code,
-            // groups: [],
-            // groups: userInfo.groups,
-            // groups: { user_group: 1, admin_group: 2, storage_group: 3, bicycle_group: 4 },
         },
     });
 
@@ -59,6 +53,8 @@ function UserEdit() {
             method: 'put',
         });
     });
+
+    // console.log(userAddressList);
 
     // old shizzleshabang related to ConfirmWindow-component:
 
@@ -110,6 +106,21 @@ function UserEdit() {
 
             <Container id="user-edit-form-container-x-center" maxWidth="xl">
                 <TypographyTitle text="Käyttäjän tietojen muokkaus" />
+                <Box id="user-common-info" sx={{ margin: '1rem 0 1rem 0' }}>
+                    <Typography>Käyttäjän rekisteröitymispäivämäärä: {userInfo.creation_date}</Typography>
+                    <Stack direction="row">
+                        <Typography>Käyttäjätili aktivoitu: </Typography>
+                        {userInfo.creation_date ? (
+                            <CheckCircleOutlineIcon color="success" fontSize="small" sx={{ marginLeft: '0.4rem' }} />
+                        ) : (
+                            <DoNotDisturbIcon color="error" fontSize="small" sx={{ marginLeft: '0.4rem' }} />
+                        )}
+                    </Stack>
+                    <Typography>
+                        Käyttäjä viimeisin sisäänkirjautuminen:{' '}
+                        {userInfo.last_login ? `${userInfo.last_login}` : 'Ei koskaan'}
+                    </Typography>
+                </Box>
                 {/* User info form */}
                 <Box
                     id="user-edition-wrapper-form-component"
@@ -170,8 +181,9 @@ function UserEdit() {
                                 // Needs to be required: false to disable browser error message
                                 inputProps={{ required: false }}
                                 required
-                                error={!!formState.errors.first_name}
-                                helperText={formState.errors.first_name?.message || ' '}
+                                error={!!formStateErrors.first_name}
+                                helperText={formStateErrors.first_name?.message || ' '}
+                                color={isDirty ? 'warning' : 'primary'}
                             />
 
                             <TextField
@@ -188,8 +200,9 @@ function UserEdit() {
                                 })}
                                 inputProps={{ required: false }}
                                 required
-                                error={!!formState.errors.last_name}
-                                helperText={formState.errors.last_name?.message || ' '}
+                                error={!!formStateErrors.last_name}
+                                helperText={formStateErrors.last_name?.message || ' '}
+                                color={isDirty ? 'warning' : 'primary'}
                             />
                         </Stack>
 
@@ -208,74 +221,81 @@ function UserEdit() {
                             })}
                             inputProps={{ required: false }}
                             required
-                            error={!!formState.errors.phone_number}
-                            helperText={formState.errors.phone_number?.message || ' '}
+                            error={!!formStateErrors.phone_number}
+                            helperText={formStateErrors.phone_number?.message || ' '}
+                            color={isDirty ? 'warning' : 'primary'}
                         />
 
                         <Box id="user-address-info-wrapper">
                             <TypographyHeading text="Käyttäjän osoitetiedot" />
-                            <TextField
-                                id="address"
-                                type="text"
-                                label="Käyttäjän ensimmäinen osoite"
-                                placeholder="Käyttäjän osoite"
-                                fullWidth
-                                value={watch('address')}
-                                {...register('address', {
-                                    required: { value: true, message: 'Käyttäjän osoite ei voi olla tyhjä' },
-                                    maxLength: { value: 100, message: 'Osoite on liian pitkä' },
-                                    minLength: {
-                                        value: 1,
-                                        message: 'Tavaran vastaanotto-osoite on vaadittu',
-                                    },
-                                })}
-                                inputProps={{ required: false }}
-                                required
-                                error={!!formState.errors.address}
-                                helperText={formState.errors.address?.message || ' '}
-                                sx={{ marginTop: '1rem' }}
-                            />
-                            <Stack direction="row" spacing={1}>
-                                <TextField
-                                    id="address"
-                                    type="text"
-                                    label="Kaupunki"
-                                    placeholder="Kaupunki"
-                                    value={watch('city')}
-                                    {...register('city', {
-                                        required: { value: true, message: 'Kaupunki ei voi olla tyhjä' },
-                                        maxLength: { value: 100, message: 'Kaupunki on liian pitkä' },
-                                        minLength: {
-                                            value: 1,
-                                            message: 'Tavaran vastaanotto-osoite on vaadittu',
-                                        },
-                                    })}
-                                    inputProps={{ required: false }}
-                                    required
-                                    error={!!formState.errors.city}
-                                    helperText={formState.errors.city?.message || ' '}
-                                />
+                            {userInfo.address_list.map((address, index) => (
+                                <Fragment key={index}>
+                                    <TextField
+                                        id={`userid-${address.user}-useraddress-${address.id}`}
+                                        type="text"
+                                        label="Osoite"
+                                        placeholder="Tavaran vastaanotto-osoite"
+                                        fullWidth
+                                        {...register(`address_list[${index}].address`, {
+                                            required: { value: true, message: 'Käyttäjän osoite ei voi olla tyhjä' },
+                                            maxLength: { value: 100, message: 'Osoite on liian pitkä' },
+                                            minLength: {
+                                                value: 1,
+                                                message: 'Tavaran vastaanotto-osoite on vaadittu',
+                                            },
+                                        })}
+                                        inputProps={{ required: false }}
+                                        required
+                                        error={!!formStateErrors.address}
+                                        helperText={formStateErrors.address?.message || ' '}
+                                        color={isDirty ? 'warning' : 'primary'}
+                                        sx={{ marginTop: '1rem' }}
+                                    />
+                                    <Stack direction="row" spacing={1}>
+                                        <TextField
+                                            id={`userid-${address.user}-addresscity-${address.city}`}
+                                            type="text"
+                                            label="Kaupunki"
+                                            placeholder="Kaupunki"
+                                            {...register(`address_list[${index}].city`, {
+                                                required: { value: true, message: 'Kaupunki ei voi olla tyhjä' },
+                                                maxLength: { value: 100, message: 'Kaupungin nimi on liian pitkä' },
+                                                minLength: {
+                                                    value: 1,
+                                                    message: 'Osoitteen kaupunki on vaadittu',
+                                                },
+                                            })}
+                                            inputProps={{ required: false }}
+                                            required
+                                            error={!!formStateErrors.city}
+                                            helperText={formStateErrors.city?.message || ' '}
+                                            color={isDirty ? 'warning' : 'primary'}
+                                        />
 
-                                <TextField
-                                    id="zipcode"
-                                    type="text"
-                                    label="Postinumero"
-                                    placeholder="Postinumero"
-                                    value={watch('zipcode')}
-                                    {...register('zipcode', {
-                                        required: { value: true, message: 'Postinumero ei voi olla tyhjä' },
-                                        maxLength: { value: 5, message: 'Postinumero on liian pitkä' },
-                                        minLength: {
-                                            value: 1,
-                                            message: 'Osoitteen postinumero on vaadittu',
-                                        },
-                                    })}
-                                    inputProps={{ required: false }}
-                                    required
-                                    error={!!formState.errors.zipcode}
-                                    helperText={formState.errors.zipcode?.message || ' '}
-                                />
-                            </Stack>
+                                        <TextField
+                                            id={`userid-${address.user}-zipcode-${address.zip_code}`}
+                                            type="text"
+                                            label="Postinumero"
+                                            placeholder="Postinumero"
+                                            {...register(`address_list[${index}].zip_code`, {
+                                                required: { value: true, message: 'Postinumero ei voi olla tyhjä' },
+                                                maxLength: { value: 5, message: 'Postinumero on liian pitkä' },
+                                                minLength: {
+                                                    value: 1,
+                                                    message: 'Osoitteen postinumero on vaadittu',
+                                                },
+                                            })}
+                                            inputProps={{ required: false }}
+                                            required
+                                            error={!!formStateErrors.zipcode}
+                                            helperText={formStateErrors.zipcode?.message || ' '}
+                                            color={isDirty ? 'warning' : 'primary'}
+                                        />
+                                    </Stack>
+                                </Fragment>
+                            ))}
+
+                            <Button sx={{ mb: '1rem' }}>Lisää uusi osoite</Button>
                         </Box>
                     </Stack>
 
@@ -286,7 +306,6 @@ function UserEdit() {
                             {/* Checkboxes, mapped: */}
                             {allGroups.map((group) => (
                                 <FormControlLabel
-                                    sx={{ margin: 0 }}
                                     key={group.id}
                                     control={
                                         <Checkbox
@@ -295,22 +314,30 @@ function UserEdit() {
                                                     color: 'success.dark',
                                                 },
                                             }}
+                                            defaultChecked={userInfo.groups.includes(group.id)}
+                                            {...register('groups', { type: 'checkbox' })}
+                                            value={group.id}
                                         />
                                     }
-                                    // name={`groups.${group.name}`}
-                                    {...register('groups')}
-                                    // onChange={(event) => {
-                                    //     handleChange('groups', event, group);
-                                    // }}
-                                    // checked={userState.groups.includes(group.id)}
                                     label={groupNames[group.name]}
-                                    value={group.id}
-                                    onClick={() => console.log(`clicked checkboxs value: ${group.id}`)}
+                                    // onClick={() => console.log(`clicked checkboxs value: ${group.id}`)}
+                                    sx={{ margin: 0 }}
                                 />
                             ))}
                         </Stack>
                     </Box>
-                    <Button id="save-changes-btn" fullWidth type="submit" sx={{ marginTop: '1rem' }}>
+                    <Button
+                        id="save-changes-btn"
+                        fullWidth
+                        type="submit"
+                        sx={{
+                            marginTop: '1rem',
+                            '&:hover': {
+                                backgroundColor: 'success.dark',
+                            },
+                        }}
+                        disabled={!isDirty}
+                    >
                         Hyväksy ja tallenna muutokset
                     </Button>
                 </Box>
