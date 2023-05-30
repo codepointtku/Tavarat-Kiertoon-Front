@@ -77,15 +77,14 @@ const productListLoader = async (auth, setAuth, request) => {
             }
         });
         url.searchParams.delete('kategoria');
-        const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
-        // TODO: not working with productsApi (same thing in adminInboxLoader)
-        // const { data } = await productsApi.productsList(url.searchParams);
+        // const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
+        // get all categories
+        const { data } = await productsApi.productsList(url.searchParams.getAll('category'));
         return data.results;
     }
 
     if (url.searchParams.has('haku')) {
         //const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
-        // TODO: not working with productsApi
         const { data } = await productsApi.productsList(null, null, null, null, null, url.searchParams.get('haku'));
         return data.results;
     }
