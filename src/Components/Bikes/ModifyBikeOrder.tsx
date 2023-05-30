@@ -121,7 +121,7 @@ export default function ModifyBikeOrder() {
         },
     });
 
-    const { fields, append, prepend, remove } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         name: 'bikes',
         control,
     });
@@ -209,15 +209,15 @@ export default function ModifyBikeOrder() {
                                         <TableCell>
                                             <Box>
                                                 <Stack justifyContent="center" direction="row">
-                                                    {/* <IconButton color="primary" onClick={() => handleRemoveBike(index)}> */}
-                                                    <IconButton color="primary" onClick={() => console.log('dasd')}>
+                                                    <IconButton color="primary" onClick={() => handleRemoveBike(index)}>
+                                                        {/* <IconButton color="primary" onClick={() => console.log('dasd')}> */}
                                                         <RemoveCircleOutlineRoundedIcon />
                                                     </IconButton>
                                                     <Typography variant="h6" sx={{ p: 0.5 }}>
                                                         {amount[index]}
                                                     </Typography>
-                                                    {/* <IconButton color="primary" onClick={() => handleAddBike(index)}> */}
-                                                    <IconButton color="primary" onClick={() => console.log('kaka')}>
+                                                    <IconButton color="primary" onClick={() => handleAddBike(index)}>
+                                                        {/* <IconButton color="primary" onClick={() => console.log('kaka')}> */}
                                                         <AddCircleRoundedIcon />
                                                     </IconButton>
                                                 </Stack>
