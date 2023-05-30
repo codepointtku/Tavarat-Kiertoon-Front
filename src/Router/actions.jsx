@@ -240,6 +240,9 @@ const userEditAction = async (auth, setAuth, request, params) => {
         phone_number: formData.get('phone_number'),
     });
 
+    // address edit action
+    // /users/address/{id}/
+
     const selectedAuthGroups = formData
         .getAll('groups')[0]
         .split(',')

@@ -167,6 +167,7 @@ function UserEdit() {
                                         message: 'Etunimi on liian pitkä, maksimi 50 merkkiä',
                                     },
                                 })}
+                                // Needs to be required: false to disable browser error message
                                 inputProps={{ required: false }}
                                 required
                                 error={!!formState.errors.first_name}
@@ -307,94 +308,15 @@ function UserEdit() {
                                     onClick={() => console.log(`clicked checkboxs value: ${group.id}`)}
                                 />
                             ))}
-
-                            {/******** */}
-                            {/* Checkboxes, hardcoded: */}
-
-                            {/* <FormControlLabel
-                                sx={{ margin: 0 }}
-                                control={
-                                    <Checkbox
-                                        sx={{
-                                            '&.Mui-checked': {
-                                                color: 'success.dark',
-                                            },
-                                        }}
-                                    />
-                                }
-                                name={'auth-groups-user-checkbox'}
-                                {...register('usergroup')}
-                                // onChange={(event) => {
-                                //     handleChange('groups', event, group);
-                                // }}
-                                // checked={formState?.groups?.includes(1)}
-                                label={'Käyttäjä'}
-                                value={1}
-                            />
-
-                            <FormControlLabel
-                                sx={{ margin: 0 }}
-                                control={
-                                    <Checkbox
-                                        sx={{
-                                            '&.Mui-checked': {
-                                                color: 'success.dark',
-                                            },
-                                        }}
-                                    />
-                                }
-                                name={'auth-groups-admin-checkbox'}
-                                {...register('admingroup')}
-                                // onChange={(event) => {
-                                //     handleChange('groups', event, group);
-                                // }}
-                                // formState.groups is undefined :(
-                                // checked={formState?.groups?.includes(2)}
-                                label={'Ylläpitäjä'}
-                                value={2}
-                            />
-
-                            <FormControlLabel
-                                sx={{ margin: 0 }}
-                                control={
-                                    <Checkbox
-                                        sx={{
-                                            '&.Mui-checked': {
-                                                color: 'success.dark',
-                                            },
-                                        }}
-                                    />
-                                }
-                                name={'auth-groups-storage-checkbox'}
-                                {...register('storagegroup')}
-                                // onChange={(event) => {
-                                //     handleChange('groups', event, group);
-                                // }}
-                                // formState.groups is undefined :(
-                                // checked={formState?.groups?.includes(2)}
-                                label={'Varastohessu'}
-                                value={3}
-                            />
-
-                            <FormControlLabel
-                                sx={{ margin: 0 }}
-                                control={<Checkbox />}
-                                name={'auth-groups-bike-checkbox'}
-                                {...register('bikegroup')}
-                                // onChange={(event) => {
-                                //     handleChange('groups', event, group);
-                                // }}
-                                // formState.groups is undefined :(
-                                // checked={formState?.groups?.includes(2)}
-                                label={'Pyörävaltuutettu'}
-                                value={4}
-                            /> */}
                         </Stack>
                     </Box>
                     <Button id="save-changes-btn" fullWidth type="submit" sx={{ marginTop: '1rem' }}>
                         Hyväksy ja tallenna muutokset
                     </Button>
                 </Box>
+                <Button id="cancel-btn" fullWidth color="error">
+                    Poistu tallentamatta
+                </Button>
             </Container>
         </>
     );
