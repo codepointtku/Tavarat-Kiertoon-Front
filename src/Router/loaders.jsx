@@ -1,5 +1,5 @@
 import axios from 'axios';
-import apiCall from '../Utils/apiCall';
+// import apiCall from '../Utils/apiCall';
 import {
     bikesApi,
     bulletinsApi,
@@ -338,7 +338,7 @@ const adminInboxLoader = async (auth, setAuth, request) => {
     //     );
     //     return messages;
     // }
-    console.log(searchParams.get('sivu'));
+
     const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null, status);
 
     // // const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
