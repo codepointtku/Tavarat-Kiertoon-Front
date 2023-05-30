@@ -84,15 +84,9 @@ const productListLoader = async (auth, setAuth, request) => {
     }
 
     if (url.searchParams.has('haku')) {
-        url.searchParams.forEach((value, key) => {
-            if (key === 'haku') {
-                url.searchParams.append('search', value);
-            }
-        });
-        url.searchParams.delete('haku');
-        const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
+        //const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
         // TODO: not working with productsApi
-        // const { data } = await productsApi.productsList(url.searchParams);
+        const { data } = await productsApi.productsList(null, null, null, null, null, url.searchParams.get('haku'));
         return data.results;
     }
 
@@ -309,34 +303,47 @@ const shoppingProcessLoader = async (auth, setAuth) => {
 
 const adminInboxLoader = async (auth, setAuth, request) => {
     const searchParams = new URL(request.url).searchParams;
-    const status =
-        searchParams.get('tila') === 'Luetut'
-            ? 'Read'
-            : searchParams.get('tila') === 'Lukemattomat'
-            ? 'Not%20read'
-            : searchParams.get('tila') === 'Hoidetut' && 'Handled';
+    // const status =
+    //     searchParams.get('tila') === 'Luetut'
+    //         ? 'Read'
+    //         : searchParams.get('tila') === 'Lukemattomat'
+    //         ? 'Not read'
+    //         : (searchParams.get('tila') === 'Hoidetut' && 'Handled') || null;
 
-    if (status) {
-        const { data: messages } = await apiCall(
-            auth,
-            setAuth,
-            searchParams.has('sivu')
-                ? `/contact_forms/?page=${searchParams.get('sivu')}&status=${status}`
-                : `/contact_forms/?status=${status}`,
-            'get'
-        );
-        return messages;
-    } else if (searchParams.has('sivu') && searchParams.get('sivu') != 0) {
-        const { data: messages } = await apiCall(
-            auth,
-            setAuth,
-            `/contact_forms/?page=${searchParams.get('sivu')}`,
-            'get'
-        );
-        return messages;
-    }
-    // const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
-    const { data: messages } = await contactFormsApi.contactFormsList();
+    const statusMap = {
+        Luetut: 'Read',
+        Lukemattomat: 'Not read',
+        Hoidetut: 'Handled',
+    };
+
+    const status = statusMap[searchParams.get('tila')] || null;
+
+    // if (status) {
+    //     // const { data: messages } = await apiCall(
+    //     //     auth,
+    //     //     setAuth,
+    //     //     searchParams.has('sivu')
+    //     //         ? `/contact_forms/?page=${searchParams.get('sivu')}&status=${status}`
+    //     //         : `/contact_forms/?status=${status}`,
+    //     //     'get'
+    //     // );
+    //     const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null , searchParams.get('tila'));
+    //     return messages;
+
+    // } else if (searchParams.has('sivu') && searchParams.get('sivu') != 0) {
+    //     const { data: messages } = await apiCall(
+    //         auth,
+    //         setAuth,
+    //         `/contact_forms/?page=${searchParams.get('sivu')}`,
+    //         'get'
+    //     );
+    //     return messages;
+    // }
+    console.log(searchParams.get('sivu'));
+    const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null, status);
+
+    // // const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
+    // const { data: messages } = await contactFormsApi.contactFormsList();
 
     return messages;
 };
