@@ -222,6 +222,17 @@ const storageEditAction = async (auth, setAuth, request, params) => {
 };
 
 const userEditAction = async (auth, setAuth, request, params) => {
+    // This action handles user data: info, addressinfo and user's auth groups.
+    // User data has different BE endpoints for different user data sections.
+
+    // First apicall is self explanatory; it updates user's editable info.
+    // Second apicall updates user's addressinfo.
+
+    // Third apicall updates user's auth groups: BE expects integers (representing different auth groups) in an array.
+    // It gets all the checked checkboxes values into an array's first index.
+    // The array is then splitted by comma into an array of strings. These indexes are then mapped into an array of integers,
+    // and then sent to the BE in a composition BE expects.
+
     const formData = await request.formData();
     let response = await apiCall(auth, setAuth, `/users/${params.id}/`, 'put', {
         first_name: formData.get('first_name'),
@@ -229,11 +240,13 @@ const userEditAction = async (auth, setAuth, request, params) => {
         phone_number: formData.get('phone_number'),
     });
 
-    console.log('...making a new call to groups endpoint...');
+    const selectedAuthGroups = formData
+        .getAll('groups')[0]
+        .split(',')
+        .map((group) => Number(group));
     response = await apiCall(auth, setAuth, `/users/${params.id}/groups/permission/`, 'put', {
-        groups: [formData.get('usergroup'), formData.get('admingroup')],
+        groups: selectedAuthGroups,
     });
-    console.log('...done! sent response obj:', response);
 
     if (response.status === 200) {
         return { type: 'update', status: true };

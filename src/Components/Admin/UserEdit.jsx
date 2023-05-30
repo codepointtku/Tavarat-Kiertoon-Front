@@ -12,12 +12,12 @@ import AlertBox from '../AlertBox';
 import TypographyTitle from '../TypographyTitle';
 import TypographyHeading from '../TypographyHeading';
 
-// const groupNames = {
-//     user_group: 'Käyttäjä',
-//     admin_group: 'Ylläpitäjä',
-//     storage_group: 'Varastotyöntekijä',
-//     bicycle_group: 'Pyörävaltuutettu',
-// };
+const groupNames = {
+    user_group: 'Käyttäjä',
+    admin_group: 'Ylläpitäjä',
+    storage_group: 'Varastotyöntekijä',
+    bicycle_group: 'Pyörävaltuutettu',
+};
 
 function UserEdit() {
     const loaderData = useLoaderData();
@@ -26,6 +26,7 @@ function UserEdit() {
     const allGroups = loaderData[1];
 
     // console.log('userinfo:', userInfo);
+    console.log('allGroups:', allGroups);
 
     const responseStatus = useActionData();
 
@@ -54,8 +55,7 @@ function UserEdit() {
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data) => {
-        const formData = { ...data };
-        submit(formData, {
+        submit(data, {
             method: 'put',
         });
     });
@@ -201,8 +201,8 @@ function UserEdit() {
                                 required: { value: true, message: 'Käyttäjän puhelinnumero ei voi olla tyhjä' },
                                 maxLength: { value: 30, message: 'Puhelinnumero on liian pitkä' },
                                 minLength: {
-                                    value: 11,
-                                    message: 'Puhelinnumero on 11 merkkiä pitkä, muodossa 040 1234567',
+                                    value: 10,
+                                    message: 'Puhelinnumero on 10 merkkiä pitkä, muodossa 040 1234567',
                                 },
                             })}
                             inputProps={{ required: false }}
@@ -282,25 +282,46 @@ function UserEdit() {
                     <Box id="user-edition-checkboxes-wrapper">
                         <TypographyHeading text="Käyttäjän käyttöoikeudet" />
                         <Stack id="usergroups-checkboxes-stack-column">
-                            {/* {groups.map((group) => (
-                                    <FormControlLabel
-                                        sx={{ margin: 0 }}
-                                        key={group.id}
-                                        control={<Checkbox />}
-                                        name={`groups.${group.name}`}
-                                        {...register(`groups.${group.id}`)}
-                                        // onChange={(event) => {
-                                        //     handleChange('groups', event, group);
-                                        // }}
-                                        // checked={userState.groups.includes(group.id)}
-                                        label={groupNames[group.name]}
-                                        value={group.name}
-                                    />
-                                ))} */}
+                            {/* Checkboxes, mapped: */}
+                            {allGroups.map((group) => (
+                                <FormControlLabel
+                                    sx={{ margin: 0 }}
+                                    key={group.id}
+                                    control={
+                                        <Checkbox
+                                            sx={{
+                                                '&.Mui-checked': {
+                                                    color: 'success.dark',
+                                                },
+                                            }}
+                                        />
+                                    }
+                                    // name={`groups.${group.name}`}
+                                    {...register('groups')}
+                                    // onChange={(event) => {
+                                    //     handleChange('groups', event, group);
+                                    // }}
+                                    // checked={userState.groups.includes(group.id)}
+                                    label={groupNames[group.name]}
+                                    value={group.id}
+                                    onClick={() => console.log(`clicked checkboxs value: ${group.id}`)}
+                                />
+                            ))}
 
-                            <FormControlLabel
+                            {/******** */}
+                            {/* Checkboxes, hardcoded: */}
+
+                            {/* <FormControlLabel
                                 sx={{ margin: 0 }}
-                                control={<Checkbox />}
+                                control={
+                                    <Checkbox
+                                        sx={{
+                                            '&.Mui-checked': {
+                                                color: 'success.dark',
+                                            },
+                                        }}
+                                    />
+                                }
                                 name={'auth-groups-user-checkbox'}
                                 {...register('usergroup')}
                                 // onChange={(event) => {
@@ -313,7 +334,15 @@ function UserEdit() {
 
                             <FormControlLabel
                                 sx={{ margin: 0 }}
-                                control={<Checkbox />}
+                                control={
+                                    <Checkbox
+                                        sx={{
+                                            '&.Mui-checked': {
+                                                color: 'success.dark',
+                                            },
+                                        }}
+                                    />
+                                }
                                 name={'auth-groups-admin-checkbox'}
                                 {...register('admingroup')}
                                 // onChange={(event) => {
@@ -324,6 +353,42 @@ function UserEdit() {
                                 label={'Ylläpitäjä'}
                                 value={2}
                             />
+
+                            <FormControlLabel
+                                sx={{ margin: 0 }}
+                                control={
+                                    <Checkbox
+                                        sx={{
+                                            '&.Mui-checked': {
+                                                color: 'success.dark',
+                                            },
+                                        }}
+                                    />
+                                }
+                                name={'auth-groups-storage-checkbox'}
+                                {...register('storagegroup')}
+                                // onChange={(event) => {
+                                //     handleChange('groups', event, group);
+                                // }}
+                                // formState.groups is undefined :(
+                                // checked={formState?.groups?.includes(2)}
+                                label={'Varastohessu'}
+                                value={3}
+                            />
+
+                            <FormControlLabel
+                                sx={{ margin: 0 }}
+                                control={<Checkbox />}
+                                name={'auth-groups-bike-checkbox'}
+                                {...register('bikegroup')}
+                                // onChange={(event) => {
+                                //     handleChange('groups', event, group);
+                                // }}
+                                // formState.groups is undefined :(
+                                // checked={formState?.groups?.includes(2)}
+                                label={'Pyörävaltuutettu'}
+                                value={4}
+                            /> */}
                         </Stack>
                     </Box>
                     <Button id="save-changes-btn" fullWidth type="submit" sx={{ marginTop: '1rem' }}>
