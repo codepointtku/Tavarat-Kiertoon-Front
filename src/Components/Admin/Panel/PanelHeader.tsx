@@ -82,6 +82,8 @@ function PanelHeader() {
         setAnchorEl(null);
     };
 
+    const unreadMessages = messages.results.filter((message: { status: string }) => message.status === 'Not read');
+
     // log out functionality:
     const responseStatus = useActionData() as Awaited<ReturnType<typeof adminLogOut>>;
     const submit = useSubmit();
@@ -129,7 +131,7 @@ function PanelHeader() {
                         <Box id="mail" sx={{ margin: '0 1rem 0 1rem' }}>
                             <Tooltip title="Uudet viestit">
                                 <IconButton>
-                                    <Badge badgeContent={messages.count} color="error">
+                                    <Badge badgeContent={unreadMessages.length} color="error">
                                         <MailIcon sx={{ color: 'primary.contrastText' }} />
                                     </Badge>
                                 </IconButton>
