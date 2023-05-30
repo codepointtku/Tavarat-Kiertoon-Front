@@ -50,18 +50,28 @@ function BikeModels() {
                                     padding: '1rem',
                                 }}
                             >
-                                <Box sx={{ display: 'flex', flexDirection: 'row', height: 280 }}>
-                                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            width: 400,
+                                        }}
+                                    >
                                         <CardMedia
                                             component="img"
-                                            sx={{ width: 250, marginRight: '1rem' }}
-                                            image="/bike.jpg"
+                                            height="175"
+                                            sx={{ objectFit: 'contain' }}
+                                            // image="/bike.jpg"
+                                            image={`${window.location.protocol}//${window.location.hostname}:8000/media/${model.picture.picture_address}`} // TODO: Fix pic path
                                             alt="Bike Model"
                                         />
                                         <Button
                                             to={`/pyorat/pyoravarasto/muokkaapyoramalli/${model.id}`}
                                             component={Link}
-                                            sx={{ width: '10rem', marginTop: '2rem' }}
+                                            sx={{ width: '10rem', marginTop: '1rem' }}
                                         >
                                             Muokkaa
                                         </Button>

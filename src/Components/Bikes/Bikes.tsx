@@ -37,6 +37,7 @@ export interface BikeModelInterface {
     name: string;
     size: { id: number; name: string };
     type: { id: number; name: string };
+    picture: { id: number; picture_address: string };
 }
 
 export interface StorageInterface {
@@ -115,7 +116,7 @@ export default function Bikes() {
                                         <Button
                                             to={`/pyorat/pyoravarasto/muokkaa/${bike.id}`}
                                             component={Link}
-                                            variant='outlined'
+                                            variant="outlined"
                                         >
                                             Muokkaa
                                         </Button>

@@ -43,6 +43,8 @@ function ModifyBikeModelPage() {
         sizes: NameIdInterface[];
     };
 
+    console.log('### bikeModel', bikeModel);
+
     // hook form functions and default values
     const { register, handleSubmit, watch } = useForm({
         defaultValues: {
@@ -52,7 +54,7 @@ function ModifyBikeModelPage() {
             bikeModelSizeName: bikeModel.size.name as string,
             bikeModelTypeName: bikeModel.type.name as string,
             bikeModelDescription: bikeModel.description as string,
-            pictures: null,
+            pictures: bikeModel.picture.picture_address as string,
         },
     });
 
@@ -116,12 +118,27 @@ function ModifyBikeModelPage() {
                     }}
                 >
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                        <CardMedia
-                            component="img"
-                            sx={{ width: 400, marginRight: '1rem' }}
-                            image="/bike.jpg"
-                            alt="Bike Model"
-                        />
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'space-around',
+                                width: 600,
+                            }}
+                        >
+                            <CardMedia
+                                component="img"
+                                height="250"
+                                sx={{ marginRight: '1rem', marginBottom: '1rem', objectFit: 'contain' }}
+                                image={`${window.location.protocol}//${window.location.hostname}:8000/media/${bikeModel.picture.picture_address}`} // TODO: Fix pic path
+                                alt="Bike Model"
+                            />
+                            <Button variant="outlined" component="label" sx={{ width: 200 }}>
+                                Vaihda kuva
+                                <input type="file" accept="image/*" {...register('pictures')} hidden />
+                            </Button>
+                        </Box>
                         <Grid container flexDirection="row" spacing={2} paddingTop="1rem">
                             <Grid item xs={6}>
                                 <TextField
@@ -216,10 +233,6 @@ function ModifyBikeModelPage() {
                     </Button>
                     <Button type="submit" sx={{ width: '12rem', padding: '1rem' }}>
                         Tallenna ja palaa
-                    </Button>
-                    <Button variant="contained" component="label" size="large">
-                        Lisää kuvat
-                        <input type="file" accept="image/*" {...register('pictures')} hidden />
                     </Button>
                 </Box>
             </Box>
