@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
     Autocomplete,
     Box,
@@ -42,8 +43,6 @@ function ModifyBikeModelPage() {
         types: NameIdInterface[];
         sizes: NameIdInterface[];
     };
-
-    console.log('### bikeModel', bikeModel);
 
     // hook form functions and default values
     const { register, handleSubmit, watch } = useForm({
@@ -92,6 +91,15 @@ function ModifyBikeModelPage() {
         });
     };
 
+    // if image has not changed return original image path.
+    // else return new FileList
+    const image = watch('pictures');
+    const imageToShow = useMemo(() => {
+        return typeof image === 'string'
+            ? `${window.location.protocol}//${window.location.hostname}:8000/media/${bikeModel.picture.picture_address}` // TODO: Fix pic path
+            : URL.createObjectURL(image[0]);
+    }, [image, bikeModel.picture.picture_address]);
+
     // RENDER
     return (
         <>
@@ -131,7 +139,7 @@ function ModifyBikeModelPage() {
                                 component="img"
                                 height="250"
                                 sx={{ marginRight: '1rem', marginBottom: '1rem', objectFit: 'contain' }}
-                                image={`${window.location.protocol}//${window.location.hostname}:8000/media/${bikeModel.picture.picture_address}`} // TODO: Fix pic path
+                                image={imageToShow}
                                 alt="Bike Model"
                             />
                             <Button variant="outlined" component="label" sx={{ width: 200 }}>
