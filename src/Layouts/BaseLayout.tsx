@@ -22,7 +22,7 @@ function BaseLayout() {
                     <Outlet />
                 </Box>
             </main>
-            <footer>
+            <footer style={{ marginTop: 'auto' }}>
                 <Footer />
             </footer>
         </Stack>

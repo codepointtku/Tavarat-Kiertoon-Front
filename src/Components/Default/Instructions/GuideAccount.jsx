@@ -60,7 +60,7 @@ function UserAccountHelp() {
                 Käyttäjätilin luominen
             </Typography>
             <Typography gutterBottom>Tilin luonti on kaksi-vaiheinen.</Typography>
-            <MuiLink component={Link} to="/signup/user">
+            <MuiLink component={Link} to="/rekisteroidy/kayttaja">
                 Avaa rekisteröinti-lomake
             </MuiLink>
             <Typography gutterBottom>

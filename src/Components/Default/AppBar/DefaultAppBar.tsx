@@ -30,7 +30,6 @@ import ProductInCart from './ProductInCart';
 import LoginForm from './LoginForm';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
-import { set } from 'date-fns';
 
 //
 
@@ -235,7 +234,7 @@ function DefaultAppBar() {
                         </>
                     )}
                     {/* {products?.map((cartProduct: CartProduct) => {
-                        const product = amountList.find((p: { id: number }) => p.id == cartProduct.group_id);
+                        const product = amountList?.find((p: { id: number }) => p.id == cartProduct.group_id);
                         return (
                             <ProductInCart
                                 key={cartProduct.id}
@@ -245,12 +244,12 @@ function DefaultAppBar() {
                                 maxCount={product?.amount}
                             />
                         );
-                    })} */}
+                    })}  */}
 
                     {/* TODO: MUUTA KÄYTTÄMÄÄN REDUCEA? */}
                     {cart?.product_items?.map((cartProduct) => {
                         // TODO TÄMÄ POIS?
-                        const product = amountList.find((p: { id: number }) => p.id == cartProduct.id);
+                        const product = amountList?.find((p: { id: number }) => p.id == cartProduct.id);
 
                         return (
                             <ProductInCart
