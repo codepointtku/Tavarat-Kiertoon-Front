@@ -72,47 +72,40 @@ interface FormValues {
 }
 
 export default function ModifyBikeOrder() {
-    // const handleAddBike = (index: number) => {
-    //     setBikesState((prevState) => {
-    //         const newState = [...prevState];
-    //         newState[index].amount += 1;
-    //         return newState;
-    //     });
-    //     setAmount((prevAmount) => {
-    //         const newAmount = [...prevAmount];
-    //         newAmount[index] += 1;
-    //         return newAmount;
-    //     });
-    // };
+    const handleAddBike = (index: number) => {
+        setBikesState((prevState) => {
+            const newState = [...prevState];
+            newState[index].amount += 1;
+            return newState;
+        });
+        setAmount((prevAmount) => {
+            const newAmount = [...prevAmount];
+            newAmount[index] += 1;
+            return newAmount;
+        });
+    };
 
-    // const handleRemoveBike = (index: number) => {
-    //     const newAmount = [...amount];
-    //     if (newAmount[index] > 0) {
-    //         newAmount[index] -= 1;
-    //         setAmount(newAmount);
-    //     }
-    // };
-    // const handleRemovePacket = (index: number) => {
-    //     const newBikes = [...bikesState];
-    //     newBikes.splice(index, 1);
-    //     setBikesState(newBikes);
-    //     const newAmount = [...amount];
-    //     newAmount.splice(index, 1);
-    //     setAmount(newAmount);
-    // };
-    const handleAddModel = (modelId: number) => {
-        const modelToAdd = models.find((model) => model.id === modelId);
-        if (modelToAdd) {
-            const newBike = {
-                id: packet.bikes.length + 1,
-                bike: modelToAdd.id,
-                amount: 1,
-            };
-            setBikesState((prevState) => [...prevState, newBike]);
-            setAmount((prevAmount) => [...prevAmount, 1]);
-            // setSelectedModel(null);
+    const handleRemoveBike = (index: number) => {
+        const newAmount = [...amount];
+        if (newAmount[index] > 0) {
+            newAmount[index] -= 1;
+            setAmount(newAmount);
         }
     };
+
+    // const handleAddModel = (modelId: number) => {
+    //     const modelToAdd = models.find((model) => model.id === modelId);
+    //     if (modelToAdd) {
+    //         const newBike = {
+    //             id: packet.bikes.length + 1,
+    //             bike: modelToAdd.id,
+    //             amount: 1,
+    //         };
+    //         setBikesState((prevState) => [...prevState, newBike]);
+    //         setAmount((prevAmount) => [...prevAmount, 1]);
+    //         // setSelectedModel(null);
+    //     }
+    // };
 
     const { packet, models } = useLoaderData() as LoaderDataInterface;
 
@@ -164,7 +157,7 @@ export default function ModifyBikeOrder() {
                     Muokkaa {packet.name}a
                 </Typography>
             </Box>
-            <Box component={Form} method="put" onSubmit={handleSubmit(onSubmit)}>
+            <Box component={Form} method="put" onSubmit={handleSubmit((data) => console.log(data))}>
                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                     <Box
                         sx={{
@@ -285,7 +278,7 @@ export default function ModifyBikeOrder() {
                                         <IconButton
                                             sx={{ color: 'primary.main' }}
                                             aria-label="add"
-                                            onClick={() => handleAddModel(selectedModel)}
+                                            onClick={() => append(selectedModel)}
                                             disabled={!selectedModel}
                                         >
                                             <AddCircleRoundedIcon />
