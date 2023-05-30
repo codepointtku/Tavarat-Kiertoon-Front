@@ -291,7 +291,7 @@ function Routes() {
                             action: async ({ request }) => changeEmailAction(auth, setAuth, request),
                         },
                         {
-                            path: 'emailvaihto/:token/:uid/:newEmail',
+                            path: 'emailvaihto/:uid/:token/:newEmail',
                             element: <EmailChangeSuccessful />,
                             action: async ({ request }) => emailChangeSuccessfulAction(auth, setAuth, request),
                         },

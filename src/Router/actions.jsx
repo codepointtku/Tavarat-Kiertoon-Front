@@ -415,11 +415,10 @@ const activationAction = async (auth, setAuth, request) => {
 
 const changeEmailAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    console.log(formData.get('newEmail'));
     const response = await apiCall(auth, setAuth, '/users/emailchange/', 'post', {
         new_email: formData.get('newEmail'),
     });
-    if (response.status === 204) {
+    if (response.status === 200) {
         return { type: 'changeEmail', status: true };
     }
     return { type: 'changeEmail', status: false };
@@ -432,7 +431,7 @@ const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
         token: formData.get('token'),
         new_email: formData.get('newEmail'),
     });
-    if (response.status === 204) {
+    if (response.status === 200) {
         return { type: 'emailchangesuccessful', status: true };
     }
     return { type: 'emailchangesuccessful', status: false };

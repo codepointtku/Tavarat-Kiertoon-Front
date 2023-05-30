@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { ErrorMessage } from '@hookform/error-message';
-import { useSubmit } from 'react-router-dom';
+import { useSubmit, useActionData, Link } from 'react-router-dom';
 
 import {
     Container,
@@ -16,13 +15,11 @@ import {
 } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import TypographyTitle from './TypographyTitle';
-
-// interface FormValidation extends ReactPortal {
-//     types: { required: string; maxLength: string; pattern: string };
-// }
+import AlertBox from './AlertBox';
 
 function ChangeEmail() {
     const submit = useSubmit();
+    const responseStatus = useActionData() as { type: string; status: boolean };
 
     const {
         register,
@@ -37,6 +34,12 @@ function ChangeEmail() {
 
     return (
         <Container sx={{ border: '0.1rem solid #bfe6f6', borderRadius: '1rem', p: 5 }}>
+            {responseStatus?.status && (
+                <AlertBox
+                    text="Sähköpostiosoitteen vaihdon vahvistuslinkki on lähetetty uuteen sähköpostiisi"
+                    status="success"
+                />
+            )}
             <>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Avatar
@@ -67,18 +70,36 @@ function ChangeEmail() {
                                     maxLength: 255,
                                     pattern: /.+@turku.fi$|.+@edu.turku.fi$/,
                                 })}
+                                color={errors.newEmail ? 'error' : 'primary'}
                                 id="outlined-input-change-email"
-                                error={errors.newEmail as unknown as boolean}
                                 label="Uusi sähköposti"
                             />
                             {errors.newEmail && errors.newEmail.type === 'required' && (
-                                <Alert severity="error">Tämä kenttä on täytettävä</Alert>
+                                <Alert severity="error" sx={{ mt: 1 }}>
+                                    Tämä kenttä on täytettävä
+                                </Alert>
+                            )}
+                            {errors.newEmail && errors.newEmail.type === 'maxLength' && (
+                                <Alert severity="error" sx={{ mt: 1 }}>
+                                    Sähköpostisi on liian pitkä
+                                </Alert>
+                            )}
+                            {errors.newEmail && errors.newEmail.type === 'pattern' && (
+                                <Alert severity="error" sx={{ mt: 1 }}>
+                                    Sähköpostisi täytyy loppua turku.fi tai edu.turku.fi
+                                </Alert>
                             )}
                         </FormControl>
                         <Grid item>
-                            <Button type="submit" sx={{ fontWeight: 'fontWeightMediumBold' }}>
-                                Vaihda sähköposti
-                            </Button>
+                            {responseStatus?.status ? (
+                                <Button component={Link} to="/" sx={{ fontWeight: 'fontWeightMediumBold' }}>
+                                    Palaa etusivulle
+                                </Button>
+                            ) : (
+                                <Button type="submit" sx={{ fontWeight: 'fontWeightMediumBold' }}>
+                                    Vaihda sähköposti
+                                </Button>
+                            )}
                         </Grid>
                     </Grid>
                 </form>

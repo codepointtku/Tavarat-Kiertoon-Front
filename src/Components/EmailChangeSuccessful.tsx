@@ -13,8 +13,9 @@ interface Params {
 function EmailChangeSuccessful() {
     const submit = useSubmit();
     const { uid, token, newEmail } = useParams() as unknown as Params;
+    console.log('uid: ', uid, 'token: ', token, 'newEmail: ', newEmail);
     useEffect(() => {
-        submit({ uid, token, newEmail }, { method: 'post', action: `/emailvaihto/${uid}/${token}/${newEmail}` });
+        submit({ uid, token, newEmail }, { method: 'post', action: `/emailvaihto/${token}/${uid}/${newEmail}` });
     }, []);
 
     return (
