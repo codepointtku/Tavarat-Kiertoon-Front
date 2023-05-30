@@ -19,7 +19,7 @@ import {
     Typography,
 } from '@mui/material';
 import { Form, useSubmit } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { useState } from 'react';
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
@@ -65,51 +65,41 @@ interface ModelInterface {
     };
 }
 
+interface FormValues {
+    packetName: string;
+    packetDescription: string;
+    bikes: BikeInterface[];
+}
+
 export default function ModifyBikeOrder() {
-    const { packet, models } = useLoaderData() as LoaderDataInterface;
-    const submit = useSubmit();
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [success, setSuccess] = useState(false);
+    // const handleAddBike = (index: number) => {
+    //     setBikesState((prevState) => {
+    //         const newState = [...prevState];
+    //         newState[index].amount += 1;
+    //         return newState;
+    //     });
+    //     setAmount((prevAmount) => {
+    //         const newAmount = [...prevAmount];
+    //         newAmount[index] += 1;
+    //         return newAmount;
+    //     });
+    // };
 
-    const { register, watch, handleSubmit } = useForm({
-        defaultValues: {
-            packetDescription: packet.description,
-            packetName: packet.name,
-        },
-    });
-    const [amount, setAmount] = useState(packet.bikes.map((packet) => packet.amount));
-    const [bikesState, setBikesState] = useState(packet.bikes);
-
-    const [selectedModel, setSelectedModel] = useState<number>(models[0].id);
-
-    const handleAddBike = (index: number) => {
-        setBikesState((prevState) => {
-            const newState = [...prevState];
-            newState[index].amount += 1;
-            return newState;
-        });
-        setAmount((prevAmount) => {
-            const newAmount = [...prevAmount];
-            newAmount[index] += 1;
-            return newAmount;
-        });
-    };
-
-    const handleRemoveBike = (index: number) => {
-        const newAmount = [...amount];
-        if (newAmount[index] > 0) {
-            newAmount[index] -= 1;
-            setAmount(newAmount);
-        }
-    };
-    const handleRemovePacket = (index: number) => {
-        const newBikes = [...bikesState];
-        newBikes.splice(index, 1);
-        setBikesState(newBikes);
-        const newAmount = [...amount];
-        newAmount.splice(index, 1);
-        setAmount(newAmount);
-    };
+    // const handleRemoveBike = (index: number) => {
+    //     const newAmount = [...amount];
+    //     if (newAmount[index] > 0) {
+    //         newAmount[index] -= 1;
+    //         setAmount(newAmount);
+    //     }
+    // };
+    // const handleRemovePacket = (index: number) => {
+    //     const newBikes = [...bikesState];
+    //     newBikes.splice(index, 1);
+    //     setBikesState(newBikes);
+    //     const newAmount = [...amount];
+    //     newAmount.splice(index, 1);
+    //     setAmount(newAmount);
+    // };
     const handleAddModel = (modelId: number) => {
         const modelToAdd = models.find((model) => model.id === modelId);
         if (modelToAdd) {
@@ -120,9 +110,34 @@ export default function ModifyBikeOrder() {
             };
             setBikesState((prevState) => [...prevState, newBike]);
             setAmount((prevAmount) => [...prevAmount, 1]);
-            setSelectedModel(null);
+            // setSelectedModel(null);
         }
     };
+
+    const { packet, models } = useLoaderData() as LoaderDataInterface;
+
+    const submit = useSubmit();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [success, setSuccess] = useState(false);
+
+    const { register, watch, handleSubmit, control } = useForm<FormValues>({
+        defaultValues: {
+            packetDescription: packet.description,
+            packetName: packet.name,
+            bikes: packet.bikes,
+        },
+    });
+
+    const { fields, append, prepend, remove } = useFieldArray({
+        name: 'bikes',
+        control,
+    });
+
+    const [amount, setAmount] = useState(packet.bikes.map((packet) => packet.amount));
+    const [bikesState, setBikesState] = useState(packet.bikes);
+
+    const [selectedModel, setSelectedModel] = useState<number>(models[0].id);
+
     const onSubmit = (data) => {
         const formData = { ...data, category: 'category' };
 
@@ -189,25 +204,27 @@ export default function ModifyBikeOrder() {
                                     </TableCell>
                                 </TableRow>
 
-                                {bikesState.map((packet, index) => (
-                                    <TableRow key={packet.bike}>
+                                {fields.map((field, index) => (
+                                    <TableRow {...register(`bikes.${index}.bike`)} key={field.id}>
                                         <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>
                                             {index === 0 ? 'Pyörät: ' : ''}
                                         </TableCell>
-                                        <TableCell>
-                                            Merkki: {models.find((model) => model.id === packet.bike)?.brand.name}
-                                        </TableCell>
 
+                                        <TableCell>
+                                            Merkki: {models.find((model) => model.id === field.bike)?.brand.name}
+                                        </TableCell>
                                         <TableCell>
                                             <Box>
                                                 <Stack justifyContent="center" direction="row">
-                                                    <IconButton color="primary" onClick={() => handleRemoveBike(index)}>
+                                                    {/* <IconButton color="primary" onClick={() => handleRemoveBike(index)}> */}
+                                                    <IconButton color="primary" onClick={() => console.log('dasd')}>
                                                         <RemoveCircleOutlineRoundedIcon />
                                                     </IconButton>
                                                     <Typography variant="h6" sx={{ p: 0.5 }}>
                                                         {amount[index]}
                                                     </Typography>
-                                                    <IconButton color="primary" onClick={() => handleAddBike(index)}>
+                                                    {/* <IconButton color="primary" onClick={() => handleAddBike(index)}> */}
+                                                    <IconButton color="primary" onClick={() => console.log('kaka')}>
                                                         <AddCircleRoundedIcon />
                                                     </IconButton>
                                                 </Stack>
@@ -215,23 +232,24 @@ export default function ModifyBikeOrder() {
                                         </TableCell>
                                         <TableCell colSpan={5}></TableCell>
                                         <TableCell>
-                                            Väri: {models.find((model) => model.id === packet.bike)?.color.name}
+                                            Väri: {models.find((model) => model.id === field.bike)?.color.name}
                                         </TableCell>
                                         <TableCell>
-                                            Malli: {models.find((model) => model.id === packet.bike)?.type.name}
+                                            Malli: {models.find((model) => model.id === field.bike)?.type.name}
                                         </TableCell>
 
                                         <TableCell>
-                                            Nimi: {models.find((model) => model.id === packet.bike)?.name}
+                                            Nimi: {models.find((model) => model.id === field.bike)?.name}
                                         </TableCell>
                                         <TableCell>
-                                            Kuvaus: {models.find((model) => model.id === packet.bike)?.description}
+                                            Kuvaus: {models.find((model) => model.id === field.bike)?.description}
                                         </TableCell>
                                         <TableCell>
                                             <IconButton
+                                                type="button"
                                                 sx={{ color: 'primary.main' }}
                                                 aria-label="remove"
-                                                onClick={() => handleRemovePacket(index)}
+                                                onClick={() => remove(index)}
                                             >
                                                 <DeleteIcon />
                                                 Poista
@@ -245,8 +263,7 @@ export default function ModifyBikeOrder() {
                                             <InputLabel id="model-label">Valitse malli</InputLabel>
                                             <Select
                                                 labelId="model-label"
-                                                // value={selectedModel}
-                                                {...register('bikes')}
+                                                value={selectedModel}
                                                 onChange={(event) => setSelectedModel(event.target.value as number)}
                                                 fullWidth
                                                 // displayEmpty

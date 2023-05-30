@@ -408,6 +408,7 @@ const modifyBikeOrderAction = async (auth, setAuth, request, params) => {
     const submission = {
         name: data.get('packetName'),
         description: data.get('packetDescription'),
+        bikes: data.get('packetBikes'),
     };
     console.log('action', submission);
     // send data and redirect back to bike list
