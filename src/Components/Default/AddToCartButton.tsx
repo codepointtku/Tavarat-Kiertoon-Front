@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSubmit, useRouteLoaderData, useSearchParams } from 'react-router-dom';
-import { OverridableStringUnion } from '@material-ui/types';
-import { Box, Button, ButtonPropsSizeOverrides } from '@mui/material';
+import { type OverridableStringUnion } from '@material-ui/types';
+import { Box, Button, type ButtonPropsSizeOverrides } from '@mui/material';
 
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import AddMoreToCart from '../AddMoreToCart';
@@ -18,7 +18,7 @@ interface Props {
 function AddToCartButton({ size, id, groupId, count }: Props) {
     const submit = useSubmit();
     const { cart, products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
-    const [addedToCart, setAddedToCart] = useState(false);
+    const [, setAddedToCart] = useState(false);
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
 
