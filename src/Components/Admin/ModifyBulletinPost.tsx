@@ -15,20 +15,17 @@ interface FormData extends SubmitHandler<FieldValues> {
 }
 
 function ModifyBulletinPost() {
+    const submit = useSubmit();
+    const location = useLocation();
     const {
         register,
         handleSubmit,
-        formState: { dirtyFields, isSubmitting, isSubmitted },
-    } = useForm({ defaultValues: { title: '', content: '' } });
-    const submit = useSubmit();
-    const location = useLocation();
+        formState: { isDirty, isSubmitted },
+    } = useForm({ mode: 'onTouched', defaultValues: { title: location.state.title, content: location.state.content } });
+
+    console.log(isDirty);
 
     const onSubmit = (data: { title: string; content: string }) => {
-        if (data.title === '') {
-            data.title = location.state.title;
-        } else if (data.content === '') {
-            data.content = location.state.content;
-        }
         const formData = { ...data, category: 'category', id: location.state.id };
 
         submit(formData, {
@@ -61,9 +58,10 @@ function ModifyBulletinPost() {
                                 sx={{ mt: 2 }}
                                 label="Uusi otsikko"
                                 placeholder="Uusi otsikko"
+                                color={isDirty ? 'success' : 'primary'}
                                 fullWidth
                                 inputProps={{ title: 'Otsikko', minLength: '4', maxLength: '50' }}
-                                required={!dirtyFields.content}
+                                required
                             />
 
                             <TextField
@@ -71,15 +69,19 @@ function ModifyBulletinPost() {
                                 sx={{ mt: 2 }}
                                 label="Uusi sisältö"
                                 placeholder="Uusi sisältö"
+                                color={isDirty ? 'success' : 'primary'}
                                 multiline
                                 rows={6}
                                 fullWidth
                                 inputProps={{ minLength: '5' }}
-                                required={!dirtyFields.title}
+                                required
                             />
 
-                            <Button disabled={isSubmitting} type="submit" sx={{ mt: 2 }}>
+                            <Button disabled={!isDirty} type="submit" sx={{ mt: 2 }}>
                                 Muokkaa tiedotetta
+                            </Button>
+                            <Button color="error" type="submit" sx={{ mt: 2 }}>
+                                Poistu tallentamatta
                             </Button>
                         </FormControl>
                     </Stack>
