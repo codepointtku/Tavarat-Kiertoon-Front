@@ -275,13 +275,34 @@ const bikeModelsLoader = async (auth, setAuth) => {
  * @returns
  */
 const bikeSingleModelLoader = async (auth, setAuth, params) => {
-    const [{ data: bikeModel }, { data: colors }, {data: brands}, {data: types}, {data: sizes}] = await Promise.all([
-        apiCall(auth, setAuth, `/bikes/models/${params.id}`, 'get'),
+    const [{ data: bikeModel }, { data: colors }, { data: brands }, { data: types }, { data: sizes }] =
+        await Promise.all([
+            apiCall(auth, setAuth, `/bikes/models/${params.id}`, 'get'),
+            apiCall(auth, setAuth, `/colors`, 'get'),
+            apiCall(auth, setAuth, `/bikes/brand`, 'get'),
+            apiCall(auth, setAuth, `/bikes/type`, 'get'),
+            apiCall(auth, setAuth, `/bikes/size`, 'get'),
+        ]);
+    return { bikeModel, colors, brands, types, sizes };
+};
+
+const bikeNewModelLoader = async (auth, setAuth, params) => {
+    const [{ data: colors }, { data: brands }, { data: types }, { data: sizes }] = await Promise.all([
         apiCall(auth, setAuth, `/colors`, 'get'),
         apiCall(auth, setAuth, `/bikes/brand`, 'get'),
         apiCall(auth, setAuth, `/bikes/type`, 'get'),
         apiCall(auth, setAuth, `/bikes/size`, 'get'),
     ]);
+
+    const bikeModel = {
+        name: '',
+        description: '',
+        type: { id: null, name: '' },
+        brand: { id: null, name: '' },
+        size: { id: null, name: '' },
+        color: { id: null, name: '' },
+        picture: { id: null, picture_address: '' },
+    };
     return { bikeModel, colors, brands, types, sizes };
 };
 
@@ -353,4 +374,5 @@ export {
     shoppingCartLoader,
     shoppingProcessLoader,
     adminInboxLoader,
+    bikeNewModelLoader,
 };

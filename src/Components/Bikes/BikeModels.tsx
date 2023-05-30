@@ -29,6 +29,12 @@ function BikeModels() {
                 Pyörämallit
             </Typography>
 
+            <Box width="100%" textAlign="right" marginBottom="1em" marginTop="-4em" marginRight="2em">
+                <Button component={Link} to="/pyorat/pyoravarasto/lisaapyoramalli/">
+                    Lisää uusi pyörämalli
+                </Button>
+            </Box>
+
             <Grid
                 container
                 spacing={4}
@@ -72,6 +78,7 @@ function BikeModels() {
                                             to={`/pyorat/pyoravarasto/muokkaapyoramalli/${model.id}`}
                                             component={Link}
                                             sx={{ width: '10rem', marginTop: '1rem' }}
+                                            variant="outlined"
                                         >
                                             Muokkaa
                                         </Button>

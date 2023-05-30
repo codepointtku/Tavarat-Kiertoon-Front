@@ -100,6 +100,7 @@ import {
     bikeSingleModelLoader,
     shoppingProcessLoader,
     adminInboxLoader,
+    bikeNewModelLoader,
 } from './loaders';
 
 import {
@@ -568,12 +569,17 @@ function Routes() {
                                         },
                                         {
                                             path: ':id',
-                                            element: <ModifyBikeModelPage />,
+                                            element: <ModifyBikeModelPage createNewBikeModel={false} />,
                                             loader: async ({ params }) => bikeSingleModelLoader(auth, setAuth, params),
                                             action: async ({ request, params }) =>
                                                 modifyBikeModelAction(auth, setAuth, request, params),
                                         },
                                     ],
+                                },
+                                {
+                                    path: 'lisaapyoramalli',
+                                    element: <ModifyBikeModelPage createNewBikeModel={true} />,
+                                    loader: async ({ params }) => bikeNewModelLoader(auth, setAuth, params),
                                 },
                             ],
                         },

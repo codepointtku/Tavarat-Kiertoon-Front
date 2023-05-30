@@ -16,6 +16,7 @@ import {
 import { useLoaderData } from 'react-router';
 import { Form, Link, useSubmit } from 'react-router-dom';
 import { type FieldValues, useForm } from 'react-hook-form';
+import NoPhotographyTwoToneIcon from '@mui/icons-material/NoPhotographyTwoTone';
 
 // interface(s)
 import type { BikeModelInterface } from './Bikes';
@@ -28,6 +29,9 @@ interface NameIdInterface {
     id: number;
     name: string;
 }
+interface ModifyBikeModelInterface {
+    createNewBikeModel: boolean;
+}
 
 /**
  * Modify a single Bike Model.
@@ -35,7 +39,7 @@ interface NameIdInterface {
  *
  * @returns
  */
-function ModifyBikeModelPage() {
+function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
     const { bikeModel, colors, brands, types, sizes } = useLoaderData() as {
         bikeModel: BikeModelInterface;
         colors: ColorInterface[];
@@ -47,13 +51,13 @@ function ModifyBikeModelPage() {
     // hook form functions and default values
     const { register, handleSubmit, watch } = useForm({
         defaultValues: {
-            bikeModelName: bikeModel.name as string,
-            bikeModelBrandName: bikeModel.brand.name as string,
-            bikeModelColorId: bikeModel.color.id as number,
-            bikeModelSizeName: bikeModel.size.name as string,
-            bikeModelTypeName: bikeModel.type.name as string,
-            bikeModelDescription: bikeModel.description as string,
-            pictures: bikeModel.picture.picture_address as string,
+            bikeModelName: createNewBikeModel ? '' : (bikeModel.name as string),
+            bikeModelBrandName: createNewBikeModel ? '' : (bikeModel.brand.name as string),
+            bikeModelColorId: createNewBikeModel ? '' : (bikeModel.color.id as number),
+            bikeModelSizeName: createNewBikeModel ? '' : (bikeModel.size.name as string),
+            bikeModelTypeName: createNewBikeModel ? '' : (bikeModel.type.name as string),
+            bikeModelDescription: createNewBikeModel ? '' : (bikeModel.description as string),
+            pictures: createNewBikeModel ? '' : (bikeModel.picture.picture_address as string),
         },
     });
 
@@ -95,16 +99,19 @@ function ModifyBikeModelPage() {
     // else return new FileList
     const image = watch('pictures');
     const imageToShow = useMemo(() => {
+        if (createNewBikeModel) {
+            return typeof image === 'string' ? '' : URL.createObjectURL(image[0]);
+        }
         return typeof image === 'string'
             ? `${window.location.protocol}//${window.location.hostname}:8000/media/${bikeModel.picture.picture_address}` // TODO: Fix pic path
             : URL.createObjectURL(image[0]);
-    }, [image, bikeModel.picture.picture_address]);
+    }, [image, bikeModel.picture.picture_address, createNewBikeModel]);
 
     // RENDER
     return (
         <>
             <Typography variant="h3" align="center" color="primary.main" mb="2rem" width="100%">
-                Muokkaa pyörämallia
+                {createNewBikeModel ? 'Lisää uusi pyörämalli' : 'Muokkaa pyörämallia'}
             </Typography>
 
             <Box
@@ -140,10 +147,10 @@ function ModifyBikeModelPage() {
                                 height="250"
                                 sx={{ marginRight: '1rem', marginBottom: '1rem', objectFit: 'contain' }}
                                 image={imageToShow}
-                                alt="Bike Model"
+                                alt="Lisää kuva"
                             />
                             <Button variant="outlined" component="label" sx={{ width: 200 }}>
-                                Vaihda kuva
+                                {createNewBikeModel ? 'Lisää kuva' : 'Vaihda kuva'}
                                 <input type="file" accept="image/*" {...register('pictures')} hidden />
                             </Button>
                         </Box>
