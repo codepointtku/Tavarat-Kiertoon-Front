@@ -483,7 +483,7 @@ function Routes() {
                             action: async ({ request }) => adminBulletinsAction(auth, setAuth, request),
                         },
                         {
-                            path: 'tiedotteet/muokkaa',
+                            path: 'tiedotteet/:id/muokkaa',
                             element: <ModifyBulletinPost />,
                         },
                         {

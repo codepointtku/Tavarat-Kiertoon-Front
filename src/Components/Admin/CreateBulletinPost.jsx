@@ -11,7 +11,7 @@ function CreateBulletinPost() {
     const {
         register,
         handleSubmit,
-        formState: { isSubmitting, isSubmitted },
+        formState: { isSubmitting, isSubmitSuccessful },
     } = useForm();
     const submit = useSubmit();
 
@@ -65,7 +65,7 @@ function CreateBulletinPost() {
                     </Stack>
                 </Container>
             </Box>
-            {isSubmitted && (
+            {isSubmitSuccessful && (
                 <AlertBox
                     text="Tiedote lisätty onnistuneesti"
                     status="success"

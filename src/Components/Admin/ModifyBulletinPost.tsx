@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Form, useSubmit, useLocation } from 'react-router-dom';
+import { Form, useSubmit, useLocation, Link } from 'react-router-dom';
 
 import { Box, Container, FormControl, Stack, TextField, Button } from '@mui/material';
 import TypographyTitle from '../TypographyTitle';
@@ -18,7 +18,7 @@ function ModifyBulletinPost() {
     const {
         register,
         handleSubmit,
-        formState: { errors, isDirty, isSubmitted },
+        formState: { errors, isDirty, isSubmitSuccessful },
     } = useForm({ mode: 'onTouched', defaultValues: { title: location.state.title, content: location.state.content } });
 
     const onSubmit = (data: { title: string; content: string }) => {
@@ -82,14 +82,14 @@ function ModifyBulletinPost() {
                             <Button disabled={!isDirty} type="submit" sx={{ mt: 2 }}>
                                 Muokkaa tiedotetta
                             </Button>
-                            <Button color="error" type="submit" sx={{ mt: 2 }}>
+                            <Button color="error" component={Link} to="/admin/tiedotteet/" sx={{ mt: 2 }}>
                                 Poistu tallentamatta
                             </Button>
                         </FormControl>
                     </Stack>
                 </Container>
             </Box>
-            {isSubmitted && (
+            {isSubmitSuccessful && (
                 <AlertBox
                     text="Tiedote lisätty onnistuneesti"
                     status="success"
