@@ -63,7 +63,7 @@ function ModifyBulletinPost() {
                                 {...register('content', {
                                     required: 'Tämä kenttä on täytettävä',
                                     minLength: { value: 5, message: 'Sisältö on liian lyhyt' },
-                                    maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
+                                    maxLength: { value: 400, message: 'Sisältö on liian pitkä' },
                                 })}
                                 sx={{ mt: 2 }}
                                 label="Uusi sisältö"
