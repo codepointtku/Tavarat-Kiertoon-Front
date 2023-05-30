@@ -243,3 +243,9 @@ test.describe('arrived', () => {
         await expect(page.getByText('Etsimääsi sijaintia /admin/saapuneet')).not.toBeVisible();
     });
 });
+test.describe('emailchange', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/sahkopostinvaihto');
+        await expect(page.getByText('Etsimääsi sijaintia /sahkopostinvaihto')).not.toBeVisible();
+    });
+});
