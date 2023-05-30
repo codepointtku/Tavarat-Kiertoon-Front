@@ -1,11 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { Form, useSubmit, useLocation } from 'react-router-dom';
 
-import { Box, Container, FormControl, Stack, TextField, Button, Grid, IconButton } from '@mui/material';
+import { Box, Container, FormControl, Stack, TextField, Button } from '@mui/material';
 import TypographyTitle from '../TypographyTitle';
 import AlertBox from '../AlertBox';
-import Tooltip from '../Tooltip';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
 
 interface FormData extends SubmitHandler<FieldValues> {
@@ -20,10 +18,8 @@ function ModifyBulletinPost() {
     const {
         register,
         handleSubmit,
-        formState: { isDirty, isSubmitted },
+        formState: { errors, isDirty, isSubmitted },
     } = useForm({ mode: 'onTouched', defaultValues: { title: location.state.title, content: location.state.content } });
-
-    console.log(isDirty);
 
     const onSubmit = (data: { title: string; content: string }) => {
         const formData = { ...data, category: 'category', id: location.state.id };
@@ -36,14 +32,7 @@ function ModifyBulletinPost() {
 
     return (
         <Stack sx={{ p: 5 }}>
-            <Grid sx={{ ml: 3 }} container>
-                <TypographyTitle text={`Muokkaa tiedotetta ${location.state.id}`} />
-                <Tooltip title="Vain yhden kentän muokkaaminen on myös mahdollista" position="right">
-                    <IconButton>
-                        <InfoOutlinedIcon fontSize="inherit" color="primary" />
-                    </IconButton>
-                </Tooltip>
-            </Grid>
+            <TypographyTitle text={`Muokkaa tiedotetta ${location.state.id}`} />
             <Box
                 id="bulletin-modification-form-component"
                 component={Form}
@@ -54,26 +43,39 @@ function ModifyBulletinPost() {
                     <Stack id="bulletin-modification-column-stacker">
                         <FormControl id="bulletin-modification-formcontrol">
                             <TextField
-                                {...register('title')}
+                                {...register('title', {
+                                    required: 'Tämä kenttä on täytettävä',
+                                    minLength: { value: 5, message: 'Sisältö on liian lyhyt' },
+                                    maxLength: { value: 100, message: 'Otsikko on liian pitkä' },
+                                })}
                                 sx={{ mt: 2 }}
                                 label="Uusi otsikko"
                                 placeholder="Uusi otsikko"
                                 color={isDirty ? 'success' : 'primary'}
                                 fullWidth
-                                inputProps={{ title: 'Otsikko', minLength: '4', maxLength: '50' }}
+                                inputProps={{ required: false }}
+                                error={!!errors.title}
+                                helperText={errors.title?.message?.toString() || ' '}
                                 required
                             />
 
                             <TextField
-                                {...register('content')}
+                                {...register('content', {
+                                    required: 'Tämä kenttä on täytettävä',
+                                    minLength: { value: 5, message: 'Sisältö on liian lyhyt' },
+                                    maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
+                                })}
                                 sx={{ mt: 2 }}
                                 label="Uusi sisältö"
                                 placeholder="Uusi sisältö"
                                 color={isDirty ? 'success' : 'primary'}
+                                // if content is on 6 rows https://stackoverflow.com/questions/64837884/material-ui-too-many-re-renders-the-layout-is-unstable-textareaautosize-limit error comes
                                 multiline
                                 rows={6}
                                 fullWidth
-                                inputProps={{ minLength: '5' }}
+                                inputProps={{ required: false }}
+                                error={!!errors.content}
+                                helperText={errors.content?.message?.toString() || ' '}
                                 required
                             />
 
