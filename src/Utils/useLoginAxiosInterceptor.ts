@@ -5,24 +5,34 @@ import AuthContext from '../Context/AuthContext';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
+axios.defaults.baseURL = 'http://localhost:8000';
+
+const axiosWithoutInterceptor = axios.create();
+axiosWithoutInterceptor.defaults.xsrfCookieName = 'csrftoken';
+axiosWithoutInterceptor.defaults.xsrfHeaderName = 'X-CSRFToken';
+axiosWithoutInterceptor.defaults.withCredentials = true;
+axiosWithoutInterceptor.defaults.baseURL = 'http://localhost:8000';
 
 export default function useLoginAxiosInterceptor() {
     const { auth, setAuth } = useContext(AuthContext);
 
     useEffect(() => {
-        axios.interceptors.response.use(async function (response) {
+        const interceptor = axios.interceptors.response.use(async function (response) {
+            const url = new URL(response.config.url!);
+            // console.log(response.config.url, url.pathname);
             // checks if path if related to userlogin etc
-            if (['/users/login/', '/users/login/refresh/', '/users/logout/'].includes(response.config.url!)) {
+            if (['/users/login/', '/users/login/refresh/', '/users/logout/'].includes(url.pathname)) {
                 // if refresh fails apiCalls to logout in order to remove the cookies
                 if (response.status === 204) {
-                    return axios.post('/users/logout/');
+                    // use different axios instance to avoid infinite loop
+                    return axiosWithoutInterceptor.post('/users/logout/');
                 }
-                // auth is object { user_group: false, storage_group: false, admin_group: false }
+                // auth is object { user_group: false, storage_group: false, admin_group: false, bicycle_group: false, username: false }
                 // loops trought the auth in order to save user_groups, saves only if there is a change
                 const nextAuth = Object.fromEntries(
                     Object.keys(auth).map((key) =>
-                        // key is "user_group", "storage_group" OR "admin_group"
-                        // result.data.group is array, which contains ["user_group", "storage_group", "admin_group"]
+                        // key is "user_group", "storage_group", "admin_group", "bicycle_group"
+                        // result.data.group is array, which contains ["user_group", "storage_group", "admin_group", "bicycle_group"]
                         [key, response.data.groups?.includes(key)]
                     )
                 );
@@ -35,11 +45,16 @@ export default function useLoginAxiosInterceptor() {
                 // if path is not logout, starts timer to refresh again
                 if (response.config.url! !== '/users/logout/') {
                     setTimeout(() => {
-                        axios.post('/users/login/refresh/');
+                        // use different axios instance
+                        axiosWithoutInterceptor.post('/users/login/refresh/');
                     }, 1000 * 120);
                 }
             }
             return response;
         });
+        // useEffect cleanup function to remove interceptor when component unmounts or dependencies change
+        return () => {
+            axios.interceptors.response.eject(interceptor);
+        };
     }, [auth, setAuth]);
 }
