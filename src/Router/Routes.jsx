@@ -124,6 +124,7 @@ import {
     deleteBikeAction,
     adminInboxAction,
     modifyBikeModelAction,
+    createBikeModelAction,
 } from './actions';
 
 createStore({});
@@ -580,7 +581,9 @@ function Routes() {
                                     path: 'lisaapyoramalli',
                                     element: <ModifyBikeModelPage createNewBikeModel={true} />,
                                     loader: async ({ params }) => bikeNewModelLoader(auth, setAuth, params),
-                                },
+                                    action: async ({ request, params }) =>
+                                        createBikeModelAction(auth, setAuth, request, params),
+                    },
                             ],
                         },
                     ],

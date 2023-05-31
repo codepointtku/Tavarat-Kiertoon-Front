@@ -88,11 +88,19 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
         formData.append('bikeModelSizeId', (size ? size.id : -1).toString());
 
         // send the data
-        submit(formData, {
-            method: 'put',
-            action: `/pyorat/pyoravarasto/muokkaapyoramalli/${bikeModel.id}`,
-            encType: 'multipart/form-data',
-        });
+        submit(formData,
+            createNewBikeModel
+            ? {
+                method: 'post',
+                action: `/pyorat/pyoravarasto/lisaapyoramalli/`,
+                encType: 'multipart/form-data',
+            }
+            : {
+                method: 'put',
+                action: `/pyorat/pyoravarasto/muokkaapyoramalli/${bikeModel.id}`,
+                encType: 'multipart/form-data',
+            }
+        );
     };
 
     // if image has not changed return original image path.

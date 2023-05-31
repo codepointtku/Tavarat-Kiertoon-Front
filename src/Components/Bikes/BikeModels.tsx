@@ -40,7 +40,8 @@ function BikeModels() {
                 spacing={4}
                 flexDirection="row"
                 paddingBottom="2rem"
-                justifyContent="center"
+                // justifyContent="center"
+                justifyContent="left"
                 minWidth="500px"
                 sx={{ color: 'red' }}
             >
