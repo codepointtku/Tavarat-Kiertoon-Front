@@ -265,9 +265,9 @@ const bikeModelsLoader = async (auth, setAuth) => {
 };
 
 /**
- * Get
- *  - A single Bike Model based on ID
- *  - list of all colors available
+ * Loader for modifying a single bike model
+ * Get a single Bike Model based on ID and lists of all colors, brands, types
+ * and sizes currently in the database
  *
  * @param {*} auth
  * @param {*} setAuth
@@ -286,6 +286,17 @@ const bikeSingleModelLoader = async (auth, setAuth, params) => {
     return { bikeModel, colors, brands, types, sizes };
 };
 
+/**
+ * Loader for new bike model creation
+ * Get lists of all colors, brands, types and sizes currently in the database
+ * Create an empty model for the new bike (this allows the usage of same page
+ * for both bike creation and modification)
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} params
+ * @returns
+ */
 const bikeNewModelLoader = async (auth, setAuth, params) => {
     const [{ data: colors }, { data: brands }, { data: types }, { data: sizes }] = await Promise.all([
         apiCall(auth, setAuth, `/colors`, 'get'),

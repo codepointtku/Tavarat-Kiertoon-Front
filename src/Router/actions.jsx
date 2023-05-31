@@ -419,8 +419,41 @@ const deleteBikeAction = async (auth, setAuth, params) => {
 };
 
 /**
+ * getOrCreateBikeModelIds
+ * Read type, brand and size ids from data. If an id is greater than 0 this value is already created => use it.
+ * Else this is a new value and needs to be created in the backend => Create the new value and return its ID
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} data
+ * @returns
+ */
+const getOrCreateBikeModelIds = async (auth, setAuth, data) => {
+    // if selected type, brand or size do not exist they need to be created
+    // need to create new is indicated by setting the bikeModelXXXId to -1 in the form
+       let typeId = data.get('bikeModelTypeId');
+    if (typeId <= 0) {
+        const response = await apiCall(auth, setAuth, `/bikes/type/`, 'post', { name: data.get('bikeModelTypeName') });
+        typeId = response.data.id;
+    }
+    let brandId = data.get('bikeModelBrandId');
+    if (brandId <= 0) {
+        const response = await apiCall(auth, setAuth, `/bikes/brand/`, 'post', {
+            name: data.get('bikeModelBrandName'),
+        });
+        brandId = response.data.id;
+    }
+    let sizeId = data.get('bikeModelSizeId');
+    if (sizeId <= 0) {
+        const response = await apiCall(auth, setAuth, `/bikes/size/`, 'post', { name: data.get('bikeModelSizeName') });
+        sizeId = response.data.id;
+    }
+    return { typeId, brandId, sizeId }
+}
+
+/**
  * Modify a single bike model.
- * During modification (or creation) it is possible to create new brandname, size and/or type.
+ * During modification it is possible to create new brandname, size and/or type.
  *
  * @param {*} auth
  * @param {*} setAuth
@@ -432,25 +465,8 @@ const modifyBikeModelAction = async (auth, setAuth, request, params) => {
     // get data from form
     const data = await request.formData();
 
-    // if selected type, brand or size do not exist they need to be created
-    // need to create new is indicated by setting the bikeModelXXXId to -1 in the form
-    let typeId = data.get('bikeModelTypeId');
-    if (typeId < 0) {
-        const response = await apiCall(auth, setAuth, `/bikes/type/`, 'post', { name: data.get('bikeModelTypeName') });
-        typeId = response.data.id;
-    }
-    let brandId = data.get('bikeModelBrandId');
-    if (brandId < 0) {
-        const response = await apiCall(auth, setAuth, `/bikes/brand/`, 'post', {
-            name: data.get('bikeModelBrandName'),
-        });
-        brandId = response.data.id;
-    }
-    let sizeId = data.get('bikeModelSizeId');
-    if (sizeId < 0) {
-        const response = await apiCall(auth, setAuth, `/bikes/size/`, 'post', { name: data.get('bikeModelSizeName') });
-        sizeId = response.data.id;
-    }
+    // get or create new ids for type, brand and size
+    const { typeId, brandId, sizeId } = await getOrCreateBikeModelIds(auth, setAuth, data)
 
     // append modified data to form data
     data.append('name', data.get('bikeModelName'));
@@ -469,7 +485,7 @@ const modifyBikeModelAction = async (auth, setAuth, request, params) => {
 
 /**
  * Create a new bike model.
- * During modification (or creation) it is possible to create new brandname, size and/or type.
+ * During creation it is possible to create new brandname, size and/or type.
  *
  * @param {*} auth
  * @param {*} setAuth
@@ -481,25 +497,8 @@ const createBikeModelAction = async (auth, setAuth, request, params) => {
     // get data from form
     const data = await request.formData();
 
-    // if selected type, brand or size do not exist they need to be created
-    // need to create new is indicated by setting the bikeModelXXXId to -1 in the form
-    let typeId = data.get('bikeModelTypeId');
-    if (typeId < 0) {
-        const response = await apiCall(auth, setAuth, `/bikes/type/`, 'post', { name: data.get('bikeModelTypeName') });
-        typeId = response.data.id;
-    }
-    let brandId = data.get('bikeModelBrandId');
-    if (brandId < 0) {
-        const response = await apiCall(auth, setAuth, `/bikes/brand/`, 'post', {
-            name: data.get('bikeModelBrandName'),
-        });
-        brandId = response.data.id;
-    }
-    let sizeId = data.get('bikeModelSizeId');
-    if (sizeId < 0) {
-        const response = await apiCall(auth, setAuth, `/bikes/size/`, 'post', { name: data.get('bikeModelSizeName') });
-        sizeId = response.data.id;
-    }
+    // get or create new ids for type, brand and size
+    const { typeId, brandId, sizeId } = await getOrCreateBikeModelIds(auth, setAuth, data)
 
     // append modified data to form data
     data.append('name', data.get('bikeModelName'));

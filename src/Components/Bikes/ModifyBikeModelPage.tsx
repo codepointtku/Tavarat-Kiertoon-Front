@@ -16,7 +16,6 @@ import {
 import { useLoaderData } from 'react-router';
 import { Form, Link, useSubmit } from 'react-router-dom';
 import { type FieldValues, useForm } from 'react-hook-form';
-import NoPhotographyTwoToneIcon from '@mui/icons-material/NoPhotographyTwoTone';
 
 // interface(s)
 import type { BikeModelInterface } from './Bikes';
@@ -103,8 +102,7 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
         );
     };
 
-    // if image has not changed return original image path.
-    // else return new FileList
+    // if image has not changed return original image path. else return new FileList
     const image = watch('pictures');
     const imageToShow = useMemo(() => {
         if (createNewBikeModel) {
