@@ -41,7 +41,7 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
-            {cart?.products?.some((product: { group_id: string }) => product['group_id'] === groupId) ? (
+            {cart?.product_items?.some((product: { group_id: string }) => product['group_id'] === groupId) ? (
                 <AddMoreToCart id={id} maxCount={count} size={size} count={product?.count} />
             ) : (
                 <form onSubmit={handleSubmit(onSubmit)}>

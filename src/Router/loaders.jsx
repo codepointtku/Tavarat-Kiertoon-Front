@@ -11,6 +11,7 @@ import {
     productsApi,
     shoppingCartApi,
     storagesApi,
+    userApi,
     usersApi,
 } from '../api';
 
@@ -59,7 +60,7 @@ const shoppingCartLoader = async (auth, setAuth) => {
     //     return cartItems;
     // }, []);
 
-    const products = [cart.product_items];
+    const products = cart?.product_items;
 
     return { products, cart, amountList };
 };
@@ -296,7 +297,7 @@ const userSignupLoader = async () => null;
  */
 const shoppingProcessLoader = async (auth, setAuth) => {
     // const { data: user } = await apiCall(auth, setAuth, '/user/', 'get');
-    const { data: user } = await usersApi.usersMeRetrieve();
+    const { data: user } = await userApi.userRetrieve();
     return user;
 };
 
