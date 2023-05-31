@@ -1,14 +1,15 @@
 import { redirect } from 'react-router-dom';
 import apiCall from '../Utils/apiCall';
-import { contactFormsApi, contactsApi, shoppingCartApi } from '../api';
+import { contactFormsApi, contactsApi, shoppingCartApi, usersApi } from '../api';
 
 const adminLogOut = async (auth, setAuth, request) => {
     const formData = await request.formData();
     if (request.method === 'POST') {
         if (auth.username) {
-            const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
-                formData,
-            });
+            // const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
+            //     formData,
+            // });
+            const response = await usersApi.usersLogoutCreate();
             if (response.status === 200) {
                 return { type: 'logout', status: true };
             }
@@ -26,18 +27,25 @@ const frontPageActions = async (auth, setAuth, request) => {
     const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : 0;
     if (request.method === 'POST') {
         if (auth.username) {
-            const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
-                formData,
-            });
+            // const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
+            //     formData,
+            // });
+            const response = await usersApi.usersLogoutCreate();
+
             if (response.status === 200) {
                 return { type: 'logout', status: true };
             }
             return { type: 'logout', status: false };
         }
-        const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
+        // const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
+        //     username: formData.get('email'),
+        //     password: formData.get('password'),
+        // });
+        const response = await usersApi.usersLoginCreate({
             username: formData.get('email'),
             password: formData.get('password'),
         });
+
         if (response.status === 200) {
             return { type: 'login', status: true };
         }
