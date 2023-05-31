@@ -24,8 +24,8 @@ function BikeModels() {
     const models = useLoaderData() as BikeModelInterface[];
 
     return (
-        <div>
-            <Typography variant="h3" align="center" color="primary.main" mb="2rem">
+        <>
+            <Typography variant="h3" align="center" color="primary.main" mb="2rem" width="100%">
                 Pyörämallit
             </Typography>
 
@@ -40,9 +40,9 @@ function BikeModels() {
                 spacing={4}
                 flexDirection="row"
                 paddingBottom="2rem"
-                // justifyContent="center"
                 justifyContent="left"
                 minWidth="500px"
+                width="100%"
                 sx={{ color: 'red' }}
             >
                 {models.map((model) => {
@@ -116,7 +116,7 @@ function BikeModels() {
                     );
                 })}
             </Grid>
-        </div>
+        </>
     );
 }
 

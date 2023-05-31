@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import {
     Autocomplete,
     Box,
@@ -16,6 +16,7 @@ import {
 import { useLoaderData } from 'react-router';
 import { Form, Link, useSubmit } from 'react-router-dom';
 import { type FieldValues, useForm } from 'react-hook-form';
+import DeleteBikeModelModal from './DeleteBikeModelModal';
 
 // interface(s)
 import type { BikeModelInterface } from './Bikes';
@@ -39,6 +40,10 @@ interface ModifyBikeModelInterface {
  * @returns
  */
 function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
+
+    const [renderDeleteBikeModelModal, setRenderDeleteBikeModelModal] = useState(false);
+
+    // input data
     const { bikeModel, colors, brands, types, sizes } = useLoaderData() as {
         bikeModel: BikeModelInterface;
         colors: ColorInterface[];
@@ -245,17 +250,26 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
                     >
                         Palaa Tallentamatta
                     </Button>
-                    <Button
-                        color="error"
-                        onClick={() => console.log('### ModifyBikeModelPage: Painoit POISTA nappia')}
-                        sx={{ width: '12rem', marginX: '3rem', padding: '1rem' }}
-                    >
-                        Poista
-                    </Button>
+                    {!createNewBikeModel && (
+                        <Button
+                            color="error"
+                            onClick={() => setRenderDeleteBikeModelModal(true)}
+                            sx={{ width: '12rem', marginX: '3rem', padding: '1rem' }}
+                            type="button"
+                        >
+                            Poista
+                        </Button>
+                    )}
+
                     <Button type="submit" sx={{ width: '12rem', padding: '1rem' }}>
                         Tallenna ja palaa
                     </Button>
                 </Box>
+                <DeleteBikeModelModal
+                    renderModal={renderDeleteBikeModelModal}
+                    setRenderModal={setRenderDeleteBikeModelModal}
+                    modelId={bikeModel.id}
+                />
             </Box>
         </>
     );

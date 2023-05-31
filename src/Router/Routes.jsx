@@ -125,6 +125,7 @@ import {
     adminInboxAction,
     modifyBikeModelAction,
     createBikeModelAction,
+    deleteBikeModelAction,
 } from './actions';
 
 createStore({});
@@ -574,6 +575,13 @@ function Routes() {
                                             loader: async ({ params }) => bikeSingleModelLoader(auth, setAuth, params),
                                             action: async ({ request, params }) =>
                                                 modifyBikeModelAction(auth, setAuth, request, params),
+                                            children: [
+                                                {
+                                                    path: 'poista',
+                                                    action: async ({ params }) =>
+                                                        deleteBikeModelAction(auth, setAuth, params),
+                                                },
+                                            ],
                                         },
                                     ],
                                 },

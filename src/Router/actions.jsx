@@ -413,10 +413,29 @@ const activationAction = async (auth, setAuth, request) => {
     return { type: 'userActivation', status: false };
 };
 
+
+/**
+ * Delete a single bike
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} params
+ * @returns
+ */
 const deleteBikeAction = async (auth, setAuth, params) => {
+    console.log('### delete BIKE action',`/bikes/stock/${params.id}` )
     await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     return redirect('/pyorat/pyoravarasto');
 };
+
+/**
+ * Delete a single bike model
+ */
+const deleteBikeModelAction = async (auth, setAuth, params) => {
+    console.log('### delete MODEL action', `/bikes/models/${params.id}`)
+    await apiCall(auth, setAuth, `/bikes/models/${params.id}`, 'delete');
+    return redirect('/pyorat/pyoravarasto');
+};
+
 
 /**
  * getOrCreateBikeModelIds
@@ -462,6 +481,7 @@ const getOrCreateBikeModelIds = async (auth, setAuth, data) => {
  * @returns
  */
 const modifyBikeModelAction = async (auth, setAuth, request, params) => {
+    console.log('### modifyBikeModelAction')
     // get data from form
     const data = await request.formData();
 
@@ -562,4 +582,5 @@ export {
     adminLogOut,
     adminInboxAction,
     createBikeModelAction,
+    deleteBikeModelAction,
 };
