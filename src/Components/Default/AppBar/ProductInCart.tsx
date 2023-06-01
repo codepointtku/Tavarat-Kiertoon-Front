@@ -29,7 +29,7 @@ function ProductInCart({ name, id, count, maxCount }: Props) {
     }
 
     function handleClick(action: string) {
-        if (amountN >= 0 && amountN <= maxCount) {
+        if (amountN >= 0 && amountN <= maxCount + amountN) {
             action === 'add' ? addAmount() : removeAmount();
         }
     }
@@ -37,7 +37,7 @@ function ProductInCart({ name, id, count, maxCount }: Props) {
     function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const _input = event.target.value;
         const input: number = +_input;
-        if ((input >= 0 && input <= maxCount) || _input === '') {
+        if ((input >= 0 && input <= maxCount + amountN) || _input === '') {
             setAmountN(Number(input));
             input === selectedAmount ? setChangeAmount(true) : setChangeAmount(false);
         }
@@ -73,7 +73,7 @@ function ProductInCart({ name, id, count, maxCount }: Props) {
                     onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
                     disableUnderline
                 />
-                <IconButton onClick={() => handleClick('add')} disabled={amountN === maxCount}>
+                <IconButton onClick={() => handleClick('add')} disabled={amountN === maxCount || amountN > maxCount}>
                     <AddIcon />
                 </IconButton>
                 <Button
