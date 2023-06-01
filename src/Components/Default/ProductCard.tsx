@@ -22,7 +22,7 @@ import AddToCartButton from './AddToCartButton';
 interface Props {
     productName: string;
     id: number;
-    groupId: string;
+    groupId: number;
     freeDescription: string;
     categoryName: string;
     storageName: string;

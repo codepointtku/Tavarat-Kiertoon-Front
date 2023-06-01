@@ -11,7 +11,7 @@ import type { shoppingCartLoader } from '../../Router/loaders';
 interface Props {
     size?: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides> | undefined;
     id: number & string;
-    groupId: string;
+    groupId: number;
     count: number;
 }
 
@@ -39,10 +39,15 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
         setAddedToCart(true);
     };
 
+    console.log(
+        cart?.product_items?.some((product_item) => product_item?.product.id === groupId),
+        groupId
+    );
+
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
-            {cart?.product_items?.some((product: { group_id: string }) => product['group_id'] === groupId) ? (
-                <AddMoreToCart id={id} maxCount={count} size={size} count={product?.count} />
+            {cart?.product_items?.some((product_item) => product_item?.product.id === groupId) ? (
+                <AddMoreToCart id={id} maxCount={count} size={size} count={product?.product?.amount} />
             ) : (
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Button
