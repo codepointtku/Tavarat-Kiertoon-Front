@@ -226,7 +226,7 @@ const userEditAction = async (auth, setAuth, request, params) => {
     // User data has different BE endpoints for different user data sections.
 
     // First apicall updates users editable info.
-    // Second apicall updates users addressinfo.
+    // Second apicall patches users addressinfo. (not finalized, working on it)
 
     // Third apicall updates users auth groups: BE expects integers (representing different auth groups) in an array.
     // It gets all the checked checkboxes values into an array's first index.
@@ -240,13 +240,13 @@ const userEditAction = async (auth, setAuth, request, params) => {
         phone_number: formData.get('phone_number'),
     });
 
-    console.log(formData.getAll('address'), formData.getAll('city'));
+    const newAddress = {
+        address: formData.get('address'),
+        zipcode: formData.get('zip_code'),
+        city: formData.get('city'),
+    };
 
-    // response = await apiCall(auth, setAuth, `/users/address/${params.id}/`, 'put', {
-    //     address: formData.get('address'),
-    //     city: formData.get('city'),
-    //     zip_code: formData.get('zip_code'),
-    // });
+    response = await apiCall(auth, setAuth, `/users/address/${params.id}/`, 'patch', newAddress);
 
     const selectedAuthGroups = formData
         .getAll('groups')[0]
