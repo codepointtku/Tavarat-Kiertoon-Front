@@ -45,22 +45,24 @@ const shoppingCartLoader = async (auth, setAuth) => {
     // // // auth check for future
     // // if (auth.user_group === true){...}
 
-    // const products = cart?.products?.reduce((cartItems, product) => {
-    //     let cartItem = cartItems.find((cartItem) => cartItem.group_id === product.group_id);
+    const products = cart?.product_items?.reduce((cartItems, product) => {
+        let cartItem = cartItems.find((cartItem) => cartItem.product.id === product.product.id);
 
-    //     if (!cartItem) {
-    //         cartItem = {
-    //             ...product,
-    //             count: 0,
-    //         };
-    //         cartItems.push(cartItem);
-    //     }
+        if (!cartItem) {
+            cartItem = {
+                ...product,
+                count: 0,
+            };
+            cartItems.push(cartItem);
+        }
 
-    //     cartItem.count += 1;
-    //     return cartItems;
-    // }, []);
+        cartItem.count += 1;
+        return cartItems;
+    }, []);
 
-    const products = cart?.product_items;
+    console.log(products);
+
+    // const products = cart?.product_items;
 
     return { products, cart, amountList };
 };

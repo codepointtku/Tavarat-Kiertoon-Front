@@ -7,12 +7,12 @@ import RemoveIcon from '@mui/icons-material/Remove';
 
 interface Props {
     name: string;
-    productId: number & string;
+    id: number & string;
     count: number;
     maxCount: number;
 }
 
-function ProductInCart({ name, productId, count, maxCount }: Props) {
+function ProductInCart({ name, id, count, maxCount }: Props) {
     const [changeAmount, setChangeAmount] = useState(true);
     const [amountN, setAmountN] = useState(count);
     const [selectedAmount, setSelectedAmount] = useState(count);
@@ -47,7 +47,7 @@ function ProductInCart({ name, productId, count, maxCount }: Props) {
         const amount = amountN.toString();
         if (action === 'add') {
             submit(
-                { productId, amount },
+                { id, amount },
                 {
                     method: 'put',
                     action: '/',
@@ -56,12 +56,12 @@ function ProductInCart({ name, productId, count, maxCount }: Props) {
             setSelectedAmount(amountN);
             setChangeAmount(true);
         } else if (action === 'remove') {
-            submit({ productId }, { method: 'delete', action: '/' });
+            submit({ id }, { method: 'delete', action: '/' });
         }
     };
 
     return (
-        <ListItem key={productId} sx={{ height: 50 }} disablePadding>
+        <ListItem key={id} sx={{ height: 50 }} disablePadding>
             <ListItemButton>
                 <ListItemText primary={name} />
                 <IconButton onClick={() => handleClick('remove')} disabled={amountN === 0}>

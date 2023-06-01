@@ -56,8 +56,6 @@ function NoSearchResults() {
 function ProductList() {
     const products = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
 
-    console.log(products);
-
     return products?.length ? (
         <Grid container spacing={2}>
             {products.map((product: any) => (

@@ -99,6 +99,7 @@ const frontPageActions = async (auth, setAuth, request) => {
         //     product: id,
         //     amount,
         // });
+        console.log('is in delete block');
         const response = await shoppingCartApi.shoppingCartUpdate({
             product: id,
             amount,

@@ -22,10 +22,6 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
 
-    // useEffect(() => {
-    //     cart?.products?.length === 0 && resetField('amount');
-    // }, [cart?.products?.length]);
-
     const product = products?.find((product: { id: number }) => product.id === id);
 
     const onSubmit = async () => {
@@ -38,11 +34,6 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
         );
         setAddedToCart(true);
     };
-
-    console.log(
-        cart?.product_items?.some((product_item) => product_item?.product.id === groupId),
-        groupId
-    );
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>

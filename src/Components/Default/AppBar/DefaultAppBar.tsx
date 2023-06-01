@@ -30,6 +30,7 @@ import ProductInCart from './ProductInCart';
 import LoginForm from './LoginForm';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
+import { ShoppingCartAvailableAmountList } from '../../../api';
 
 //
 
@@ -129,6 +130,11 @@ const toolBarHover = {
 
 interface SubmitFunction {
     (SubmitTarget: string, options: { method: string; action: string }): any;
+}
+
+interface CartProduct {
+    count: number;
+    product: { name: string; id: number & string };
 }
 
 function DefaultAppBar() {
@@ -233,33 +239,17 @@ function DefaultAppBar() {
                             )}
                         </>
                     )}
-                    {/* {products?.map((cartProduct: CartProduct) => {
-                        const product = amountList?.find((p: { id: number }) => p.id == cartProduct.group_id);
+                    {products?.map((cartProduct: CartProduct) => {
+                        const product = amountList.find(
+                            (p) => p.id == cartProduct.product.id
+                        ) as ShoppingCartAvailableAmountList;
                         return (
                             <ProductInCart
-                                key={cartProduct.id}
-                                text={cartProduct.name}
-                                count={cartProduct.count}
-                                productId={cartProduct.id}
-                                maxCount={product?.amount}
-                            />
-                        );
-                    })}  */}
-
-                    {/* TODO: MUUTA KÄYTTÄMÄÄN REDUCEA? */}
-                    {cart?.product_items?.map((cartProduct) => {
-                        // TODO TÄMÄ POIS?
-                        const product = amountList?.find((p: { id: number }) => p.id == cartProduct.id);
-
-                        return (
-                            <ProductInCart
-                                key={cartProduct.id}
+                                key={cartProduct.product.id}
                                 name={cartProduct.product.name}
-                                // TODO: count saatava oikein
-                                count={product?.amount}
-                                productId={product?.id}
-                                // index={cartProduct.product.id}
-                                maxCount={product?.amount || 0}
+                                count={cartProduct.count}
+                                id={cartProduct.product.id}
+                                maxCount={product.amount}
                             />
                         );
                     })}
