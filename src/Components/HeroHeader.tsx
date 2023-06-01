@@ -13,13 +13,14 @@ import BackButton from './BackButton';
 
 interface Props {
     Icon: React.ReactNode;
+    hideInAdmin?: boolean;
 }
 
-function HeroHeader({ Icon }: Props) {
+function HeroHeader({ Icon, hideInAdmin }: Props) {
     return (
         <Grid container className="back-btn-avatar-wrapper-hero-header">
             <Grid item xs={4}>
-                <BackButton />
+                {!hideInAdmin && <BackButton />}
             </Grid>
             <Grid item xs={4} display="flex" justifyContent="center" alignItems="center">
                 <Avatar

@@ -243,3 +243,15 @@ test.describe('arrived', () => {
         await expect(page.getByText('Etsimääsi sijaintia /admin/saapuneet')).not.toBeVisible();
     });
 });
+test.describe('admintiedotteet', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tiedotteet');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/tiedotteet')).not.toBeVisible();
+    });
+});
+test.describe('muokkaatiedotetta', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tiedotteet/2/muokkaa');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/tiedotteet/2/muokkaa')).not.toBeVisible();
+    });
+});
