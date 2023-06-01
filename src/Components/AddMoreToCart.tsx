@@ -23,6 +23,8 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) 
     const [searchParams] = useSearchParams();
     const { handleSubmit, register } = useForm();
 
+    console.log('maxCount:', maxCount);
+
     function addAmount() {
         setAmountN((amountN) => amountN + 1);
         amountN + 1 === selectedAmount ? setAddedToCart(true) : setAddedToCart(false);

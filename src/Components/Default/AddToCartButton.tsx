@@ -22,7 +22,7 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
 
-    const product = products?.find((product: { id: number }) => product.id === id);
+    const product = products?.find((product_item: { product: { id: number } }) => product_item.product.id == id);
 
     const onSubmit = async () => {
         submit(
@@ -35,10 +35,12 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
         setAddedToCart(true);
     };
 
+    // product = undefined
+
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
             {cart?.product_items?.some((product_item) => product_item?.product.id === groupId) ? (
-                <AddMoreToCart id={id} maxCount={count} size={size} count={product?.product?.amount} />
+                <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
             ) : (
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Button
