@@ -60,8 +60,6 @@ const shoppingCartLoader = async (auth, setAuth) => {
         return cartItems;
     }, []);
 
-    console.log(products);
-
     // const products = cart?.product_items;
 
     return { products, cart, amountList };
