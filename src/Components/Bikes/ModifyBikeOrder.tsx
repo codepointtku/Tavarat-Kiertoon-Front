@@ -2,7 +2,6 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useLoaderData } from 'react-router';
@@ -90,22 +89,22 @@ export default function ModifyBikeOrder() {
         if (newAmount[index] > 0) {
             newAmount[index] -= 1;
             setAmount(newAmount);
+            setBikesState((prevState) => {
+                const newState = [...prevState];
+                newState[index].amount -= 1;
+                return newState;
+            });
         }
     };
-
-    // const handleAddModel = (modelId: number) => {
-    //     const modelToAdd = models.find((model) => model.id === modelId);
-    //     if (modelToAdd) {
-    //         const newBike = {
-    //             id: packet.bikes.length + 1,
-    //             bike: modelToAdd.id,
-    //             amount: 1,
-    //         };
-    //         setBikesState((prevState) => [...prevState, newBike]);
-    //         setAmount((prevAmount) => [...prevAmount, 1]);
-    //         // setSelectedModel(null);
-    //     }
-    // };
+    const handleAddModel = () => {
+        const newBike = {
+            bike: selectedModel,
+            amount: 1,
+        };
+        setBikesState([...bikesState, newBike]);
+        setAmount([...amount, 1]);
+        append(newBike);
+    };
 
     const { packet, models } = useLoaderData() as LoaderDataInterface;
 
@@ -126,7 +125,7 @@ export default function ModifyBikeOrder() {
         control,
     });
 
-    const [amount, setAmount] = useState(packet.bikes.map((packet) => packet.amount));
+    const [amount, setAmount] = useState(packet.bikes.map((bike) => bike.amount));
     const [bikesState, setBikesState] = useState(packet.bikes);
 
     const [selectedModel, setSelectedModel] = useState<number>(models[0].id);
@@ -210,14 +209,13 @@ export default function ModifyBikeOrder() {
                                             <Box>
                                                 <Stack justifyContent="center" direction="row">
                                                     <IconButton color="primary" onClick={() => handleRemoveBike(index)}>
-                                                        {/* <IconButton color="primary" onClick={() => console.log('dasd')}> */}
                                                         <RemoveCircleOutlineRoundedIcon />
                                                     </IconButton>
                                                     <Typography variant="h6" sx={{ p: 0.5 }}>
                                                         {amount[index]}
+                                                        {/* {watch(`bikes.${index}.amount`)} */}
                                                     </Typography>
                                                     <IconButton color="primary" onClick={() => handleAddBike(index)}>
-                                                        {/* <IconButton color="primary" onClick={() => console.log('kaka')}> */}
                                                         <AddCircleRoundedIcon />
                                                     </IconButton>
                                                 </Stack>
@@ -259,7 +257,6 @@ export default function ModifyBikeOrder() {
                                                 value={selectedModel}
                                                 onChange={(event) => setSelectedModel(event.target.value as number)}
                                                 fullWidth
-                                                // displayEmpty
                                             >
                                                 {!selectedModel && (
                                                     <MenuItem disabled value="">
@@ -278,7 +275,7 @@ export default function ModifyBikeOrder() {
                                         <IconButton
                                             sx={{ color: 'primary.main' }}
                                             aria-label="add"
-                                            onClick={() => append(selectedModel)}
+                                            onClick={handleAddModel}
                                             disabled={!selectedModel}
                                         >
                                             <AddCircleRoundedIcon />
