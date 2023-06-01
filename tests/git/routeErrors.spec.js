@@ -248,6 +248,8 @@ test.describe('emailchange', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/sahkopostinvaihto');
         await expect(page.getByText('Etsimääsi sijaintia /sahkopostinvaihto')).not.toBeVisible();
+    });
+});
 
 test.describe('admintiedotteet', () => {
     test('no errors', async ({ page }) => {
