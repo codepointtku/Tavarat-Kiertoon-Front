@@ -2816,6 +2816,61 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserCreateReturnResponseSchema'
           description: ''
+  /users/emailchange/:
+    post:
+      operationId: users_emailchange_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewEmail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewEmail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NewEmail'
+        required: true
+      security:
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewEmail'
+          description: ''
+  /users/emailchange/finish/:
+    post:
+      operationId: users_emailchange_finish_create
+      description: Validating and changing the email for user after the new email
+        address has been sent from fronts url.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewEmailFinishValidation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewEmailFinishValidation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NewEmailFinishValidation'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewEmailFinishValidation'
+          description: ''
   /users/groups/:
     get:
       operationId: users_groups_list
@@ -3871,6 +3926,32 @@ components:
           maxLength: 255
       required:
       - message
+    NewEmail:
+      type: object
+      description: Serializer for inputting new email address
+      properties:
+        new_email:
+          type: string
+          maxLength: 255
+      required:
+      - new_email
+    NewEmailFinishValidation:
+      type: object
+      description: Serializer for inputting new email address
+      properties:
+        uid:
+          type: string
+          maxLength: 255
+        token:
+          type: string
+          maxLength: 255
+        new_email:
+          type: string
+          maxLength: 255
+      required:
+      - new_email
+      - token
+      - uid
     OrderDetailRequest:
       type: object
       properties:
@@ -4814,6 +4895,7 @@ components:
       - username
     UserPasswordChangeEmailValidation:
       type: object
+      description: Serializer for user activation validations.
       properties:
         uid:
           type: string
