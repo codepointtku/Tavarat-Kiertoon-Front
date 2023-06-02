@@ -67,7 +67,7 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, users }) {
 
     return (
         <TableContainer component={Paper} sx={{ padding: '2rem' }}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <Table aria-label="customized table">
                 <TableHead>
                     <TableRow>
                         <StyledTableCell> </StyledTableCell>
@@ -107,7 +107,7 @@ function UsersListTable({ page, rowsPerPage, setUsedParams, users }) {
                                                     <Button
                                                         type="button"
                                                         align="right"
-                                                        to={`/admin/users/${row.id}`}
+                                                        to={`/admin/kayttajat/${row.id}`}
                                                         component={Link}
                                                     >
                                                         Muokkaa käyttäjää

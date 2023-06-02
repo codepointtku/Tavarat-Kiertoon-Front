@@ -23,6 +23,7 @@ const rootLoader = async (auth, setAuth) => {
  */
 const shoppingCartLoader = async (auth, setAuth) => {
     const { data: cart } = await apiCall(auth, setAuth, '/shopping_cart/', 'get');
+    const { data: amountList } = await apiCall(auth, setAuth, '/shopping_cart/available_amount/', 'get');
     // console.log('@shoppingCartLoader, cart.products:', cart?.products);
     // console.log('@shoppingCartLoader, cart:', cart);
 
@@ -41,11 +42,10 @@ const shoppingCartLoader = async (auth, setAuth) => {
         }
 
         cartItem.count += 1;
-        // console.log(cartItems);
         return cartItems;
     }, []);
 
-    return { products, cart };
+    return { products, cart, amountList };
 };
 
 /**
@@ -235,6 +235,23 @@ const bikeLoader = async (auth, setAuth, params) => {
     return { bikeData, bikeModelsData, storagesData };
 };
 
+const createNewBikeLoader = async (auth, setAuth) => {
+    const [{ data: bikeModelsData }, { data: storagesData }] = await Promise.all([
+        apiCall(auth, setAuth, '/bikes/models/', 'get'),
+        apiCall(auth, setAuth, '/storages/', 'get'),
+    ]);
+    // Empty bike to show in the page before information is added
+    const bikeData = {
+        bike: '',
+        frame_number: '',
+        number: '',
+        package_only: false,
+        state: 'AVAILABLE',
+        storage: '',
+    };
+    return { bikeData, bikeModelsData, storagesData };
+};
+
 /**
  * returns null load
  */
@@ -246,6 +263,47 @@ const userSignupLoader = async () => null;
 const shoppingProcessLoader = async (auth, setAuth) => {
     const { data: user } = await apiCall(auth, setAuth, '/user/', 'get');
     return user;
+};
+
+const adminLoader = async (auth, setAuth) => {
+    const [{ data: user }, { data: messages }] = await Promise.all([
+        apiCall(auth, setAuth, '/user/', 'get'),
+        apiCall(auth, setAuth, '/contact_forms/?status=Not read', 'get'),
+    ]);
+
+    return { user, messages };
+};
+
+const adminInboxLoader = async (auth, setAuth, request) => {
+    const searchParams = new URL(request.url).searchParams;
+    const status =
+        searchParams.get('tila') === 'Luetut'
+            ? 'Read'
+            : searchParams.get('tila') === 'Lukemattomat'
+            ? 'Not%20read'
+            : searchParams.get('tila') === 'Hoidetut' && 'Handled';
+
+    if (status) {
+        const { data: messages } = await apiCall(
+            auth,
+            setAuth,
+            searchParams.has('sivu')
+                ? `/contact_forms/?page=${searchParams.get('sivu')}&status=${status}`
+                : `/contact_forms/?status=${status}`,
+            'get'
+        );
+        return messages;
+    } else if (searchParams.has('sivu') && searchParams.get('sivu') != 0) {
+        const { data: messages } = await apiCall(
+            auth,
+            setAuth,
+            `/contact_forms/?page=${searchParams.get('sivu')}`,
+            'get'
+        );
+        return messages;
+    }
+    const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
+    return messages;
 };
 
 export {
@@ -265,6 +323,9 @@ export {
     bikesDefaultLoader,
     bikesListLoader,
     bikeLoader,
+    createNewBikeLoader,
     shoppingCartLoader,
     shoppingProcessLoader,
+    adminLoader,
+    adminInboxLoader,
 };

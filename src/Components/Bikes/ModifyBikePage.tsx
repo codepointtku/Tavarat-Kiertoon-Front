@@ -1,6 +1,7 @@
 import {
     Box,
     Button,
+    Checkbox,
     FormControl,
     InputLabel,
     MenuItem,
@@ -18,15 +19,20 @@ import { Form, Link } from 'react-router-dom';
 import type { bikeInterface, bikeModelInterface, storageInterface } from './Bikes';
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
+import DeleteBikeModal from './DeleteBikeModal';
 
+interface ModifyBikePageInterface {
+    createNewBike: boolean;
+}
 
 /**
  * ModifyBikePage
- * View that allows user to modify bike info
+ * View that allows user to modify bike info or create a new bike.
  *
+ * @param createNewBike boolean : true = creates a new bike : false = modifies an existing bike
  * @returns JSX.Element
  */
-export default function ModifyBikePage() {
+export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterface) {
     // get data for current bike, all bikeModels and all storages
     const { bikeData, bikeModelsData, storagesData } = useLoaderData() as {
         bikeData: bikeInterface;
@@ -35,11 +41,16 @@ export default function ModifyBikePage() {
     };
 
     // states needed for the form data
-    const [storageState, setStorageState] = useState(bikeData.storage.id.toString());
-    const [bikeModelState, setBikeModelState] = useState(bikeData.bike.id.toString());
+    const [storageState, setStorageState] = useState(createNewBike ? '' : bikeData.storage.id.toString());
+    const [bikeModelState, setBikeModelState] = useState(createNewBike ? '' : bikeData.bike.id.toString());
     const [bikeState, setBikeState] = useState(bikeData);
-    const [frameNumberState, setFrameNumberState] = useState(bikeData.frame_number);
-    const [bikeNumberState, setBikeNumberState] = useState(bikeData.number);
+    const [frameNumberState, setFrameNumberState] = useState(createNewBike ? '' : bikeData.frame_number);
+    const [bikeNumberState, setBikeNumberState] = useState(createNewBike ? '' : bikeData.number);
+    const [packageOnly, setPackageOnly] = useState(createNewBike ? false : bikeData.package_only);
+    const [statusState, setStatusState] = useState(createNewBike ? 'AVAILABLE' : bikeData.state);
+    const [renderDeleteBikeModal, setRenderDeleteBikeModal] = useState(false);
+
+    const currentBikeStatus = ['AVAILABLE', 'MAINTENANCE', 'RENTED', 'RETIRED'];
 
     // storage change handler: used for selecting the correct storage
     const handleStorageChange = (event: SelectChangeEvent) => {
@@ -78,6 +89,16 @@ export default function ModifyBikePage() {
         setBikeNumberState(event.target.value as string);
     };
 
+    // handler for package_only tab.
+    // JTo: Not completely sure if this is needed here or not
+    const handlePackageOnly = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPackageOnly(event.target.checked);
+    };
+
+    const handleStatusChange = (event: SelectChangeEvent) => {
+        setStatusState(event.target.value);
+    };
+
     // RENDER
     return (
         <>
@@ -90,18 +111,18 @@ export default function ModifyBikePage() {
                     paddingBottom="20px"
                     borderBottom="1px solid lightgray"
                 >
-                    <h3>
-                        Pyörän <i>{bikeState.frame_number}</i> tiedot
-                    </h3>
+                    <h3>{createNewBike ? 'Luo uusi pyörä' : 'Muokkaa pyörän tietoja'}</h3>
                 </Box>
 
                 {/*
-                  * Form area
-                  */}
+                 * Form area
+                 */}
                 <Box
                     component={Form}
-                    method="put"
-                    action={`/pyorat/pyoravarasto/muokkaa/${bikeState.id}`}
+                    method={createNewBike ? 'post' : 'put'}
+                    action={
+                        createNewBike ? `/pyorat/pyoravarasto/lisaa/` : `/pyorat/pyoravarasto/muokkaa/${bikeState.id}`
+                    }
                 >
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box
@@ -146,22 +167,22 @@ export default function ModifyBikePage() {
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Merkki:</TableCell>
-                                        <TableCell>{bikeState.bike.brand.name}</TableCell>
+                                        <TableCell>{bikeState.bike.brand?.name}</TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Tyyppi:</TableCell>
-                                        <TableCell>{bikeState.bike.type.name}</TableCell>
+                                        <TableCell>{bikeState.bike.type?.name}</TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Koko:</TableCell>
-                                        <TableCell>{bikeState.bike.size.name}</TableCell>
+                                        <TableCell>{bikeState.bike.size?.name}</TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Väri:</TableCell>
-                                        <TableCell>{bikeState.bike.color.name}</TableCell>
+                                        <TableCell>{bikeState.bike.color?.name}</TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
@@ -191,40 +212,79 @@ export default function ModifyBikePage() {
                                 <TableBody>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Runkonumero:</TableCell>
-                                        <TableCell colSpan={2}>
-                                            <TextField
-                                                label="Muokkaa runkonumeroa"
-                                                name="changeFrameNumber"
-                                                value={frameNumberState}
-                                                fullWidth
-                                                onChange={handleFrameNumberChange}
-                                            />
+                                        <TableCell colSpan={3} align="right">
+                                            <FormControl>
+                                                <TextField
+                                                    label="Muokkaa runkonumeroa"
+                                                    name="changeFrameNumber"
+                                                    value={frameNumberState}
+                                                    fullWidth
+                                                    onChange={handleFrameNumberChange}
+                                                />
+                                            </FormControl>
                                         </TableCell>
                                     </TableRow>
                                     {/*
-                                      * When editing bike this row is not visible
-                                      * Unfortenately field can not be disabled cause the value is still used in form
-                                      * When adding new bike this field needs to be shown
-                                      */}
-                                    <TableRow style={{ display: "none" }}>
+                                     * When editing bike this row is not visible
+                                     * Unfortenately field can not be disabled cause the value is still used in form
+                                     * When adding new bike this field needs to be shown
+                                     */}
+                                    <TableRow
+                                        style={{
+                                            display: createNewBike ? '' : 'none',
+                                        }}
+                                    >
                                         <TableCell sx={{ fontWeight: 'bold' }}>Numero:</TableCell>
-                                        <TableCell colSpan={2}>
-                                            <TextField
-                                                label="Muokkaa Numeroa"
-                                                name="changeBikeNumber"
-                                                value={bikeNumberState}
-                                                fullWidth
-                                                onChange={handleBikeNumberChange}
-                                                // disabled
-                                            />
+                                        <TableCell colSpan={3} align="right">
+                                            <FormControl>
+                                                <TextField
+                                                    label="Muokkaa Numeroa"
+                                                    name="changeBikeNumber"
+                                                    value={bikeNumberState}
+                                                    fullWidth
+                                                    onChange={handleBikeNumberChange}
+                                                />
+                                            </FormControl>
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varattu Pakettiin:</TableCell>
                                         <TableCell sx={{ border: 0 }}>
-                                            {bikeState.package_only ? 'Kyllä' : 'Ei'}
+                                            {/* {bikeState.package_only ? 'Kyllä' : 'Ei'} */}
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={packageOnly}
+                                                    onChange={handlePackageOnly}
+                                                    inputProps={{ 'aria-label': 'controlled' }}
+                                                    name="changePackageOnly"
+                                                />
+                                            </FormControl>
                                         </TableCell>
-                                        <TableCell sx={{ border: 0 }}></TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Tila:</TableCell>
+                                        <TableCell sx={{ border: 0 }} align="right">
+                                            <FormControl>
+                                                <InputLabel id="change-bike-status-label">
+                                                    Vaihda Pyörän Tilaa
+                                                </InputLabel>
+                                                <Select
+                                                    labelId="change-bike-status-label"
+                                                    id="change-bike-status"
+                                                    name="changeBikeStatus"
+                                                    value={statusState}
+                                                    label="Vaihda Pyörän Tilaa"
+                                                    onChange={handleStatusChange}
+                                                    sx={{ width: '200px' }}
+                                                >
+                                                    {currentBikeStatus.map((status) => {
+                                                        return (
+                                                            <MenuItem key={status} value={status}>
+                                                                {status}
+                                                            </MenuItem>
+                                                        );
+                                                    })}
+                                                </Select>
+                                            </FormControl>
+                                        </TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
@@ -280,11 +340,21 @@ export default function ModifyBikePage() {
                         <Button to={`/pyorat/pyoravarasto`} component={Link} sx={{ padding: '20px' }}>
                             Palaa pyörälistaan tallentamatta
                         </Button>
+                        {!createNewBike && (
+                            <Button color="error" onClick={() => setRenderDeleteBikeModal(true)}>
+                                Poista tämä pyörä
+                            </Button>
+                        )}
                         <Button type="submit" sx={{ padding: '20px' }}>
                             Tallenna muutokset ja palaa listaan
                         </Button>
                     </Box>
                 </Box>
+                <DeleteBikeModal
+                    renderModal={renderDeleteBikeModal}
+                    setRenderModal={setRenderDeleteBikeModal}
+                    bikeId={bikeData.id}
+                />
             </TableContainer>
         </>
     );

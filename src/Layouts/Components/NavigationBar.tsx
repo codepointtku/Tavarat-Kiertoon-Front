@@ -1,9 +1,11 @@
-import { Link } from 'react-router-dom';
-import { useContext } from 'react';
+import { useEffect } from 'react';
+import { Link, useActionData } from 'react-router-dom';
 
 import { Box, Button, ButtonGroup } from '@mui/material';
 
-import AuthContext from '../../Context/AuthContext';
+import HasRole from '../../Utils/HasRole';
+
+import type { frontPageActions } from '../../Router/actions';
 
 function LinkBar() {
     return (
@@ -43,22 +45,25 @@ function AuthedLinkBar() {
                 aria-label="authed navigation link buttons"
                 sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
             >
-                <Button component={Link} to="/tilastot">
-                    Tilastot
-                </Button>
-                <Button component={Link} to="/varasto">
-                    Varaston hallintanäkymä
-                </Button>
-                <Button component={Link} to="/admin">
-                    Sivuston hallintanäkymä
-                </Button>
+                <HasRole role={'admin_group' || 'storage_group'}>
+                    <Button component={Link} to="/varasto">
+                        Varaston hallintanäkymä
+                    </Button>
+                </HasRole>
+                <HasRole role="admin_group">
+                    <Button component={Link} to="/admin">
+                        Sivuston hallintanäkymä
+                    </Button>
+                </HasRole>
             </ButtonGroup>
         </Box>
     );
 }
 
 function NavigationBar() {
-    const { auth } = useContext(AuthContext);
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof frontPageActions>>;
+
+    useEffect(() => {}, [responseStatus]);
 
     return (
         <Box
@@ -72,7 +77,9 @@ function NavigationBar() {
             }}
         >
             <LinkBar />
-            {auth.storage && <AuthedLinkBar />}
+            <HasRole role={'admin_group' || 'storage_group'}>
+                <AuthedLinkBar />
+            </HasRole>
         </Box>
     );
 }
