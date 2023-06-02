@@ -521,6 +521,34 @@ const deleteBikeAction = async (auth, setAuth, params) => {
     return redirect('/pyorat/pyoravarasto');
 };
 
+/**
+ * deletes or modifies a bulletin
+ */
+
+const adminBulletinsAction = async (auth, setAuth, request) => {
+    if (request.method === 'DELETE') {
+        const formData = await request.formData();
+        const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'delete');
+        if (response.status === 204) {
+            return { type: 'deleted', status: true };
+        }
+        return { type: 'deleted', status: false };
+    }
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'put', {
+        title: formData.get('title'),
+        content: formData.get('content'),
+    });
+    if (response.status === 200) {
+        return { type: 'modified', status: true };
+    }
+    return { type: 'modified', status: false };
+};
+
+/**
+ * Changes read state of message
+ */
+
 const adminInboxAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const id = formData.get('id');
@@ -562,6 +590,7 @@ export {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
+    adminBulletinsAction,
     activationAction,
     deleteBikeAction,
     adminLogOut,

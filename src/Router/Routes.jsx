@@ -30,7 +30,9 @@ import AdminInbox from '../Components/Admin/AdminInbox';
 
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
+import BulletinPosts from '../Components/Admin/BulletinPosts';
 import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
+import ModifyBulletinPost from '../Components/Admin/ModifyBulletinPost';
 import Stats from '../Components/Admin/Stats/Stats';
 
 import StoragesList from '../Components/Admin/StoragesList';
@@ -95,6 +97,7 @@ import {
     bikeLoader,
     createNewBikeLoader,
     shoppingProcessLoader,
+    adminLoader,
     adminInboxLoader,
 } from './loaders';
 
@@ -118,6 +121,7 @@ import {
     adminLogOut,
     deleteBikeAction,
     adminInboxAction,
+    adminBulletinsAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
@@ -137,7 +141,9 @@ function Routes() {
             id: 'root',
             loader: async () => rootLoader(auth, setAuth),
             // Loads data only at first page load, not with every route
-            shouldRevalidate: () => false,
+            shouldRevalidate: ({ currentUrl }) => {
+                return currentUrl.pathname === '/admin/tiedotteet' || '/admin/tiedotteet/';
+            },
             children: [
                 // main routes
                 {
@@ -409,11 +415,13 @@ function Routes() {
                             </ThemeProvider>
                         </HasRole>
                     ),
+                    id: 'admin',
                     errorElement: (
                         <ThemeProvider theme={adminTheme}>
                             <ErrorBoundary />,
                         </ThemeProvider>
                     ),
+                    loader: async () => adminLoader(auth, setAuth),
                     action: async ({ request }) => adminLogOut(auth, setAuth, request),
                     children: [
                         {
@@ -476,7 +484,12 @@ function Routes() {
                         },
                         {
                             path: 'tiedotteet',
-                            element: <Bulletins />,
+                            element: <BulletinPosts />,
+                            action: async ({ request }) => adminBulletinsAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'tiedotteet/:id/muokkaa',
+                            element: <ModifyBulletinPost />,
                         },
                         {
                             path: 'tiedotteet/luo',

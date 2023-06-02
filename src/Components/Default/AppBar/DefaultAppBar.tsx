@@ -30,7 +30,7 @@ import ProductInCart from './ProductInCart';
 import LoginForm from './LoginForm';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
-import { ShoppingCartAvailableAmountList } from '../../../api';
+import { type ShoppingCartAvailableAmountList } from '../../../api';
 
 //
 
