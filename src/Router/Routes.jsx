@@ -51,6 +51,8 @@ import Confirmation from '../Components/Default/ShoppingCart/Confirmation';
 import SignupLandingPage from '../Components/Default/Signup/SignupLandingPage';
 import SignupPage from '../Components/Default/Signup/SignupPage';
 import Activation from '../Components/Default/Signup/Activation';
+import EmailChangeSuccessful from '../Components/EmailChangeSuccessful';
+import ChangeEmail from '../Components/ChangeEmail';
 
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
@@ -124,6 +126,8 @@ import {
     adminLogOut,
     deleteBikeAction,
     adminInboxAction,
+    emailChangeSuccessfulAction,
+    changeEmailAction,
     adminBulletinsAction,
 } from './actions';
 
@@ -289,6 +293,16 @@ function Routes() {
                             path: 'otayhteytta',
                             element: <ContactPage />,
                             action: async ({ request }) => contactAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'sahkopostinvaihto',
+                            element: <ChangeEmail />,
+                            action: async ({ request }) => changeEmailAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'emailvaihto/:uid/:token/:newEmail',
+                            element: <EmailChangeSuccessful />,
+                            action: async ({ request }) => emailChangeSuccessfulAction(auth, setAuth, request),
                         },
                         {
                             path: 'unohtunutsalasana',
