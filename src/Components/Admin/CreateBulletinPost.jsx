@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Form, useSubmit } from 'react-router-dom';
+import { Form, useSubmit, useRouteLoaderData } from 'react-router-dom';
 
 import { Container, TextField, Button, FormControl, Box, Stack } from '@mui/material';
 
@@ -8,22 +7,21 @@ import AlertBox from '../AlertBox';
 import TypographyTitle from '../TypographyTitle';
 
 function CreateBulletinPost() {
-    const { register, handleSubmit } = useForm();
+    const { user } = useRouteLoaderData('admin');
+    const {
+        register,
+        handleSubmit,
+        formState: { isSubmitting, isSubmitSuccessful },
+    } = useForm();
     const submit = useSubmit();
-    const [success, setSuccess] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const onSubmit = (data) => {
-        const formData = { ...data, category: 'category' };
-
-        setIsSubmitting(true);
+        const formData = { ...data, category: 'category', author: user.id };
 
         submit(formData, {
             method: 'post',
             action: '/admin/tiedotteet/luo',
         });
-
-        setSuccess(true);
     };
 
     return (
@@ -67,8 +65,13 @@ function CreateBulletinPost() {
                     </Stack>
                 </Container>
             </Box>
-            {success && (
-                <AlertBox text="Tiedote lisätty onnistuneesti" status="success" redirectUrl="/admin" timer={1500} />
+            {isSubmitSuccessful && (
+                <AlertBox
+                    text="Tiedote lisätty onnistuneesti"
+                    status="success"
+                    redirectUrl="/admin/tiedotteet"
+                    timer={1500}
+                />
             )}
         </>
     );
