@@ -240,13 +240,14 @@ const userEditAction = async (auth, setAuth, request, params) => {
         phone_number: formData.get('phone_number'),
     });
 
-    const newAddress = {
-        address: formData.get('address'),
-        zipcode: formData.get('zip_code'),
-        city: formData.get('city'),
-    };
+    // works if used perfectly. needs more validation. not yet ready for production. disabled for this pr.
+    // const newAddress = {
+    //     address: formData.get('address'),
+    //     zipcode: formData.get('zip_code'),
+    //     city: formData.get('city'),
+    // };
 
-    response = await apiCall(auth, setAuth, `/users/address/${params.id}/`, 'patch', newAddress);
+    // response = await apiCall(auth, setAuth, `/users/address/${params.id}/`, 'patch', newAddress);
 
     const selectedAuthGroups = formData
         .getAll('groups')[0]

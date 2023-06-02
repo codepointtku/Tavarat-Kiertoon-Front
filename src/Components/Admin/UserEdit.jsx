@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 import { useLoaderData, useActionData } from 'react-router';
 import { Form, useSubmit, Link } from 'react-router-dom';
@@ -23,6 +23,8 @@ const groupNames = {
 };
 
 function UserEdit() {
+    // todo: re-render after submit, helpertexts indicating edited fields
+
     const loaderData = useLoaderData();
     // loaderData === [{}, []]
     const userInfo = loaderData[0];
@@ -33,7 +35,6 @@ function UserEdit() {
     const {
         register,
         handleSubmit: createHandleSubmit,
-        watch,
         formState: { errors: formStateErrors, isDirty, dirtyFields },
     } = useForm({
         mode: 'onTouched',
@@ -51,13 +52,22 @@ function UserEdit() {
     });
 
     const [showAddressEditFields, setShowAddressEditFields] = useState({ aid: null, aindex: null });
-    const reffi = useRef(null);
 
     const handleAddressEdit = (aid, aindex) => {
         setShowAddressEditFields({ aid: aid, aindex: aindex });
     };
 
     const AddressEdit = () => {
+        // todo:
+        // register fields with index
+        // fix input focus bug
+        // create functionality to modify only one field at a time
+        // cancel button
+        // go minigolfing
+        // eat some pizza
+        // fix the world
+        // profit
+
         return (
             <Box sx={{ margin: '1rem 0 1rem 0' }}>
                 <Typography variant="body2" gutterBottom>
@@ -71,7 +81,7 @@ function UserEdit() {
                     fullWidth
                     // {...register(`address_list[${showAddressEditFields.aindex}].address`, {
                     {...register('address', {
-                        required: { value: true, message: 'Käyttäjän osoite ei voi olla tyhjä' },
+                        required: { value: true, message: 'Osoite ei voi olla tyhjä' },
                         maxLength: { value: 100, message: 'Osoite on liian pitkä' },
                         minLength: {
                             value: 1,
@@ -82,7 +92,7 @@ function UserEdit() {
                     required
                     error={!!formStateErrors.address}
                     helperText={formStateErrors.address?.message || ' '}
-                    color={isDirty ? 'warning' : 'primary'}
+                    color={dirtyFields.address && 'warning'}
                     sx={{ marginTop: '1rem' }}
                 />
                 <Stack direction="row" spacing={1}>
@@ -104,7 +114,7 @@ function UserEdit() {
                         required
                         error={!!formStateErrors.city}
                         helperText={formStateErrors.city?.message || ' '}
-                        color={isDirty ? 'warning' : 'primary'}
+                        color={dirtyFields.city && 'warning'}
                     />
 
                     <TextField
@@ -125,7 +135,7 @@ function UserEdit() {
                         required
                         error={!!formStateErrors.zipcode}
                         helperText={formStateErrors.zipcode?.message || ' '}
-                        color={isDirty ? 'warning' : 'primary'}
+                        color={dirtyFields.zip_code && 'warning'}
                     />
                 </Stack>
             </Box>
@@ -176,45 +186,9 @@ function UserEdit() {
                     id="user-edition-wrapper-form-component"
                     component={Form}
                     onSubmit={handleSubmit}
-                    sx={{ margin: '2rem 0 2rem 0' }}
+                    sx={{ margin: '2rem 0 1rem 0' }}
                 >
                     <Stack id="user-edition-fields-stack-column">
-                        {/* these out-commented fields are not editable (in the BE) for the time being */}
-
-                        {/* <TextField
-                                id="textfield-username"
-                                type="text"
-                                label="Käyttäjätunnus"
-                                placeholder="Käyttäjätunnus"
-                                {...register('username', {
-                                    required: { value: true, message: 'Käyttäjätunnus ei voi olla tyhjä' },
-                                    maxLength: { value: 50, message: 'Tunnus on liian pitkä, maksimi 50 merkkiä' },
-                                })}
-                                // Needs to be required: false to disable browser error message
-                                inputProps={{ required: false }}
-                                required
-                                error={!!formState.errors.username}
-                                helperText={formState.errors.username?.message || ' '}
-                            />
-
-                            <TextField
-                                id="textfield-useremail"
-                                type="text"
-                                label="Sähköpostiosoite"
-                                placeholder="Sähköpostiosoite"
-                                {...register('email', {
-                                    required: { value: true, message: 'Sähköpostiosoite ei voi olla tyhjä' },
-                                    maxLength: {
-                                        value: 50,
-                                        message: 'Sähköpostiosoite on liian pitkä, maksimi 50 merkkiä',
-                                    },
-                                })}
-                                inputProps={{ required: false }}
-                                required
-                                error={!!formState.errors.email}
-                                helperText={formState.errors.email?.message || ' '}
-                            /> */}
-
                         <Stack id="fname-lname-stacker" direction="row" spacing={1}>
                             <TextField
                                 id="textfield-fname"
@@ -225,7 +199,7 @@ function UserEdit() {
                                     required: { value: true, message: 'Käyttäjän nimi ei voi olla tyhjä' },
                                     maxLength: {
                                         value: 50,
-                                        message: 'Etunimi on liian pitkä, maksimi 50 merkkiä',
+                                        message: 'Maksimipituus 50 merkkiä',
                                     },
                                 })}
                                 // Needs to be required: false to disable browser error message
@@ -245,7 +219,7 @@ function UserEdit() {
                                     required: { value: true, message: 'Käyttäjän sukunimi ei voi olla tyhjä' },
                                     maxLength: {
                                         value: 50,
-                                        message: 'Sukunimi on liian pitkä, maksimi 50 merkkiä',
+                                        message: 'Maksimi 50 merkkiä',
                                     },
                                 })}
                                 inputProps={{ required: false }}
@@ -260,13 +234,13 @@ function UserEdit() {
                             id="phone_number"
                             type="text"
                             label="Puhelinnumero"
-                            placeholder="Käyttäjän puhelinnumero, esim. 040 1234567"
+                            placeholder="Käyttäjän puhelinnumero, muodossa 0401234567"
                             {...register('phone_number', {
                                 required: { value: true, message: 'Käyttäjän puhelinnumero ei voi olla tyhjä' },
                                 maxLength: { value: 30, message: 'Puhelinnumero on liian pitkä' },
                                 minLength: {
                                     value: 10,
-                                    message: 'Puhelinnumero on 10 merkkiä pitkä, muodossa 040 1234567',
+                                    message: 'Puhelinnumero on 10 merkkiä pitkä, muodossa 0401234567',
                                 },
                             })}
                             inputProps={{ required: false }}
@@ -352,7 +326,7 @@ function UserEdit() {
                         Hyväksy ja tallenna muutokset
                     </Button>
                 </Box>
-                <Button id="cancel-btn" component={Link} to="admin/kayttajat/" fullWidth color="error">
+                <Button id="cancel-btn" component={Link} to="/admin/kayttajat/" fullWidth color="error">
                     Poistu tallentamatta
                 </Button>
             </Container>
