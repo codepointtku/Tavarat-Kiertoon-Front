@@ -421,7 +421,6 @@ const activationAction = async (auth, setAuth, request) => {
  * @returns
  */
 const deleteBikeAction = async (auth, setAuth, params) => {
-    console.log('### delete BIKE action', `/bikes/stock/${params.id}`);
     await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     return redirect('/pyorat/pyoravarasto');
 };
@@ -430,7 +429,6 @@ const deleteBikeAction = async (auth, setAuth, params) => {
  * Delete a single bike model
  */
 const deleteBikeModelAction = async (auth, setAuth, params) => {
-    console.log('### delete MODEL action', `/bikes/models/${params.id}`);
     await apiCall(auth, setAuth, `/bikes/models/${params.id}`, 'delete');
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
@@ -479,7 +477,6 @@ const getOrCreateBikeModelIds = async (auth, setAuth, data) => {
  * @returns
  */
 const modifyBikeModelAction = async (auth, setAuth, request, params) => {
-    console.log('### modifyBikeModelAction');
     // get data from form
     const data = await request.formData();
 
