@@ -1,8 +1,7 @@
 import { Box } from '@mui/material';
 import TypographyHeading from '../../TypographyHeading';
 
-function OrdersHistory({ userOrdersHistory }) {
-    // console.log('ollaan historia tilaukset', userOrdersHistory);
+function OrdersHistory() {
     return (
         <Box sx={{ border: '1px solid red' }}>
             <TypographyHeading text="Tilaushistoria" />

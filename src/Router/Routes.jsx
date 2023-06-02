@@ -77,6 +77,8 @@ import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
 import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 
+import UserProfilePage from '../Components/Default/Profilepage/UserProfilePage';
+
 import {
     addItemLoader,
     orderEditLoader,
@@ -91,6 +93,7 @@ import {
     userEditLoader,
     usersListLoader,
     userSignupLoader,
+    userInfoLoader,
     shoppingCartLoader,
     bikesDefaultLoader,
     bikesListLoader,
@@ -320,6 +323,7 @@ function Routes() {
                             element: <Activation />,
                             action: async ({ request }) => activationAction(auth, setAuth, request),
                         },
+                        { path: 'profiili', element: <UserProfilePage />, loader: userInfoLoader },
                     ],
                 },
                 // storage routes
