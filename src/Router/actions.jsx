@@ -403,7 +403,7 @@ const confirmationAction = async (auth, setAuth, request) => {
         delivery_address: formData.get('deliveryAddress'),
         phone_number: formData.get('phoneNumber'),
         status: 'Waiting',
-        user: formData.get('id'),
+        user: Number(formData.get('id')),
         order_info: formData.get('orderInfo'),
         // products: formData.get('productIds'),
     });
