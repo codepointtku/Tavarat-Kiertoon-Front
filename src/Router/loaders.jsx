@@ -303,8 +303,10 @@ const shoppingProcessLoader = async (auth, setAuth) => {
 
 const adminLoader = async (auth, setAuth) => {
     const [{ data: user }, { data: messages }] = await Promise.all([
-        apiCall(auth, setAuth, '/user/', 'get'),
-        apiCall(auth, setAuth, '/contact_forms/?status=Not read', 'get'),
+        // apiCall(auth, setAuth, '/user/', 'get'),
+        userApi.userRetrieve(),
+        // apiCall(auth, setAuth, '/contact_forms/?status=Not read', 'get'),
+        contactFormsApi.contactFormsList(null, null, null, { status: 'Not read' }),
     ]);
 
     return { user, messages };

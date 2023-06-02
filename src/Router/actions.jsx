@@ -528,17 +528,23 @@ const deleteBikeAction = async (auth, setAuth, params) => {
 const adminBulletinsAction = async (auth, setAuth, request) => {
     if (request.method === 'DELETE') {
         const formData = await request.formData();
-        const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'delete');
+        // const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'delete');
+        const response = await bulletinsApi.bulletinsRetrieve(formData.get('id'));
         if (response.status === 204) {
             return { type: 'deleted', status: true };
         }
         return { type: 'deleted', status: false };
     }
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'put', {
+    // const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'put', {
+    //     title: formData.get('title'),
+    //     content: formData.get('content'),
+    // });
+    const response = await bulletinsApi.bulletinsUpdate(formData.get('id'), {
         title: formData.get('title'),
         content: formData.get('content'),
     });
+
     if (response.status === 200) {
         return { type: 'modified', status: true };
     }
@@ -551,7 +557,7 @@ const adminBulletinsAction = async (auth, setAuth, request) => {
 
 const adminInboxAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const id = formData.get('id');
+    const id = Number(formData.get('id'));
     // const response = await apiCall(auth, setAuth, `/contact_forms/${id}/`, 'put', {
     //     name: formData.get('name'),
     //     email: formData.get('email'),
