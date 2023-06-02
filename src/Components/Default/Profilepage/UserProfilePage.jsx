@@ -35,7 +35,7 @@ function UserProfilePage() {
                     <Tab value="userInfo" label="Käyttäjätiedot" />
                     <Tab value="userOrders" label="Tilaustiedot" />
                 </Tabs>
-                <Grid container flexDirection="row" justifyContent="space-around" sx={{ border: '1px solid blue' }}>
+                <Grid flexDirection="row" sx={{ border: '1px solid blue' }}>
                     <TabPanel value="userInfo">
                         <Grid item>
                             <ProfileInfo userInfo={userInfo} />
