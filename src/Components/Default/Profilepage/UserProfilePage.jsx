@@ -1,15 +1,21 @@
+import { useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { Grid, Tabs, Tab, Typography } from '@mui/material';
+import { TabContext, TabPanel } from '@mui/lab';
 
 import ProfileInfo from './ProfileInfo';
 import OrdersActive from './OrdersActive';
 import OrdersHistory from './OrdersHistory';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import TypographyHeading from '../../TypographyHeading';
 
 function UserProfilePage() {
+    const [value, setValue] = useState('userInfo');
     const { userInfo, userOrders } = useLoaderData();
+
+    function handleSectionChange(event, newSection) {
+        setValue(newSection);
+    }
 
     return (
         <>
@@ -24,25 +30,30 @@ function UserProfilePage() {
                     Käyttäjäprofiili
                 </Typography>
             </Grid>
-            <Tabs centered>
-                <Tab label="Käyttäjätiedot" />
-                <Tab label="Tilaustiedot" />
-            </Tabs>
-            <Grid container flexDirection="row" justifyContent="space-around" sx={{ border: '1px solid blue' }}>
-                <Grid item>
-                    <ProfileInfo userInfo={userInfo} />
-                </Grid>
+            <TabContext value={value}>
+                <Tabs value={value} onChange={handleSectionChange} centered>
+                    <Tab value="userInfo" label="Käyttäjätiedot" />
+                    <Tab value="userOrders" label="Tilaustiedot" />
+                </Tabs>
+                <Grid container flexDirection="row" justifyContent="space-around" sx={{ border: '1px solid blue' }}>
+                    <TabPanel value="userInfo">
+                        <Grid item>
+                            <ProfileInfo userInfo={userInfo} />
+                        </Grid>
+                    </TabPanel>
+                    <TabPanel value="userOrders">
+                        <Grid flexDirection="column" sx={{ border: '1px solid green' }}>
+                            <Grid item>
+                                <OrdersActive userOrders={userOrders} />
+                            </Grid>
 
-                <Grid flexDirection="column" sx={{ border: '1px solid green' }}>
-                    <Grid item>
-                        <OrdersActive userOrders={userOrders} />
-                    </Grid>
-
-                    <Grid item>
-                        <OrdersHistory userOrdersHistory={userOrders} />
-                    </Grid>
+                            <Grid item>
+                                <OrdersHistory userOrdersHistory={userOrders} />
+                            </Grid>
+                        </Grid>
+                    </TabPanel>
                 </Grid>
-            </Grid>
+            </TabContext>
         </>
     );
 }
