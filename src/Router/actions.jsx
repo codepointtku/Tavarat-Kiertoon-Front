@@ -517,7 +517,7 @@ const activationAction = async (auth, setAuth, request) => {
 
 const deleteBikeAction = async (auth, setAuth, params) => {
     // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
-    await bikesApi.bikesStockDelete(params.id);
+    await bikesApi.bikesStockDestroy(params.id);
     return redirect('/pyorat/pyoravarasto');
 };
 
