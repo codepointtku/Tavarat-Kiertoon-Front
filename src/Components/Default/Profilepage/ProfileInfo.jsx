@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
-import { Grid, Box, TextField, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Grid, Box, TextField, Typography, Button } from '@mui/material';
 
 function ProfileInfo({ userInfo }) {
     // console.log('ollaan ProfileInfolla', userInfo);
@@ -42,6 +43,9 @@ function ProfileInfo({ userInfo }) {
                     </Grid>
                     <Grid item>
                         <TextField {...register('userEmail')} label="Sähköposti" placeholder="Sähköposti" disabled />
+                        <Button component={Link} to="/sahkopostinvaihto" sx={{ ml: 2, p: 2 }}>
+                            Vaihda sähköpostiosoite
+                        </Button>
                     </Grid>
                 </Grid>
             </Grid>
