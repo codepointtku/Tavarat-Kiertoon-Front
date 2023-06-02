@@ -435,9 +435,89 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     return redirect('/pyorat/pyoravarasto');
 };
 
+const activationAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/users/activate/', 'post', {
+        uid: formData.get('uid'),
+        token: formData.get('token'),
+    });
+    if (response.status === 200) {
+        return { type: 'userActivation', status: true };
+    }
+    return { type: 'userActivation', status: false };
+};
+
+const changeEmailAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/users/emailchange/', 'post', {
+        new_email: formData.get('newEmail'),
+    });
+    if (response.status === 200) {
+        return { type: 'changeEmail', status: true };
+    }
+    return { type: 'changeEmail', status: false };
+};
+
+const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/users/emailchange/finish/', 'post', {
+        uid: formData.get('uid'),
+        token: formData.get('token'),
+        new_email: formData.get('newEmail'),
+    });
+    if (response.status === 200) {
+        return { type: 'emailchangesuccessful', status: true };
+    }
+    return { type: 'emailchangesuccessful', status: false };
+};
+
 const deleteBikeAction = async (auth, setAuth, params) => {
     await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     return redirect('/pyorat/pyoravarasto');
+};
+
+/**
+ * deletes or modifies a bulletin
+ */
+
+const adminBulletinsAction = async (auth, setAuth, request) => {
+    if (request.method === 'DELETE') {
+        const formData = await request.formData();
+        const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'delete');
+        if (response.status === 204) {
+            return { type: 'deleted', status: true };
+        }
+        return { type: 'deleted', status: false };
+    }
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'put', {
+        title: formData.get('title'),
+        content: formData.get('content'),
+    });
+    if (response.status === 200) {
+        return { type: 'modified', status: true };
+    }
+    return { type: 'modified', status: false };
+};
+
+/**
+ * Changes read state of message
+ */
+
+const adminInboxAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const id = formData.get('id');
+    const response = await apiCall(auth, setAuth, `/contact_forms/${id}/`, 'put', {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        subject: formData.get('subject'),
+        message: formData.get('message'),
+        status: formData.get('status'),
+    });
+    if (response.status === 200) {
+        return { type: 'markasread', status: true };
+    }
+    return { type: 'markasread', status: false };
 };
 
 export {
@@ -459,6 +539,11 @@ export {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
+    adminBulletinsAction,
+    activationAction,
     deleteBikeAction,
     adminLogOut,
+    adminInboxAction,
+    emailChangeSuccessfulAction,
+    changeEmailAction,
 };

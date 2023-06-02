@@ -275,7 +275,43 @@ const shoppingProcessLoader = async (auth, setAuth) => {
     return user;
 };
 
-const adminInboxLoader = async (auth, setAuth) => {
+const adminLoader = async (auth, setAuth) => {
+    const [{ data: user }, { data: messages }] = await Promise.all([
+        apiCall(auth, setAuth, '/user/', 'get'),
+        apiCall(auth, setAuth, '/contact_forms/?status=Not read', 'get'),
+    ]);
+
+    return { user, messages };
+};
+
+const adminInboxLoader = async (auth, setAuth, request) => {
+    const searchParams = new URL(request.url).searchParams;
+    const status =
+        searchParams.get('tila') === 'Luetut'
+            ? 'Read'
+            : searchParams.get('tila') === 'Lukemattomat'
+            ? 'Not%20read'
+            : searchParams.get('tila') === 'Hoidetut' && 'Handled';
+
+    if (status) {
+        const { data: messages } = await apiCall(
+            auth,
+            setAuth,
+            searchParams.has('sivu')
+                ? `/contact_forms/?page=${searchParams.get('sivu')}&status=${status}`
+                : `/contact_forms/?status=${status}`,
+            'get'
+        );
+        return messages;
+    } else if (searchParams.has('sivu') && searchParams.get('sivu') != 0) {
+        const { data: messages } = await apiCall(
+            auth,
+            setAuth,
+            `/contact_forms/?page=${searchParams.get('sivu')}`,
+            'get'
+        );
+        return messages;
+    }
     const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
     return messages;
 };
@@ -300,5 +336,6 @@ export {
     createNewBikeLoader,
     shoppingCartLoader,
     shoppingProcessLoader,
+    adminLoader,
     adminInboxLoader,
 };

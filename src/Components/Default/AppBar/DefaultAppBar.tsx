@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect, ReactNode } from 'react';
-import { useLoaderData, useNavigate, useSubmit, useRouteLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate, useSubmit } from 'react-router-dom';
 
 import {
     AppBar,
@@ -30,7 +30,6 @@ import ProductInCart from './ProductInCart';
 import LoginForm from './LoginForm';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
-import { set } from 'date-fns';
 
 //
 
@@ -242,7 +241,7 @@ function DefaultAppBar() {
                         </>
                     )}
                     {products?.map((cartProduct: CartProduct) => {
-                        const product = amountList.find((p: { id: number }) => p.id == cartProduct.group_id);
+                        const product = amountList?.find((p: { id: number }) => p.id == cartProduct.group_id);
                         return (
                             <ProductInCart
                                 key={cartProduct.id}
