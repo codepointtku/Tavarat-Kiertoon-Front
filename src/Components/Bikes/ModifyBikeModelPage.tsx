@@ -5,11 +5,9 @@ import {
     Button,
     Card,
     CardMedia,
-    FormControl,
     Grid,
-    InputLabel,
     MenuItem,
-    Select,
+    // Select,
     TextField,
     Typography,
 } from '@mui/material';
@@ -40,7 +38,7 @@ interface ModifyBikeModelInterface {
  * @returns
  */
 function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
-
+    // state for controlling the Delete confirmation modal
     const [renderDeleteBikeModelModal, setRenderDeleteBikeModelModal] = useState(false);
 
     // input data
@@ -53,7 +51,8 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
     };
 
     // hook form functions and default values
-    const { register, handleSubmit, watch } = useForm({
+    const { register, handleSubmit, watch, formState } = useForm({
+        mode: 'onTouched',
         defaultValues: {
             bikeModelName: createNewBikeModel ? '' : (bikeModel.name as string),
             bikeModelBrandName: createNewBikeModel ? '' : (bikeModel.brand.name as string),
@@ -64,6 +63,9 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
             pictures: createNewBikeModel ? '' : (bikeModel.picture.picture_address as string),
         },
     });
+
+    // error messages
+    const { errors } = formState;
 
     // submit the form data
     const submit = useSubmit();
@@ -92,18 +94,19 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
         formData.append('bikeModelSizeId', (size ? size.id : -1).toString());
 
         // send the data
-        submit(formData,
+        submit(
+            formData,
             createNewBikeModel
-            ? {
-                method: 'post',
-                action: `/pyorat/pyoravarasto/lisaapyoramalli/`,
-                encType: 'multipart/form-data',
-            }
-            : {
-                method: 'put',
-                action: `/pyorat/pyoravarasto/muokkaapyoramalli/${bikeModel.id}`,
-                encType: 'multipart/form-data',
-            }
+                ? {
+                      method: 'post',
+                      action: `/pyorat/pyoravarasto/lisaapyoramalli/`,
+                      encType: 'multipart/form-data',
+                  }
+                : {
+                      method: 'put',
+                      action: `/pyorat/pyoravarasto/muokkaapyoramalli/${bikeModel.id}`,
+                      encType: 'multipart/form-data',
+                  }
         );
     };
 
@@ -156,46 +159,94 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
                             <CardMedia
                                 component="img"
                                 height="250"
-                                sx={{ marginRight: '1rem', marginBottom: '1rem', objectFit: 'contain' }}
+                                sx={{
+                                    marginRight: '1rem',
+                                    marginBottom: '1rem',
+                                    objectFit: 'contain',
+                                }}
                                 image={imageToShow}
                                 alt="Lisää kuva"
                             />
-                            <Button variant="outlined" component="label" sx={{ width: 200 }}>
+                            <Button
+                                variant="outlined"
+                                color={errors.pictures ? 'error' : 'primary'}
+                                component="label"
+                                sx={{ width: 200 }}
+                            >
                                 {createNewBikeModel ? 'Lisää kuva' : 'Vaihda kuva'}
-                                <input type="file" accept="image/*" {...register('pictures')} hidden />
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    {...register('pictures', {
+                                        required: 'Kuva puuttuu',
+                                    })}
+                                    hidden
+                                />
                             </Button>
+                            {
+                                <p style={{ color: 'red', fontSize: '0.8rem', marginTop: 0, height: '1rem' }}>
+                                    {errors.pictures ? errors.pictures.message : ' '}
+                                </p>
+                            }
                         </Box>
                         <Grid container flexDirection="row" spacing={2} paddingTop="1rem">
                             <Grid item xs={6}>
+                                {/*  */}
                                 <TextField
                                     label="Nimi"
                                     value={watch('bikeModelName')}
-                                    {...register('bikeModelName')}
+                                    {...register('bikeModelName', { required: 'Pakollinen tieto puuttuu' })}
                                     fullWidth
+                                    color={errors.bikeModelName ? 'error' : 'primary'}
+                                    error={!!errors.bikeModelName}
+                                    helperText={errors.bikeModelName?.message?.toString() || ' '}
+                                    required
+                                    sx={{ marginBottom: '-1rem' }}
                                 />
+                                {/*  */}
                             </Grid>
                             <Grid item xs={6}></Grid>
                             <Grid item xs={6}>
+                                {/*  */}
                                 <Autocomplete
                                     freeSolo
                                     id="bike-model-brand-name"
                                     options={brands.map((brand) => brand.name)}
                                     value={watch('bikeModelBrandName')}
                                     renderInput={(params) => (
-                                        <TextField {...params} label="Merkki" {...register('bikeModelBrandName')} />
+                                        <TextField
+                                            {...params}
+                                            label="Merkki"
+                                            {...register('bikeModelBrandName', {
+                                                required: 'Pakollinen tieto puuttuu',
+                                            })}
+                                            color={errors.bikeModelBrandName ? 'error' : 'primary'}
+                                            error={!!errors.bikeModelBrandName}
+                                            helperText={errors.bikeModelBrandName?.message?.toString() || ' '}
+                                            required
+                                            sx={{ marginBottom: '-1rem' }}
+                                        />
                                     )}
                                     sx={{ width: '100%' }}
                                 />
+                                {/*  */}
                             </Grid>
                             <Grid item xs={6}>
-                                <FormControl fullWidth>
+                                {/* <FormControl fullWidth>
                                     <InputLabel id="bike-model-color-name-label">Väri</InputLabel>
                                     <Select
                                         labelId="bike-model-color-name-label"
                                         id="bike-model-color-name"
                                         label="Väri"
-                                        {...register('bikeModelColorId')}
+                                        {...register('bikeModelColorId', {
+                                            required: 'Pakollinen tieto puuttuu',
+                                        })}
                                         value={watch('bikeModelColorId')}
+                                        color={errors.bikeModelColorId ? 'error' : 'primary'}
+                                        error={!!errors.bikeModelColorId}
+                                        // helperText={errors.bikeModelColorId?.message?.toString() || ' '}
+                                        required
+                                        sx={{ marginBottom: '-1rem' }}
                                     >
                                         {colors.map((color) => {
                                             return (
@@ -205,7 +256,31 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
                                             );
                                         })}
                                     </Select>
-                                </FormControl>
+                                </FormControl> */}
+                                <TextField
+                                    id="bike-model-color-name"
+                                    select
+                                    label="Väri"
+                                    {...register('bikeModelColorId', {
+                                        required: 'Pakollinen tieto puuttuu',
+                                    })}
+                                    value={watch('bikeModelColorId')}
+                                    fullWidth
+                                    inputProps={{ required: false }}
+                                    required
+                                    color={errors.bikeModelColorId ? 'error' : 'primary'}
+                                    error={!!errors.bikeModelColorId}
+                                    helperText={errors.bikeModelColorId?.message || ' '}
+                                    sx={{ marginBottom: '-1rem' }}
+                                >
+                                    {colors?.map((color) => {
+                                        return (
+                                            <MenuItem key={color.id} value={color.id}>
+                                                {color.name}
+                                            </MenuItem>
+                                        );
+                                    })}
+                                </TextField>
                             </Grid>
                             <Grid item xs={6}>
                                 <Autocomplete
@@ -214,7 +289,18 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
                                     options={sizes.map((size) => size.name)}
                                     value={watch('bikeModelSizeName')}
                                     renderInput={(params) => (
-                                        <TextField {...params} label="Koko" {...register('bikeModelSizeName')} />
+                                        <TextField
+                                            {...params}
+                                            label="Koko"
+                                            {...register('bikeModelSizeName', {
+                                                required: 'Pakollinen tieto puuttuu',
+                                            })}
+                                            color={errors.bikeModelSizeName ? 'error' : 'primary'}
+                                            error={!!errors.bikeModelSizeName}
+                                            helperText={errors.bikeModelSizeName?.message?.toString() || ' '}
+                                            required
+                                            sx={{ marginBottom: '-1rem' }}
+                                        />
                                     )}
                                     sx={{ width: '100%' }}
                                 />
@@ -226,18 +312,36 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
                                     options={types.map((type) => type.name)}
                                     value={watch('bikeModelTypeName')}
                                     renderInput={(params) => (
-                                        <TextField {...params} label="Tyyppi" {...register('bikeModelTypeName')} />
+                                        <TextField
+                                            {...params}
+                                            label="Tyyppi"
+                                            {...register('bikeModelTypeName', {
+                                                required: 'Pakollinen tieto puuttuu',
+                                            })}
+                                            color={errors.bikeModelTypeName ? 'error' : 'primary'}
+                                            error={!!errors.bikeModelTypeName}
+                                            helperText={errors.bikeModelTypeName?.message?.toString() || ' '}
+                                            required
+                                            sx={{ marginBottom: '-1rem' }}
+                                        />
                                     )}
                                     sx={{ width: '100%' }}
                                 />
                             </Grid>
                             <Grid item xs={12}>
+                                {/*  */}
                                 <TextField
                                     label="Kuvaus"
                                     value={watch('bikeModelDescription')}
-                                    {...register('bikeModelDescription')}
+                                    {...register('bikeModelDescription', { required: 'Pakollinen tieto puuttuu' })}
                                     fullWidth
+                                    color={errors.bikeModelDescription ? 'error' : 'primary'}
+                                    error={!!errors.bikeModelDescription}
+                                    helperText={errors.bikeModelDescription?.message?.toString() || ' '}
+                                    required
+                                    sx={{ marginBottom: '-1rem' }}
                                 />
+                                {/*  */}
                             </Grid>
                         </Grid>
                     </Box>
@@ -246,7 +350,7 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
                     <Button
                         to="/pyorat/pyoravarasto/pyoramallit"
                         component={Link}
-                        sx={{ width: '12rem', padding: '1rem' }}
+                        sx={{ width: '12rem', padding: '1rem', marginRight: '3rem' }}
                     >
                         Palaa Tallentamatta
                     </Button>
@@ -254,23 +358,23 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
                         <Button
                             color="error"
                             onClick={() => setRenderDeleteBikeModelModal(true)}
-                            sx={{ width: '12rem', marginX: '3rem', padding: '1rem' }}
+                            sx={{ width: '12rem', padding: '1rem' }}
                             type="button"
                         >
                             Poista
                         </Button>
                     )}
 
-                    <Button type="submit" sx={{ width: '12rem', padding: '1rem' }}>
+                    <Button type="submit" sx={{ width: '12rem', padding: '1rem', marginLeft: '3rem' }}>
                         Tallenna ja palaa
                     </Button>
                 </Box>
-                <DeleteBikeModelModal
-                    renderModal={renderDeleteBikeModelModal}
-                    setRenderModal={setRenderDeleteBikeModelModal}
-                    modelId={bikeModel.id}
-                />
             </Box>
+            <DeleteBikeModelModal
+                renderModal={renderDeleteBikeModelModal}
+                setRenderModal={setRenderDeleteBikeModelModal}
+                modelId={bikeModel.id}
+            />
         </>
     );
 }

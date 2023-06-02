@@ -413,7 +413,6 @@ const activationAction = async (auth, setAuth, request) => {
     return { type: 'userActivation', status: false };
 };
 
-
 /**
  * Delete a single bike
  * @param {*} auth
@@ -422,7 +421,7 @@ const activationAction = async (auth, setAuth, request) => {
  * @returns
  */
 const deleteBikeAction = async (auth, setAuth, params) => {
-    console.log('### delete BIKE action',`/bikes/stock/${params.id}` )
+    console.log('### delete BIKE action', `/bikes/stock/${params.id}`);
     await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     return redirect('/pyorat/pyoravarasto');
 };
@@ -431,11 +430,10 @@ const deleteBikeAction = async (auth, setAuth, params) => {
  * Delete a single bike model
  */
 const deleteBikeModelAction = async (auth, setAuth, params) => {
-    console.log('### delete MODEL action', `/bikes/models/${params.id}`)
+    console.log('### delete MODEL action', `/bikes/models/${params.id}`);
     await apiCall(auth, setAuth, `/bikes/models/${params.id}`, 'delete');
-    return redirect('/pyorat/pyoravarasto');
+    return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
-
 
 /**
  * getOrCreateBikeModelIds
@@ -450,7 +448,7 @@ const deleteBikeModelAction = async (auth, setAuth, params) => {
 const getOrCreateBikeModelIds = async (auth, setAuth, data) => {
     // if selected type, brand or size do not exist they need to be created
     // need to create new is indicated by setting the bikeModelXXXId to -1 in the form
-       let typeId = data.get('bikeModelTypeId');
+    let typeId = data.get('bikeModelTypeId');
     if (typeId <= 0) {
         const response = await apiCall(auth, setAuth, `/bikes/type/`, 'post', { name: data.get('bikeModelTypeName') });
         typeId = response.data.id;
@@ -467,8 +465,8 @@ const getOrCreateBikeModelIds = async (auth, setAuth, data) => {
         const response = await apiCall(auth, setAuth, `/bikes/size/`, 'post', { name: data.get('bikeModelSizeName') });
         sizeId = response.data.id;
     }
-    return { typeId, brandId, sizeId }
-}
+    return { typeId, brandId, sizeId };
+};
 
 /**
  * Modify a single bike model.
@@ -481,12 +479,12 @@ const getOrCreateBikeModelIds = async (auth, setAuth, data) => {
  * @returns
  */
 const modifyBikeModelAction = async (auth, setAuth, request, params) => {
-    console.log('### modifyBikeModelAction')
+    console.log('### modifyBikeModelAction');
     // get data from form
     const data = await request.formData();
 
     // get or create new ids for type, brand and size
-    const { typeId, brandId, sizeId } = await getOrCreateBikeModelIds(auth, setAuth, data)
+    const { typeId, brandId, sizeId } = await getOrCreateBikeModelIds(auth, setAuth, data);
 
     // append modified data to form data
     data.append('name', data.get('bikeModelName'));
@@ -518,7 +516,7 @@ const createBikeModelAction = async (auth, setAuth, request, params) => {
     const data = await request.formData();
 
     // get or create new ids for type, brand and size
-    const { typeId, brandId, sizeId } = await getOrCreateBikeModelIds(auth, setAuth, data)
+    const { typeId, brandId, sizeId } = await getOrCreateBikeModelIds(auth, setAuth, data);
 
     // append modified data to form data
     data.append('name', data.get('bikeModelName'));
