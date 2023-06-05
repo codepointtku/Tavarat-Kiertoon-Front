@@ -42,8 +42,10 @@
     },
     "scripts": {
         "start": "npm ci && vite",
-        "dev": "npm install && vite",
-        "build": "tsc & vite build",
+        "dev": "npm install && npm run api:download-schema && npm run api:generate && vite",
+        "build": "npm run api:generate && tsc && vite build",
+        "api:download-schema": "curl http://localhost:8000/schema/ --output src/api/schema.yaml",
+        "api:generate": "openapi-generator-cli generate",
         "lint": "eslint src --fix",
         "test": "playwright test",
         "typecheck": "tsc",
@@ -70,6 +72,7 @@
     },
     "devDependencies": {
         "@faker-js/faker": "^7.6.0",
+        "@openapitools/openapi-generator-cli": "^2.6.0",
         "@playwright/test": "^1.29.2",
         "@remix-run/eslint-config": "^1.14.3",
         "@types/validator": "^13.7.14",

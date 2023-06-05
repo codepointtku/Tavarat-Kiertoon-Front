@@ -7,13 +7,6 @@ import FeedIcon from '@mui/icons-material/Feed';
 import { useRouteLoaderData } from 'react-router-dom';
 import type { rootLoader } from '../../Router/loaders';
 
-interface Bulletin {
-    title: string;
-    date: string;
-    content: string;
-    id: string;
-}
-
 function BulletinPosts() {
     const { bulletins } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
 
@@ -22,7 +15,7 @@ function BulletinPosts() {
             <HeroHeader Icon={<FeedIcon />} hideInAdmin={true} />
             <HeroText title="Tiedotteet" />
             <Stack id="bulletin-cards-column-stacker-admin" sx={{ m: '1rem 0 1rem 0' }}>
-                {bulletins.map((bulletin: Bulletin) => {
+                {bulletins.map((bulletin) => {
                     const date = new Date(bulletin.date);
                     const dateInfo = [];
                     dateInfo.push(date.toLocaleDateString());
@@ -30,7 +23,7 @@ function BulletinPosts() {
                     return (
                         <BulletinPost
                             key={bulletin.id}
-                            id={bulletin.id}
+                            id={bulletin.id.toString()}
                             title={bulletin.title}
                             content={bulletin.content}
                             date={dateInfo}

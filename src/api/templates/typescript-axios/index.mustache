@@ -1,0 +1,17 @@
+/* tslint:disable */
+/* eslint-disable */
+{{>licenseInfo}}
+// Added exports for each API -->
+// Original: https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator/src/main/resources/typescript-axios/index.mustache
+
+{{#apiInfo}}{{#apis}}import { {{classname}} } from "./api";
+{{/apis}}{{/apiInfo}}
+import configuration from '../configuration';
+
+{{#apiInfo}}{{#apis}}export const {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = new {{classname}}(configuration);
+{{/apis}}{{/apiInfo}}
+// <--
+
+export * from "./api";
+export * from "./configuration";
+{{#withSeparateModelsAndApi}}export * from "./{{tsModelPackage}}";{{/withSeparateModelsAndApi}}

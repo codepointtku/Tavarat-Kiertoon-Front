@@ -4,22 +4,22 @@ import HeroText from '../HeroText';
 import MessageCard from './MessageCard';
 import type { adminInboxLoader } from '../../Router/loaders';
 
-interface Message {
-    subject: string;
-    date: Date & string;
-    message: string;
-    id: string;
-    status: string;
-    name: string;
-    email: string;
-}
+// interface Message {
+//     subject: string;
+//     date: Date & string;
+//     message: string;
+//     id: number;
+//     status: string;
+//     name: string;
+//     email: string;
+// }
 
 function AdminInbox() {
     const [searchParams, setSearchParams] = useSearchParams();
     const messages = useLoaderData() as Awaited<ReturnType<typeof adminInboxLoader>>;
-    const pageCount = Math.ceil(messages.count / 5);
+    const pageCount = messages?.count && Math.ceil(messages.count / 5);
     const url = window.location.href;
-    const messageCards = messages.results.map((message: Message) => {
+    const messageCards = messages?.results?.map((message) => {
         const date = new Date(message.date);
         const dateInfo = [];
         dateInfo.push(date.toLocaleDateString());
@@ -27,7 +27,7 @@ function AdminInbox() {
         return (
             <MessageCard
                 key={message.id}
-                id={message.id}
+                id={message.id.toString()}
                 currentStatus={message.status}
                 subject={message.subject}
                 date={dateInfo}
