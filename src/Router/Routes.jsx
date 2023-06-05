@@ -30,7 +30,9 @@ import AdminInbox from '../Components/Admin/AdminInbox';
 
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
+import BulletinPosts from '../Components/Admin/BulletinPosts';
 import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
+import ModifyBulletinPost from '../Components/Admin/ModifyBulletinPost';
 import Stats from '../Components/Admin/Stats/Stats';
 
 import StoragesList from '../Components/Admin/StoragesList';
@@ -49,6 +51,8 @@ import Confirmation from '../Components/Default/ShoppingCart/Confirmation';
 import SignupLandingPage from '../Components/Default/Signup/SignupLandingPage';
 import SignupPage from '../Components/Default/Signup/SignupPage';
 import Activation from '../Components/Default/Signup/Activation';
+import EmailChangeSuccessful from '../Components/EmailChangeSuccessful';
+import ChangeEmail from '../Components/ChangeEmail';
 
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
@@ -99,6 +103,7 @@ import {
     bikeModelsLoader,
     bikeSingleModelLoader,
     shoppingProcessLoader,
+    adminLoader,
     adminInboxLoader,
     bikeNewModelLoader,
 } from './loaders';
@@ -126,12 +131,20 @@ import {
     modifyBikeModelAction,
     createBikeModelAction,
     deleteBikeModelAction,
+    emailChangeSuccessfulAction,
+    changeEmailAction,
+    adminBulletinsAction,
 } from './actions';
+
+import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 
 createStore({});
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
+
+    useLoginAxiosInterceptor();
+
     const router = createBrowserRouter([
         {
             path: '/',
@@ -140,7 +153,9 @@ function Routes() {
             id: 'root',
             loader: async () => rootLoader(auth, setAuth),
             // Loads data only at first page load, not with every route
-            shouldRevalidate: () => false,
+            shouldRevalidate: ({ currentUrl }) => {
+                return currentUrl.pathname === '/admin/tiedotteet' || '/admin/tiedotteet/';
+            },
             children: [
                 // main routes
                 {
@@ -290,6 +305,16 @@ function Routes() {
                             action: async ({ request }) => contactAction(auth, setAuth, request),
                         },
                         {
+                            path: 'sahkopostinvaihto',
+                            element: <ChangeEmail />,
+                            action: async ({ request }) => changeEmailAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'emailvaihto/:uid/:token/:newEmail',
+                            element: <EmailChangeSuccessful />,
+                            action: async ({ request }) => emailChangeSuccessfulAction(auth, setAuth, request),
+                        },
+                        {
                             path: 'unohtunutsalasana',
                             element: <ForgotPassword />,
                             action: async ({ request }) => resetEmailAction(auth, setAuth, request),
@@ -412,11 +437,13 @@ function Routes() {
                             </ThemeProvider>
                         </HasRole>
                     ),
+                    id: 'admin',
                     errorElement: (
                         <ThemeProvider theme={adminTheme}>
                             <ErrorBoundary />,
                         </ThemeProvider>
                     ),
+                    loader: async () => adminLoader(auth, setAuth),
                     action: async ({ request }) => adminLogOut(auth, setAuth, request),
                     children: [
                         {
@@ -479,7 +506,12 @@ function Routes() {
                         },
                         {
                             path: 'tiedotteet',
-                            element: <Bulletins />,
+                            element: <BulletinPosts />,
+                            action: async ({ request }) => adminBulletinsAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'tiedotteet/:id/muokkaa',
+                            element: <ModifyBulletinPost />,
                         },
                         {
                             path: 'tiedotteet/luo',
@@ -591,7 +623,7 @@ function Routes() {
                                     loader: async ({ params }) => bikeNewModelLoader(auth, setAuth, params),
                                     action: async ({ request, params }) =>
                                         createBikeModelAction(auth, setAuth, request, params),
-                    },
+                                },
                             ],
                         },
                     ],

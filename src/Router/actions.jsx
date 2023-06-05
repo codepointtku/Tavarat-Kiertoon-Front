@@ -1,14 +1,24 @@
 import { redirect } from 'react-router-dom';
 import apiCall from '../Utils/apiCall';
+import {
+    bikesApi,
+    bulletinsApi,
+    contactFormsApi,
+    contactsApi,
+    ordersApi,
+    shoppingCartApi,
+    storagesApi,
+    usersApi,
+} from '../api';
 
 const adminLogOut = async (auth, setAuth, request) => {
-    console.log('kick ban!!111');
-    const formData = await request.formData();
+    // const formData = await request.formData();
     if (request.method === 'POST') {
         if (auth.username) {
-            const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
-                formData,
-            });
+            // const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
+            //     formData,
+            // });
+            const response = await usersApi.usersLogoutCreate();
             if (response.status === 200) {
                 return { type: 'logout', status: true };
             }
@@ -26,18 +36,25 @@ const frontPageActions = async (auth, setAuth, request) => {
     const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : 0;
     if (request.method === 'POST') {
         if (auth.username) {
-            const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
-                formData,
-            });
+            // const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
+            //     formData,
+            // });
+            const response = await usersApi.usersLogoutCreate();
+
             if (response.status === 200) {
                 return { type: 'logout', status: true };
             }
             return { type: 'logout', status: false };
         }
-        const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
+        // const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
+        //     username: formData.get('email'),
+        //     password: formData.get('password'),
+        // });
+        const response = await usersApi.usersLoginCreate({
             username: formData.get('email'),
             password: formData.get('password'),
         });
+
         if (response.status === 200) {
             return { type: 'login', status: true };
         }
@@ -51,16 +68,24 @@ const frontPageActions = async (auth, setAuth, request) => {
         }
         if (!id) {
             // clear cart if no id is being sent or clear cart and return "type: orderCreated" when a new order is created.
-            const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            // const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+            //     amount: -1,
+            // });
+            const response = await shoppingCartApi.shoppingCartUpdate({
                 amount: -1,
             });
+
             if (formData.has('order')) {
                 return { type: 'orderCreated', status: true };
             }
             return response;
         }
-        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
-            products: id,
+        // const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+        //     products: id,
+        //     amount,
+        // });
+        const response = await shoppingCartApi.shoppingCartUpdate({
+            product: id,
             amount,
         });
         if (response.status === 202) {
@@ -70,8 +95,13 @@ const frontPageActions = async (auth, setAuth, request) => {
         return { type: 'update', status: false };
     }
     if (request.method === 'DELETE') {
-        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
-            products: id,
+        // const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+        //     product: id,
+        //     amount,
+        // });
+        console.log('is in delete block');
+        const response = await shoppingCartApi.shoppingCartUpdate({
+            product: id,
             amount,
         });
 
@@ -113,7 +143,8 @@ const userSignupAction = async (auth, setAuth, request) => {
         userSignUpValues = { ...userSignUpValues, username: formData.get('username') };
     }
 
-    const response = await apiCall(auth, setAuth, '/users/create/', 'post', userSignUpValues);
+    // const response = await apiCall(auth, setAuth, '/users/create/', 'post', userSignUpValues);
+    const response = await usersApi.usersCreateCreate(userSignUpValues);
 
     if (response.status === 201) {
         return { type: 'create', status: true };
@@ -127,7 +158,8 @@ const userSignupAction = async (auth, setAuth, request) => {
  */
 const contactAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/contact_forms/', 'post', formData);
+    // const response = await apiCall(auth, setAuth, '/contact_forms/', 'post', formData);
+    const response = await contactFormsApi.contactFormsCreate(Object.fromEntries(formData));
     return response.data || null;
 };
 /**
@@ -136,7 +168,17 @@ const contactAction = async (auth, setAuth, request) => {
 const bikeOrderAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     // console.log('@bikeorderAction', formData.get('contactPersonName'));
-    const response = await apiCall(auth, setAuth, '/bikes/rental/', 'post', {
+    // const response = await apiCall(auth, setAuth, '/bikes/rental/', 'post', {
+    //     contact_name: formData.get('contactPersonName'),
+    //     contact_phone_number: formData.get('contactPersonPhoneNumber'),
+    //     delivery_address: formData.get('deliveryAddress'),
+    //     start_date: formData.get('startDateTime'),
+    //     end_date: formData.get('endDateTime'),
+    //     bike_stock: JSON.parse(formData.get('selectedBikes')),
+    //     extra_info: formData.get('extraInfo'),
+    //     pickup: formData.get('pickup'),
+    // });
+    const response = await bikesApi.bikesRentalCreate({
         contact_name: formData.get('contactPersonName'),
         contact_phone_number: formData.get('contactPersonPhoneNumber'),
         delivery_address: formData.get('deliveryAddress'),
@@ -157,17 +199,31 @@ const orderEditAction = async (auth, setAuth, request, params) => {
     // const productName = formData.get('productName');
     if (request.method === 'POST') {
         if (formData.get('type') === 'delete') {
-            const response = await apiCall(auth, setAuth, `/orders/${params.id}`, 'delete', {
+            // const response = await apiCall(auth, setAuth, `/orders/${params.id}`, 'delete', {
+            //     product: Number(formData.get('product')),
+            //     productId: Number(formData.get('productId')),
+            // });
+
+            // TODO: why payload with delete method???
+            const response = await ordersApi.ordersDestroy(params.id, {
                 product: Number(formData.get('product')),
                 productId: Number(formData.get('productId')),
             });
+
             if (response.status === 202) {
                 return { type: 'delete', status: true };
             }
             return { type: 'delete', status: false };
         }
         if (formData.get('type') === 'put') {
-            const response = await apiCall(auth, setAuth, `/orders/${params.id}/`, 'put', {
+            // const response = await apiCall(auth, setAuth, `/orders/${params.id}/`, 'put', {
+            //     contact: formData.get('contact'),
+            //     delivery_address: formData.get('delivery_address'),
+            //     phone_number: formData.get('phone_number'),
+            //     status: formData.get('status'),
+            //     order_info: formData.get('order_info'),
+            // });
+            const response = await ordersApi.ordersUpdate(params.id, {
                 contact: formData.get('contact'),
                 delivery_address: formData.get('delivery_address'),
                 phone_number: formData.get('phone_number'),
@@ -189,7 +245,12 @@ creates new storage
 */
 const storageCreateAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/storages/', 'post', {
+    // const response = await apiCall(auth, setAuth, '/storages/', 'post', {
+    //     address: formData.get('address'),
+    //     name: formData.get('name'),
+    //     in_use: formData.get('in_use') === 'käytössä' ? true : false,
+    // });
+    const response = await storagesApi.storagesCreate({
         address: formData.get('address'),
         name: formData.get('name'),
         in_use: formData.get('in_use') === 'käytössä' ? true : false,
@@ -207,7 +268,12 @@ const storageEditAction = async (auth, setAuth, request, params) => {
     const formData = await request.formData();
     if (request.method === 'POST') {
         if (formData.get('type') === 'put') {
-            const response = await apiCall(auth, setAuth, `/storages/${params.id}/`, 'put', {
+            // const response = await apiCall(auth, setAuth, `/storages/${params.id}/`, 'put', {
+            //     address: formData.get('address'),
+            //     name: formData.get('name'),
+            //     in_use: formData.get('in_use'),
+            // });
+            const response = await storagesApi.storagesUpdate(params.id, {
                 address: formData.get('address'),
                 name: formData.get('name'),
                 in_use: formData.get('in_use'),
@@ -223,7 +289,8 @@ const storageEditAction = async (auth, setAuth, request, params) => {
 
 const userEditAction = async (auth, setAuth, request, params) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, `/users/${params.id}/edit/`, 'put', formData);
+    // const response = await apiCall(auth, setAuth, `/users/${params.id}/edit/`, 'put', formData);
+    const response = await usersApi.usersUpdate(params.id, Object.fromEntries(formData.entries()));
     if (response.status === 200) {
         return { type: 'update', status: true };
     }
@@ -234,6 +301,7 @@ const userEditAction = async (auth, setAuth, request, params) => {
  * creates a new item
  */
 
+// this will be replaced with openapi api call
 const itemCreateAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, '/products/', 'post', formData, {
@@ -251,7 +319,8 @@ const itemCreateAction = async (auth, setAuth, request) => {
 
 const createBulletinAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/bulletins/', 'post', formData);
+    // const response = await apiCall(auth, setAuth, '/bulletins/', 'post', formData);
+    const response = await bulletinsApi.bulletinsCreate(Object.fromEntries(formData.entries()));
     if (response.status === 200) {
         return { type: 'createnewannouncement', status: true };
     }
@@ -262,6 +331,7 @@ const createBulletinAction = async (auth, setAuth, request) => {
  * updates existing item
  */
 
+// this will be replaced with openapi api call
 const itemUpdateAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, '/products/', 'put', formData);
@@ -280,8 +350,12 @@ const cartViewAction = async (auth, setAuth, request) => {
     const amount = request.method === 'PUT' ? 1 : -1;
     const id = Number(formData.get('id'));
     if (request.method === 'PUT') {
-        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
-            products: id,
+        // const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+        //     product: id,
+        //     amount,
+        // });
+        const response = await shoppingCartApi.shoppingCartUpdate({
+            product: id,
             amount,
         });
         // console.log(id, 'put method test', response.status);
@@ -292,8 +366,12 @@ const cartViewAction = async (auth, setAuth, request) => {
         return { type: 'update', status: false };
     }
     if (request.method === 'DELETE') {
-        const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
-            products: id,
+        // const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
+        //     product: id,
+        //     amount,
+        // });
+        const response = await shoppingCartApi.shoppingCartUpdate({
+            product: id,
             amount,
         });
 
@@ -311,12 +389,21 @@ const cartViewAction = async (auth, setAuth, request) => {
 
 const confirmationAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/orders/', 'post', {
+    // const response = await apiCall(auth, setAuth, '/orders/', 'post', {
+    //     contact: formData.get('email'),
+    //     delivery_address: formData.get('deliveryAddress'),
+    //     phone_number: formData.get('phoneNumber'),
+    //     status: 'Waiting',
+    //     user: formData.get('id'),
+    //     order_info: formData.get('orderInfo'),
+    //     // products: formData.get('productIds'),
+    // });
+    const response = await ordersApi.ordersCreate({
         contact: formData.get('email'),
         delivery_address: formData.get('deliveryAddress'),
         phone_number: formData.get('phoneNumber'),
         status: 'Waiting',
-        user: formData.get('id'),
+        user: Number(formData.get('id')),
         order_info: formData.get('orderInfo'),
         // products: formData.get('productIds'),
     });
@@ -332,7 +419,10 @@ const confirmationAction = async (auth, setAuth, request) => {
 
 const resetEmailAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/users/password/resetemail/', 'post', {
+    // const response = await apiCall(auth, setAuth, '/users/password/resetemail/', 'post', {
+    //     username: formData.get('username'),
+    // });
+    const response = await usersApi.usersPasswordResetemailCreate({
         username: formData.get('username'),
     });
     if (response.status === 200) {
@@ -343,7 +433,13 @@ const resetEmailAction = async (auth, setAuth, request) => {
 
 const resetPasswordAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, 'users/password/reset/', 'post', {
+    // const response = await apiCall(auth, setAuth, 'users/password/reset/', 'post', {
+    //     new_password: formData.get('new_password'),
+    //     new_password_again: formData.get('new_password_again'),
+    //     uid: formData.get('uid'),
+    //     token: formData.get('token'),
+    // });
+    const response = await usersApi.usersPasswordResetCreate({
         new_password: formData.get('new_password'),
         new_password_again: formData.get('new_password_again'),
         uid: formData.get('uid'),
@@ -379,7 +475,8 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
     };
 
     // send data and redirect back to bike list
-    await apiCall(auth, setAuth, `/bikes/stock/${params.id}/`, 'put', submission);
+    // await apiCall(auth, setAuth, `/bikes/stock/${params.id}/`, 'put', submission);
+    await bikesApi.bikesStockUpdate(params.id, submission);
     return redirect('/pyorat/pyoravarasto');
 };
 
@@ -397,13 +494,18 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     };
 
     // send data and redirect back to bike list
-    await apiCall(auth, setAuth, `/bikes/stock/`, 'post', submission);
+    // await apiCall(auth, setAuth, `/bikes/stock/`, 'post', submission);
+    await bikesApi.bikesStockCreate(submission);
     return redirect('/pyorat/pyoravarasto');
 };
 
 const activationAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/users/activate/', 'post', {
+    // const response = await apiCall(auth, setAuth, '/users/activate/', 'post', {
+    //     uid: formData.get('uid'),
+    //     token: formData.get('token'),
+    // });
+    const response = await usersApi.usersActivateCreate({
         uid: formData.get('uid'),
         token: formData.get('token'),
     });
@@ -420,8 +522,43 @@ const activationAction = async (auth, setAuth, request) => {
  * @param {*} params
  * @returns
  */
+const changeEmailAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    // const response = await apiCall(auth, setAuth, '/users/emailchange/', 'post', {
+    //     new_email: formData.get('newEmail'),
+    // });
+    const response = await usersApi.usersEmailchangeCreate({
+        new_email: formData.get('newEmail'),
+    });
+
+    if (response.status === 200) {
+        return { type: 'changeEmail', status: true };
+    }
+    return { type: 'changeEmail', status: false };
+};
+
+const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    // const response = await apiCall(auth, setAuth, '/users/emailchange/finish/', 'post', {
+    //     uid: formData.get('uid'),
+    //     token: formData.get('token'),
+    //     new_email: formData.get('newEmail'),
+    // });
+    const response = await usersApi.usersEmailchangeFinishCreate({
+        uid: formData.get('uid'),
+        token: formData.get('token'),
+        new_email: formData.get('newEmail'),
+    });
+
+    if (response.status === 200) {
+        return { type: 'emailchangesuccessful', status: true };
+    }
+    return { type: 'emailchangesuccessful', status: false };
+};
+
 const deleteBikeAction = async (auth, setAuth, params) => {
-    await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
+    // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
+    await bikesApi.bikesStockDestroy(params.id);
     return redirect('/pyorat/pyoravarasto');
 };
 
@@ -537,10 +674,50 @@ const createBikeModelAction = async (auth, setAuth, request, params) => {
  * @param {*} request
  * @returns
  */
+ * deletes or modifies a bulletin
+ */
+
+const adminBulletinsAction = async (auth, setAuth, request) => {
+    if (request.method === 'DELETE') {
+        const formData = await request.formData();
+        // const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'delete');
+        const response = await bulletinsApi.bulletinsRetrieve(formData.get('id'));
+        if (response.status === 204) {
+            return { type: 'deleted', status: true };
+        }
+        return { type: 'deleted', status: false };
+    }
+    const formData = await request.formData();
+    // const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'put', {
+    //     title: formData.get('title'),
+    //     content: formData.get('content'),
+    // });
+    const response = await bulletinsApi.bulletinsUpdate(formData.get('id'), {
+        title: formData.get('title'),
+        content: formData.get('content'),
+    });
+
+    if (response.status === 200) {
+        return { type: 'modified', status: true };
+    }
+    return { type: 'modified', status: false };
+};
+
+/**
+ * Changes read state of message
+ */
+
 const adminInboxAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const id = formData.get('id');
-    const response = await apiCall(auth, setAuth, `/contact_forms/${id}/`, 'put', {
+    const id = Number(formData.get('id'));
+    // const response = await apiCall(auth, setAuth, `/contact_forms/${id}/`, 'put', {
+    //     name: formData.get('name'),
+    //     email: formData.get('email'),
+    //     subject: formData.get('subject'),
+    //     message: formData.get('message'),
+    //     status: formData.get('status'),
+    // });
+    const response = await contactFormsApi.contactFormsUpdate(id, {
         name: formData.get('name'),
         email: formData.get('email'),
         subject: formData.get('subject'),
@@ -571,6 +748,7 @@ export {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
+    adminBulletinsAction,
     activationAction,
     modifyBikeModelAction,
     deleteBikeAction,
@@ -578,4 +756,6 @@ export {
     adminInboxAction,
     createBikeModelAction,
     deleteBikeModelAction,
+    emailChangeSuccessfulAction,
+    changeEmailAction,
 };

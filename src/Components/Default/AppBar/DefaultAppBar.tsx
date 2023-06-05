@@ -1,5 +1,5 @@
-import { useState, useContext, useEffect, ReactNode } from 'react';
-import { useLoaderData, useNavigate, useSubmit, useRouteLoaderData } from 'react-router-dom';
+import { useState, useContext, useEffect, type ReactNode } from 'react';
+import { useLoaderData, useNavigate, useSubmit } from 'react-router-dom';
 
 import {
     AppBar,
@@ -15,7 +15,7 @@ import {
     ListItem,
     ListItemText,
     Typography,
-    Theme,
+    type Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -30,6 +30,7 @@ import ProductInCart from './ProductInCart';
 import LoginForm from './LoginForm';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
+import { type ShoppingCartAvailableAmountList } from '../../../api';
 
 //
 
@@ -127,15 +128,13 @@ const toolBarHover = {
     },
 };
 
-interface CartProduct {
-    id: number & string;
-    count: number;
-    name: string;
-    group_id: number;
-}
-
 interface SubmitFunction {
     (SubmitTarget: string, options: { method: string; action: string }): any;
+}
+
+interface CartProduct {
+    count: number;
+    product: { name: string; id: number & string };
 }
 
 function DefaultAppBar() {
@@ -145,16 +144,16 @@ function DefaultAppBar() {
     const navigate = useNavigate();
     const submit = useSubmit() as unknown as SubmitFunction;
     const { cart, products, amountList } = useLoaderData() as Awaited<ReturnType<typeof shoppingCartLoader>>;
-    const [productsLength, setProductsLength] = useState(cart?.products?.length);
+    const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
     const [cartEmpty, setCartEmpty] = useState(false);
 
     useEffect(() => {
-        if (cart?.products?.length !== productsLength) {
+        if (cart?.product_items?.length !== productsLength) {
             setTimeout(() => {
-                setProductsLength(cart?.products?.length);
+                setProductsLength(cart?.product_items?.length);
             }, 3000);
         }
-    }, [cart?.products?.length]);
+    }, [cart?.product_items?.length]);
 
     const drawerOpen = (drawer: string) => () => {
         notLoggedIn && setNotLoggedIn(false);
@@ -170,7 +169,7 @@ function DefaultAppBar() {
             setCurrentOpenDrawer('account');
             setNotLoggedIn(true);
         } else {
-            if (cart?.products?.length === 0) {
+            if (cart?.product_items?.length === 0) {
                 setCartEmpty(true);
             } else {
                 setCartEmpty(false);
@@ -203,8 +202,8 @@ function DefaultAppBar() {
                         <Tooltip title="Ostoskori">
                             <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
                                 <StyledBadge
-                                    isanimated={productsLength === cart?.products?.length ? 1 : 0}
-                                    badgeContent={cart?.products?.length}
+                                    isanimated={productsLength === cart?.product_items?.length ? 1 : 0}
+                                    badgeContent={cart?.product_items?.length}
                                     sx={{ color: 'primary.contrastText' }}
                                     anchorOrigin={{
                                         vertical: 'top',
@@ -227,7 +226,7 @@ function DefaultAppBar() {
             <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart" onClose={drawerOpen('')}>
                 {/* tähän oma komponentti.. */}
                 <List>
-                    {cart?.products?.length === 0 && (
+                    {cart?.product_items?.length === 0 && (
                         <>
                             {cartEmpty ? (
                                 <Typography variant="h6" align="center" sx={{ color: 'error.main' }}>
@@ -241,18 +240,20 @@ function DefaultAppBar() {
                         </>
                     )}
                     {products?.map((cartProduct: CartProduct) => {
-                        const product = amountList?.find((p: { id: number }) => p.id == cartProduct.group_id);
+                        const product = amountList.find(
+                            (p) => p.id == cartProduct.product.id
+                        ) as ShoppingCartAvailableAmountList;
                         return (
                             <ProductInCart
-                                key={cartProduct.id}
-                                text={cartProduct.name}
+                                key={cartProduct.product.id}
+                                name={cartProduct.product.name}
                                 count={cartProduct.count}
-                                index={cartProduct.id}
-                                maxCount={product?.amount}
+                                id={cartProduct.product.id}
+                                maxCount={product.amount}
                             />
                         );
                     })}
-                    {cart?.products?.length > 0 && (
+                    {cart?.product_items?.length > 0 && (
                         <ListItem
                             sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}
                         >

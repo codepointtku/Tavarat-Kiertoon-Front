@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSubmit, useRouteLoaderData, useSearchParams } from 'react-router-dom';
-import { OverridableStringUnion } from '@material-ui/types';
-import { Box, Button, ButtonPropsSizeOverrides } from '@mui/material';
+import { type OverridableStringUnion } from '@material-ui/types';
+import { Box, Button, type ButtonPropsSizeOverrides } from '@mui/material';
 
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import AddMoreToCart from '../AddMoreToCart';
@@ -11,22 +11,18 @@ import type { shoppingCartLoader } from '../../Router/loaders';
 interface Props {
     size?: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides> | undefined;
     id: number & string;
-    groupId: string;
+    groupId: number;
     count: number;
 }
 
 function AddToCartButton({ size, id, groupId, count }: Props) {
     const submit = useSubmit();
     const { cart, products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
-    const [addedToCart, setAddedToCart] = useState(false);
+    const [, setAddedToCart] = useState(false);
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
 
-    // useEffect(() => {
-    //     cart?.products?.length === 0 && resetField('amount');
-    // }, [cart?.products?.length]);
-
-    const product = products?.find((product: { id: number }) => product.id === id);
+    const product = products?.find((product_item: { product: { id: number } }) => product_item.product.id == id);
 
     const onSubmit = async () => {
         submit(
@@ -39,10 +35,12 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
         setAddedToCart(true);
     };
 
+    // product = undefined
+
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
-            {cart?.products?.some((product: { group_id: string }) => product['group_id'] === groupId) ? (
-                <AddMoreToCart id={id} maxCount={count} size={size} count={product?.count} />
+            {cart?.product_items?.some((product_item) => product_item?.product.id === groupId) ? (
+                <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
             ) : (
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Button
