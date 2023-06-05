@@ -517,9 +517,13 @@ const activationAction = async (auth, setAuth, request) => {
 
 const changeEmailAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/users/emailchange/', 'post', {
+    // const response = await apiCall(auth, setAuth, '/users/emailchange/', 'post', {
+    //     new_email: formData.get('newEmail'),
+    // });
+    const response = await usersApi.usersEmailchangeCreate({
         new_email: formData.get('newEmail'),
     });
+
     if (response.status === 200) {
         return { type: 'changeEmail', status: true };
     }
@@ -528,11 +532,17 @@ const changeEmailAction = async (auth, setAuth, request) => {
 
 const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/users/emailchange/finish/', 'post', {
+    // const response = await apiCall(auth, setAuth, '/users/emailchange/finish/', 'post', {
+    //     uid: formData.get('uid'),
+    //     token: formData.get('token'),
+    //     new_email: formData.get('newEmail'),
+    // });
+    const response = await usersApi.usersEmailchangeFinishCreate({
         uid: formData.get('uid'),
         token: formData.get('token'),
         new_email: formData.get('newEmail'),
     });
+
     if (response.status === 200) {
         return { type: 'emailchangesuccessful', status: true };
     }
