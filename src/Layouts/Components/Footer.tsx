@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import { Box, Grid, Link as MuiLink, Typography } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import { Box, Grid, Link as MuiLink, Typography } from '@mui/material';
 
 function Footer() {
     return (

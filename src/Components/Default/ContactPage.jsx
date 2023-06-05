@@ -18,12 +18,12 @@ function ContactForm() {
 
     const subject = watch('subject');
 
-    const onSubmit = (data) => {
-        const formData = { ...data, category: 'category' };
+    const onSubmit = (formData) => {
         submit(formData, {
             method: 'post',
             action: '/otayhteytta',
         });
+        //change to use useActionData
         setSuccess(true);
     };
 
