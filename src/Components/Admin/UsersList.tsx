@@ -3,22 +3,7 @@ import * as React from 'react';
 import { useLoaderData } from 'react-router';
 import type { usersListLoader } from '../../Router/loaders';
 
-import {
-    Box,
-    Table,
-    TableBody,
-    TableContainer,
-    TableHead,
-    TableCell,
-    TableRow,
-    Paper,
-    Stack,
-    // Pagination,
-    // PaginationItem,
-} from '@mui/material';
-
-// import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-// import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Box } from '@mui/material';
 
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 
@@ -52,7 +37,7 @@ function UsersList() {
     // console.log('users list (results):', results);
 
     const page_size = 10; // page_size @ BE: 10
-    const pageCount = Math.ceil(count / page_size);
+    const pageCount = Math.ceil(count! / page_size);
 
     const [currentPage, setCurrentPage] = React.useState(1);
 
@@ -70,49 +55,11 @@ function UsersList() {
                 border: '1px solid red',
             }}
         >
-            <Stack alignItems="center">
-                <TableContainer id="users-list" component={Paper} sx={{ marginBottom: '1rem' }}>
-                    <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Sähköposti</TableCell>
-                                <TableCell align="right">Nimi</TableCell>
-                                <TableCell align="right">Puhelinnumero</TableCell>
-                                <TableCell align="right">Tunniste</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {results.map((user: any) => (
-                                <TableRow key={user.email} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                    <TableCell component="th" scope="row">
-                                        {user.email}
-                                    </TableCell>
-                                    <TableCell align="right">{user.first_name}</TableCell>
-                                    <TableCell align="right">{user.phone_number}</TableCell>
-                                    <TableCell align="right">{user.id}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                {/* <Pagination size="large" color="primary" count={count} showFirstButton showLastButton  /> */}
-                {/* <Pagination
-                    size="large"
-                    color="primary"
-                    count={pageCount}
-                    page={currentPage}
-                    onChange={handleChange}
-                    renderItem={(item) => (
-                        <PaginationItem slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }} {...item} />
-                    )}
-                /> */}
-
-                <div style={{ display: 'flex', height: '100%' }}>
-                    <div style={{ flexGrow: 1 }}>
-                        <GridX />
-                    </div>
+            <div style={{ display: 'flex', height: '100%' }}>
+                <div style={{ flexGrow: 1 }}>
+                    <GridX />
                 </div>
-            </Stack>
+            </div>
         </Box>
     );
 }
