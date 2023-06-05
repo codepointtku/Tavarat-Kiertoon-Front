@@ -1,9 +1,10 @@
 import { useForm } from 'react-hook-form';
-import { Form, Link } from 'react-router-dom';
+import { Form, Link, useSubmit } from 'react-router-dom';
 import { Grid, TextField, Typography, Button } from '@mui/material';
 
 function ProfileInfo({ userInfo }) {
     // console.log('ollaan ProfileInfolla', userInfo);
+    const submit = useSubmit();
     const address = userInfo.address_list.map((item) => item.address);
 
     const {
@@ -13,16 +14,16 @@ function ProfileInfo({ userInfo }) {
     } = useForm({
         defaultValues: {
             username: userInfo.username,
-            firstName: userInfo.first_name,
-            lastName: userInfo.last_name,
-            phoneNumber: userInfo.phone_number,
+            first_name: userInfo.first_name,
+            last_name: userInfo.last_name,
+            phone_number: userInfo.phone_number,
             userAddresses: address,
-            userEmail: userInfo.email,
+            email: userInfo.email,
         },
     });
 
     const onSubmit = (data) => {
-        console.log(data);
+        submit(data, { method: 'put', action: '/profiili' });
     };
 
     return (
@@ -36,21 +37,21 @@ function ProfileInfo({ userInfo }) {
                         <TextField {...register('username')} label="Käyttäjänimi" placeholder="Käyttäjänimi" />
                     </Grid>
                     <Grid item>
-                        <TextField {...register('firstName')} label="Etunimi" placeholder="Etunimi" />
+                        <TextField {...register('first_name')} label="Etunimi" placeholder="Etunimi" />
                     </Grid>
                     <Grid item>
-                        <TextField {...register('lastName')} label="Sukunimi" placeholder="Sukunimi" />
+                        <TextField {...register('last_name')} label="Sukunimi" placeholder="Sukunimi" />
                     </Grid>
                 </Grid>
                 <Grid container flexDirection="column" sx={{ width: 'auto' }} gap={2}>
                     <Grid item>
-                        <TextField {...register('phoneNumber')} label="Puhelin numero" placeholder="Puhelin numero" />
+                        <TextField {...register('phone_number')} label="Puhelin numero" placeholder="Puhelin numero" />
                     </Grid>
                     <Grid item>
                         <TextField {...register('userAddresses')} label="Osoite" placeholder="Osoite" />
                     </Grid>
                     <Grid item>
-                        <TextField {...register('userEmail')} label="Sähköposti" placeholder="Sähköposti" disabled />
+                        <TextField {...register('email')} label="Sähköposti" placeholder="Sähköposti" disabled />
                         <Button component={Link} to="/sahkopostinvaihto" sx={{ ml: 2, p: 2 }}>
                             Vaihda sähköpostiosoite
                         </Button>

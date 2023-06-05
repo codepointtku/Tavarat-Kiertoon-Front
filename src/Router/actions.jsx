@@ -486,6 +486,15 @@ const adminInboxAction = async (auth, setAuth, request) => {
     return { type: 'markasread', status: false };
 };
 
+const userProfilePageAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+    const response = await apiCall(auth, setAuth, '/user/', 'put', formData);
+    if (response.status === 200) {
+        return { type: 'markasread', status: true };
+    }
+    return { type: 'markasread', status: false };
+};
+
 export {
     userSignupAction,
     frontPageActions,
@@ -511,4 +520,5 @@ export {
     adminInboxAction,
     emailChangeSuccessfulAction,
     changeEmailAction,
+    userProfilePageAction,
 };

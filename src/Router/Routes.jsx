@@ -129,6 +129,7 @@ import {
     emailChangeSuccessfulAction,
     changeEmailAction,
     adminBulletinsAction,
+    userProfilePageAction,
 } from './actions';
 
 createStore({});
@@ -337,7 +338,12 @@ function Routes() {
                             element: <Activation />,
                             action: async ({ request }) => activationAction(auth, setAuth, request),
                         },
-                        { path: 'profiili', element: <UserProfilePage />, loader: userInfoLoader },
+                        {
+                            path: 'profiili',
+                            element: <UserProfilePage />,
+                            loader: userInfoLoader,
+                            action: async ({ request }) => userProfilePageAction(auth, setAuth, request),
+                        },
                     ],
                 },
                 // storage routes
