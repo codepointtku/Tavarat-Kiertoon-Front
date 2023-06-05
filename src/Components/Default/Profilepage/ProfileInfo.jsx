@@ -1,12 +1,16 @@
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import { Grid, Box, TextField, Typography, Button } from '@mui/material';
+import { Form, Link } from 'react-router-dom';
+import { Grid, TextField, Typography, Button } from '@mui/material';
 
 function ProfileInfo({ userInfo }) {
     // console.log('ollaan ProfileInfolla', userInfo);
     const address = userInfo.address_list.map((item) => item.address);
 
-    const { register, handleSubmit } = useForm({
+    const {
+        register,
+        handleSubmit,
+        formState: { isDirty },
+    } = useForm({
         defaultValues: {
             username: userInfo.username,
             firstName: userInfo.first_name,
@@ -17,12 +21,16 @@ function ProfileInfo({ userInfo }) {
         },
     });
 
+    const onSubmit = (data) => {
+        console.log(data);
+    };
+
     return (
-        <Box>
+        <Grid container component={Form} onSubmit={handleSubmit(onSubmit)} justifyContent="center">
             <Typography variant="h5" color="primary.main" align="center" sx={{ mb: 2 }}>
                 Käyttäjäprofiilin tiedot
             </Typography>
-            <Grid container flexDirection="row" justifyContent="space-around">
+            <Grid container id="user-info-container" flexDirection="row" justifyContent="space-evenly" sx={{ mb: 5 }}>
                 <Grid container flexDirection="column" sx={{ width: 'auto' }} gap={2}>
                     <Grid item>
                         <TextField {...register('username')} label="Käyttäjänimi" placeholder="Käyttäjänimi" />
@@ -49,7 +57,12 @@ function ProfileInfo({ userInfo }) {
                     </Grid>
                 </Grid>
             </Grid>
-        </Box>
+            {isDirty && (
+                <Button sx={{ width: 200, p: 2 }} type="submit">
+                    Vahvista muutokset
+                </Button>
+            )}
+        </Grid>
     );
 }
 
