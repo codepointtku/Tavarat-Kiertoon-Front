@@ -178,7 +178,7 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
                                     type="file"
                                     accept="image/*"
                                     {...register('pictures', {
-                                        required: 'Kuva puuttuu',
+                                        required: createNewBikeModel ? 'Kuva puuttuu' : false,
                                     })}
                                     hidden
                                 />

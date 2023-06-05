@@ -4,7 +4,7 @@ import {
     bikesApi,
     bulletinsApi,
     contactFormsApi,
-    contactsApi,
+    // contactsApi,
     ordersApi,
     shoppingCartApi,
     storagesApi,
@@ -515,13 +515,6 @@ const activationAction = async (auth, setAuth, request) => {
     return { type: 'userActivation', status: false };
 };
 
-/**
- * Delete a single bike
- * @param {*} auth
- * @param {*} setAuth
- * @param {*} params
- * @returns
- */
 const changeEmailAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     // const response = await apiCall(auth, setAuth, '/users/emailchange/', 'post', {
@@ -556,6 +549,13 @@ const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
     return { type: 'emailchangesuccessful', status: false };
 };
 
+/**
+ * Delete a single bike
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} params
+ * @returns
+ */
 const deleteBikeAction = async (auth, setAuth, params) => {
     // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     await bikesApi.bikesStockDestroy(params.id);
@@ -566,7 +566,8 @@ const deleteBikeAction = async (auth, setAuth, params) => {
  * Delete a single bike model
  */
 const deleteBikeModelAction = async (auth, setAuth, params) => {
-    await apiCall(auth, setAuth, `/bikes/models/${params.id}`, 'delete');
+    // await apiCall(auth, setAuth, `/bikes/models/${params.id}`, 'delete');
+    await bikesApi.bikesModelsDestroy(params.id);
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
 
@@ -585,19 +586,22 @@ const getOrCreateBikeModelIds = async (auth, setAuth, data) => {
     // need to create new is indicated by setting the bikeModelXXXId to -1 in the form
     let typeId = data.get('bikeModelTypeId');
     if (typeId <= 0) {
-        const response = await apiCall(auth, setAuth, `/bikes/type/`, 'post', { name: data.get('bikeModelTypeName') });
+        // const response = await apiCall(auth, setAuth, `/bikes/type/`, 'post', { name: data.get('bikeModelTypeName') });
+        const response = await bikesApi.bikesTypeCreate({ name: data.get('bikeModelTypeName') });
         typeId = response.data.id;
     }
     let brandId = data.get('bikeModelBrandId');
     if (brandId <= 0) {
-        const response = await apiCall(auth, setAuth, `/bikes/brand/`, 'post', {
-            name: data.get('bikeModelBrandName'),
-        });
+        // const response = await apiCall(auth, setAuth, `/bikes/brand/`, 'post', {
+        //     name: data.get('bikeModelBrandName'),
+        // });
+        const response = await bikesApi.bikesBrandCreate({ name: data.get('bikeModelBrandName') });
         brandId = response.data.id;
     }
     let sizeId = data.get('bikeModelSizeId');
     if (sizeId <= 0) {
-        const response = await apiCall(auth, setAuth, `/bikes/size/`, 'post', { name: data.get('bikeModelSizeName') });
+        // const response = await apiCall(auth, setAuth, `/bikes/size/`, 'post', { name: data.get('bikeModelSizeName') });
+        const response = await bikesApi.bikesSizeCreate({ name: data.get('bikeModelSizeName') });
         sizeId = response.data.id;
     }
     return { typeId, brandId, sizeId };
@@ -629,9 +633,10 @@ const modifyBikeModelAction = async (auth, setAuth, request, params) => {
     data.append('size', sizeId);
 
     // send data and redirect
-    await apiCall(auth, setAuth, `/bikes/models/${params.id}/`, 'put', data, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    // await apiCall(auth, setAuth, `/bikes/models/${params.id}/`, 'put', data, {
+    //     headers: { 'Content-Type': 'multipart/form-data' },
+    // });
+    await bikesApi.bikesModelsUpdate(params.id, data, { headers: { 'Content-Type': 'multipart/form-data' } });
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
 
@@ -642,10 +647,9 @@ const modifyBikeModelAction = async (auth, setAuth, request, params) => {
  * @param {*} auth
  * @param {*} setAuth
  * @param {*} request
- * @param {*} params
  * @returns
  */
-const createBikeModelAction = async (auth, setAuth, request, params) => {
+const createBikeModelAction = async (auth, setAuth, request) => {
     // get data from form
     const data = await request.formData();
 
@@ -661,22 +665,21 @@ const createBikeModelAction = async (auth, setAuth, request, params) => {
     data.append('size', sizeId);
 
     // send data and redirect
-    await apiCall(auth, setAuth, `/bikes/models/`, 'post', data, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    // await apiCall(auth, setAuth, `/bikes/models/`, 'post', data, {
+    //     headers: { 'Content-Type': 'multipart/form-data' },
+    // });
+    await bikesApi.bikesModelsCreate(data, { headers: { 'Content-Type': 'multipart/form-data' } });
+
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
 
 /**
- *
+ * deletes or modifies a bulletin
  * @param {*} auth
  * @param {*} setAuth
  * @param {*} request
  * @returns
  */
- * deletes or modifies a bulletin
- */
-
 const adminBulletinsAction = async (auth, setAuth, request) => {
     if (request.method === 'DELETE') {
         const formData = await request.formData();
