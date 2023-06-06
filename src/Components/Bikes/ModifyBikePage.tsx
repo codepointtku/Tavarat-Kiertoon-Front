@@ -3,6 +3,7 @@ import {
     Button,
     Checkbox,
     FormControl,
+    FormControlLabel,
     InputLabel,
     MenuItem,
     Paper,
@@ -20,7 +21,8 @@ import type { bikeInterface, bikeModelInterface, storageInterface } from './Bike
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
 import DeleteBikeModal from './DeleteBikeModal';
-import { type FieldValues, useForm } from 'react-hook-form';
+import { type FieldValues, useForm, Controller } from 'react-hook-form';
+import { CheckBox } from '@mui/icons-material';
 
 interface ModifyBikePageInterface {
     createNewBike: boolean;
@@ -49,13 +51,15 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     };
 
     // hook form functions and default values
-    const { formState, handleSubmit, register, watch } = useForm({
+    const { control, formState, handleSubmit, register, watch } = useForm({
         mode: 'onTouched',
         defaultValues: {
             bikeModelIdSelect: createNewBike ? '' : bikeData.bike.id,
             bikeStorageIdSelect: createNewBike ? '' : bikeData.storage.id,
             bikeFrameNumberTextField: createNewBike ? '' : bikeData.frame_number,
+            bikeNumberTextField: createNewBike ? '' : bikeData.number,
             bikeStatusSelect: createNewBike ? 'AVAILABLE' : bikeData.state,
+            bikePackageOnlyCheckBox: createNewBike ? false : bikeData.package_only
         }
     });
 
@@ -86,8 +90,8 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     // const [bikeModelState, setBikeModelState] = useState(createNewBike ? '' : bikeData.bike.id.toString());
     const [bikeState, setBikeState] = useState(bikeData);
     // const [frameNumberState, setFrameNumberState] = useState(createNewBike ? '' : bikeData.frame_number);
-    const [bikeNumberState, setBikeNumberState] = useState(createNewBike ? '' : bikeData.number);
-    const [packageOnly, setPackageOnly] = useState(createNewBike ? false : bikeData.package_only);
+    // const [bikeNumberState, setBikeNumberState] = useState(createNewBike ? '' : bikeData.number);
+    // const [packageOnly, setPackageOnly] = useState(createNewBike ? false : bikeData.package_only);
     // const [statusState, setStatusState] = useState(createNewBike ? 'AVAILABLE' : bikeData.state);
 
 
@@ -124,15 +128,15 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
 
     // handler for bike number text field change
     // Note! Field is not rendered when modifying the bike but the value is still needed
-    const handleBikeNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setBikeNumberState(event.target.value as string);
-    };
+    // const handleBikeNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setBikeNumberState(event.target.value as string);
+    // };
 
     // handler for package_only tab.
     // JTo: Not completely sure if this is needed here or not
-    const handlePackageOnly = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPackageOnly(event.target.checked);
-    };
+    // const handlePackageOnly = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setPackageOnly(event.target.checked);
+    // };
 
     // const handleStatusChange = (event: SelectChangeEvent) => {
     //     setStatusState(event.target.value);
@@ -181,7 +185,8 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                 <TableBody>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Nimi:</TableCell>
-                                        <TableCell>{bikeState.bike.name}</TableCell>
+                                        {/* <TableCell>{bikeState.bike.name}</TableCell> */}
+                                        <TableCell>{bikeModelsData.find(model => model.id === (watch('bikeModelIdSelect') as number) )?.name}</TableCell>
                                         <TableCell align="right">
                                             {/* <FormControl>
                                                 <InputLabel id="change-bike-model-label">Vaihda pyörämalli</InputLabel>
@@ -233,28 +238,29 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Merkki:</TableCell>
-                                        <TableCell>{bikeState.bike.brand?.name}</TableCell>
+                                        {/* <TableCell>{bikeState.bike.brand?.name}</TableCell> */}
+                                        <TableCell>{bikeModelsData.find(model => model.id === (watch('bikeModelIdSelect') as number) )?.brand.name}</TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Tyyppi:</TableCell>
-                                        <TableCell>{bikeState.bike.type?.name}</TableCell>
+                                        <TableCell>{bikeModelsData.find(model => model.id === (watch('bikeModelIdSelect') as number) )?.type.name}</TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Koko:</TableCell>
-                                        <TableCell>{bikeState.bike.size?.name}</TableCell>
+                                        <TableCell>{bikeModelsData.find(model => model.id === (watch('bikeModelIdSelect') as number) )?.size.name}</TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Väri:</TableCell>
-                                        <TableCell>{bikeState.bike.color?.name}</TableCell>
+                                        <TableCell>{bikeModelsData.find(model => model.id === (watch('bikeModelIdSelect') as number) )?.color.name}</TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Kuvaus:</TableCell>
                                         <TableCell colSpan={2} sx={{ border: 0 }}>
-                                            {bikeState.bike.description}
+                                            {bikeModelsData.find(model => model.id === (watch('bikeModelIdSelect') as number) )?.description}
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -315,7 +321,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                     >
                                         <TableCell sx={{ fontWeight: 'bold' }}>Numero:</TableCell>
                                         <TableCell colSpan={3} align="right">
-                                            <FormControl>
+                                            {/* <FormControl>
                                                 <TextField
                                                     label="Muokkaa Numeroa"
                                                     name="changeBikeNumber"
@@ -323,21 +329,41 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                                     fullWidth
                                                     onChange={handleBikeNumberChange}
                                                 />
-                                            </FormControl>
+                                            </FormControl> */}
+                                            {/*  */}
+                                            <TextField
+                                                label="Muokkaa Numeroa"
+                                                value={watch('bikeNumberTextField')}
+                                                {...register('bikeNumberTextField', { required: 'Pakollinen tieto puuttuu' })}
+                                                fullWidth
+                                                color={errors.bikeNumberTextField ? 'error' : 'primary'}
+                                                error={!!errors.bikeNumberTextField}
+                                                helperText={errors.bikeNumberTextField?.message?.toString() || ' '}
+                                                required
+                                                sx={{ marginBottom: '-1rem' }}
+                                            />
+                                            {/*  */}
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varattu Pakettiin:</TableCell>
                                         <TableCell sx={{ border: 0 }}>
                                             {/* {bikeState.package_only ? 'Kyllä' : 'Ei'} */}
-                                            <FormControl>
+                                            {/* <FormControl>
                                                 <Checkbox
                                                     checked={packageOnly}
                                                     onChange={handlePackageOnly}
                                                     inputProps={{ 'aria-label': 'controlled' }}
                                                     name="changePackageOnly"
                                                 />
-                                            </FormControl>
+                                            </FormControl> */}
+                                            {/*  */}
+                                            {/* <CheckBox
+                                                {...register('bikePackageOnlyCheckBox')}
+                                                id='bike-package-only-checkbox'
+                                                checked={watch('bikePackageOnlyCheckBox')}
+                                            /> */}
+                                            {/*  */}
                                         </TableCell>
                                         <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Tila:</TableCell>
                                         <TableCell sx={{ border: 0 }} align="right">
@@ -401,7 +427,8 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                 <TableBody>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Varaston nimi:</TableCell>
-                                        <TableCell>{bikeState.storage.name}</TableCell>
+                                        <TableCell>{storagesData.find(storage => storage.id === (watch('bikeStorageIdSelect') as number) )?.name}</TableCell>
+
                                         <TableCell align="right">
                                             {/* <FormControl>
                                                 <InputLabel id="change-bike-storage-label">Vaihda varasto</InputLabel>
@@ -453,7 +480,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varaston osoite</TableCell>
-                                        <TableCell sx={{ border: 0 }}>{bikeState.storage.address}</TableCell>
+                                        <TableCell sx={{ border: 0 }}>{storagesData.find(storage => storage.id === (watch('bikeStorageIdSelect') as number) )?.address}</TableCell>
                                         <TableCell sx={{ border: 0 }}></TableCell>
                                     </TableRow>
                                 </TableBody>
