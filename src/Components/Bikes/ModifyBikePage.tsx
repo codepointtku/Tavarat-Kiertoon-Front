@@ -20,7 +20,7 @@ import type { bikeInterface, bikeModelInterface, storageInterface } from './Bike
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
 import DeleteBikeModal from './DeleteBikeModal';
-import { FieldValues, useForm } from 'react-hook-form';
+import { type FieldValues, useForm } from 'react-hook-form';
 
 interface ModifyBikePageInterface {
     createNewBike: boolean;
@@ -52,7 +52,9 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     const { formState, handleSubmit, register, watch } = useForm({
         mode: 'onTouched',
         defaultValues: {
-            bikeSelectModelId: createNewBike ? '' : bikeData.bike.id
+            bikeModelIdSelect: createNewBike ? '' : bikeData.bike.id,
+            bikeStorageIdSelect: createNewBike ? '' : bikeData.storage.id,
+            bikeFrameNumberTextField: createNewBike ? '' : bikeData.frame_number
         }
     });
 
@@ -76,10 +78,10 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
 // -------------------------------------------------------------------------
 
     // states needed for the form data
-    const [storageState, setStorageState] = useState(createNewBike ? '' : bikeData.storage.id.toString());
+    // const [storageState, setStorageState] = useState(createNewBike ? '' : bikeData.storage.id.toString());
     // const [bikeModelState, setBikeModelState] = useState(createNewBike ? '' : bikeData.bike.id.toString());
     const [bikeState, setBikeState] = useState(bikeData);
-    const [frameNumberState, setFrameNumberState] = useState(createNewBike ? '' : bikeData.frame_number);
+    // const [frameNumberState, setFrameNumberState] = useState(createNewBike ? '' : bikeData.frame_number);
     const [bikeNumberState, setBikeNumberState] = useState(createNewBike ? '' : bikeData.number);
     const [packageOnly, setPackageOnly] = useState(createNewBike ? false : bikeData.package_only);
     const [statusState, setStatusState] = useState(createNewBike ? 'AVAILABLE' : bikeData.state);
@@ -87,17 +89,17 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     const currentBikeStatus = ['AVAILABLE', 'MAINTENANCE', 'RENTED', 'RETIRED'];
 
     // storage change handler: used for selecting the correct storage
-    const handleStorageChange = (event: SelectChangeEvent) => {
-        const storage = storagesData.find((storage) => storage.id.toString() === event.target.value.toString());
-        if (storage) {
-            const newBike = {
-                ...bikeState,
-                storage: storage,
-            };
-            setBikeState(newBike);
-            setStorageState(newBike.storage.id.toString());
-        }
-    };
+    // const handleStorageChange = (event: SelectChangeEvent) => {
+    //     const storage = storagesData.find((storage) => storage.id.toString() === event.target.value.toString());
+    //     if (storage) {
+    //         const newBike = {
+    //             ...bikeState,
+    //             storage: storage,
+    //         };
+    //         setBikeState(newBike);
+    //         setStorageState(newBike.storage.id.toString());
+    //     }
+    // };
 
     // bike model change handler: used for changing the model of the bike
     // const handleBikeModelChange = (event: SelectChangeEvent) => {
@@ -113,9 +115,9 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     // };
 
     // handler for frame number text field change
-    const handleFrameNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFrameNumberState(event.target.value as string);
-    };
+    // const handleFrameNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setFrameNumberState(event.target.value as string);
+    // };
 
     // handler for bike number text field change
     // Note! Field is not rendered when modifying the bike but the value is still needed
@@ -203,16 +205,16 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                                 id="change-bike-model"
                                                 select
                                                 label="Vaihda pyörämalli"
-                                                {...register('bikeSelectModelId', {
+                                                {...register('bikeModelIdSelect', {
                                                     required: 'Pakollinen tieto puuttuu',
                                                 })}
-                                                value={watch('bikeSelectModelId')}
+                                                value={watch('bikeModelIdSelect')}
                                                 fullWidth
                                                 inputProps={{ required: false }}
                                                 required
-                                                color={errors.bikeSelectModelId ? 'error' : 'primary'}
-                                                error={!!errors.bikeSelectModelId}
-                                                helperText={errors.bikeSelectModelId?.message || ' '}
+                                                color={errors.bikeModelIdSelect ? 'error' : 'primary'}
+                                                error={!!errors.bikeModelIdSelect}
+                                                helperText={errors.bikeModelIdSelect?.message || ' '}
                                                 sx={{ marginBottom: '-1rem' }}
                                             >
                                                 {bikeModelsData?.map((bikeModel) => {
@@ -274,7 +276,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Runkonumero:</TableCell>
                                         <TableCell colSpan={3} align="right">
-                                            <FormControl>
+                                            {/* <FormControl>
                                                 <TextField
                                                     label="Muokkaa runkonumeroa"
                                                     name="changeFrameNumber"
@@ -282,7 +284,20 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                                     fullWidth
                                                     onChange={handleFrameNumberChange}
                                                 />
-                                            </FormControl>
+                                            </FormControl> */}
+                                            {/*  */}
+                                            <TextField
+                                                label="Muokkaa runkonumeroa"
+                                                value={watch('bikeFrameNumberTextField')}
+                                                {...register('bikeFrameNumberTextField', { required: 'Pakollinen tieto puuttuu' })}
+                                                fullWidth
+                                                color={errors.bikeFrameNumberTextField ? 'error' : 'primary'}
+                                                error={!!errors.bikeFrameNumberTextField}
+                                                helperText={errors.bikeFrameNumberTextField?.message?.toString() || ' '}
+                                                required
+                                                sx={{ marginBottom: '-1rem' }}
+                                            />
+                                            {/*  */}
                                         </TableCell>
                                     </TableRow>
                                     {/*
@@ -359,7 +374,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                         <TableCell sx={{ fontWeight: 'bold' }}>Varaston nimi:</TableCell>
                                         <TableCell>{bikeState.storage.name}</TableCell>
                                         <TableCell align="right">
-                                            <FormControl>
+                                            {/* <FormControl>
                                                 <InputLabel id="change-bike-storage-label">Vaihda varasto</InputLabel>
                                                 <Select
                                                     labelId="change-bike-storage-label"
@@ -378,7 +393,33 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                                         );
                                                     })}
                                                 </Select>
-                                            </FormControl>
+                                            </FormControl> */}
+                                            {/*  */}
+                                            <TextField
+                                                id="bike-select-storage-id"
+                                                select
+                                                label="Vaihda varasto"
+                                                {...register('bikeStorageIdSelect', {
+                                                    required: 'Pakollinen tieto puuttuu',
+                                                })}
+                                                value={watch('bikeStorageIdSelect')}
+                                                fullWidth
+                                                inputProps={{ required: false }}
+                                                required
+                                                color={errors.bikeStorageIdSelect ? 'error' : 'primary'}
+                                                error={!!errors.bikeStorageIdSelect}
+                                                helperText={errors.bikeStorageIdSelect?.message || ' '}
+                                                sx={{ marginBottom: '-1rem' }}
+                                            >
+                                                {storagesData?.map((storage) => {
+                                                    return (
+                                                        <MenuItem key={storage.id} value={storage.id}>
+                                                            {storage.name}
+                                                        </MenuItem>
+                                                    );
+                                                })}
+                                            </TextField>
+                                            {/*  */}
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
