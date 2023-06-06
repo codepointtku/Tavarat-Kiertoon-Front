@@ -54,12 +54,16 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
         defaultValues: {
             bikeModelIdSelect: createNewBike ? '' : bikeData.bike.id,
             bikeStorageIdSelect: createNewBike ? '' : bikeData.storage.id,
-            bikeFrameNumberTextField: createNewBike ? '' : bikeData.frame_number
+            bikeFrameNumberTextField: createNewBike ? '' : bikeData.frame_number,
+            bikeStatusSelect: createNewBike ? 'AVAILABLE' : bikeData.state,
         }
     });
 
     // error messages
     const { errors } = formState;
+
+    // possible statuses for a bike
+    const currentBikeStatus = ['AVAILABLE', 'MAINTENANCE', 'RENTED', 'RETIRED'];
 
     // submit the form data
     // const submit = useSubmit();
@@ -84,9 +88,8 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     // const [frameNumberState, setFrameNumberState] = useState(createNewBike ? '' : bikeData.frame_number);
     const [bikeNumberState, setBikeNumberState] = useState(createNewBike ? '' : bikeData.number);
     const [packageOnly, setPackageOnly] = useState(createNewBike ? false : bikeData.package_only);
-    const [statusState, setStatusState] = useState(createNewBike ? 'AVAILABLE' : bikeData.state);
+    // const [statusState, setStatusState] = useState(createNewBike ? 'AVAILABLE' : bikeData.state);
 
-    const currentBikeStatus = ['AVAILABLE', 'MAINTENANCE', 'RENTED', 'RETIRED'];
 
     // storage change handler: used for selecting the correct storage
     // const handleStorageChange = (event: SelectChangeEvent) => {
@@ -131,9 +134,9 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
         setPackageOnly(event.target.checked);
     };
 
-    const handleStatusChange = (event: SelectChangeEvent) => {
-        setStatusState(event.target.value);
-    };
+    // const handleStatusChange = (event: SelectChangeEvent) => {
+    //     setStatusState(event.target.value);
+    // };
 
     // RENDER
     return (
@@ -156,10 +159,10 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                 <Box
                     component={Form}
                     onSubmit={handleSubmit(onSubmit)}
-                    method={createNewBike ? 'post' : 'put'}
-                    action={
-                        createNewBike ? `/pyorat/pyoravarasto/lisaa/` : `/pyorat/pyoravarasto/muokkaa/${bikeState.id}`
-                    }
+                    // method={createNewBike ? 'post' : 'put'}
+                    // action={
+                    //     createNewBike ? `/pyorat/pyoravarasto/lisaa/` : `/pyorat/pyoravarasto/muokkaa/${bikeState.id}`
+                    // }
                 >
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box
@@ -338,7 +341,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                         </TableCell>
                                         <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Tila:</TableCell>
                                         <TableCell sx={{ border: 0 }} align="right">
-                                            <FormControl>
+                                            {/* <FormControl>
                                                 <InputLabel id="change-bike-status-label">
                                                     Vaihda Pyörän Tilaa
                                                 </InputLabel>
@@ -359,7 +362,33 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                                         );
                                                     })}
                                                 </Select>
-                                            </FormControl>
+                                            </FormControl> */}
+                                            {/*  */}
+                                            <TextField
+                                                id="bike-status-select"
+                                                select
+                                                label="Valitse pyörän tila"
+                                                {...register('bikeStatusSelect', {
+                                                    required: 'Pakollinen tieto puuttuu',
+                                                })}
+                                                value={watch('bikeStatusSelect')}
+                                                fullWidth
+                                                inputProps={{ required: false }}
+                                                required
+                                                color={errors.bikeStatusSelect ? 'error' : 'primary'}
+                                                error={!!errors.bikeStatusSelect}
+                                                helperText={errors.bikeStatusSelect?.message || ' '}
+                                                sx={{ marginBottom: '-1rem' }}
+                                            >
+                                                {currentBikeStatus?.map((status) => {
+                                                    return (
+                                                        <MenuItem key={status} value={status}>
+                                                            {status}
+                                                        </MenuItem>
+                                                    );
+                                                })}
+                                            </TextField>
+                                            {/*  */}
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
