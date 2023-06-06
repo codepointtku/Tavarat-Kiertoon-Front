@@ -15,11 +15,12 @@ import {
     TextField,
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
-import { Form, Link } from 'react-router-dom';
+import { Form, Link, useSubmit } from 'react-router-dom';
 import type { bikeInterface, bikeModelInterface, storageInterface } from './Bikes';
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
 import DeleteBikeModal from './DeleteBikeModal';
+import { FieldValues, useForm } from 'react-hook-form';
 
 interface ModifyBikePageInterface {
     createNewBike: boolean;
@@ -28,27 +29,60 @@ interface ModifyBikePageInterface {
 /**
  * ModifyBikePage
  * View that allows user to modify bike info or create a new bike.
+ * LoaderData:
+ * - bikeData : data for current bike
+ * - bikeModelsData[] : list of bike models in database
+ * - storagesData[] : list of all storage places in database
  *
  * @param createNewBike boolean : true = creates a new bike : false = modifies an existing bike
  * @returns JSX.Element
  */
 export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterface) {
-    // get data for current bike, all bikeModels and all storages
+    // state to control the Delete confirmation modal
+    const [renderDeleteBikeModal, setRenderDeleteBikeModal] = useState(false);
+
+    // get loader data
     const { bikeData, bikeModelsData, storagesData } = useLoaderData() as {
         bikeData: bikeInterface;
         bikeModelsData: bikeModelInterface[];
         storagesData: storageInterface[];
     };
 
+    // hook form functions and default values
+    const { formState, handleSubmit, register, watch } = useForm({
+        mode: 'onTouched',
+        defaultValues: {
+            bikeSelectModelId: createNewBike ? '' : bikeData.bike.id
+        }
+    });
+
+    // error messages
+    const { errors } = formState;
+
+    // submit the form data
+    // const submit = useSubmit();
+    const onSubmit = (data: FieldValues) => {
+        console.log('### data', data)
+
+        // submit(
+        //     data,
+        //     {
+        //         method: createNewBike ? 'post' : 'put',
+        //         action: createNewBike ? `/pyorat/pyoravarasto/lisaa/` : `/pyorat/pyoravarasto/muokkaa/${bikeData.id}`
+        //     }
+        // )
+    }
+
+// -------------------------------------------------------------------------
+
     // states needed for the form data
     const [storageState, setStorageState] = useState(createNewBike ? '' : bikeData.storage.id.toString());
-    const [bikeModelState, setBikeModelState] = useState(createNewBike ? '' : bikeData.bike.id.toString());
+    // const [bikeModelState, setBikeModelState] = useState(createNewBike ? '' : bikeData.bike.id.toString());
     const [bikeState, setBikeState] = useState(bikeData);
     const [frameNumberState, setFrameNumberState] = useState(createNewBike ? '' : bikeData.frame_number);
     const [bikeNumberState, setBikeNumberState] = useState(createNewBike ? '' : bikeData.number);
     const [packageOnly, setPackageOnly] = useState(createNewBike ? false : bikeData.package_only);
     const [statusState, setStatusState] = useState(createNewBike ? 'AVAILABLE' : bikeData.state);
-    const [renderDeleteBikeModal, setRenderDeleteBikeModal] = useState(false);
 
     const currentBikeStatus = ['AVAILABLE', 'MAINTENANCE', 'RENTED', 'RETIRED'];
 
@@ -66,17 +100,17 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     };
 
     // bike model change handler: used for changing the model of the bike
-    const handleBikeModelChange = (event: SelectChangeEvent) => {
-        const bikeModel = bikeModelsData.find((bikeModel) => bikeModel.id.toString() === event.target.value.toString());
-        if (bikeModel) {
-            const newBike = {
-                ...bikeState,
-                bike: bikeModel,
-            };
-            setBikeState(newBike);
-            setBikeModelState(newBike.bike.id.toString());
-        }
-    };
+    // const handleBikeModelChange = (event: SelectChangeEvent) => {
+    //     const bikeModel = bikeModelsData.find((bikeModel) => bikeModel.id.toString() === event.target.value.toString());
+    //     if (bikeModel) {
+    //         const newBike = {
+    //             ...bikeState,
+    //             bike: bikeModel,
+    //         };
+    //         setBikeState(newBike);
+    //         setBikeModelState(newBike.bike.id.toString());
+    //     }
+    // };
 
     // handler for frame number text field change
     const handleFrameNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,6 +153,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                  */}
                 <Box
                     component={Form}
+                    onSubmit={handleSubmit(onSubmit)}
                     method={createNewBike ? 'post' : 'put'}
                     action={
                         createNewBike ? `/pyorat/pyoravarasto/lisaa/` : `/pyorat/pyoravarasto/muokkaa/${bikeState.id}`
@@ -143,7 +178,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                         <TableCell sx={{ fontWeight: 'bold' }}>Nimi:</TableCell>
                                         <TableCell>{bikeState.bike.name}</TableCell>
                                         <TableCell align="right">
-                                            <FormControl>
+                                            {/* <FormControl>
                                                 <InputLabel id="change-bike-model-label">Vaihda pyörämalli</InputLabel>
                                                 <Select
                                                     labelId="change-bike-model-label"
@@ -162,7 +197,33 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                                         );
                                                     })}
                                                 </Select>
-                                            </FormControl>
+                                            </FormControl> */}
+                                            {/*  */}
+                                            <TextField
+                                                id="change-bike-model"
+                                                select
+                                                label="Vaihda pyörämalli"
+                                                {...register('bikeSelectModelId', {
+                                                    required: 'Pakollinen tieto puuttuu',
+                                                })}
+                                                value={watch('bikeSelectModelId')}
+                                                fullWidth
+                                                inputProps={{ required: false }}
+                                                required
+                                                color={errors.bikeSelectModelId ? 'error' : 'primary'}
+                                                error={!!errors.bikeSelectModelId}
+                                                helperText={errors.bikeSelectModelId?.message || ' '}
+                                                sx={{ marginBottom: '-1rem' }}
+                                            >
+                                                {bikeModelsData?.map((bikeModel) => {
+                                                    return (
+                                                        <MenuItem key={bikeModel.id} value={bikeModel.id}>
+                                                            {bikeModel.name}
+                                                        </MenuItem>
+                                                    );
+                                                })}
+                                            </TextField>
+                                            {/*  */}
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
