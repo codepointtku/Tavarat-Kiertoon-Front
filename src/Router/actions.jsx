@@ -464,13 +464,13 @@ const resetPasswordAction = async (auth, setAuth, request) => {
 const modifyBikeAction = async (auth, setAuth, request, params) => {
     // collect data that needs to be sent to backend
     const data = await request.formData();
-    const packageOnly = data.get('changePackageOnly');
+    const packageOnly = data.get('bikePackageOnlyCheckBox');
     const submission = {
-        bike: data.get('changeBikeModel'),
-        frame_number: data.get('changeFrameNumber'),
-        number: data.get('changeBikeNumber'),
-        storage: data.get('changeBikeStorage'),
-        state: data.get('changeBikeStatus'),
+        bike: data.get('bikeModelIdSelect'),
+        frame_number: data.get('bikeFrameNumberTextField'),
+        number: data.get('bikeNumberTextField'),
+        storage: data.get('bikeStorageIdSelect'),
+        state: data.get('bikeStatusSelect'),
         package_only: packageOnly === null ? false : packageOnly, // from checkbox value seems to be 'on' or null
     };
 
@@ -483,13 +483,13 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
 const createNewBikeAction = async (auth, setAuth, request) => {
     // collect data that needs to be sent to backend
     const data = await request.formData();
-    const packageOnly = data.get('changePackageOnly');
+    const packageOnly = data.get('bikePackageOnlyCheckBox');
     const submission = {
-        bike: data.get('changeBikeModel'),
-        frame_number: data.get('changeFrameNumber'),
-        number: data.get('changeBikeNumber'),
-        storage: data.get('changeBikeStorage'),
-        state: data.get('changeBikeStatus'),
+        bike: data.get('bikeModelIdSelect'),
+        frame_number: data.get('bikeFrameNumberTextField'),
+        number: data.get('bikeNumberTextField'),
+        storage: data.get('bikeStorageIdSelect'),
+        state: data.get('bikeStatusSelect'),
         package_only: packageOnly === null ? false : packageOnly, // from checkbox value seems to be 'on' or null
     };
 
