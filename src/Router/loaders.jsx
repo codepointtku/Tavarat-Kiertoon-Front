@@ -157,24 +157,14 @@ const orderEditLoader = async (auth, setAuth, params) => {
  * Get all categories and storages
  */
 const storageProductsLoader = async (auth, setAuth, request) => {
-    // const url new URLSearchParams(request).get('search');
     const url = new URL(request.url);
-    const search = url.searchParams.get('search');
-    console.log('search @ storageProductsLoaders:', search);
 
-    if (search) {
-        const [{ data: storages }, { data: colors }, { data: products }] = await Promise.all([
-            axios.get('http://localhost:8000/storages/'),
-            axios.get('http://localhost:8000/colors/'),
-            axios.get(`http://localhost:8000/storage/products/?search=${search}`),
-        ]);
-        return { storages, products };
-    }
     const [{ data: storages }, { data: colors }, { data: products }] = await Promise.all([
-        axios.get('http://localhost:8000/storages/'),
-        axios.get('http://localhost:8000/colors/'),
-        axios.get('http://localhost:8000/storage/products/'),
+        storagesApi.storagesList(),
+        colorsApi.colorsList(),
+        productsApi.productsList(null, null, null, null, null, url.searchParams.get('search')),
     ]);
+
     return { storages, colors, products };
 };
 
