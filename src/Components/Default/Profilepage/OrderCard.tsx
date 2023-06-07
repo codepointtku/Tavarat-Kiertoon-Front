@@ -15,7 +15,7 @@ interface OrderInfo {
 
 function OrderCard({ orderInfo }: OrderInfo) {
     return (
-        <Card sx={{ mt: 2 }} raised>
+        <Card sx={{ maxWidth: 600, maxHeight: 360, mt: 2 }} raised>
             <CardActionArea sx={{ height: 'inherit' }}>
                 <CardHeader
                     component={Typography}
