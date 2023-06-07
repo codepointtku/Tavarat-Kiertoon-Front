@@ -6,6 +6,7 @@ function ProfileInfo({ userInfo }) {
     // console.log('ollaan ProfileInfolla', userInfo);
     const submit = useSubmit();
     const address = userInfo.address_list.map((item) => item.address);
+    console.log(address);
 
     const {
         register,
@@ -17,7 +18,7 @@ function ProfileInfo({ userInfo }) {
             first_name: userInfo.first_name,
             last_name: userInfo.last_name,
             phone_number: userInfo.phone_number,
-            userAddresses: address,
+            userAddresses: address[0],
             email: userInfo.email,
         },
     });
