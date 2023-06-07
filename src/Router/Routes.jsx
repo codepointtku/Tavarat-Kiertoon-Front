@@ -132,10 +132,15 @@ import {
     userProfilePageAction,
 } from './actions';
 
+import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
+
 createStore({});
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
+
+    useLoginAxiosInterceptor();
+
     const router = createBrowserRouter([
         {
             path: '/',
