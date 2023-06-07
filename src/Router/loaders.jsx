@@ -360,10 +360,10 @@ const adminInboxLoader = async (auth, setAuth, request) => {
 };
 
 /* get logged in users data */
-const userInfoLoader = async (auth, setAuth) => {
+const userInfoLoader = async () => {
     const [{ data: userInfo }, { data: userOrders }] = await Promise.all([
-        await apiCall(auth, setAuth, '/user', 'get'),
-        await apiCall(auth, setAuth, '/orders/user', 'get'),
+        userApi.userRetrieve(),
+        ordersApi.ordersUserList(),
     ]);
 
     return { userInfo, userOrders };

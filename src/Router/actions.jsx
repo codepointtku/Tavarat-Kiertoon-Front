@@ -8,6 +8,7 @@ import {
     ordersApi,
     shoppingCartApi,
     storagesApi,
+    userApi,
     usersApi,
 } from '../api';
 
@@ -614,7 +615,9 @@ const adminInboxAction = async (auth, setAuth, request) => {
 
 const userProfilePageAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/user/', 'put', formData);
+    console.log(formData.get('first_name'));
+    const response = await userApi.userUpdate(formData);
+    // apiCall(auth, setAuth, '/user/', 'put', formData);
     if (response.status === 200) {
         return { type: 'markasread', status: true };
     }
