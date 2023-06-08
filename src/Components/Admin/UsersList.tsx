@@ -73,6 +73,7 @@ function UsersList() {
                 </div>
             </div> */}
 
+            {/* For alpha, table with client side pagination: */}
             <Stack alignItems="center">
                 <TableContainer id="users-list" component={Paper} sx={{ marginBottom: '1rem' }}>
                     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
