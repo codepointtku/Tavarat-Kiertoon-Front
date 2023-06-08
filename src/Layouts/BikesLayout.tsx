@@ -20,7 +20,7 @@ import Header from './Components/Header';
 // }
 
 // bike
-export interface bikeInterface {
+export interface BikeInterface {
     brand: string;
     color: string;
     description: string;
@@ -34,7 +34,7 @@ export interface bikeInterface {
     unavailable: { [key: string]: number };
 }
 // bikePackage
-export interface bikePackageInterface {
+export interface BikePackageInterface {
     bikes: { amount: number; bike: number }[];
     // bikes: bikeInterface[];
     brand: string | null;
@@ -47,7 +47,7 @@ export interface bikePackageInterface {
     type: string;
 }
 // selectedBikes
-export interface selectedBikesInterface {
+export interface SelectedBikesInterface {
     [key: string]: number;
 }
 

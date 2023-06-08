@@ -1,5 +1,5 @@
 import { Box, Button, List, ListItem, Modal, Stack, Typography } from '@mui/material';
-import type { bikeInterface } from '../../Layouts/BikesLayout';
+import type { BikeInterface } from '../../Layouts/BikesLayout';
 
 interface BikeThankYouModalInterface {
     isThankYouModalVisible: boolean;
@@ -8,7 +8,7 @@ interface BikeThankYouModalInterface {
     setIsIntroVisible: React.Dispatch<React.SetStateAction<null | boolean>>;
     reset: Function; // JTo: Not sure if this is OK ???
     getValues: Function; // JTo: Not sure if this is OK ???
-    bikes: bikeInterface[];
+    bikes: BikeInterface[];
 }
 
 /**
