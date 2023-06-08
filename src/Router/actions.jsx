@@ -288,9 +288,49 @@ const storageEditAction = async (auth, setAuth, request, params) => {
 };
 
 const userEditAction = async (auth, setAuth, request, params) => {
+    // This action handles user data: info, addressinfo and users auth groups.
+    // User data has different BE endpoints for different user data sections.
+
+    // First apicall updates users editable info.
+    // Second apicall patches users addressinfo. (not finalized, working on it)
+
+    // Third apicall updates users auth groups: BE expects integers (representing different auth groups) in an array.
+    // It gets all the checked checkboxes values into an array's first index.
+    // The array is then splitted by comma into an array of strings. These indexes are then mapped into an array of integers,
+    // and then sent to the BE in a composition BE expects.
+
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, `/users/${params.id}/edit/`, 'put', formData);
-    const response = await usersApi.usersUpdate(params.id, Object.fromEntries(formData.entries()));
+    // let response = await apiCall(auth, setAuth, `/users/${params.id}/`, 'put', {
+    //     first_name: formData.get('first_name'),
+    //     last_name: formData.get('last_name'),
+    //     phone_number: formData.get('phone_number'),
+    // });
+
+    let response = await usersApi.usersUpdate(params.id, {
+        first_name: formData.get('first_name'),
+        last_name: formData.get('last_name'),
+        phone_number: formData.get('phone_number'),
+    });
+
+    // works if used perfectly. needs more validation. not yet ready for production. disabled for this pr.
+    // const newAddress = {
+    //     address: formData.get('address'),
+    //     zipcode: formData.get('zip_code'),
+    //     city: formData.get('city'),
+    // };
+
+    // response = await apiCall(auth, setAuth, `/users/address/${params.id}/`, 'patch', newAddress);
+
+    const selectedAuthGroups = formData
+        .getAll('groups')[0]
+        .split(',')
+        .map((group) => Number(group));
+    // response = await apiCall(auth, setAuth, `/users/${params.id}/groups/permission/`, 'put', {
+    //     groups: selectedAuthGroups,
+    // });
+
+    response = await usersApi.usersGroupsPermissionUpdate(params.id, { groups: selectedAuthGroups });
+
     if (response.status === 200) {
         return { type: 'update', status: true };
     }
