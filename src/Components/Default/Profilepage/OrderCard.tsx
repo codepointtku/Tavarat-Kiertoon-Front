@@ -15,8 +15,8 @@ interface OrderInfo {
 
 function OrderCard({ orderInfo }: OrderInfo) {
     return (
-        <Card sx={{ maxWidth: 600, maxHeight: 360, mt: 2 }} raised>
-            <CardActionArea sx={{ height: 'inherit' }}>
+        <Card sx={{ maxWidth: 600, mt: 2 }} raised>
+            <CardActionArea sx={{ height: '100%' }}>
                 <CardHeader
                     component={Typography}
                     align="center"
@@ -57,7 +57,7 @@ function OrderCard({ orderInfo }: OrderInfo) {
                                 <Typography variant="body2" sx={{ display: 'inline' }} color="primary.main">
                                     Tilauksen tiedot:
                                 </Typography>
-                                <Typography variant="body2" sx={{ ml: 0.5, display: 'inline' }}>
+                                <Typography variant="body2" sx={{ ml: 0.5, display: 'inline', wordWrap: 'break-word' }}>
                                     {orderInfo.order_info}
                                 </Typography>
                             </Grid>
