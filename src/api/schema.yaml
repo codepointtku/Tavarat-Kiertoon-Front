@@ -2543,6 +2543,18 @@ paths:
       operationId: users_list
       description: List all users with all database fields, no POST here
       parameters:
+      - in: query
+        name: groups
+        schema:
+          type: array
+          items:
+            type: integer
+        explode: true
+        style: form
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
       - name: ordering
         required: false
         in: query

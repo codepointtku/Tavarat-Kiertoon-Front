@@ -423,11 +423,11 @@ function Routes() {
                 {
                     path: 'admin',
                     element: (
-                        <HasRole role="admin_group" fallback={<Navigate to="/" />}>
-                            <ThemeProvider theme={adminTheme}>
-                                <AdminLayout />
-                            </ThemeProvider>
-                        </HasRole>
+                        // <HasRole role="admin_group" fallback={<Navigate to="/rickastley" />}>
+                        <ThemeProvider theme={adminTheme}>
+                            <AdminLayout />
+                        </ThemeProvider>
+                        // </HasRole>
                     ),
                     id: 'admin',
                     errorElement: (
