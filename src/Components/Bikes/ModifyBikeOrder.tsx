@@ -80,8 +80,9 @@ export default function ModifyBikeOrder() {
     // data from backend
     const { packet, models } = useLoaderData() as LoaderDataInterface;
 
-    // local states
-    const [selectedModel, setSelectedModel] = useState<number>(models[0] ? models[0].id : 1);
+    // Local states
+    const [selectedModels, setSelectedModels] = useState<number[]>(models[0] ? [models[0].id] : []);
+    const [selectedModel, setSelectedModel] = useState<number>(models[0] ? models[0].id : models[1]?.id || 0);
 
     // hook form functions
     const { handleSubmit, control, register, watch, setValue } = useForm<FormValues>({
@@ -121,15 +122,20 @@ export default function ModifyBikeOrder() {
     };
 
     const handleAddModel = () => {
-        const newBike = {
-            bike: selectedModel,
-            amount: 1,
-        };
-        append(newBike);
+        const isModelAlreadyAdded = fields.some((field) => field.bike === selectedModel);
+        if (!isModelAlreadyAdded) {
+            const newBike = {
+                bike: selectedModel,
+                amount: 1,
+            };
+            append(newBike);
+        }
     };
 
     const handleRemoveModel = (index: number) => {
         remove(index);
+        const removedModel = fields[index].bike;
+        setSelectedModels((prevModels) => prevModels.filter((model) => model !== removedModel)); // Remove the deleted model from the selectedModels state
     };
 
     // RENDER
@@ -165,13 +171,7 @@ export default function ModifyBikeOrder() {
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>Nimi:</TableCell>
                                     <TableCell colSpan={3}>
-                                        <TextField
-                                            multiline
-                                            {...register('packetName')}
-                                            value={watch('packetName')}
-                                            name="changePacketName"
-                                            fullWidth
-                                        />
+                                        <TextField multiline {...register('packetName')} name="packetName" fullWidth />
                                     </TableCell>
                                     <TableCell colSpan={4}></TableCell>
                                 </TableRow>
@@ -234,84 +234,63 @@ export default function ModifyBikeOrder() {
                                         </TableCell>
 
                                         <TableCell>
-                                            {/* Kuvaus:  */}
-                                            {models.find((model) => model.id === field.bike)?.description}
+                                            {/* Koko:  */}
+                                            {models.find((model) => model.id === field.bike)?.size.name}
                                         </TableCell>
 
                                         <TableCell>
-                                            <IconButton
-                                                type="button"
-                                                sx={{ color: 'primary.main' }}
-                                                aria-label="remove"
-                                                onClick={() => handleRemoveModel(index)}
-                                            >
+                                            {/* Lisää nappi */}
+                                            <IconButton color="primary" onClick={() => handleRemoveModel(index)}>
                                                 <DeleteIcon />
-                                                Poista
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
                                 ))}
-
-                                {/*
-                                 * Add new bike model
-                                 */}
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>
-                                        Lisää uusi
-                                    </TableCell>
-                                    <TableCell colSpan={3}>
-                                        <FormControl sx={{ width: 300 }}>
-                                            <InputLabel id="model-select-label">Valitse malli</InputLabel>
-                                            <Select
-                                                labelId="model-select-label"
-                                                id="model-select-id"
-                                                value={selectedModel}
-                                                onChange={(event) => setSelectedModel(event.target.value as number)}
-                                                label="Valitse malli"
-                                                fullWidth
-                                            >
-                                                {/* {!selectedModel && (
-                                                    <MenuItem disabled value="">
-                                                        <em>Valitse malli</em>
-                                                    </MenuItem>
-                                                )} */}
-                                                {models.map((model) => (
-                                                    <MenuItem key={model.id} value={model.id}>
-                                                        {model.name}
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-                                    </TableCell>
-                                    <TableCell colSpan={4}>
-                                        <IconButton
-                                            sx={{ color: 'primary.main' }}
-                                            aria-label="add"
-                                            onClick={handleAddModel}
-                                            disabled={false}
-                                        >
-                                            <AddCircleRoundedIcon />
-                                            <Typography variant="body1">Lisää</Typography>
-                                        </IconButton>
-                                    </TableCell>
-                                </TableRow>
                             </TableBody>
                         </Table>
+
+                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '2em' }}>
+                            <FormControl sx={{ minWidth: '180px' }}>
+                                <InputLabel id="model-select-label">Valitse malli</InputLabel>
+                                <Select
+                                    labelId="model-select-label"
+                                    id="model-select"
+                                    value={selectedModel}
+                                    onChange={(e) => setSelectedModel(e.target.value as number)}
+                                    label="Valitse malli"
+                                >
+                                    {models.map((model) => {
+                                        const isModelAdded = fields.some((field) => field.bike === model.id);
+                                        return (
+                                            <MenuItem key={model.id} value={model.id} disabled={isModelAdded}>
+                                                {model.name}
+                                            </MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                            </FormControl>
+
+                            <Button sx={{ marginLeft: '1em' }} variant="contained" onClick={handleAddModel}>
+                                Lisää pyörä
+                            </Button>
+                        </Box>
                     </Box>
                 </Box>
-                {/*
-                 * Submit
-                 */}
-                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '2em' }}>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        sx={{ fontFamily: 'Montserrat', fontWeight: 'bold' }}
-                    >
-                        Lähetä
-                    </Button>
-                </Box>
+
+                {/* Submit button */}
+                <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                        marginTop: '2em',
+                        marginBottom: '2em',
+                        width: '120px',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                    }}
+                >
+                    Tallenna
+                </Button>
             </Box>
         </TableContainer>
     );
