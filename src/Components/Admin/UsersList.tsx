@@ -26,30 +26,6 @@ import TypographyTitle from '../TypographyTitle';
 
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 
-const rows: GridRowsProp = [
-    { id: 1, col1: 'Jorma@jee.com', col2: 'Jomppa', col3: '0501231234', col4: '1', col5: 'nappula' },
-    { id: 2, col1: 'zeic@jee.com', col2: 'Jake', col3: '0501231234', col4: '1', col5: 'nappula' },
-    { id: 3, col1: 'jesse@jee.com', col2: 'Yes ese', col3: '0501231234', col4: '1', col5: 'nappula' },
-    { id: 4, col1: 'irma@jee.com', col2: 'Ike', col3: '0501231234', col4: '1', col5: 'nappula' },
-    { id: 5, col1: 'pirkko@jee.com', col2: 'Pike', col3: '0501231234', col4: '1', col5: 'nappula' },
-];
-
-const columns: GridColDef[] = [
-    { field: 'col1', headerName: 'Sähköposti', width: 150 },
-    { field: 'col2', headerName: 'Nimi', width: 150 },
-    { field: 'col3', headerName: 'Puhelinnumero', width: 150 },
-    { field: 'col4', headerName: 'Tunniste', width: 150 },
-    { field: 'col5', headerName: 'Lisätiedot', width: 150 },
-];
-
-function GridX() {
-    return (
-        <div style={{ height: 600, width: '100%' }}>
-            <DataGrid rows={rows} columns={columns} />
-        </div>
-    );
-}
-
 function UsersList() {
     const { count, next, previous, results } = useLoaderData() as Awaited<ReturnType<typeof usersListLoader>>;
     // const data = useLoaderData() as Awaited<ReturnType<typeof usersListLoader>>;
@@ -60,7 +36,7 @@ function UsersList() {
     // console.log('pagination previous:', previous);
     // console.log('users list (results):', results);
 
-    const page_size = 30; // page_size @ BE: 10
+    const page_size = 10; // page_size @ BE: 10
     const pageCount = Math.ceil(count! / page_size);
 
     // const [currentPage, setCurrentPage] = React.useState(1);
@@ -68,6 +44,39 @@ function UsersList() {
     // const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     //     setCurrentPage(value);
     // };
+
+    const rows: GridRowsProp = [
+        { id: 1, col1: 'Jorma@jee.com', col2: 'Jomppa', col3: '0501231234', col4: '1', col5: 'nappula' },
+        { id: 2, col1: 'zeic@jee.com', col2: 'Jake', col3: '0501231234', col4: '1', col5: 'nappula' },
+        { id: 3, col1: 'jesse@jee.com', col2: 'Yes ese', col3: '0501231234', col4: '1', col5: 'nappula' },
+        { id: 4, col1: 'irma@jee.com', col2: 'Ike', col3: '0501231234', col4: '1', col5: 'nappula' },
+        { id: 5, col1: 'pirkko@jee.com', col2: 'Pike', col3: '0501231234', col4: '1', col5: 'nappula' },
+    ];
+
+    const columns: GridColDef[] = [
+        { field: 'col1', headerName: 'Sähköposti', width: 150 },
+        { field: 'col2', headerName: 'Nimi', width: 150 },
+        { field: 'col3', headerName: 'Puhelinnumero', width: 150 },
+        { field: 'col4', headerName: 'Tunniste', width: 150 },
+        { field: 'col5', headerName: 'Lisätiedot', width: 150 },
+    ];
+
+    const GridX = () => {
+        return (
+            <div style={{ height: 600, width: '100%' }}>
+                <DataGrid
+                    paginationMode={'server'}
+                    rowCount={pageCount}
+                    rows={rows}
+                    columns={columns}
+                    checkboxSelection
+                    density={'comfortable'}
+                    showColumnVerticalBorder
+                    showCellVerticalBorder
+                />
+            </div>
+        );
+    };
 
     return (
         <Box id="user-list-component-container">
