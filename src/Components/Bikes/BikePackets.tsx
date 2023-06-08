@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export default function BikePackets() {
     const loaderData = useLoaderData();
-    console.log('###', loaderData);
+    // console.log('###', loaderData);
 
     const packages = loaderData.packet;
 

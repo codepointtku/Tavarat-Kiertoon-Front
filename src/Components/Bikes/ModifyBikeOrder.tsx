@@ -81,11 +81,11 @@ export default function ModifyBikeOrder() {
     const { packet, models } = useLoaderData() as LoaderDataInterface;
 
     // local states
-    const [selectedModel, setSelectedModel] = useState<number>(models[0].id);
+    const [selectedModel, setSelectedModel] = useState<number>(models[0] ? models[0].id : 1);
     const [amount, setAmount] = useState(packet.bikes.map((bike) => bike.amount));
 
     // hook form functions
-    const { handleSubmit, control, register, watch } = useForm<FormValues>({
+    const { handleSubmit, control, register, watch, setValue } = useForm<FormValues>({
         defaultValues: {
             packetDescription: packet.description,
             packetName: packet.name,
@@ -102,6 +102,7 @@ export default function ModifyBikeOrder() {
     // submit
     const submit = useSubmit();
     const onSubmit = (data: FieldValues) => {
+        console.log(data);
         const formData = { ...data, bikes: JSON.stringify(data.bikes) };
         submit(formData, {
             method: 'post',
@@ -110,40 +111,34 @@ export default function ModifyBikeOrder() {
     };
 
     const handleAddBike = (index: number) => {
-        // setBikesState((prevState) => {
-        //     const newState = [...prevState];
-        //     newState[index].amount += 1;
-        //     return newState;
-        // });
-        setAmount((prevAmount) => {
-            const newAmount = [...prevAmount];
-            newAmount[index] += 1;
-            return newAmount;
-        });
+        const newAmount = [...amount];
+        newAmount[index] = newAmount[index] + 1;
+        setAmount(newAmount);
     };
 
     const handleRemoveBike = (index: number) => {
         const newAmount = [...amount];
         if (newAmount[index] > 0) {
-            newAmount[index] -= 1;
+            newAmount[index] = newAmount[index] - 1;
             setAmount(newAmount);
-            // setBikesState((prevState) => {
-            //     const newState = [...prevState];
-            //     newState[index].amount -= 1;
-            //     return newState;
-            // });
         }
     };
 
     const handleAddModel = () => {
         const newBike = {
-            id: selectedModel, // TODO: JTo: This REALLY needs to be checked
+            // id: selectedModel,
             bike: selectedModel,
             amount: 1,
         };
         append(newBike);
+        setAmount([...amount, 1]);
     };
-
+    const handleRemoveModel = (index: number) => {
+        const newFields = [...fields];
+        setAmount(amount.filter((_, i) => i !== index));
+        setValue('bikes', newFields);
+        remove(index);
+    };
     // const [isSubmitting, setIsSubmitting] = useState(false);
     // const [success, setSuccess] = useState(false);
 
@@ -259,7 +254,7 @@ export default function ModifyBikeOrder() {
                                                 type="button"
                                                 sx={{ color: 'primary.main' }}
                                                 aria-label="remove"
-                                                onClick={() => remove(index)}
+                                                onClick={() => handleRemoveModel(index)}
                                             >
                                                 <DeleteIcon />
                                                 Poista
