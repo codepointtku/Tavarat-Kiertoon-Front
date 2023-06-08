@@ -1,6 +1,8 @@
 import * as React from 'react';
 
 import { useLoaderData } from 'react-router';
+import { Link } from 'react-router-dom';
+
 import type { usersListLoader } from '../../Router/loaders';
 
 import {
@@ -14,8 +16,13 @@ import {
     Paper,
     Stack,
     Pagination,
-    PaginationItem,
+    // PaginationItem,
+    IconButton,
 } from '@mui/material';
+
+import EditIcon from '@mui/icons-material/Edit';
+
+import TypographyTitle from '../TypographyTitle';
 
 // import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 
@@ -60,13 +67,7 @@ function UsersList() {
     };
 
     return (
-        <Box
-            id="user-list-component-container"
-            sx={{
-                padding: '1rem',
-                border: '1px solid red',
-            }}
-        >
+        <Box id="user-list-component-container">
             {/* <div style={{ display: 'flex', height: '100%' }}>
                 <div style={{ flexGrow: 1 }}>
                     <GridX />
@@ -75,7 +76,8 @@ function UsersList() {
 
             {/* For alpha, table with client side pagination: */}
             <Stack alignItems="center">
-                <TableContainer id="users-list" component={Paper} sx={{ marginBottom: '1rem' }}>
+                <TypographyTitle text="Kaikki käyttäjät" />
+                <TableContainer id="users-list" component={Paper} sx={{ margin: '1rem 0 1rem 0' }}>
                     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                         <TableHead>
                             <TableRow>
@@ -83,6 +85,7 @@ function UsersList() {
                                 <TableCell align="right">Nimi</TableCell>
                                 <TableCell align="right">Puhelinnumero</TableCell>
                                 <TableCell align="right">Tunniste</TableCell>
+                                <TableCell align="right">Lisätiedot</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -94,13 +97,25 @@ function UsersList() {
                                     <TableCell align="right">{user.first_name}</TableCell>
                                     <TableCell align="right">{user.phone_number}</TableCell>
                                     <TableCell align="right">{user.id}</TableCell>
+                                    <TableCell align="right">
+                                        <IconButton component={Link} to={`/admin/kayttajat/${user.id}`}>
+                                            <EditIcon />
+                                        </IconButton>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Pagination size="large" color="primary" count={count} showFirstButton showLastButton />
-                <Pagination size="large" color="primary" count={pageCount} page={currentPage} onChange={handleChange} />
+                <Pagination
+                    size="large"
+                    color="primary"
+                    count={pageCount}
+                    showFirstButton
+                    showLastButton
+                    onChange={handleChange}
+                />
+                {/* <Pagination size="large" color="primary" count={pageCount} page={currentPage} onChange={handleChange} /> */}
             </Stack>
         </Box>
     );
