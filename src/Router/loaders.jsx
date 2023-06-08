@@ -213,7 +213,6 @@ const userEditLoader = async (auth, setAuth, params) => {
     const dataList = [];
     // let { data } = await apiCall(auth, setAuth, `/users/${params.id}`, 'get');
     let { data } = await usersApi.usersRetrieve(params.id);
-    // TODO: check this later seems unnecessarily complicated
     data.groups = data.groups.map((group) => group.id);
     dataList.push(data);
     // data = await apiCall(auth, setAuth, '/users/groups', 'get');
@@ -222,7 +221,6 @@ const userEditLoader = async (auth, setAuth, params) => {
     if (dataList) {
         return dataList;
     }
-    console.log('datalista:', dataList);
     return null;
 };
 
