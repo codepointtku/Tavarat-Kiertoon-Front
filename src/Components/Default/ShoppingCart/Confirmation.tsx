@@ -32,7 +32,10 @@ function Confirmation() {
 
     const onSubmit = async () => {
         const { email, deliveryAddress, phoneNumber, orderInfo } = state;
-        submit({ deliveryAddress, email, phoneNumber, id, orderInfo }, { method: 'post', action: '/ostoskori/vaihe3' });
+        submit(
+            { deliveryAddress, email, phoneNumber, id: id.toString(), orderInfo },
+            { method: 'post', action: '/ostoskori/vaihe3' }
+        );
         submit({ order }, { method: 'put', action: '/' });
     };
 

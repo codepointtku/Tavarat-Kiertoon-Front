@@ -43,11 +43,10 @@ function ContactsAndDelivery() {
     const correctAddress = user.address_list?.filter(
         (address: { address: string }) => address.address === selectedAddress
     );
-    const fullname = user.name.split(' ');
 
     function handleClick() {
-        setValue('firstName', fullname[0]);
-        setValue('lastName', fullname[1]);
+        setValue('firstName', user.first_name);
+        setValue('lastName', user.last_name);
         setValue('email', user.email);
         setValue('phoneNumber', user.phone_number);
     }
@@ -71,7 +70,8 @@ function ContactsAndDelivery() {
                     Tilaajan yhteystiedot
                 </Typography>
                 <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Typography variant="h6">Nimi: {user.name}</Typography>
+                    <Typography variant="h6">Nimi: {user.first_name}</Typography>
+                    <Typography variant="h6">Nimi: {user.last_name}</Typography>
                     <Typography variant="h6">Sähköposti: {user.email}</Typography>
                     <Typography variant="h6">Puh. numero: {user.phone_number}</Typography>
                 </Box>

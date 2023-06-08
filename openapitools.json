@@ -1,0 +1,17 @@
+{
+    "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+    "spaces": 2,
+    "generator-cli": {
+        "useDocker": true,
+        "version": "6.5.0",
+        "generators": {
+            "main": {
+                "inputSpec": "src/api/schema.yaml",
+                "output": "src/api/client",
+                "generatorName": "typescript-axios",
+                "ignoreFileOverride": ".openapi-generator-ignore",
+                "templateDir": "src/api/templates/typescript-axios"
+            }
+        }
+    }
+}

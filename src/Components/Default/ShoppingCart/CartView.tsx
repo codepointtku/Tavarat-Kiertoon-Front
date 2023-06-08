@@ -7,6 +7,11 @@ import AddMoreToCart from '../../AddMoreToCart';
 import { OverridableStringUnion } from '@material-ui/types';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import TypographyHeading from '../../TypographyHeading';
+import { ShoppingCartAvailableAmountList } from '../../../api';
+
+interface CartProduct {
+    product: { id: number };
+}
 
 function CartView() {
     const navigate = useNavigate();
@@ -19,29 +24,33 @@ function CartView() {
         navigate('/ostoskori/vaihe2');
     };
 
+    console.log(cartProducts);
+
     return (
         <>
             <Grid container direction="row" justifyContent="space-around">
                 {cartProducts?.length === 0 ? (
-                    <TypographyHeading text="Ostoskorisi on tyhjä. Meneppäs lisäämään tuotteita." />
+                    <TypographyHeading text="Ostoskorisi on tyhjä." />
                 ) : (
                     <>
                         <Grid container direction="column" sx={{ width: 'auto' }}>
-                            {cartProducts?.map((item: { name: string; id: number }) => (
-                                <Typography variant="h6" sx={{ p: 0.5 }} key={item.id}>
-                                    {item.name}
+                            {cartProducts?.map((product_item: { product: { name: string; id: number } }) => (
+                                <Typography variant="h6" sx={{ p: 0.5 }} key={product_item.product.id}>
+                                    {product_item.product.name}
                                 </Typography>
                             ))}
                         </Grid>
                         <Grid container direction="column" gap={1.5} sx={{ width: 'auto' }}>
-                            {cartProducts?.map((item: { id: string & number; group_id: number; count: number }) => {
-                                const product = amountList.find((p: { id: number }) => p.id == item.group_id);
+                            {cartProducts?.map((product_item: { count: number; product: { id: number & string } }) => {
+                                const product = amountList.find(
+                                    (p) => p.id == product_item.product.id
+                                ) as ShoppingCartAvailableAmountList;
                                 return (
                                     <AddMoreToCart
-                                        key={item.id}
-                                        id={item.id}
-                                        count={item.count}
-                                        maxCount={product?.amount}
+                                        key={product_item.product.id}
+                                        id={product_item.product.id}
+                                        count={product_item.count}
+                                        maxCount={product.amount}
                                         size={
                                             'small' as OverridableStringUnion<
                                                 'small' | 'medium' | 'large',

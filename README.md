@@ -31,6 +31,56 @@ Add this into settings.json:
   },
 ```
 
+## API Client Generation & OpenAPI Schema
+
+Setup:
+
+1. Make sure you have Docker installed and running: `docker -v`
+2. Make sure you have backend running
+
+3. Run `npm run generate-api`:
+    1. Schema is downloaded from the server from `/schema` path to a local file: `src/api/schema.yaml`
+    2. TypeScript interfaces typed Axios methods are generated to `src/api/client`
+
+### Usage
+
+Import API methods from `api`:
+
+```ts
+// Loader
+import { ordersApi } from '../api';
+
+const ordersListLoader = async (params) => {
+    const { data } = await ordersApi.ordersList();
+    // ...
+};
+
+// Component
+import { useLoaderData } from 'react-router-dom';
+
+function OrderListTable({ page, rowsPerPage, setUsedParams }) {
+    const orders = useLoaderData() as Awaited<ReturnType<typeof ordersListLoader>>;
+    // ...
+}
+```
+
+Use generated TypeScript interfaces with props:
+
+```ts
+import type { Order } from '../api';
+
+interface Props {
+    order: Order;
+}
+
+// A component that expects a single order as one of its props
+function OrderTableRow({ order }: Props) {
+    // ...
+    <TableCell align="right">{order.delivery_address}</TableCell>;
+    // ...
+}
+```
+
 (To get open settings.json do ctrl + shift + p, then search "open settings")
 
 ## Docker
