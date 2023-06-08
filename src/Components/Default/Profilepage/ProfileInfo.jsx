@@ -6,7 +6,6 @@ function ProfileInfo({ userInfo }) {
     // console.log('ollaan ProfileInfolla', userInfo);
     const submit = useSubmit();
     const address = userInfo.address_list.map((item) => item.address);
-    console.log(address);
 
     const {
         register,
@@ -24,6 +23,8 @@ function ProfileInfo({ userInfo }) {
     });
 
     const onSubmit = (data) => {
+        const formData = { ...data };
+        formData.id = userInfo.id;
         submit(data, { method: 'put', action: '/profiili' });
     };
 

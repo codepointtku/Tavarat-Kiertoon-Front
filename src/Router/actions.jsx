@@ -615,8 +615,13 @@ const adminInboxAction = async (auth, setAuth, request) => {
 
 const userProfilePageAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    console.log(formData.get('first_name'));
-    const response = await userApi.userUpdate(formData);
+    console.log(...formData);
+    const response = await userApi.userUpdate({
+        username: formData.get('username'),
+        first_name: formData.get('first_name'),
+        last_name: formData.get('last_name'),
+        phone_number: formData.get('phone_number'),
+    });
     // apiCall(auth, setAuth, '/user/', 'put', formData);
     if (response.status === 200) {
         return { type: 'markasread', status: true };
