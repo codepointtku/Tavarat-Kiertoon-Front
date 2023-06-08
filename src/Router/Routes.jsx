@@ -78,6 +78,8 @@ import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
 import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
+import BikeModels from '../Components/Bikes/BikeModels';
+import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
 
 import {
     addItemLoader,
@@ -98,9 +100,12 @@ import {
     bikesListLoader,
     bikeLoader,
     createNewBikeLoader,
+    bikeModelsLoader,
+    bikeSingleModelLoader,
     shoppingProcessLoader,
     adminLoader,
     adminInboxLoader,
+    bikeNewModelLoader,
 } from './loaders';
 
 import {
@@ -123,6 +128,9 @@ import {
     adminLogOut,
     deleteBikeAction,
     adminInboxAction,
+    modifyBikeModelAction,
+    createBikeModelAction,
+    deleteBikeModelAction,
     emailChangeSuccessfulAction,
     changeEmailAction,
     adminBulletinsAction,
@@ -579,6 +587,42 @@ function Routes() {
                                     element: <ModifyBikePage createNewBike={true} />,
                                     loader: async () => createNewBikeLoader(auth, setAuth),
                                     action: async ({ request }) => createNewBikeAction(auth, setAuth, request),
+                                },
+                                {
+                                    path: 'pyoramallit',
+                                    element: <BikeModels />,
+                                    loader: async () => bikeModelsLoader(auth, setAuth),
+                                },
+                                {
+                                    path: 'muokkaapyoramalli',
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <Navigate to="pyorat/pyoravarasto/pyoramallit" />,
+                                        },
+                                        {
+                                            path: ':id',
+                                            element: <ModifyBikeModelPage createNewBikeModel={false} />,
+                                            loader: async ({ params }) => bikeSingleModelLoader(auth, setAuth, params),
+                                            action: async ({ request, params }) =>
+                                                modifyBikeModelAction(auth, setAuth, request, params),
+                                            children: [
+                                                {
+                                                    path: 'poista',
+                                                    action: async ({ params }) =>
+                                                        deleteBikeModelAction(auth, setAuth, params),
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                },
+                                {
+                                    path: 'lisaapyoramalli',
+                                    element: <ModifyBikeModelPage createNewBikeModel={true} />,
+                                    loader: async ({ params }) => bikeNewModelLoader(auth, setAuth, params),
+                                    action: async ({ request, params }) =>
+                                        createBikeModelAction(auth, setAuth, request, params),
                                 },
                             ],
                         },

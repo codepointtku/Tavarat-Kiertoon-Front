@@ -290,6 +290,81 @@ const createNewBikeLoader = async (auth, setAuth) => {
 };
 
 /**
+ * Get ALL Bike Models
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @returns
+ */
+const bikeModelsLoader = async (auth, setAuth) => {
+    // const { data } = await apiCall(auth, setAuth, `/bikes/models/`, 'get');
+    const { data } = await bikesApi.bikesModelsList();
+    return data;
+};
+
+/**
+ * Loader for modifying a single bike model
+ * Get a single Bike Model based on ID and lists of all colors, brands, types
+ * and sizes currently in the database
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} params
+ * @returns
+ */
+const bikeSingleModelLoader = async (auth, setAuth, params) => {
+    const [{ data: bikeModel }, { data: colors }, { data: brands }, { data: types }, { data: sizes }] =
+        await Promise.all([
+            // apiCall(auth, setAuth, `/bikes/models/${params.id}`, 'get'),
+            bikesApi.bikesModelsRetrieve(params.id),
+            // apiCall(auth, setAuth, `/colors`, 'get'),
+            colorsApi.colorsList(),
+            // apiCall(auth, setAuth, `/bikes/brand`, 'get'),
+            bikesApi.bikesBrandList(),
+            // apiCall(auth, setAuth, `/bikes/type`, 'get'),
+            bikesApi.bikesTypeList(),
+            // apiCall(auth, setAuth, `/bikes/size`, 'get'),
+            bikesApi.bikesSizeList(),
+        ]);
+    return { bikeModel, colors, brands, types, sizes };
+};
+
+/**
+ * Loader for new bike model creation
+ * Get lists of all colors, brands, types and sizes currently in the database
+ * Create an empty model for the new bike (this allows the usage of same page
+ * for both bike creation and modification)
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} params
+ * @returns
+ */
+const bikeNewModelLoader = async (auth, setAuth, params) => {
+    const [{ data: colors }, { data: brands }, { data: types }, { data: sizes }] = await Promise.all([
+        // apiCall(auth, setAuth, `/colors`, 'get'),
+        colorsApi.colorsList(),
+        // apiCall(auth, setAuth, `/bikes/brand`, 'get'),
+        bikesApi.bikesBrandList(),
+        // apiCall(auth, setAuth, `/bikes/type`, 'get'),
+        bikesApi.bikesTypeList(),
+        // apiCall(auth, setAuth, `/bikes/size`, 'get'),
+        bikesApi.bikesSizeList(),
+    ]);
+
+    const bikeModel = {
+        name: '',
+        description: '',
+        type: { id: null, name: '' },
+        brand: { id: null, name: '' },
+        size: { id: null, name: '' },
+        color: { id: null, name: '' },
+        picture: { id: null, picture_address: '' },
+    };
+    return { bikeModel, colors, brands, types, sizes };
+};
+
+/**
  * returns null load
  */
 const userSignupLoader = async () => null;
@@ -379,8 +454,11 @@ export {
     bikesListLoader,
     bikeLoader,
     createNewBikeLoader,
+    bikeModelsLoader,
+    bikeSingleModelLoader,
     shoppingCartLoader,
     shoppingProcessLoader,
     adminLoader,
     adminInboxLoader,
+    bikeNewModelLoader,
 };

@@ -11,13 +11,14 @@ import {
     TableContainer,
     TableRow,
     TextField,
+    Typography,
 } from '@mui/material';
+import type { BikeInterface, BikeModelInterface, StorageInterface } from './Bikes';
 import { Form, Link, useSubmit } from 'react-router-dom';
-import type { bikeInterface, bikeModelInterface, storageInterface } from './Bikes';
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
 import DeleteBikeModal from './DeleteBikeModal';
-import { type FieldValues, useForm} from 'react-hook-form';
+import { type FieldValues, useForm } from 'react-hook-form';
 
 interface ModifyBikePageInterface {
     createNewBike: boolean;
@@ -40,9 +41,9 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
 
     // get loader data
     const { bikeData, bikeModelsData, storagesData } = useLoaderData() as {
-        bikeData: bikeInterface;
-        bikeModelsData: bikeModelInterface[];
-        storagesData: storageInterface[];
+        bikeData: BikeInterface;
+        bikeModelsData: BikeModelInterface[];
+        storagesData: StorageInterface[];
     };
 
     // hook form functions and default values
@@ -54,8 +55,8 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
             bikeFrameNumberTextField: createNewBike ? '' : bikeData.frame_number,
             bikeNumberTextField: createNewBike ? '' : bikeData.number,
             bikeStatusSelect: createNewBike ? 'AVAILABLE' : bikeData.state,
-            bikePackageOnlyCheckBox: createNewBike ? false : bikeData.package_only
-        }
+            bikePackageOnlyCheckBox: createNewBike ? false : bikeData.package_only,
+        },
     });
 
     // error messages
@@ -67,37 +68,24 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     // submit the form data
     const submit = useSubmit();
     const onSubmit = (data: FieldValues) => {
-        submit(
-            data,
-            {
-                method: createNewBike ? 'post' : 'put',
-                action: createNewBike ? `/pyorat/pyoravarasto/lisaa/` : `/pyorat/pyoravarasto/muokkaa/${bikeData.id}`
-            }
-        )
-    }
+        submit(data, {
+            method: createNewBike ? 'post' : 'put',
+            action: createNewBike ? `/pyorat/pyoravarasto/lisaa/` : `/pyorat/pyoravarasto/muokkaa/${bikeData.id}`,
+        });
+    };
 
     // RENDER
     return (
         <>
-            <TableContainer component={Paper} sx={{ padding: '2rem' }}>
-                {/* Header */}
-                <Box
-                    width="100%"
-                    textAlign="center"
-                    marginBottom="20px"
-                    paddingBottom="20px"
-                    borderBottom="1px solid lightgray"
-                >
-                    <h3>{createNewBike ? 'Luo uusi pyörä' : 'Muokkaa pyörän tietoja'}</h3>
-                </Box>
+            <Typography variant="h3" align="center" color="primary.main" mb="2rem" width="100%">
+                {createNewBike ? 'Luo uusi pyörä' : 'Muokkaa pyörän tietoja'}
+            </Typography>
 
+            <TableContainer component={Paper} sx={{ padding: '2rem' }}>
                 {/*
                  * Form area
                  */}
-                <Box
-                    component={Form}
-                    onSubmit={handleSubmit(onSubmit)}
-                >
+                <Box component={Form} onSubmit={handleSubmit(onSubmit)}>
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box
                             sx={{
@@ -115,7 +103,13 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                 <TableBody>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Nimi:</TableCell>
-                                        <TableCell>{bikeModelsData.find(model => model.id === (watch('bikeModelIdSelect') as number) )?.name}</TableCell>
+                                        <TableCell>
+                                            {
+                                                bikeModelsData.find(
+                                                    (model) => model.id === (watch('bikeModelIdSelect') as number)
+                                                )?.name
+                                            }
+                                        </TableCell>
                                         <TableCell align="right">
                                             <TextField
                                                 id="change-bike-model"
@@ -147,28 +141,56 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Merkki:</TableCell>
                                         {/* <TableCell>{bikeState.bike.brand?.name}</TableCell> */}
-                                        <TableCell>{bikeModelsData.find(model => model.id === (watch('bikeModelIdSelect') as number) )?.brand.name}</TableCell>
+                                        <TableCell>
+                                            {
+                                                bikeModelsData.find(
+                                                    (model) => model.id === (watch('bikeModelIdSelect') as number)
+                                                )?.brand.name
+                                            }
+                                        </TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Tyyppi:</TableCell>
-                                        <TableCell>{bikeModelsData.find(model => model.id === (watch('bikeModelIdSelect') as number) )?.type.name}</TableCell>
+                                        <TableCell>
+                                            {
+                                                bikeModelsData.find(
+                                                    (model) => model.id === (watch('bikeModelIdSelect') as number)
+                                                )?.type.name
+                                            }
+                                        </TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Koko:</TableCell>
-                                        <TableCell>{bikeModelsData.find(model => model.id === (watch('bikeModelIdSelect') as number) )?.size.name}</TableCell>
+                                        <TableCell>
+                                            {
+                                                bikeModelsData.find(
+                                                    (model) => model.id === (watch('bikeModelIdSelect') as number)
+                                                )?.size.name
+                                            }
+                                        </TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Väri:</TableCell>
-                                        <TableCell>{bikeModelsData.find(model => model.id === (watch('bikeModelIdSelect') as number) )?.color.name}</TableCell>
+                                        <TableCell>
+                                            {
+                                                bikeModelsData.find(
+                                                    (model) => model.id === (watch('bikeModelIdSelect') as number)
+                                                )?.color.name
+                                            }
+                                        </TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Kuvaus:</TableCell>
                                         <TableCell colSpan={2} sx={{ border: 0 }}>
-                                            {bikeModelsData.find(model => model.id === (watch('bikeModelIdSelect') as number) )?.description}
+                                            {
+                                                bikeModelsData.find(
+                                                    (model) => model.id === (watch('bikeModelIdSelect') as number)
+                                                )?.description
+                                            }
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -196,7 +218,9 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                             <TextField
                                                 label="Muokkaa runkonumeroa"
                                                 value={watch('bikeFrameNumberTextField')}
-                                                {...register('bikeFrameNumberTextField', { required: 'Pakollinen tieto puuttuu' })}
+                                                {...register('bikeFrameNumberTextField', {
+                                                    required: 'Pakollinen tieto puuttuu',
+                                                })}
                                                 fullWidth
                                                 color={errors.bikeFrameNumberTextField ? 'error' : 'primary'}
                                                 error={!!errors.bikeFrameNumberTextField}
@@ -221,7 +245,9 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                             <TextField
                                                 label="Muokkaa Numeroa"
                                                 value={watch('bikeNumberTextField')}
-                                                {...register('bikeNumberTextField', { required: 'Pakollinen tieto puuttuu' })}
+                                                {...register('bikeNumberTextField', {
+                                                    required: 'Pakollinen tieto puuttuu',
+                                                })}
                                                 fullWidth
                                                 color={errors.bikeNumberTextField ? 'error' : 'primary'}
                                                 error={!!errors.bikeNumberTextField}
@@ -280,7 +306,13 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                 <TableBody>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Varaston nimi:</TableCell>
-                                        <TableCell>{storagesData.find(storage => storage.id === (watch('bikeStorageIdSelect') as number) )?.name}</TableCell>
+                                        <TableCell>
+                                            {
+                                                storagesData.find(
+                                                    (storage) => storage.id === (watch('bikeStorageIdSelect') as number)
+                                                )?.name
+                                            }
+                                        </TableCell>
                                         <TableCell align="right">
                                             <TextField
                                                 id="bike-select-storage-id"
@@ -311,7 +343,13 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varaston osoite</TableCell>
-                                        <TableCell sx={{ border: 0 }}>{storagesData.find(storage => storage.id === (watch('bikeStorageIdSelect') as number) )?.address}</TableCell>
+                                        <TableCell sx={{ border: 0 }}>
+                                            {
+                                                storagesData.find(
+                                                    (storage) => storage.id === (watch('bikeStorageIdSelect') as number)
+                                                )?.address
+                                            }
+                                        </TableCell>
                                         <TableCell sx={{ border: 0 }}></TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -326,7 +364,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                         paddingTop="20px"
                         borderTop="1px solid lightgray"
                     >
-                        <Button to={`/pyorat/pyoravarasto`} component={Link} sx={{ padding: '20px' }}>
+                        <Button to={`/pyorat/pyoravarasto`} component={Link} sx={{ padding: '1rem' }}>
                             Palaa pyörälistaan tallentamatta
                         </Button>
                         {!createNewBike && (
@@ -334,7 +372,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                 Poista tämä pyörä
                             </Button>
                         )}
-                        <Button type="submit" sx={{ padding: '20px' }}>
+                        <Button type="submit" sx={{ padding: '1rem' }}>
                             Tallenna muutokset ja palaa listaan
                         </Button>
                     </Box>
