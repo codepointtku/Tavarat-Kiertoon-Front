@@ -32,6 +32,8 @@ function UserEdit() {
 
     const responseStatus = useActionData();
 
+    console.log('loader data useredit.jsx:', loaderData);
+
     const {
         register,
         handleSubmit: createHandleSubmit,

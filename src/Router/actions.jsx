@@ -300,7 +300,13 @@ const userEditAction = async (auth, setAuth, request, params) => {
     // and then sent to the BE in a composition BE expects.
 
     const formData = await request.formData();
-    let response = await apiCall(auth, setAuth, `/users/${params.id}/`, 'put', {
+    // let response = await apiCall(auth, setAuth, `/users/${params.id}/`, 'put', {
+    //     first_name: formData.get('first_name'),
+    //     last_name: formData.get('last_name'),
+    //     phone_number: formData.get('phone_number'),
+    // });
+
+    let response = await usersApi.usersUpdate(params.id, {
         first_name: formData.get('first_name'),
         last_name: formData.get('last_name'),
         phone_number: formData.get('phone_number'),
@@ -319,9 +325,11 @@ const userEditAction = async (auth, setAuth, request, params) => {
         .getAll('groups')[0]
         .split(',')
         .map((group) => Number(group));
-    response = await apiCall(auth, setAuth, `/users/${params.id}/groups/permission/`, 'put', {
-        groups: selectedAuthGroups,
-    });
+    // response = await apiCall(auth, setAuth, `/users/${params.id}/groups/permission/`, 'put', {
+    //     groups: selectedAuthGroups,
+    // });
+
+    response = await usersApi.usersGroupsPermissionUpdate(params.id, { groups: selectedAuthGroups });
 
     if (response.status === 200) {
         return { type: 'update', status: true };

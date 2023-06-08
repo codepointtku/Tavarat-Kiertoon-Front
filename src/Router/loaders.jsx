@@ -38,8 +38,8 @@ const rootLoader = async (auth, setAuth) => {
 const shoppingCartLoader = async (auth, setAuth) => {
     const { data: cart } = await shoppingCartApi.shoppingCartRetrieve();
     const { data: amountList } = await shoppingCartApi.shoppingCartAvailableAmountList();
-    console.log('@shoppingCartLoader, cart.product_items:', cart?.product_items);
-    console.log('@shoppingCartLoader, cart:', cart);
+    // console.log('@shoppingCartLoader, cart.product_items:', cart?.product_items);
+    // console.log('@shoppingCartLoader, cart:', cart);
 
     // /* eslint-disable no-shadow */
     // // // auth check for future
@@ -222,6 +222,7 @@ const userEditLoader = async (auth, setAuth, params) => {
     if (dataList) {
         return dataList;
     }
+    console.log('datalista:', dataList);
     return null;
 };
 
