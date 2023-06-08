@@ -18,7 +18,7 @@ import {
     Typography,
 } from '@mui/material';
 import { Form, useSubmit } from 'react-router-dom';
-import { type FieldValues, useFieldArray, useForm } from 'react-hook-form';
+import { FieldValues, useFieldArray, useForm } from 'react-hook-form';
 import { useState } from 'react';
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
@@ -82,7 +82,6 @@ export default function ModifyBikeOrder() {
 
     // local states
     const [selectedModel, setSelectedModel] = useState<number>(models[0] ? models[0].id : 1);
-    const [amount, setAmount] = useState(packet.bikes.map((bike) => bike.amount));
 
     // hook form functions
     const { handleSubmit, control, register, watch, setValue } = useForm<FormValues>({
@@ -101,46 +100,37 @@ export default function ModifyBikeOrder() {
 
     // submit
     const submit = useSubmit();
-    const onSubmit = (data: FieldValues) => {
+    const onSubmit = async (data: FieldValues) => {
         console.log(data);
         const formData = { ...data, bikes: JSON.stringify(data.bikes) };
-        submit(formData, {
+        await submit(formData, {
             method: 'post',
             action: `/pyorat/pyoravarasto/muokkaapaketti/${packet.id}`,
         });
     };
 
     const handleAddBike = (index: number) => {
-        const newAmount = [...amount];
-        newAmount[index] = newAmount[index] + 1;
-        setAmount(newAmount);
+        setValue(`bikes.${index}.amount`, watch(`bikes.${index}.amount`) + 1);
     };
 
     const handleRemoveBike = (index: number) => {
-        const newAmount = [...amount];
-        if (newAmount[index] > 0) {
-            newAmount[index] = newAmount[index] - 1;
-            setAmount(newAmount);
+        const currentAmount = watch(`bikes.${index}.amount`);
+        if (currentAmount > 0) {
+            setValue(`bikes.${index}.amount`, currentAmount - 1);
         }
     };
 
     const handleAddModel = () => {
         const newBike = {
-            // id: selectedModel,
             bike: selectedModel,
             amount: 1,
         };
         append(newBike);
-        setAmount([...amount, 1]);
     };
+
     const handleRemoveModel = (index: number) => {
-        const newFields = [...fields];
-        setAmount(amount.filter((_, i) => i !== index));
-        setValue('bikes', newFields);
         remove(index);
     };
-    // const [isSubmitting, setIsSubmitting] = useState(false);
-    // const [success, setSuccess] = useState(false);
 
     // RENDER
     return (
@@ -219,8 +209,7 @@ export default function ModifyBikeOrder() {
                                                         <RemoveCircleOutlineRoundedIcon />
                                                     </IconButton>
                                                     <Typography variant="h6" sx={{ p: 0.5 }}>
-                                                        {amount[index]}
-                                                        {/* {watch(`bikes.${index}.amount`)} */}
+                                                        {watch(`bikes.${index}.amount`)}
                                                     </Typography>
                                                     <IconButton color="primary" onClick={() => handleAddBike(index)}>
                                                         <AddCircleRoundedIcon />
