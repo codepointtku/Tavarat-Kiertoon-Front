@@ -65,7 +65,7 @@ export interface SubmitDataInterface {
  * @returns JSX.Element
  */
 export default function Bikes() {
-    const loaderData = useLoaderData() as bikeInterface[];
+    const loaderData = useLoaderData() as BikeInterface[];
     console.log('loaderData', loaderData);
 
     return (

@@ -1,42 +1,45 @@
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import StyledTableCell from '../StyledTableCell';
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useLoaderData } from 'react-router';
 import { Link } from 'react-router-dom';
+import { type bikesPacketLoader } from '../../Router/loaders';
+import { type PacketInterface } from './ModifyBikeOrder';
 
 export default function BikePackets() {
-    const loaderData = useLoaderData();
-    // console.log('###', loaderData);
+    const { packet } = useLoaderData() as Awaited<ReturnType<typeof bikesPacketLoader>>;
+    // const loaderData = useLoaderData() as LoaderDataInterface;
 
-    const packages = loaderData.packet;
+    const packages = packet;
 
     return (
-        <TableContainer component={Paper} sx={{ padding: '2rem' }}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                <TableHead>
-                    <TableRow>
-                        <StyledTableCell align="right">ID</StyledTableCell>
-                        <StyledTableCell align="right">Paketin nimi</StyledTableCell>
-                        <StyledTableCell align="right">Muokkaa</StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {packages.map((packet) => (
-                        <TableRow key={packet.id}>
-                            <TableCell align="right"> {packet.id} </TableCell>
-                            <TableCell align="right"> {packet.name} </TableCell>
-                            <TableCell align="right">
-                                <Button
-                                    color="primary"
-                                    to={`/pyorat/pyoravarasto/muokkaapaketti/${packet.id}`}
-                                    component={Link}
-                                >
-                                    Muokkaa
-                                </Button>
-                            </TableCell>
+        <Box sx={{ padding: '2rem' }}>
+            <TableContainer component={Paper} sx={{ padding: '2rem' }}>
+                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="right">ID</TableCell>
+                            <TableCell align="right">Paketin nimi</TableCell>
+                            <TableCell align="right">Muokkaa</TableCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                    </TableHead>
+                    <TableBody>
+                        {packages.map((packet: PacketInterface) => (
+                            <TableRow key={packet.id}>
+                                <TableCell align="right"> {packet.id} </TableCell>
+                                <TableCell align="right"> {packet.name} </TableCell>
+                                <TableCell align="right">
+                                    <Button
+                                        color="primary"
+                                        to={`/pyorat/pyoravarasto/muokkaapaketti/${packet.id}`}
+                                        component={Link}
+                                    >
+                                        Muokkaa
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Box>
     );
 }

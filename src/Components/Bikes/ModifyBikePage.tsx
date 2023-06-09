@@ -85,7 +85,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                 {/*
                  * Form area
                  */}
-                <Box component={Form} method="put" action={`/pyorat/pyoravarasto/muokkaa/${bikeState.id}`}>
+                <Box component={Form} onSubmit={handleSubmit(onSubmit)}>
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                         <Box
                             sx={{

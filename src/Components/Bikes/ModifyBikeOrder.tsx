@@ -18,12 +18,11 @@ import {
     Typography,
 } from '@mui/material';
 import { Form, useSubmit } from 'react-router-dom';
-import { FieldValues, useFieldArray, useForm } from 'react-hook-form';
+import { type FieldValues, useFieldArray, useForm } from 'react-hook-form';
 import { useState } from 'react';
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getValue } from '@testing-library/user-event/dist/utils';
 
 // Interfaces
 interface LoaderDataInterface {
@@ -31,7 +30,7 @@ interface LoaderDataInterface {
     models: ModelInterface[];
 }
 
-interface PacketInterface {
+export interface PacketInterface {
     id: number;
     name: string;
     description: string;
@@ -81,7 +80,7 @@ export default function ModifyBikeOrder() {
     const { packet, models } = useLoaderData() as LoaderDataInterface;
 
     // Local states
-    const [selectedModels, setSelectedModels] = useState<number[]>(models[0] ? [models[0].id] : []);
+    const [, setSelectedModels] = useState<number[]>(models[0] ? [models[0].id] : []);
     const [selectedModel, setSelectedModel] = useState<number>(models[0] ? models[0].id : models[1]?.id || 0);
 
     // hook form functions
@@ -124,7 +123,8 @@ export default function ModifyBikeOrder() {
     const handleAddModel = () => {
         const isModelAlreadyAdded = fields.some((field) => field.bike === selectedModel);
         if (!isModelAlreadyAdded) {
-            const newBike = {
+            const newBike: BikeInterface = {
+                id: selectedModel, // Assign the selectedModel as the id
                 bike: selectedModel,
                 amount: 1,
             };
