@@ -1,4 +1,4 @@
-// import * as React from 'react';
+import * as React from 'react';
 
 import { useLoaderData } from 'react-router';
 // import { Link } from 'react-router-dom';
@@ -8,15 +8,6 @@ import type { usersListLoader } from '../../Router/loaders';
 import {
     Box,
     Stack,
-    // Table,
-    // TableBody,
-    // TableContainer,
-    // TableHead,
-    // TableCell,
-    // TableRow,
-    // Paper,
-    // Pagination,
-    // PaginationItem,
     // IconButton,
 } from '@mui/material';
 
@@ -36,14 +27,12 @@ function UsersList() {
     // console.log('pagination previous:', previous);
     // console.log('users list (results):', results);
 
-    const page_size = 10; // page_size @ BE: 10
-    const pageCount = Math.ceil(count! / page_size);
+    const pageSize = 10; // page_size @ BE: 10
+    const pageCount = Math.ceil(count! / pageSize);
 
-    // const [currentPage, setCurrentPage] = React.useState(1);
+    const allUsers = results?.map((user: any) => user);
 
-    // const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    //     setCurrentPage(value);
-    // };
+    console.log('allUsers:', allUsers);
 
     const rows: GridRowsProp = [
         { id: 1, col1: 'Jorma@jee.com', col2: 'Jomppa', col3: '0501231234', col4: '1', col5: 'nappula' },
@@ -61,15 +50,21 @@ function UsersList() {
         { field: 'col5', headerName: 'Lisätiedot', width: 150 },
     ];
 
+    const [rowCountState, setRowCountState] = React.useState(pageCount);
+    React.useEffect(() => {
+        setRowCountState((prevRowCountState) => (pageCount !== undefined ? pageCount : prevRowCountState));
+    }, [pageCount, setRowCountState]);
+
     const GridX = () => {
         return (
             <div style={{ height: 600, width: '100%' }}>
                 <DataGrid
                     paginationMode={'server'}
-                    rowCount={pageCount}
+                    // rowCount={pageCount}
+                    rowCount={rowCountState}
                     rows={rows}
                     columns={columns}
-                    checkboxSelection
+                    // checkboxSelection
                     density={'comfortable'}
                     showColumnVerticalBorder
                     showCellVerticalBorder
