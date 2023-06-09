@@ -8,7 +8,6 @@ import SortByMenu from '../SortByMenu';
 
 function OrderListTable() {
     const orders = useLoaderData();
-    console.log('orders:', orders);
     const navigate = useNavigate();
 
     const dateParse = (value) => {
