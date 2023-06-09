@@ -22,15 +22,15 @@ import {
 import { format } from 'date-fns';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
-import type { bikeInterface, selectedBikesInterface } from '../../Layouts/BikesLayout';
+import type { BikeInterface, SelectedBikesInterface } from '../../Layouts/BikesLayout';
 import type { Control } from 'react-hook-form';
 
-interface bikeConfirmationInterface {
+interface BikeConfirmationInterface {
     startDate: Date;
     endDate: Date;
-    selectedBikes: selectedBikesInterface;
+    selectedBikes: SelectedBikesInterface;
     control: Control;
-    bikes: bikeInterface[];
+    bikes: BikeInterface[];
     setIsConfirmationVisible: Function;
 }
 
@@ -41,7 +41,7 @@ export default function BikeConfirmation({
     control,
     bikes,
     setIsConfirmationVisible,
-}: bikeConfirmationInterface) {
+}: BikeConfirmationInterface) {
     const [requiredCheckboxes, setRequiredCheckboxes] = useState({ education: false, responsibilities: false });
 
     return (
