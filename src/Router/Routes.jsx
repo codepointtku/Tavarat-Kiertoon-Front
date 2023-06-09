@@ -127,6 +127,9 @@ import {
     resetPasswordAction,
     modifyBikeAction,
     createNewBikeAction,
+    activationAction,
+    adminLogOut,
+    modifyBikeOrderAction,
     deleteBikeAction,
     adminInboxAction,
     modifyBikeModelAction,
@@ -135,7 +138,6 @@ import {
     emailChangeSuccessfulAction,
     changeEmailAction,
     adminBulletinsAction,
-    modifyBikeOrderAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
