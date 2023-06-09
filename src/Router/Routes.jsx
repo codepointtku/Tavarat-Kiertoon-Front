@@ -82,6 +82,7 @@ import BikeModels from '../Components/Bikes/BikeModels';
 import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
 
 import UserProfilePage from '../Components/Default/Profilepage/UserProfilePage';
+import OrderPage from '../Components/Default/Profilepage/OrderPage';
 
 import {
     addItemLoader,
@@ -356,7 +357,7 @@ function Routes() {
                             element: <UserProfilePage />,
                             loader: userInfoLoader,
                             action: async ({ request }) => userProfilePageAction(auth, setAuth, request),
-                            children: [{ path: 'tilaus/:id' }],
+                            children: [{ path: 'tilaus/:id', element: <OrderPage /> }],
                         },
                     ],
                 },
