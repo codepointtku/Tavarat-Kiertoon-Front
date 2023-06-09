@@ -30,7 +30,9 @@ import AdminInbox from '../Components/Admin/AdminInbox';
 
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
+import BulletinPosts from '../Components/Admin/BulletinPosts';
 import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
+import ModifyBulletinPost from '../Components/Admin/ModifyBulletinPost';
 import Stats from '../Components/Admin/Stats/Stats';
 
 import StoragesList from '../Components/Admin/StoragesList';
@@ -48,6 +50,9 @@ import Confirmation from '../Components/Default/ShoppingCart/Confirmation';
 
 import SignupLandingPage from '../Components/Default/Signup/SignupLandingPage';
 import SignupPage from '../Components/Default/Signup/SignupPage';
+import Activation from '../Components/Default/Signup/Activation';
+import EmailChangeSuccessful from '../Components/EmailChangeSuccessful';
+import ChangeEmail from '../Components/ChangeEmail';
 
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
@@ -74,6 +79,8 @@ import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
 import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
+import BikeModels from '../Components/Bikes/BikeModels';
+import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
 
 import {
     bikesPacketLoader,
@@ -95,9 +102,13 @@ import {
     bikesListLoader,
     bikeLoader,
     createNewBikeLoader,
+    bikeModelsLoader,
+    bikeSingleModelLoader,
     shoppingProcessLoader,
     modifyBikeOrderLoader,
+    adminLoader,
     adminInboxLoader,
+    bikeNewModelLoader,
 } from './loaders';
 
 import {
@@ -117,14 +128,25 @@ import {
     modifyBikeAction,
     createNewBikeAction,
     deleteBikeAction,
-    adminLogOut,
+    adminInboxAction,
+    modifyBikeModelAction,
+    createBikeModelAction,
+    deleteBikeModelAction,
+    emailChangeSuccessfulAction,
+    changeEmailAction,
+    adminBulletinsAction,
     modifyBikeOrderAction,
 } from './actions';
+
+import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 
 createStore({});
 
 function Routes() {
     const { auth, setAuth } = useContext(AuthContext);
+
+    useLoginAxiosInterceptor();
+
     const router = createBrowserRouter([
         {
             path: '/',
@@ -133,7 +155,9 @@ function Routes() {
             id: 'root',
             loader: async () => rootLoader(auth, setAuth),
             // Loads data only at first page load, not with every route
-            shouldRevalidate: () => false,
+            shouldRevalidate: ({ currentUrl }) => {
+                return currentUrl.pathname === '/admin/tiedotteet' || '/admin/tiedotteet/';
+            },
             children: [
                 // main routes
                 {
@@ -283,6 +307,16 @@ function Routes() {
                             action: async ({ request }) => contactAction(auth, setAuth, request),
                         },
                         {
+                            path: 'sahkopostinvaihto',
+                            element: <ChangeEmail />,
+                            action: async ({ request }) => changeEmailAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'emailvaihto/:uid/:token/:newEmail',
+                            element: <EmailChangeSuccessful />,
+                            action: async ({ request }) => emailChangeSuccessfulAction(auth, setAuth, request),
+                        },
+                        {
                             path: 'unohtunutsalasana',
                             element: <ForgotPassword />,
                             action: async ({ request }) => resetEmailAction(auth, setAuth, request),
@@ -309,6 +343,11 @@ function Routes() {
                                     element: <PasswordResetNavigate />,
                                 },
                             ],
+                        },
+                        {
+                            path: 'aktivointi/:uid/:token',
+                            element: <Activation />,
+                            action: async ({ request }) => activationAction(auth, setAuth, request),
                         },
                     ],
                 },
@@ -394,17 +433,19 @@ function Routes() {
                 {
                     path: 'admin',
                     element: (
-                        <HasRole role="admin_group" fallback={<Navigate to="/" />}>
-                            <ThemeProvider theme={adminTheme}>
-                                <AdminLayout />
-                            </ThemeProvider>
-                        </HasRole>
+                        // <HasRole role="admin_group" fallback={<Navigate to="/rickastley" />}>
+                        <ThemeProvider theme={adminTheme}>
+                            <AdminLayout />
+                        </ThemeProvider>
+                        // </HasRole>
                     ),
+                    id: 'admin',
                     errorElement: (
                         <ThemeProvider theme={adminTheme}>
                             <ErrorBoundary />,
                         </ThemeProvider>
                     ),
+                    loader: async () => adminLoader(auth, setAuth),
                     action: async ({ request }) => adminLogOut(auth, setAuth, request),
                     children: [
                         {
@@ -467,7 +508,12 @@ function Routes() {
                         },
                         {
                             path: 'tiedotteet',
-                            element: <Bulletins />,
+                            element: <BulletinPosts />,
+                            action: async ({ request }) => adminBulletinsAction(auth, setAuth, request),
+                        },
+                        {
+                            path: 'tiedotteet/:id/muokkaa',
+                            element: <ModifyBulletinPost />,
                         },
                         {
                             path: 'tiedotteet/luo',
@@ -475,9 +521,10 @@ function Routes() {
                             action: async ({ request }) => createBulletinAction(auth, setAuth, request),
                         },
                         {
-                            path: 'saapuneet',
+                            path: ':saapuneet',
                             element: <AdminInbox />,
-                            loader: adminInboxLoader,
+                            loader: async ({ request }) => adminInboxLoader(auth, setAuth, request),
+                            action: async ({ request }) => adminInboxAction(auth, setAuth, request),
                         },
                     ],
                 },
@@ -562,6 +609,42 @@ function Routes() {
                                     element: <ModifyBikePage createNewBike={true} />,
                                     loader: async () => createNewBikeLoader(auth, setAuth),
                                     action: async ({ request }) => createNewBikeAction(auth, setAuth, request),
+                                },
+                                {
+                                    path: 'pyoramallit',
+                                    element: <BikeModels />,
+                                    loader: async () => bikeModelsLoader(auth, setAuth),
+                                },
+                                {
+                                    path: 'muokkaapyoramalli',
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <Navigate to="pyorat/pyoravarasto/pyoramallit" />,
+                                        },
+                                        {
+                                            path: ':id',
+                                            element: <ModifyBikeModelPage createNewBikeModel={false} />,
+                                            loader: async ({ params }) => bikeSingleModelLoader(auth, setAuth, params),
+                                            action: async ({ request, params }) =>
+                                                modifyBikeModelAction(auth, setAuth, request, params),
+                                            children: [
+                                                {
+                                                    path: 'poista',
+                                                    action: async ({ params }) =>
+                                                        deleteBikeModelAction(auth, setAuth, params),
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                },
+                                {
+                                    path: 'lisaapyoramalli',
+                                    element: <ModifyBikeModelPage createNewBikeModel={true} />,
+                                    loader: async ({ params }) => bikeNewModelLoader(auth, setAuth, params),
+                                    action: async ({ request, params }) =>
+                                        createBikeModelAction(auth, setAuth, request, params),
                                 },
                             ],
                         },

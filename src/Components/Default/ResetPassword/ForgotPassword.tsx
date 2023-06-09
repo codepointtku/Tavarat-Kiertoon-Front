@@ -22,11 +22,11 @@ function ForgotPassword() {
 
     const onSubmit = (data: any) => {
         const { username } = data;
-        submit({ username }, { method: 'post' });
+        submit({ username }, { method: 'post', action: '/unohtunutsalasana/' });
     };
 
     return (
-        <Container sx={{ border: '0.1rem solid #bfe6f6', borderRadius: '1rem', p: 5 }}>
+        <Container sx={{ border: '0.1rem solid #bfe6f6', borderRadius: '1rem', p: 5, mb: 5 }}>
             <>
                 <Grid container>
                     <Grid item xs={4}>
@@ -92,16 +92,3 @@ function ForgotPassword() {
 }
 
 export default ForgotPassword;
-
-{
-    /* <Grid direction="row" gap={2} alignItems="center" container>
-                <Grid item>
-                    <KeyIcon fontSize="large" />
-                </Grid>
-                <Grid item>
-                    <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                        Unohtunut salasana
-                    </Typography>
-                </Grid>
-            </Grid> */
-}

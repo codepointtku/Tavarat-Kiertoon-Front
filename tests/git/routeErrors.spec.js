@@ -216,24 +216,51 @@ test.describe('bikepackets', () => {
 test.describe('passwordreset', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/salasananpalautus');
-        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+        await expect(page.getByText('Etsimääsi sijaintia /salasananpalautus')).not.toBeVisible();
     });
 });
 test.describe('passwordresetsuccessful', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/salasananpalautus/salasanapalautettu');
-        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+        await expect(page.getByText('Etsimääsi sijaintia /salasananpalautus/salasanapalautettu')).not.toBeVisible();
     });
 });
 test.describe('linkexpired', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/salasananpalautus/linkexpired');
-        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+        await expect(page.getByText('Etsimääsi sijaintia /salasananpalautus/linkexpired')).not.toBeVisible();
     });
 });
 test.describe('pwdresetsession', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/salasananpalautus/asd/das');
-        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
+        await expect(page.getByText('Etsimääsi sijaintia /salasananpalautus/asd/das')).not.toBeVisible();
+    });
+});
+test.describe('arrived', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/saapuneet');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/saapuneet')).not.toBeVisible();
+    });
+});
+
+test.describe('emailchange', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/sahkopostinvaihto');
+        await expect(page.getByText('Etsimääsi sijaintia /sahkopostinvaihto')).not.toBeVisible();
+    });
+});
+
+test.describe('admintiedotteet', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tiedotteet');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/tiedotteet')).not.toBeVisible();
+    });
+});
+
+test.describe('muokkaatiedotetta', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tiedotteet/2/muokkaa');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/tiedotteet/2/muokkaa')).not.toBeVisible();
     });
 });
