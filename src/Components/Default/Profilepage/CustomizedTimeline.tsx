@@ -3,7 +3,6 @@ import TimelineItem from '@mui/lab/TimelineItem';
 import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
-import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import LaptopMacIcon from '@mui/icons-material/LaptopMac';
@@ -13,28 +12,20 @@ function CustomizedTimeline() {
     return (
         <Timeline position="alternate">
             <TimelineItem>
-                <TimelineOppositeContent sx={{ m: 'auto 0' }} align="right" variant="body2" color="text.secondary">
-                    Vastaanotettu
-                </TimelineOppositeContent>
                 <TimelineSeparator>
-                    <TimelineConnector />
                     <TimelineDot>
                         <FastfoodIcon />
                     </TimelineDot>
                     <TimelineConnector />
                 </TimelineSeparator>
-                <TimelineContent sx={{ py: '12px', px: 2 }}>
-                    <Typography variant="h6" component="span">
-                        Tilauksesi on vastaanotettu
+                <TimelineContent sx={{ py: '1.25rem', px: 2 }}>
+                    <Typography sx={{ m: 'auto 0' }} variant="body1" color="primary.dark">
+                        Odottaa vastaanottoa
                     </Typography>
                 </TimelineContent>
             </TimelineItem>
 
             <TimelineItem>
-                <TimelineOppositeContent sx={{ m: 'auto 0' }} variant="body2" color="text.secondary">
-                    Käsittelemme tilaustasi
-                </TimelineOppositeContent>
-
                 <TimelineSeparator>
                     <TimelineConnector />
 
@@ -46,16 +37,13 @@ function CustomizedTimeline() {
                 </TimelineSeparator>
 
                 <TimelineContent sx={{ py: '2rem', px: 2 }}>
-                    <Typography variant="h6" component="span">
+                    <Typography sx={{ m: 'auto 0' }} variant="body1" color="primary.dark" component="span">
                         Käsittelyssä
                     </Typography>
                 </TimelineContent>
             </TimelineItem>
 
             <TimelineItem>
-                <TimelineOppositeContent sx={{ m: 'auto 0' }} align="right" variant="body2" color="text.secondary">
-                    Hetki vielä..
-                </TimelineOppositeContent>
                 <TimelineSeparator>
                     <TimelineConnector />
                     <TimelineDot>
@@ -64,24 +52,33 @@ function CustomizedTimeline() {
                     <TimelineConnector />
                 </TimelineSeparator>
                 <TimelineContent sx={{ py: '2rem', px: 2 }}>
-                    <Typography variant="h6" component="span">
+                    <Typography
+                        sx={{ m: 'auto 0' }}
+                        align="right"
+                        variant="body1"
+                        color="primary.dark"
+                        component="span"
+                    >
                         Kuljetuksessa
                     </Typography>
                 </TimelineContent>
             </TimelineItem>
 
             <TimelineItem>
-                <TimelineOppositeContent sx={{ m: 'auto 0' }} align="right" variant="body2" color="text.secondary">
-                    Valmis!
-                </TimelineOppositeContent>
                 <TimelineSeparator>
                     <TimelineConnector />
-                    <TimelineDot>
-                        <FastfoodIcon />
+                    <TimelineDot color="success">
+                        <FastfoodIcon sx={{ color: 'white' }} />
                     </TimelineDot>
                 </TimelineSeparator>
-                <TimelineContent sx={{ py: '2rem', px: 2 }}>
-                    <Typography variant="h6" component="span">
+                <TimelineContent sx={{ pt: '1.75rem', px: 2 }}>
+                    <Typography
+                        sx={{ m: 'auto 0' }}
+                        align="right"
+                        variant="body1"
+                        color="primary.dark"
+                        component="span"
+                    >
                         Toimitettu
                     </Typography>
                 </TimelineContent>

@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 
-import { Container, Grid, Paper, Card, CardHeader, CardContent, CardMedia, Typography, Box } from '@mui/material';
+import { Container, Grid, Paper, Card, CardActionArea, CardContent, CardMedia, Typography, Box } from '@mui/material';
 
 import CustomizedTimeline from './CustomizedTimeline';
 import TypographyHeading from '../../TypographyHeading';
@@ -35,38 +35,41 @@ function OrderPage() {
                                 item
                                 component={Card}
                                 sx={{
-                                    height: 200,
-                                    width: 200,
+                                    height: 150,
+                                    width: 150,
                                     backgroundColor: 'rgba(255, 255, 255, 0.4)',
                                     backdropFilter: 'blur(6px)',
                                 }}
                                 raised
                             >
-                                <CardMedia
-                                    sx={{ height: '100%' }}
-                                    image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product_item.product.pictures[0].picture_address}`}
-                                >
-                                    <Box
-                                        sx={{
-                                            height: 'inherit',
-                                            backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                                            backdropFilter: 'blur(3px)',
-                                        }}
+                                <CardActionArea sx={{ height: '100%' }}>
+                                    <CardMedia
+                                        sx={{ height: '100%' }}
+                                        image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product_item.product.pictures[0].picture_address}`}
                                     >
-                                        <CardHeader
-                                            component={Typography}
-                                            align="center"
-                                            color="primary.dark"
-                                            title={product_item.product.name}
-                                        ></CardHeader>
-                                        <CardContent>
-                                            <Typography variant="body2" color="primary.dark" align="center">
-                                                <b>Määrä: </b>
-                                                {product_item.product.amount}
+                                        <Box
+                                            sx={{
+                                                height: 'inherit',
+                                                backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                                backdropFilter: 'blur(3px)',
+                                            }}
+                                        >
+                                            <Typography
+                                                align="center"
+                                                color="primary.dark"
+                                                sx={{ p: 2, fontWeight: 'fontWeightMediumBold' }}
+                                            >
+                                                {product_item.product.name}
                                             </Typography>
-                                        </CardContent>
-                                    </Box>
-                                </CardMedia>
+                                            <CardContent>
+                                                <Typography variant="body2" color="primary.dark" align="center">
+                                                    <b>Määrä: </b>
+                                                    {product_item.product.amount}
+                                                </Typography>
+                                            </CardContent>
+                                        </Box>
+                                    </CardMedia>
+                                </CardActionArea>
                             </Grid>
                         ))}
                     </Grid>
