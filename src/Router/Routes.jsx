@@ -357,7 +357,10 @@ function Routes() {
                             element: <UserProfilePage />,
                             loader: userInfoLoader,
                             action: async ({ request }) => userProfilePageAction(auth, setAuth, request),
-                            children: [{ path: 'tilaus/:id', element: <OrderPage /> }],
+                        },
+                        {
+                            path: 'profiili/tilaus/:id',
+                            element: <OrderPage />,
                         },
                     ],
                 },

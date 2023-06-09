@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardActionArea, CardHeader, Typography, Grid } from '@mui/material';
 
 interface OrderInfo {
@@ -16,7 +17,7 @@ interface OrderInfo {
 function OrderCard({ orderInfo }: OrderInfo) {
     return (
         <Card sx={{ maxWidth: 600, mt: 2 }} raised>
-            <CardActionArea sx={{ height: '100%' }}>
+            <CardActionArea component={Link} to={`tilaus/${orderInfo.id}`} sx={{ height: '100%' }}>
                 <CardHeader
                     component={Typography}
                     align="center"
