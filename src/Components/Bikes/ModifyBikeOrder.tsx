@@ -102,7 +102,7 @@ export default function ModifyBikeOrder() {
     // submit
     const submit = useSubmit();
     const onSubmit = async (data: FieldValues) => {
-        console.log(data);
+        // console.log(data);
         const formData = { ...data, bikes: JSON.stringify(data.bikes) };
         await submit(formData, {
             method: 'post',

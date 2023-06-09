@@ -544,7 +544,7 @@ const modifyBikeOrderAction = async (auth, setAuth, request, params) => {
     console.log('p:', params);
     // collect data that needs to be sent to backend
     const data = await request.formData();
-    console.log('### data', data);
+    // console.log('### data', data);
     const submission = {
         name: data.get('packetName'),
         description: data.get('packetDescription'),

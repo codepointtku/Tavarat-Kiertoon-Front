@@ -270,7 +270,7 @@ const bikesPacketLoader = async (auth, setAuth) => {
  * Get one bikepacket and all models
  */
 const modifyBikeOrderLoader = async (auth, setAuth, params) => {
-    console.log('lauantai');
+    // console.log('lauantai');
     const [{ data: packet }, { data: models }] = await Promise.all([
         // apiCall(auth, setAuth, `/bikes/packages/${params.id}`, 'get'),
         // apiCall(auth, setAuth, `/bikes/models/`, 'get'),
