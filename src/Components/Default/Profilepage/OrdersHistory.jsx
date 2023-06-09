@@ -4,7 +4,7 @@ import OrderCard from './OrderCard';
 
 function OrdersHistory({ userOrdersHistory }) {
     const finishedOrders = userOrdersHistory.filter((order) => order.status === 'Finished');
-    const ordersHistoryCards = finishedOrders.map((order) => <OrderCard orderInfo={order} />);
+    const ordersHistoryCards = finishedOrders.map((order) => <OrderCard key={order.id} orderInfo={order} />);
 
     return (
         <Box sx={{ border: '1px solid red', p: 2 }}>

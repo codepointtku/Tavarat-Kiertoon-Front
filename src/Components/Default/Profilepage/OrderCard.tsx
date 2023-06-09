@@ -17,7 +17,12 @@ interface OrderInfo {
 function OrderCard({ orderInfo }: OrderInfo) {
     return (
         <Card sx={{ maxWidth: 600, mt: 2 }} raised>
-            <CardActionArea component={Link} to={`tilaus/${orderInfo.id}`} sx={{ height: '100%' }}>
+            <CardActionArea
+                component={Link}
+                to={`tilaus/${orderInfo.id}`}
+                state={{ orderInfo }}
+                sx={{ height: '100%' }}
+            >
                 <CardHeader
                     component={Typography}
                     align="center"

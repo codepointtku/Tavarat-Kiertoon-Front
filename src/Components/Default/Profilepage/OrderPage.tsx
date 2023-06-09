@@ -1,23 +1,23 @@
-import { Container, Typography, Grid, Box } from '@mui/material';
-// import {CustomizedTime}
+import { useLocation } from 'react-router-dom';
+
+import { Container, Grid, Paper } from '@mui/material';
+
+import CustomizedTimeline from './CustomizedTimeline';
+import TypographyHeading from '../../TypographyHeading';
 
 function OrderPage() {
+    const { state } = useLocation();
+
     return (
-        <Container sx={{ border: '1px solid red' }} disableGutters>
+        <Container disableGutters>
             <Grid container id="main-order-separating-grid" direction="row">
-                <Grid xs={6} item>
-                    <Box sx={{ p: 5, border: '1px solid blue' }}>
-                        <Typography variant="overline" align="center">
-                            Osio 1
-                        </Typography>
-                    </Box>
+                <Grid xs={6} component={Paper} square variant="outlined" sx={{ p: 5 }} item>
+                    <TypographyHeading text="Tilauksesi tila" />
+                    <CustomizedTimeline />
                 </Grid>
-                <Grid xs={6} item>
-                    <Box sx={{ p: 5, border: '1px solid green' }}>
-                        <Typography variant="overline" align="center">
-                            Osio 2
-                        </Typography>
-                    </Box>
+                <Grid xs={6} component={Paper} square variant="outlined" sx={{ p: 5 }} item>
+                    <TypographyHeading text="Tilaamasi tuotteet" />
+                    <Grid container>{state.orderInfo.product_items.map((product_item: {}) => product_item)}</Grid>
                 </Grid>
             </Grid>
         </Container>
