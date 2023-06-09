@@ -4,7 +4,7 @@ import {
     bikesApi,
     bulletinsApi,
     contactFormsApi,
-    contactsApi,
+    // contactsApi,
     ordersApi,
     shoppingCartApi,
     storagesApi,
@@ -289,9 +289,49 @@ const storageEditAction = async (auth, setAuth, request, params) => {
 };
 
 const userEditAction = async (auth, setAuth, request, params) => {
+    // This action handles user data: info, addressinfo and users auth groups.
+    // User data has different BE endpoints for different user data sections.
+
+    // First apicall updates users editable info.
+    // Second apicall patches users addressinfo. (not finalized, working on it)
+
+    // Third apicall updates users auth groups: BE expects integers (representing different auth groups) in an array.
+    // It gets all the checked checkboxes values into an array's first index.
+    // The array is then splitted by comma into an array of strings. These indexes are then mapped into an array of integers,
+    // and then sent to the BE in a composition BE expects.
+
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, `/users/${params.id}/edit/`, 'put', formData);
-    const response = await usersApi.usersUpdate(params.id, Object.fromEntries(formData.entries()));
+    // let response = await apiCall(auth, setAuth, `/users/${params.id}/`, 'put', {
+    //     first_name: formData.get('first_name'),
+    //     last_name: formData.get('last_name'),
+    //     phone_number: formData.get('phone_number'),
+    // });
+
+    let response = await usersApi.usersUpdate(params.id, {
+        first_name: formData.get('first_name'),
+        last_name: formData.get('last_name'),
+        phone_number: formData.get('phone_number'),
+    });
+
+    // works if used perfectly. needs more validation. not yet ready for production. disabled for this pr.
+    // const newAddress = {
+    //     address: formData.get('address'),
+    //     zipcode: formData.get('zip_code'),
+    //     city: formData.get('city'),
+    // };
+
+    // response = await apiCall(auth, setAuth, `/users/address/${params.id}/`, 'patch', newAddress);
+
+    const selectedAuthGroups = formData
+        .getAll('groups')[0]
+        .split(',')
+        .map((group) => Number(group));
+    // response = await apiCall(auth, setAuth, `/users/${params.id}/groups/permission/`, 'put', {
+    //     groups: selectedAuthGroups,
+    // });
+
+    response = await usersApi.usersGroupsPermissionUpdate(params.id, { groups: selectedAuthGroups });
+
     if (response.status === 200) {
         return { type: 'update', status: true };
     }
@@ -465,13 +505,13 @@ const resetPasswordAction = async (auth, setAuth, request) => {
 const modifyBikeAction = async (auth, setAuth, request, params) => {
     // collect data that needs to be sent to backend
     const data = await request.formData();
-    const packageOnly = data.get('changePackageOnly');
+    const packageOnly = data.get('bikePackageOnlyCheckBox');
     const submission = {
-        bike: data.get('changeBikeModel'),
-        frame_number: data.get('changeFrameNumber'),
-        number: data.get('changeBikeNumber'),
-        storage: data.get('changeBikeStorage'),
-        state: data.get('changeBikeStatus'),
+        bike: data.get('bikeModelIdSelect'),
+        frame_number: data.get('bikeFrameNumberTextField'),
+        number: data.get('bikeNumberTextField'),
+        storage: data.get('bikeStorageIdSelect'),
+        state: data.get('bikeStatusSelect'),
         package_only: packageOnly === null ? false : packageOnly, // from checkbox value seems to be 'on' or null
     };
 
@@ -484,13 +524,13 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
 const createNewBikeAction = async (auth, setAuth, request) => {
     // collect data that needs to be sent to backend
     const data = await request.formData();
-    const packageOnly = data.get('changePackageOnly');
+    const packageOnly = data.get('bikePackageOnlyCheckBox');
     const submission = {
-        bike: data.get('changeBikeModel'),
-        frame_number: data.get('changeFrameNumber'),
-        number: data.get('changeBikeNumber'),
-        storage: data.get('changeBikeStorage'),
-        state: data.get('changeBikeStatus'),
+        bike: data.get('bikeModelIdSelect'),
+        frame_number: data.get('bikeFrameNumberTextField'),
+        number: data.get('bikeNumberTextField'),
+        storage: data.get('bikeStorageIdSelect'),
+        state: data.get('bikeStatusSelect'),
         package_only: packageOnly === null ? false : packageOnly, // from checkbox value seems to be 'on' or null
     };
 
@@ -550,6 +590,13 @@ const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
     return { type: 'emailchangesuccessful', status: false };
 };
 
+/**
+ * Delete a single bike
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} params
+ * @returns
+ */
 const deleteBikeAction = async (auth, setAuth, params) => {
     // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     await bikesApi.bikesStockDestroy(params.id);
@@ -557,9 +604,123 @@ const deleteBikeAction = async (auth, setAuth, params) => {
 };
 
 /**
- * deletes or modifies a bulletin
+ * Delete a single bike model
  */
+const deleteBikeModelAction = async (auth, setAuth, params) => {
+    // await apiCall(auth, setAuth, `/bikes/models/${params.id}`, 'delete');
+    await bikesApi.bikesModelsDestroy(params.id);
+    return redirect('/pyorat/pyoravarasto/pyoramallit');
+};
 
+/**
+ * getOrCreateBikeModelIds
+ * Read type, brand and size ids from data. If an id is greater than 0 this value is already created => use it.
+ * Else this is a new value and needs to be created in the backend => Create the new value and return its ID
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} data
+ * @returns
+ */
+const getOrCreateBikeModelIds = async (auth, setAuth, data) => {
+    // if selected type, brand or size do not exist they need to be created
+    // need to create new is indicated by setting the bikeModelXXXId to -1 in the form
+    let typeId = data.get('bikeModelTypeId');
+    if (typeId <= 0) {
+        // const response = await apiCall(auth, setAuth, `/bikes/type/`, 'post', { name: data.get('bikeModelTypeName') });
+        const response = await bikesApi.bikesTypeCreate({ name: data.get('bikeModelTypeName') });
+        typeId = response.data.id;
+    }
+    let brandId = data.get('bikeModelBrandId');
+    if (brandId <= 0) {
+        // const response = await apiCall(auth, setAuth, `/bikes/brand/`, 'post', {
+        //     name: data.get('bikeModelBrandName'),
+        // });
+        const response = await bikesApi.bikesBrandCreate({ name: data.get('bikeModelBrandName') });
+        brandId = response.data.id;
+    }
+    let sizeId = data.get('bikeModelSizeId');
+    if (sizeId <= 0) {
+        // const response = await apiCall(auth, setAuth, `/bikes/size/`, 'post', { name: data.get('bikeModelSizeName') });
+        const response = await bikesApi.bikesSizeCreate({ name: data.get('bikeModelSizeName') });
+        sizeId = response.data.id;
+    }
+    return { typeId, brandId, sizeId };
+};
+
+/**
+ * Modify a single bike model.
+ * During modification it is possible to create new brandname, size and/or type.
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} request
+ * @param {*} params
+ * @returns
+ */
+const modifyBikeModelAction = async (auth, setAuth, request, params) => {
+    // get data from form
+    const data = await request.formData();
+
+    // get or create new ids for type, brand and size
+    const { typeId, brandId, sizeId } = await getOrCreateBikeModelIds(auth, setAuth, data);
+
+    // append modified data to form data
+    data.append('name', data.get('bikeModelName'));
+    data.append('description', data.get('bikeModelDescription'));
+    data.append('color', data.get('bikeModelColorId'));
+    data.append('type', typeId);
+    data.append('brand', brandId);
+    data.append('size', sizeId);
+
+    // send data and redirect
+    // await apiCall(auth, setAuth, `/bikes/models/${params.id}/`, 'put', data, {
+    //     headers: { 'Content-Type': 'multipart/form-data' },
+    // });
+    await bikesApi.bikesModelsUpdate(params.id, data, { headers: { 'Content-Type': 'multipart/form-data' } });
+    return redirect('/pyorat/pyoravarasto/pyoramallit');
+};
+
+/**
+ * Create a new bike model.
+ * During creation it is possible to create new brandname, size and/or type.
+ *
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} request
+ * @returns
+ */
+const createBikeModelAction = async (auth, setAuth, request) => {
+    // get data from form
+    const data = await request.formData();
+
+    // get or create new ids for type, brand and size
+    const { typeId, brandId, sizeId } = await getOrCreateBikeModelIds(auth, setAuth, data);
+
+    // append modified data to form data
+    data.append('name', data.get('bikeModelName'));
+    data.append('description', data.get('bikeModelDescription'));
+    data.append('color', data.get('bikeModelColorId'));
+    data.append('type', typeId);
+    data.append('brand', brandId);
+    data.append('size', sizeId);
+
+    // send data and redirect
+    // await apiCall(auth, setAuth, `/bikes/models/`, 'post', data, {
+    //     headers: { 'Content-Type': 'multipart/form-data' },
+    // });
+    await bikesApi.bikesModelsCreate(data, { headers: { 'Content-Type': 'multipart/form-data' } });
+
+    return redirect('/pyorat/pyoravarasto/pyoramallit');
+};
+
+/**
+ * deletes or modifies a bulletin
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} request
+ * @returns
+ */
 const adminBulletinsAction = async (auth, setAuth, request) => {
     if (request.method === 'DELETE') {
         const formData = await request.formData();
@@ -649,9 +810,12 @@ export {
     createNewBikeAction,
     adminBulletinsAction,
     activationAction,
+    modifyBikeModelAction,
     deleteBikeAction,
     adminLogOut,
     adminInboxAction,
+    createBikeModelAction,
+    deleteBikeModelAction,
     emailChangeSuccessfulAction,
     changeEmailAction,
     userProfilePageAction,

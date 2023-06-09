@@ -1765,7 +1765,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedProductResponseList'
+                $ref: '#/components/schemas/PaginatedProductSchemaResponseList'
           description: ''
     post:
       operationId: products_create
@@ -1777,13 +1777,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductCreateRequest'
+              $ref: '#/components/schemas/ProductCreateSchema'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/ProductCreateRequest'
+              $ref: '#/components/schemas/ProductCreateSchema'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ProductCreateRequest'
+              $ref: '#/components/schemas/ProductCreateSchema'
         required: true
       security:
       - cookieAuth: []
@@ -1796,7 +1796,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductResponse'
+                $ref: '#/components/schemas/ProductSchemaResponse'
           description: ''
   /products/{id}/:
     get:
@@ -1818,7 +1818,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductResponse'
+                $ref: '#/components/schemas/ProductSchemaResponse'
           description: ''
     put:
       operationId: products_update
@@ -1851,7 +1851,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductUpdateResponse'
+                $ref: '#/components/schemas/ProductUpdateSchemaResponse'
           description: ''
     delete:
       operationId: products_destroy
@@ -1927,7 +1927,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedProductItemResponseList'
+                $ref: '#/components/schemas/PaginatedProductItemSchemaResponseList'
           description: ''
   /products/items/{id}:
     get:
@@ -1942,17 +1942,14 @@ paths:
       tags:
       - products
       security:
-      - cookieAuth: []
-      - basicAuth: []
       - jwtAuth: []
-      - CustomJWTAuthentication: []
       - {}
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductItemDetailResponse'
+                $ref: '#/components/schemas/ProductItemDetailSchemaResponse'
           description: ''
     put:
       operationId: products_items_update
@@ -1969,25 +1966,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductItemUpdate'
+              $ref: '#/components/schemas/ProductItemUpdateSchemaResponse'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/ProductItemUpdate'
+              $ref: '#/components/schemas/ProductItemUpdateSchemaResponse'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ProductItemUpdate'
+              $ref: '#/components/schemas/ProductItemUpdateSchemaResponse'
+        required: true
       security:
-      - cookieAuth: []
-      - basicAuth: []
       - jwtAuth: []
-      - CustomJWTAuthentication: []
       - {}
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductItemDetailResponse'
+                $ref: '#/components/schemas/ProductItemDetailSchemaResponse'
           description: ''
     delete:
       operationId: products_items_destroy
@@ -2001,10 +1996,7 @@ paths:
       tags:
       - products
       security:
-      - cookieAuth: []
-      - basicAuth: []
       - jwtAuth: []
-      - CustomJWTAuthentication: []
       - {}
       responses:
         '204':
@@ -2037,7 +2029,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ProductItemResponse'
+                  $ref: '#/components/schemas/ProductItemSchemaResponse'
           description: ''
   /schema/:
     get:
@@ -2309,7 +2301,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/StorageResponse'
+                  $ref: '#/components/schemas/StorageSchemaResponse'
           description: ''
     post:
       operationId: storages_create
@@ -2335,7 +2327,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StorageResponse'
+                $ref: '#/components/schemas/StorageSchemaResponse'
           description: ''
   /storages/{id}/:
     get:
@@ -2356,7 +2348,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StorageResponse'
+                $ref: '#/components/schemas/StorageSchemaResponse'
           description: ''
     put:
       operationId: storages_update
@@ -2388,7 +2380,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StorageResponse'
+                $ref: '#/components/schemas/StorageSchemaResponse'
           description: ''
     delete:
       operationId: storages_destroy
@@ -2441,7 +2433,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/UserUpdate'
-        required: true
       security:
       - CustomJWTAuthentication: []
       responses:
@@ -2543,6 +2534,18 @@ paths:
       operationId: users_list
       description: List all users with all database fields, no POST here
       parameters:
+      - in: query
+        name: groups
+        schema:
+          type: array
+          items:
+            type: integer
+        explode: true
+        style: form
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
       - name: ordering
         required: false
         in: query
@@ -2622,7 +2625,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/UserUpdate'
-        required: true
       security:
       - CustomJWTAuthentication: []
       responses:
@@ -2718,7 +2720,11 @@ paths:
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
   /users/address/{id}/:
     get:
       operationId: users_address_retrieve
@@ -2797,10 +2803,7 @@ paths:
   /users/create/:
     post:
       operationId: users_create_create
-      description: |-
-        List all users, and create with POST
-        if username field comes = joint user
-        if no username = normal user and email address gets copied to username and will be used to login
+      description: List all users, and create with POST
       tags:
       - users
       requestBody:
@@ -2825,55 +2828,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserCreateReturnResponseSchema'
           description: ''
-  /users/emailchange/:
-    post:
-      operationId: users_emailchange_create
-      description: Sends email change link to entered email address for the logged
-        in user account
-      tags:
-      - users
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NewEmail'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/NewEmail'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/NewEmail'
-        required: true
-      security:
-      - CustomJWTAuthentication: []
-      responses:
-        '200':
-          description: No response body
-  /users/emailchange/finish/:
-    post:
-      operationId: users_emailchange_finish_create
-      description: Validating and changing the email for user after the new email
-        address has been sent from fronts url.
-      tags:
-      - users
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NewEmailFinishValidation'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/NewEmailFinishValidation'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/NewEmailFinishValidation'
-        required: true
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          description: No response body
   /users/groups/:
     get:
       operationId: users_groups_list
@@ -2975,7 +2929,11 @@ paths:
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
   /users/password/resetemail/:
     post:
       operationId: users_password_resetemail_create
@@ -3002,26 +2960,6 @@ paths:
           description: No response body
 components:
   schemas:
-    ActionEnum:
-      enum:
-      - Created
-      - Added to shopping cart
-      - Removed from shopping cart
-      - Timed out from shopping cart
-      - Ordered
-      - Came back to circulation
-      - Modified at storage
-      - Gifted away
-      type: string
-      description: |-
-        * `Created` - Create
-        * `Added to shopping cart` - Cart Add
-        * `Removed from shopping cart` - Cart Remove
-        * `Timed out from shopping cart` - Cart Timeout
-        * `Ordered` - Order
-        * `Came back to circulation` - Circulation
-        * `Modified at storage` - Modify
-        * `Gifted away` - Gift
     BikeAmount:
       type: object
       properties:
@@ -3121,6 +3059,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/Color'
           readOnly: true
+        picture:
+          allOf:
+          - $ref: '#/components/schemas/Picture'
+          readOnly: true
         name:
           type: string
           maxLength: 255
@@ -3133,6 +3075,7 @@ components:
       - description
       - id
       - name
+      - picture
       - size
       - type
     BikeModelCreate:
@@ -3157,6 +3100,9 @@ components:
           type: integer
           nullable: true
         color:
+          type: integer
+          nullable: true
+        picture:
           type: integer
           nullable: true
       required:
@@ -3185,6 +3131,9 @@ components:
           type: integer
           nullable: true
         color:
+          type: integer
+          nullable: true
+        picture:
           type: integer
           nullable: true
       required:
@@ -3420,6 +3369,9 @@ components:
         description:
           type: string
           maxLength: 255
+        picture:
+          type: integer
+          nullable: true
       required:
       - brand
       - color
@@ -3937,32 +3889,14 @@ components:
       required:
       - amount
       - bike
-    NewEmail:
+    Message:
       type: object
-      description: Serializer for inputting new email address
       properties:
-        new_email:
+        message:
           type: string
           maxLength: 255
       required:
-      - new_email
-    NewEmailFinishValidation:
-      type: object
-      description: Serializer for inputting new email address
-      properties:
-        uid:
-          type: string
-          maxLength: 255
-        token:
-          type: string
-          maxLength: 255
-        new_email:
-          type: string
-          maxLength: 255
-      required:
-      - new_email
-      - token
-      - uid
+      - message
     OrderDetailRequest:
       type: object
       properties:
@@ -4015,7 +3949,7 @@ components:
         product_items:
           type: array
           items:
-            $ref: '#/components/schemas/ProductItemResponse'
+            $ref: '#/components/schemas/ProductItemSchemaResponse'
           readOnly: true
         status:
           type: string
@@ -4174,7 +4108,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrderResponse'
-    PaginatedProductItemResponseList:
+    PaginatedProductItemSchemaResponseList:
       type: object
       properties:
         count:
@@ -4193,8 +4127,8 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/ProductItemResponse'
-    PaginatedProductResponseList:
+            $ref: '#/components/schemas/ProductItemSchemaResponse'
+    PaginatedProductSchemaResponseList:
       type: object
       properties:
         count:
@@ -4213,7 +4147,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/ProductResponse'
+            $ref: '#/components/schemas/ProductSchemaResponse'
     PaginatedUserFullResponseSchemaList:
       type: object
       properties:
@@ -4258,14 +4192,14 @@ components:
       required:
       - id
       - picture_address
-    ProductCreateRequest:
+    ProductCreateSchema:
       type: object
       properties:
         id:
           type: integer
           readOnly: true
         product_item:
-          $ref: '#/components/schemas/ProductItemCreate'
+          $ref: '#/components/schemas/ProductItemCreateSchema'
         amount:
           type: integer
         color:
@@ -4294,7 +4228,7 @@ components:
       - id
       - name
       - product_item
-    ProductItemCreate:
+    ProductItemCreateSchema:
       type: object
       properties:
         id:
@@ -4316,7 +4250,7 @@ components:
       - barcode
       - id
       - storage
-    ProductItemDetailResponse:
+    ProductItemDetailSchemaResponse:
       type: object
       properties:
         id:
@@ -4339,40 +4273,15 @@ components:
         storage:
           type: integer
           nullable: true
-        log_entries:
-          type: array
-          items:
-            type: integer
       required:
       - available
       - barcode
       - id
-      - log_entries
       - modified_date
       - product
       - shelf_id
       - storage
-    ProductItemLogEntryResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        date:
-          type: string
-          format: date-time
-          readOnly: true
-        action:
-          $ref: '#/components/schemas/ActionEnum'
-        user:
-          type: integer
-          nullable: true
-      required:
-      - action
-      - date
-      - id
-      - user
-    ProductItemResponse:
+    ProductItemSchemaResponse:
       type: object
       properties:
         id:
@@ -4380,16 +4289,11 @@ components:
           readOnly: true
         product:
           allOf:
-          - $ref: '#/components/schemas/ProductResponse'
+          - $ref: '#/components/schemas/ProductSchemaResponse'
           readOnly: true
         storage:
           allOf:
-          - $ref: '#/components/schemas/StorageResponse'
-          readOnly: true
-        log_entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductItemLogEntryResponse'
+          - $ref: '#/components/schemas/StorageSchemaResponse'
           readOnly: true
         available:
           type: boolean
@@ -4406,14 +4310,12 @@ components:
       - available
       - barcode
       - id
-      - log_entries
       - modified_date
       - product
       - shelf_id
       - storage
-    ProductItemUpdate:
+    ProductItemUpdateSchemaResponse:
       type: object
-      description: serializer for product items for purpose of updating it.
       properties:
         id:
           type: integer
@@ -4422,34 +4324,22 @@ components:
           type: string
         available:
           type: boolean
-        modified_date:
-          type: string
-          format: date-time
-          readOnly: true
         shelf_id:
           type: string
           maxLength: 255
         barcode:
           type: string
           maxLength: 255
-        product:
-          type: integer
-          readOnly: true
-          nullable: true
         storage:
           type: integer
           nullable: true
-        log_entries:
-          type: array
-          items:
-            type: integer
-          readOnly: true
       required:
+      - available
+      - barcode
       - id
-      - log_entries
-      - modified_date
-      - product
-    ProductResponse:
+      - shelf_id
+      - storage
+    ProductSchemaResponse:
       type: object
       properties:
         id:
@@ -4547,7 +4437,7 @@ components:
       - id
       - name
       - pictures
-    ProductUpdateResponse:
+    ProductUpdateSchemaResponse:
       type: object
       properties:
         id:
@@ -4637,7 +4527,7 @@ components:
         product_items:
           type: array
           items:
-            $ref: '#/components/schemas/ProductItemResponse'
+            $ref: '#/components/schemas/ProductItemSchemaResponse'
           readOnly: true
         date:
           type: string
@@ -4713,7 +4603,7 @@ components:
       - address
       - id
       - name
-    StorageResponse:
+    StorageSchemaResponse:
       type: object
       properties:
         id:
@@ -4849,6 +4739,7 @@ components:
       - last_name
       - password
       - phone_number
+      - username
       - zip_code
     UserCreateReturnResponseSchema:
       type: object
@@ -4898,9 +4789,11 @@ components:
           nullable: true
         first_name:
           type: string
+          nullable: true
           maxLength: 255
         last_name:
           type: string
+          nullable: true
           maxLength: 255
         email:
           type: string
@@ -4947,7 +4840,6 @@ components:
       - username
     UserPasswordChangeEmailValidation:
       type: object
-      description: Serializer for user activation validations.
       properties:
         uid:
           type: string
@@ -4993,26 +4885,27 @@ components:
       properties:
         first_name:
           type: string
+          nullable: true
           maxLength: 255
         last_name:
           type: string
+          nullable: true
           maxLength: 255
         phone_number:
           type: string
           nullable: true
           maxLength: 255
-      required:
-      - first_name
-      - last_name
     UserUpdateReturnSchema:
       type: object
       description: FOR SCHEMA, Serializer for users, for updating user information
       properties:
         first_name:
           type: string
+          nullable: true
           maxLength: 255
         last_name:
           type: string
+          nullable: true
           maxLength: 255
         phone_number:
           type: string
