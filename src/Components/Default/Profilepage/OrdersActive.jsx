@@ -1,7 +1,6 @@
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 
 import OrderCard from './OrderCard';
-import TypographyHeading from '../../TypographyHeading';
 
 function ProfileInfo({ userOrders }) {
     const activeOrders = userOrders.filter((order) => order.status !== 'Finished');
@@ -9,7 +8,9 @@ function ProfileInfo({ userOrders }) {
 
     return (
         <Box sx={{ border: '1px solid red', p: 2 }}>
-            <TypographyHeading text="Aktiiviset tilaukset" />
+            <Typography variant="h5" color="primary.main" align="center" sx={{ mb: 2 }}>
+                Aktiiviset tilaukset
+            </Typography>
             <Grid container direction="row" gap={5} sx={{ p: 2 }}>
                 {activeOrdersCards}
             </Grid>

@@ -84,7 +84,7 @@ function ProfileInfo({ userInfo }: UserInfoProps) {
                             select
                         >
                             {userInfo.address_list?.map((a) => (
-                                <MenuItem value={a.address} key={a.id}>
+                                <MenuItem key={a.id} value={a.address}>
                                     {a.address}
                                 </MenuItem>
                             ))}

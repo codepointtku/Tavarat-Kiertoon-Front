@@ -33,7 +33,8 @@ function UserProfilePage() {
             <TabContext value={value}>
                 <Tabs value={value} onChange={handleSectionChange} centered>
                     <Tab value="userInfo" label="Käyttäjätiedot" />
-                    <Tab value="userOrders" label="Tilaustiedot" />
+                    <Tab value="activeOrders" label="Aktiiviset tilaukset" />
+                    <Tab value="orderHistory" label="Tilaushistoria" />
                 </Tabs>
                 <Grid flexDirection="row" sx={{ border: '1px solid blue' }}>
                     <TabPanel value="userInfo">
@@ -41,12 +42,15 @@ function UserProfilePage() {
                             <ProfileInfo userInfo={userInfo} />
                         </Grid>
                     </TabPanel>
-                    <TabPanel value="userOrders">
-                        <Grid flexDirection="column" sx={{ border: '1px solid green' }}>
+                    <TabPanel value="activeOrders">
+                        <Grid flexDirection="row" sx={{ border: '1px solid green' }}>
                             <Grid item>
                                 <OrdersActive userOrders={userOrders} />
                             </Grid>
-
+                        </Grid>
+                    </TabPanel>
+                    <TabPanel value="orderHistory">
+                        <Grid flexDirection="row" sx={{ border: '1px solid green' }}>
                             <Grid item>
                                 <OrdersHistory userOrdersHistory={userOrders} />
                             </Grid>

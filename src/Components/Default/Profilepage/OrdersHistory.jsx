@@ -1,5 +1,4 @@
-import { Box, Grid } from '@mui/material';
-import TypographyHeading from '../../TypographyHeading';
+import { Box, Grid, Typography } from '@mui/material';
 import OrderCard from './OrderCard';
 
 function OrdersHistory({ userOrdersHistory }) {
@@ -8,7 +7,9 @@ function OrdersHistory({ userOrdersHistory }) {
 
     return (
         <Box sx={{ border: '1px solid red', p: 2 }}>
-            <TypographyHeading text="Tilaushistoria" />
+            <Typography variant="h5" color="primary.main" align="center" sx={{ mb: 2 }}>
+                Tilaushistoria
+            </Typography>
             <Grid direction="row" gap={5} container>
                 {ordersHistoryCards}
             </Grid>
