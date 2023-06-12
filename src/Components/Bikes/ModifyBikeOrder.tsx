@@ -42,6 +42,10 @@ interface BikeInterface {
     bike: number;
     amount: number;
 }
+interface NewBikeInterface {
+    bike: number;
+    amount: number;
+}
 
 interface ModelInterface {
     id: number;
@@ -68,7 +72,7 @@ interface ModelInterface {
 interface FormValues {
     packetName: string;
     packetDescription: string;
-    bikes: BikeInterface[];
+    bikes: BikeInterface[] | NewBikeInterface[];
 }
 
 /**
@@ -123,8 +127,7 @@ export default function ModifyBikeOrder() {
     const handleAddModel = () => {
         const isModelAlreadyAdded = fields.some((field) => field.bike === selectedModel);
         if (!isModelAlreadyAdded) {
-            const newBike: BikeInterface = {
-                id: selectedModel, // Assign the selectedModel as the id
+            const newBike: NewBikeInterface = {
                 bike: selectedModel,
                 amount: 1,
             };

@@ -4,6 +4,13 @@ import { Link } from 'react-router-dom';
 import { type bikesPacketLoader } from '../../Router/loaders';
 import { type PacketInterface } from './ModifyBikeOrder';
 
+
+function handleRemove(id: number) {
+    const confirmed = window.confirm('Are you sure you want to remove this packet?');
+    if (confirmed) {
+        // Remove the packet from the list
+    }
+}
 export default function BikePackets() {
     const { packet } = useLoaderData() as Awaited<ReturnType<typeof bikesPacketLoader>>;
     // const loaderData = useLoaderData() as LoaderDataInterface;
@@ -11,7 +18,7 @@ export default function BikePackets() {
     const packages = packet;
 
     return (
-        <Box sx={{ padding: '2rem' }}>
+        <Box sx={{ width: '100%', height: '100%', padding: '2rem' }}>
             <TableContainer component={Paper} sx={{ padding: '2rem' }}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
@@ -35,6 +42,12 @@ export default function BikePackets() {
                                         Muokkaa
                                     </Button>
                                 </TableCell>
+                                <TableCell align="right">
+        <Button
+            color="secondary"
+            onClick={() => handleRemove(packet.id)}
+        >
+            Remove
                             </TableRow>
                         ))}
                     </TableBody>
