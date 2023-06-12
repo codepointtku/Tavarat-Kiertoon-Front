@@ -16,7 +16,15 @@ interface OrderInfo {
 
 function OrderCard({ orderInfo }: OrderInfo) {
     return (
-        <Card sx={{ maxWidth: 600, mt: 2 }} raised>
+        <Card
+            sx={{
+                width: 400,
+                minHeight: 400,
+                border: orderInfo.status === 'Finished' ? '1px solid #81C784' : '1px solid #0062ae',
+                mt: 2,
+            }}
+            raised
+        >
             <CardActionArea
                 component={Link}
                 to={`tilaus/${orderInfo.id}`}
@@ -31,58 +39,54 @@ function OrderCard({ orderInfo }: OrderInfo) {
                     title={`Tilaus #${orderInfo.id}`}
                 />
                 <CardContent>
-                    <Grid container direction="row" justifyContent="space-between">
-                        <Grid container direction="column" justifyContent="space-around" sx={{ width: 'auto' }}>
-                            <Grid item>
-                                <Typography variant="body2" sx={{ display: 'inline' }} color="primary.main">
-                                    Tilauksen tila:
-                                </Typography>
-                                <Typography variant="body2" sx={{ ml: 0.5, display: 'inline' }}>
-                                    {orderInfo.status}
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <Typography variant="body2" sx={{ display: 'inline' }} color="primary.main">
-                                    Toimitusosoite:
-                                </Typography>
-                                <Typography variant="body2" sx={{ ml: 0.5, display: 'inline' }}>
-                                    {orderInfo.delivery_address}
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <Typography variant="body2" sx={{ display: 'inline' }} color="primary.main">
-                                    Tilaajan sähköposti:
-                                </Typography>
-                                <Typography variant="body2" sx={{ ml: 0.5, display: 'inline' }}>
-                                    {orderInfo.contact}
-                                </Typography>
-                            </Grid>
+                    <Grid container direction="column" justifyContent="space-around" sx={{ width: 'auto' }}>
+                        <Grid item>
+                            <Typography variant="body2" sx={{ display: 'inline' }} color="primary.main">
+                                Tilauksen tila:
+                            </Typography>
+                            <Typography variant="body2" sx={{ ml: 0.5, display: 'inline' }}>
+                                {orderInfo.status}
+                            </Typography>
                         </Grid>
-                        <Grid container direction="column" justifyContent="space-between" sx={{ width: 'auto' }}>
-                            <Grid item>
-                                <Typography variant="body2" sx={{ display: 'inline' }} color="primary.main">
-                                    Tilauksen tiedot:
-                                </Typography>
-                                <Typography variant="body2" sx={{ ml: 0.5, display: 'inline', wordWrap: 'break-word' }}>
-                                    {orderInfo.order_info}
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <Typography variant="body2" sx={{ display: 'inline' }} color="primary.main">
-                                    Toimituspäivä:
-                                </Typography>
-                                <Typography variant="body2" sx={{ ml: 0.5, display: 'inline' }}>
-                                    {orderInfo.delivery_date}
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <Typography variant="body2" sx={{ display: 'inline' }} color="primary.main">
-                                    Tilaajan puhelinnumero:
-                                </Typography>
-                                <Typography variant="body2" sx={{ ml: 0.5, display: 'inline' }}>
-                                    {orderInfo.phone_number}
-                                </Typography>
-                            </Grid>
+                        <Grid item>
+                            <Typography variant="body2" sx={{ display: 'inline' }} color="primary.main">
+                                Toimitusosoite:
+                            </Typography>
+                            <Typography variant="body2" sx={{ ml: 0.5, display: 'inline' }}>
+                                {orderInfo.delivery_address}
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="body2" sx={{ display: 'inline' }} color="primary.main">
+                                Tilaajan sähköposti:
+                            </Typography>
+                            <Typography variant="body2" sx={{ ml: 0.5, display: 'inline' }}>
+                                {orderInfo.contact}
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="body2" sx={{ display: 'inline' }} color="primary.main">
+                                Tilauksen tiedot:
+                            </Typography>
+                            <Typography variant="body2" sx={{ ml: 0.5, display: 'inline', wordWrap: 'break-word' }}>
+                                {orderInfo.order_info}
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="body2" sx={{ display: 'inline' }} color="primary.main">
+                                Toimituspäivä:
+                            </Typography>
+                            <Typography variant="body2" sx={{ ml: 0.5, display: 'inline' }}>
+                                {orderInfo.delivery_date}
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="body2" sx={{ display: 'inline' }} color="primary.main">
+                                Tilaajan puhelinnumero:
+                            </Typography>
+                            <Typography variant="body2" sx={{ ml: 0.5, display: 'inline' }}>
+                                {orderInfo.phone_number}
+                            </Typography>
                         </Grid>
                     </Grid>
                 </CardContent>

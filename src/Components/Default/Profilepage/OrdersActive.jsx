@@ -1,14 +1,18 @@
-import { Box } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 
+import OrderCard from './OrderCard';
 import TypographyHeading from '../../TypographyHeading';
-import CustomizedTimeline from './CustomizedTimeline';
 
 function ProfileInfo({ userOrders }) {
-    console.log('ollaan aktiiviset tilaukset', userOrders);
+    const activeOrders = userOrders.filter((order) => order.status !== 'Finished');
+    const activeOrdersCards = activeOrders.map((order) => <OrderCard orderInfo={order} />);
+
     return (
         <Box sx={{ border: '1px solid red', p: 2 }}>
             <TypographyHeading text="Aktiiviset tilaukset" />
-            <CustomizedTimeline />
+            <Grid container direction="row" gap={5} sx={{ p: 2 }}>
+                {activeOrdersCards}
+            </Grid>
         </Box>
     );
 }
