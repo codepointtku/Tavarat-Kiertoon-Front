@@ -1,11 +1,35 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, Link, useSubmit } from 'react-router-dom';
-import { Grid, TextField, Typography, Button } from '@mui/material';
+import { Grid, TextField, Typography, MenuItem, Button } from '@mui/material';
 
-function ProfileInfo({ userInfo }) {
+interface UserInfoProps {
+    userInfo: {
+        username: string;
+        first_name: string;
+        last_name: string;
+        phone_number: string;
+        email: string;
+        id: string;
+        address_list: [{ address: string; city: string; zip_code: string; id: number }];
+    };
+}
+
+interface FormData {
+    [key: string]: string;
+    username: string;
+    first_name: string;
+    last_name: string;
+    phone_number: string;
+    email: string;
+    userAddress: string;
+}
+
+function ProfileInfo({ userInfo }: UserInfoProps) {
     // console.log('ollaan ProfileInfolla', userInfo);
     const submit = useSubmit();
     const address = userInfo.address_list.map((item) => item.address);
+    const [selectedAddress, setSelectedAddress] = useState(address[0]);
 
     const {
         register,
@@ -17,20 +41,20 @@ function ProfileInfo({ userInfo }) {
             first_name: userInfo.first_name,
             last_name: userInfo.last_name,
             phone_number: userInfo.phone_number,
-            userAddresses: address[0],
+            userAddress: address[0],
             email: userInfo.email,
         },
     });
 
-    const onSubmit = (data) => {
+    const onSubmit = (data: FormData) => {
         const formData = { ...data };
-        formData.id = userInfo.id;
+        Object.assign(formData, { id: userInfo.id });
         submit(data, { method: 'put', action: '/profiili' });
     };
 
     return (
         <Grid container component={Form} onSubmit={handleSubmit(onSubmit)} justifyContent="center">
-            <Typography variant="h5" color="primary.main" align="center" sx={{ mb: 2 }}>
+            <Typography variant="h5" color="primary.main" sx={{ mb: 2 }}>
                 Käyttäjäprofiilin tiedot
             </Typography>
             <Grid container id="user-info-container" flexDirection="row" justifyContent="space-evenly" sx={{ mb: 5 }}>
@@ -50,14 +74,28 @@ function ProfileInfo({ userInfo }) {
                         <TextField {...register('phone_number')} label="Puhelin numero" placeholder="Puhelin numero" />
                     </Grid>
                     <Grid item>
-                        <TextField {...register('userAddresses')} label="Osoite" placeholder="Osoite" />
+                        <TextField
+                            {...register('userAddress')}
+                            value={selectedAddress}
+                            label="Osoite"
+                            placeholder="Osoite"
+                            onChange={(event) => setSelectedAddress(event.target.value)}
+                            sx={{ width: '100%' }}
+                            select
+                        >
+                            {userInfo.address_list?.map((a) => (
+                                <MenuItem value={a.address} key={a.id}>
+                                    {a.address}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                     </Grid>
                     <Grid item>
                         <TextField {...register('email')} label="Sähköposti" placeholder="Sähköposti" disabled />
-                        <Button component={Link} to="/sahkopostinvaihto" sx={{ ml: 2, p: 2 }}>
-                            Vaihda sähköpostiosoite
-                        </Button>
                     </Grid>
+                    <Button component={Link} to="/sahkopostinvaihto" sx={{ ml: 2, p: 2, width: 'inherit' }}>
+                        Vaihda sähköpostiosoite
+                    </Button>
                 </Grid>
             </Grid>
             {isDirty && (
