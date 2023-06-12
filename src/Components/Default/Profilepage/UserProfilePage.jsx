@@ -1,17 +1,12 @@
 import { useState } from 'react';
-import { useLoaderData, Link, Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 import { Grid, Tabs, Tab, Typography } from '@mui/material';
-import { TabContext, TabPanel } from '@mui/lab';
 
-import ProfileInfo from './ProfileInfo';
-import OrdersActive from './OrdersActive';
-import OrdersHistory from './OrdersHistory';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 function UserProfilePage() {
     const [value, setValue] = useState('userInfo');
-    const { userInfo, userOrders } = useLoaderData();
 
     function handleSectionChange(event, newSection) {
         setValue(newSection);

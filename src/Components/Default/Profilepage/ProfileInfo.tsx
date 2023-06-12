@@ -75,8 +75,8 @@ function ProfileInfo() {
                         <TextField
                             {...register('userAddress')}
                             value={selectedAddress}
-                            label="Osoite"
-                            placeholder="Osoite"
+                            label="Osoitteet"
+                            placeholder="Osoitteet"
                             onChange={(event) => setSelectedAddress(event.target.value)}
                             sx={{ width: '100%' }}
                             select

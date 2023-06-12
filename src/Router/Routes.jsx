@@ -377,7 +377,7 @@ function Routes() {
                             ],
                         },
                         {
-                            path: 'profiili/tilaus/:id',
+                            path: 'profiili/:tilaustila/tilaus/:id',
                             element: <OrderPage />,
                         },
                     ],

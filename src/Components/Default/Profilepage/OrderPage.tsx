@@ -13,6 +13,7 @@ interface Product {
 }
 
 interface ProductItem {
+    id: number;
     product: Product;
 }
 
@@ -33,6 +34,7 @@ function OrderPage() {
                     <Grid gap={2} sx={{ mt: 2 }} container>
                         {state.orderInfo.product_items.map((product_item: ProductItem) => (
                             <Grid
+                                key={product_item.id}
                                 item
                                 component={Card}
                                 sx={{
