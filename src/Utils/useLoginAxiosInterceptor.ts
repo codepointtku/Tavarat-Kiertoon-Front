@@ -44,6 +44,7 @@ export default function useLoginAxiosInterceptor() {
                 }
                 // if path is not logout, starts timer to refresh again
                 if (response.config.url! !== '/users/logout/') {
+                    console.log('setataan timeoutti');
                     setTimeout(() => {
                         // use different axios instance
                         axiosWithoutInterceptor.post('/users/login/refresh/');
@@ -54,6 +55,7 @@ export default function useLoginAxiosInterceptor() {
         });
         // useEffect cleanup function to remove interceptor when component unmounts or dependencies change
         return () => {
+            console.log('ejektoiduttiin velociraptorista!');
             axios.interceptors.response.eject(interceptor);
         };
     }, [auth, setAuth]);

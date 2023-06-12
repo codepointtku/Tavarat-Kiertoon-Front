@@ -13,16 +13,24 @@ import {
 
 // import EditIcon from '@mui/icons-material/Edit';
 
-import TypographyTitle from '../TypographyTitle';
+import {
+    DataGrid,
+    GridRowsProp,
+    GridColDef,
+    // GridToolbar,
+    GridToolbarContainer,
+    GridToolbarColumnsButton,
+    GridToolbarDensitySelector,
+    GridToolbarExport,
+    GridToolbarQuickFilter,
+    GridToolbarFilterButton,
+} from '@mui/x-data-grid';
 
-import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
+import TypographyTitle from '../TypographyTitle';
 
 function UsersList() {
     const { count, next, previous, results } = useLoaderData() as Awaited<ReturnType<typeof usersListLoader>>;
-    // const data = useLoaderData() as Awaited<ReturnType<typeof usersListLoader>>;
-    // console.log(data);
 
-    // console.log('count (kui mont userii kokonaisuuressaa):', count);
     // console.log('pagination next:', next);
     // console.log('pagination previous:', previous);
     // console.log('users list (results):', results);
@@ -30,24 +38,26 @@ function UsersList() {
     const pageSize = 10; // page_size @ BE: 10
     const pageCount = Math.ceil(count! / pageSize);
 
-    const allUsers = results?.map((user: any) => user);
+    const allUsers = results?.map((user: any) => {
+        return {
+            id: user.id,
+            col1: user.email,
+            col2: user.username,
+            col3: user.phone_number,
+            col4: user.id,
+            col5: 'nappula',
+        };
+    });
 
-    console.log('allUsers:', allUsers);
-
-    const rows: GridRowsProp = [
-        { id: 1, col1: 'Jorma@jee.com', col2: 'Jomppa', col3: '0501231234', col4: '1', col5: 'nappula' },
-        { id: 2, col1: 'zeic@jee.com', col2: 'Jake', col3: '0501231234', col4: '1', col5: 'nappula' },
-        { id: 3, col1: 'jesse@jee.com', col2: 'Yes ese', col3: '0501231234', col4: '1', col5: 'nappula' },
-        { id: 4, col1: 'irma@jee.com', col2: 'Ike', col3: '0501231234', col4: '1', col5: 'nappula' },
-        { id: 5, col1: 'pirkko@jee.com', col2: 'Pike', col3: '0501231234', col4: '1', col5: 'nappula' },
-    ];
+    const rows: GridRowsProp = allUsers!;
+    console.log('rows:', rows);
 
     const columns: GridColDef[] = [
-        { field: 'col1', headerName: 'Sähköposti', width: 150 },
-        { field: 'col2', headerName: 'Nimi', width: 150 },
-        { field: 'col3', headerName: 'Puhelinnumero', width: 150 },
-        { field: 'col4', headerName: 'Tunniste', width: 150 },
-        { field: 'col5', headerName: 'Lisätiedot', width: 150 },
+        { field: 'col1', headerName: 'Sähköposti', flex: 2 },
+        { field: 'col2', headerName: 'Nimi', flex: 1 },
+        { field: 'col3', headerName: 'Puhelinnumero', flex: 1 },
+        { field: 'col4', headerName: 'Tunniste', flex: 1 },
+        { field: 'col5', headerName: 'Lisätiedot', flex: 1 },
     ];
 
     const [rowCountState, setRowCountState] = React.useState(pageCount);
@@ -57,33 +67,50 @@ function UsersList() {
 
     const GridX = () => {
         return (
-            <div style={{ height: 600, width: '100%' }}>
+            <div style={{ height: 500, width: '100%' }}>
                 <DataGrid
                     paginationMode={'server'}
                     // rowCount={pageCount}
                     rowCount={rowCountState}
                     rows={rows}
+                    getRowId={(rows) => rows.id}
                     columns={columns}
+                    // slots={{ toolbar: GridToolbar }}
+                    slots={{
+                        toolbar: () => {
+                            return (
+                                <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
+                                    <GridToolbarQuickFilter />
+                                    <GridToolbarColumnsButton />
+                                    <GridToolbarFilterButton />
+                                    <GridToolbarDensitySelector />
+                                    <GridToolbarExport />
+                                </GridToolbarContainer>
+                            );
+                        },
+                    }}
                     // checkboxSelection
-                    density={'comfortable'}
-                    showColumnVerticalBorder
-                    showCellVerticalBorder
+                    // showColumnVerticalBorder
+                    // showCellVerticalBorder
                 />
             </div>
         );
     };
 
     return (
-        <Box id="user-list-component-container">
-            <Stack alignItems="center">
-                <TypographyTitle text="Kaikki käyttäjät" />
-                <div style={{ display: 'flex', height: '100%', margin: '1rem 0 1rem 0' }}>
-                    <div style={{ flexGrow: 1 }}>
-                        <GridX />
-                    </div>
+        // <Box id="users-list-component-container">
+        <Stack id="components-stack" alignItems="center" width="100%">
+            <TypographyTitle text="Kaikki käyttäjät" />
+            <div
+                id="datagrid-parent"
+                style={{ display: 'flex', height: '100%', width: '100%', margin: '1rem 0 1rem 0' }}
+            >
+                <div style={{ flexGrow: 1 }}>
+                    <GridX />
                 </div>
-            </Stack>
-        </Box>
+            </div>
+        </Stack>
+        // </Box>
 
         // <TableContainer id="users-list" component={Paper} sx={{ margin: '1rem 0 1rem 0' }}>
         //     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">

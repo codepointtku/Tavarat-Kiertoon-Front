@@ -67,7 +67,7 @@ function Search() {
     );
 }
 
-function PanelHeader() {
+function AdminAppBar() {
     const [avatarDropDownMenu, setAvatarDropDownMenu] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const { messages } = useRouteLoaderData('admin') as Awaited<ReturnType<typeof adminLoader>>;
@@ -100,6 +100,7 @@ function PanelHeader() {
 
             <AppBar
                 id="admin-panel-appbar"
+                position="static"
                 sx={{
                     width: 'min-content',
                     backgroundColor: 'primary.main',
@@ -160,4 +161,4 @@ function PanelHeader() {
     );
 }
 
-export default PanelHeader;
+export default AdminAppBar;
