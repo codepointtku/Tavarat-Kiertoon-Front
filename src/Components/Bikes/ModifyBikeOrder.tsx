@@ -74,12 +74,15 @@ interface FormValues {
     packetDescription: string;
     bikes: BikeInterface[] | NewBikeInterface[];
 }
+interface CreateNewPacketInterface {
+    createNewPacket: boolean;
+}
 
 /**
  *
  * @returns
  */
-export default function ModifyBikeOrder() {
+export default function ModifyBikeOrder({ createNewPacket }: CreateNewPacketInterface) {
     // data from backend
     const { packet, models } = useLoaderData() as LoaderDataInterface;
 
@@ -90,9 +93,9 @@ export default function ModifyBikeOrder() {
     // hook form functions
     const { handleSubmit, control, register, watch, setValue } = useForm<FormValues>({
         defaultValues: {
-            packetDescription: packet.description,
-            packetName: packet.name,
-            bikes: packet.bikes,
+            packetDescription: createNewPacket ? '' : (packet.description as string),
+            packetName: createNewPacket ? '' : (packet.name as string),
+            bikes: createNewPacket ? [] : (packet.bikes as BikeInterface[]),
         },
     });
 
@@ -107,9 +110,12 @@ export default function ModifyBikeOrder() {
     const onSubmit = async (data: FieldValues) => {
         // console.log(data);
         const formData = { ...data, bikes: JSON.stringify(data.bikes) };
+        console.log(formData);
         await submit(formData, {
-            method: 'post',
-            action: `/pyorat/pyoravarasto/muokkaapaketti/${packet.id}`,
+            method: createNewPacket ? 'post' : 'put',
+            action: createNewPacket
+                ? `/pyorat/pyoravarasto/lisaapaketti`
+                : `/pyorat/pyoravarasto/muokkaapaketti/${packet.id}`,
         });
     };
 
