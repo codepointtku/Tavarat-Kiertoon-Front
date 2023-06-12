@@ -776,7 +776,6 @@ const adminInboxAction = async (auth, setAuth, request) => {
 
 const userProfilePageAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    console.log(...formData);
     const response = await userApi.userUpdate({
         username: formData.get('username'),
         first_name: formData.get('first_name'),

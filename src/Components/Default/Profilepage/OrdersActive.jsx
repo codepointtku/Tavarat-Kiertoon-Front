@@ -1,10 +1,12 @@
+import { useRouteLoaderData } from 'react-router-dom';
 import { Box, Grid, Typography } from '@mui/material';
 
 import OrderCard from './OrderCard';
 
-function ProfileInfo({ userOrders }) {
+function ProfileInfo() {
+    const { userOrders } = useRouteLoaderData('profile');
     const activeOrders = userOrders.filter((order) => order.status !== 'Finished');
-    const activeOrdersCards = activeOrders.map((order) => <OrderCard orderInfo={order} />);
+    const activeOrdersCards = activeOrders.map((order) => <OrderCard key={order.id} orderInfo={order} />);
 
     return (
         <Box sx={{ border: '1px solid red', p: 2 }}>

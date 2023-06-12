@@ -1,8 +1,10 @@
+import { useRouteLoaderData } from 'react-router-dom';
 import { Box, Grid, Typography } from '@mui/material';
 import OrderCard from './OrderCard';
 
-function OrdersHistory({ userOrdersHistory }) {
-    const finishedOrders = userOrdersHistory.filter((order) => order.status === 'Finished');
+function OrdersHistory() {
+    const { userOrders } = useRouteLoaderData('profile');
+    const finishedOrders = userOrders.filter((order) => order.status === 'Finished');
     const ordersHistoryCards = finishedOrders.map((order) => <OrderCard key={order.id} orderInfo={order} />);
 
     return (

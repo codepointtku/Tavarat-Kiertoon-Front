@@ -83,6 +83,9 @@ import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
 
 import UserProfilePage from '../Components/Default/Profilepage/UserProfilePage';
 import OrderPage from '../Components/Default/Profilepage/OrderPage';
+import ProfileInfo from '../Components/Default/Profilepage/ProfileInfo';
+import OrdersActive from '../Components/Default/Profilepage/OrdersActive';
+import OrdersHistory from '../Components/Default/Profilepage/OrdersHistory';
 
 import {
     addItemLoader,
@@ -355,8 +358,23 @@ function Routes() {
                         {
                             path: 'profiili',
                             element: <UserProfilePage />,
+                            id: 'profile',
                             loader: userInfoLoader,
                             action: async ({ request }) => userProfilePageAction(auth, setAuth, request),
+                            children: [
+                                {
+                                    index: true,
+                                    element: <ProfileInfo />,
+                                },
+                                {
+                                    path: 'aktiivisettilaukset',
+                                    element: <OrdersActive />,
+                                },
+                                {
+                                    path: 'tilaushistoria',
+                                    element: <OrdersHistory />,
+                                },
+                            ],
                         },
                         {
                             path: 'profiili/tilaus/:id',

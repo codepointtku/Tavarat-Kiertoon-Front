@@ -1,19 +1,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Form, Link, useSubmit } from 'react-router-dom';
+import { Form, Link, useSubmit, useRouteLoaderData } from 'react-router-dom';
 import { Grid, TextField, Typography, MenuItem, Button } from '@mui/material';
-
-interface UserInfoProps {
-    userInfo: {
-        username: string;
-        first_name: string;
-        last_name: string;
-        phone_number: string;
-        email: string;
-        id: string;
-        address_list: [{ address: string; city: string; zip_code: string; id: number }];
-    };
-}
+import type { userInfoLoader } from '../../../Router/loaders';
 
 interface FormData {
     [key: string]: string;
@@ -25,8 +14,15 @@ interface FormData {
     userAddress: string;
 }
 
-function ProfileInfo({ userInfo }: UserInfoProps) {
+interface UserInfo extends Awaited<ReturnType<typeof userInfoLoader>> {
+    phone_number: string;
+    first_name: string;
+    last_name: string;
+}
+
+function ProfileInfo() {
     // console.log('ollaan ProfileInfolla', userInfo);
+    const { userInfo } = useRouteLoaderData('profile') as UserInfo;
     const submit = useSubmit();
     const address = userInfo.address_list.map((item) => item.address);
     const [selectedAddress, setSelectedAddress] = useState(address[0]);
@@ -52,8 +48,10 @@ function ProfileInfo({ userInfo }: UserInfoProps) {
         submit(data, { method: 'put', action: '/profiili' });
     };
 
+    // Submit ei toimi | Typescript error
+
     return (
-        <Grid container component={Form} onSubmit={handleSubmit(onSubmit)} justifyContent="center">
+        <Grid container component={Form} onSubmit={handleSubmit(() => onSubmit)} justifyContent="center">
             <Typography variant="h5" color="primary.main" sx={{ mb: 2 }}>
                 Käyttäjäprofiilin tiedot
             </Typography>

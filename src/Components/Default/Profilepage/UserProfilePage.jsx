@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, Link, Outlet } from 'react-router-dom';
 
 import { Grid, Tabs, Tab, Typography } from '@mui/material';
 import { TabContext, TabPanel } from '@mui/lab';
@@ -30,34 +30,14 @@ function UserProfilePage() {
                     Käyttäjäprofiili
                 </Typography>
             </Grid>
-            <TabContext value={value}>
-                <Tabs value={value} onChange={handleSectionChange} centered>
-                    <Tab value="userInfo" label="Käyttäjätiedot" />
-                    <Tab value="activeOrders" label="Aktiiviset tilaukset" />
-                    <Tab value="orderHistory" label="Tilaushistoria" />
-                </Tabs>
-                <Grid flexDirection="row" sx={{ border: '1px solid blue' }}>
-                    <TabPanel value="userInfo">
-                        <Grid item>
-                            <ProfileInfo userInfo={userInfo} />
-                        </Grid>
-                    </TabPanel>
-                    <TabPanel value="activeOrders">
-                        <Grid flexDirection="row" sx={{ border: '1px solid green' }}>
-                            <Grid item>
-                                <OrdersActive userOrders={userOrders} />
-                            </Grid>
-                        </Grid>
-                    </TabPanel>
-                    <TabPanel value="orderHistory">
-                        <Grid flexDirection="row" sx={{ border: '1px solid green' }}>
-                            <Grid item>
-                                <OrdersHistory userOrdersHistory={userOrders} />
-                            </Grid>
-                        </Grid>
-                    </TabPanel>
-                </Grid>
-            </TabContext>
+            <Tabs value={value} onChange={handleSectionChange} centered>
+                <Tab component={Link} to="" value="userInfo" label="Käyttäjätiedot" />
+                <Tab component={Link} to="aktiivisettilaukset" value="activeOrders" label="Aktiiviset tilaukset" />
+                <Tab component={Link} to="tilaushistoria" value="orderHistory" label="Tilaushistoria" />
+            </Tabs>
+            <Grid flexDirection="row" sx={{ border: '1px solid blue' }}>
+                <Outlet />
+            </Grid>
         </>
     );
 }
