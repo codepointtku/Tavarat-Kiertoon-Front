@@ -140,7 +140,6 @@ const orderViewLoader = async (auth, setAuth, params) => {
     // const response = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
     const response = await ordersApi.ordersRetrieve(params.id);
     // TODO: check this later, with pdfViewLoader
-    response.data.productList = response.data.products;
     return response.data;
 };
 
