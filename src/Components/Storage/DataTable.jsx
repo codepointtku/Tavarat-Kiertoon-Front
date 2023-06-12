@@ -1,46 +1,14 @@
-import { useEffect } from 'react';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableFooter,
-    TablePagination,
-    TableRow,
-    Paper,
-} from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
-import TablePaginationActions from '../TablePaginationActions';
 import StyledTableCell from '../StyledTableCell';
-import StyledTableRow from '../StyledTableRow';
 import SortByMenu from '../SortByMenu';
 
-function OrderListTable({ page, rowsPerPage, setUsedParams }) {
+function OrderListTable() {
     const orders = useLoaderData();
     const navigate = useNavigate();
-    // Avoid a layout jump when reaching the last page with empty rows.
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - orders.length) : 0;
-
-    const handleChangePage = (event, newPage) => {
-        setUsedParams('page', newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setUsedParams('rows', parseInt(event.target.value, 10));
-        setUsedParams('page', 0);
-    };
-
-    useEffect(() => {
-        if (page > Math.floor(orders.length / rowsPerPage)) {
-            setUsedParams('page', Math.floor(orders.length / rowsPerPage));
-        } else if (page < 0) {
-            setUsedParams('page', 0);
-        }
-    }, [page]);
 
     const dateParse = (value) => {
         const date = new Date(value);
@@ -64,15 +32,12 @@ function OrderListTable({ page, rowsPerPage, setUsedParams }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {(rowsPerPage > 0
-                        ? orders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : orders
-                    ).map((row) => (
+                    {orders.map((row) => (
                         <TableRow
                             key={row.id}
                             style={{ cursor: 'pointer' }}
                             hover
-                            onClick={() => navigate(`/varasto/tilaus/${row.id}?page=0&rows=5`)}
+                            onClick={() => navigate(`/varasto/tilaus/${row.id}`)}
                         >
                             <TableCell component="th" scope="row">
                                 {row.id}
@@ -84,33 +49,7 @@ function OrderListTable({ page, rowsPerPage, setUsedParams }) {
                             <TableCell align="right">{dateParse(row.delivery_date)}</TableCell>
                         </TableRow>
                     ))}
-
-                    {emptyRows > 0 && (
-                        <StyledTableRow style={{ height: 53 * emptyRows }}>
-                            <StyledTableCell colSpan={6} />
-                        </StyledTableRow>
-                    )}
                 </TableBody>
-                <TableFooter>
-                    <TableRow>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 25, 100]}
-                            colSpan={7}
-                            count={orders.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            SelectProps={{
-                                inputProps: {
-                                    'aria-label': 'rows per page',
-                                },
-                                native: true,
-                            }}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                            ActionsComponent={TablePaginationActions}
-                        />
-                    </TableRow>
-                </TableFooter>
             </Table>
         </TableContainer>
     );
