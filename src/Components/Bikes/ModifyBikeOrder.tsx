@@ -225,12 +225,11 @@ export default function ModifyBikeOrder({ createNewPacket }: CreateNewPacketInte
                                      */}
                                     {fields.map((field, index) => (
                                         <TableRow key={field.id}>
-                                            <input
-                                                type="hidden"
-                                                {...register(`bikes.${index}.bike`, { required: 'Valitse pyörä' })}
-                                            />
-
                                             <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>
+                                                <input
+                                                    type="hidden"
+                                                    {...register(`bikes.${index}.bike`, { required: 'Valitse pyörä' })}
+                                                />{' '}
                                                 {index === 0 ? 'Pyörät: ' : ''}
                                             </TableCell>
 
@@ -335,9 +334,11 @@ export default function ModifyBikeOrder({ createNewPacket }: CreateNewPacketInte
                     >
                         Tallenna
                     </Button>
-                    <Button color="error" onClick={() => setRenderDeleteBikePacket(true)}>
-                        Poista tämä paketti
-                    </Button>
+                    {!createNewPacket && (
+                        <IconButton color="error" onClick={() => setRenderDeleteBikePacket(true)}>
+                            <DeleteIcon />
+                        </IconButton>
+                    )}
                 </Box>
             </TableContainer>
             <DeleteBikePacketModal
