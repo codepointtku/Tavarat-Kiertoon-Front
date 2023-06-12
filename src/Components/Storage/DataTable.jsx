@@ -56,7 +56,7 @@ function OrderListTable() {
 }
 
 OrderListTable.propTypes = {
-    page: PropTypes.number.isRequired,
+    // page: PropTypes.number.isRequired,
     setUsedParams: PropTypes.func.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
 };
