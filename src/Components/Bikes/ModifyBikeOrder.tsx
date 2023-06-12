@@ -157,6 +157,9 @@ export default function ModifyBikeOrder({ createNewPacket }: CreateNewPacketInte
     // RENDER
     return (
         <>
+            <Typography variant="h3" align="center" color="primary.main" mb="2rem" width="100%">
+                {createNewPacket ? 'Luo uusi paketti' : `Muokkaa pakettia: ${packet.name}`}
+            </Typography>
             <TableContainer component={Paper} sx={{ padding: '2rem' }}>
                 <Box
                     width="100%"
@@ -165,9 +168,9 @@ export default function ModifyBikeOrder({ createNewPacket }: CreateNewPacketInte
                     paddingBottom="20px"
                     borderBottom="1px solid lightgray"
                 >
-                    <Typography variant="h4" component="h1" sx={{ fontFamily: 'Montserrat', color: 'primary.main' }}>
+                    {/* <Typography variant="h4" component="h1" sx={{ fontFamily: 'Montserrat', color: 'primary.main' }}>
                         Muokkaa pakettia: {packet.name}
-                    </Typography>
+                    </Typography> */}
                 </Box>
                 <Box component={Form} method="put" onSubmit={handleSubmit(onSubmit)}>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
