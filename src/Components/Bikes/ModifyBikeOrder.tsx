@@ -152,7 +152,7 @@ export default function ModifyBikeOrder() {
                 borderBottom="1px solid lightgray"
             >
                 <Typography variant="h4" component="h1" sx={{ fontFamily: 'Montserrat', color: 'primary.main' }}>
-                    Muokkaa {packet.name}a
+                    Muokkaa pakettia: {packet.name}
                 </Typography>
             </Box>
             <Box component={Form} method="put" onSubmit={handleSubmit(onSubmit)}>
