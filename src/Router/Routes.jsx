@@ -72,6 +72,7 @@ import GuideOrdering from '../Components/Default/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Default/Instructions/GuideShipping';
 import GuideBikes from '../Components/Default/Instructions/GuideBikes';
 
+import ModifyBikeOrder from '../Components/Bikes/ModifyBikeOrder';
 import BikesPage from '../Components/Bikes/BikesPage';
 import Bikes from '../Components/Bikes/Bikes';
 import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
@@ -82,6 +83,7 @@ import BikeModels from '../Components/Bikes/BikeModels';
 import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
 
 import {
+    bikesPacketLoader,
     addItemLoader,
     orderEditLoader,
     ordersListLoader,
@@ -103,6 +105,7 @@ import {
     bikeModelsLoader,
     bikeSingleModelLoader,
     shoppingProcessLoader,
+    modifyBikeOrderLoader,
     adminLoader,
     adminInboxLoader,
     bikeNewModelLoader,
@@ -126,6 +129,7 @@ import {
     createNewBikeAction,
     activationAction,
     adminLogOut,
+    modifyBikeOrderAction,
     deleteBikeAction,
     adminInboxAction,
     modifyBikeModelAction,
@@ -556,8 +560,28 @@ function Routes() {
                                 },
                                 {
                                     path: 'pyorapaketit',
+                                    loader: async () => bikesPacketLoader(auth, setAuth),
                                     element: <BikePackets />,
                                 },
+
+                                {
+                                    path: 'muokkaapaketti',
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <Navigate to="/pyorat/pyoravarasto/muokkaapaketti" />,
+                                        },
+                                        {
+                                            path: ':id',
+                                            element: <ModifyBikeOrder />,
+                                            loader: async ({ params }) => modifyBikeOrderLoader(auth, setAuth, params),
+                                            action: async ({ request, params }) =>
+                                                modifyBikeOrderAction(auth, setAuth, request, params),
+                                        },
+                                    ],
+                                },
+
                                 {
                                     path: 'muokkaa',
                                     element: <Outlet />,
