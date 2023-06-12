@@ -140,6 +140,7 @@ import {
     changeEmailAction,
     adminBulletinsAction,
     createNewPacketAction,
+    deletePacketAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
@@ -580,6 +581,13 @@ function Routes() {
                                             loader: async ({ params }) => modifyBikeOrderLoader(auth, setAuth, params),
                                             action: async ({ request, params }) =>
                                                 modifyBikeOrderAction(auth, setAuth, request, params),
+                                            children: [
+                                                {
+                                                    path: 'poista',
+                                                    action: async ({ params }) =>
+                                                        deletePacketAction(auth, setAuth, params),
+                                                },
+                                            ],
                                         },
                                     ],
                                 },

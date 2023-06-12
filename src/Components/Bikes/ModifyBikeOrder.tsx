@@ -23,6 +23,7 @@ import { useState } from 'react';
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteBikePacketModal from './DeleteBikePacketModal';
 
 // Interfaces
 interface LoaderDataInterface {
@@ -89,9 +90,17 @@ export default function ModifyBikeOrder({ createNewPacket }: CreateNewPacketInte
     // Local states
     const [, setSelectedModels] = useState<number[]>(models[0] ? [models[0].id] : []);
     const [selectedModel, setSelectedModel] = useState<number>(models[0] ? models[0].id : models[1]?.id || 0);
+    const [renderDeleteBikePacket, setRenderDeleteBikePacket] = useState(false);
 
     // hook form functions
-    const { handleSubmit, control, register, watch, setValue } = useForm<FormValues>({
+    const {
+        handleSubmit,
+        control,
+        register,
+        watch,
+        setValue,
+        formState: { errors },
+    } = useForm<FormValues>({
         defaultValues: {
             packetDescription: createNewPacket ? '' : (packet.description as string),
             packetName: createNewPacket ? '' : (packet.name as string),
@@ -108,9 +117,7 @@ export default function ModifyBikeOrder({ createNewPacket }: CreateNewPacketInte
     // submit
     const submit = useSubmit();
     const onSubmit = async (data: FieldValues) => {
-        // console.log(data);
         const formData = { ...data, bikes: JSON.stringify(data.bikes) };
-        console.log(formData);
         await submit(formData, {
             method: createNewPacket ? 'post' : 'put',
             action: createNewPacket
@@ -149,158 +156,195 @@ export default function ModifyBikeOrder({ createNewPacket }: CreateNewPacketInte
 
     // RENDER
     return (
-        <TableContainer component={Paper} sx={{ padding: '2rem' }}>
-            <Box
-                width="100%"
-                textAlign="center"
-                marginBottom="20px"
-                paddingBottom="20px"
-                borderBottom="1px solid lightgray"
-            >
-                <Typography variant="h4" component="h1" sx={{ fontFamily: 'Montserrat', color: 'primary.main' }}>
-                    Muokkaa pakettia: {packet.name}
-                </Typography>
-            </Box>
-            <Box component={Form} method="put" onSubmit={handleSubmit(onSubmit)}>
-                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            flex: 0.5,
-                            marginRight: '2em',
-                            minWidth: 500,
-                        }}
-                    >
-                        <Table>
-                            <TableBody>
-                                {/*
-                                 * Package name and description
-                                 */}
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>Nimi:</TableCell>
-                                    <TableCell colSpan={3}>
-                                        <TextField multiline {...register('packetName')} name="packetName" fullWidth />
-                                    </TableCell>
-                                    <TableCell colSpan={4}></TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>Kuvaus:</TableCell>
-                                    <TableCell colSpan={7}>
-                                        <TextField
-                                            rows={2}
-                                            {...register('packetDescription')}
-                                            value={watch('packetDescription')}
-                                            multiline
-                                            name="packetDescription"
-                                            fullWidth
-                                        />
-                                    </TableCell>
-                                </TableRow>
-                                {/*
-                                 * Bike Models and amounts
-                                 */}
-                                {fields.map((field, index) => (
-                                    <TableRow {...register(`bikes.${index}.bike`)} key={field.id}>
+        <>
+            <TableContainer component={Paper} sx={{ padding: '2rem' }}>
+                <Box
+                    width="100%"
+                    textAlign="center"
+                    marginBottom="20px"
+                    paddingBottom="20px"
+                    borderBottom="1px solid lightgray"
+                >
+                    <Typography variant="h4" component="h1" sx={{ fontFamily: 'Montserrat', color: 'primary.main' }}>
+                        Muokkaa pakettia: {packet.name}
+                    </Typography>
+                </Box>
+                <Box component={Form} method="put" onSubmit={handleSubmit(onSubmit)}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                flex: 0.5,
+                                marginRight: '2em',
+                                minWidth: 500,
+                            }}
+                        >
+                            <Table>
+                                <TableBody>
+                                    {/*
+                                     * Package name and description
+                                     */}
+                                    <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>
-                                            {index === 0 ? 'Pyörät: ' : ''}
+                                            Nimi:
                                         </TableCell>
-
-                                        <TableCell>
-                                            {/* Merkki:  */}
-                                            {models.find((model) => model.id === field.bike)?.brand.name}
+                                        <TableCell colSpan={3}>
+                                            <TextField
+                                                multiline
+                                                {...register('packetName', { required: 'Täytä tämä kenttä' })}
+                                                color={errors.packetName ? 'error' : 'primary'}
+                                                error={!!errors.packetName}
+                                                helperText={errors.packetName?.message?.toString() || ' '}
+                                                name="packetName"
+                                                fullWidth
+                                            />
                                         </TableCell>
-
-                                        <TableCell>
-                                            <Box>
-                                                <Stack justifyContent="center" direction="row">
-                                                    <IconButton color="primary" onClick={() => handleRemoveBike(index)}>
-                                                        <RemoveCircleOutlineRoundedIcon />
-                                                    </IconButton>
-                                                    <Typography variant="h6" sx={{ p: 0.5 }}>
-                                                        {watch(`bikes.${index}.amount`)}
-                                                    </Typography>
-                                                    <IconButton color="primary" onClick={() => handleAddBike(index)}>
-                                                        <AddCircleRoundedIcon />
-                                                    </IconButton>
-                                                </Stack>
-                                            </Box>
+                                        <TableCell colSpan={4}></TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>
+                                            Kuvaus:
                                         </TableCell>
-
-                                        <TableCell>
-                                            {/* Väri:  */}
-                                            {models.find((model) => model.id === field.bike)?.color.name}
-                                        </TableCell>
-
-                                        <TableCell>
-                                            {/* Malli:  */}
-                                            {models.find((model) => model.id === field.bike)?.type.name}
-                                        </TableCell>
-
-                                        <TableCell>
-                                            {/* Nimi:  */}
-                                            {models.find((model) => model.id === field.bike)?.name}
-                                        </TableCell>
-
-                                        <TableCell>
-                                            {/* Koko:  */}
-                                            {models.find((model) => model.id === field.bike)?.size.name}
-                                        </TableCell>
-
-                                        <TableCell>
-                                            {/* Lisää nappi */}
-                                            <IconButton color="primary" onClick={() => handleRemoveModel(index)}>
-                                                <DeleteIcon />
-                                            </IconButton>
+                                        <TableCell colSpan={7}>
+                                            <TextField
+                                                rows={2}
+                                                {...register('packetDescription', { required: 'Täytä tämä kenttä' })}
+                                                value={watch('packetDescription')}
+                                                // required
+                                                color={errors.packetDescription ? 'error' : 'primary'}
+                                                error={!!errors.packetDescription}
+                                                helperText={errors.packetDescription?.message?.toString() || ' '}
+                                                multiline
+                                                fullWidth
+                                            />
                                         </TableCell>
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
+                                    {/*
+                                     * Bike Models and amounts
+                                     */}
+                                    {fields.map((field, index) => (
+                                        <TableRow key={field.id}>
+                                            <input
+                                                type="hidden"
+                                                {...register(`bikes.${index}.bike`, { required: 'Valitse pyörä' })}
+                                            />
 
-                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '2em' }}>
-                            <FormControl sx={{ minWidth: '180px' }}>
-                                <InputLabel id="model-select-label">Valitse malli</InputLabel>
-                                <Select
-                                    labelId="model-select-label"
-                                    id="model-select"
-                                    value={selectedModel}
-                                    onChange={(e) => setSelectedModel(e.target.value as number)}
-                                    label="Valitse malli"
-                                >
-                                    {models.map((model) => {
-                                        const isModelAdded = fields.some((field) => field.bike === model.id);
-                                        return (
-                                            <MenuItem key={model.id} value={model.id} disabled={isModelAdded}>
-                                                {model.name}
-                                            </MenuItem>
-                                        );
-                                    })}
-                                </Select>
-                            </FormControl>
+                                            <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>
+                                                {index === 0 ? 'Pyörät: ' : ''}
+                                            </TableCell>
 
-                            <Button sx={{ marginLeft: '1em' }} variant="contained" onClick={handleAddModel}>
-                                Lisää pyörä
-                            </Button>
+                                            <TableCell>
+                                                {/* Merkki:  */}
+                                                {models.find((model) => model.id === field.bike)?.brand.name}
+                                            </TableCell>
+
+                                            <TableCell>
+                                                <Box>
+                                                    <Stack justifyContent="center" direction="row">
+                                                        <IconButton
+                                                            color="primary"
+                                                            onClick={() => handleRemoveBike(index)}
+                                                        >
+                                                            <RemoveCircleOutlineRoundedIcon />
+                                                        </IconButton>
+                                                        <Typography variant="h6" sx={{ p: 0.5 }}>
+                                                            {watch(`bikes.${index}.amount`)}
+                                                        </Typography>
+                                                        <IconButton
+                                                            color="primary"
+                                                            onClick={() => handleAddBike(index)}
+                                                        >
+                                                            <AddCircleRoundedIcon />
+                                                        </IconButton>
+                                                    </Stack>
+                                                </Box>
+                                            </TableCell>
+
+                                            <TableCell>
+                                                {/* Väri:  */}
+                                                {models.find((model) => model.id === field.bike)?.color.name}
+                                            </TableCell>
+
+                                            <TableCell>
+                                                {/* Malli:  */}
+                                                {models.find((model) => model.id === field.bike)?.type.name}
+                                            </TableCell>
+
+                                            <TableCell>
+                                                {/* Nimi:  */}
+                                                {models.find((model) => model.id === field.bike)?.name}
+                                            </TableCell>
+
+                                            <TableCell>
+                                                {/* Koko:  */}
+                                                {models.find((model) => model.id === field.bike)?.size.name}
+                                            </TableCell>
+
+                                            <TableCell>
+                                                {/* Lisää nappi */}
+                                                <IconButton color="primary" onClick={() => handleRemoveModel(index)}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+
+                            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '2em' }}>
+                                <FormControl sx={{ minWidth: '180px' }}>
+                                    <InputLabel id="model-select-label">Valitse malli</InputLabel>
+                                    <Select
+                                        required
+                                        labelId="model-select-label"
+                                        id="model-select"
+                                        value={selectedModel}
+                                        onChange={(e) => setSelectedModel(e.target.value as number)}
+                                        label="Valitse malli"
+                                    >
+                                        {models.map((model) => {
+                                            const isModelAdded = fields.some((field) => field.bike === model.id);
+                                            return (
+                                                <MenuItem key={model.id} value={model.id} disabled={isModelAdded}>
+                                                    {model.name}
+                                                </MenuItem>
+                                            );
+                                        })}
+                                    </Select>
+                                </FormControl>
+
+                                <Button sx={{ marginLeft: '1em' }} variant="contained" onClick={handleAddModel}>
+                                    Lisää pyörä
+                                </Button>
+                            </Box>
                         </Box>
                     </Box>
-                </Box>
 
-                {/* Submit button */}
-                <Button
-                    type="submit"
-                    variant="contained"
-                    sx={{
-                        marginTop: '2em',
-                        marginBottom: '2em',
-                        width: '120px',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                    }}
-                >
-                    Tallenna
-                </Button>
-            </Box>
-        </TableContainer>
+                    {/* Submit button */}
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        sx={{
+                            marginTop: '2em',
+                            marginBottom: '2em',
+                            width: '120px',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                        }}
+                    >
+                        Tallenna
+                    </Button>
+                    <Button color="error" onClick={() => setRenderDeleteBikePacket(true)}>
+                        Poista tämä paketti
+                    </Button>
+                </Box>
+            </TableContainer>
+            <DeleteBikePacketModal
+                renderModal={renderDeleteBikePacket}
+                setRenderModal={setRenderDeleteBikePacket}
+                packetId={packet.id}
+            />
+        </>
     );
 }

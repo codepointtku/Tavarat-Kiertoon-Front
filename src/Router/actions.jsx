@@ -571,6 +571,12 @@ const createNewPacketAction = async (auth, setAuth, request) => {
     await bikesApi.bikesPackagesCreate(submission);
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
+const deletePacketAction = async (auth, setAuth, params) => {
+    console.log('### deletePacketAction');
+    // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
+    await bikesApi.bikesPackagesDestroy(params.id);
+    return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+};
 
 const activationAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
@@ -836,4 +842,5 @@ export {
     emailChangeSuccessfulAction,
     changeEmailAction,
     createNewPacketAction,
+    deletePacketAction,
 };
