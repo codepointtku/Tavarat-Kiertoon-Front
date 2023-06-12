@@ -8,18 +8,15 @@ import {
     TableHead,
     TableCell,
     TableRow,
-    TableFooter,
     IconButton,
     Box,
     Typography,
     Collapse,
-    TablePagination,
     Button,
 } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-import TablePaginationActions from '../TablePaginationActions';
 import StyledTableRow from '../StyledTableRow';
 import StyledTableCell from '../StyledTableCell';
 
@@ -33,7 +30,7 @@ function NoOrders() {
     );
 }
 
-function OrderTable({ page, rowsPerPage, setUsedParams }) {
+function OrderTable() {
     const [isOpen, setIsOpen] = useState({});
     const navigate = useNavigate();
 
@@ -42,7 +39,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
     const sourceStates = {};
     let orderList = [];
 
-    order?.productList.forEach((entry) => {
+    order?.product_items.forEach((entry) => {
         try {
             const newEntry = entry;
             sourceStates[entry.id] = false;
@@ -73,25 +70,6 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
             });
         }
     });
-
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - orderList.length) : 0;
-
-    const handleChangePage = (event, newPage) => {
-        setUsedParams('page', newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setUsedParams('rows', parseInt(event.target.value, 10));
-        setUsedParams('page', 0);
-    };
-
-    useEffect(() => {
-        if (page > Math.floor(orderList.length / rowsPerPage)) {
-            setUsedParams('page', Math.floor(orderList.length / rowsPerPage));
-        } else if (page < 0) {
-            setUsedParams('page', 0);
-        }
-    }, [page]);
 
     useEffect(() => {
         setIsOpen({ sourceStates });
@@ -248,10 +226,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {(rowsPerPage > 0
-                                    ? orderList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    : orderList
-                                ).map((value) => (
+                                {orderList.map((value) => (
                                     <Fragment key={value.id}>
                                         <StyledTableRow>
                                             <TableCell>
@@ -338,32 +313,7 @@ function OrderTable({ page, rowsPerPage, setUsedParams }) {
                                         </TableRow>
                                     </Fragment>
                                 ))}
-                                {emptyRows > 0 && (
-                                    <StyledTableRow style={{ height: 53 * emptyRows }}>
-                                        <StyledTableCell colSpan={7} />
-                                    </StyledTableRow>
-                                )}
                             </TableBody>
-                            <TableFooter>
-                                <TableRow>
-                                    <TablePagination
-                                        rowsPerPageOptions={[5, 10, 25, 100]}
-                                        colSpan={7}
-                                        count={orderList.length}
-                                        rowsPerPage={rowsPerPage}
-                                        page={page}
-                                        SelectProps={{
-                                            inputProps: {
-                                                'aria-label': 'rows per page',
-                                            },
-                                            native: true,
-                                        }}
-                                        onPageChange={handleChangePage}
-                                        onRowsPerPageChange={handleChangeRowsPerPage}
-                                        ActionsComponent={TablePaginationActions}
-                                    />
-                                </TableRow>
-                            </TableFooter>
                         </Table>
                     </Box>
                     <Button sx={{ margin: '2rem' }} onClick={() => navigate(`/varasto/tilaus/${order.id}/muokkaa`)}>

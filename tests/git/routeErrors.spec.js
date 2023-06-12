@@ -128,7 +128,7 @@ test.describe('varasto', () => {
 
 test.describe('tilaus', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/varasto/tilaus/4127?page=0&rows=5');
+        await page.goto('/varasto/tilaus/4127');
         await expect(page.getByText('Etsimääsi sijaintia /tilaus/4127')).not.toBeVisible();
     });
 });

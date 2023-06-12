@@ -363,12 +363,13 @@ function Routes() {
                         </ThemeProvider>
                     ),
                     children: [
+                        // {
+                        //     index: true,
+                        //     element: <Navigate to="0/delivery?page=0&rows=5" />,
+                        // },
                         {
                             index: true,
-                            element: <Navigate to="0/delivery?page=0&rows=5" />,
-                        },
-                        {
-                            path: ':num/:view',
+                            // path: ':num/:view',
                             element: <OrdersList />,
                             loader: async ({ params }) => ordersListLoader(auth, setAuth, params),
                         },
@@ -376,10 +377,10 @@ function Routes() {
                             path: 'tilaus',
                             element: <Outlet />,
                             children: [
-                                {
-                                    index: true,
-                                    element: <Navigate to="/varasto" />,
-                                },
+                                // {
+                                //     index: true,
+                                //     element: <Navigate to="/varasto" />,
+                                // },
                                 {
                                     path: ':id',
                                     element: <Outlet />,
@@ -387,7 +388,6 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <OrderView />,
-
                                             loader: async ({ params }) => orderViewLoader(auth, setAuth, params),
                                         },
                                         {
