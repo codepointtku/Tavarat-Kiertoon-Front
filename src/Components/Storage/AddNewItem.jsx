@@ -35,19 +35,23 @@ function AddNewItem() {
         // after first error, shows errors on every change
         mode: 'onTouched',
         defaultValues: {
-            available: true,
             // defaultValues for faster testing
-            // amount: 1,
+            product_item: {
+                // todo: spreadaa product itemin tiedot ja rakenna se uudelleen actionissa
+                available: true,
+                shelf_id: '',
+                barcode: '1234',
+                storage: 1,
+            },
+            amount: 1,
             // price: 99.0,
-            // shelf_id: '',
             // measurements: 'wrdrqwf',
             // weight: 0.0,
-            // storages: 1,
-            // name: 'testi',
-            // barcode: '1234',
-            // free_description: 'testi',
-            // category: 1,
-            // colors: 1,
+            name: 'testi',
+            free_description: 'testikuvaus',
+            category: 1,
+            // color can a id as a string or new color as a string
+            color: '1',
             // // pictures: [1],
         },
     });
@@ -55,20 +59,29 @@ function AddNewItem() {
     // TODO:  Add yup / zod / x for validation?
 
     const description = watch('free_description');
-    const barcode = watch('barcode');
+    const barcode = watch('product_item.barcode');
 
     // QR code scanner
     const onNewScanResult = (decodedText, decodedResult) => {
         setQrScanOpen(false);
-        setValue('barcode', decodedText);
+        setValue('product_item.barcode', decodedText);
     };
 
     const onSubmit = async (data) => {
         const formData = new FormData();
 
         Object.keys(data).forEach((key) => {
-            if (key !== 'pictures') formData.append(key, data[key]);
+            if (key === 'product_item') {
+                Object.keys(data[key]).forEach((key2) => {
+                    formData.append(key2, data[key][key2]);
+                });
+            } else if (key !== 'pictures') formData.append(key, data[key]);
         });
+        // if (key === 'product_item') {
+        //     console.log('product_item:', data[key]);
+        // }
+        //     if (key !== 'pictures') formData.append(key, data[key]);
+        // });
 
         Object.values(data.pictures).forEach((value) => formData.append('pictures[]', value));
 
@@ -179,7 +192,7 @@ function AddNewItem() {
                         type="text"
                         label="Viivakoodi"
                         placeholder="viivakoodi"
-                        {...register('barcode', {
+                        {...register('product_item.barcode', {
                             required: {
                                 value: true,
                                 message: 'Viivakoodi on pakollinen',
@@ -194,8 +207,8 @@ function AddNewItem() {
                         })}
                         inputProps={{ required: false }}
                         required
-                        error={!!errors.barcode}
-                        helperText={errors.barcode?.message || ' '}
+                        error={!!errors.product_item?.barcode}
+                        helperText={errors.product_item?.barcode?.message || ' '}
                     >
                         Viivakoodi
                     </TextField>
@@ -209,14 +222,14 @@ function AddNewItem() {
                         id="storage-select"
                         select
                         label="Varastosijainti"
-                        {...register('storages', {
+                        {...register('product_item.storage', {
                             required: { value: true, message: 'Varasto on valittava' },
                         })}
                         //  TODO default varastosijainti sama kuin varastokäyttäjätilin sijainti?
                         inputProps={{ required: false }}
                         required
-                        error={!!errors.storages}
-                        helperText={errors.storages?.message || ' '}
+                        error={!!errors.product_item?.storage}
+                        helperText={errors.product_item?.storage?.message || ' '}
                     >
                         {storages?.map((location) => (
                             <MenuItem key={location.id} value={location.id}>

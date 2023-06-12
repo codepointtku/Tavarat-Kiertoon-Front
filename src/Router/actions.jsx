@@ -6,6 +6,7 @@ import {
     contactFormsApi,
     // contactsApi,
     ordersApi,
+    productsApi,
     shoppingCartApi,
     storagesApi,
     usersApi,
@@ -249,8 +250,37 @@ const addProductAction = async (auth, setAuth, request) => {
     console.log('formData actionissa :', formData);
     console.log('formData.get name actionissa :', formData.get('name'));
     console.log('formData.get pictures actionissa :', formData.get('pictures'));
+    console.log('formData.get product_item actionissa :', formData.get('product_item'));
 
-    const response = await apiCall(auth, setAuth, '/storage/products/', 'post', formData, {
+    // formData.append('product_item', {
+    //     barcode: formData.get('barcode'),
+    //     available: formData.get('available'),
+    //     storage: formData.get('storage'),
+    //     shelf_id: formData.get('shelf_id'),
+    // });
+
+    const formDataWithProductItem = {
+        product_item: {
+            barcode: formData.get('barcode'),
+            available: formData.get('available'),
+            storage: formData.get('storage'),
+            shelf_id: formData.get('shelf_id'),
+        },
+        amount: formData.get('amount'),
+        name: formData.get('name'),
+        free_description: formData.get('free_description'),
+        price: formData.get('price'),
+        category: formData.get('category'),
+        // kuvan lisäys ei toimi bäkissä
+        pictures: JSON.parse(formData.get('pictures')),
+        color: formData.get('color'),
+    };
+    console.log(formDataWithProductItem);
+
+    // const response = await apiCall(auth, setAuth, '/storage/products/', 'post', formData, {
+    //     headers: { 'Content-Type': 'multipart/form-data' },
+    // });
+    const response = await productsApi.productsCreate(formDataWithProductItem, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
     console.log('response actionissa :', response);
