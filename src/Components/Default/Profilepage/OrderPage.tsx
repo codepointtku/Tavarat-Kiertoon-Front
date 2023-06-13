@@ -20,14 +20,12 @@ interface ProductItem {
 function OrderPage() {
     const { state } = useLocation();
 
-    console.log(state.orderInfo.product_items);
-
     return (
         <Container disableGutters>
             <Grid container id="main-order-separating-grid" direction="row">
                 <Grid item xs={6} component={Paper} square variant="outlined" sx={{ p: 5 }}>
                     <TypographyHeading text="Tilauksesi tila" />
-                    <OrderStepper />
+                    <OrderStepper orderInfo={state.orderInfo} />
                 </Grid>
                 <Grid item xs={6} component={Paper} square variant="outlined" sx={{ p: 5 }}>
                     <TypographyHeading text="Tilaamasi tuotteet" />

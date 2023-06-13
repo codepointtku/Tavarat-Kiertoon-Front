@@ -14,15 +14,14 @@ interface FormData {
     userAddress: string;
 }
 
-interface UserInfo extends Awaited<ReturnType<typeof userInfoLoader>> {
-    phone_number: string;
-    first_name: string;
-    last_name: string;
-}
+// interface Submit extends SubmitHandler<FormData> {
+//     first_name: string;
+//     last_name: string;
+//     phone_number: string;
+// }
 
 function ProfileInfo() {
-    // console.log('ollaan ProfileInfolla', userInfo);
-    const { userInfo } = useRouteLoaderData('profile') as UserInfo;
+    const { userInfo } = useRouteLoaderData('profile') as Awaited<ReturnType<typeof userInfoLoader>>;
     const submit = useSubmit();
     const address = userInfo.address_list.map((item) => item.address);
     const [selectedAddress, setSelectedAddress] = useState(address[0]);
@@ -51,7 +50,7 @@ function ProfileInfo() {
     // Submit ei toimi | Typescript error
 
     return (
-        <Grid container component={Form} onSubmit={handleSubmit(() => onSubmit)} justifyContent="center" sx={{ p: 2 }}>
+        <Grid container component={Form} onSubmit={handleSubmit(onSubmit as any)} justifyContent="center" sx={{ p: 2 }}>
             <Typography variant="h5" color="primary.main" sx={{ mb: 2 }}>
                 Käyttäjäprofiilin tiedot
             </Typography>

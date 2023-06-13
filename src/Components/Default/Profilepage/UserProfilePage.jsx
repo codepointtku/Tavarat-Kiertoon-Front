@@ -13,7 +13,7 @@ function UserProfilePage() {
     }
 
     return (
-        <Box sx={{ border: '0.1rem solid #bfe6f6', borderRadius: '0.5rem 0.5rem 0 0' }}>
+        <Box sx={{ border: '0.1rem solid #bfe6f6', borderRadius: '0.5rem', minHeight: '36rem', mb: 5 }}>
             <Grid
                 container
                 flexDirection="row"

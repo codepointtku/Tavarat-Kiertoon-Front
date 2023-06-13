@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Stepper, Step, StepLabel } from '@mui/material';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
@@ -15,7 +16,26 @@ const OrderStepConnector = styled(StepConnector)(({ theme }) => ({
     },
 }));
 
-function OrderStepper() {
+interface OrderInfo {
+    orderInfo: { status: 'Waiting' | 'Processing' | 'Delivery' | 'Finished' };
+}
+
+function OrderStepper({ orderInfo }: OrderInfo) {
+    function activeStepSetter() {
+        switch (orderInfo.status) {
+            case 'Waiting':
+                return 0;
+            case 'Processing':
+                return 1;
+            case 'Delivery':
+                return 2;
+            case 'Finished':
+                return 3;
+            default:
+                return -1;
+        }
+    }
+    const [activeStep] = useState(activeStepSetter);
     const steps = [
         { label: 'Odottaa vastaanottoa', icon: <AccessTimeIcon /> },
         { label: 'Käsittelyssä', icon: <InventoryIcon /> },
@@ -32,7 +52,6 @@ function OrderStepper() {
                     backgroundColor: 'primary.main',
                     width: 35,
                     height: 35,
-                    // p: 1,
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -48,7 +67,10 @@ function OrderStepper() {
         <Step key={step.label}>
             <StepLabel
                 StepIconComponent={() => setCustomIconComponent(index)}
-                sx={{ '& .Mui-completed': { color: 'success.light' }, '& .Mui-active': { color: 'primary.dark' } }}
+                sx={{
+                    '& .MuiStepLabel-label.Mui-completed': { color: 'success.light' },
+                    '& .MuiStepLabel-label.Mui-active': { color: activeStep === 3 ? 'success.light' : 'primary.dark' },
+                }}
             >
                 {step.label}
             </StepLabel>
@@ -62,7 +84,7 @@ function OrderStepper() {
                     '& .Mui-disabled': { opacity: 0.5 },
                 }}
                 orientation="vertical"
-                activeStep={1}
+                activeStep={activeStep}
                 connector={<OrderStepConnector />}
             >
                 {stepElements}
