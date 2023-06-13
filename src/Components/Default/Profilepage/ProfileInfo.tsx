@@ -54,8 +54,8 @@ function ProfileInfo() {
             <Typography variant="h5" color="primary.main" sx={{ mb: 2 }}>
                 Käyttäjäprofiilin tiedot
             </Typography>
-            <Grid container id="user-info-container" flexDirection="row" justifyContent="space-evenly" sx={{ mb: 5 }}>
-                <Grid container flexDirection="column" sx={{ width: 'auto' }} gap={2}>
+            <Grid container id="user-info-container" direction="row" justifyContent="space-evenly" sx={{ mb: 5 }}>
+                <Grid container direction="column" alignContent="center" sx={{ width: 550 }} gap={2}>
                     <Grid item>
                         <TextField {...register('username')} label="Käyttäjänimi" placeholder="Käyttäjänimi" />
                     </Grid>
@@ -66,18 +66,18 @@ function ProfileInfo() {
                         <TextField {...register('last_name')} label="Sukunimi" placeholder="Sukunimi" />
                     </Grid>
                 </Grid>
-                <Grid container flexDirection="column" sx={{ width: 'auto' }} gap={2}>
+                <Grid container direction="column" alignItems="center" sx={{ width: 550 }} gap={2}>
                     <Grid item>
                         <TextField {...register('phone_number')} label="Puhelin numero" placeholder="Puhelin numero" />
                     </Grid>
-                    <Grid item>
+                    <Grid item sx={{ ml: 13.5 }}>
                         <TextField
                             {...register('userAddress')}
                             value={selectedAddress}
                             label="Osoitteet"
                             placeholder="Osoitteet"
                             onChange={(event) => setSelectedAddress(event.target.value)}
-                            sx={{ width: '100%' }}
+                            sx={{ minWidth: 210 }}
                             select
                         >
                             {userInfo.address_list?.map((a) => (
@@ -86,13 +86,16 @@ function ProfileInfo() {
                                 </MenuItem>
                             ))}
                         </TextField>
+                        <Button component={Link} to="/sahkopostinvaihto" sx={{ ml: 2, p: 2 }}>
+                            Muokkaa
+                        </Button>
                     </Grid>
-                    <Grid item>
+                    <Grid item sx={{ ml: 13.5 }}>
                         <TextField {...register('email')} label="Sähköposti" placeholder="Sähköposti" disabled />
+                        <Button component={Link} to="/sahkopostinvaihto" sx={{ ml: 2, p: 2 }}>
+                            Muokkaa
+                        </Button>
                     </Grid>
-                    <Button component={Link} to="/sahkopostinvaihto" sx={{ ml: 2, p: 2, width: 'inherit' }}>
-                        Vaihda sähköpostiosoite
-                    </Button>
                 </Grid>
             </Grid>
             {isDirty && (
