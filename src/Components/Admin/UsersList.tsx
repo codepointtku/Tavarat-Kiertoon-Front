@@ -1,81 +1,88 @@
 import * as React from 'react';
 
 import { useLoaderData } from 'react-router';
-// import { Link } from 'react-router-dom';
-
-import type { usersListLoader } from '../../Router/loaders';
+import { Link } from 'react-router-dom';
 
 import {
-    Box,
+    // Box,
     Stack,
-    // IconButton,
+    Button,
+    Link as MuiLink,
 } from '@mui/material';
-
-// import EditIcon from '@mui/icons-material/Edit';
 
 import {
     DataGrid,
     GridRowsProp,
     GridColDef,
-    // GridToolbar,
+    GridEventListener,
     GridToolbarContainer,
     GridToolbarColumnsButton,
     GridToolbarDensitySelector,
     GridToolbarExport,
     GridToolbarQuickFilter,
     GridToolbarFilterButton,
+    GridRenderCellParams,
 } from '@mui/x-data-grid';
 
 import TypographyTitle from '../TypographyTitle';
 
+import type { usersListLoader } from '../../Router/loaders';
+
+// interface Column {
+//     id: number;
+//     col1: string;
+//     col2: string;
+//     col3: string;
+//     col4: number;
+//     col5: xxx
+// }
+
+// interface User {
+//     id: number;
+//     email: string;
+//     username: string;
+//     phone_number: string;
+// }
+
 function UsersList() {
     const { count, next, previous, results } = useLoaderData() as Awaited<ReturnType<typeof usersListLoader>>;
 
-    // console.log('pagination next:', next);
-    // console.log('pagination previous:', previous);
-    // console.log('users list (results):', results);
-
     const pageSize = 10; // page_size @ BE: 10
     const pageCount = Math.ceil(count! / pageSize);
-
-    const allUsers = results?.map((user: any) => {
-        return {
-            id: user.id,
-            col1: user.email,
-            col2: user.username,
-            col3: user.phone_number,
-            col4: user.id,
-            col5: 'nappula',
-        };
-    });
-
-    const rows: GridRowsProp = allUsers!;
-    console.log('rows:', rows);
-
-    const columns: GridColDef[] = [
-        { field: 'col1', headerName: 'Sähköposti', flex: 2 },
-        { field: 'col2', headerName: 'Nimi', flex: 1 },
-        { field: 'col3', headerName: 'Puhelinnumero', flex: 1 },
-        { field: 'col4', headerName: 'Tunniste', flex: 1 },
-        { field: 'col5', headerName: 'Lisätiedot', flex: 1 },
-    ];
 
     const [rowCountState, setRowCountState] = React.useState(pageCount);
     React.useEffect(() => {
         setRowCountState((prevRowCountState) => (pageCount !== undefined ? pageCount : prevRowCountState));
     }, [pageCount, setRowCountState]);
 
+    const columns: GridColDef[] = [
+        { field: 'email', headerName: 'Sähköposti', flex: 2 },
+        { field: 'username', headerName: 'Nimi', flex: 1 },
+        { field: 'phone_number', headerName: 'Puhelinnumero', flex: 1 },
+        {
+            field: 'id',
+            headerName: 'Lisätiedot',
+            renderCell: (params) => (
+                <Button variant="outlined">
+                    <MuiLink component={Link} to={`/admin/kayttajat/${params.value}`}>
+                        Avaa
+                    </MuiLink>
+                </Button>
+            ),
+        },
+    ];
+
+    if (!results) return null;
+
     const GridX = () => {
         return (
-            <div style={{ height: 500, width: '100%' }}>
+            <div style={{ height: 500 }}>
                 <DataGrid
                     paginationMode={'server'}
                     // rowCount={pageCount}
                     rowCount={rowCountState}
-                    rows={rows}
-                    getRowId={(rows) => rows.id}
+                    rows={results}
                     columns={columns}
-                    // slots={{ toolbar: GridToolbar }}
                     slots={{
                         toolbar: () => {
                             return (
@@ -111,46 +118,6 @@ function UsersList() {
             </div>
         </Stack>
         // </Box>
-
-        // <TableContainer id="users-list" component={Paper} sx={{ margin: '1rem 0 1rem 0' }}>
-        //     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        //         <TableHead>
-        //             <TableRow>
-        //                 <TableCell>Sähköposti</TableCell>
-        //                 <TableCell align="right">Nimi</TableCell>
-        //                 <TableCell align="right">Puhelinnumero</TableCell>
-        //                 <TableCell align="right">Tunniste</TableCell>
-        //                 <TableCell align="right">Lisätiedot</TableCell>
-        //             </TableRow>
-        //         </TableHead>
-        //         <TableBody>
-        //             {results?.map((user: any) => (
-        //                 <TableRow key={user.email} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-        //                     <TableCell component="th" scope="row">
-        //                         {user.email}
-        //                     </TableCell>
-        //                     <TableCell align="right">{user.first_name}</TableCell>
-        //                     <TableCell align="right">{user.phone_number}</TableCell>
-        //                     <TableCell align="right">{user.id}</TableCell>
-        //                     <TableCell align="right">
-        //                         <IconButton component={Link} to={`/admin/kayttajat/${user.id}`}>
-        //                             <EditIcon />
-        //                         </IconButton>
-        //                     </TableCell>
-        //                 </TableRow>
-        //             ))}
-        //         </TableBody>
-        //     </Table>
-        // </TableContainer>
-        // <Pagination
-        //     size="large"
-        //     color="primary"
-        //     count={pageCount}
-        //     page={currentPage}
-        //     onChange={handleChange}
-        //     showFirstButton
-        //     showLastButton
-        // />
     );
 }
 
