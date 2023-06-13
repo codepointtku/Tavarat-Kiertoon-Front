@@ -18,6 +18,9 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import StyledTableRow from '../StyledTableRow';
 import StyledTableCell from '../StyledTableCell';
+import { type orderViewLoader } from '../../Router/loaders';
+
+export type OrderViewLoaderType = Awaited<ReturnType<typeof orderViewLoader>>;
 
 function NoOrders() {
     return (
@@ -30,49 +33,65 @@ function NoOrders() {
 }
 
 function OrderTable() {
+    // data from backend
+    const order = useLoaderData() as OrderViewLoaderType;
+    // console.log('### OrderTable: order', order);
+
+    const productItems = [...order.product_items];
+    // console.log('### OrderTable: productItems', productItems);
+
+    const productRenderItems: OrderViewLoaderType['product_items'][] = [];
+    productItems.forEach((productItem) => {
+        const productIndex = productRenderItems.findIndex((index) => index[0]?.id === productItem.id);
+        if (productIndex < 0) {
+            productRenderItems.push([productItem]);
+        } else {
+            productRenderItems[productIndex].push(productItem);
+        }
+    });
+    console.log('### OrderTable: productRenderItems', productRenderItems);
+
     const [isOpen, setIsOpen] = useState({});
     const navigate = useNavigate();
 
-    const order = useLoaderData();
+    // const sourceStates = {};
+    // let orderList = [];
 
-    const sourceStates = {};
-    let orderList = [];
+    // order?.product_items.forEach((entry) => {
+    //     try {
+    //         const newEntry = entry;
+    //         sourceStates[entry.id] = false;
+    //         newEntry.count = 1;
+    //         newEntry.id = entry.id;
+    //         newEntry.items = [newEntry];
+    //         orderList.forEach((each) => {
+    //             if (each.group_id === newEntry.group_id) {
+    //                 newEntry.count += each.count;
+    //                 newEntry.items = newEntry.items.concat(each.items);
+    //                 const index = orderList.findIndex((key) => key.id === each.id);
+    //                 orderList = [...orderList.slice(0, index), ...orderList.slice(index + 1)];
+    //             }
+    //         });
+    //         orderList.push(newEntry);
+    //     } catch {
+    //         orderList.push({
+    //             name: 'Tuotetta ei olemassa',
+    //             id: entry.id,
+    //             barcode: '-',
+    //             count: 0,
+    //             category_name: '-',
+    //             storage_name: '-',
+    //             items: [],
+    //             measurements: '-',
+    //             weight: '-',
+    //             shelf_id: '-',
+    //         });
+    //     }
+    // });
 
-    order?.product_items.forEach((entry) => {
-        try {
-            const newEntry = entry;
-            sourceStates[entry.id] = false;
-            newEntry.count = 1;
-            newEntry.id = entry.id;
-            newEntry.items = [newEntry];
-            orderList.forEach((each) => {
-                if (each.group_id === newEntry.group_id) {
-                    newEntry.count += each.count;
-                    newEntry.items = newEntry.items.concat(each.items);
-                    const index = orderList.findIndex((key) => key.id === each.id);
-                    orderList = [...orderList.slice(0, index), ...orderList.slice(index + 1)];
-                }
-            });
-            orderList.push(newEntry);
-        } catch {
-            orderList.push({
-                name: 'Tuotetta ei olemassa',
-                id: entry.id,
-                barcode: '-',
-                count: 0,
-                category_name: '-',
-                storage_name: '-',
-                items: [],
-                measurements: '-',
-                weight: '-',
-                shelf_id: '-',
-            });
-        }
-    });
-
-    useEffect(() => {
-        setIsOpen({ sourceStates });
-    }, []);
+    // useEffect(() => {
+    //     setIsOpen({ sourceStates });
+    // }, []);
 
     const dateParse = (value) => {
         const date = new Date(value);
@@ -224,7 +243,7 @@ function OrderTable() {
                                     <StyledTableCell align="right">Varasto</StyledTableCell>
                                 </TableRow>
                             </TableHead>
-                            <TableBody>
+                            {/* <TableBody>
                                 {orderList.map((value) => (
                                     <Fragment key={value.id}>
                                         <StyledTableRow>
@@ -312,7 +331,7 @@ function OrderTable() {
                                         </TableRow>
                                     </Fragment>
                                 ))}
-                            </TableBody>
+                            </TableBody> */}
                         </Table>
                     </Box>
                     <Button sx={{ margin: '2rem' }} onClick={() => navigate(`/varasto/tilaus/${order.id}/muokkaa`)}>
