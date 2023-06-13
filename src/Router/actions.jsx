@@ -30,15 +30,21 @@ const adminLogOut = async (auth, setAuth, request) => {
 /**
  * logins or logouts user, adds a product to shopping cart and deletes product from shopping cart
  */
-const frontPageActions = async (auth, setAuth, request) => {
+const frontPageActions = async ({ request }) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : 0;
     if (request.method === 'POST') {
-        if (auth.username) {
-            // const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
-            //     formData,
-            // });
+        if (formData.get('password')) {
+            const response = await usersApi.usersLoginCreate({
+                username: formData.get('email'),
+                password: formData.get('password'),
+            });
+            if (response.status === 200) {
+                return { type: 'login', status: true };
+            }
+            return { type: 'login', status: false };
+        } else {
             const response = await usersApi.usersLogoutCreate();
 
             if (response.status === 200) {
@@ -50,22 +56,8 @@ const frontPageActions = async (auth, setAuth, request) => {
         //     username: formData.get('email'),
         //     password: formData.get('password'),
         // });
-        const response = await usersApi.usersLoginCreate({
-            username: formData.get('email'),
-            password: formData.get('password'),
-        });
-
-        if (response.status === 200) {
-            return { type: 'login', status: true };
-        }
-        return { type: 'login', status: false };
     }
     if (request.method === 'PUT') {
-        if (auth.user_group === false) {
-            // eslint-disable-next-line no-alert
-            alert('log in as with user_group rights first');
-            return null;
-        }
         if (!id) {
             // clear cart if no id is being sent or clear cart and return "type: orderCreated" when a new order is created.
             // const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
@@ -385,7 +377,7 @@ const itemUpdateAction = async (auth, setAuth, request) => {
  * adds or removes items from shopping cart while in ordering process phase 1
  */
 
-const cartViewAction = async (auth, setAuth, request) => {
+const cartViewAction = async ({ request }) => {
     const formData = await request.formData();
     const amount = request.method === 'PUT' ? 1 : -1;
     const id = Number(formData.get('id'));
@@ -427,7 +419,7 @@ const cartViewAction = async (auth, setAuth, request) => {
  * Adds an item in order
  */
 
-const confirmationAction = async (auth, setAuth, request) => {
+const confirmationAction = async ({ request }) => {
     const formData = await request.formData();
     // const response = await apiCall(auth, setAuth, '/orders/', 'post', {
     //     contact: formData.get('email'),
