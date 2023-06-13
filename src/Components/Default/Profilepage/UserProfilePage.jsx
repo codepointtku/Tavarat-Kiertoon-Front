@@ -6,7 +6,21 @@ import { Grid, Tabs, Tab, Typography, Box } from '@mui/material';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 function UserProfilePage() {
-    const [value, setValue] = useState('userInfo');
+    const url = window.location.href;
+    const [value, setValue] = useState(initializeValue);
+
+    function initializeValue() {
+        switch (true) {
+            case url.endsWith('profiili/'):
+                return 'userInfo';
+            case url.endsWith('aktiivisettilaukset'):
+                return 'activeOrders';
+            case url.endsWith('tilaushistoria'):
+                return 'orderHistory';
+            default:
+                return 'userInfo';
+        }
+    }
 
     function handleSectionChange(event, newSection) {
         setValue(newSection);
