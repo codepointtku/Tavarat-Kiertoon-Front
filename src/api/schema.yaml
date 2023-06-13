@@ -3001,17 +3001,2057 @@ paths:
                 '200':
                     description: No response body
 components:
-    schemas:
-        ActionEnum:
-            enum:
-                - Created
-                - Added to shopping cart
-                - Removed from shopping cart
-                - Timed out from shopping cart
-                - Ordered
-                - Came back to circulation
-                - Modified at storage
-                - Gifted away
+  schemas:
+    ActionEnum:
+      enum:
+      - Created
+      - Added to shopping cart
+      - Removed from shopping cart
+      - Timed out from shopping cart
+      - Ordered
+      - Came back to circulation
+      - Modified at storage
+      - Gifted away
+      type: string
+      description: |-
+        * `Created` - Create
+        * `Added to shopping cart` - Cart Add
+        * `Removed from shopping cart` - Cart Remove
+        * `Timed out from shopping cart` - Cart Timeout
+        * `Ordered` - Order
+        * `Came back to circulation` - Circulation
+        * `Modified at storage` - Modify
+        * `Gifted away` - Gift
+    BikeAmount:
+      type: object
+      properties:
+        id:
+          type: integer
+        amount:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        bike:
+          type: integer
+      required:
+      - amount
+      - bike
+    BikeAmountList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        amount:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        bike:
+          type: integer
+        package:
+          type: integer
+      required:
+      - amount
+      - bike
+      - id
+      - package
+    BikeAmountSchemaCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        amount:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        bike:
+          type: integer
+      required:
+      - amount
+      - bike
+      - id
+    BikeAmountSchemaResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        amount:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        bike:
+          type: integer
+      required:
+      - amount
+      - bike
+      - id
+    BikeBrand:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+      required:
+      - id
+      - name
+    BikeModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/BikeType'
+          readOnly: true
+        brand:
+          allOf:
+          - $ref: '#/components/schemas/BikeBrand'
+          readOnly: true
+        size:
+          allOf:
+          - $ref: '#/components/schemas/BikeSize'
+          readOnly: true
+        color:
+          allOf:
+          - $ref: '#/components/schemas/Color'
+          readOnly: true
+        picture:
+          allOf:
+          - $ref: '#/components/schemas/Picture'
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 255
+      required:
+      - brand
+      - color
+      - description
+      - id
+      - name
+      - picture
+      - size
+      - type
+    BikeModelCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 255
+        type:
+          type: integer
+          nullable: true
+        brand:
+          type: integer
+          nullable: true
+        size:
+          type: integer
+          nullable: true
+        color:
+          type: integer
+          nullable: true
+        picture:
+          type: integer
+          nullable: true
+      required:
+      - description
+      - id
+      - name
+    BikeModelSchemaResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 255
+        type:
+          type: integer
+          nullable: true
+        brand:
+          type: integer
+          nullable: true
+        size:
+          type: integer
+          nullable: true
+        color:
+          type: integer
+          nullable: true
+        picture:
+          type: integer
+          nullable: true
+      required:
+      - brand
+      - color
+      - description
+      - id
+      - name
+      - size
+      - type
+    BikePackage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 255
+        bikes:
+          type: array
+          items:
+            $ref: '#/components/schemas/BikeAmount'
+      required:
+      - bikes
+      - description
+      - id
+      - name
+    BikePackageCreateResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 255
+        bikes:
+          type: array
+          items:
+            $ref: '#/components/schemas/BikeAmountSchemaCreate'
+      required:
+      - bikes
+      - description
+      - name
+    BikePackageSchemaResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 255
+        bikes:
+          type: array
+          items:
+            $ref: '#/components/schemas/BikeAmountSchemaResponse'
+      required:
+      - bikes
+      - description
+      - id
+      - name
+    BikeRentalSchemaPost:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        bike_stock:
+          type: object
+          additionalProperties:
+            type: integer
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        delivery_address:
+          type: string
+          maxLength: 255
+        pickup:
+          type: boolean
+        contact_name:
+          type: string
+          maxLength: 255
+        contact_phone_number:
+          type: string
+          maxLength: 255
+        extra_info:
+          type: string
+          maxLength: 255
+      required:
+      - bike_stock
+      - contact_name
+      - contact_phone_number
+      - delivery_address
+      - end_date
+      - id
+      - start_date
+    BikeRentalSchemaResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        state:
+          $ref: '#/components/schemas/BikeRentalSchemaResponseStateEnum'
+        delivery_address:
+          type: string
+          maxLength: 255
+        pickup:
+          type: boolean
+        contact_name:
+          type: string
+          maxLength: 255
+        contact_phone_number:
+          type: string
+          maxLength: 255
+        extra_info:
+          type: string
+          maxLength: 255
+        user:
+          type: integer
+          nullable: true
+        bike_stock:
+          type: array
+          items:
+            type: integer
+      required:
+      - bike_stock
+      - contact_name
+      - contact_phone_number
+      - delivery_address
+      - end_date
+      - extra_info
+      - id
+      - pickup
+      - start_date
+      - state
+      - user
+    BikeRentalSchemaResponseStateEnum:
+      enum:
+      - WAITING
+      - BEING_PROCESSED
+      - ACTIVE
+      type: string
+      description: |-
+        * `WAITING` - Waiting
+        * `BEING_PROCESSED` - Being Processed
+        * `ACTIVE` - Active
+    BikeSize:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+      required:
+      - id
+      - name
+    BikeStockCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        package_only:
+          type: boolean
+        number:
+          type: string
+          maxLength: 255
+        frame_number:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        state:
+          $ref: '#/components/schemas/State6acEnum'
+        bike:
+          type: integer
+        storage:
+          type: integer
+      required:
+      - bike
+      - created_at
+      - frame_number
+      - id
+      - number
+      - storage
+    BikeStockDepth:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/BikeType'
+          readOnly: true
+        brand:
+          allOf:
+          - $ref: '#/components/schemas/BikeBrand'
+          readOnly: true
+        size:
+          allOf:
+          - $ref: '#/components/schemas/BikeSize'
+          readOnly: true
+        color:
+          allOf:
+          - $ref: '#/components/schemas/Color'
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 255
+        picture:
+          type: integer
+          nullable: true
+      required:
+      - brand
+      - color
+      - description
+      - id
+      - name
+      - size
+      - type
+    BikeStockDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        bike:
+          allOf:
+          - $ref: '#/components/schemas/BikeStockDepth'
+          readOnly: true
+        storage:
+          allOf:
+          - $ref: '#/components/schemas/Storage'
+          readOnly: true
+        package_only:
+          type: boolean
+        number:
+          type: string
+          maxLength: 255
+        frame_number:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        state:
+          $ref: '#/components/schemas/State6acEnum'
+      required:
+      - bike
+      - created_at
+      - frame_number
+      - id
+      - number
+      - package_only
+      - state
+      - storage
+    BikeStockList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        bike:
+          allOf:
+          - $ref: '#/components/schemas/BikeStockDepth'
+          readOnly: true
+        package_only:
+          type: boolean
+        number:
+          type: string
+          maxLength: 255
+        frame_number:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        state:
+          $ref: '#/components/schemas/State6acEnum'
+        storage:
+          type: integer
+      required:
+      - bike
+      - created_at
+      - frame_number
+      - id
+      - number
+      - package_only
+      - state
+      - storage
+    BikeStockSchemaCreateUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        package_only:
+          type: boolean
+        number:
+          type: string
+          maxLength: 255
+        frame_number:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        state:
+          $ref: '#/components/schemas/State6acEnum'
+        bike:
+          type: integer
+        storage:
+          type: integer
+      required:
+      - bike
+      - created_at
+      - frame_number
+      - id
+      - number
+      - package_only
+      - state
+      - storage
+    BikeType:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+      required:
+      - id
+      - name
+    Bulletin:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        content:
+          type: string
+        date:
+          type: string
+          format: date-time
+          readOnly: true
+        author:
+          type: integer
+          nullable: true
+      required:
+      - content
+      - date
+      - id
+      - title
+    BulletinResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        content:
+          type: string
+        date:
+          type: string
+          format: date-time
+          readOnly: true
+        author:
+          type: integer
+          nullable: true
+      required:
+      - author
+      - content
+      - date
+      - id
+      - title
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product_count:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        lft:
+          type: integer
+          readOnly: true
+        rght:
+          type: integer
+          readOnly: true
+        tree_id:
+          type: integer
+          readOnly: true
+        level:
+          type: integer
+          readOnly: true
+        parent:
+          type: integer
+          nullable: true
+      required:
+      - id
+      - level
+      - lft
+      - name
+      - product_count
+      - rght
+      - tree_id
+    CategoryResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product_count:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        lft:
+          type: integer
+          readOnly: true
+        rght:
+          type: integer
+          readOnly: true
+        tree_id:
+          type: integer
+          readOnly: true
+        level:
+          type: integer
+          readOnly: true
+        parent:
+          type: integer
+          nullable: true
+      required:
+      - id
+      - level
+      - lft
+      - name
+      - parent
+      - product_count
+      - rght
+      - tree_id
+    CategoryTree:
+      type: object
+      properties:
+        category_id:
+          type: array
+          items:
+            type: integer
+            readOnly: true
+      required:
+      - category_id
+    Color:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        default:
+          type: boolean
+          readOnly: true
+      required:
+      - default
+      - id
+      - name
+    Contact:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        address:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          maxLength: 255
+        phone_number:
+          type: string
+          maxLength: 100
+      required:
+      - address
+      - email
+      - id
+      - name
+      - phone_number
+    ContactForm:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          maxLength: 255
+        subject:
+          type: string
+          maxLength: 255
+        message:
+          type: string
+        order_id:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        date:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+      required:
+      - date
+      - email
+      - id
+      - message
+      - name
+      - subject
+    ContactFormResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          maxLength: 255
+        subject:
+          type: string
+          maxLength: 255
+        message:
+          type: string
+        order_id:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        date:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+      required:
+      - date
+      - email
+      - id
+      - message
+      - name
+      - order_id
+      - status
+      - subject
+    GroupName:
+      type: object
+      description: Serializer for Groups
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 150
+      required:
+      - id
+      - name
+    GroupPermissions:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            type: integer
+          description: The groups this user belongs to. A user will get all permissions
+            granted to each of their groups.
+    GroupPermissionsResponseSchema:
+      type: object
+      description: FOR SCHEMA
+      properties:
+        groups:
+          type: array
+          items:
+            type: integer
+          description: The groups this user belongs to. A user will get all permissions
+            granted to each of their groups.
+      required:
+      - groups
+    MainBikeListSchema:
+      type: object
+      properties:
+        date_info:
+          $ref: '#/components/schemas/MainBikeSchemaDate'
+        bikes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MainBikeSchemaBikes'
+        packages:
+          type: array
+          items:
+            $ref: '#/components/schemas/MainBikeSchemaPackage'
+      required:
+      - bikes
+      - date_info
+      - packages
+    MainBikeSchemaBikes:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        max_available:
+          type: integer
+        description:
+          type: string
+        type:
+          type: string
+        brand:
+          type: string
+        size:
+          type: string
+        color:
+          type: integer
+        unavailable:
+          type: object
+          additionalProperties:
+            type: integer
+        package_only_count:
+          type: integer
+        package_only_unavailable:
+          type: object
+          additionalProperties:
+            type: integer
+      required:
+      - brand
+      - color
+      - description
+      - id
+      - max_available
+      - name
+      - package_only_count
+      - package_only_unavailable
+      - size
+      - type
+      - unavailable
+    MainBikeSchemaDate:
+      type: object
+      properties:
+        available_from:
+          type: string
+          format: date
+        available_to:
+          type: string
+          format: date
+      required:
+      - available_from
+      - available_to
+    MainBikeSchemaPackage:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        bikes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MainBikeSchemaPackageBike'
+        type:
+          type: string
+        unavailable:
+          type: object
+          additionalProperties:
+            type: integer
+        brand:
+          type: integer
+        color:
+          type: integer
+        size:
+          type: string
+        max_available:
+          type: integer
+      required:
+      - bikes
+      - brand
+      - color
+      - description
+      - id
+      - max_available
+      - name
+      - size
+      - type
+      - unavailable
+    MainBikeSchemaPackageBike:
+      type: object
+      properties:
+        bike:
+          type: integer
+        amount:
+          type: integer
+      required:
+      - amount
+      - bike
+    NewEmail:
+      type: object
+      description: Serializer for inputting new email address
+      properties:
+        new_email:
+          type: string
+          maxLength: 255
+      required:
+      - new_email
+    NewEmailFinishValidation:
+      type: object
+      description: Serializer for inputting new email address
+      properties:
+        uid:
+          type: string
+          maxLength: 255
+        token:
+          type: string
+          maxLength: 255
+        new_email:
+          type: string
+          maxLength: 255
+      required:
+      - new_email
+      - token
+      - uid
+    OrderDetailRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        status:
+          type: string
+          maxLength: 255
+        delivery_address:
+          type: string
+          maxLength: 255
+        contact:
+          type: string
+          maxLength: 255
+        order_info:
+          type: string
+        delivery_date:
+          type: string
+          format: date-time
+          nullable: true
+        phone_number:
+          type: string
+          maxLength: 255
+        creation_date:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+          nullable: true
+        product_items:
+          type: array
+          items:
+            type: integer
+      required:
+      - contact
+      - creation_date
+      - delivery_address
+      - id
+      - phone_number
+      - product_items
+      - status
+    OrderDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductItemResponse'
+          readOnly: true
+        status:
+          type: string
+          maxLength: 255
+        delivery_address:
+          type: string
+          maxLength: 255
+        contact:
+          type: string
+          maxLength: 255
+        order_info:
+          type: string
+        delivery_date:
+          type: string
+          format: date-time
+          nullable: true
+        phone_number:
+          type: string
+          maxLength: 255
+        creation_date:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+          nullable: true
+      required:
+      - contact
+      - creation_date
+      - delivery_address
+      - delivery_date
+      - id
+      - order_info
+      - phone_number
+      - product_items
+      - status
+      - user
+    OrderRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        status:
+          type: string
+          maxLength: 255
+        delivery_address:
+          type: string
+          maxLength: 255
+        contact:
+          type: string
+          maxLength: 255
+        order_info:
+          type: string
+        delivery_date:
+          type: string
+          format: date-time
+          nullable: true
+        phone_number:
+          type: string
+          maxLength: 255
+        creation_date:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - contact
+      - creation_date
+      - delivery_address
+      - id
+      - phone_number
+      - status
+    OrderResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        status:
+          type: string
+          maxLength: 255
+        delivery_address:
+          type: string
+          maxLength: 255
+        contact:
+          type: string
+          maxLength: 255
+        order_info:
+          type: string
+        delivery_date:
+          type: string
+          format: date-time
+          nullable: true
+        phone_number:
+          type: string
+          maxLength: 255
+        creation_date:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+          nullable: true
+        product_items:
+          type: array
+          items:
+            type: integer
+      required:
+      - contact
+      - creation_date
+      - delivery_address
+      - delivery_date
+      - id
+      - order_info
+      - phone_number
+      - product_items
+      - status
+      - user
+    PaginatedContactFormResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactFormResponse'
+    PaginatedOrderResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderResponse'
+    PaginatedProductItemResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductItemResponse'
+    PaginatedProductResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductResponse'
+    PaginatedUserFullResponseSchemaList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserFullResponseSchema'
+    Picture:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        picture_address:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - picture_address
+    PictureCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        picture_address:
+          type: string
+          format: uri
+      required:
+      - id
+      - picture_address
+    ProductCreateRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product_item:
+          $ref: '#/components/schemas/ProductItemCreate'
+        amount:
+          type: integer
+        color:
+          type: string
+        name:
+          type: string
+          maxLength: 255
+        price:
+          type: number
+          format: double
+        free_description:
+          type: string
+        measurements:
+          type: string
+          maxLength: 50
+        weight:
+          type: number
+          format: double
+        category:
+          type: integer
+          nullable: true
+      required:
+      - amount
+      - category
+      - color
+      - id
+      - name
+      - product_item
+    ProductItemCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        available:
+          type: boolean
+        shelf_id:
+          type: string
+          maxLength: 255
+        barcode:
+          type: string
+          maxLength: 255
+        storage:
+          type: integer
+          nullable: true
+      required:
+      - available
+      - barcode
+      - id
+      - storage
+    ProductItemDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        available:
+          type: boolean
+        modified_date:
+          type: string
+          format: date-time
+        shelf_id:
+          type: string
+          maxLength: 255
+        barcode:
+          type: string
+          maxLength: 255
+        product:
+          type: integer
+          nullable: true
+        storage:
+          type: integer
+          nullable: true
+        log_entries:
+          type: array
+          items:
+            type: integer
+      required:
+      - available
+      - barcode
+      - id
+      - log_entries
+      - modified_date
+      - product
+      - shelf_id
+      - storage
+    ProductItemLogEntryResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        date:
+          type: string
+          format: date-time
+          readOnly: true
+        action:
+          $ref: '#/components/schemas/ActionEnum'
+        user:
+          type: integer
+          nullable: true
+      required:
+      - action
+      - date
+      - id
+      - user
+    ProductItemResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product:
+          allOf:
+          - $ref: '#/components/schemas/ProductResponse'
+          readOnly: true
+        storage:
+          allOf:
+          - $ref: '#/components/schemas/StorageResponse'
+          readOnly: true
+        log_entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductItemLogEntryResponse'
+          readOnly: true
+        available:
+          type: boolean
+        modified_date:
+          type: string
+          format: date-time
+        shelf_id:
+          type: string
+          maxLength: 255
+        barcode:
+          type: string
+          maxLength: 255
+      required:
+      - available
+      - barcode
+      - id
+      - log_entries
+      - modified_date
+      - product
+      - shelf_id
+      - storage
+    ProductItemUpdate:
+      type: object
+      description: serializer for product items for purpose of updating it.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        modify_date:
+          type: string
+        available:
+          type: boolean
+        modified_date:
+          type: string
+          format: date-time
+          readOnly: true
+        shelf_id:
+          type: string
+          maxLength: 255
+        barcode:
+          type: string
+          maxLength: 255
+        product:
+          type: integer
+          readOnly: true
+          nullable: true
+        storage:
+          type: integer
+          nullable: true
+        log_entries:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+      required:
+      - id
+      - log_entries
+      - modified_date
+      - product
+    ProductResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        pictures:
+          type: array
+          items:
+            $ref: '#/components/schemas/Picture'
+          readOnly: true
+        amount:
+          type: integer
+          readOnly: true
+        total_amount:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        price:
+          type: number
+          format: double
+        free_description:
+          type: string
+        measurements:
+          type: string
+          maxLength: 50
+        weight:
+          type: number
+          format: double
+        category:
+          type: integer
+          nullable: true
+        color:
+          type: integer
+          nullable: true
+      required:
+      - amount
+      - category
+      - color
+      - free_description
+      - id
+      - measurements
+      - name
+      - pictures
+      - price
+      - total_amount
+      - weight
+    ProductStorageTransfer:
+      type: object
+      properties:
+        storage:
+          type: integer
+        product_items:
+          type: array
+          items:
+            type: integer
+      required:
+      - product_items
+      - storage
+    ProductUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        price:
+          type: number
+          format: double
+        free_description:
+          type: string
+        measurements:
+          type: string
+          maxLength: 50
+        weight:
+          type: number
+          format: double
+        category:
+          type: integer
+          nullable: true
+        color:
+          type: integer
+          nullable: true
+        pictures:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+      required:
+      - category
+      - color
+      - id
+      - name
+      - pictures
+    ProductUpdateResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        price:
+          type: number
+          format: double
+        free_description:
+          type: string
+        measurements:
+          type: string
+          maxLength: 50
+        weight:
+          type: number
+          format: double
+        category:
+          type: integer
+          nullable: true
+        color:
+          type: integer
+          nullable: true
+        pictures:
+          type: array
+          items:
+            type: integer
+      required:
+      - category
+      - color
+      - free_description
+      - id
+      - measurements
+      - name
+      - pictures
+      - price
+      - weight
+    ShoppingCart:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        date:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+          nullable: true
+        product_items:
+          type: array
+          items:
+            type: integer
+      required:
+      - date
+      - id
+      - product_items
+      - user
+    ShoppingCartAvailableAmountList:
+      type: object
+      properties:
+        id:
+          type: integer
+        amount:
+          type: integer
+      required:
+      - amount
+      - id
+    ShoppingCartDetailRequest:
+      type: object
+      properties:
+        product:
+          type: integer
+        amount:
+          type: integer
+      required:
+      - amount
+    ShoppingCartDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductItemResponse'
+          readOnly: true
+        date:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+          nullable: true
+      required:
+      - date
+      - id
+      - product_items
+      - user
+    ShoppingCartResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        date:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+          nullable: true
+        product_items:
+          type: array
+          items:
+            type: integer
+      required:
+      - date
+      - id
+      - product_items
+      - user
+    State6acEnum:
+      enum:
+      - AVAILABLE
+      - MAINTENANCE
+      - RENTED
+      - RETIRED
+      type: string
+      description: |-
+        * `AVAILABLE` - Available
+        * `MAINTENANCE` - Maintenance
+        * `RENTED` - Rented
+        * `RETIRED` - Retired
+    StatusEnum:
+      enum:
+      - Not read
+      - Read
+      - Handled
+      type: string
+      description: |-
+        * `Not read` - Not Read
+        * `Read` - Read
+        * `Handled` - Handled
+    Storage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        address:
+          type: string
+          maxLength: 255
+        in_use:
+          type: boolean
+      required:
+      - address
+      - id
+      - name
+    StorageResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        address:
+          type: string
+          maxLength: 255
+        in_use:
+          type: boolean
+      required:
+      - address
+      - id
+      - in_use
+      - name
+    SubSerializerForGroupsSchema:
+      type: object
+      description: Serializer for getting group names from users
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 150
+      required:
+      - id
+      - name
+    UserAddress:
+      type: object
+      description: Serializer for user address
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        address:
+          type: string
+          maxLength: 255
+        zip_code:
+          type: string
+          maxLength: 10
+        city:
+          type: string
+          maxLength: 100
+        user:
+          type: integer
+      required:
+      - address
+      - city
+      - id
+      - user
+      - zip_code
+    UserAddressPostRequest:
+      type: object
+      description: Serializer mainly for schema purpose, fields required for creating
+        address for user
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        address:
+          type: string
+          maxLength: 255
+        zip_code:
+          type: string
+          maxLength: 10
+        city:
+          type: string
+          maxLength: 100
+      required:
+      - address
+      - city
+      - id
+      - zip_code
+    UserAddressPutRequest:
+      type: object
+      description: |-
+        Serializer mainly for schema purpose, removing the required tag and adding id
+        id = the id number of address being changed
+      properties:
+        id:
+          type: integer
+        address:
+          type: string
+          maxLength: 255
+        zip_code:
+          type: string
+          maxLength: 10
+        city:
+          type: string
+          maxLength: 100
+      required:
+      - id
+    UserCreate:
+      type: object
+      description: Serializer for users, in specific format for user creation
+      properties:
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          maxLength: 255
+        phone_number:
+          type: string
+          maxLength: 50
+        password:
+          type: string
+          maxLength: 128
+        username:
+          type: string
+          maxLength: 255
+        address:
+          type: string
+          maxLength: 255
+        zip_code:
+          type: string
+          maxLength: 10
+        city:
+          type: string
+          maxLength: 100
+      required:
+      - address
+      - city
+      - email
+      - first_name
+      - last_name
+      - password
+      - phone_number
+      - zip_code
+    UserCreateReturnResponseSchema:
+      type: object
+      description: FOR SCHEMA, Serializer for users, in specific format for user creation
+      properties:
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          maxLength: 255
+        phone_number:
+          type: string
+          maxLength: 50
+        message:
+          type: string
+          maxLength: 255
+      required:
+      - email
+      - first_name
+      - last_name
+      - message
+      - phone_number
+    UserFullResponseSchema:
+      type: object
+      description: FOR SCHEMA, Serializer for users, all database fields
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        address_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserAddress'
+          readOnly: true
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubSerializerForGroupsSchema'
+          readOnly: true
+        last_login:
+          type: string
+          format: date-time
+          nullable: true
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          maxLength: 255
+        creation_date:
+          type: string
+          format: date-time
+          readOnly: true
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 255
+        username:
+          type: string
+          maxLength: 255
+        is_active:
+          type: boolean
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+      required:
+      - address_list
+      - creation_date
+      - email
+      - first_name
+      - groups
+      - id
+      - is_active
+      - last_login
+      - last_name
+      - phone_number
+      - username
+    UserLoginPost:
+      type: object
+      description: needed login information
+      properties:
+        username:
+          type: string
+          maxLength: 255
+        password:
+          type: string
+          maxLength: 128
+      required:
+      - password
+      - username
+    UserPasswordChangeEmailValidation:
+      type: object
+      description: Serializer for user activation validations.
+      properties:
+        uid:
+          type: string
+          maxLength: 255
+        token:
+          type: string
+          maxLength: 255
+        new_password:
+          type: string
+          maxLength: 255
+        new_password_again:
+          type: string
+          maxLength: 255
+      required:
+      - new_password
+      - new_password_again
+      - token
+      - uid
+    UserPasswordCheckEmail:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 255
+      required:
+      - username
+    UserTokenValidation:
+      type: object
+      description: Serializer for user activation validations.
+      properties:
+        uid:
+          type: string
+          maxLength: 255
+        token:
+          type: string
+          maxLength: 255
+      required:
+      - token
+      - uid
+    UserUpdate:
+      type: object
+      description: Serializer for users, for updating user information
+      properties:
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 255
+      required:
+      - first_name
+      - last_name
+    UserUpdateReturnSchema:
+      type: object
+      description: FOR SCHEMA, Serializer for users, for updating user information
+      properties:
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 255
+      required:
+      - first_name
+      - last_name
+      - phone_number
+    UsersLoginRefreshResponseSchema:
+      type: object
+      description: |-
+        FOR SCHEMA
+        Serializer for return data when logging in and refreshing.
+        pass message in context.
+      properties:
+        message:
+          type: string
+          maxLength: 255
+        username:
+          type: string
+          maxLength: 255
+        groups:
+          type: array
+          items:
             type: string
             description: |-
                 * `Created` - Create

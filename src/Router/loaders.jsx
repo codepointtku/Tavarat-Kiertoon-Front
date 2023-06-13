@@ -278,6 +278,21 @@ const modifyBikeOrderLoader = async (auth, setAuth, params) => {
     ]);
     return { packet, models };
 };
+const createBikeOrderLoader = async (auth, setAuth, params) => {
+    // console.log('lauantai');
+    const [{ data: models }] = await Promise.all([
+        // apiCall(auth, setAuth, `/bikes/packages/${params.id}`, 'get'),
+        // apiCall(auth, setAuth, `/bikes/models/`, 'get'),
+        bikesApi.bikesModelsList(),
+    ]);
+    const packet = {
+        // id: number;
+        name: '',
+        description: '',
+        bikes: [],
+    };
+    return { packet, models };
+};
 
 /**
  * Get information needed to modify a single bike
@@ -503,4 +518,5 @@ export {
     adminInboxLoader,
     modifyBikeOrderLoader,
     bikeNewModelLoader,
+    createBikeOrderLoader,
 };

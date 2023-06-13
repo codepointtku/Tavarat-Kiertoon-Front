@@ -116,6 +116,7 @@ import {
     adminLoader,
     adminInboxLoader,
     bikeNewModelLoader,
+    createBikeOrderLoader,
 } from './loaders';
 
 import {
@@ -146,6 +147,8 @@ import {
     changeEmailAction,
     adminBulletinsAction,
     userProfilePageAction,
+    createNewPacketAction,
+    deletePacketAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
@@ -607,14 +610,27 @@ function Routes() {
                                         },
                                         {
                                             path: ':id',
-                                            element: <ModifyBikeOrder />,
+                                            element: <ModifyBikeOrder createNewPacket={false} />,
                                             loader: async ({ params }) => modifyBikeOrderLoader(auth, setAuth, params),
                                             action: async ({ request, params }) =>
                                                 modifyBikeOrderAction(auth, setAuth, request, params),
+                                            children: [
+                                                {
+                                                    path: 'poista',
+                                                    action: async ({ params }) =>
+                                                        deletePacketAction(auth, setAuth, params),
+                                                },
+                                            ],
                                         },
                                     ],
                                 },
-
+                                {
+                                    path: 'lisaapaketti',
+                                    element: <ModifyBikeOrder createNewPacket={true} />,
+                                    loader: async ({ params }) => createBikeOrderLoader(auth, setAuth, params),
+                                    action: async ({ request, params }) =>
+                                        createNewPacketAction(auth, setAuth, request, params),
+                                },
                                 {
                                     path: 'muokkaa',
                                     element: <Outlet />,
