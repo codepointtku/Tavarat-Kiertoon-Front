@@ -72,6 +72,7 @@ import GuideOrdering from '../Components/Default/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Default/Instructions/GuideShipping';
 import GuideBikes from '../Components/Default/Instructions/GuideBikes';
 
+import ModifyBikeOrder from '../Components/Bikes/ModifyBikeOrder';
 import BikesPage from '../Components/Bikes/BikesPage';
 import Bikes from '../Components/Bikes/Bikes';
 import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
@@ -88,6 +89,7 @@ import OrdersActive from '../Components/Default/Profilepage/OrdersActive';
 import OrdersHistory from '../Components/Default/Profilepage/OrdersHistory';
 
 import {
+    bikesPacketLoader,
     addItemLoader,
     orderEditLoader,
     ordersListLoader,
@@ -110,6 +112,7 @@ import {
     bikeModelsLoader,
     bikeSingleModelLoader,
     shoppingProcessLoader,
+    modifyBikeOrderLoader,
     adminLoader,
     adminInboxLoader,
     bikeNewModelLoader,
@@ -133,6 +136,7 @@ import {
     createNewBikeAction,
     activationAction,
     adminLogOut,
+    modifyBikeOrderAction,
     deleteBikeAction,
     adminInboxAction,
     modifyBikeModelAction,
@@ -396,12 +400,13 @@ function Routes() {
                         </ThemeProvider>
                     ),
                     children: [
+                        // {
+                        //     index: true,
+                        //     element: <Navigate to="0/delivery?page=0&rows=5" />,
+                        // },
                         {
                             index: true,
-                            element: <Navigate to="0/delivery?page=0&rows=5" />,
-                        },
-                        {
-                            path: ':num/:view',
+                            // path: ':num/:view',
                             element: <OrdersList />,
                             loader: async ({ params }) => ordersListLoader(auth, setAuth, params),
                         },
@@ -409,10 +414,10 @@ function Routes() {
                             path: 'tilaus',
                             element: <Outlet />,
                             children: [
-                                {
-                                    index: true,
-                                    element: <Navigate to="/varasto" />,
-                                },
+                                // {
+                                //     index: true,
+                                //     element: <Navigate to="/varasto" />,
+                                // },
                                 {
                                     path: ':id',
                                     element: <Outlet />,
@@ -420,7 +425,6 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <OrderView />,
-
                                             loader: async ({ params }) => orderViewLoader(auth, setAuth, params),
                                         },
                                         {
@@ -589,8 +593,28 @@ function Routes() {
                                 },
                                 {
                                     path: 'pyorapaketit',
+                                    loader: async () => bikesPacketLoader(auth, setAuth),
                                     element: <BikePackets />,
                                 },
+
+                                {
+                                    path: 'muokkaapaketti',
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <Navigate to="/pyorat/pyoravarasto/muokkaapaketti" />,
+                                        },
+                                        {
+                                            path: ':id',
+                                            element: <ModifyBikeOrder />,
+                                            loader: async ({ params }) => modifyBikeOrderLoader(auth, setAuth, params),
+                                            action: async ({ request, params }) =>
+                                                modifyBikeOrderAction(auth, setAuth, request, params),
+                                        },
+                                    ],
+                                },
+
                                 {
                                     path: 'muokkaa',
                                     element: <Outlet />,

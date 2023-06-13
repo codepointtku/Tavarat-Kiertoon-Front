@@ -10,7 +10,7 @@ export default function StorageBar() {
     const [currentPage, setCurrentPage] = useState('Tilaukset');
 
     const pages = [
-        { name: 'Tilaukset', path: '/varasto/0/delivery?page=0&rows=5' },
+        { name: 'Tilaukset', path: '/varasto/' },
         { name: 'Luo tuote', path: '/varasto/luo' },
     ];
 
@@ -34,7 +34,7 @@ export default function StorageBar() {
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        <Link to="/varasto/0/delivery?page=0&rows=5" style={{ color: 'white' }}>
+                        <Link to="/varasto/" style={{ color: 'white' }}>
                             Varasto
                         </Link>
                         <Typography variant="subtitle2">{currentPage}</Typography>
