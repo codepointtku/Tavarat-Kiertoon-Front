@@ -65,7 +65,6 @@ function ShoppingCart() {
                 sx={{
                     border: '0.1rem solid #bfe6f6',
                     borderRadius: '1rem',
-                    borderStyle: 'solid',
                     p: 20,
                     pt: 5,
                     paddingBottom: 5,

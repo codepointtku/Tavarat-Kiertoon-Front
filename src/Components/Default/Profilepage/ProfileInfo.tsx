@@ -51,7 +51,7 @@ function ProfileInfo() {
     // Submit ei toimi | Typescript error
 
     return (
-        <Grid container component={Form} onSubmit={handleSubmit(() => onSubmit)} justifyContent="center">
+        <Grid container component={Form} onSubmit={handleSubmit(() => onSubmit)} justifyContent="center" sx={{ p: 2 }}>
             <Typography variant="h5" color="primary.main" sx={{ mb: 2 }}>
                 Käyttäjäprofiilin tiedot
             </Typography>

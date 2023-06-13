@@ -8,7 +8,7 @@ function OrdersHistory() {
     const ordersHistoryCards = finishedOrders.map((order) => <OrderCard key={order.id} orderInfo={order} />);
 
     return (
-        <Box sx={{ border: '1px solid red', p: 2 }}>
+        <Box sx={{ p: 2 }}>
             <Typography variant="h5" color="primary.main" align="center" sx={{ mb: 2 }}>
                 Tilaushistoria
             </Typography>
