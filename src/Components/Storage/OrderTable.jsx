@@ -1,6 +1,5 @@
 import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import { useState, useEffect, Fragment } from 'react';
-import PropTypes from 'prop-types';
 
 import {
     Table,
@@ -329,11 +328,5 @@ function OrderTable() {
         </>
     );
 }
-
-OrderTable.propTypes = {
-    page: PropTypes.number.isRequired,
-    setUsedParams: PropTypes.func.isRequired,
-    rowsPerPage: PropTypes.number.isRequired,
-};
 
 export default OrderTable;

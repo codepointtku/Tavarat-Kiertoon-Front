@@ -1,6 +1,7 @@
 import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
 import logo from '../../Assets/LOGO.png';
-import type { IPDFDocument, IProduct } from './PDFView';
+import { type PDFOrderType } from './PDFView';
+// import type { IPDFDocument, IProduct } from './PDFView';
 
 // NOTE: JTo: Temporary baseUrl. Move this to env variable.
 const baseUrl = `${window.location.protocol}//${window.location.hostname}:8000`;
@@ -87,13 +88,13 @@ const styles = StyleSheet.create({
  * @param {Array} aProducts : Array of all products individually (from backend)
  * @returns {Array} aRenderPages : Array of combined productsproducts
  */
-const createRenderableProductList = (aProducts: IProduct[]) => {
+const createRenderableProductList = (aProducts: PDFOrderType['product_items']) => {
     // move all aProducts with same group_id into same array inside aTempProducts array.
     // [{}{}{}{}{}{}{}] => [ [{}{}{}], [{}], [{}{}], [{}] ]
     //  => aTemp[0][0] == product, aTemp[0].length == product amount, aTemp.length == number of different products
-    const aTempProducts: IProduct[][] = [];
+    const aTempProducts: PDFOrderType['product_items'][] = [];
     aProducts.forEach((aProduct) => {
-        const productIndex = aTempProducts.findIndex((aTempProduct) => aTempProduct[0]?.group_id === aProduct.group_id);
+        const productIndex = aTempProducts.findIndex((aTempProduct) => aTempProduct[0]?.id === aProduct.id);
         if (productIndex < 0) {
             aTempProducts.push([aProduct]);
         } else {
@@ -104,10 +105,10 @@ const createRenderableProductList = (aProducts: IProduct[]) => {
     // create a single Array that contains only unique objects and add numberOfProducts field to each object
     // [ [{}{}{}], [{}], [{}{}], [{}] ] => [ {}{}{}{} ]
     //  => aRenderProducts[0] == single product, aRenderProducts[0].numberOfProducts == number of those products
-    const aRenderProducts: IProduct[] = [];
+    const aRenderProducts: PDFOrderType['product_items'] = [];
     aTempProducts.forEach((aProduct, index) => {
         aRenderProducts.push(aProduct[0]);
-        aRenderProducts[index] = { ...aRenderProducts[index], numberOfProducts: aTempProducts[index].length };
+        // aRenderProducts[index] = { ...aRenderProducts[index], numberOfProducts: aTempProducts[index].length };
     });
 
     return aRenderProducts;
@@ -118,7 +119,7 @@ const createRenderableProductList = (aProducts: IProduct[]) => {
  * [ {}{}{}{}{}{}{}{}{}{}{}{}{}{} ] => [ [{}{}{}{}],[{}{}{}{}{}{}],[{}{}{}{}] ]
  * @returns
  */
-const createPaginatedProductsLists = (aRenderProducts: IProduct[]) => {
+const createPaginatedProductsLists = (aRenderProducts: PDFOrderType['product_items']) => {
     const productsOnFirstPage = 4;
     const productsPerPage = 6;
 
@@ -138,8 +139,9 @@ const createPaginatedProductsLists = (aRenderProducts: IProduct[]) => {
  *
  * @param {*} order : The order that needs to be printed
  */
-function PDFDocument({ order }: IPDFDocument) {
-    const productList = createRenderableProductList(order.products);
+function PDFDocument({ order }: { order: PDFOrderType }) {
+    // console.log('### order', order.product_items);
+    const productList = createRenderableProductList(order.product_items);
     const paginatedProductList = createPaginatedProductsLists(productList);
 
     // Address section on top of the page
@@ -171,30 +173,39 @@ function PDFDocument({ order }: IPDFDocument) {
 
             {/* Render list of products to the orderInfoSection */}
             {/* <Text style={{ marginVertical: 5 }}>Tuotteet</Text>
-                <View style={styles.orderInfoProductList}>
-                    {productList.map((product, index) => (
-                        <Text key={product.id}>
-                            {product.name} x {product.numberOfProducts}
-                            {index === productList.length - 1 ? '' : ', '}
-                        </Text>
-                    ))}
-                </View> */}
+            <View style={styles.orderInfoProductList}>
+                {productList.map((product, index) => (
+                    <Text key={product.id}>
+                        {product.name} x {product.numberOfProducts}
+                        {index === productList.length - 1 ? '' : ', '}
+                    </Text>
+                ))}
+            </View> */}
         </View>
     );
 
     // Product card
-    const productCard = (product: IProduct) => {
+    // Explanation attempt for typescript type
+    //  - PDFOrderType       : Full Loader Data. Taken as Awaited<ReturnType<typeof pdfViewLoader>> and contains everything
+    //  - ['product_items']  : product_items array from datatype.
+    //  - [number]           : indicates that you want to use type of one object from the array
+    const productCard = (productItem: PDFOrderType['product_items'][number]) => {
+        // : IProduct
         return (
-            <View style={styles.productCard} key={product.id}>
-                <Image src={`${baseUrl}/media/${product.pictures[0].picture_address}`} style={styles.productImg} />
+            <View style={styles.productCard} key={productItem.id}>
+                {/* <Image src={`${baseUrl}/media/${product.pictures[0].picture_address}`} style={styles.productImg} /> */}
+                <Image
+                    src={`${baseUrl}/media/${productItem.product.pictures[0].picture_address}`}
+                    style={styles.productImg}
+                />
 
                 <Text style={{ fontSize: '12', marginBottom: '5px' }}>
-                    {product.name}: {product.numberOfProducts} kpl.
+                    {productItem.product.name}: {productItem.product.amount} kpl.
                 </Text>
-                <Text style={{ fontSize: '10', marginBottom: '5px' }}>Viivakoodi: {product.barcode}</Text>
+                <Text style={{ fontSize: '10', marginBottom: '5px' }}>Viivakoodi: {productItem.barcode}</Text>
                 <Text style={{ fontSize: '10', marginBottom: '5px' }}>
-                    Sijainti: {product.storage_name}
-                    {product.shelf_id ? ` / ${product.shelf_id}` : ''}
+                    Sijainti: {productItem.storage.name}
+                    {productItem.shelf_id ? ` / ${productItem.shelf_id}` : ''}
                 </Text>
             </View>
         );
