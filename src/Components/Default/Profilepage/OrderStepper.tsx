@@ -10,7 +10,8 @@ import CheckIcon from '@mui/icons-material/Check';
 const OrderStepConnector = styled(StepConnector)(({ theme }) => ({
     [`& .${stepConnectorClasses.line}`]: {
         borderColor: theme.palette.primary.dark,
-        borderWidth: 'medium',
+        borderWidth: '0.15rem',
+        height: '2rem',
     },
 }));
 
@@ -21,15 +22,49 @@ function OrderStepper() {
         { label: 'Kuljetuksessa', icon: <LocalShippingIcon /> },
         { label: 'Toimitettu', icon: <CheckIcon /> },
     ];
-    const stepElements = steps.map((step) => (
+
+    function setCustomIconComponent(index: number) {
+        return (
+            <Box
+                sx={{
+                    borderRadius: '50%',
+                    border: '0.1rem solid primary.dark',
+                    backgroundColor: 'primary.main',
+                    width: 35,
+                    height: 35,
+                    // p: 1,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: 'white',
+                }}
+            >
+                {steps[index].icon}
+            </Box>
+        );
+    }
+
+    const stepElements = steps.map((step, index) => (
         <Step key={step.label}>
-            <StepLabel icon={step.icon}>{step.label}</StepLabel>
+            <StepLabel
+                StepIconComponent={() => setCustomIconComponent(index)}
+                sx={{ '& .Mui-completed': { color: 'success.light' }, '& .Mui-active': { color: 'primary.dark' } }}
+            >
+                {step.label}
+            </StepLabel>
         </Step>
     ));
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Stepper orientation="vertical" activeStep={1} connector={<OrderStepConnector />}>
+            <Stepper
+                sx={{
+                    '& .Mui-disabled': { opacity: 0.5 },
+                }}
+                orientation="vertical"
+                activeStep={1}
+                connector={<OrderStepConnector />}
+            >
                 {stepElements}
             </Stepper>
         </Box>
