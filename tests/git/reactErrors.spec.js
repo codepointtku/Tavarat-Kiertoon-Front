@@ -254,6 +254,18 @@ test.describe('bike-packet-list', () => {
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
     });
 });
+test.describe('bike-packet-modify-1', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/pyorat/pyoravarasto/muokkaapaketti/1');
+        await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/muokkaapaketti/1')).not.toBeVisible();
+    });
+});
+test.describe('bike-packet-add-new', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/pyorat/pyoravarasto/lisaapaketti');
+        await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/lisaapaketti')).not.toBeVisible();
+    });
+});
 // bike orders tests
 test.describe('bike-orders', () => {
     test('no errors', async ({ page }) => {

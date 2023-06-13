@@ -24,6 +24,7 @@ import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutl
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteBikePacketModal from './DeleteBikePacketModal';
+import SaveIcon from '@mui/icons-material/Save';
 
 // Interfaces
 interface LoaderDataInterface {
@@ -160,7 +161,7 @@ export default function ModifyBikeOrder({ createNewPacket }: CreateNewPacketInte
             <Typography variant="h3" align="center" color="primary.main" mb="2rem" width="100%">
                 {createNewPacket ? 'Luo uusi paketti' : `Muokkaa pakettia: ${packet.name}`}
             </Typography>
-            <TableContainer component={Paper} sx={{ padding: '2rem' }}>
+            <TableContainer component={Paper} elevation={3} sx={{ marginBottom: '2rem', padding: '2rem' }}>
                 <Box
                     width="100%"
                     textAlign="center"
@@ -294,7 +295,7 @@ export default function ModifyBikeOrder({ createNewPacket }: CreateNewPacketInte
                                 </TableBody>
                             </Table>
 
-                            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '2em' }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'left', marginTop: '2em' }}>
                                 <FormControl sx={{ minWidth: '180px' }}>
                                     <InputLabel id="model-select-label">Valitse malli</InputLabel>
                                     <Select
@@ -322,26 +323,28 @@ export default function ModifyBikeOrder({ createNewPacket }: CreateNewPacketInte
                             </Box>
                         </Box>
                     </Box>
-
-                    {/* Submit button */}
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        sx={{
-                            marginTop: '2em',
-                            marginBottom: '2em',
-                            width: '120px',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                        }}
+                    <Box
+                        width="100%"
+                        display="flex"
+                        justifyContent="space-evenly"
+                        marginTop="20px"
+                        paddingTop="20px"
+                        borderTop="1px solid lightgray"
                     >
-                        Tallenna
-                    </Button>
-                    {!createNewPacket && (
-                        <IconButton color="error" onClick={() => setRenderDeleteBikePacket(true)}>
-                            <DeleteIcon />
-                        </IconButton>
-                    )}
+                        {/* Submit button */}
+                        <Button type="submit" variant="contained" sx={{ padding: '1rem' }}>
+                            Tallenna <SaveIcon />
+                        </Button>
+                        {!createNewPacket && (
+                            <Button
+                                color="error"
+                                sx={{ padding: '1rem' }}
+                                onClick={() => setRenderDeleteBikePacket(true)}
+                            >
+                                <DeleteIcon /> Poista paketti
+                            </Button>
+                        )}
+                    </Box>
                 </Box>
             </TableContainer>
             <DeleteBikePacketModal
