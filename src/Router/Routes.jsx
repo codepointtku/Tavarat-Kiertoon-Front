@@ -435,7 +435,7 @@ function Routes() {
                         {
                             path: 'admin',
                             element: (
-                                // <HasRole role="admin_group" fallback={<Navigate to="/rickastley" />}>
+                                // <HasRole role="admin_group" fallback={<Navigate to="/" />}>
                                 <ThemeProvider theme={adminTheme}>
                                     <AdminLayout />
                                 </ThemeProvider>

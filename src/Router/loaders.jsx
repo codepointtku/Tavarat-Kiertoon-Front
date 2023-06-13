@@ -26,7 +26,7 @@ const rootLoader = async () => {
             categoriesApi.categoriesList(),
             bulletinsApi.bulletinsList(),
             categoriesApi.categoriesTreeRetrieve(),
-            // usersApi.usersLoginRefreshCreate(),
+            //usersApi.usersLoginRefreshCreate(),
         ]);
 
     return { contacts, colors, categories, bulletins, categoryTree };
