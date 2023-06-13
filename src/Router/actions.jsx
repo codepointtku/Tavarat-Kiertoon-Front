@@ -536,7 +536,7 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     // send data and redirect back to bike list
     // await apiCall(auth, setAuth, `/bikes/stock/`, 'post', submission);
     await bikesApi.bikesStockCreate(submission);
-    return redirect('/pyorat/pyoravarasto');
+    return redirect('/pyorat/pyoravarasto/pyoralista');
 };
 
 // kommentti
@@ -638,7 +638,7 @@ const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
 const deleteBikeAction = async (auth, setAuth, params) => {
     // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     await bikesApi.bikesStockDestroy(params.id);
-    return redirect('/pyorat/pyoravarasto');
+    return redirect('/pyorat/pyoravarasto/pyoralista');
 };
 
 /**

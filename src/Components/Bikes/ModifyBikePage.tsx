@@ -360,7 +360,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                         paddingTop="20px"
                         borderTop="1px solid lightgray"
                     >
-                        <Button to={`/pyorat/pyoravarasto`} component={Link} sx={{ padding: '1rem' }}>
+                        <Button to={`/pyorat/pyoravarasto/pyoralista`} component={Link} sx={{ padding: '1rem' }}>
                             Palaa pyörälistaan tallentamatta
                         </Button>
                         {!createNewBike && (

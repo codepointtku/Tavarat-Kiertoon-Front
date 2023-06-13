@@ -19,17 +19,21 @@ function BikeLinkBar() {
                 aria-label="navigation link buttons"
                 sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
             >
-                <Button component={Link} to="">
-                    <ListIcon sx={{ marginRight: '5px' }} />Kaikki pyörät
+                <Button component={Link} to="pyoralista">
+                    <ListIcon sx={{ marginRight: '5px' }} />
+                    Kaikki pyörät
                 </Button>
                 <Button component={Link} to="pyoramallit">
-                    <BikeScooterIcon sx={{ marginRight: '5px' }} />Pyörämallit
+                    <BikeScooterIcon sx={{ marginRight: '5px' }} />
+                    Pyörämallit
                 </Button>
                 <Button component={Link} to="pyoratilaukset">
-                    <ScheduleIcon sx={{ marginRight: '5px' }} />Pyörätilaukset
+                    <ScheduleIcon sx={{ marginRight: '5px' }} />
+                    Pyörätilaukset
                 </Button>
                 <Button component={Link} to="pyorapaketit">
-                    <ViewListIcon sx={{ marginRight: '5px' }} />Pyöräpaketit
+                    <ViewListIcon sx={{ marginRight: '5px' }} />
+                    Pyöräpaketit
                 </Button>
             </ButtonGroup>
         </Box>

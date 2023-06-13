@@ -144,6 +144,7 @@ import {
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
+import BikesHomePage from '../Components/Bikes/BikesHomePage';
 
 createStore({});
 
@@ -553,7 +554,11 @@ function Routes() {
                             element: <BikeWarehouse />,
                             children: [
                                 {
-                                    index: true,
+                                    index: 'true',
+                                    element: <BikesHomePage />,
+                                },
+                                {
+                                    path: 'pyoralista',
                                     loader: async () => bikesListLoader(auth, setAuth),
                                     element: <Bikes />,
                                 },
