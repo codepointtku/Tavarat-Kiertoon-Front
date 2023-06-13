@@ -87,6 +87,7 @@ import OrderPage from '../Components/Default/Profilepage/OrderPage';
 import ProfileInfo from '../Components/Default/Profilepage/ProfileInfo';
 import OrdersActive from '../Components/Default/Profilepage/OrdersActive';
 import OrdersHistory from '../Components/Default/Profilepage/OrdersHistory';
+import ModifyAddressInfo from '../Components/Default/Profilepage/ModifyAddressInfo';
 
 import {
     bikesPacketLoader,
@@ -372,6 +373,10 @@ function Routes() {
                                 {
                                     index: true,
                                     element: <ProfileInfo />,
+                                },
+                                {
+                                    path: 'osoitetiedot/:id',
+                                    element: <ModifyAddressInfo />,
                                 },
                                 {
                                     path: 'aktiivisettilaukset',

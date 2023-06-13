@@ -47,6 +47,8 @@ function ProfileInfo() {
         submit(data, { method: 'put', action: '/profiili' });
     };
 
+    const selectedAddressInfo = userInfo.address_list.filter((addressInfo) => addressInfo.address === selectedAddress);
+
     // Submit ei toimi | Typescript error
 
     return (
@@ -86,7 +88,12 @@ function ProfileInfo() {
                                 </MenuItem>
                             ))}
                         </TextField>
-                        <Button component={Link} to="/sahkopostinvaihto" sx={{ ml: 2, p: 2 }}>
+                        <Button
+                            component={Link}
+                            to={`osoitetiedot/${selectedAddressInfo[0].id}`}
+                            state={selectedAddressInfo[0]}
+                            sx={{ ml: 2, p: 2 }}
+                        >
                             Muokkaa
                         </Button>
                     </Grid>
