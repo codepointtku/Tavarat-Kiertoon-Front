@@ -22,6 +22,11 @@ import { type orderViewLoader } from '../../Router/loaders';
 
 export type OrderViewLoaderType = Awaited<ReturnType<typeof orderViewLoader>>;
 
+/**
+ * Render to view if Order is not found
+ *
+ * @returns
+ */
 function NoOrders() {
     return (
         <TableRow>
@@ -32,18 +37,21 @@ function NoOrders() {
     );
 }
 
+/**
+ * List of the products of an individual order
+ *
+ * @returns
+ */
 function OrderTable() {
     // data from backend
     const order = useLoaderData() as OrderViewLoaderType;
-    // console.log('### OrderTable: order', order);
 
-    const productItems = [...order.product_items];
-    // console.log('### OrderTable: productItems', productItems);
+    // state to control product info collapse field
+    const [isOpen, setIsOpen] = useState<boolean[]>([]);
 
-    // go through every productItem and create an array which contains an array for each
-    // unique productItem.product.id and all products with that id
+    // array with an array for each unique product_item.product.id and all products with that id
     const productRenderItems: OrderViewLoaderType['product_items'][] = [];
-    productItems.forEach((productItem) => {
+    order.product_items.forEach((productItem) => {
         // check if array already contains an item.product.id array
         const productIndex = productRenderItems.findIndex((index) => index[0]?.product.id === productItem.product.id);
         if (productIndex < 0) {
@@ -54,56 +62,22 @@ function OrderTable() {
             productRenderItems[productIndex].push(productItem);
         }
     });
-    console.log('### OrderTable: productRenderItems', productRenderItems);
 
-    const [isOpen, setIsOpen] = useState({});
-    const navigate = useNavigate();
+    // fill states for collapse field for each product
+    useEffect(() => {
+        if (isOpen.length === 0) {
+            setIsOpen(new Array(productRenderItems.length).fill(false));
+        }
+    }, [isOpen.length, productRenderItems.length]);
 
-    // const sourceStates = {};
-    // let orderList = [];
-
-    // order?.product_items.forEach((entry) => {
-    //     try {
-    //         const newEntry = entry;
-    //         sourceStates[entry.id] = false;
-    //         newEntry.count = 1;
-    //         newEntry.id = entry.id;
-    //         newEntry.items = [newEntry];
-    //         orderList.forEach((each) => {
-    //             if (each.group_id === newEntry.group_id) {
-    //                 newEntry.count += each.count;
-    //                 newEntry.items = newEntry.items.concat(each.items);
-    //                 const index = orderList.findIndex((key) => key.id === each.id);
-    //                 orderList = [...orderList.slice(0, index), ...orderList.slice(index + 1)];
-    //             }
-    //         });
-    //         orderList.push(newEntry);
-    //     } catch {
-    //         orderList.push({
-    //             name: 'Tuotetta ei olemassa',
-    //             id: entry.id,
-    //             barcode: '-',
-    //             count: 0,
-    //             category_name: '-',
-    //             storage_name: '-',
-    //             items: [],
-    //             measurements: '-',
-    //             weight: '-',
-    //             shelf_id: '-',
-    //         });
-    //     }
-    // });
-
-    // useEffect(() => {
-    //     setIsOpen({ sourceStates });
-    // }, []);
-
+    // Parse Date objects from backend data string
     const dateParse = (value: string) => {
         const date = new Date(value);
         const dateString = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
         return dateString;
     };
 
+    // RENDER
     return (
         <>
             {order ? (
@@ -170,7 +144,6 @@ function OrderTable() {
                             }}
                         >
                             <Typography>{order.contact}</Typography>
-                            {/* <Typography>{dateParse(order?.delivery_date as string)}</Typography> */}
                             <Typography>{dateParse(order?.creation_date as string)}</Typography>
                         </Box>
                         <Box
@@ -252,25 +225,26 @@ function OrderTable() {
                             {/*
                              */}
                             <TableBody>
-                                {productRenderItems.map((itemArray) => (
+                                {productRenderItems.map((itemArray, index) => (
                                     <Fragment key={itemArray[0].id}>
                                         <StyledTableRow>
                                             <TableCell>
                                                 <IconButton
                                                     aria-label="expand row"
                                                     size="small"
-                                                    // onClick={() => {
-                                                    //     setIsOpen((prev) => ({
-                                                    //         ...prev,
-                                                    //         [value.id]: !isOpen[value.id],
-                                                    //     }));
-                                                    // }}
+                                                    onClick={() => {
+                                                        setIsOpen((prev) =>
+                                                            prev.map((currentState, idx) =>
+                                                                idx === index ? !currentState : currentState
+                                                            )
+                                                        );
+                                                    }}
                                                 >
-                                                    {/* {isOpen[value.id] ? ( */}
-                                                    <KeyboardArrowUpIcon />
-                                                    {/* ) : (
+                                                    {isOpen[index] ? (
+                                                        <KeyboardArrowUpIcon />
+                                                    ) : (
                                                         <KeyboardArrowDownIcon />
-                                                    )} */}
+                                                    )}
                                                 </IconButton>
                                             </TableCell>
                                             <TableCell component="th" scope="row">
@@ -284,8 +258,8 @@ function OrderTable() {
                                         </StyledTableRow>
                                         <TableRow>
                                             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
-                                                {/* <Collapse in={isOpen[value.id]} timeout="auto" unmountOnExit> */}
-                                                <Collapse in={true} timeout="auto" unmountOnExit>
+                                                <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
+                                                    {/* <Collapse in={true} timeout="auto" unmountOnExit> */}
                                                     <Box sx={{ margin: 1 }}>
                                                         <Typography variant="h6" gutterBottom component="div">
                                                             Tuotteet
@@ -347,7 +321,7 @@ function OrderTable() {
                              */}
                         </Table>
                     </Box>
-                    <Button sx={{ margin: '2rem' }} onClick={() => navigate(`/varasto/tilaus/${order.id}/muokkaa`)}>
+                    <Button sx={{ margin: '2rem' }} to={`/varasto/tilaus/${order.id}/muokkaa`} component={Link}>
                         Muokkaa tilausta
                     </Button>
                     <Button color="error" to={`/varasto/pdf/${order.id}`} component={Link}>
