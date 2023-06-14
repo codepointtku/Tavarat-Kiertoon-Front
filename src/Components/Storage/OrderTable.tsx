@@ -40,12 +40,17 @@ function OrderTable() {
     const productItems = [...order.product_items];
     // console.log('### OrderTable: productItems', productItems);
 
+    // go through every productItem and create an array which contains an array for each
+    // unique productItem.product.id and all products with that id
     const productRenderItems: OrderViewLoaderType['product_items'][] = [];
     productItems.forEach((productItem) => {
-        const productIndex = productRenderItems.findIndex((index) => index[0]?.id === productItem.id);
+        // check if array already contains an item.product.id array
+        const productIndex = productRenderItems.findIndex((index) => index[0]?.product.id === productItem.product.id);
         if (productIndex < 0) {
+            // if not, push a new array with this item as its first object
             productRenderItems.push([productItem]);
         } else {
+            // if yes, push this item to that array
             productRenderItems[productIndex].push(productItem);
         }
     });
@@ -93,7 +98,7 @@ function OrderTable() {
     //     setIsOpen({ sourceStates });
     // }, []);
 
-    const dateParse = (value) => {
+    const dateParse = (value: string) => {
         const date = new Date(value);
         const dateString = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
         return dateString;
@@ -112,7 +117,7 @@ function OrderTable() {
                                 '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
                         }}
                     >
-                        <h2 align="center">{`Tilauksen ${order.id} tiedot`}</h2>
+                        <h2 style={{ textAlign: 'center' }}>{`Tilauksen ${order.id} tiedot`}</h2>
                         <Box
                             sx={{
                                 display: 'flex',
@@ -165,7 +170,8 @@ function OrderTable() {
                             }}
                         >
                             <Typography>{order.contact}</Typography>
-                            <Typography>{dateParse(order.delivery_date)}</Typography>
+                            {/* <Typography>{dateParse(order?.delivery_date as string)}</Typography> */}
+                            <Typography>{dateParse(order?.creation_date as string)}</Typography>
                         </Box>
                         <Box
                             sx={{
@@ -230,7 +236,7 @@ function OrderTable() {
                                 '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
                         }}
                     >
-                        <h2 align="center">Tilauksen tuotteet</h2>
+                        <h2 style={{ textAlign: 'center' }}>Tilauksen tuotteet</h2>
                         <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
                             <TableHead>
                                 <TableRow>
@@ -243,40 +249,43 @@ function OrderTable() {
                                     <StyledTableCell align="right">Varasto</StyledTableCell>
                                 </TableRow>
                             </TableHead>
-                            {/* <TableBody>
-                                {orderList.map((value) => (
-                                    <Fragment key={value.id}>
+                            {/*
+                             */}
+                            <TableBody>
+                                {productRenderItems.map((itemArray) => (
+                                    <Fragment key={itemArray[0].id}>
                                         <StyledTableRow>
                                             <TableCell>
                                                 <IconButton
                                                     aria-label="expand row"
                                                     size="small"
-                                                    onClick={() => {
-                                                        setIsOpen((prev) => ({
-                                                            ...prev,
-                                                            [value.id]: !isOpen[value.id],
-                                                        }));
-                                                    }}
+                                                    // onClick={() => {
+                                                    //     setIsOpen((prev) => ({
+                                                    //         ...prev,
+                                                    //         [value.id]: !isOpen[value.id],
+                                                    //     }));
+                                                    // }}
                                                 >
-                                                    {isOpen[value.id] ? (
-                                                        <KeyboardArrowUpIcon />
-                                                    ) : (
+                                                    {/* {isOpen[value.id] ? ( */}
+                                                    <KeyboardArrowUpIcon />
+                                                    {/* ) : (
                                                         <KeyboardArrowDownIcon />
-                                                    )}
+                                                    )} */}
                                                 </IconButton>
                                             </TableCell>
                                             <TableCell component="th" scope="row">
-                                                {value.name}
+                                                {itemArray[0].product.name}
                                             </TableCell>
-                                            <TableCell align="right">{value.count}</TableCell>
-                                            <TableCell align="right">{value.barcode}</TableCell>
-                                            <TableCell align="right">{value.id}</TableCell>
-                                            <TableCell align="right">{value.category_name}</TableCell>
-                                            <TableCell align="right">{value.storage_name}</TableCell>
+                                            <TableCell align="right">{itemArray.length}</TableCell>
+                                            <TableCell align="right">{itemArray[0].barcode}</TableCell>
+                                            <TableCell align="right">{itemArray[0].product.id}</TableCell>
+                                            <TableCell align="right">{itemArray[0].product.category}</TableCell>
+                                            <TableCell align="right">{itemArray[0].storage.name}</TableCell>
                                         </StyledTableRow>
                                         <TableRow>
                                             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
-                                                <Collapse in={isOpen[value.id]} timeout="auto" unmountOnExit>
+                                                {/* <Collapse in={isOpen[value.id]} timeout="auto" unmountOnExit> */}
+                                                <Collapse in={true} timeout="auto" unmountOnExit>
                                                     <Box sx={{ margin: 1 }}>
                                                         <Typography variant="h6" gutterBottom component="div">
                                                             Tuotteet
@@ -297,26 +306,28 @@ function OrderTable() {
                                                                 </TableRow>
                                                             </TableHead>
                                                             <TableBody>
-                                                                {value.items.map((item) => (
+                                                                {itemArray.map((item) => (
                                                                     <TableRow key={item.id}>
                                                                         <TableCell component="th" scope="row">
                                                                             {item.id}
                                                                         </TableCell>
-                                                                        <TableCell align="right">{item.name}</TableCell>
+                                                                        <TableCell align="right">
+                                                                            {item.product.name}
+                                                                        </TableCell>
                                                                         <TableCell align="right">
                                                                             {item.barcode}
                                                                         </TableCell>
                                                                         <TableCell align="right">
-                                                                            {item.category_name}
+                                                                            {item.product.category}
                                                                         </TableCell>
                                                                         <TableCell align="right">
-                                                                            {item.color_name}
+                                                                            {item.product.color}
                                                                         </TableCell>
                                                                         <TableCell align="right">
-                                                                            {item.measurements}
+                                                                            {item.product.measurements}
                                                                         </TableCell>
                                                                         <TableCell align="right">
-                                                                            {item.weight}
+                                                                            {item.product.weight}
                                                                         </TableCell>
                                                                         <TableCell align="right">
                                                                             {item.shelf_id}
@@ -331,7 +342,9 @@ function OrderTable() {
                                         </TableRow>
                                     </Fragment>
                                 ))}
-                            </TableBody> */}
+                            </TableBody>
+                            {/*
+                             */}
                         </Table>
                     </Box>
                     <Button sx={{ margin: '2rem' }} onClick={() => navigate(`/varasto/tilaus/${order.id}/muokkaa`)}>
