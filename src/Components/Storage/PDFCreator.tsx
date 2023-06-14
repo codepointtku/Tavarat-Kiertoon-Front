@@ -1,7 +1,8 @@
 import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
 import logo from '../../Assets/LOGO.png';
 import { type PDFOrderType } from './PDFView';
-// import type { IPDFDocument, IProduct } from './PDFView';
+
+// type ProductItemsType = Partial<PDFOrderType['product_items']> & { numberOfProducts: number };
 
 // NOTE: JTo: Temporary baseUrl. Move this to env variable.
 const baseUrl = `${window.location.protocol}//${window.location.hostname}:8000`;
@@ -94,7 +95,9 @@ const createRenderableProductList = (aProducts: PDFOrderType['product_items']) =
     //  => aTemp[0][0] == product, aTemp[0].length == product amount, aTemp.length == number of different products
     const aTempProducts: PDFOrderType['product_items'][] = [];
     aProducts.forEach((aProduct) => {
-        const productIndex = aTempProducts.findIndex((aTempProduct) => aTempProduct[0]?.id === aProduct.id);
+        const productIndex = aTempProducts.findIndex(
+            (aTempProduct) => aTempProduct[0]?.product.id === aProduct.product.id
+        );
         if (productIndex < 0) {
             aTempProducts.push([aProduct]);
         } else {
@@ -108,7 +111,7 @@ const createRenderableProductList = (aProducts: PDFOrderType['product_items']) =
     const aRenderProducts: PDFOrderType['product_items'] = [];
     aTempProducts.forEach((aProduct, index) => {
         aRenderProducts.push(aProduct[0]);
-        // aRenderProducts[index] = { ...aRenderProducts[index], numberOfProducts: aTempProducts[index].length };
+        aRenderProducts[index] = { ...aRenderProducts[index], numberOfProducts: aTempProducts[index].length };
     });
 
     return aRenderProducts;
@@ -143,6 +146,8 @@ function PDFDocument({ order }: { order: PDFOrderType }) {
     // console.log('### order', order.product_items);
     const productList = createRenderableProductList(order.product_items);
     const paginatedProductList = createPaginatedProductsLists(productList);
+    console.log('### productList', productList);
+    console.log('### paginatedProductList', paginatedProductList);
 
     // Address section on top of the page
     const addressSection = () => (
@@ -190,7 +195,6 @@ function PDFDocument({ order }: { order: PDFOrderType }) {
     //  - ['product_items']  : product_items array from datatype.
     //  - [number]           : indicates that you want to use type of one object from the array
     const productCard = (productItem: PDFOrderType['product_items'][number]) => {
-        // : IProduct
         return (
             <View style={styles.productCard} key={productItem.id}>
                 {/* <Image src={`${baseUrl}/media/${product.pictures[0].picture_address}`} style={styles.productImg} /> */}
@@ -200,7 +204,7 @@ function PDFDocument({ order }: { order: PDFOrderType }) {
                 />
 
                 <Text style={{ fontSize: '12', marginBottom: '5px' }}>
-                    {productItem.product.name}: {productItem.product.amount} kpl.
+                    {productItem.product.name}: {productItem.numberOfProducts} kpl.
                 </Text>
                 <Text style={{ fontSize: '10', marginBottom: '5px' }}>Viivakoodi: {productItem.barcode}</Text>
                 <Text style={{ fontSize: '10', marginBottom: '5px' }}>
