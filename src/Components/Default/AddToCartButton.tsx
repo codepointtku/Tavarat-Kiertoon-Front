@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSubmit, useRouteLoaderData, useSearchParams } from 'react-router-dom';
 import { type OverridableStringUnion } from '@material-ui/types';
@@ -18,7 +17,6 @@ interface Props {
 function AddToCartButton({ size, id, groupId, count }: Props) {
     const submit = useSubmit();
     const { cart, products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
-    const [, setAddedToCart] = useState(false);
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
 
@@ -32,7 +30,6 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
                 action: '/?' + searchParams.toString(),
             }
         );
-        setAddedToCart(true);
     };
 
     // product = undefined
