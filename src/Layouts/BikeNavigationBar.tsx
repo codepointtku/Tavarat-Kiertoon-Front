@@ -1,60 +1,114 @@
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-
-import { Box, Button, ButtonGroup } from '@mui/material';
 import BikeScooterIcon from '@mui/icons-material/BikeScooter';
 import ListIcon from '@mui/icons-material/List';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import ViewListIcon from '@mui/icons-material/ViewList';
-// import PedalBikeIcon from '@mui/icons-material/PedalBike';
-// import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
-// import MailOutlineIcon from '@mui/icons-material/MailOutline';
-// import StorageIcon from '@mui/icons-material/Storage';
 
-function BikeLinkBar() {
+export default function BikesHomePage() {
     return (
-        <Box id="bikes-navbuttons-wrapper" sx={{ borderBottom: '1px solid #009bd8' }}>
-            <ButtonGroup
-                variant="text"
-                id="navbuttons"
-                aria-label="navigation link buttons"
-                sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-            >
-                <Button component={Link} to="pyoralista">
-                    <ListIcon sx={{ marginRight: '5px' }} />
-                    Kaikki pyörät
-                </Button>
-                <Button component={Link} to="pyoramallit">
-                    <BikeScooterIcon sx={{ marginRight: '5px' }} />
-                    Pyörämallit
-                </Button>
-                <Button component={Link} to="pyoratilaukset">
-                    <ScheduleIcon sx={{ marginRight: '5px' }} />
-                    Pyörätilaukset
-                </Button>
-                <Button component={Link} to="pyorapaketit">
-                    <ViewListIcon sx={{ marginRight: '5px' }} />
-                    Pyöräpaketit
-                </Button>
-            </ButtonGroup>
-        </Box>
+        <>
+            <Typography variant="h3" align="center" color="primary.main" mb="2rem" width="100%">
+                Polkupyörien vuokraus
+            </Typography>
+
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableBody>
+                        <TableRow>
+                            <TableCell>
+                                <Button
+                                    component={Link}
+                                    to="pyoralista"
+                                    sx={{
+                                        bgcolor: 'common.white',
+                                        color: 'primary.main',
+                                        '&:hover': {
+                                            bgcolor: 'primary.main',
+                                            color: 'common.white',
+                                        },
+                                    }}
+                                >
+                                    <ListIcon sx={{ marginRight: '5px' }} />
+                                    Kaikki Polkupyörät
+                                </Button>
+                            </TableCell>
+                            <TableCell>
+                                <Typography variant="body1">Kaikki saatavilla olevat polkupyörät</Typography>
+                            </TableCell>
+                        </TableRow>
+
+                        <TableRow>
+                            <TableCell>
+                                <Button
+                                    component={Link}
+                                    to="pyoramallit"
+                                    sx={{
+                                        bgcolor: 'common.white',
+                                        color: 'primary.main',
+                                        '&:hover': {
+                                            bgcolor: 'primary.main',
+                                            color: 'common.white',
+                                        },
+                                    }}
+                                >
+                                    <BikeScooterIcon sx={{ marginRight: '5px' }} />
+                                    Pyörien mallit
+                                </Button>
+                            </TableCell>
+                            <TableCell>
+                                <Typography variant="body1">Kaikkien saatavilla olevat pyörien mallit</Typography>
+                            </TableCell>
+                        </TableRow>
+
+                        <TableRow>
+                            <TableCell>
+                                <Button
+                                    component={Link}
+                                    to="pyoratilaukset"
+                                    sx={{
+                                        bgcolor: 'common.white',
+                                        color: 'primary.main',
+                                        '&:hover': {
+                                            bgcolor: 'primary.main',
+                                            color: 'common.white',
+                                        },
+                                    }}
+                                >
+                                    <ScheduleIcon sx={{ marginRight: '5px' }} />
+                                    Pyörätilaukset
+                                </Button>
+                            </TableCell>
+                            <TableCell>
+                                <Typography variant="body1">Pyörien varaukset ja toimitukset.</Typography>
+                            </TableCell>
+                        </TableRow>
+
+                        <TableRow>
+                            <TableCell>
+                                <Button
+                                    component={Link}
+                                    to="pyorapaketit"
+                                    sx={{
+                                        bgcolor: 'common.white',
+                                        color: 'primary.main',
+                                        '&:hover': {
+                                            bgcolor: 'primary.main',
+                                            color: 'common.white',
+                                        },
+                                    }}
+                                >
+                                    <ViewListIcon sx={{ marginRight: '5px' }} />
+                                    Pyöräpaketit
+                                </Button>
+                            </TableCell>
+                            <TableCell>
+                                <Typography variant="body1">Pyöräpakettien mukkaus.</Typography>
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </>
     );
 }
-
-function BikeNavigationBar() {
-    return (
-        <Box
-            id="bikes-navbar-container"
-            aria-label="navigation bar"
-            sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                width: '100%',
-                mb: '1rem',
-            }}
-        >
-            <BikeLinkBar />
-        </Box>
-    );
-}
-
-export default BikeNavigationBar;
