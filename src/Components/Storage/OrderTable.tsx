@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate, Link } from 'react-router-dom';
+import { useLoaderData, Link } from 'react-router-dom';
 import { useState, useEffect, Fragment } from 'react';
 
 import {
@@ -214,11 +214,11 @@ function OrderTable() {
                             <TableHead>
                                 <TableRow>
                                     <StyledTableCell> </StyledTableCell>
+                                    <StyledTableCell>Viivakoodi</StyledTableCell>
                                     <StyledTableCell>Tuotenimi</StyledTableCell>
-                                    <StyledTableCell align="right">Saldo</StyledTableCell>
-                                    <StyledTableCell align="right">Viivakoodi</StyledTableCell>
-                                    <StyledTableCell align="right">Tuotenumero</StyledTableCell>
-                                    <StyledTableCell align="right">Kategoria</StyledTableCell>
+                                    <StyledTableCell align="right">Kappalemäärä</StyledTableCell>
+                                    {/* <StyledTableCell align="right">Tuotenumero</StyledTableCell> */}
+                                    {/* <StyledTableCell align="right">Kategoria</StyledTableCell> */}
                                     <StyledTableCell align="right">Varasto</StyledTableCell>
                                 </TableRow>
                             </TableHead>
@@ -247,13 +247,13 @@ function OrderTable() {
                                                     )}
                                                 </IconButton>
                                             </TableCell>
+                                            <TableCell>{itemArray[0].barcode}</TableCell>
                                             <TableCell component="th" scope="row">
                                                 {itemArray[0].product.name}
                                             </TableCell>
                                             <TableCell align="right">{itemArray.length}</TableCell>
-                                            <TableCell align="right">{itemArray[0].barcode}</TableCell>
-                                            <TableCell align="right">{itemArray[0].product.id}</TableCell>
-                                            <TableCell align="right">{itemArray[0].product.category}</TableCell>
+                                            {/* <TableCell align="right">{itemArray[0].product.id}</TableCell> */}
+                                            {/* <TableCell align="right">{itemArray[0].product.category}</TableCell> */}
                                             <TableCell align="right">{itemArray[0].storage.name}</TableCell>
                                         </StyledTableRow>
                                         <TableRow>
@@ -267,13 +267,13 @@ function OrderTable() {
                                                         <Table size="small">
                                                             <TableHead>
                                                                 <TableRow>
-                                                                    <TableCell component="th" scope="row">
+                                                                    {/* <TableCell component="th" scope="row">
                                                                         Tuotenumero
-                                                                    </TableCell>
-                                                                    <TableCell align="right">Tuotenimi</TableCell>
+                                                                    </TableCell> */}
                                                                     <TableCell align="right">Viivakoodi</TableCell>
-                                                                    <TableCell align="right">Kategoria</TableCell>
-                                                                    <TableCell align="right">Väri</TableCell>
+                                                                    <TableCell align="right">Tuotenimi</TableCell>
+                                                                    {/* <TableCell align="right">Kategoria</TableCell> */}
+                                                                    {/* <TableCell align="right">Väri</TableCell> */}
                                                                     <TableCell align="right">Mitat</TableCell>
                                                                     <TableCell align="right">Paino</TableCell>
                                                                     <TableCell align="right">Hylly id</TableCell>
@@ -282,21 +282,21 @@ function OrderTable() {
                                                             <TableBody>
                                                                 {itemArray.map((item) => (
                                                                     <TableRow key={item.id}>
-                                                                        <TableCell component="th" scope="row">
+                                                                        {/* <TableCell component="th" scope="row">
                                                                             {item.id}
-                                                                        </TableCell>
-                                                                        <TableCell align="right">
-                                                                            {item.product.name}
-                                                                        </TableCell>
+                                                                        </TableCell> */}
                                                                         <TableCell align="right">
                                                                             {item.barcode}
                                                                         </TableCell>
                                                                         <TableCell align="right">
+                                                                            {item.product.name}
+                                                                        </TableCell>
+                                                                        {/* <TableCell align="right">
                                                                             {item.product.category}
                                                                         </TableCell>
                                                                         <TableCell align="right">
                                                                             {item.product.color}
-                                                                        </TableCell>
+                                                                        </TableCell> */}
                                                                         <TableCell align="right">
                                                                             {item.product.measurements}
                                                                         </TableCell>
@@ -325,7 +325,7 @@ function OrderTable() {
                         Muokkaa tilausta
                     </Button>
                     <Button color="error" to={`/varasto/pdf/${order.id}`} component={Link}>
-                        Create PDF
+                        Luo tulostettava PDF
                     </Button>
                 </>
             ) : (
