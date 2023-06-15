@@ -30,6 +30,8 @@ function Confirmation() {
     const { id } = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
     let order: string;
 
+    console.log(products);
+
     const onSubmit = async () => {
         const { email, deliveryAddress, phoneNumber, orderInfo } = state;
         submit(
@@ -96,9 +98,9 @@ function Confirmation() {
                     Tilaustiedot
                 </Typography>
                 <List>
-                    {products?.map((item: { id: number; count: number; name: string }) => (
-                        <ListItem key={item.id} disableGutters disablePadding>
-                            <ListItemText primary={`${item.count}x ${item.name}`} />
+                    {products?.map((product_item: { count: number; product: { id: number; name: string } }) => (
+                        <ListItem key={product_item.product.id} disableGutters disablePadding>
+                            <ListItemText primary={`${product_item.count}x ${product_item.product.name}`} />
                         </ListItem>
                     ))}
                 </List>
