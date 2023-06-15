@@ -279,7 +279,7 @@ function DefaultAppBar() {
                                 sx={{ mt: 1 }}
                             >
                                 <Grid container direction="row" justifyContent="space-evenly" sx={{ p: 2, width: 200 }}>
-                                    <Grid id="typography-grid-item" item sx={{ mt: '0.5rem' }}>
+                                    <Grid item sx={{ mt: '0.5rem' }}>
                                         <Typography variant="body2">Oletko varma?</Typography>
                                     </Grid>
                                     <Grid item>
