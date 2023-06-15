@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect, type ReactNode } from 'react';
-import { useLoaderData, useNavigate, useSubmit } from 'react-router-dom';
+import { useLoaderData, useNavigate, useSubmit, useLocation } from 'react-router-dom';
 
 import {
     AppBar,
@@ -150,6 +150,9 @@ function DefaultAppBar() {
     const [cartEmpty, setCartEmpty] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+    const location = useLocation();
+
+    console.log(location.pathname);
 
     useEffect(() => {
         if (cart?.product_items?.length !== productsLength) {
@@ -207,21 +210,23 @@ function DefaultAppBar() {
             >
                 <Toolbar>
                     <Stack direction="row" spacing={4}>
-                        <Tooltip title="Ostoskori">
-                            <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
-                                <StyledBadge
-                                    isanimated={productsLength === cart?.product_items?.length ? 1 : 0}
-                                    badgeContent={cart?.product_items?.length}
-                                    sx={{ color: 'primary.contrastText' }}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                >
-                                    <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
-                                </StyledBadge>
-                            </IconButton>
-                        </Tooltip>
+                        {!location.pathname.includes('/ostoskori') && (
+                            <Tooltip title="Ostoskori">
+                                <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
+                                    <StyledBadge
+                                        isanimated={productsLength === cart?.product_items?.length ? 1 : 0}
+                                        badgeContent={cart?.product_items?.length}
+                                        sx={{ color: 'primary.contrastText' }}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                    >
+                                        <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
+                                    </StyledBadge>
+                                </IconButton>
+                            </Tooltip>
+                        )}
                         <Tooltip title="Kirjautuminen">
                             <IconButton onClick={drawerOpen('account')} sx={iconHover}>
                                 <AccountCircleOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
