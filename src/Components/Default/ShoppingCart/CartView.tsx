@@ -24,8 +24,6 @@ function CartView() {
         navigate('/ostoskori/vaihe2');
     };
 
-    console.log(cartProducts);
-
     return (
         <>
             <Grid container direction="row" justifyContent="space-around">

@@ -152,8 +152,6 @@ function DefaultAppBar() {
     const open = Boolean(anchorEl);
     const location = useLocation();
 
-    console.log(location.pathname);
-
     useEffect(() => {
         if (cart?.product_items?.length !== productsLength) {
             setTimeout(() => {
@@ -192,6 +190,7 @@ function DefaultAppBar() {
 
     function handleEmptyCart() {
         submit('a', { method: 'put', action: '/' });
+        setAnchorEl(null);
     }
 
     return (
@@ -283,7 +282,7 @@ function DefaultAppBar() {
                                 onClose={() => setAnchorEl(null)}
                                 sx={{ mt: 1 }}
                             >
-                                <Grid container direction="row" justifyContent="space-evenly" sx={{ p: 2, width: 200 }}>
+                                <Grid container direction="row" justifyContent="space-evenly" sx={{ p: 1, width: 200 }}>
                                     <Grid item sx={{ mt: '0.5rem' }}>
                                         <Typography variant="body2">Oletko varma?</Typography>
                                     </Grid>
