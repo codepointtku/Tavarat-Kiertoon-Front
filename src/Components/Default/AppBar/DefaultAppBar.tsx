@@ -15,6 +15,8 @@ import {
     ListItem,
     ListItemText,
     Typography,
+    Popover,
+    Grid,
     type Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -146,6 +148,8 @@ function DefaultAppBar() {
     const { cart, products, amountList } = useLoaderData() as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
     const [cartEmpty, setCartEmpty] = useState(false);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
 
     useEffect(() => {
         if (cart?.product_items?.length !== productsLength) {
@@ -179,7 +183,11 @@ function DefaultAppBar() {
         }
     }
 
-    function handleClick() {
+    function handlePopOverOpen(event: React.MouseEvent<HTMLElement>) {
+        setAnchorEl(event.currentTarget);
+    }
+
+    function handleEmptyCart() {
         submit('a', { method: 'put', action: '/' });
     }
 
@@ -257,12 +265,28 @@ function DefaultAppBar() {
                         <ListItem
                             sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}
                         >
-                            <Button color="error" startIcon={<DeleteIcon />} onClick={handleClick}>
+                            <Button color="error" startIcon={<DeleteIcon />} onClick={handlePopOverOpen}>
                                 <ListItemText
                                     primary="Tyhjennä ostoskori"
                                     primaryTypographyProps={{ fontWeight: 'bold' }}
                                 />
                             </Button>
+                            <Popover
+                                open={open}
+                                anchorEl={anchorEl}
+                                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                                onClose={() => setAnchorEl(null)}
+                                sx={{ mt: 1 }}
+                            >
+                                <Grid container direction="row" justifyContent="space-evenly" sx={{ p: 2, width: 200 }}>
+                                    <Grid id="typography-grid-item" item sx={{ mt: '0.5rem' }}>
+                                        <Typography variant="body2">Oletko varma?</Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button onClick={handleEmptyCart}>Kyllä</Button>
+                                    </Grid>
+                                </Grid>
+                            </Popover>
                         </ListItem>
                     )}
                 </List>
