@@ -12,7 +12,7 @@ interface CartState {
     state: {
         email: string;
         deliveryAddress: string;
-        deliveryMethod: string;
+        deliveryRequired: string;
         phoneNumber: string;
         orderInfo: string;
         firstName: string;
@@ -38,6 +38,8 @@ function Confirmation() {
         );
         submit({ order }, { method: 'put', action: '/' });
     };
+
+    console.log(state.deliveryRequired);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -89,7 +91,9 @@ function Confirmation() {
                         <Typography variant="subtitle1">Kaupunki: {state.city}</Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">Toimitustapa: {state.deliveryMethod}</Typography>
+                        <Typography variant="subtitle1">
+                            Toimitustapa: {state.deliveryRequired === 'true' ? 'Kuljetus' : 'Nouto'}
+                        </Typography>
                     </Grid>
                 </Grid>
                 <Typography variant="overline" sx={{ fontSize: 20, fontWeight: 'bold' }}>

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { useStateMachine } from 'little-state-machine';
-import { Typography, TextField, Grid, MenuItem, Box, Alert, OutlinedInput, Button } from '@mui/material';
+import { Typography, TextField, Grid, MenuItem, Box, Alert, OutlinedInput, Button, fabClasses } from '@mui/material';
 
 import CartButtons from './CartButtons';
 import Update from './Update';
@@ -19,14 +19,14 @@ export interface CartFormData {
     deliveryAddress: string;
     zipcode: string;
     city: string;
-    deliveryMethod: string;
+    deliveryRequired: string;
     orderInfo?: string;
 }
 
 function ContactsAndDelivery() {
     const user = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
     const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
-    const [selectedMethod, setSelectedMethod] = useState('shipping');
+    const [selectedMethod, setSelectedMethod] = useState('true');
     const {
         register,
         handleSubmit,
@@ -37,6 +37,7 @@ function ContactsAndDelivery() {
 
     const navigate = useNavigate();
     const onSubmit = (data: CartFormData) => {
+        console.log(data);
         actions.Update(data);
         navigate('/ostoskori/vaihe3');
     };
@@ -186,7 +187,7 @@ function ContactsAndDelivery() {
                 )}
                 <Grid item xs={2.5}>
                     <TextField
-                        {...register('deliveryMethod', { required: true })}
+                        {...register('deliveryRequired', { required: true })}
                         label="Toimitustapa"
                         variant="outlined"
                         value={selectedMethod}
@@ -196,10 +197,10 @@ function ContactsAndDelivery() {
                         fullWidth
                         select
                     >
-                        <MenuItem value="shipping">Kuljetus</MenuItem>
-                        <MenuItem value="pickup">Nouto</MenuItem>
+                        <MenuItem value="true">Kuljetus</MenuItem>
+                        <MenuItem value="false">Nouto</MenuItem>
                     </TextField>
-                    {errors.deliveryMethod && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
+                    {errors.deliveryRequired && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                 </Grid>
                 {selectedMethod === 'pickup' && (
                     <Grid item>
