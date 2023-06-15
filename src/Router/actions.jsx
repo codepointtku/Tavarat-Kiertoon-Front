@@ -18,11 +18,13 @@ const adminLogOut = async (auth, setAuth, request) => {
             // const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
             //     formData,
             // });
-            const response = await usersApi.usersLogoutCreate();
-            if (response.status === 200) {
-                return { type: 'logout', status: true };
-            }
-            return { type: 'logout', status: false };
+            // const response = await usersApi.usersLogoutCreate();
+            await usersApi.usersLogoutCreate();
+            // if (response.status === 200) {
+            // return { type: 'logout', status: true };
+            return redirect('/');
+            // }
+            // return { type: 'logout', status: false };
         }
     }
 };
