@@ -73,10 +73,7 @@ function ProductInCart({ name, id, count, maxCount }: Props) {
                     onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
                     disableUnderline
                 />
-                <IconButton
-                    onClick={() => handleClick('add')}
-                    disabled={amountN === maxCount + selectedAmount || amountN > maxCount}
-                >
+                <IconButton onClick={() => handleClick('add')} disabled={amountN === maxCount + selectedAmount}>
                     <AddIcon />
                 </IconButton>
                 <Button

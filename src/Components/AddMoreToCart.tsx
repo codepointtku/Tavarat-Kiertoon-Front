@@ -107,7 +107,7 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) 
                         size="small"
                         sx={{ color: 'background.default', padding: 0, ml: 1, mr: 0.5 }}
                         onClick={() => handleOnClick('add')}
-                        disabled={amountN === maxCount + selectedAmount || amountN > maxCount}
+                        disabled={amountN === maxCount + selectedAmount}
                     >
                         <AddIcon />
                     </IconButton>
