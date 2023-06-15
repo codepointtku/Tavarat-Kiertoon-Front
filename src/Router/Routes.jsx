@@ -1,11 +1,11 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { StateMachineProvider, createStore } from 'little-state-machine';
 import { ThemeProvider } from '@mui/material';
 
 import AuthContext from '../Context/AuthContext';
 import ErrorBoundary from './ErrorBoundary';
-import HasRole from '../Utils/HasRole';
+// import HasRole from '../Utils/HasRole';
 
 import DefaultView from '../Views/DefaultView';
 
@@ -72,6 +72,7 @@ import GuideOrdering from '../Components/Default/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Default/Instructions/GuideShipping';
 import GuideBikes from '../Components/Default/Instructions/GuideBikes';
 
+import ModifyBikeOrder from '../Components/Bikes/ModifyBikeOrder';
 import BikesPage from '../Components/Bikes/BikesPage';
 import Bikes from '../Components/Bikes/Bikes';
 import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
@@ -82,6 +83,7 @@ import BikeModels from '../Components/Bikes/BikeModels';
 import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
 
 import {
+    bikesPacketLoader,
     addItemLoader,
     orderEditLoader,
     ordersListLoader,
@@ -103,9 +105,11 @@ import {
     bikeModelsLoader,
     bikeSingleModelLoader,
     shoppingProcessLoader,
+    modifyBikeOrderLoader,
     adminLoader,
     adminInboxLoader,
     bikeNewModelLoader,
+    createBikeOrderLoader,
 } from './loaders';
 
 import {
@@ -126,6 +130,7 @@ import {
     createNewBikeAction,
     activationAction,
     adminLogOut,
+    modifyBikeOrderAction,
     deleteBikeAction,
     adminInboxAction,
     modifyBikeModelAction,
@@ -134,6 +139,8 @@ import {
     emailChangeSuccessfulAction,
     changeEmailAction,
     adminBulletinsAction,
+    createNewPacketAction,
+    deletePacketAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
@@ -560,7 +567,41 @@ function Routes() {
                                         },
                                         {
                                             path: 'pyorapaketit',
+                                            loader: async () => bikesPacketLoader(auth, setAuth),
                                             element: <BikePackets />,
+                                        },
+
+                                        {
+                                            path: 'muokkaapaketti',
+                                            element: <Outlet />,
+                                            children: [
+                                                {
+                                                    index: true,
+                                                    element: <Navigate to="/pyorat/pyoravarasto/muokkaapaketti" />,
+                                                },
+                                                {
+                                                    path: ':id',
+                                                    element: <ModifyBikeOrder createNewPacket={false} />,
+                                                    loader: async ({ params }) =>
+                                                        modifyBikeOrderLoader(auth, setAuth, params),
+                                                    action: async ({ request, params }) =>
+                                                        modifyBikeOrderAction(auth, setAuth, request, params),
+                                                    children: [
+                                                        {
+                                                            path: 'poista',
+                                                            action: async ({ params }) =>
+                                                                deletePacketAction(auth, setAuth, params),
+                                                        },
+                                                    ],
+                                                },
+                                            ],
+                                        },
+                                        {
+                                            path: 'lisaapaketti',
+                                            element: <ModifyBikeOrder createNewPacket={true} />,
+                                            loader: async ({ params }) => createBikeOrderLoader(auth, setAuth, params),
+                                            action: async ({ request, params }) =>
+                                                createNewPacketAction(auth, setAuth, request, params),
                                         },
                                         {
                                             path: 'muokkaa',

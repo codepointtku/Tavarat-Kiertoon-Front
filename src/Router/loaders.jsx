@@ -248,6 +248,51 @@ const bikesListLoader = async (auth, setAuth) => {
     const { data } = await bikesApi.bikesStockList();
     return data;
 };
+/**
+ * Get all bikepackets and models
+ */
+const bikesPacketLoader = async (auth, setAuth) => {
+    // console.log('perjantai');
+    // const [{ data: packet }, { data: models }] = await Promise.all([
+    //     apiCall(auth, setAuth, `/bikes/packages/`, 'get'),
+    //     apiCall(auth, setAuth, `/bikes/models/`, 'get'),
+    // ]);
+
+    const [{ data: packet }, { data: models }] = await Promise.all([
+        bikesApi.bikesPackagesList(),
+        bikesApi.bikesModelsList(),
+    ]);
+
+    return { packet, models };
+};
+/**
+ * Get one bikepacket and all models
+ */
+const modifyBikeOrderLoader = async (auth, setAuth, params) => {
+    // console.log('lauantai');
+    const [{ data: packet }, { data: models }] = await Promise.all([
+        // apiCall(auth, setAuth, `/bikes/packages/${params.id}`, 'get'),
+        // apiCall(auth, setAuth, `/bikes/models/`, 'get'),
+        bikesApi.bikesPackagesRetrieve(params.id),
+        bikesApi.bikesModelsList(),
+    ]);
+    return { packet, models };
+};
+const createBikeOrderLoader = async (auth, setAuth, params) => {
+    // console.log('lauantai');
+    const [{ data: models }] = await Promise.all([
+        // apiCall(auth, setAuth, `/bikes/packages/${params.id}`, 'get'),
+        // apiCall(auth, setAuth, `/bikes/models/`, 'get'),
+        bikesApi.bikesModelsList(),
+    ]);
+    const packet = {
+        // id: number;
+        name: '',
+        description: '',
+        bikes: [],
+    };
+    return { packet, models };
+};
 
 /**
  * Get information needed to modify a single bike
@@ -436,6 +481,7 @@ const adminInboxLoader = async (auth, setAuth, request) => {
 };
 
 export {
+    bikesPacketLoader,
     rootLoader,
     productListLoader,
     productDetailsLoader,
@@ -459,5 +505,7 @@ export {
     shoppingProcessLoader,
     adminLoader,
     adminInboxLoader,
+    modifyBikeOrderLoader,
     bikeNewModelLoader,
+    createBikeOrderLoader,
 };

@@ -531,6 +531,45 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     return redirect('/pyorat/pyoravarasto');
 };
 
+// kommentti
+const modifyBikeOrderAction = async (auth, setAuth, request, params) => {
+    console.log('p:', params);
+    // collect data that needs to be sent to backend
+    const data = await request.formData();
+    // console.log('### data', data);
+    const submission = {
+        name: data.get('packetName'),
+        description: data.get('packetDescription'),
+        bikes: JSON.parse(data.get('bikes')),
+    };
+    // send data and redirect back to bike list
+    // await apiCall(auth, setAuth, `/bikes/packages/${params.id}/`, 'put', submission);
+    console.log('### submission', submission);
+    await bikesApi.bikesPackagesUpdate(params.id, submission);
+    return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+};
+const createNewPacketAction = async (auth, setAuth, request) => {
+    console.log('### createNewPacketAction');
+    // collect data that needs to be sent to backend
+    const data = await request.formData();
+    const submission = {
+        name: data.get('packetName'),
+        description: data.get('packetDescription'),
+        bikes: JSON.parse(data.get('bikes')),
+    };
+
+    // send data and redirect back to bike list
+    // await apiCall(auth, setAuth, `/bikes/stock/`, 'post', submission);
+    await bikesApi.bikesPackagesCreate(submission);
+    return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+};
+const deletePacketAction = async (auth, setAuth, params) => {
+    console.log('### deletePacketAction');
+    // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
+    await bikesApi.bikesPackagesDestroy(params.id);
+    return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+};
+
 const activationAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     // const response = await apiCall(auth, setAuth, '/users/activate/', 'post', {
@@ -788,9 +827,12 @@ export {
     modifyBikeModelAction,
     deleteBikeAction,
     adminLogOut,
+    modifyBikeOrderAction,
     adminInboxAction,
     createBikeModelAction,
     deleteBikeModelAction,
     emailChangeSuccessfulAction,
     changeEmailAction,
+    createNewPacketAction,
+    deletePacketAction,
 };
