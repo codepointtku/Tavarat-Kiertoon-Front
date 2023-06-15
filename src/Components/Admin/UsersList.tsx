@@ -3,12 +3,7 @@ import * as React from 'react';
 import { useLoaderData } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import {
-    // Box,
-    Stack,
-    Button,
-    Link as MuiLink,
-} from '@mui/material';
+import { Stack, Button, Link as MuiLink } from '@mui/material';
 
 import {
     DataGrid,
@@ -54,8 +49,6 @@ function UsersList() {
             ),
         },
     ];
-
-    if (!results) return null;
 
     const localizedTextsMap = {
         // https://github.com/mui/mui-x/blob/master/packages/grid/x-data-grid/src/locales/fiFI.ts
@@ -233,6 +226,8 @@ function UsersList() {
         aggregationFunctionLabelSize: 'koko',
     };
 
+    if (!results) return null;
+
     const GridX = () => {
         return (
             <div style={{ height: 500 }}>
@@ -266,19 +261,17 @@ function UsersList() {
     };
 
     return (
-        // <Box id="users-list-component-container">
         <Stack id="components-stack" alignItems="center" width="100%">
             <TypographyTitle text="Kaikki käyttäjät" />
             <div
                 id="datagrid-parent"
                 style={{ display: 'flex', height: '100%', width: '100%', margin: '1rem 0 1rem 0' }}
             >
-                <div style={{ flexGrow: 1 }}>
+                <div id="datagrid-child" style={{ flexGrow: 1 }}>
                     <GridX />
                 </div>
             </div>
         </Stack>
-        // </Box>
     );
 }
 
