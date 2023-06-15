@@ -3133,10 +3133,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/Color'
           readOnly: true
-        picture:
-          allOf:
-          - $ref: '#/components/schemas/Picture'
-          readOnly: true
         name:
           type: string
           maxLength: 255
@@ -3149,7 +3145,6 @@ components:
       - description
       - id
       - name
-      - picture
       - size
       - type
     BikeModelCreate:
@@ -3174,9 +3169,6 @@ components:
           type: integer
           nullable: true
         color:
-          type: integer
-          nullable: true
-        picture:
           type: integer
           nullable: true
       required:
@@ -3205,9 +3197,6 @@ components:
           type: integer
           nullable: true
         color:
-          type: integer
-          nullable: true
-        picture:
           type: integer
           nullable: true
       required:
@@ -3443,9 +3432,6 @@ components:
         description:
           type: string
           maxLength: 255
-        picture:
-          type: integer
-          nullable: true
       required:
       - brand
       - color

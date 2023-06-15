@@ -1,12 +1,25 @@
 import * as React from 'react';
 import { useSubmit, Link, useActionData, useRouteLoaderData } from 'react-router-dom';
 
-import { AppBar, Avatar, Badge, Box, IconButton, InputBase, Menu, MenuItem, Stack, Toolbar } from '@mui/material';
+import {
+    AppBar,
+    Avatar,
+    Badge,
+    Box,
+    Grid,
+    IconButton,
+    // InputBase,
+    Menu,
+    MenuItem,
+    Stack,
+    Toolbar,
+    Typography,
+} from '@mui/material';
 
-import { styled, alpha } from '@mui/material/styles';
+// import { styled, alpha } from '@mui/material/styles';
 
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import MailIcon from '@mui/icons-material/Mail';
 
@@ -16,58 +29,60 @@ import AlertBox from '../../AlertBox';
 import type { adminLogOut } from '../../../Router/actions';
 import type { adminLoader } from '../../../Router/loaders';
 
-function Search() {
-    const Search = styled('div')(({ theme }) => ({
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: alpha(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.common.white, 0.25),
-        },
-        marginRight: theme.spacing(2),
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(3),
-            width: 'auto',
-        },
-    }));
+import logo from '../../../Assets/Turku_vaaka_300ppi_viiva_white.png';
 
-    const SearchIconWrapper = styled('div')(({ theme }) => ({
-        padding: theme.spacing(0, 2),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    }));
+// function Search() {
+//     const Search = styled('div')(({ theme }) => ({
+//         position: 'relative',
+//         borderRadius: theme.shape.borderRadius,
+//         backgroundColor: alpha(theme.palette.common.white, 0.15),
+//         '&:hover': {
+//             backgroundColor: alpha(theme.palette.common.white, 0.25),
+//         },
+//         marginRight: theme.spacing(2),
+//         marginLeft: 0,
+//         width: '100%',
+//         [theme.breakpoints.up('sm')]: {
+//             marginLeft: theme.spacing(3),
+//             width: 'auto',
+//         },
+//     }));
 
-    const StyledInputBase = styled(InputBase)(({ theme }) => ({
-        color: 'inherit',
-        '& .MuiInputBase-input': {
-            padding: theme.spacing(1, 1, 1, 0),
-            // vertical padding + font size from searchIcon
-            paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-            transition: theme.transitions.create('width'),
-            width: '100%',
-            [theme.breakpoints.up('md')]: {
-                width: '20ch',
-            },
-        },
-    }));
+//     const SearchIconWrapper = styled('div')(({ theme }) => ({
+//         padding: theme.spacing(0, 2),
+//         height: '100%',
+//         position: 'absolute',
+//         pointerEvents: 'none',
+//         display: 'flex',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//     }));
 
-    return (
-        <Search>
-            <SearchIconWrapper>
-                <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase placeholder="Etsi sivustolta..." inputProps={{ 'aria-label': 'search' }} />
-        </Search>
-    );
-}
+//     const StyledInputBase = styled(InputBase)(({ theme }) => ({
+//         color: 'inherit',
+//         '& .MuiInputBase-input': {
+//             padding: theme.spacing(1, 1, 1, 0),
+//             // vertical padding + font size from searchIcon
+//             paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+//             transition: theme.transitions.create('width'),
+//             width: '100%',
+//             [theme.breakpoints.up('md')]: {
+//                 width: '20ch',
+//             },
+//         },
+//     }));
 
-function AdminAppBar() {
+//     return (
+//         <Search>
+//             <SearchIconWrapper>
+//                 <SearchIcon />
+//             </SearchIconWrapper>
+//             <StyledInputBase placeholder="Etsi sivustolta..." inputProps={{ 'aria-label': 'search' }} />
+//         </Search>
+//     );
+// }
+
+function Abc() {
     const [avatarDropDownMenu, setAvatarDropDownMenu] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const { messages } = useRouteLoaderData('admin') as Awaited<ReturnType<typeof adminLoader>>;
@@ -97,27 +112,25 @@ function AdminAppBar() {
             {responseStatus?.type === 'logout' && (
                 <AlertBox text="asia pihvi, hei hei ja huomiseen" status="success" redirectUrl="/" timer={4000} />
             )}
-
             <AppBar
                 id="admin-panel-appbar"
                 position="static"
                 sx={{
                     width: 'min-content',
                     backgroundColor: 'primary.main',
-                    padding: '1rem',
                     boxShadow: 0,
                 }}
             >
                 <Toolbar id="admin-panel-appbar-toolbar">
                     <Stack id="appbar-icons-stack-row" direction="row" alignItems="center">
-                        <Box id="statistics" sx={{ margin: '0 1rem 0 0rem' }}>
+                        <Box id="statistics" sx={{ margin: '0 1rem 0 0' }}>
                             <Tooltip title="Tarkastele tilastoja">
                                 <IconButton component={Link} to="/admin/tilastot">
                                     <QueryStatsIcon sx={{ color: 'primary.contrastText' }} />
                                 </IconButton>
                             </Tooltip>
                         </Box>
-                        <Search />
+                        {/* <Search /> */}
                         <Box id="notifs" sx={{ margin: '0 1rem 0 1rem' }}>
                             <Tooltip title="Ilmoitukset">
                                 <IconButton>
@@ -136,7 +149,7 @@ function AdminAppBar() {
                                 </IconButton>
                             </Tooltip>
                         </Box>
-                        <Box id="avatar" sx={{ margin: '0 1rem 0 1rem' }}>
+                        <Box id="avatar" sx={{ margin: '0 0 0 1rem' }}>
                             {/* <Tooltip title="Kirjautuminen"> */}
                             <IconButton onClick={handleClickAvatarDropDownMenu}>
                                 <Avatar sx={{ bgcolor: 'success.dark' }}>A</Avatar>
@@ -161,4 +174,48 @@ function AdminAppBar() {
     );
 }
 
-export default AdminAppBar;
+function PanelHeader() {
+    return (
+        <Box id="header-appbar-container" sx={{ backgroundColor: 'primary.main', padding: '1rem' }}>
+            <Grid container flexDirection="row">
+                <Grid item xs={2} md={2}>
+                    <Link to="/">
+                        <img src={logo} alt="Turku logo" style={{ width: 'auto', maxWidth: '9rem', height: 'auto' }} />
+                    </Link>
+                </Grid>
+
+                <Grid
+                    item
+                    xs={3}
+                    md={3}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography variant="h4" color="primary.contrastText">
+                            Tavarat Kiertoon
+                        </Typography>
+                    </Box>
+                </Grid>
+
+                <Grid
+                    item
+                    xs={7}
+                    md={7}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end',
+                    }}
+                >
+                    <Abc />
+                </Grid>
+            </Grid>
+        </Box>
+    );
+}
+
+export default PanelHeader;
