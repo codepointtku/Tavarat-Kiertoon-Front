@@ -1,21 +1,14 @@
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardActionArea, CardHeader, Typography, Grid } from '@mui/material';
+import { OrderDetailResponse } from '../../../api';
 
-interface OrderInfo {
-    orderInfo: {
-        id: number;
-        status: string;
-        delivery_address: string;
-        contact: string;
-        order_info: string;
-        delivery_date: string;
-        phone_number: string;
-        product_items: [];
-    };
-}
+export type OrderCardProps = {
+    key: number;
+    orderInfo: OrderDetailResponse;
+};
 
-function OrderCard({ orderInfo }: OrderInfo) {
-    const date = new Date(orderInfo.delivery_date);
+function OrderCard({ orderInfo }: OrderCardProps) {
+    const date = new Date(orderInfo.delivery_date as string);
     const readableDeliveryDate = date.toLocaleDateString();
     return (
         <Card
