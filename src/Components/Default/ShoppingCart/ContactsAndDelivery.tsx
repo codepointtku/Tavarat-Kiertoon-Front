@@ -39,7 +39,6 @@ function ContactsAndDelivery() {
 
     const navigate = useNavigate();
     const onSubmit = (data: CartFormData) => {
-        // console.log(data);
         actions.Update(data);
         navigate('/ostoskori/vaihe3');
     };
