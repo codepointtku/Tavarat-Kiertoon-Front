@@ -29,7 +29,7 @@ function ProductInCart({ name, id, count, maxCount }: Props) {
     }
 
     function handleClick(action: string) {
-        if (amountN >= 0 && amountN <= maxCount + amountN) {
+        if (amountN >= 0 && amountN <= maxCount + selectedAmount) {
             action === 'add' ? addAmount() : removeAmount();
         }
     }
@@ -37,7 +37,7 @@ function ProductInCart({ name, id, count, maxCount }: Props) {
     function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const _input = event.target.value;
         const input: number = +_input;
-        if ((input >= 0 && input <= maxCount + amountN) || _input === '') {
+        if ((input >= 0 && input <= maxCount + selectedAmount) || _input === '') {
             setAmountN(Number(input));
             input === selectedAmount ? setChangeAmount(true) : setChangeAmount(false);
         }
@@ -73,7 +73,7 @@ function ProductInCart({ name, id, count, maxCount }: Props) {
                     onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
                     disableUnderline
                 />
-                <IconButton onClick={() => handleClick('add')} disabled={amountN === maxCount || amountN > maxCount}>
+                <IconButton onClick={() => handleClick('add')} disabled={amountN === maxCount + selectedAmount}>
                     <AddIcon />
                 </IconButton>
                 <Button
@@ -88,7 +88,7 @@ function ProductInCart({ name, id, count, maxCount }: Props) {
                     disabled={changeAmount}
                 >
                     {amountN === 0 ? (
-                        <Typography variant="inherit">Poista tuote</Typography>
+                        <Typography variant="inherit">Poista korista</Typography>
                     ) : (
                         <Typography variant="inherit">Muuta määrää</Typography>
                     )}
