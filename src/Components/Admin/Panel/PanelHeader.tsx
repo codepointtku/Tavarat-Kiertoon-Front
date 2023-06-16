@@ -20,9 +20,9 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import MailIcon from '@mui/icons-material/Mail';
 
 import Tooltip from '../../Tooltip';
-import AlertBox from '../../AlertBox';
+// import AlertBox from '../../AlertBox';
 
-import type { adminLogOut } from '../../../Router/actions';
+// import type { adminLogOut } from '../../../Router/actions';
 import type { adminLoader } from '../../../Router/loaders';
 
 import logo from '../../../Assets/Turku_vaaka_300ppi_viiva_white.png';
@@ -43,7 +43,7 @@ function AdminAppBar() {
     };
 
     // log out functionality:
-    const responseStatus = useActionData() as Awaited<ReturnType<typeof adminLogOut>>;
+    // const responseStatus = useActionData() as Awaited<ReturnType<typeof adminLogOut>>;
     const submit = useSubmit();
     const onClickLogOut = () => {
         submit(null, {
@@ -54,9 +54,9 @@ function AdminAppBar() {
 
     return (
         <>
-            {responseStatus?.type === 'logout' && (
+            {/* {responseStatus?.type === 'logout' && (
                 <AlertBox text="asia pihvi, hei hei ja huomiseen" status="success" redirectUrl="/" timer={4000} />
-            )}
+            )} */}
             <AppBar
                 id="admin-panel-appbar"
                 position="static"
