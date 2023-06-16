@@ -20,7 +20,13 @@ function ModifyAddressInfo() {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+    } = useForm({
+        defaultValues: {
+            address: addressInfo.action === 'modify' ? addressInfo.address : '',
+            city: addressInfo.action === 'modify' ? addressInfo.city : '',
+            zip_code: addressInfo.action === 'modify' ? addressInfo.zip_code : '',
+        },
+    });
 
     function onSubmit(data: Data) {
         console.log(data);
@@ -29,7 +35,7 @@ function ModifyAddressInfo() {
     return (
         <Box sx={{ p: 2 }}>
             <HeroHeader Icon={<BusinessIcon />} />
-            <HeroText title="Luo uusi osoite" />
+            <HeroText title={addressInfo.action === 'create' ? 'Luo uusi osoite' : 'Muokkaa osoitetietoja'} />
             <Grid
                 container
                 component={Form}
@@ -64,7 +70,7 @@ function ModifyAddressInfo() {
                 </Grid>
                 <Grid item>
                     <Button type="submit" fullWidth>
-                        Luo uusi osoite
+                        {addressInfo.action === 'create' ? 'Luo uusi osoite' : 'Muokkaa osoitetietoja'}
                     </Button>
                 </Grid>
             </Grid>

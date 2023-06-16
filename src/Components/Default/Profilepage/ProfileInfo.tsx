@@ -73,7 +73,7 @@ function ProfileInfo() {
                     <Grid item>
                         <TextField {...register('phone_number')} label="Puhelin numero" placeholder="Puhelin numero" />
                     </Grid>
-                    <Grid item sx={{ ml: '13.25rem' }}>
+                    <Grid item sx={{ ml: 26.25 }}>
                         <TextField
                             {...register('userAddress')}
                             value={selectedAddress}
@@ -92,7 +92,7 @@ function ProfileInfo() {
                         <Button
                             component={Link}
                             to={`osoitetiedot/${selectedAddressInfo[0].id}`}
-                            state={selectedAddressInfo[0]}
+                            state={{ ...selectedAddressInfo[0], action: 'modify' }}
                             sx={{ ml: 2, p: 2 }}
                         >
                             Muokkaa
@@ -100,7 +100,7 @@ function ProfileInfo() {
                         <Button
                             component={Link}
                             to={`osoitetiedot/${selectedAddressInfo[0].id}`}
-                            state={selectedAddressInfo[0]}
+                            state={{ ...selectedAddressInfo[0], action: 'create' }}
                             sx={{ ml: 2, p: 2 }}
                         >
                             Luo uusi

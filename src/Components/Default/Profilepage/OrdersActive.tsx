@@ -9,7 +9,6 @@ function ProfileInfo() {
     const activeOrders = userOrders.filter((order) => order.status !== 'Finished');
     const activeOrdersCards = activeOrders.map((order) => <OrderCard key={order.id} orderInfo={order} />);
 
-    console.log(userOrders);
     return (
         <Box sx={{ p: 2 }}>
             <Typography variant="h5" color="primary.main" align="center" sx={{ mb: 2 }}>
