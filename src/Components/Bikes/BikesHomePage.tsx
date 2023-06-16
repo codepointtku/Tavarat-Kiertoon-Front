@@ -80,7 +80,7 @@ export default function BikesHomePage() {
                         <Typography variant="body1">Pyöräpaketit</Typography>
                     </ButtonBase>
                     <Typography variant="body1" mt="0.5rem">
-                        Pyöräpakettien mukkaus.
+                        Pyöräpakettien muokkaus.
                     </Typography>
                 </Paper>
 
