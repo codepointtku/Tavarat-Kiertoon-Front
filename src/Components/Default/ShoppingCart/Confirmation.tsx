@@ -48,12 +48,12 @@ function Confirmation() {
     }, [responseStatus]);
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '-2rem' }}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TypographyTitle text="Tilauksen yhteenveto" />
                 <Box
                     sx={{
-                        margin: '1rem 0 0 0',
+                        margin: '1rem 0 2rem 0',
                         p: '2rem',
                         borderStyle: 'solid',
                         borderWidth: 5,
@@ -111,6 +111,9 @@ function Confirmation() {
                         ))}
                     </List>
                 </Box>
+                <Typography variant="subtitle2" align="center">
+                    Tilausvahvistus lähetetään sähköpostiin.
+                </Typography>
                 <CartButtons backText="Takaisin" forwardText="Vahvista" />
             </form>
         </Box>
