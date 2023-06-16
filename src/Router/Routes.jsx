@@ -150,6 +150,7 @@ import {
     userProfilePageAction,
     createNewPacketAction,
     deletePacketAction,
+    modifyUserAddressesAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
@@ -377,6 +378,7 @@ function Routes() {
                                 {
                                     path: 'osoitetiedot/:id',
                                     element: <ModifyAddressInfo />,
+                                    action: async ({ request }) => modifyUserAddressesAction(request),
                                 },
                                 {
                                     path: 'aktiivisettilaukset',

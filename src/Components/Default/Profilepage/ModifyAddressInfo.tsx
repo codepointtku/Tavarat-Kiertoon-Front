@@ -1,4 +1,4 @@
-import { useLocation, Form, useSubmit } from 'react-router-dom';
+import { useLocation, Form, useSubmit, useActionData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { Box, TextField, Grid, Button } from '@mui/material';
@@ -8,6 +8,7 @@ import BusinessIcon from '@mui/icons-material/Business';
 import { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
 
 interface Data extends SubmitHandler<FieldValues> {
+    [key: string]: string;
     address: string;
     city: string;
     zip_code: string;
@@ -16,6 +17,9 @@ interface Data extends SubmitHandler<FieldValues> {
 function ModifyAddressInfo() {
     const submit = useSubmit();
     const { state: addressInfo } = useLocation();
+    const responseStatus = useActionData();
+    console.log('AddressInfo action: ', addressInfo.action);
+    console.log(responseStatus);
     const {
         register,
         handleSubmit,
@@ -29,7 +33,11 @@ function ModifyAddressInfo() {
     });
 
     function onSubmit(data: Data) {
-        console.log(data);
+        if (addressInfo.action === 'modify') {
+            submit(data, { method: 'put', action: '/profiili/osoitetiedot/:id' });
+        }
+        const dataWithId = { ...data, id: addressInfo.id };
+        submit(dataWithId, { method: 'post', action: '/profiili/osoitetiedot/:id' });
     }
 
     return (
@@ -62,7 +70,7 @@ function ModifyAddressInfo() {
                 </Grid>
                 <Grid item>
                     <TextField
-                        {...register('zip_code', { required: true, minLength: 1, maxLength: 255 })}
+                        {...register('zip_code', { required: true, minLength: 1, maxLength: 10 })}
                         label="Postinumero"
                         placeholder="Postinumero"
                         sx={{ width: '150%' }}
