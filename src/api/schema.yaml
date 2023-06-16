@@ -2644,6 +2644,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserUpdateReturnSchema'
           description: ''
+    delete:
+      operationId: users_destroy
+      description: |-
+        Get specific users info,
+        only some field can be updated
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      security:
+      - CustomJWTAuthentication: []
+      responses:
+        '204':
+          description: No response body
   /users/{id}/groups/permission/:
     get:
       operationId: users_groups_permission_retrieve
@@ -3133,6 +3151,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/Color'
           readOnly: true
+        picture:
+          allOf:
+          - $ref: '#/components/schemas/Picture'
+          readOnly: true
         name:
           type: string
           maxLength: 255
@@ -3145,6 +3167,7 @@ components:
       - description
       - id
       - name
+      - picture
       - size
       - type
     BikeModelCreate:
@@ -3169,6 +3192,9 @@ components:
           type: integer
           nullable: true
         color:
+          type: integer
+          nullable: true
+        picture:
           type: integer
           nullable: true
       required:
@@ -3197,6 +3223,9 @@ components:
           type: integer
           nullable: true
         color:
+          type: integer
+          nullable: true
+        picture:
           type: integer
           nullable: true
       required:
@@ -3432,6 +3461,9 @@ components:
         description:
           type: string
           maxLength: 255
+        picture:
+          type: integer
+          nullable: true
       required:
       - brand
       - color
@@ -4029,6 +4061,10 @@ components:
           items:
             $ref: '#/components/schemas/ProductItemResponse'
           readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/UserFullResponseSchema'
+          readOnly: true
         status:
           type: string
           maxLength: 255
@@ -4051,9 +4087,6 @@ components:
           type: string
           format: date-time
           readOnly: true
-        user:
-          type: integer
-          nullable: true
       required:
       - contact
       - creation_date

@@ -528,18 +528,20 @@ function NavigationTree() {
             >
                 <Paper id="admin-navtree-paper" elevation={0} sx={{ maxWidth: 256 }}>
                     <NavStyles id="admin-navtree-styles-wrapper" component="nav" disablePadding>
-                        <ListItemButton id="admin-panel-refresh-linkbtn" component="a" href="/admin">
-                            <ListItemText
-                                sx={{ my: 0 }}
-                                primary="Hallintapaneeli"
-                                primaryTypographyProps={{
-                                    fontSize: 20,
-                                    fontWeight: 'medium',
-                                    letterSpacing: 0,
-                                    textAlign: 'center',
-                                }}
-                            />
-                        </ListItemButton>
+                        <Tooltip title="Lataa koko paneeli uudestaan" position="right">
+                            <ListItemButton id="admin-panel-refresh-linkbtn" component="a" href="/admin">
+                                <ListItemText
+                                    sx={{ my: 0 }}
+                                    primary="Hallintapaneeli"
+                                    primaryTypographyProps={{
+                                        fontSize: 20,
+                                        fontWeight: 'medium',
+                                        letterSpacing: 0,
+                                        textAlign: 'center',
+                                    }}
+                                />
+                            </ListItemButton>
+                        </Tooltip>
                         <Divider />
                         <ListItem component="div" disablePadding>
                             <ListItemButtonLink id="overview-link" to="/admin" sx={{ height: 56 }}>
