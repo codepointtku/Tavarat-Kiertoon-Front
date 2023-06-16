@@ -1,4 +1,5 @@
-import { useRouteLoaderData, useSubmit } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useRouteLoaderData, useSubmit, useActionData, useNavigate } from 'react-router-dom';
 import { Typography, Grid, Box, List, ListItem, ListItemText } from '@mui/material';
 import { useStateMachine } from 'little-state-machine';
 import { useForm } from 'react-hook-form';
@@ -25,10 +26,11 @@ interface CartState {
 function Confirmation() {
     const { handleSubmit, register } = useForm();
     const submit = useSubmit();
+    const navigate = useNavigate();
+    const responseStatus = useActionData() as { type: string; status: boolean };
     const { state } = useStateMachine({ Update }) as unknown as CartState;
     const { products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const { id } = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
-    let order: string;
 
     const onSubmit = async () => {
         const { email, deliveryAddress, phoneNumber, orderInfo } = state;
@@ -36,10 +38,13 @@ function Confirmation() {
             { deliveryAddress, email, phoneNumber, id: id.toString(), orderInfo },
             { method: 'post', action: '/ostoskori/vaihe3' }
         );
-        submit({ order }, { method: 'put', action: '/' });
     };
 
-    console.log(state.deliveryRequired);
+    useEffect(() => {
+        if (responseStatus?.status === true) {
+            navigate('/', { state: { ...responseStatus } });
+        }
+    }, [responseStatus]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
