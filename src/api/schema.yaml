@@ -2441,7 +2441,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/UserUpdate'
-        required: true
       security:
       - CustomJWTAuthentication: []
       responses:
@@ -2622,7 +2621,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/UserUpdate'
-        required: true
       security:
       - CustomJWTAuthentication: []
       responses:
@@ -2718,7 +2716,11 @@ paths:
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
   /users/address/{id}/:
     get:
       operationId: users_address_retrieve
@@ -2797,10 +2799,7 @@ paths:
   /users/create/:
     post:
       operationId: users_create_create
-      description: |-
-        List all users, and create with POST
-        if username field comes = joint user
-        if no username = normal user and email address gets copied to username and will be used to login
+      description: List all users, and create with POST
       tags:
       - users
       requestBody:
@@ -2828,8 +2827,6 @@ paths:
   /users/emailchange/:
     post:
       operationId: users_emailchange_create
-      description: Sends email change link to entered email address for the logged
-        in user account
       tags:
       - users
       requestBody:
@@ -2848,7 +2845,11 @@ paths:
       - CustomJWTAuthentication: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewEmail'
+          description: ''
   /users/emailchange/finish/:
     post:
       operationId: users_emailchange_finish_create
@@ -2873,7 +2874,11 @@ paths:
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewEmailFinishValidation'
+          description: ''
   /users/groups/:
     get:
       operationId: users_groups_list
@@ -2975,7 +2980,11 @@ paths:
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
   /users/password/resetemail/:
     post:
       operationId: users_password_resetemail_create
@@ -3937,6 +3946,14 @@ components:
       required:
       - amount
       - bike
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
+          maxLength: 255
+      required:
+      - message
     NewEmail:
       type: object
       description: Serializer for inputting new email address
@@ -4849,6 +4866,7 @@ components:
       - last_name
       - password
       - phone_number
+      - username
       - zip_code
     UserCreateReturnResponseSchema:
       type: object
@@ -4898,9 +4916,11 @@ components:
           nullable: true
         first_name:
           type: string
+          nullable: true
           maxLength: 255
         last_name:
           type: string
+          nullable: true
           maxLength: 255
         email:
           type: string
@@ -4993,26 +5013,27 @@ components:
       properties:
         first_name:
           type: string
+          nullable: true
           maxLength: 255
         last_name:
           type: string
+          nullable: true
           maxLength: 255
         phone_number:
           type: string
           nullable: true
           maxLength: 255
-      required:
-      - first_name
-      - last_name
     UserUpdateReturnSchema:
       type: object
       description: FOR SCHEMA, Serializer for users, for updating user information
       properties:
         first_name:
           type: string
+          nullable: true
           maxLength: 255
         last_name:
           type: string
+          nullable: true
           maxLength: 255
         phone_number:
           type: string
