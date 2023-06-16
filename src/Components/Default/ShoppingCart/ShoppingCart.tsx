@@ -70,7 +70,7 @@ function ShoppingCart() {
                     // pt: '1rem',
                     pb: '2rem',
                     mt: '1rem',
-                    mb: '1rem',
+                    mb: '2rem',
                 }}
             >
                 <Box
