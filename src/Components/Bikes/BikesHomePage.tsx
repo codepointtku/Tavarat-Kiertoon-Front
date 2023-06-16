@@ -1,9 +1,10 @@
 import { Box, Paper, Typography } from '@mui/material';
-import BikeScooterIcon from '@mui/icons-material/BikeScooter';
+import PedalBikeIcon from '@mui/icons-material/PedalBike';
 import ListIcon from '@mui/icons-material/List';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 export default function BikesHomePage() {
     return (
@@ -15,8 +16,18 @@ export default function BikesHomePage() {
             <Box display="flex" justifyContent="space-between" mt="2rem">
                 <Paper
                     component={Link}
-                    to="pyoralista"
-                    sx={{ textDecoration: 'none', flex: '1', mx: '1rem', padding: '2rem', cursor: 'pointer' }}
+                    to="pyoramallit"
+                    sx={{
+                        textDecoration: 'none',
+                        flex: '1',
+                        mx: '1rem',
+                        padding: '2rem',
+                        cursor: 'pointer',
+                        transition: 'transform 0.2s ease-in-out',
+                        '&:hover': {
+                            transform: 'scale(1.1)',
+                        },
+                    }}
                 >
                     <Box display="flex" alignItems="center">
                         <ListIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
@@ -28,14 +39,23 @@ export default function BikesHomePage() {
                         Kaikki saatavilla olevat polkupyörät
                     </Typography>
                 </Paper>
-
                 <Paper
                     component={Link}
                     to="pyoramallit"
-                    sx={{ textDecoration: 'none', flex: '1', mx: '1rem', padding: '2rem', cursor: 'pointer' }}
+                    sx={{
+                        textDecoration: 'none',
+                        flex: '1',
+                        mx: '1rem',
+                        padding: '2rem',
+                        cursor: 'pointer',
+                        transition: 'transform 0.2s ease-in-out',
+                        '&:hover': {
+                            transform: 'scale(1.1)',
+                        },
+                    }}
                 >
                     <Box display="flex" alignItems="center">
-                        <BikeScooterIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
+                        <PedalBikeIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
                         <Typography variant="h5" color="primary.main">
                             Pyörien mallit
                         </Typography>
@@ -46,7 +66,7 @@ export default function BikesHomePage() {
                 </Paper>
             </Box>
 
-            <Box display="flex" justifyContent="space-between" mt="2rem">
+            <Box display="flex" justifyContent="space-between" mt="4rem">
                 <Paper
                     component={Link}
                     to="pyorapaketit"
@@ -55,8 +75,11 @@ export default function BikesHomePage() {
                         flex: '1',
                         mx: '1rem',
                         padding: '2rem',
-                        mb: '2rem',
                         cursor: 'pointer',
+                        transition: 'transform 0.2s ease-in-out',
+                        '&:hover': {
+                            transform: 'scale(1.1)',
+                        },
                     }}
                 >
                     <Box display="flex" alignItems="center">
@@ -69,7 +92,6 @@ export default function BikesHomePage() {
                         Pyöräpakettien muokkaus.
                     </Typography>
                 </Paper>
-
                 <Paper
                     component={Link}
                     to="pyoratilaukset"
@@ -77,9 +99,12 @@ export default function BikesHomePage() {
                         textDecoration: 'none',
                         flex: '1',
                         mx: '1rem',
-                        mb: '2rem',
                         padding: '2rem',
                         cursor: 'pointer',
+                        transition: 'transform 0.2s ease-in-out',
+                        '&:hover': {
+                            transform: 'scale(1.1)',
+                        },
                     }}
                 >
                     <Box display="flex" alignItems="center">
