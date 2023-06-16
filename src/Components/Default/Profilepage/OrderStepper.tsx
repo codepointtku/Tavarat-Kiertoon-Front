@@ -4,8 +4,7 @@ import { Box, Stepper, Step, StepLabel } from '@mui/material';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import SignLanguageIcon from '@mui/icons-material/SignLanguage';
 import CheckIcon from '@mui/icons-material/Check';
 
 const OrderStepConnector = styled(StepConnector)(({ theme }) => ({
@@ -17,7 +16,7 @@ const OrderStepConnector = styled(StepConnector)(({ theme }) => ({
 }));
 
 interface OrderInfo {
-    orderInfo: { status: 'Waiting' | 'Processing' | 'Delivery' | 'Finished' };
+    orderInfo: { status: 'Waiting' | 'Processing' | 'Finished' };
 }
 
 function OrderStepper({ orderInfo }: OrderInfo) {
@@ -27,10 +26,8 @@ function OrderStepper({ orderInfo }: OrderInfo) {
                 return 0;
             case 'Processing':
                 return 1;
-            case 'Delivery':
-                return 2;
             case 'Finished':
-                return 3;
+                return 2;
             default:
                 return -1;
         }
@@ -38,8 +35,7 @@ function OrderStepper({ orderInfo }: OrderInfo) {
     const [activeStep] = useState(activeStepSetter);
     const steps = [
         { label: 'Odottaa vastaanottoa', icon: <AccessTimeIcon /> },
-        { label: 'Käsittelyssä', icon: <InventoryIcon /> },
-        { label: 'Kuljetuksessa', icon: <LocalShippingIcon /> },
+        { label: 'Käsittelyssä', icon: <SignLanguageIcon /> },
         { label: 'Toimitettu', icon: <CheckIcon /> },
     ];
 
@@ -69,7 +65,7 @@ function OrderStepper({ orderInfo }: OrderInfo) {
                 StepIconComponent={() => setCustomIconComponent(index)}
                 sx={{
                     '& .MuiStepLabel-label.Mui-completed': { color: 'success.light' },
-                    '& .MuiStepLabel-label.Mui-active': { color: activeStep === 3 ? 'success.light' : 'primary.dark' },
+                    '& .MuiStepLabel-label.Mui-active': { color: activeStep === 2 ? 'success.light' : 'primary.dark' },
                 }}
             >
                 {step.label}

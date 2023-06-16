@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 import { Container, Grid, Paper, Card, CardActionArea, CardContent, CardMedia, Typography, Box } from '@mui/material';
 
@@ -7,6 +7,7 @@ import OrderStepper from './OrderStepper';
 import TypographyHeading from '../../TypographyHeading';
 
 interface Product {
+    id: number;
     name: string;
     amount: number;
     pictures: { id: number; picture_address: string }[];
@@ -43,7 +44,11 @@ function OrderPage() {
                                 }}
                                 raised
                             >
-                                <CardActionArea sx={{ height: '100%' }}>
+                                <CardActionArea
+                                    sx={{ height: '100%' }}
+                                    component={Link}
+                                    to={`/tuotteet/${product_item.product.id}`}
+                                >
                                     <CardMedia
                                         sx={{ height: '100%' }}
                                         image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product_item.product.pictures[0].picture_address}`}
