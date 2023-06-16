@@ -7,6 +7,7 @@ import Update from './Update';
 import CartButtons from './CartButtons';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import type { shoppingProcessLoader } from '../../../Router/loaders';
+import TypographyTitle from '../../TypographyTitle';
 
 interface CartState {
     state: {
@@ -39,18 +40,15 @@ function Confirmation() {
         submit({ order }, { method: 'put', action: '/' });
     };
 
-    console.log(state.deliveryRequired);
+    // console.log(state.deliveryRequired);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Typography variant="h4" color="primary.main">
-                Ostosten yhteenveto
-            </Typography>
-            <hr />
+            <TypographyTitle text="Tilauksen yhteenveto" />
             <Box
                 sx={{
-                    mt: 5,
-                    p: 5,
+                    margin: '1rem 0 0 0',
+                    p: '2rem',
                     borderStyle: 'solid',
                     borderWidth: 5,
                     borderRadius: 5,

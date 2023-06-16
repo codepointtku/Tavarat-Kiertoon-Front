@@ -33,6 +33,7 @@ import LoginForm from './LoginForm';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
 import { type ShoppingCartAvailableAmountList } from '../../../api';
+import CloseDrawerButton from './CloseDrawerButton';
 
 //
 
@@ -112,7 +113,7 @@ const StyledBadge = styled(Badge)(({ theme, isanimated }: StyledBadge) => ({
         },
         to: {
             fontSize: '125%',
-            color: theme?.palette.primary.main,
+            // color: theme?.palette.primary.main,
         },
     },
     '@keyframes idle': { '100%': {} },
@@ -265,47 +266,70 @@ function DefaultAppBar() {
                             />
                         );
                     })}
-                    {cart?.product_items?.length > 0 && (
-                        <ListItem
-                            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}
-                        >
-                            <Button color="error" startIcon={<DeleteIcon />} onClick={handlePopOverOpen}>
-                                <ListItemText
-                                    primary="Tyhjennä ostoskori"
-                                    primaryTypographyProps={{ fontWeight: 'bold' }}
-                                />
-                            </Button>
-                            <Popover
-                                open={open}
-                                anchorEl={anchorEl}
-                                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-                                onClose={() => setAnchorEl(null)}
-                                sx={{ mt: 1 }}
-                            >
-                                <Grid container direction="row" justifyContent="space-evenly" sx={{ p: 1, width: 200 }}>
-                                    <Grid item sx={{ mt: '0.5rem' }}>
-                                        <Typography variant="body2">Oletko varma?</Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <Button onClick={handleEmptyCart}>Kyllä</Button>
-                                    </Grid>
-                                </Grid>
-                            </Popover>
-                        </ListItem>
-                    )}
                 </List>
-                <Divider />
-                <List>
-                    <ListItem>
-                        <Button
-                            onClick={() => navigateToCart()}
-                            variant="contained"
-                            startIcon={<ShoppingCartCheckoutIcon />}
-                        >
-                            <ListItemText primary="Kassalle" />
-                        </Button>
-                    </ListItem>
-                </List>
+                {/* <Divider /> */}
+                <Grid container sx={{ display: 'flex', justifyContent: 'center', marginBottom: '6rem' }}>
+                    <Grid item xs={2} />
+                    <Grid item xs={8}>
+                        <List>
+                            <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Button
+                                    onClick={() => navigateToCart()}
+                                    variant="contained"
+                                    fullWidth
+                                    // endIcon={<ShoppingCartCheckoutIcon />}
+                                    sx={{
+                                        '&:hover': {
+                                            backgroundColor: 'success.dark',
+                                        },
+                                    }}
+                                >
+                                    <ListItemText primary="Kassalle" primaryTypographyProps={{ fontWeight: 'bold' }} />
+                                </Button>
+                            </ListItem>
+                        </List>
+
+                        {/* ///// */}
+                        {cart?.product_items?.length > 0 && (
+                            <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Button
+                                    color="error"
+                                    fullWidth
+                                    // startIcon={<DeleteIcon />}
+                                    onClick={handlePopOverOpen}
+                                >
+                                    <ListItemText
+                                        primary="Tyhjennä ostoskori"
+                                        primaryTypographyProps={{ fontWeight: 'bold' }}
+                                    />
+                                </Button>
+                                <Popover
+                                    open={open}
+                                    anchorEl={anchorEl}
+                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                                    onClose={() => setAnchorEl(null)}
+                                    sx={{ mt: 1 }}
+                                >
+                                    <Grid
+                                        container
+                                        direction="row"
+                                        justifyContent="space-evenly"
+                                        sx={{ p: 1, width: 200 }}
+                                    >
+                                        <Grid item sx={{ mt: '0.5rem' }}>
+                                            <Typography variant="body2">Oletko varma?</Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Button onClick={handleEmptyCart}>Kyllä</Button>
+                                        </Grid>
+                                    </Grid>
+                                </Popover>
+                            </ListItem>
+                        )}
+                    </Grid>
+                    <Grid item xs={2} />
+                </Grid>
+                <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>

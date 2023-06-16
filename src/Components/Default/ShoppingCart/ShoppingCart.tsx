@@ -62,27 +62,28 @@ function ShoppingCart() {
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Container
+                id="shopping-process-container"
+                maxWidth="lg"
                 sx={{
                     border: '0.1rem solid #bfe6f6',
                     borderRadius: '1rem',
-                    borderStyle: 'solid',
-                    p: 20,
-                    pt: 5,
-                    paddingBottom: 5,
-                    margin: '3.125rem 0rem',
+                    // pt: '1rem',
+                    pb: '2rem',
+                    mt: '1rem',
+                    mb: '1rem',
                 }}
             >
                 <Box
+                    id="shopping-process-stepper-container"
                     sx={{
-                        border: 1,
-                        borderStyle: 'solid',
-                        borderRadius: 3,
-                        borderColor: 'gray',
-                        p: 5,
-                        marginBottom: 5,
+                        // border: '0.1rem solid #bfe6f6',
+                        // borderRadius: '1rem',
+                        p: '2rem',
+                        mb: 5,
                     }}
                 >
                     <Stepper
+                        id="shopping-process-stepper"
                         sx={{
                             '& .Mui-disabled': { opacity: 0.5 },
                         }}

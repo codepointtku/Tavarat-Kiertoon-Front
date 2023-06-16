@@ -125,7 +125,7 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) 
                     disabled={addedToCart}
                 >
                     {amountN === 0 ? (
-                        <Typography variant="inherit">Poista tuote</Typography>
+                        <Typography variant="inherit">Poista korista</Typography>
                     ) : (
                         <Typography variant="inherit">Muuta määrää</Typography>
                     )}

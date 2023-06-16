@@ -88,7 +88,7 @@ function ProductInCart({ name, id, count, maxCount }: Props) {
                     disabled={changeAmount}
                 >
                     {amountN === 0 ? (
-                        <Typography variant="inherit">Poista tuote</Typography>
+                        <Typography variant="inherit">Poista korista</Typography>
                     ) : (
                         <Typography variant="inherit">Muuta määrää</Typography>
                     )}

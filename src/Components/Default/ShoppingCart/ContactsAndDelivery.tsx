@@ -1,15 +1,17 @@
-/* eslint-disable react/jsx-props-no-spreading */
-
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { useStateMachine } from 'little-state-machine';
-import { Typography, TextField, Grid, MenuItem, Box, Alert, OutlinedInput, Button, fabClasses } from '@mui/material';
+import { Typography, TextField, Grid, MenuItem, Box, Alert, OutlinedInput, Button, Stack } from '@mui/material';
 
 import CartButtons from './CartButtons';
 import Update from './Update';
+
 import type { shoppingProcessLoader } from '../../../Router/loaders';
-import { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
+import type { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
+
+import TypographyTitle from '../../TypographyTitle';
+import TypographyHeading from '../../TypographyHeading';
 
 export interface CartFormData {
     firstName: string;
@@ -37,7 +39,7 @@ function ContactsAndDelivery() {
 
     const navigate = useNavigate();
     const onSubmit = (data: CartFormData) => {
-        console.log(data);
+        // console.log(data);
         actions.Update(data);
         navigate('/ostoskori/vaihe3');
     };
@@ -56,176 +58,203 @@ function ContactsAndDelivery() {
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
             <Box
                 sx={{
-                    p: 5,
-                    fontWeight: 'bold',
-                    fontSize: '22px',
-                    mt: 5,
-                    mb: 5,
-                    maxWidth: 800,
-                    borderStyle: 'solid',
+                    p: '2rem',
+                    mt: '-2rem',
+                    mb: '2rem',
+                    border: '1px solid #bfe6f6',
                     borderRadius: '1rem',
-                    borderColor: 'primary.main',
+                    display: 'flex',
+                    justifyContent: 'center',
                 }}
             >
-                <Typography variant="h4" sx={{ mb: 2 }}>
-                    Tilaajan yhteystiedot
-                </Typography>
-                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Typography variant="h6">Nimi: {user.first_name}</Typography>
-                    <Typography variant="h6">Nimi: {user.last_name}</Typography>
-                    <Typography variant="h6">Sähköposti: {user.email}</Typography>
-                    <Typography variant="h6">Puh. numero: {user.phone_number}</Typography>
-                </Box>
+                <Stack>
+                    <TypographyTitle text="Tilaajan yhteystiedot" />
+                    <Stack direction="row" mt="1rem" gap={2}>
+                        <Box>
+                            <Typography variant="h6" sx={{ mr: '1rem' }}>
+                                Etunimi:
+                            </Typography>
+                            <Typography variant="h6" sx={{ mr: '1rem' }}>
+                                Sukunimi:
+                            </Typography>
+                        </Box>
+
+                        <Box>
+                            <Typography>{user.first_name}</Typography>
+                            <Typography> {user.last_name}</Typography>
+                        </Box>
+
+                        <Box>
+                            <Typography variant="h6">Sähköposti: </Typography>
+                            <Typography variant="h6">Puh. numero: </Typography>
+                        </Box>
+                        <Box>
+                            <Typography>{user.email}</Typography>
+                            <Typography>{user.phone_number}</Typography>
+                        </Box>
+                    </Stack>
+                </Stack>
             </Box>
-            <Grid gap={2} sx={{ mb: 2 }} container>
-                <Grid item>
-                    <Typography variant="h6">Vastaanottaja sama kuin tilaaja?</Typography>
+
+            <Box
+                sx={{
+                    p: '2rem',
+                    mb: '2rem',
+                    border: '1px solid #bfe6f6',
+                    borderRadius: '1rem',
+                }}
+            >
+                <TypographyTitle text="Vastaanottajan yhteystiedot" />
+                <Grid container margin="2rem 0 2rem 0">
+                    <Grid item xs={4}>
+                        <TypographyHeading text="Vastaanottaja sama kuin tilaaja?" />
+                    </Grid>
+                    <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Button onClick={() => handleClick()}>Täytä tiedot samoina</Button>
+                    </Grid>
+                    <Grid item xs={4} />
                 </Grid>
-                <Grid item>
-                    <Button onClick={() => handleClick()}>Täytä tiedot samoina</Button>
-                </Grid>
-            </Grid>
-            <Typography variant="h4" sx={{ marginBottom: 2, color: 'primary.main' }}>
-                Vastaanottajan yhteystiedot
-            </Typography>
-            {/* fix shrink */}
-            <Grid container spacing={4}>
-                <Grid item>
-                    <TextField
-                        label="Etunimi"
-                        placeholder="Etunimi"
-                        variant="outlined"
-                        InputLabelProps={{ shrink: true }}
-                        {...register('firstName', {
-                            required: true,
-                            maxLength: 255,
-                        })}
-                    />
-                    {errors.firstName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
-                </Grid>
-                <Grid item>
-                    <TextField
-                        label="Sukunimi"
-                        placeholder="Sukunimi"
-                        variant="outlined"
-                        InputLabelProps={{ shrink: true }}
-                        {...register('lastName', { required: true, maxLength: 255 })}
-                    />
-                    {errors.lastName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
-                </Grid>
-                <Grid item>
-                    <TextField
-                        label="Sähköposti"
-                        placeholder="Sähköposti"
-                        variant="outlined"
-                        InputLabelProps={{ shrink: true }}
-                        {...register('email', {
-                            required: true,
-                            pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/,
-                            maxLength: 255,
-                        })}
-                    />
-                    {errors.email && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
-                </Grid>
-                <Grid item>
-                    <TextField
-                        label="Puh. numero"
-                        placeholder="Puh. numero"
-                        variant="outlined"
-                        InputLabelProps={{ shrink: true }}
-                        {...register('phoneNumber', {
-                            required: true,
-                            pattern: /^[0-9]+$/,
-                            maxLength: 255,
-                        })}
-                    />
-                    {errors.phoneNumber && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
-                </Grid>
-            </Grid>
-            <Typography variant="h4" sx={{ marginTop: 5, marginBottom: 2, color: 'primary.main' }}>
-                Toimitus
-            </Typography>
-            <Grid container spacing={4}>
-                <Grid item xs={2.5}>
-                    <TextField
-                        label="Toimitusosoite"
-                        variant="outlined"
-                        value={selectedAddress}
-                        {...register('deliveryAddress', { required: true })}
-                        onChange={(SelectChangeEvent) => {
-                            setSelectedAddress(SelectChangeEvent.target.value);
-                        }}
-                        fullWidth
-                        select
-                    >
-                        {user.address_list?.map((a: { address: string; id: number }) => (
-                            <MenuItem value={a.address} key={a.id}>
-                                {a.address}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                </Grid>
-                {selectedAddress && (
-                    <>
-                        <Grid item>
-                            <TextField
-                                label="Postinumero"
-                                variant="outlined"
-                                value={correctAddress[0]?.zip_code}
-                                {...register('zipcode', { required: true })}
-                            />
-                        </Grid>
-                        <Grid item>
-                            <TextField
-                                label="Kaupunki"
-                                variant="outlined"
-                                value={correctAddress[0]?.city}
-                                {...register('city', { required: true })}
-                            />
-                        </Grid>
-                    </>
-                )}
-                <Grid item xs={2.5}>
-                    <TextField
-                        {...register('deliveryRequired', { required: true })}
-                        label="Toimitustapa"
-                        variant="outlined"
-                        value={selectedMethod}
-                        onChange={(SelectChangeEvent) => {
-                            setSelectedMethod(SelectChangeEvent.target.value);
-                        }}
-                        fullWidth
-                        select
-                    >
-                        <MenuItem value="true">Kuljetus</MenuItem>
-                        <MenuItem value="false">Nouto</MenuItem>
-                    </TextField>
-                    {errors.deliveryRequired && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
-                </Grid>
-                {selectedMethod === 'pickup' && (
+
+                <Grid id="receiver-input-fields-grid-container" container spacing={2} mb="2rem">
                     <Grid item>
                         <TextField
-                            {...register('fetchDate')}
-                            type="date"
-                            label="Noutoaika"
+                            label="Etunimi"
+                            placeholder="Etunimi"
                             variant="outlined"
-                            placeholder="Noutoaika"
                             InputLabelProps={{ shrink: true }}
+                            {...register('firstName', {
+                                required: true,
+                                maxLength: 255,
+                            })}
                         />
+                        {errors.firstName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                     </Grid>
-                )}
-            </Grid>
-            <Typography variant="h4" sx={{ mt: 5, mb: 2, color: 'primary.main' }}>
-                Lisätietoa
-            </Typography>
+                    <Grid item>
+                        <TextField
+                            label="Sukunimi"
+                            placeholder="Sukunimi"
+                            variant="outlined"
+                            InputLabelProps={{ shrink: true }}
+                            {...register('lastName', { required: true, maxLength: 255 })}
+                        />
+                        {errors.lastName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            label="Sähköposti"
+                            placeholder="Sähköposti"
+                            variant="outlined"
+                            InputLabelProps={{ shrink: true }}
+                            {...register('email', {
+                                required: true,
+                                pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/,
+                                maxLength: 255,
+                            })}
+                        />
+                        {errors.email && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            label="Puhelinnumero"
+                            placeholder="Puh. numero"
+                            variant="outlined"
+                            InputLabelProps={{ shrink: true }}
+                            {...register('phoneNumber', {
+                                required: true,
+                                pattern: /^[0-9]+$/,
+                                maxLength: 255,
+                            })}
+                        />
+                        {errors.phoneNumber && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
+                    </Grid>
+                </Grid>
+
+                {/* //// */}
+
+                <TypographyHeading text="Toimitusosoitetiedot" />
+                <Grid id="delivery-fields-grid-container" container margin="2rem 0 1rem 0">
+                    <Grid item mr="1rem">
+                        <TextField
+                            label="Toimitusosoite"
+                            variant="outlined"
+                            value={selectedAddress}
+                            {...register('deliveryAddress', { required: true })}
+                            onChange={(SelectChangeEvent) => {
+                                setSelectedAddress(SelectChangeEvent.target.value);
+                            }}
+                            fullWidth
+                            select
+                        >
+                            {user.address_list?.map((a: { address: string; id: number }) => (
+                                <MenuItem value={a.address} key={a.id}>
+                                    {a.address}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </Grid>
+                    {selectedAddress && (
+                        <>
+                            <Grid item mr="1rem">
+                                <TextField
+                                    label="Postinumero"
+                                    variant="outlined"
+                                    value={correctAddress[0]?.zip_code}
+                                    {...register('zipcode', { required: true })}
+                                />
+                            </Grid>
+                            <Grid item mr="1rem">
+                                <TextField
+                                    label="Kaupunki"
+                                    variant="outlined"
+                                    value={correctAddress[0]?.city}
+                                    {...register('city', { required: true })}
+                                />
+                            </Grid>
+                        </>
+                    )}
+                    <Grid item xs={2} mr="1rem">
+                        <TextField
+                            {...register('deliveryRequired', { required: true })}
+                            label="Toimitustapa"
+                            variant="outlined"
+                            value={selectedMethod}
+                            onChange={(SelectChangeEvent) => {
+                                setSelectedMethod(SelectChangeEvent.target.value);
+                            }}
+                            fullWidth
+                            select
+                        >
+                            <MenuItem value="true">Kuljetus</MenuItem>
+                            <MenuItem value="false">Nouto</MenuItem>
+                        </TextField>
+                        {errors.deliveryRequired && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
+                    </Grid>
+                    {selectedMethod === 'false' && (
+                        <Grid item>
+                            <TextField
+                                {...register('fetchDate')}
+                                type="date"
+                                label="Noutoaika"
+                                variant="outlined"
+                                placeholder="Noutoaika"
+                                InputLabelProps={{ shrink: true }}
+                            />
+                        </Grid>
+                    )}
+                </Grid>
+            </Box>
+            {/* ////// */}
+            <TypographyTitle text="Lisätietoja / Viesti" />
+
             <OutlinedInput
                 {...register('orderInfo', {
                     maxLength: 255,
                 })}
                 placeholder="Lisätietoa toimituksesta..."
-                sx={{ width: 400 }}
+                fullWidth
                 multiline
                 rows={5}
+                sx={{ marginTop: '2rem' }}
             />
             <Box
                 sx={{
@@ -240,6 +269,7 @@ function ContactsAndDelivery() {
             >
                 Toimituksessa kestää keskimäärin 1-2 viikkoa.
             </Box>
+
             <CartButtons backText="Takaisin" forwardText="Seuraava" />
         </form>
     );
