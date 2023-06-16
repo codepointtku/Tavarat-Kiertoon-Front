@@ -94,7 +94,9 @@ function OrderTable() {
                                     <TableCell width="20%" sx={{ fontWeight: 'bold' }}>
                                         Tilaaja:
                                     </TableCell>
-                                    <TableCell width="30%">{order.user}</TableCell>
+                                    <TableCell width="30%">
+                                        {order.user.first_name} {order.user.last_name}
+                                    </TableCell>
                                     <TableCell width="20%" sx={{ fontWeight: 'bold' }}>
                                         Tilaus tehty:
                                     </TableCell>
@@ -103,11 +105,7 @@ function OrderTable() {
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold' }}>Tilauksen toimitusosoite:</TableCell>
                                     <TableCell>{order.delivery_address}</TableCell>
-                                    {/* {order.delivery_date ? ( */}
                                     <TableCell sx={{ fontWeight: 'bold' }}>Toivottu toimitusaika:</TableCell>
-                                    {/* ) : (
-                                        <TableCell></TableCell>
-                                    )} */}
                                     {order.delivery_date ? (
                                         <TableCell>{dateParse(order?.delivery_date as string)}</TableCell>
                                     ) : (
@@ -146,8 +144,6 @@ function OrderTable() {
                                     <StyledTableCell>Viivakoodi</StyledTableCell>
                                     <StyledTableCell>Tuotenimi</StyledTableCell>
                                     <StyledTableCell align="right">Kappalemäärä</StyledTableCell>
-                                    {/* <StyledTableCell align="right">Tuotenumero</StyledTableCell> */}
-                                    {/* <StyledTableCell align="right">Kategoria</StyledTableCell> */}
                                     <StyledTableCell align="right">Varasto</StyledTableCell>
                                 </TableRow>
                             </TableHead>
@@ -178,17 +174,16 @@ function OrderTable() {
                                             </TableCell>
                                             <TableCell>{itemArray[0].barcode}</TableCell>
                                             <TableCell component="th" scope="row">
-                                                {itemArray[0].product.name}
+                                                <Box component={Link} to={`/tuotteet/${itemArray[0].product.id}`}>
+                                                    {itemArray[0].product.name}
+                                                </Box>
                                             </TableCell>
                                             <TableCell align="right">{itemArray.length}</TableCell>
-                                            {/* <TableCell align="right">{itemArray[0].product.id}</TableCell> */}
-                                            {/* <TableCell align="right">{itemArray[0].product.category}</TableCell> */}
                                             <TableCell align="right">{itemArray[0].storage.name}</TableCell>
                                         </StyledTableRow>
                                         <TableRow>
                                             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
                                                 <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
-                                                    {/* <Collapse in={true} timeout="auto" unmountOnExit> */}
                                                     <Box sx={{ margin: 1 }}>
                                                         <Typography variant="h6" gutterBottom component="div">
                                                             Tuotteet
@@ -196,13 +191,8 @@ function OrderTable() {
                                                         <Table size="small">
                                                             <TableHead>
                                                                 <TableRow>
-                                                                    {/* <TableCell component="th" scope="row">
-                                                                        Tuotenumero
-                                                                    </TableCell> */}
                                                                     <TableCell align="right">Viivakoodi</TableCell>
                                                                     <TableCell align="right">Tuotenimi</TableCell>
-                                                                    {/* <TableCell align="right">Kategoria</TableCell> */}
-                                                                    {/* <TableCell align="right">Väri</TableCell> */}
                                                                     <TableCell align="right">Mitat</TableCell>
                                                                     <TableCell align="right">Paino</TableCell>
                                                                     <TableCell align="right">Hylly id</TableCell>
@@ -211,21 +201,12 @@ function OrderTable() {
                                                             <TableBody>
                                                                 {itemArray.map((item) => (
                                                                     <TableRow key={item.id}>
-                                                                        {/* <TableCell component="th" scope="row">
-                                                                            {item.id}
-                                                                        </TableCell> */}
                                                                         <TableCell align="right">
                                                                             {item.barcode}
                                                                         </TableCell>
                                                                         <TableCell align="right">
                                                                             {item.product.name}
                                                                         </TableCell>
-                                                                        {/* <TableCell align="right">
-                                                                            {item.product.category}
-                                                                        </TableCell>
-                                                                        <TableCell align="right">
-                                                                            {item.product.color}
-                                                                        </TableCell> */}
                                                                         <TableCell align="right">
                                                                             {item.product.measurements}
                                                                         </TableCell>
