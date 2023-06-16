@@ -8,13 +8,15 @@ interface OrderInfo {
         delivery_address: string;
         contact: string;
         order_info: string;
-        delivery_date: null | string;
+        delivery_date: string;
         phone_number: string;
         product_items: [];
     };
 }
 
 function OrderCard({ orderInfo }: OrderInfo) {
+    const date = new Date(orderInfo.delivery_date);
+    const readableDeliveryDate = date.toLocaleDateString();
     return (
         <Card
             sx={{
@@ -77,7 +79,7 @@ function OrderCard({ orderInfo }: OrderInfo) {
                                 Toimituspäivä:
                             </Typography>
                             <Typography variant="body2" sx={{ ml: 0.5, display: 'inline' }}>
-                                {orderInfo.delivery_date}
+                                {readableDeliveryDate}
                             </Typography>
                         </Grid>
                         <Grid item>
