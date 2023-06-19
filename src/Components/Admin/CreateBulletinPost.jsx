@@ -72,7 +72,7 @@ function CreateBulletinPost() {
                             />
 
                             <TextField
-                                {...register('content', { validate: validateTitle })}
+                                {...register('content', { validate: validateContent })}
                                 sx={{ mt: 2 }}
                                 label="Tiedote"
                                 placeholder="Tiedote"
