@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect, type ReactNode } from 'react';
-import { useLoaderData, useNavigate, useSubmit } from 'react-router-dom';
+import { useLoaderData, useNavigate, useSubmit, useLocation } from 'react-router-dom';
 
 import {
     AppBar,
@@ -15,6 +15,8 @@ import {
     ListItem,
     ListItemText,
     Typography,
+    Popover,
+    Grid,
     type Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -31,6 +33,7 @@ import LoginForm from './LoginForm';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
 import { type ShoppingCartAvailableAmountList } from '../../../api';
+import CloseDrawerButton from './CloseDrawerButton';
 
 //
 
@@ -110,7 +113,7 @@ const StyledBadge = styled(Badge)(({ theme, isanimated }: StyledBadge) => ({
         },
         to: {
             fontSize: '125%',
-            color: theme?.palette.primary.main,
+            // color: theme?.palette.primary.main,
         },
     },
     '@keyframes idle': { '100%': {} },
@@ -146,6 +149,9 @@ function DefaultAppBar() {
     const { cart, products, amountList } = useLoaderData() as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
     const [cartEmpty, setCartEmpty] = useState(false);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const location = useLocation();
 
     useEffect(() => {
         if (cart?.product_items?.length !== productsLength) {
@@ -179,8 +185,13 @@ function DefaultAppBar() {
         }
     }
 
-    function handleClick() {
+    function handlePopOverOpen(event: React.MouseEvent<HTMLElement>) {
+        setAnchorEl(event.currentTarget);
+    }
+
+    function handleEmptyCart() {
         submit('a', { method: 'put', action: '/' });
+        setAnchorEl(null);
     }
 
     return (
@@ -199,21 +210,23 @@ function DefaultAppBar() {
             >
                 <Toolbar>
                     <Stack direction="row" spacing={4}>
-                        <Tooltip title="Ostoskori">
-                            <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
-                                <StyledBadge
-                                    isanimated={productsLength === cart?.product_items?.length ? 1 : 0}
-                                    badgeContent={cart?.product_items?.length}
-                                    sx={{ color: 'primary.contrastText' }}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                >
-                                    <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
-                                </StyledBadge>
-                            </IconButton>
-                        </Tooltip>
+                        {!location.pathname.includes('/ostoskori') && (
+                            <Tooltip title="Ostoskori">
+                                <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
+                                    <StyledBadge
+                                        isanimated={productsLength === cart?.product_items?.length ? 1 : 0}
+                                        badgeContent={cart?.product_items?.length}
+                                        sx={{ color: 'primary.contrastText' }}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                    >
+                                        <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
+                                    </StyledBadge>
+                                </IconButton>
+                            </Tooltip>
+                        )}
                         <Tooltip title="Kirjautuminen">
                             <IconButton onClick={drawerOpen('account')} sx={iconHover}>
                                 <AccountCircleOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
@@ -253,31 +266,70 @@ function DefaultAppBar() {
                             />
                         );
                     })}
-                    {cart?.product_items?.length > 0 && (
-                        <ListItem
-                            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}
-                        >
-                            <Button color="error" startIcon={<DeleteIcon />} onClick={handleClick}>
-                                <ListItemText
-                                    primary="Tyhjennä ostoskori"
-                                    primaryTypographyProps={{ fontWeight: 'bold' }}
-                                />
-                            </Button>
-                        </ListItem>
-                    )}
                 </List>
-                <Divider />
-                <List>
-                    <ListItem>
-                        <Button
-                            onClick={() => navigateToCart()}
-                            variant="contained"
-                            startIcon={<ShoppingCartCheckoutIcon />}
-                        >
-                            <ListItemText primary="Kassalle" />
-                        </Button>
-                    </ListItem>
-                </List>
+                {/* <Divider /> */}
+                <Grid container sx={{ display: 'flex', justifyContent: 'center', marginBottom: '6rem' }}>
+                    <Grid item xs={2} />
+                    <Grid item xs={8}>
+                        <List>
+                            <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Button
+                                    onClick={() => navigateToCart()}
+                                    variant="contained"
+                                    fullWidth
+                                    // endIcon={<ShoppingCartCheckoutIcon />}
+                                    sx={{
+                                        '&:hover': {
+                                            backgroundColor: 'success.dark',
+                                        },
+                                    }}
+                                >
+                                    <ListItemText primary="Kassalle" primaryTypographyProps={{ fontWeight: 'bold' }} />
+                                </Button>
+                            </ListItem>
+                        </List>
+
+                        {/* ///// */}
+                        {cart?.product_items?.length > 0 && (
+                            <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Button
+                                    color="error"
+                                    fullWidth
+                                    // startIcon={<DeleteIcon />}
+                                    onClick={handlePopOverOpen}
+                                >
+                                    <ListItemText
+                                        primary="Tyhjennä ostoskori"
+                                        primaryTypographyProps={{ fontWeight: 'bold' }}
+                                    />
+                                </Button>
+                                <Popover
+                                    open={open}
+                                    anchorEl={anchorEl}
+                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                                    onClose={() => setAnchorEl(null)}
+                                    sx={{ mt: 1 }}
+                                >
+                                    <Grid
+                                        container
+                                        direction="row"
+                                        justifyContent="space-evenly"
+                                        sx={{ p: 1, width: 200 }}
+                                    >
+                                        <Grid item sx={{ mt: '0.5rem' }}>
+                                            <Typography variant="body2">Oletko varma?</Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Button onClick={handleEmptyCart}>Kyllä</Button>
+                                        </Grid>
+                                    </Grid>
+                                </Popover>
+                            </ListItem>
+                        )}
+                    </Grid>
+                    <Grid item xs={2} />
+                </Grid>
+                <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
