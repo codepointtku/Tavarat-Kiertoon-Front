@@ -16,7 +16,7 @@ export default function BikesHomePage() {
             <Box display="flex" justifyContent="space-between" mt="2rem">
                 <Paper
                     component={Link}
-                    to="pyoramallit"
+                    to="pyoralista"
                     sx={{
                         textDecoration: 'none',
                         flex: '1',
@@ -27,6 +27,7 @@ export default function BikesHomePage() {
                         '&:hover': {
                             transform: 'scale(1.1)',
                         },
+                        backgroundColor: '#FFFFFF',
                     }}
                 >
                     <Box display="flex" alignItems="center">
@@ -52,6 +53,7 @@ export default function BikesHomePage() {
                         '&:hover': {
                             transform: 'scale(1.1)',
                         },
+                        backgroundColor: '#FFFFFF', // Add this line to change the background color to pure white
                     }}
                 >
                     <Box display="flex" alignItems="center">
@@ -80,6 +82,7 @@ export default function BikesHomePage() {
                         '&:hover': {
                             transform: 'scale(1.1)',
                         },
+                        backgroundColor: '#FFFFFF', // Add this line to change the background color to pure white
                     }}
                 >
                     <Box display="flex" alignItems="center">
@@ -105,6 +108,7 @@ export default function BikesHomePage() {
                         '&:hover': {
                             transform: 'scale(1.1)',
                         },
+                        backgroundColor: '#ffffff', // Add this line to change the background color to pure white
                     }}
                 >
                     <Box display="flex" alignItems="center">

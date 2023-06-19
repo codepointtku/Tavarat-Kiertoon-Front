@@ -19,7 +19,7 @@ function BikeLinkBar() {
                 aria-label="navigation link buttons"
                 sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
             >
-                <Button component={Link} to="">
+                <Button component={Link} to="pyoralista">
                     <ListIcon sx={{ marginRight: '5px' }} />
                     Kaikki pyörät
                 </Button>
