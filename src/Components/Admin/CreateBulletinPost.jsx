@@ -11,7 +11,8 @@ function CreateBulletinPost() {
     const {
         register,
         handleSubmit,
-        formState: { isSubmitting, isSubmitSuccessful },
+        formState: { isSubmitting, isSubmitSuccessful, errors },
+        setError,
     } = useForm();
     const submit = useSubmit();
 
@@ -22,6 +23,29 @@ function CreateBulletinPost() {
             method: 'post',
             action: '/admin/tiedotteet/luo',
         });
+    };
+
+    const validateTitle = (value) => {
+        if (!value) {
+            setError('title', { type: 'required', message: 'Otsikko on pakollinen' });
+        } else if (value.length < 2) {
+            setError('title', { type: 'minLength', message: 'Otsikon pituus tulee olla vähintään 2 merkkiä' });
+        } else if (value.length > 50) {
+            setError('title', { type: 'maxLength', message: 'Otsikon pituus tulee olla enintään 50 merkkiä' });
+        } else {
+            setError('title', null);
+        }
+    };
+    const validateContent = (value) => {
+        if (!value) {
+            setError('title', { type: 'required', message: 'Sisältö on pakollinen' });
+        } else if (value.length < 2) {
+            setError('title', { type: 'minLength', message: 'Sisällön pituus tulee olla vähintään 2 merkkiä' });
+        } else if (value.length > 100) {
+            setError('title', { type: 'maxLength', message: 'Sisällön pituus tulee olla enintään 100 merkkiä' });
+        } else {
+            setError('title', null);
+        }
     };
 
     return (
@@ -37,25 +61,27 @@ function CreateBulletinPost() {
                     <Stack id="bulletin-creation-column-stacker">
                         <FormControl id="bulletin-creation-formcontrol">
                             <TextField
-                                {...register('title')}
+                                {...register('title', { validate: validateTitle })}
                                 sx={{ mt: 2 }}
                                 label="Otsikko"
                                 placeholder="Otsikko"
                                 fullWidth
                                 inputProps={{ title: 'Otsikko', minLength: '4', maxLength: '50' }}
-                                required
+                                error={!!errors.title}
+                                helperText={errors.title?.message}
                             />
 
                             <TextField
-                                {...register('content')}
+                                {...register('content', { validate: validateTitle })}
                                 sx={{ mt: 2 }}
-                                label="Sisältö"
-                                placeholder="Sisältö"
+                                label="Tiedote"
+                                placeholder="Tiedote"
+                                fullWidth
                                 multiline
                                 rows={6}
-                                fullWidth
-                                inputProps={{ minLength: '5' }}
-                                required
+                                inputProps={{ title: 'Tiedote', minLength: '4', maxLength: '50' }}
+                                error={!!errors.title}
+                                helperText={errors.title?.message}
                             />
 
                             <Button disabled={isSubmitting} type="submit" sx={{ mt: 2 }}>
