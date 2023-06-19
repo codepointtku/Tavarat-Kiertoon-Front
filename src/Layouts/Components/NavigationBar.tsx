@@ -50,7 +50,6 @@ function AuthedLinkBar() {
                         Varastonäkymä
                     </Button>
                 </HasRole>
-                {/* !!! */}
                 <HasRole role="admin_group">
                     <Button component={Link} to="/admin">
                         Ylläpitäjän näkymä
@@ -58,26 +57,6 @@ function AuthedLinkBar() {
                 </HasRole>
             </ButtonGroup>
         </Box>
-    );
-}
-
-function AdminViewBtn() {
-    return (
-        <HasRole role="admin_group">
-            <Button component={Link} to="/admin">
-                Ylläpitäjän näkymä
-            </Button>
-        </HasRole>
-    );
-}
-
-function StorageViewBtn() {
-    return (
-        <HasRole role={'storage_group'}>
-            <Button component={Link} to="/varasto">
-                Varastonäkymä
-            </Button>
-        </HasRole>
     );
 }
 
