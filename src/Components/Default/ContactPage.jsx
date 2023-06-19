@@ -88,14 +88,14 @@ function ContactForm() {
                     {...register('email', {
                         required: 'Sähköposti on pakollinen', // add required validation and custom error message
                         pattern: {
-                            value: /.+@turku\.fi$/,
-                            message: 'Sähköpostin tulee olla muotoa joku@turku.fi', // add pattern validation and custom error message
+                            value: /.+@turku.fi$|.+@edu.turku.fi$/,
+                            message: 'Sähköpostin tulee olla muotoa @turku.fi tai @edu.turku.fi', // add pattern validation and custom error message
                         },
                     })}
                     sx={{ mt: 2 }}
                     label="Sähköpostisi"
                     fullWidth
-                    placeholder="@turku.fi"
+                    placeholder="@turku.fi tai @edu.turku.fi"
                 />
                 {errors.email ? (
                     <FormHelperText error>{errors.email.message}</FormHelperText>
