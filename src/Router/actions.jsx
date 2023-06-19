@@ -74,10 +74,6 @@ const frontPageActions = async (auth, setAuth, request) => {
             const response = await shoppingCartApi.shoppingCartUpdate({
                 amount: -1,
             });
-
-            if (formData.has('order')) {
-                return { type: 'orderCreated', status: true };
-            }
             return response;
         }
         // const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
@@ -447,10 +443,10 @@ const confirmationAction = async (auth, setAuth, request) => {
         order_info: formData.get('orderInfo'),
         // products: formData.get('productIds'),
     });
-    if (response.status === 200) {
-        return { type: 'post', status: true };
+    if (response.status === 201) {
+        return { type: 'orderCreated', status: true };
     }
-    return { type: 'post', status: false };
+    return { type: 'orderCreated', status: false };
 };
 
 /**
