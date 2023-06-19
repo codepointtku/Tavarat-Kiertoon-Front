@@ -2,7 +2,17 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, useSubmit } from 'react-router-dom';
 
-import { Container, TextField, Button, FormControl, InputLabel, Select, MenuItem, Grid } from '@mui/material';
+import {
+    Container,
+    TextField,
+    Button,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    Grid,
+    FormHelperText, // import FormHelperText
+} from '@mui/material';
 
 import MailIcon from '@mui/icons-material/Mail';
 
@@ -11,7 +21,14 @@ import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
 function ContactForm() {
-    const { register, handleSubmit, watch } = useForm();
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors }, // add formState and errors
+    } = useForm({
+        mode: 'onBlur', // set mode to onBlur
+    });
     const submit = useSubmit();
     const [success, setSuccess] = useState(false);
     const [isSubmitting] = useState(false);
@@ -23,7 +40,6 @@ function ContactForm() {
             method: 'post',
             action: '/otayhteytta',
         });
-        //change to use useActionData
         setSuccess(true);
     };
 
@@ -44,34 +60,56 @@ function ContactForm() {
                 }}
             >
                 <TextField
-                    {...register('name')}
+                    {...register('name', {
+                        required: 'Nimi on pakollinen', // add required validation and custom error message
+                        minLength: {
+                            value: 2,
+                            message: 'Nimen pituuden tulee olla vähintään 2 merkkiä', // add minLength validation and custom error message
+                        },
+                        maxLength: {
+                            value: 50,
+                            message: 'Nimen pituus saa olla enintään 50 merkkiä', // add maxLength validation and custom error message
+                        },
+                    })}
                     sx={{ mt: 2 }}
                     label="Nimesi"
                     placeholder="Nimi"
                     fullWidth
-                    inputProps={{ title: 'Etu- ja sukunimi', minLength: '2', maxLength: '50' }}
-                    required
+                    inputProps={{ title: 'Etu- ja sukunimi' }}
                 />
+                {errors.name ? (
+                    <FormHelperText error>{errors.name.message}</FormHelperText>
+                ) : (
+                    <FormHelperText> </FormHelperText>
+                    // add error message for subject field
+                )}
 
                 <TextField
-                    {...register('email')}
+                    {...register('email', {
+                        required: 'Sähköposti on pakollinen', // add required validation and custom error message
+                        pattern: {
+                            value: /.+@turku\.fi$/,
+                            message: 'Sähköpostin tulee olla muotoa joku@turku.fi', // add pattern validation and custom error message
+                        },
+                    })}
                     sx={{ mt: 2 }}
                     label="Sähköpostisi"
                     fullWidth
-                    inputProps={{
-                        title: 'vaatii @turku.fi päätteen',
-                        pattern: '.+@turku\\.fi$',
-                    }}
-                    required
                     placeholder="@turku.fi"
                 />
+                {errors.email ? (
+                    <FormHelperText error>{errors.email.message}</FormHelperText>
+                ) : (
+                    <FormHelperText> </FormHelperText>
+                    // add error message for subject field
+                )}
 
                 <Grid container>
                     <Grid item xs={12}>
-                        <FormControl fullWidth required sx={{ mt: 2 }}>
+                        <FormControl fullWidth sx={{ mt: 2 }}>
                             <InputLabel>Viestin aihe</InputLabel>
                             <Select
-                                {...register('subject')}
+                                {...register('subject', { required: 'Aihe on pakollinen' })} // add required validation and custom error message
                                 labelId="select-label"
                                 defaultValue=""
                                 label="Viestin aihe"
@@ -82,32 +120,54 @@ function ContactForm() {
                                 <MenuItem value="Kehitysehdotukset">Kehitysehdotukset</MenuItem>
                             </Select>
                         </FormControl>
+                        {errors.subject ? (
+                            <FormHelperText error>{errors.subject.message}</FormHelperText>
+                        ) : (
+                            <FormHelperText> </FormHelperText>
+                            // add error message for subject field
+                        )}
                     </Grid>
                     <Grid item xs={12}>
                         {subject === 'Tilaukset' && (
                             <TextField
-                                {...register('order_id')}
+                                {...register('order_id', {
+                                    required: 'Tilausnumero on pakollinen', // add required validation and custom error message
+                                    min: {
+                                        value: 1,
+                                        message: 'Tilausnumeron tulee olla vähintään 1', // add min validation and custom error message
+                                    },
+                                })}
                                 sx={{ mt: 2 }}
                                 label="Tilausnumero"
                                 placeholder="1234"
-                                required
                                 type="number"
                             />
+                        )}
+                        {errors.order_id && (
+                            <FormHelperText error>{errors.order_id.message}</FormHelperText> // add error message for order_id field
                         )}
                     </Grid>
                 </Grid>
 
                 <TextField
-                    {...register('message')}
+                    {...register('message', {
+                        required: 'Viesti on pakollinen', // add required validation and custom error message
+                        minLength: {
+                            value: 5,
+                            message: 'Viestin pituuden tulee olla vähintään 5 merkkiä', // add minLength validation and custom error message
+                        },
+                    })}
                     sx={{ mt: 2 }}
                     placeholder="Viesti"
                     label="Viesti"
-                    required
                     multiline
-                    inputProps={{ minLength: '5' }}
                     fullWidth
                     rows={6}
                 />
+                {errors.message && (
+                    <FormHelperText error>{errors.message.message}</FormHelperText> // add error message for message field
+                )}
+
                 <Button
                     disabled={isSubmitting}
                     type="submit"
