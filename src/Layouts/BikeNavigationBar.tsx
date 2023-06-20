@@ -22,7 +22,7 @@ function BikeLinkBar() {
             >
                 <Button component={Link} to="">
                     <HomeIcon sx={{ marginRight: '5px' }} />
-                    Etusivu
+                    Etusivu 
                 </Button>
                 <Button component={Link} to="pyoralista">
                     <ListIcon sx={{ marginRight: '5px' }} />
