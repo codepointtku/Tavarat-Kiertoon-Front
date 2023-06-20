@@ -2,6 +2,11 @@ import * as React from 'react';
 
 import { Backdrop, Box, Modal, Fade, Button, Typography } from '@mui/material/';
 
+interface Props {
+    title: string;
+    content: string;
+}
+
 const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -14,7 +19,7 @@ const style = {
     p: 4,
 };
 
-function MessageModal() {
+function MessageModal({ title, content }: Props) {
     const [messageModalOpened, setMessageModalOpened] = React.useState(false);
     const handleOpen = () => setMessageModalOpened(true);
     const handleClose = () => setMessageModalOpened(false);
@@ -38,10 +43,10 @@ function MessageModal() {
                 <Fade in={messageModalOpened}>
                     <Box sx={style}>
                         <Typography id="transition-modal-title" variant="h6" component="h2">
-                            Textiä in a modal jou
+                            {title}
                         </Typography>
                         <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                            Tättärää ja taas koodaillaan
+                            {content}
                         </Typography>
                     </Box>
                 </Fade>
