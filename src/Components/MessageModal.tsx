@@ -14,19 +14,20 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 400,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    border: '0.1rem solid #009bd8',
+    borderRadius: '1rem',
     boxShadow: 24,
     p: 4,
 };
 
 function MessageModal({ title, content }: Props) {
-    const [messageModalOpened, setMessageModalOpened] = React.useState(false);
-    const handleOpen = () => setMessageModalOpened(true);
+    const [messageModalOpened, setMessageModalOpened] = React.useState(true);
+    // const handleOpen = () => setMessageModalOpened(true);
     const handleClose = () => setMessageModalOpened(false);
 
     return (
         <div>
-            <Button onClick={handleOpen}>Open modal</Button>
+            {/* <Button onClick={handleOpen}>Open modal</Button> */}
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"

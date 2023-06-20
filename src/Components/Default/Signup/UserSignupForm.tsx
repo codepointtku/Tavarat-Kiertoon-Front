@@ -82,19 +82,24 @@ function UserForm() {
         });
     });
 
+    const handleClick = () => {
+        console.log('böö');
+    };
+
     return (
         <>
-            <MessageModal />
             {responseStatus?.type === 'create' && !responseStatus?.status && (
-                <>
-                    <AlertBox text="Tunnuksen luominen epäonnistui" status="error" />
-                </>
+                <AlertBox text="Tunnuksen luominen epäonnistui" status="error" />
             )}
+
             {responseStatus?.type === 'create' && responseStatus?.status && (
-                <>
-                    <AlertBox text="Tunnuksen luominen onnistui" status="success" />
-                </>
+                <AlertBox text="Tunnuksen luominen onnistui" status="success" />
             )}
+
+            {responseStatus?.type === 'create' && responseStatus?.status && (
+                <MessageModal title="Jes, äijä!" content="Äijä teki tunnukset!" />
+            )}
+
             <Container id="signupform-user-fields-wrapper" maxWidth="sm" component={Form} onSubmit={handleSubmit}>
                 <Stack id="signupform-user-fields">
                     <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
@@ -223,7 +228,7 @@ function UserForm() {
                             placeholder="**** ****"
                         />
                     </FormControl>
-                    <Button sx={{ mt: 3, mb: 3 }} fullWidth type="submit">
+                    <Button sx={{ mt: 3, mb: 3 }} fullWidth type="submit" onClick={handleClick}>
                         Rekisteröidy
                     </Button>
                     <Button
