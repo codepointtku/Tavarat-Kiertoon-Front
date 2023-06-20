@@ -5,6 +5,7 @@ import BikeScooterIcon from '@mui/icons-material/BikeScooter';
 import ListIcon from '@mui/icons-material/List';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import ViewListIcon from '@mui/icons-material/ViewList';
+import HomeIcon from '@mui/icons-material/Home';
 // import PedalBikeIcon from '@mui/icons-material/PedalBike';
 // import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
 // import MailOutlineIcon from '@mui/icons-material/MailOutline';
@@ -19,6 +20,10 @@ function BikeLinkBar() {
                 aria-label="navigation link buttons"
                 sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
             >
+                <Button component={Link} to="">
+                    <HomeIcon sx={{ marginRight: '5px' }} />
+                    Etusivu
+                </Button>
                 <Button component={Link} to="pyoralista">
                     <ListIcon sx={{ marginRight: '5px' }} />
                     Kaikki pyörät
