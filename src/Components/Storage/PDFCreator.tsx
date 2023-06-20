@@ -108,13 +108,13 @@ const createRenderableProductList = (aProducts: PDFOrderType['product_items']) =
     // create a single Array that contains only unique objects and add numberOfProducts field to each object
     // [ [{}{}{}], [{}], [{}{}], [{}] ] => [ {}{}{}{} ]
     //  => aRenderProducts[0] == single product, aRenderProducts[0].numberOfProducts == number of those products
-    const aRenderProducts: PDFOrderType['product_items'] = [];
-    aTempProducts.forEach((aProduct, index) => {
-        aRenderProducts.push(aProduct[0]);
-        aRenderProducts[index] = { ...aRenderProducts[index], numberOfProducts: aTempProducts[index].length };
-    });
+    // const aRenderProducts: PDFOrderType['product_items'] = [];
+    // aTempProducts.forEach((aProduct, index) => {
+    //     aRenderProducts.push(aProduct[0]);
+    //     aRenderProducts[index] = { ...aRenderProducts[index], numberOfProducts: aTempProducts[index].length };
+    // });
 
-    return aRenderProducts;
+    return aTempProducts;
 };
 
 /**
@@ -122,7 +122,7 @@ const createRenderableProductList = (aProducts: PDFOrderType['product_items']) =
  * [ {}{}{}{}{}{}{}{}{}{}{}{}{}{} ] => [ [{}{}{}{}],[{}{}{}{}{}{}],[{}{}{}{}] ]
  * @returns
  */
-const createPaginatedProductsLists = (aRenderProducts: PDFOrderType['product_items']) => {
+const createPaginatedProductsLists = (aRenderProducts: PDFOrderType['product_items'][]) => {
     const productsOnFirstPage = 4;
     const productsPerPage = 6;
 
@@ -194,22 +194,23 @@ function PDFDocument({ order }: { order: PDFOrderType }) {
     //  - PDFOrderType       : Full Loader Data. Taken as Awaited<ReturnType<typeof pdfViewLoader>> and contains everything
     //  - ['product_items']  : product_items array from datatype.
     //  - [number]           : indicates that you want to use type of one object from the array
-    const productCard = (productItem: PDFOrderType['product_items'][number]) => {
+    const productCard = (productItem: PDFOrderType['product_items']) => {
+        console.log('### productItem', productItem[0].product.name);
         return (
-            <View style={styles.productCard} key={productItem.id}>
+            <View style={styles.productCard} key={productItem[0].id}>
                 {/* <Image src={`${baseUrl}/media/${product.pictures[0].picture_address}`} style={styles.productImg} /> */}
                 <Image
-                    src={`${baseUrl}/media/${productItem.product.pictures[0].picture_address}`}
+                    src={`${baseUrl}/media/${productItem[0].product.pictures[0].picture_address}`}
                     style={styles.productImg}
                 />
 
                 <Text style={{ fontSize: '12', marginBottom: '5px' }}>
-                    {productItem.product.name}: {productItem.numberOfProducts} kpl.
+                    {productItem[0].product.name}: {productItem.length} kpl.
                 </Text>
-                <Text style={{ fontSize: '10', marginBottom: '5px' }}>Viivakoodi: {productItem.barcode}</Text>
+                <Text style={{ fontSize: '10', marginBottom: '5px' }}>Viivakoodi: {productItem[0].barcode}</Text>
                 <Text style={{ fontSize: '10', marginBottom: '5px' }}>
-                    Sijainti: {productItem.storage.name}
-                    {productItem.shelf_id ? ` / ${productItem.shelf_id}` : ''}
+                    Sijainti: {productItem[0].storage.name}
+                    {productItem[0].shelf_id ? ` / ${productItem[0].shelf_id}` : ''}
                 </Text>
             </View>
         );
@@ -241,7 +242,7 @@ function PDFDocument({ order }: { order: PDFOrderType }) {
     const productPages = () => (
         <Page size="A4" style={styles.page}>
             {paginatedProductList.slice(1).map((pageList, index) => (
-                <View key={pageList[0].id} style={styles.pageView}>
+                <View key={pageList[0][0].id} style={styles.pageView}>
                     {headerSection(index + 2)}
                     <View style={styles.productPage}>{pageList.map((product) => productCard(product))}</View>
                 </View>
