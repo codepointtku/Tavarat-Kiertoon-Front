@@ -78,7 +78,7 @@ function UserForm() {
 
             <Container id="signupform-user-fields-wrapper" maxWidth="sm" component={Form} onSubmit={handleSubmit}>
                 <Stack id="signupform-user-fields">
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                    <FormControl variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
                         <InputLabel htmlFor="outlined-adornment-email">Sähköpostiosoite</InputLabel>
                         <OutlinedInput
                             {...register('email')}
