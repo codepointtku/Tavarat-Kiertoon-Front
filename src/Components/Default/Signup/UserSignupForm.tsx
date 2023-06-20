@@ -11,9 +11,11 @@ import {
     OutlinedInput,
     InputAdornment,
     IconButton,
+    Link as MuiLink,
     Avatar,
     Stack,
     Grid,
+    Typography,
 } from '@mui/material';
 
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
@@ -66,8 +68,20 @@ function Hero() {
     );
 }
 
+function ModalFooter() {
+    return (
+        <Typography textAlign="center" mt={2}>
+            Tämän ikkunan voi nyt sulkea turvallisesti.
+        </Typography>
+    );
+}
+
 function UserForm() {
-    const { register, handleSubmit: createHandleSubmit } = useForm();
+    const {
+        register,
+        handleSubmit: createHandleSubmit,
+        formState: { isSubmitSuccessful },
+    } = useForm();
     const submit = useSubmit();
     const responseStatus = useActionData() as Awaited<ReturnType<typeof userSignupAction>>;
 
@@ -82,10 +96,6 @@ function UserForm() {
         });
     });
 
-    const handleClick = () => {
-        console.log('böö');
-    };
-
     return (
         <>
             {responseStatus?.type === 'create' && !responseStatus?.status && (
@@ -93,16 +103,21 @@ function UserForm() {
             )}
 
             {responseStatus?.type === 'create' && responseStatus?.status && (
-                <AlertBox text="Tunnuksen luominen onnistui" status="success" />
+                <AlertBox text="Rekisteröinti onnistui!" status="success" />
             )}
 
             {responseStatus?.type === 'create' && responseStatus?.status && (
-                <MessageModal title="Jes, äijä!" content="Äijä teki tunnukset!" />
+                <MessageModal
+                    title="Tunnuksesi on nyt luotu järjestelmään"
+                    content="Tili on vielä aktivoitava kirjautuaksesi sisään."
+                    subcontent="Lähetimme sähköpostiisi linkin, josta voit aktivoida tunnuksesi."
+                    footer={<ModalFooter />}
+                />
             )}
 
             <Container id="signupform-user-fields-wrapper" maxWidth="sm" component={Form} onSubmit={handleSubmit}>
                 <Stack id="signupform-user-fields">
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
                         <InputLabel htmlFor="outlined-adornment-email">Sähköpostiosoite</InputLabel>
                         <OutlinedInput
                             {...register('email')}
@@ -118,7 +133,13 @@ function UserForm() {
                         />
                     </FormControl>
                     <Stack direction="row">
-                        <FormControl sx={{ mt: 1, mr: 1 }} variant="outlined" fullWidth required>
+                        <FormControl
+                            sx={{ mt: 1, mr: 1 }}
+                            variant="outlined"
+                            fullWidth
+                            required
+                            disabled={isSubmitSuccessful}
+                        >
                             <InputLabel htmlFor="outlined-adornment-firstname">Etunimi</InputLabel>
                             <OutlinedInput
                                 {...register('firstname')}
@@ -128,7 +149,7 @@ function UserForm() {
                                 placeholder="Tilin omistajan etunimi"
                             />
                         </FormControl>
-                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
                             <InputLabel htmlFor="outlined-adornment-lastname">Sukunimi</InputLabel>
                             <OutlinedInput
                                 {...register('lastname')}
@@ -144,7 +165,7 @@ function UserForm() {
                             />
                         </FormControl>
                     </Stack>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
                         <InputLabel htmlFor="outlined-adornment-phonenumber">Puhelinnumero</InputLabel>
                         <OutlinedInput
                             {...register('phonenumber')}
@@ -161,7 +182,13 @@ function UserForm() {
                     </FormControl>
 
                     <Stack direction="row">
-                        <FormControl sx={{ mt: 1, mr: 1 }} variant="outlined" fullWidth required>
+                        <FormControl
+                            sx={{ mt: 1, mr: 1 }}
+                            variant="outlined"
+                            fullWidth
+                            required
+                            disabled={isSubmitSuccessful}
+                        >
                             <InputLabel htmlFor="outlined-adornment-address">Osoite</InputLabel>
                             <OutlinedInput
                                 {...register('address')}
@@ -171,7 +198,7 @@ function UserForm() {
                                 placeholder="Kahvikuja 5 as. 1"
                             />
                         </FormControl>
-                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
                             <InputLabel htmlFor="outlined-adornment-zipcode">Postinumero</InputLabel>
                             <OutlinedInput
                                 {...register('zipcode')}
@@ -187,7 +214,7 @@ function UserForm() {
                             />
                         </FormControl>
                     </Stack>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" required>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" required disabled={isSubmitSuccessful}>
                         <InputLabel htmlFor="outlined-adornment-town">Kaupunki</InputLabel>
                         <OutlinedInput
                             {...register('town')}
@@ -197,7 +224,7 @@ function UserForm() {
                             placeholder="Turku"
                         />
                     </FormControl>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
                         <InputLabel htmlFor="outlined-adornment-password">Salasana</InputLabel>
                         <OutlinedInput
                             {...register('password')}
@@ -218,7 +245,7 @@ function UserForm() {
                             }
                         />
                     </FormControl>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
                         <InputLabel htmlFor="outlined-adornment-passwordrepeat">Salasana uudelleen</InputLabel>
                         <OutlinedInput
                             {...register('passwordCheck')}
@@ -228,14 +255,14 @@ function UserForm() {
                             placeholder="**** ****"
                         />
                     </FormControl>
-                    <Button sx={{ mt: 3, mb: 3 }} fullWidth type="submit" onClick={handleClick}>
+                    <Button sx={{ mt: 3, mb: 3 }} fullWidth type="submit" disabled={isSubmitSuccessful}>
                         Rekisteröidy
                     </Button>
                     <Button
                         component={Link}
                         to="/ohjeet/tili/kayttaja"
                         sx={{ mb: 2 }}
-                        size="small"
+                        // size="small"
                         variant="text"
                         endIcon={<HelpOutlineIcon />}
                     >
