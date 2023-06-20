@@ -1,4 +1,15 @@
-import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import {
+    Box,
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+} from '@mui/material';
 import { useLoaderData } from 'react-router';
 import { Link } from 'react-router-dom';
 import { type bikesPacketLoader } from '../../Router/loaders';
@@ -9,6 +20,9 @@ export default function BikePackets() {
 
     return (
         <Box sx={{ height: '100%', width: '100%', padding: '2rem' }}>
+            <Typography variant="h3" align="center" color="primary.main" mb="2rem" width="100%">
+                Pyöräpaketit
+            </Typography>
             <TableContainer component={Paper} sx={{ padding: '2rem' }}>
                 <Button color="primary" to={`/pyorat/pyoravarasto/lisaapaketti`} component={Link}>
                     Uusi paketti
