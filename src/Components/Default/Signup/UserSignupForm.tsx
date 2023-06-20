@@ -27,6 +27,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import BackButton from '../../BackButton';
 import AlertBox from '../../AlertBox';
 import TypographyTitle from '../../TypographyTitle';
+import MessageModal from '../../MessageModal';
 
 import type { userSignupAction } from '../../../Router/actions';
 
@@ -83,6 +84,7 @@ function UserForm() {
 
     return (
         <>
+            <MessageModal />
             {responseStatus?.type === 'create' && !responseStatus?.status && (
                 <>
                     <AlertBox text="Tunnuksen luominen epäonnistui" status="error" />
