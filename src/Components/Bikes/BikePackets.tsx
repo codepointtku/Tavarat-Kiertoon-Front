@@ -10,13 +10,11 @@ export default function BikePackets() {
     return (
         <Box sx={{ height: '100%', width: '100%', padding: '2rem' }}>
             <TableContainer component={Paper} sx={{ padding: '2rem' }}>
+                <Button color="primary" to={`/pyorat/pyoravarasto/lisaapaketti`} component={Link}>
+                    Uusi paketti
+                </Button>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
-                        <>
-                            <Button color="primary" to={`/pyorat/pyoravarasto/lisaapaketti`} component={Link}>
-                                Uusi paketti
-                            </Button>
-                        </>
                         <TableRow>
                             <TableCell align="right">ID</TableCell>
                             <TableCell align="right">Paketin nimi</TableCell>
