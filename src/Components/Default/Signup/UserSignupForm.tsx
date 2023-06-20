@@ -3,7 +3,6 @@ import { Link, useSubmit, Form, useActionData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import {
-    Box,
     Container,
     Button,
     FormControl,
@@ -11,10 +10,7 @@ import {
     OutlinedInput,
     InputAdornment,
     IconButton,
-    Link as MuiLink,
-    Avatar,
     Stack,
-    Grid,
     Typography,
 } from '@mui/material';
 
@@ -26,47 +22,12 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import HomeIcon from '@mui/icons-material/Home';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-import BackButton from '../../BackButton';
 import AlertBox from '../../AlertBox';
-import TypographyTitle from '../../TypographyTitle';
 import MessageModal from '../../MessageModal';
+import HeroHeader from '../../HeroHeader';
+import HeroText from '../../HeroText';
 
 import type { userSignupAction } from '../../../Router/actions';
-
-function Hero() {
-    return (
-        <>
-            <Grid container className="back-btn-avatar-wrapper">
-                <Grid item xs={4}>
-                    <BackButton />
-                </Grid>
-                <Grid
-                    item
-                    xs={4}
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Avatar
-                        sx={{
-                            bgcolor: 'secondary.dark',
-                            width: 48,
-                            height: 48,
-                        }}
-                    >
-                        <VpnKeyIcon />
-                    </Avatar>
-                </Grid>
-                <Grid item xs={4} />
-            </Grid>
-            <Box sx={{ mt: 2, mb: 2 }}>
-                <TypographyTitle text="Luo uusi käyttäjätili" />
-            </Box>
-        </>
-    );
-}
 
 function ModalFooter() {
     return (
@@ -277,7 +238,8 @@ function UserForm() {
 function UserSignupForm() {
     return (
         <Container maxWidth="md">
-            <Hero />
+            <HeroHeader Icon={<VpnKeyIcon />} />
+            <HeroText title="Luo uusi käyttäjätili" />
             <UserForm />
         </Container>
     );
