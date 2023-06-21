@@ -49,7 +49,7 @@ function OrderEdit() {
 
     let orderList = [];
 
-    orderData.products.forEach((entry) => {
+    orderData.product_items.forEach((entry) => {
         try {
             const newEntry = entry;
             newEntry.count = 1;
