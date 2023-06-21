@@ -7,8 +7,6 @@ import {
     Container,
     Button,
     FormControl,
-    InputLabel,
-    OutlinedInput,
     InputAdornment,
     IconButton,
     Avatar,
@@ -30,9 +28,9 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import BackButton from '../../BackButton';
 import AlertBox from '../../AlertBox';
 import TypographyTitle from '../../TypographyTitle';
+import MessageModal from '../../MessageModal';
 
 import type { userSignupAction } from '../../../Router/actions';
-import MessageModal from '../../MessageModal';
 
 function HeroText() {
     return (
@@ -151,7 +149,7 @@ function LocationForm() {
 
             <Container id="signupform-location-fields-wrapper" maxWidth="sm" component={Form} onSubmit={handleSubmit}>
                 <Stack id="signupform-location-fields">
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
                         <TextField
                             id="input-location-name"
                             type="text"
@@ -380,7 +378,7 @@ function LocationForm() {
                         />
                     </FormControl>
 
-                    <Button sx={{ mt: 3, mb: 3 }} fullWidth type="submit" disabled={isSubmitSuccessful}>
+                    <Button sx={{ mt: 1, mb: 3 }} fullWidth type="submit" disabled={isSubmitSuccessful}>
                         Rekisteröidy
                     </Button>
                 </Stack>
