@@ -45,14 +45,14 @@ function AuthedLinkBar() {
                 aria-label="authed navigation link buttons"
                 sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
             >
-                <HasRole role={'admin_group' || 'storage_group'}>
+                <HasRole role={'storage_group'}>
                     <Button component={Link} to="/varasto">
-                        Varaston hallintanäkymä
+                        Varastonäkymä
                     </Button>
                 </HasRole>
                 <HasRole role="admin_group">
                     <Button component={Link} to="/admin">
-                        Sivuston hallintanäkymä
+                        Ylläpitäjän näkymä
                     </Button>
                 </HasRole>
             </ButtonGroup>
