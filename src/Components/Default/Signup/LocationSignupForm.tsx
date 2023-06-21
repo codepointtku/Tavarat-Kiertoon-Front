@@ -105,7 +105,7 @@ function Hero() {
 function ModalFooter() {
     return (
         <Typography textAlign="center" mt={2}>
-            Tämän ikkunan voi nyt sulkea turvallisesti.
+            Tämän ikkunan voi nyt turvallisesti sulkea.
         </Typography>
     );
 }
@@ -142,9 +142,9 @@ function LocationForm() {
 
             {responseStatus?.type === 'create' && responseStatus?.status && (
                 <MessageModal
-                    title="Tunnuksesi on nyt luotu järjestelmään"
-                    content="Tili on vielä aktivoitava kirjautuaksesi sisään."
-                    subcontent="Lähetimme sähköpostiisi linkin, josta voit aktivoida tunnuksesi."
+                    title="Toimipaikkatili on nyt luotu järjestelmään"
+                    content="Tili on vielä aktivoitava."
+                    subcontent="Lähetimme vastuuhenkilön sähköpostiin linkin, josta voi suorittaa tilin aktivoinnin."
                     footer={<ModalFooter />}
                 />
             )}
