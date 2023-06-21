@@ -287,6 +287,13 @@ function LocationForm() {
                             error={!!formErrors.address}
                             helperText={formErrors.address?.message?.toString() || ' '}
                             inputProps={{ required: false }}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <HomeIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                     </FormControl>
                     <Stack direction="row">
@@ -309,13 +316,6 @@ function LocationForm() {
                                 error={!!formErrors.zipcode}
                                 helperText={formErrors.zipcode?.message?.toString() || ' '}
                                 inputProps={{ required: false }}
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <HomeIcon />
-                                        </InputAdornment>
-                                    ),
-                                }}
                             />
                         </FormControl>
                         <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
@@ -331,6 +331,13 @@ function LocationForm() {
                                 error={!!formErrors.town}
                                 helperText={formErrors.town?.message?.toString() || ' '}
                                 inputProps={{ required: false }}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <HomeIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
                             />
                         </FormControl>
                     </Stack>
