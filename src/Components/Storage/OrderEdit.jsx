@@ -56,7 +56,7 @@ function OrderEdit() {
             newEntry.id = entry.id;
             newEntry.items = [newEntry];
             orderList.forEach((each) => {
-                if (each.group_id === newEntry.group_id) {
+                if (each.product.id === newEntry.product.id) {
                     newEntry.count += each.count;
                     newEntry.items = newEntry.items.concat(each.items);
                     const index = orderList.findIndex((key) => key.id === each.id);
@@ -299,7 +299,7 @@ function OrderEdit() {
                         <TableBody>
                             {orderList.map((item) => (
                                 <StyledTableRow key={item.id}>
-                                    <TableCell>{item.name}</TableCell>
+                                    <TableCell>{item.product.name}</TableCell>
                                     <TableCell>{item.id}</TableCell>
                                     <TableCell>{item.barcode}</TableCell>
                                     <TableCell>{item.items.length}</TableCell>
