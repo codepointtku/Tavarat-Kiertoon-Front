@@ -91,7 +91,7 @@ function UserForm() {
                                 minLength: { value: 5, message: 'Sähköpostiosoitteen on oltava vähintään 5 merkkiä' },
                                 pattern: {
                                     value: /.+@turku.fi$|.+@edu.turku.fi$/,
-                                    message: 'Sähköpostin tulee olla muotoa @turku.fi tai @edu.turku.fi',
+                                    message: 'Sähköpostin on oltava muotoa @turku.fi tai @edu.turku.fi',
                                 },
                             })}
                             error={!!formErrors.email}

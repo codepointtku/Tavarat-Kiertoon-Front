@@ -15,6 +15,7 @@ import {
     Typography,
     Grid,
     Stack,
+    TextField,
 } from '@mui/material';
 
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
@@ -31,6 +32,7 @@ import AlertBox from '../../AlertBox';
 import TypographyTitle from '../../TypographyTitle';
 
 import type { userSignupAction } from '../../../Router/actions';
+import MessageModal from '../../MessageModal';
 
 function HeroText() {
     return (
@@ -100,13 +102,25 @@ function Hero() {
     );
 }
 
+function ModalFooter() {
+    return (
+        <Typography textAlign="center" mt={2}>
+            Tämän ikkunan voi nyt sulkea turvallisesti.
+        </Typography>
+    );
+}
+
 function LocationForm() {
-    const { register, handleSubmit: createHandleSubmit } = useForm();
+    const {
+        register,
+        handleSubmit: createHandleSubmit,
+        formState: { isSubmitSuccessful, errors: formErrors },
+    } = useForm({ mode: 'onTouched' });
     const submit = useSubmit();
+
     const responseStatus = useActionData() as Awaited<ReturnType<typeof userSignupAction>>;
 
     const [showPassword, setShowPassword] = useState(false);
-
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const handleSubmit = createHandleSubmit((data) => {
@@ -120,160 +134,253 @@ function LocationForm() {
     return (
         <>
             {responseStatus?.type === 'create' && !responseStatus?.status && (
-                <>
-                    <AlertBox text="Tunnuksen luominen epäonnistui" status="error" />
-                </>
+                <AlertBox text="Tunnuksen luominen epäonnistui" status="error" />
             )}
             {responseStatus?.type === 'create' && responseStatus?.status && (
-                <>
-                    <AlertBox text="Tunnuksen luominen onnistui" status="success" />
-                </>
+                <AlertBox text="Tunnuksen luominen onnistui" status="success" />
             )}
+
+            {responseStatus?.type === 'create' && responseStatus?.status && (
+                <MessageModal
+                    title="Tunnuksesi on nyt luotu järjestelmään"
+                    content="Tili on vielä aktivoitava kirjautuaksesi sisään."
+                    subcontent="Lähetimme sähköpostiisi linkin, josta voit aktivoida tunnuksesi."
+                    footer={<ModalFooter />}
+                />
+            )}
+
             <Container id="signupform-location-fields-wrapper" maxWidth="sm" component={Form} onSubmit={handleSubmit}>
                 <Stack id="signupform-location-fields">
                     <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-location">Käyttäjätunnus</InputLabel>
-                        <OutlinedInput
-                            {...register('username')}
-                            id="outlined-adornment-location"
+                        <TextField
+                            id="input-location-name"
                             type="text"
                             label="Toimipaikka"
                             placeholder="Käyttäjätunnus yhteiskäyttöön"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <SupervisedUserCircleIcon />
-                                </InputAdornment>
-                            }
+                            {...register('username', {
+                                required: { value: true, message: 'Tunnus on pakollinen' },
+                                minLength: { value: 1, message: 'Tunnuksen oltava vähintään 1 merkki' },
+                            })}
+                            error={!!formErrors.username}
+                            helperText={formErrors.username?.message?.toString() || ' '}
+                            inputProps={{ required: false }}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <SupervisedUserCircleIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                     </FormControl>
                     <Stack direction="row">
-                        <FormControl sx={{ mt: 1, mr: 1 }} variant="outlined" fullWidth required>
-                            <InputLabel htmlFor="outlined-adornment-firstname">Etunimi</InputLabel>
-                            <OutlinedInput
-                                {...register('firstname')}
-                                id="outlined-adornment-firstname"
+                        <FormControl
+                            sx={{ mt: 1, mr: 1 }}
+                            variant="outlined"
+                            fullWidth
+                            required
+                            disabled={isSubmitSuccessful}
+                        >
+                            <TextField
+                                id="input-firstname"
                                 type="text"
                                 label="Etunimi"
                                 placeholder="Tilin vastuuhenkilön etunimi"
+                                {...register('firstname', {
+                                    required: { value: true, message: 'Etunimi on pakollinen' },
+                                    minLength: { value: 1, message: 'Etunimen oltava vähintään 1 merkki' },
+                                })}
+                                error={!!formErrors.firstname}
+                                helperText={formErrors.firstname?.message?.toString() || ' '}
+                                inputProps={{ required: false }}
                             />
                         </FormControl>
-                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                            <InputLabel htmlFor="outlined-adornment-lastname">Sukunimi</InputLabel>
-                            <OutlinedInput
-                                {...register('lastname')}
-                                id="outlined-adornment-lastname"
+                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                            <TextField
+                                id="input-lastname"
                                 type="text"
                                 label="Sukunimi"
                                 placeholder="Tilin vastuuhenkilön sukunimi"
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <Person2Icon />
-                                    </InputAdornment>
-                                }
+                                {...register('lastname', {
+                                    required: { value: true, message: 'Sukunimi on pakollinen' },
+                                    minLength: { value: 1, message: 'Sukunimen on oltava vähintään 1 merkki' },
+                                })}
+                                error={!!formErrors.lastname}
+                                helperText={formErrors.lastname?.message?.toString() || ' '}
+                                inputProps={{ required: false }}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <Person2Icon />
+                                        </InputAdornment>
+                                    ),
+                                }}
                             />
                         </FormControl>
                     </Stack>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-email">Sähköpostiosoite</InputLabel>
-                        <OutlinedInput
-                            {...register('email')}
-                            id="outlined-adornment-email"
+                    <FormControl variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                        <TextField
+                            id="input-email"
                             type="text"
                             label="Sähköpostiosoite"
                             placeholder="Vastuuhenkilön sähköpostiosoite"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <MailOutlineIcon />
-                                </InputAdornment>
-                            }
+                            {...register('email', {
+                                required: { value: true, message: 'Sähköpostiosoite on pakollinen' },
+                                minLength: { value: 5, message: 'Sähköpostiosoitteen on oltava vähintään 5 merkkiä' },
+                                pattern: {
+                                    value: /.+@turku.fi$|.+@edu.turku.fi$/,
+                                    message: 'Sähköpostin on oltava muotoa @turku.fi tai @edu.turku.fi',
+                                },
+                            })}
+                            error={!!formErrors.email}
+                            helperText={formErrors.email?.message?.toString() || ' '}
+                            inputProps={{ required: false }}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <MailOutlineIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                     </FormControl>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-phonenumber">Puhelinnumero</InputLabel>
-                        <OutlinedInput
-                            {...register('phonenumber')}
-                            id="outlined-adornment-phonenumber"
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                        <TextField
+                            id="input-phonenumber"
                             type="text"
                             label="Puhelinnumero"
                             placeholder="010 123 1234"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <PhoneIcon />
-                                </InputAdornment>
-                            }
+                            {...register('phonenumber', {
+                                required: { value: true, message: 'Puhelinnumero on pakollinen' },
+                                minLength: { value: 1, message: 'Puhelinnumeron on oltava vähintään 1 merkki' },
+                                // pattern: {
+                                //     value: /.+@turku.fi$|.+@edu.turku.fi$/,
+                                //     message: 'Puhelinnumero muodossa 010 123 1234',
+                                // },
+                            })}
+                            error={!!formErrors.phonenumber}
+                            helperText={formErrors.phonenumber?.message?.toString() || ' '}
+                            inputProps={{ required: false }}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <PhoneIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                     </FormControl>
-                    <FormControl sx={{ mt: 1, mr: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-address">Osoite</InputLabel>
-                        <OutlinedInput
-                            {...register('address')}
-                            id="outlined-adornment-address"
+                    <FormControl
+                        sx={{ mt: 1, mr: 1 }}
+                        variant="outlined"
+                        fullWidth
+                        required
+                        disabled={isSubmitSuccessful}
+                    >
+                        <TextField
+                            id="input-address"
                             type="text"
                             label="Osoite"
                             placeholder="Toimipaikan katuosoite"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <HomeIcon />
-                                </InputAdornment>
-                            }
+                            {...register('address', {
+                                required: { value: true, message: 'Osoite on pakollinen' },
+                                minLength: { value: 1, message: 'Osoitteen on oltava vähintään 1 merkki' },
+                            })}
+                            error={!!formErrors.address}
+                            helperText={formErrors.address?.message?.toString() || ' '}
+                            inputProps={{ required: false }}
                         />
                     </FormControl>
                     <Stack direction="row">
-                        <FormControl sx={{ mt: 1, mr: 1 }} variant="outlined" fullWidth required>
-                            <InputLabel htmlFor="outlined-adornment-zipcode">Postinumero</InputLabel>
-                            <OutlinedInput
-                                {...register('zipcode')}
-                                id="outlined-adornment-zipcode"
+                        <FormControl
+                            sx={{ mt: 1, mr: 1 }}
+                            variant="outlined"
+                            fullWidth
+                            required
+                            disabled={isSubmitSuccessful}
+                        >
+                            <TextField
+                                id="input-zipcode"
                                 type="text"
                                 label="Postinumero"
                                 placeholder="20100"
+                                {...register('zipcode', {
+                                    required: { value: true, message: 'Postinumero on pakollinen' },
+                                    minLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
+                                })}
+                                error={!!formErrors.zipcode}
+                                helperText={formErrors.zipcode?.message?.toString() || ' '}
+                                inputProps={{ required: false }}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <HomeIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
                             />
                         </FormControl>
-                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                            <InputLabel htmlFor="outlined-adornment-town">Kaupunki</InputLabel>
-                            <OutlinedInput
-                                {...register('town')}
-                                id="outlined-adornment-town"
+                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                            <TextField
+                                id="input-town"
                                 type="text"
                                 label="Kaupunki"
                                 placeholder="Turku"
+                                {...register('town', {
+                                    required: { value: true, message: 'Kaupunki on pakollinen' },
+                                    minLength: { value: 1, message: 'Kaupungin on oltava vähintään 1 merkki' },
+                                })}
+                                error={!!formErrors.town}
+                                helperText={formErrors.town?.message?.toString() || ' '}
+                                inputProps={{ required: false }}
                             />
                         </FormControl>
                     </Stack>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-password">Salasana</InputLabel>
-                        <OutlinedInput
-                            {...register('password')}
-                            id="outlined-adornment-password"
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                        <TextField
+                            id="input-password"
                             type={showPassword ? 'text' : 'password'}
                             label="Salasana"
-                            placeholder="Salasanan on oltava vähintään 45 merkkiä pitkä"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClickShowPassword}
-                                        edge="end"
-                                    >
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
+                            placeholder="Kirjoita salasana"
+                            {...register('password', {
+                                required: { value: true, message: 'Salasana on pakollinen' },
+                                minLength: { value: 2, message: 'Salasanan on oltava vähintään 2 merkkiä' },
+                            })}
+                            error={!!formErrors.password}
+                            inputProps={{ required: false }}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                     </FormControl>
-
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required>
-                        <InputLabel htmlFor="outlined-adornment-passwordrepeat">Salasana uudelleen</InputLabel>
-                        <OutlinedInput
-                            {...register('passwordCheck')}
-                            id="outlined-adornment-passwordrepeat"
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                        <TextField
+                            id="input-passwordrepeat"
                             type={showPassword ? 'text' : 'password'}
                             label="Salasana uudelleen"
-                            placeholder="********"
+                            placeholder="Kirjoita salasana uudelleen"
+                            {...register('passwordCheck', {
+                                required: { value: true, message: 'Salasana on pakollinen' },
+                                minLength: { value: 2, message: 'Salasanan on oltava vähintään 2 merkkiä' },
+                                // validate: (value) => value === getValues('password') || 'Salasanat eivät täsmää',
+                            })}
+                            error={!!formErrors.passwordCheck}
+                            helperText={formErrors.passwordCheck?.message?.toString() || ' '}
+                            inputProps={{ required: false }}
                         />
                     </FormControl>
 
-                    <Button sx={{ mt: 3, mb: 3 }} fullWidth type="submit">
+                    <Button sx={{ mt: 3, mb: 3 }} fullWidth type="submit" disabled={isSubmitSuccessful}>
                         Rekisteröidy
                     </Button>
                 </Stack>

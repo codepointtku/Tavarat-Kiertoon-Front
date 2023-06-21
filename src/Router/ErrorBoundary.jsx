@@ -11,7 +11,7 @@ function ErrorBoundary() {
     };
 
     const errorType = (err) => {
-        // console.log(err);
+        console.log(err);
         if (err?.name === 'AxiosError') {
             return 'axios';
         }
@@ -19,7 +19,7 @@ function ErrorBoundary() {
             return 'noroute';
         }
         // for development console logging errors
-        console.log('error boundary');
+        // console.log('error boundary');
         return 'else';
     };
 
