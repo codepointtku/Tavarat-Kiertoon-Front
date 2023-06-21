@@ -304,7 +304,7 @@ function Routes() {
                                             path: 'toimipaikka',
                                             element: <SignupPage isLocationForm />,
                                             loader: userSignupLoader,
-                                            action: async ({ request }) => userSignupAction(auth, setAuth, request),
+                                            action: async ({ request }) => userSignupAction(request),
                                         },
                                     ],
                                 },
