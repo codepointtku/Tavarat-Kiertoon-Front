@@ -1455,12 +1455,16 @@ paths:
         schema:
           type: string
           enum:
-          - Delivery
           - Finished
+          - Processing
           - Waiting
         description: |-
           * `Waiting` - Waiting
-          * `Delivery` - Delivery
+          * `Processing` - Processing
+          * `Finished` - Finished
+
+          * `Waiting` - Waiting
+          * `Processing` - Processing
           * `Finished` - Finished
       tags:
       - orders
@@ -1691,6 +1695,41 @@ paths:
     get:
       operationId: orders_user_list
       description: View for returning logged in users own orders
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - Finished
+          - Processing
+          - Waiting
+        description: |-
+          * `Waiting` - Waiting
+          * `Processing` - Processing
+          * `Finished` - Finished
+
+          * `Waiting` - Waiting
+          * `Processing` - Processing
+          * `Finished` - Finished
       tags:
       - orders
       security:
@@ -1704,9 +1743,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/OrderDetailResponse'
+                $ref: '#/components/schemas/PaginatedOrderDetailResponseList'
           description: ''
   /pictures/:
     get:
@@ -3896,7 +3933,7 @@ components:
           format: date-time
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusEnum'
+          $ref: '#/components/schemas/StatusC9fEnum'
       required:
       - date
       - email
@@ -3931,7 +3968,7 @@ components:
           format: date-time
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusEnum'
+          $ref: '#/components/schemas/StatusC9fEnum'
       required:
       - date
       - email
@@ -4126,8 +4163,7 @@ components:
           type: integer
           readOnly: true
         status:
-          type: string
-          maxLength: 255
+          $ref: '#/components/schemas/StatusF71Enum'
         delivery_address:
           type: string
           maxLength: 255
@@ -4163,7 +4199,6 @@ components:
       - id
       - phone_number
       - product_items
-      - status
     OrderDetailResponse:
       type: object
       properties:
@@ -4180,8 +4215,7 @@ components:
           - $ref: '#/components/schemas/UserFullResponseSchema'
           readOnly: true
         status:
-          type: string
-          maxLength: 255
+          $ref: '#/components/schemas/StatusF71Enum'
         delivery_address:
           type: string
           maxLength: 255
@@ -4233,8 +4267,7 @@ components:
           type: integer
           readOnly: true
         status:
-          type: string
-          maxLength: 255
+          $ref: '#/components/schemas/StatusF71Enum'
         delivery_address:
           type: string
           maxLength: 255
@@ -4262,7 +4295,6 @@ components:
       - delivery_address
       - id
       - phone_number
-      - status
     OrderResponse:
       type: object
       properties:
@@ -4270,8 +4302,7 @@ components:
           type: integer
           readOnly: true
         status:
-          type: string
-          maxLength: 255
+          $ref: '#/components/schemas/StatusF71Enum'
         delivery_address:
           type: string
           maxLength: 255
@@ -4331,6 +4362,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ContactFormResponse'
+    PaginatedOrderDetailResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderDetailResponse'
     PaginatedOrderResponseList:
       type: object
       properties:
@@ -4865,7 +4916,7 @@ components:
         * `MAINTENANCE` - Maintenance
         * `RENTED` - Rented
         * `RETIRED` - Retired
-    StatusEnum:
+    StatusC9fEnum:
       enum:
       - Not read
       - Read
@@ -4875,6 +4926,16 @@ components:
         * `Not read` - Not Read
         * `Read` - Read
         * `Handled` - Handled
+    StatusF71Enum:
+      enum:
+      - Waiting
+      - Processing
+      - Finished
+      type: string
+      description: |-
+        * `Waiting` - Waiting
+        * `Processing` - Processing
+        * `Finished` - Finished
     Storage:
       type: object
       properties:

@@ -34,9 +34,9 @@ function Confirmation() {
     const { id } = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
 
     const onSubmit = async () => {
-        const { email, deliveryAddress, phoneNumber, orderInfo } = state;
+        const { email, deliveryAddress, phoneNumber, orderInfo, deliveryRequired } = state;
         submit(
-            { deliveryAddress, email, phoneNumber, id: id.toString(), orderInfo },
+            { email, deliveryAddress, phoneNumber, id: id.toString(), orderInfo, deliveryRequired },
             { method: 'post', action: '/ostoskori/vaihe3' }
         );
     };
