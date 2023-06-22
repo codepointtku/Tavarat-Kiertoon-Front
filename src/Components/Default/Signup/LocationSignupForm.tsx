@@ -102,9 +102,12 @@ function Hero() {
 
 function ModalFooter() {
     return (
-        <Typography textAlign="center" mt={2}>
-            Tämän ikkunan voi nyt turvallisesti sulkea.
-        </Typography>
+        <>
+            <Typography textAlign="center" mt={2}>
+                Tämän ikkunan voi nyt turvallisesti sulkea.
+            </Typography>
+            <Button>Okei</Button>
+        </>
     );
 }
 
@@ -117,6 +120,7 @@ function LocationForm() {
     const submit = useSubmit();
 
     const responseStatus = useActionData() as Awaited<ReturnType<typeof userSignupAction>>;
+    // console.log('rStatus:', responseStatus);
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -131,9 +135,14 @@ function LocationForm() {
 
     return (
         <>
-            {responseStatus?.type === 'create' && !responseStatus?.status && (
-                <AlertBox text="Tunnuksen luominen epäonnistui" status="error" />
+            {responseStatus?.type === 'create' && responseStatus?.status === false && (
+                <AlertBox text="Voi pylly" status="error" />
             )}
+
+            {/* {responseStatus?.type === 'create' && responseStatus?.status === false && (
+                <AlertBox text="Tunnuksen luominen epäonnistui" status="error" />
+            )} */}
+
             {responseStatus?.type === 'create' && responseStatus?.status && (
                 <AlertBox text="Tunnuksen luominen onnistui" status="success" />
             )}
@@ -385,7 +394,8 @@ function LocationForm() {
                         />
                     </FormControl>
 
-                    <Button sx={{ mt: 1, mb: 3 }} fullWidth type="submit" disabled={isSubmitSuccessful}>
+                    <Button sx={{ mt: 1, mb: 3 }} fullWidth type="submit">
+                        {/* <Button sx={{ mt: 1, mb: 3 }} fullWidth type="submit" disabled={isSubmitSuccessful}> */}
                         Rekisteröidy
                     </Button>
                 </Stack>

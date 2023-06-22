@@ -58,7 +58,7 @@ function UserForm() {
 
     return (
         <>
-            {responseStatus?.type === 'create' && !responseStatus?.status && (
+            {responseStatus?.type === 'create' && responseStatus?.status === false && (
                 <AlertBox text="Tunnuksen luominen epäonnistui" status="error" />
             )}
 

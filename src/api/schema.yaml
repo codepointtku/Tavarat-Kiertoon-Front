@@ -1860,7 +1860,7 @@ paths:
     get:
       operationId: products_list
       description: View for listing and creating products. Create includes creation
-        of ProductItem, Picture and Color
+        of ProductItem and Picture
       parameters:
       - in: query
         name: category
@@ -1919,7 +1919,7 @@ paths:
     post:
       operationId: products_create
       description: View for listing and creating products. Create includes creation
-        of ProductItem, Picture and Color
+        of ProductItem and Picture
       tags:
       - products
       requestBody:
@@ -4496,9 +4496,8 @@ components:
           $ref: '#/components/schemas/ProductItemCreate'
         amount:
           type: integer
-        colors:
-          type: array
-          items: {}
+        color:
+          type: string
         name:
           type: string
           maxLength: 255
@@ -4519,6 +4518,7 @@ components:
       required:
       - amount
       - category
+      - color
       - id
       - name
       - product_item
@@ -4712,9 +4712,8 @@ components:
           type: integer
           nullable: true
         color:
-          type: array
-          items:
-            type: integer
+          type: integer
+          nullable: true
       required:
       - amount
       - category
@@ -4762,15 +4761,14 @@ components:
         category:
           type: integer
           nullable: true
+        color:
+          type: integer
+          nullable: true
         pictures:
           type: array
           items:
             type: integer
           readOnly: true
-        color:
-          type: array
-          items:
-            type: integer
       required:
       - category
       - color
@@ -4800,11 +4798,10 @@ components:
         category:
           type: integer
           nullable: true
-        pictures:
-          type: array
-          items:
-            type: integer
         color:
+          type: integer
+          nullable: true
+        pictures:
           type: array
           items:
             type: integer
