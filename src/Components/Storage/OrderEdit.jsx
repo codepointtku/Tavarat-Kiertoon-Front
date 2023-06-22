@@ -1,6 +1,7 @@
 import {
     Button,
     Box,
+    Paper,
     TextField,
     TableCell,
     TableContainer,
@@ -8,6 +9,7 @@ import {
     TableHead,
     TableRow,
     TableBody,
+    Typography,
 } from '@mui/material';
 import { useState, useRef } from 'react';
 import { useLoaderData, useNavigate, generatePath, useActionData } from 'react-router';
@@ -16,9 +18,29 @@ import AlertBox from '../AlertBox';
 import StyledTableRow from '../StyledTableRow';
 import StyledTableCell from '../StyledTableCell';
 import ConfirmWindow from '../Admin/ConfirmWindow';
+import { useForm } from 'react-hook-form';
 
 function OrderEdit() {
     const orderData = useLoaderData();
+    console.log('### OrderEdit: orderData', orderData);
+
+    // hook form functions and default values
+    const { formState, register, watch } = useForm({
+        mode: 'onTouched',
+        defaultValues: {
+            orderEditModifyContact: orderData.contact,
+            orderEditModifyNumber: orderData.phone_number,
+            orderEditModifyAddress: orderData.delivery_address,
+            orderEditModifyStatus: orderData.status,
+            orderEditModifyOrderInfo: orderData.order_info,
+        },
+    });
+
+    // error messages
+    const { errors } = formState;
+
+    /* ------------------------------------------------------------- */
+
     const navigate = useNavigate();
     const responseStatus = useActionData();
     const [orderState, setOrderState] = useState(orderData);
@@ -117,6 +139,128 @@ function OrderEdit() {
 
     return (
         <>
+            <>
+                <Typography variant="h3" align="center" color="primary.main" my="2rem" width="100%">
+                    {`Muokkaa tilausta ${orderData.id}`}
+                </Typography>
+                {orderData && (
+                    <>
+                        <Box component={Form}>
+                            <TableContainer
+                                component={Paper}
+                                align="center"
+                                sx={{ padding: '2rem', marginBottom: '2rem' }}
+                            >
+                                {/* Contact part */}
+                                <Box width="75%">
+                                    <Table>
+                                        <TableBody>
+                                            <TableRow>
+                                                <TableCell>Yhteystieto:</TableCell>
+                                                <TableCell>
+                                                    <TextField
+                                                        label="Muokka yhteystietoa"
+                                                        value={watch('orderEditModifyContact')}
+                                                        {...register('orderEditModifyContact', {
+                                                            required: 'Pakollinen kenttä',
+                                                        })}
+                                                        fullWidth
+                                                        color={errors.orderEditModifyContact ? 'error' : 'primary'}
+                                                        error={!!errors.orderEditModifyContact}
+                                                        helperText={
+                                                            errors.orderEditModifyContact?.message?.toString() || ' '
+                                                        }
+                                                        required
+                                                        sx={{ marginBottom: '-1rem' }}
+                                                    />
+                                                </TableCell>
+                                                <TableCell>Puhelinnumero:</TableCell>
+                                                <TableCell>
+                                                    <TextField
+                                                        label="Puhelinnumero"
+                                                        value={watch('orderEditModifyNumber')}
+                                                        {...register('orderEditModifyNumber', {
+                                                            required: 'Pakollinen kenttä',
+                                                        })}
+                                                        fullWidth
+                                                        color={errors.orderEditModifyNumber ? 'error' : 'primary'}
+                                                        error={!!errors.orderEditModifyNumber}
+                                                        helperText={
+                                                            errors.orderEditModifyNumber?.message?.toString() || ' '
+                                                        }
+                                                        required
+                                                        sx={{ marginBottom: '-1rem' }}
+                                                    />
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>Osoite:</TableCell>
+                                                <TableCell>
+                                                    <TextField
+                                                        label="Osoite"
+                                                        value={watch('orderEditModifyAddress')}
+                                                        {...register('orderEditModifyAddress', {
+                                                            required: 'Pakollinen kenttä',
+                                                        })}
+                                                        fullWidth
+                                                        color={errors.orderEditModifyAddress ? 'error' : 'primary'}
+                                                        error={!!errors.orderEditModifyAddress}
+                                                        helperText={
+                                                            errors.orderEditModifyAddress?.message?.toString() || ' '
+                                                        }
+                                                        required
+                                                        sx={{ marginBottom: '-1rem' }}
+                                                    />
+                                                </TableCell>
+                                                <TableCell>Status:</TableCell>
+                                                <TableCell>
+                                                    <TextField
+                                                        label="Status"
+                                                        value={watch('orderEditModifyStatus')}
+                                                        {...register('orderEditModifyStatus', {
+                                                            required: 'Pakollinen kenttä',
+                                                        })}
+                                                        fullWidth
+                                                        color={errors.orderEditModifyStatus ? 'error' : 'primary'}
+                                                        error={!!errors.orderEditModifyStatus}
+                                                        helperText={
+                                                            errors.orderEditModifyStatus?.message?.toString() || ' '
+                                                        }
+                                                        required
+                                                        sx={{ marginBottom: '-1rem' }}
+                                                    />
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>Lisätieto:</TableCell>
+                                                <TableCell colSpan={3}>
+                                                    <TextField
+                                                        label="Lisätieto"
+                                                        value={watch('orderEditModifyOrderInfo')}
+                                                        {...register('orderEditModifyOrderInfo', {
+                                                            required: 'Pakollinen kenttä',
+                                                        })}
+                                                        fullWidth
+                                                        color={errors.orderEditModifyOrderInfo ? 'error' : 'primary'}
+                                                        error={!!errors.orderEditModifyOrderInfo}
+                                                        helperText={
+                                                            errors.orderEditModifyOrderInfo?.message?.toString() || ' '
+                                                        }
+                                                        required
+                                                        multiline
+                                                        sx={{ marginBottom: '-1rem' }}
+                                                    />
+                                                </TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    </Table>
+                                </Box>
+                            </TableContainer>
+                        </Box>
+                    </>
+                )}
+            </>
+
             <ConfirmWindow
                 open={isEditOpen}
                 onConfirm={handleConfirmEdit}
@@ -155,6 +299,11 @@ function OrderEdit() {
 
                 <Button onClick={() => addItem()}>Lisää esine ID:n perusteella</Button>
 
+                {/*
+                 * ****************************************************************************************************
+                 * Start of Osoitekenttä
+                 * ****************************************************************************************************
+                 */}
                 <h1 align="center">Muokkaa Tilausta {orderState.id}</h1>
                 <Box align="center">
                     <div>
@@ -267,6 +416,12 @@ function OrderEdit() {
                         </h5>
                     </div>
                 </Box>
+                {/*
+                 * ****************************************************************************************************
+                 * End of Osoitekenttä
+                 * ****************************************************************************************************
+                 */}
+
                 <h2 align="center">Poista tilauksen tuotteita.</h2>
                 {responseStatus?.type === 'delete' && !responseStatus?.status && (
                     <AlertBox text="Esineen poistaminen epäonnistui" status="error" timer={3000} />

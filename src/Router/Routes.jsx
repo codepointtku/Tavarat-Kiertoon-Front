@@ -380,7 +380,7 @@ function Routes() {
                                     index: true,
                                     // path: ':num/:view',
                                     element: <OrdersList />,
-                                    loader: async ({ params }) => ordersListLoader(auth, setAuth, params),
+                                    loader: ordersListLoader,
                                 },
                                 {
                                     path: 'tilaus',
