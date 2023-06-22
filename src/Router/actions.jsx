@@ -419,21 +419,27 @@ const cartViewAction = async ({ request }) => {
 
 const confirmationAction = async ({ request }) => {
     const formData = await request.formData();
-
+    // const response = await apiCall(auth, setAuth, '/orders/', 'post', {
+    //     contact: formData.get('email'),
+    //     delivery_address: formData.get('deliveryAddress'),
+    //     phone_number: formData.get('phoneNumber'),
+    //     status: 'Waiting',
+    //     user: formData.get('id'),
+    //     order_info: formData.get('orderInfo'),
+    //     // products: formData.get('productIds'),
+    // });
     const response = await ordersApi.ordersCreate({
         contact: formData.get('email'),
         delivery_address: formData.get('deliveryAddress'),
         phone_number: formData.get('phoneNumber'),
+        status: 'Waiting',
         user: Number(formData.get('id')),
         order_info: formData.get('orderInfo'),
-        delivery_required: formData.get('deliveryRequired'),
-        status: 'Waiting',
+        // products: formData.get('productIds'),
     });
-
     if (response.status === 201) {
         return { type: 'orderCreated', status: true };
     }
-
     return { type: 'orderCreated', status: false };
 };
 
