@@ -278,7 +278,7 @@ function Routes() {
                                         {
                                             path: '/ostoskori/vaihe3',
                                             element: <Confirmation />,
-                                            action: confirmationAction,
+                                            action: async ({ request }) => confirmationAction(auth, setAuth, request),
                                         },
                                     ],
                                 },

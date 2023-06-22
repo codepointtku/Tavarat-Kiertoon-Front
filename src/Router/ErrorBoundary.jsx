@@ -11,13 +11,15 @@ function ErrorBoundary() {
     };
 
     const errorType = (err) => {
-        console.log(err);
+        // console.log(err);
         if (err?.name === 'AxiosError') {
             return 'axios';
         }
         if (err?.status === 404) {
             return 'noroute';
         }
+        // for development console logging errors
+        console.log('error boundary');
         return 'else';
     };
 
