@@ -144,6 +144,7 @@ import {
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
+import BikesHomePage from '../Components/Bikes/BikesHomePage';
 
 createStore({});
 
@@ -380,7 +381,7 @@ function Routes() {
                                     index: true,
                                     // path: ':num/:view',
                                     element: <OrdersList />,
-                                    loader: async ({ params }) => ordersListLoader(auth, setAuth, params),
+                                    loader: ordersListLoader,
                                 },
                                 {
                                     path: 'tilaus',
@@ -557,7 +558,11 @@ function Routes() {
                                     element: <BikeWarehouse />,
                                     children: [
                                         {
-                                            index: true,
+                                            index: 'true',
+                                            element: <BikesHomePage />,
+                                        },
+                                        {
+                                            path: 'pyoralista',
                                             loader: async () => bikesListLoader(auth, setAuth),
                                             element: <Bikes />,
                                         },
