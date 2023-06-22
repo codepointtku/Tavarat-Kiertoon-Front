@@ -154,7 +154,6 @@ const contactAction = async (auth, setAuth, request) => {
  */
 const bikeOrderAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    // console.log('@bikeorderAction', formData.get('contactPersonName'));
     // const response = await apiCall(auth, setAuth, '/bikes/rental/', 'post', {
     //     contact_name: formData.get('contactPersonName'),
     //     contact_phone_number: formData.get('contactPersonPhoneNumber'),
@@ -416,27 +415,21 @@ const cartViewAction = async ({ request }) => {
 
 const confirmationAction = async ({ request }) => {
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/orders/', 'post', {
-    //     contact: formData.get('email'),
-    //     delivery_address: formData.get('deliveryAddress'),
-    //     phone_number: formData.get('phoneNumber'),
-    //     status: 'Waiting',
-    //     user: formData.get('id'),
-    //     order_info: formData.get('orderInfo'),
-    //     // products: formData.get('productIds'),
-    // });
+
     const response = await ordersApi.ordersCreate({
         contact: formData.get('email'),
         delivery_address: formData.get('deliveryAddress'),
         phone_number: formData.get('phoneNumber'),
-        status: 'Waiting',
         user: Number(formData.get('id')),
         order_info: formData.get('orderInfo'),
-        // products: formData.get('productIds'),
+        delivery_required: formData.get('deliveryRequired'),
+        status: 'Waiting',
     });
+
     if (response.status === 201) {
         return { type: 'orderCreated', status: true };
     }
+
     return { type: 'orderCreated', status: false };
 };
 
@@ -504,7 +497,7 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
     // send data and redirect back to bike list
     // await apiCall(auth, setAuth, `/bikes/stock/${params.id}/`, 'put', submission);
     await bikesApi.bikesStockUpdate(params.id, submission);
-    return redirect('/pyorat/pyoravarasto');
+    return redirect('/pyorat/pyoravarasto/pyoralista');
 };
 
 const createNewBikeAction = async (auth, setAuth, request) => {
@@ -523,15 +516,13 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     // send data and redirect back to bike list
     // await apiCall(auth, setAuth, `/bikes/stock/`, 'post', submission);
     await bikesApi.bikesStockCreate(submission);
-    return redirect('/pyorat/pyoravarasto');
+    return redirect('/pyorat/pyoravarasto/pyoralista');
 };
 
 // kommentti
 const modifyBikeOrderAction = async (auth, setAuth, request, params) => {
-    console.log('p:', params);
     // collect data that needs to be sent to backend
     const data = await request.formData();
-    // console.log('### data', data);
     const submission = {
         name: data.get('packetName'),
         description: data.get('packetDescription'),
@@ -539,12 +530,10 @@ const modifyBikeOrderAction = async (auth, setAuth, request, params) => {
     };
     // send data and redirect back to bike list
     // await apiCall(auth, setAuth, `/bikes/packages/${params.id}/`, 'put', submission);
-    console.log('### submission', submission);
     await bikesApi.bikesPackagesUpdate(params.id, submission);
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
 const createNewPacketAction = async (auth, setAuth, request) => {
-    console.log('### createNewPacketAction');
     // collect data that needs to be sent to backend
     const data = await request.formData();
     const submission = {
@@ -559,7 +548,6 @@ const createNewPacketAction = async (auth, setAuth, request) => {
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
 const deletePacketAction = async (auth, setAuth, params) => {
-    console.log('### deletePacketAction');
     // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     await bikesApi.bikesPackagesDestroy(params.id);
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
@@ -625,7 +613,7 @@ const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
 const deleteBikeAction = async (auth, setAuth, params) => {
     // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     await bikesApi.bikesStockDestroy(params.id);
-    return redirect('/pyorat/pyoravarasto');
+    return redirect('/pyorat/pyoravarasto/pyoralista');
 };
 
 /**
