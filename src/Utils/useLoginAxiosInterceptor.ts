@@ -71,6 +71,7 @@ function useRefreshInterval() {
                 usersApi.usersLoginRefreshCreate();
             }, 1000 * 120);
         } else {
+            // initial refresh when page is loaded and tokens possibly in browser storage
             usersApi.usersLoginRefreshCreate();
         }
 
