@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Form, Link, useSubmit, useRouteLoaderData } from 'react-router-dom';
 import { Grid, TextField, Typography, MenuItem, Button } from '@mui/material';
 import type { userInfoLoader } from '../../../Router/loaders';
+import Tooltip from '../../Tooltip';
 
 interface FormData {
     [key: string]: string;
@@ -59,7 +60,17 @@ function ProfileInfo() {
             <Grid container id="user-info-container" direction="row" justifyContent="space-evenly" sx={{ mb: 5 }}>
                 <Grid container direction="column" alignContent="center" gap={2}>
                     <Grid item>
-                        <TextField {...register('username')} label="Käyttäjänimi" placeholder="Käyttäjänimi" />
+                        <Tooltip
+                            title="Käyttäjätunnus luodaan automaattisesti järjestelmässä, ja sen muokkaaminen on estetty"
+                            position="right"
+                        >
+                            <TextField
+                                {...register('username')}
+                                label="Käyttäjänimi"
+                                placeholder="Käyttäjänimi"
+                                disabled
+                            />
+                        </Tooltip>
                     </Grid>
                     <Grid item>
                         <TextField {...register('first_name')} label="Etunimi" placeholder="Etunimi" />

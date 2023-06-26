@@ -1455,16 +1455,12 @@ paths:
         schema:
           type: string
           enum:
+          - Delivery
           - Finished
-          - Processing
           - Waiting
         description: |-
           * `Waiting` - Waiting
-          * `Processing` - Processing
-          * `Finished` - Finished
-
-          * `Waiting` - Waiting
-          * `Processing` - Processing
+          * `Delivery` - Delivery
           * `Finished` - Finished
       tags:
       - orders
@@ -1695,41 +1691,6 @@ paths:
     get:
       operationId: orders_user_list
       description: View for returning logged in users own orders
-      parameters:
-      - name: ordering
-        required: false
-        in: query
-        description: Which field to use when ordering the results.
-        schema:
-          type: string
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      - name: page_size
-        required: false
-        in: query
-        description: Number of results to return per page.
-        schema:
-          type: integer
-      - in: query
-        name: status
-        schema:
-          type: string
-          enum:
-          - Finished
-          - Processing
-          - Waiting
-        description: |-
-          * `Waiting` - Waiting
-          * `Processing` - Processing
-          * `Finished` - Finished
-
-          * `Waiting` - Waiting
-          * `Processing` - Processing
-          * `Finished` - Finished
       tags:
       - orders
       security:
@@ -1743,7 +1704,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedOrderDetailResponseList'
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderDetailResponse'
           description: ''
   /pictures/:
     get:
@@ -1860,7 +1823,7 @@ paths:
     get:
       operationId: products_list
       description: View for listing and creating products. Create includes creation
-        of ProductItem, Picture and Color
+        of ProductItem and Picture
       parameters:
       - in: query
         name: category
@@ -1919,7 +1882,7 @@ paths:
     post:
       operationId: products_create
       description: View for listing and creating products. Create includes creation
-        of ProductItem, Picture and Color
+        of ProductItem and Picture
       tags:
       - products
       requestBody:
@@ -2590,6 +2553,7 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/UserUpdate'
+        required: true
       security:
       - CustomJWTAuthentication: []
       responses:
@@ -2691,6 +2655,18 @@ paths:
       operationId: users_list
       description: List all users with all database fields, no POST here
       parameters:
+      - in: query
+        name: groups
+        schema:
+          type: array
+          items:
+            type: integer
+        explode: true
+        style: form
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
       - name: ordering
         required: false
         in: query
@@ -2770,6 +2746,7 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/UserUpdate'
+        required: true
       security:
       - CustomJWTAuthentication: []
       responses:
@@ -2883,11 +2860,7 @@ paths:
       - {}
       responses:
         '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Message'
-          description: ''
+          description: No response body
   /users/address/{id}/:
     get:
       operationId: users_address_retrieve
@@ -2966,7 +2939,10 @@ paths:
   /users/create/:
     post:
       operationId: users_create_create
-      description: List all users, and create with POST
+      description: |-
+        List all users, and create with POST
+        if username field comes = joint user
+        if no username = normal user and email address gets copied to username and will be used to login
       tags:
       - users
       requestBody:
@@ -2994,6 +2970,8 @@ paths:
   /users/emailchange/:
     post:
       operationId: users_emailchange_create
+      description: Sends email change link to entered email address for the logged
+        in user account
       tags:
       - users
       requestBody:
@@ -3012,11 +2990,7 @@ paths:
       - CustomJWTAuthentication: []
       responses:
         '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NewEmail'
-          description: ''
+          description: No response body
   /users/emailchange/finish/:
     post:
       operationId: users_emailchange_finish_create
@@ -3041,11 +3015,7 @@ paths:
       - {}
       responses:
         '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NewEmailFinishValidation'
-          description: ''
+          description: No response body
   /users/groups/:
     get:
       operationId: users_groups_list
@@ -3147,11 +3117,7 @@ paths:
       - {}
       responses:
         '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Message'
-          description: ''
+          description: No response body
   /users/password/resetemail/:
     post:
       operationId: users_password_resetemail_create
@@ -3297,6 +3263,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/Color'
           readOnly: true
+        picture:
+          allOf:
+          - $ref: '#/components/schemas/Picture'
+          readOnly: true
         name:
           type: string
           maxLength: 255
@@ -3309,6 +3279,7 @@ components:
       - description
       - id
       - name
+      - picture
       - size
       - type
     BikeModelCreate:
@@ -3333,6 +3304,9 @@ components:
           type: integer
           nullable: true
         color:
+          type: integer
+          nullable: true
+        picture:
           type: integer
           nullable: true
       required:
@@ -3361,6 +3335,9 @@ components:
           type: integer
           nullable: true
         color:
+          type: integer
+          nullable: true
+        picture:
           type: integer
           nullable: true
       required:
@@ -3596,6 +3573,9 @@ components:
         description:
           type: string
           maxLength: 255
+        picture:
+          type: integer
+          nullable: true
       required:
       - brand
       - color
@@ -3916,7 +3896,7 @@ components:
           format: date-time
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusC9fEnum'
+          $ref: '#/components/schemas/StatusEnum'
       required:
       - date
       - email
@@ -3951,7 +3931,7 @@ components:
           format: date-time
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusC9fEnum'
+          $ref: '#/components/schemas/StatusEnum'
       required:
       - date
       - email
@@ -4113,14 +4093,6 @@ components:
       required:
       - amount
       - bike
-    Message:
-      type: object
-      properties:
-        message:
-          type: string
-          maxLength: 255
-      required:
-      - message
     NewEmail:
       type: object
       description: Serializer for inputting new email address
@@ -4154,7 +4126,8 @@ components:
           type: integer
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusF71Enum'
+          type: string
+          maxLength: 255
         delivery_address:
           type: string
           maxLength: 255
@@ -4190,6 +4163,7 @@ components:
       - id
       - phone_number
       - product_items
+      - status
     OrderDetailResponse:
       type: object
       properties:
@@ -4206,7 +4180,8 @@ components:
           - $ref: '#/components/schemas/UserFullResponseSchema'
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusF71Enum'
+          type: string
+          maxLength: 255
         delivery_address:
           type: string
           maxLength: 255
@@ -4258,7 +4233,8 @@ components:
           type: integer
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusF71Enum'
+          type: string
+          maxLength: 255
         delivery_address:
           type: string
           maxLength: 255
@@ -4286,6 +4262,7 @@ components:
       - delivery_address
       - id
       - phone_number
+      - status
     OrderResponse:
       type: object
       properties:
@@ -4293,7 +4270,8 @@ components:
           type: integer
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusF71Enum'
+          type: string
+          maxLength: 255
         delivery_address:
           type: string
           maxLength: 255
@@ -4353,26 +4331,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ContactFormResponse'
-    PaginatedOrderDetailResponseList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrderDetailResponse'
     PaginatedOrderResponseList:
       type: object
       properties:
@@ -4487,9 +4445,8 @@ components:
           $ref: '#/components/schemas/ProductItemCreate'
         amount:
           type: integer
-        colors:
-          type: array
-          items: {}
+        color:
+          type: string
         name:
           type: string
           maxLength: 255
@@ -4510,6 +4467,7 @@ components:
       required:
       - amount
       - category
+      - color
       - id
       - name
       - product_item
@@ -4703,9 +4661,8 @@ components:
           type: integer
           nullable: true
         color:
-          type: array
-          items:
-            type: integer
+          type: integer
+          nullable: true
       required:
       - amount
       - category
@@ -4753,15 +4710,14 @@ components:
         category:
           type: integer
           nullable: true
+        color:
+          type: integer
+          nullable: true
         pictures:
           type: array
           items:
             type: integer
           readOnly: true
-        color:
-          type: array
-          items:
-            type: integer
       required:
       - category
       - color
@@ -4791,11 +4747,10 @@ components:
         category:
           type: integer
           nullable: true
-        pictures:
-          type: array
-          items:
-            type: integer
         color:
+          type: integer
+          nullable: true
+        pictures:
           type: array
           items:
             type: integer
@@ -4907,7 +4862,7 @@ components:
         * `MAINTENANCE` - Maintenance
         * `RENTED` - Rented
         * `RETIRED` - Retired
-    StatusC9fEnum:
+    StatusEnum:
       enum:
       - Not read
       - Read
@@ -4917,16 +4872,6 @@ components:
         * `Not read` - Not Read
         * `Read` - Read
         * `Handled` - Handled
-    StatusF71Enum:
-      enum:
-      - Waiting
-      - Processing
-      - Finished
-      type: string
-      description: |-
-        * `Waiting` - Waiting
-        * `Processing` - Processing
-        * `Finished` - Finished
     Storage:
       type: object
       properties:
@@ -5081,7 +5026,6 @@ components:
       - last_name
       - password
       - phone_number
-      - username
       - zip_code
     UserCreateReturnResponseSchema:
       type: object
@@ -5131,11 +5075,9 @@ components:
           nullable: true
         first_name:
           type: string
-          nullable: true
           maxLength: 255
         last_name:
           type: string
-          nullable: true
           maxLength: 255
         email:
           type: string
@@ -5228,27 +5170,26 @@ components:
       properties:
         first_name:
           type: string
-          nullable: true
           maxLength: 255
         last_name:
           type: string
-          nullable: true
           maxLength: 255
         phone_number:
           type: string
           nullable: true
           maxLength: 255
+      required:
+      - first_name
+      - last_name
     UserUpdateReturnSchema:
       type: object
       description: FOR SCHEMA, Serializer for users, for updating user information
       properties:
         first_name:
           type: string
-          nullable: true
           maxLength: 255
         last_name:
           type: string
-          nullable: true
           maxLength: 255
         phone_number:
           type: string
