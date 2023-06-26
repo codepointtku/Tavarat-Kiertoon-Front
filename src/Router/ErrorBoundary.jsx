@@ -2,19 +2,19 @@ import { Alert, AlertTitle, Box, Button, Typography } from '@mui/material';
 import { useLocation, useNavigate, useRouteError, Link } from 'react-router-dom';
 
 const errorType = (err) => {
-    // if (err?.name === 'AxiosError') {
-    //     console.log('axios errori');
-    //     return 'axios';
-    // }
+    console.log(err);
     if (err?.response?.status === 204) {
-        console.log('response status 400 (badrequest)');
-        return 'badrequest';
+        return 'nocontent';
     }
     if (err?.status === 404) {
         return 'noroute';
     }
-    // for development console logging errors
-    console.log(err);
+    if (err?.status === 400) {
+        return 'badrequest';
+    }
+    if (err?.response?.status === 500) {
+        return 'internalservererror';
+    }
     return 'else';
 };
 
@@ -28,16 +28,16 @@ function ErrorBoundary() {
     };
 
     const errorTypes = {
-        // axios: (
-        //     <Typography variant="h6">
-        //         Yhteysongelma sijainnissa {location.pathname}, yritä uudelleen.
-        //     </Typography>
-        // ),
-
+        nocontent: <Typography variant="h6">No content @ {location.pathname}</Typography>,
         noroute: <Typography variant="h6">Etsimääsi sijaintia {location.pathname} ei valitettavasti löydy.</Typography>,
-
-        badrequest: <Typography variant="h6">400 @ {location.pathname} dawg.</Typography>,
-        else: <Typography variant="h6">Virhe sijainnissa {location.pathname}.</Typography>,
+        badrequest: <Typography variant="h6">Bad request @ {location.pathname}</Typography>,
+        internalservererror: (
+            <Typography variant="h6">
+                Server encountered an unexpected condition that prevented it from fulfilling the request @{' '}
+                {location.pathname}
+            </Typography>
+        ),
+        else: <Typography variant="h6">Virhe sijainnissa {location.pathname}</Typography>,
     };
 
     return (
