@@ -30,9 +30,14 @@ import type { userSignupAction } from '../../../Router/actions';
 
 function ModalFooter() {
     return (
-        <Typography textAlign="center" mt={2}>
-            Tämän ikkunan voi nyt sulkea turvallisesti.
-        </Typography>
+        <Stack id="modal-footer-stack" alignItems="center">
+            <Typography textAlign="center" mt={2}>
+                Tämän ikkunan voi nyt turvallisesti sulkea.
+            </Typography>
+            <Button component={Link} to="/kirjaudu" fullWidth sx={{ mt: '1rem' }}>
+                Kirjaudu sisään täältä
+            </Button>
+        </Stack>
     );
 }
 
@@ -77,7 +82,7 @@ function UserForm() {
 
             <Container id="signupform-user-fields-wrapper" maxWidth="sm" component={Form} onSubmit={handleSubmit}>
                 <Stack id="signupform-user-fields">
-                    <FormControl variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                    <FormControl variant="outlined" fullWidth>
                         <TextField
                             id="input-email"
                             type="text"
@@ -93,6 +98,8 @@ function UserForm() {
                             })}
                             error={!!formErrors.email}
                             helperText={formErrors.email?.message?.toString() || ' '}
+                            disabled={isSubmitSuccessful}
+                            required
                             // Attributes applied to the input element.
                             inputProps={{ required: false }}
                             // Props applied to the Input element. It will be a FilledInput, OutlinedInput or Input component depending on the variant prop value.
@@ -106,13 +113,7 @@ function UserForm() {
                         />
                     </FormControl>
                     <Stack direction="row">
-                        <FormControl
-                            sx={{ mt: 1, mr: 1 }}
-                            variant="outlined"
-                            fullWidth
-                            required
-                            disabled={isSubmitSuccessful}
-                        >
+                        <FormControl sx={{ mt: 1, mr: 1 }} variant="outlined" fullWidth>
                             <TextField
                                 id="input-firstname"
                                 type="text"
@@ -124,10 +125,12 @@ function UserForm() {
                                 })}
                                 error={!!formErrors.firstname}
                                 helperText={formErrors.firstname?.message?.toString() || ' '}
+                                disabled={isSubmitSuccessful}
+                                required
                                 inputProps={{ required: false }}
                             />
                         </FormControl>
-                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
                             <TextField
                                 id="outlined-adornment-lastname"
                                 type="text"
@@ -139,6 +142,8 @@ function UserForm() {
                                 })}
                                 error={!!formErrors.lastname}
                                 helperText={formErrors.lastname?.message?.toString() || ' '}
+                                disabled={isSubmitSuccessful}
+                                required
                                 inputProps={{ required: false }}
                                 InputProps={{
                                     endAdornment: (
@@ -150,7 +155,7 @@ function UserForm() {
                             />
                         </FormControl>
                     </Stack>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
                         <TextField
                             id="input-phonenumber"
                             type="text"
@@ -166,6 +171,8 @@ function UserForm() {
                             })}
                             error={!!formErrors.phonenumber}
                             helperText={formErrors.phonenumber?.message?.toString() || ' '}
+                            disabled={isSubmitSuccessful}
+                            required
                             inputProps={{ required: false }}
                             InputProps={{
                                 endAdornment: (
@@ -178,13 +185,7 @@ function UserForm() {
                     </FormControl>
 
                     <Stack direction="row">
-                        <FormControl
-                            sx={{ mt: 1, mr: 1 }}
-                            variant="outlined"
-                            fullWidth
-                            required
-                            disabled={isSubmitSuccessful}
-                        >
+                        <FormControl sx={{ mt: 1, mr: 1 }} variant="outlined" fullWidth>
                             <TextField
                                 id="input-address"
                                 type="text"
@@ -196,10 +197,12 @@ function UserForm() {
                                 })}
                                 error={!!formErrors.address}
                                 helperText={formErrors.address?.message?.toString() || ' '}
+                                disabled={isSubmitSuccessful}
+                                required
                                 inputProps={{ required: false }}
                             />
                         </FormControl>
-                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
                             <TextField
                                 id="input-zipcode"
                                 type="text"
@@ -211,6 +214,8 @@ function UserForm() {
                                 })}
                                 error={!!formErrors.zipcode}
                                 helperText={formErrors.zipcode?.message?.toString() || ' '}
+                                disabled={isSubmitSuccessful}
+                                required
                                 inputProps={{ required: false }}
                                 InputProps={{
                                     endAdornment: (
@@ -222,7 +227,7 @@ function UserForm() {
                             />
                         </FormControl>
                     </Stack>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" required disabled={isSubmitSuccessful}>
+                    <FormControl sx={{ mt: 1 }} variant="outlined">
                         <TextField
                             id="input-town"
                             type="text"
@@ -234,10 +239,12 @@ function UserForm() {
                             })}
                             error={!!formErrors.town}
                             helperText={formErrors.town?.message?.toString() || ' '}
+                            disabled={isSubmitSuccessful}
+                            required
                             inputProps={{ required: false }}
                         />
                     </FormControl>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
                         <TextField
                             id="input-password"
                             type={showPassword ? 'text' : 'password'}
@@ -248,6 +255,9 @@ function UserForm() {
                                 minLength: { value: 2, message: 'Salasanan on oltava vähintään 2 merkkiä' },
                             })}
                             error={!!formErrors.password}
+                            helperText={formErrors.password?.message?.toString() || ' '}
+                            disabled={isSubmitSuccessful}
+                            required
                             inputProps={{ required: false }}
                             InputProps={{
                                 endAdornment: (
@@ -264,7 +274,7 @@ function UserForm() {
                             }}
                         />
                     </FormControl>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
                         <TextField
                             id="input-passwordrepeat"
                             type={showPassword ? 'text' : 'password'}
@@ -277,6 +287,8 @@ function UserForm() {
                             })}
                             error={!!formErrors.passwordCheck}
                             helperText={formErrors.passwordCheck?.message?.toString() || ' '}
+                            disabled={isSubmitSuccessful}
+                            required
                             inputProps={{ required: false }}
                         />
                     </FormControl>
