@@ -292,7 +292,7 @@ function UserForm() {
                             inputProps={{ required: false }}
                         />
                     </FormControl>
-                    <Button sx={{ mt: 3, mb: 3 }} fullWidth type="submit" disabled={isSubmitSuccessful}>
+                    <Button sx={{ mt: 1, mb: 2 }} fullWidth type="submit" disabled={isSubmitSuccessful}>
                         Rekisteröidy
                     </Button>
                     <Button
