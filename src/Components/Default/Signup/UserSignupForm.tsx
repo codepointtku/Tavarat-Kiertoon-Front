@@ -82,7 +82,7 @@ function UserForm() {
 
             <Container id="signupform-user-fields-wrapper" maxWidth="sm" component={Form} onSubmit={handleSubmit}>
                 <Stack id="signupform-user-fields">
-                    <FormControl variant="outlined" fullWidth>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
                         <TextField
                             id="input-email"
                             type="text"
