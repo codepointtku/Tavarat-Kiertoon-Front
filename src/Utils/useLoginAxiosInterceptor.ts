@@ -70,6 +70,8 @@ function useRefreshInterval() {
             interval = setInterval(() => {
                 usersApi.usersLoginRefreshCreate();
             }, 1000 * 120);
+        } else {
+            usersApi.usersLoginRefreshCreate();
         }
 
         return () => {
