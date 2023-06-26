@@ -34,7 +34,7 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) 
     }
 
     function handleOnClick(action: string) {
-        if (amountN >= 0 && amountN <= maxCount) {
+        if (amountN >= 0 && amountN <= maxCount + selectedAmount) {
             action === 'add' ? addAmount() : removeAmount();
         }
     }
@@ -42,7 +42,7 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) 
     function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const _input = event.target.value;
         const input: number = +_input;
-        if ((input >= 0 && input <= maxCount) || _input === '') {
+        if ((input >= 0 && input <= maxCount + selectedAmount) || _input === '') {
             setAmountN(Number(input));
             input === selectedAmount ? setAddedToCart(true) : setAddedToCart(false);
         }
@@ -107,7 +107,7 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) 
                         size="small"
                         sx={{ color: 'background.default', padding: 0, ml: 1, mr: 0.5 }}
                         onClick={() => handleOnClick('add')}
-                        disabled={amountN === maxCount}
+                        disabled={amountN === maxCount + selectedAmount}
                     >
                         <AddIcon />
                     </IconButton>
@@ -125,7 +125,7 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) 
                     disabled={addedToCart}
                 >
                     {amountN === 0 ? (
-                        <Typography variant="inherit">Poista tuote</Typography>
+                        <Typography variant="inherit">Poista korista</Typography>
                     ) : (
                         <Typography variant="inherit">Muuta määrää</Typography>
                     )}

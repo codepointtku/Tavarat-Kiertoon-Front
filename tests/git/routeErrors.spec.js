@@ -128,7 +128,7 @@ test.describe('varasto', () => {
 
 test.describe('tilaus', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/varasto/tilaus/4127?page=0&rows=5');
+        await page.goto('/varasto/tilaus/4127');
         await expect(page.getByText('Etsimääsi sijaintia /tilaus/4127')).not.toBeVisible();
     });
 });
@@ -189,30 +189,94 @@ test.describe('fail', () => {
     });
 });
 
+/*
+ *  Bike tests
+ *      /pyorat
+ *      /pyorat/pyoravarasto
+ *      /pyorat/pyoravarasto/pyoratilaukset
+ *      /pyorat/pyoravarasto/pyorapaketit
+ *    ( /pyorat/pyoravarasto/muokkaa => /pyorat/pyoravarasto ) : no test yet
+ *      /pyorat/pyoravarasto/muokkaa/0
+ *      /pyorat/pyoravarasto/lisaa
+ *      /pyorat/pyoravarasto/pyoramallit
+ *    ( /pyorat/pyoravarasto/muokkaapyoramalli => pyorat/pyoravarasto/pyoramallit ) : no test yet
+ *      /pyorat/pyoravarasto/muokkaapyoramalli/0
+ *      /pyorat/pyoravarasto/lisaapyoramalli
+ */
 test.describe('bikes', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/pyorat');
         await expect(page.getByText('Etsimääsi sijaintia /pyorat')).not.toBeVisible();
     });
 });
-test.describe('bikewarehouse', () => {
+// bike tests
+test.describe('bike-list', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/pyorat/pyoravarasto');
         await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto')).not.toBeVisible();
     });
 });
-test.describe('bikeorder', () => {
+test.describe('bike-modify-1', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/pyorat/pyoravarasto/pyoratilaukset');
-        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyoratilaukset')).not.toBeVisible();
+        await page.goto('/pyorat/pyoravarasto/muokkaa/1');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit/1')).not.toBeVisible();
     });
 });
-test.describe('bikepackets', () => {
+test.describe('bike-add-new', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/pyorat/pyoravarasto/lisaa');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/lisaa')).not.toBeVisible();
+    });
+});
+// bike model tests
+test.describe('bike-model-list', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/pyorat/pyoravarasto/pyoramallit');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyoramallit')).not.toBeVisible();
+    });
+});
+test.describe('bike-model-modify-1', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/pyorat/pyoravarasto/muokkaapyoramalli/1');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/muokkaapyoramalli/1')).not.toBeVisible();
+    });
+});
+test.describe('bike-model-add-new', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/pyorat/pyoravarasto/lisaapyoramalli');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/lisaapyoramalli')).not.toBeVisible();
+    });
+});
+// bike packet tests
+test.describe('bike-packet-list', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/pyorat/pyoravarasto/pyorapaketit');
         await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
     });
 });
+test.describe('bike-packet-modify-1', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/pyorat/pyoravarasto/muokkaapaketti/1');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/muokkaapaketti/1')).not.toBeVisible();
+    });
+});
+test.describe('bike-packet-add-new', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/pyorat/pyoravarasto/lisaapaketti');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/lisaapaketti')).not.toBeVisible();
+    });
+});
+// bike orders tests
+test.describe('bike-orders', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/pyorat/pyoravarasto/pyoratilaukset');
+        await expect(page.getByText('Etsimääsi sijaintia /pyorat/pyoravarasto/pyoratilaukset')).not.toBeVisible();
+    });
+});
+
+/*
+ *
+ */
 test.describe('passwordreset', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/salasananpalautus');

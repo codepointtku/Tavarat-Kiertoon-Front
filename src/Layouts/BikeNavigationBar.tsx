@@ -1,7 +1,15 @@
 import { Link } from 'react-router-dom';
 
 import { Box, Button, ButtonGroup } from '@mui/material';
-import PedalBikeIcon from '@mui/icons-material/PedalBike';
+import BikeScooterIcon from '@mui/icons-material/BikeScooter';
+import ListIcon from '@mui/icons-material/List';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import HomeIcon from '@mui/icons-material/Home';
+// import PedalBikeIcon from '@mui/icons-material/PedalBike';
+// import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
+// import MailOutlineIcon from '@mui/icons-material/MailOutline';
+// import StorageIcon from '@mui/icons-material/Storage';
 
 function BikeLinkBar() {
     return (
@@ -13,12 +21,23 @@ function BikeLinkBar() {
                 sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
             >
                 <Button component={Link} to="">
-                    <PedalBikeIcon />
+                    <HomeIcon sx={{ marginRight: '5px' }} />
+                    Etusivu 
+                </Button>
+                <Button component={Link} to="pyoralista">
+                    <ListIcon sx={{ marginRight: '5px' }} />
+                    Kaikki pyörät
+                </Button>
+                <Button component={Link} to="pyoramallit">
+                    <BikeScooterIcon sx={{ marginRight: '5px' }} />
+                    Pyörämallit
                 </Button>
                 <Button component={Link} to="pyoratilaukset">
+                    <ScheduleIcon sx={{ marginRight: '5px' }} />
                     Pyörätilaukset
                 </Button>
                 <Button component={Link} to="pyorapaketit">
+                    <ViewListIcon sx={{ marginRight: '5px' }} />
                     Pyöräpaketit
                 </Button>
             </ButtonGroup>

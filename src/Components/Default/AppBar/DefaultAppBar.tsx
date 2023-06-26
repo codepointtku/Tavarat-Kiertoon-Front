@@ -1,5 +1,5 @@
-import { useState, useContext, useEffect, ReactNode } from 'react';
-import { useLoaderData, useNavigate, useSubmit } from 'react-router-dom';
+import { useState, useContext, useEffect, type ReactNode } from 'react';
+import { useLoaderData, useNavigate, useSubmit, useLocation } from 'react-router-dom';
 
 import {
     AppBar,
@@ -15,7 +15,9 @@ import {
     ListItem,
     ListItemText,
     Typography,
-    Theme,
+    Popover,
+    Grid,
+    type Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -30,6 +32,8 @@ import ProductInCart from './ProductInCart';
 import LoginForm from './LoginForm';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
+import { type ShoppingCartAvailableAmountList } from '../../../api';
+import CloseDrawerButton from './CloseDrawerButton';
 
 //
 
@@ -109,7 +113,7 @@ const StyledBadge = styled(Badge)(({ theme, isanimated }: StyledBadge) => ({
         },
         to: {
             fontSize: '125%',
-            color: theme?.palette.primary.main,
+            // color: theme?.palette.primary.main,
         },
     },
     '@keyframes idle': { '100%': {} },
@@ -127,15 +131,13 @@ const toolBarHover = {
     },
 };
 
-interface CartProduct {
-    id: number & string;
-    count: number;
-    name: string;
-    group_id: number;
-}
-
 interface SubmitFunction {
     (SubmitTarget: string, options: { method: string; action: string }): any;
+}
+
+interface CartProduct {
+    count: number;
+    product: { name: string; id: number & string };
 }
 
 function DefaultAppBar() {
@@ -145,16 +147,19 @@ function DefaultAppBar() {
     const navigate = useNavigate();
     const submit = useSubmit() as unknown as SubmitFunction;
     const { cart, products, amountList } = useLoaderData() as Awaited<ReturnType<typeof shoppingCartLoader>>;
-    const [productsLength, setProductsLength] = useState(cart?.products?.length);
+    const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
     const [cartEmpty, setCartEmpty] = useState(false);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const location = useLocation();
 
     useEffect(() => {
-        if (cart?.products?.length !== productsLength) {
+        if (cart?.product_items?.length !== productsLength) {
             setTimeout(() => {
-                setProductsLength(cart?.products?.length);
+                setProductsLength(cart?.product_items?.length);
             }, 3000);
         }
-    }, [cart?.products?.length]);
+    }, [cart?.product_items?.length]);
 
     const drawerOpen = (drawer: string) => () => {
         notLoggedIn && setNotLoggedIn(false);
@@ -170,7 +175,7 @@ function DefaultAppBar() {
             setCurrentOpenDrawer('account');
             setNotLoggedIn(true);
         } else {
-            if (cart?.products?.length === 0) {
+            if (cart?.product_items?.length === 0) {
                 setCartEmpty(true);
             } else {
                 setCartEmpty(false);
@@ -180,8 +185,13 @@ function DefaultAppBar() {
         }
     }
 
-    function handleClick() {
+    function handlePopOverOpen(event: React.MouseEvent<HTMLElement>) {
+        setAnchorEl(event.currentTarget);
+    }
+
+    function handleEmptyCart() {
         submit('a', { method: 'put', action: '/' });
+        setAnchorEl(null);
     }
 
     return (
@@ -200,21 +210,23 @@ function DefaultAppBar() {
             >
                 <Toolbar>
                     <Stack direction="row" spacing={4}>
-                        <Tooltip title="Ostoskori">
-                            <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
-                                <StyledBadge
-                                    isanimated={productsLength === cart?.products?.length ? 1 : 0}
-                                    badgeContent={cart?.products?.length}
-                                    sx={{ color: 'primary.contrastText' }}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                >
-                                    <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
-                                </StyledBadge>
-                            </IconButton>
-                        </Tooltip>
+                        {!location.pathname.includes('/ostoskori') && (
+                            <Tooltip title="Ostoskori">
+                                <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
+                                    <StyledBadge
+                                        isanimated={productsLength === cart?.product_items?.length ? 1 : 0}
+                                        badgeContent={cart?.product_items?.length}
+                                        sx={{ color: 'primary.contrastText' }}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                    >
+                                        <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
+                                    </StyledBadge>
+                                </IconButton>
+                            </Tooltip>
+                        )}
                         <Tooltip title="Kirjautuminen">
                             <IconButton onClick={drawerOpen('account')} sx={iconHover}>
                                 <AccountCircleOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
@@ -227,7 +239,7 @@ function DefaultAppBar() {
             <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart" onClose={drawerOpen('')}>
                 {/* tähän oma komponentti.. */}
                 <List>
-                    {cart?.products?.length === 0 && (
+                    {cart?.product_items?.length === 0 && (
                         <>
                             {cartEmpty ? (
                                 <Typography variant="h6" align="center" sx={{ color: 'error.main' }}>
@@ -241,42 +253,83 @@ function DefaultAppBar() {
                         </>
                     )}
                     {products?.map((cartProduct: CartProduct) => {
-                        const product = amountList?.find((p: { id: number }) => p.id == cartProduct.group_id);
+                        const product = amountList.find(
+                            (p) => p.id == cartProduct.product.id
+                        ) as ShoppingCartAvailableAmountList;
                         return (
                             <ProductInCart
-                                key={cartProduct.id}
-                                text={cartProduct.name}
+                                key={cartProduct.product.id}
+                                name={cartProduct.product.name}
                                 count={cartProduct.count}
-                                index={cartProduct.id}
-                                maxCount={product?.amount}
+                                id={cartProduct.product.id}
+                                maxCount={product.amount}
                             />
                         );
                     })}
-                    {cart?.products?.length > 0 && (
-                        <ListItem
-                            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}
-                        >
-                            <Button color="error" startIcon={<DeleteIcon />} onClick={handleClick}>
-                                <ListItemText
-                                    primary="Tyhjennä ostoskori"
-                                    primaryTypographyProps={{ fontWeight: 'bold' }}
-                                />
-                            </Button>
-                        </ListItem>
-                    )}
                 </List>
-                <Divider />
-                <List>
-                    <ListItem>
-                        <Button
-                            onClick={() => navigateToCart()}
-                            variant="contained"
-                            startIcon={<ShoppingCartCheckoutIcon />}
-                        >
-                            <ListItemText primary="Kassalle" />
-                        </Button>
-                    </ListItem>
-                </List>
+                {/* <Divider /> */}
+                <Grid container sx={{ display: 'flex', justifyContent: 'center', marginBottom: '6rem' }}>
+                    <Grid item xs={2} />
+                    <Grid item xs={8}>
+                        <List>
+                            <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Button
+                                    onClick={() => navigateToCart()}
+                                    variant="contained"
+                                    fullWidth
+                                    // endIcon={<ShoppingCartCheckoutIcon />}
+                                    sx={{
+                                        '&:hover': {
+                                            backgroundColor: 'success.dark',
+                                        },
+                                    }}
+                                >
+                                    <ListItemText primary="Kassalle" primaryTypographyProps={{ fontWeight: 'bold' }} />
+                                </Button>
+                            </ListItem>
+                        </List>
+
+                        {/* ///// */}
+                        {cart?.product_items?.length > 0 && (
+                            <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Button
+                                    color="error"
+                                    fullWidth
+                                    // startIcon={<DeleteIcon />}
+                                    onClick={handlePopOverOpen}
+                                >
+                                    <ListItemText
+                                        primary="Tyhjennä ostoskori"
+                                        primaryTypographyProps={{ fontWeight: 'bold' }}
+                                    />
+                                </Button>
+                                <Popover
+                                    open={open}
+                                    anchorEl={anchorEl}
+                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                                    onClose={() => setAnchorEl(null)}
+                                    sx={{ mt: 1 }}
+                                >
+                                    <Grid
+                                        container
+                                        direction="row"
+                                        justifyContent="space-evenly"
+                                        sx={{ p: 1, width: 200 }}
+                                    >
+                                        <Grid item sx={{ mt: '0.5rem' }}>
+                                            <Typography variant="body2">Oletko varma?</Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Button onClick={handleEmptyCart}>Kyllä</Button>
+                                        </Grid>
+                                    </Grid>
+                                </Popover>
+                            </ListItem>
+                        )}
+                    </Grid>
+                    <Grid item xs={2} />
+                </Grid>
+                <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>

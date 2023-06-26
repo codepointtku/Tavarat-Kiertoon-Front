@@ -16,18 +16,18 @@ import {
 import { useState } from 'react';
 
 import BikeAvailability from './BikeAvailability';
-import type { bikeInterface } from '../../Layouts/BikesLayout';
+import type { BikeInterface } from '../../Layouts/BikesLayout';
 
-interface dateInfoInterface {
+interface DateInfoInterface {
     today: string;
     available_from: string;
     available_to: string;
     monday: string;
 }
 
-interface bikeCardInterface {
-    bike: bikeInterface;
-    dateInfo: dateInfoInterface;
+interface BikeCardInterface {
+    bike: BikeInterface;
+    dateInfo: DateInfoInterface;
     amountSelected: number;
     onChange: Function;
     startDate?: Date;
@@ -41,7 +41,7 @@ export default function BikeCard({
     onChange,
     startDate: selectedStartDate,
     endDate: selectedEndDate,
-}: bikeCardInterface) {
+}: BikeCardInterface) {
     const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
     const maxNonPackageAvailable = bike.package_only_count
         ? bike.max_available - bike.package_only_count
@@ -49,7 +49,7 @@ export default function BikeCard({
 
     return (
         <Card sx={{ my: 1, display: 'flex', flexDirection: 'row', height: '220px' }}>
-            <CardMedia sx={{ width: '220px', height: '220px' }} component="img" alt="kuva" image="br.jpg" />
+            <CardMedia sx={{ width: '220px', height: '220px' }} component="img" alt="kuva" image="/bike.jpg" />
             <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Typography variant="h6">{bike.name}</Typography>
                 <Box sx={{ mb: 1 }}>

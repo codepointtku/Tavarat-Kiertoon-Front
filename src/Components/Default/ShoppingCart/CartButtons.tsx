@@ -26,11 +26,15 @@ const LinkButton: FC<CustomButtonProps> = ({ component, to, backText }) => {
 
 function CartButtons({ backText, forwardText, cartEmpty }: Props) {
     return (
-        <Grid container justifyContent="space-between" sx={{ marginTop: 5 }}>
+        <Grid container justifyContent="space-between" sx={{ marginTop: '2rem' }}>
+            {/* <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'center' }}> */}
             <LinkButton component={Link} to={-1} backText={backText} />
+            {/* </Grid> */}
+            {/* <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'center' }}> */}
             <Button type="submit" variant="contained" disabled={cartEmpty} endIcon={<ArrowForwardIcon />}>
                 {forwardText}
             </Button>
+            {/* </Grid> */}
         </Grid>
     );
 }

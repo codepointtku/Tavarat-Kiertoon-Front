@@ -1,4 +1,4 @@
-import { useActionData } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Grid, Box } from '@mui/material';
 
 import SearchField from '../Components/Default/SearchField';
@@ -8,15 +8,11 @@ import AlertBox from '../Components/AlertBox';
 
 // default front page view
 
-interface Jee {
-    type: string;
-}
-
 function DefaultView() {
-    const responseStatus = useActionData() as Jee;
+    const { state: responseStatus } = useLocation();
     return (
         <Box id="front-page-main-block">
-            {responseStatus?.type === 'orderCreated' && (
+            {responseStatus?.type === 'orderCreated' && responseStatus?.status === true && (
                 <AlertBox text="Tilaus onnistui!" status="success" timer={3000} />
             )}
             <SearchField />
