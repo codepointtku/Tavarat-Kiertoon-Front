@@ -31,12 +31,14 @@ import type { userSignupAction } from '../../../Router/actions';
 
 function ModalFooter() {
     return (
-        <>
+        <Stack alignItems="center">
             <Typography textAlign="center" mt={2}>
                 Tämän ikkunan voi nyt turvallisesti sulkea.
             </Typography>
-            <Button>Okei</Button>
-        </>
+            <Button component={Link} to="/kirjaudu" fullWidth sx={{ mt: '1rem' }}>
+                Kirjaudu sisään täältä
+            </Button>
+        </Stack>
     );
 }
 
@@ -49,7 +51,6 @@ function LocationForm() {
     const submit = useSubmit();
 
     const responseStatus = useActionData() as Awaited<ReturnType<typeof userSignupAction>>;
-    // console.log('rStatus:', responseStatus);
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -65,12 +66,8 @@ function LocationForm() {
     return (
         <>
             {responseStatus?.type === 'create' && responseStatus?.status === false && (
-                <AlertBox text="Voi pylly" status="error" />
-            )}
-
-            {/* {responseStatus?.type === 'create' && responseStatus?.status === false && (
                 <AlertBox text="Tunnuksen luominen epäonnistui" status="error" />
-            )} */}
+            )}
 
             {responseStatus?.type === 'create' && responseStatus?.status && (
                 <AlertBox text="Tunnuksen luominen onnistui" status="success" />
@@ -87,7 +84,7 @@ function LocationForm() {
 
             <Container id="signupform-location-fields-wrapper" maxWidth="sm" component={Form} onSubmit={handleSubmit}>
                 <Stack id="signupform-location-fields">
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
                         <TextField
                             id="input-location-name"
                             type="text"
@@ -99,6 +96,8 @@ function LocationForm() {
                             })}
                             error={!!formErrors.username}
                             helperText={formErrors.username?.message?.toString() || ' '}
+                            disabled={isSubmitSuccessful}
+                            required
                             inputProps={{ required: false }}
                             InputProps={{
                                 endAdornment: (
@@ -110,13 +109,7 @@ function LocationForm() {
                         />
                     </FormControl>
                     <Stack direction="row">
-                        <FormControl
-                            sx={{ mt: 1, mr: 1 }}
-                            variant="outlined"
-                            fullWidth
-                            required
-                            disabled={isSubmitSuccessful}
-                        >
+                        <FormControl sx={{ mt: 1, mr: 1 }} variant="outlined" fullWidth>
                             <TextField
                                 id="input-firstname"
                                 type="text"
@@ -128,10 +121,12 @@ function LocationForm() {
                                 })}
                                 error={!!formErrors.firstname}
                                 helperText={formErrors.firstname?.message?.toString() || ' '}
+                                disabled={isSubmitSuccessful}
+                                required
                                 inputProps={{ required: false }}
                             />
                         </FormControl>
-                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
                             <TextField
                                 id="input-lastname"
                                 type="text"
@@ -143,6 +138,8 @@ function LocationForm() {
                                 })}
                                 error={!!formErrors.lastname}
                                 helperText={formErrors.lastname?.message?.toString() || ' '}
+                                disabled={isSubmitSuccessful}
+                                required
                                 inputProps={{ required: false }}
                                 InputProps={{
                                     endAdornment: (
@@ -154,7 +151,7 @@ function LocationForm() {
                             />
                         </FormControl>
                     </Stack>
-                    <FormControl variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
                         <TextField
                             id="input-email"
                             type="text"
@@ -170,6 +167,8 @@ function LocationForm() {
                             })}
                             error={!!formErrors.email}
                             helperText={formErrors.email?.message?.toString() || ' '}
+                            disabled={isSubmitSuccessful}
+                            required
                             inputProps={{ required: false }}
                             InputProps={{
                                 endAdornment: (
@@ -180,7 +179,7 @@ function LocationForm() {
                             }}
                         />
                     </FormControl>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
                         <TextField
                             id="input-phonenumber"
                             type="text"
@@ -196,6 +195,8 @@ function LocationForm() {
                             })}
                             error={!!formErrors.phonenumber}
                             helperText={formErrors.phonenumber?.message?.toString() || ' '}
+                            disabled={isSubmitSuccessful}
+                            required
                             inputProps={{ required: false }}
                             InputProps={{
                                 endAdornment: (
@@ -206,13 +207,7 @@ function LocationForm() {
                             }}
                         />
                     </FormControl>
-                    <FormControl
-                        sx={{ mt: 1, mr: 1 }}
-                        variant="outlined"
-                        fullWidth
-                        required
-                        disabled={isSubmitSuccessful}
-                    >
+                    <FormControl sx={{ mt: 1, mr: 1 }} variant="outlined" fullWidth>
                         <TextField
                             id="input-address"
                             type="text"
@@ -224,6 +219,8 @@ function LocationForm() {
                             })}
                             error={!!formErrors.address}
                             helperText={formErrors.address?.message?.toString() || ' '}
+                            disabled={isSubmitSuccessful}
+                            required
                             inputProps={{ required: false }}
                             InputProps={{
                                 endAdornment: (
@@ -235,13 +232,7 @@ function LocationForm() {
                         />
                     </FormControl>
                     <Stack direction="row">
-                        <FormControl
-                            sx={{ mt: 1, mr: 1 }}
-                            variant="outlined"
-                            fullWidth
-                            required
-                            disabled={isSubmitSuccessful}
-                        >
+                        <FormControl sx={{ mt: 1, mr: 1 }} variant="outlined" fullWidth>
                             <TextField
                                 id="input-zipcode"
                                 type="text"
@@ -253,10 +244,12 @@ function LocationForm() {
                                 })}
                                 error={!!formErrors.zipcode}
                                 helperText={formErrors.zipcode?.message?.toString() || ' '}
+                                disabled={isSubmitSuccessful}
+                                required
                                 inputProps={{ required: false }}
                             />
                         </FormControl>
-                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
                             <TextField
                                 id="input-town"
                                 type="text"
@@ -268,6 +261,8 @@ function LocationForm() {
                                 })}
                                 error={!!formErrors.town}
                                 helperText={formErrors.town?.message?.toString() || ' '}
+                                disabled={isSubmitSuccessful}
+                                required
                                 inputProps={{ required: false }}
                                 InputProps={{
                                     endAdornment: (
@@ -279,7 +274,7 @@ function LocationForm() {
                             />
                         </FormControl>
                     </Stack>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
                         <TextField
                             id="input-password"
                             type={showPassword ? 'text' : 'password'}
@@ -290,6 +285,9 @@ function LocationForm() {
                                 minLength: { value: 2, message: 'Salasanan on oltava vähintään 2 merkkiä' },
                             })}
                             error={!!formErrors.password}
+                            helperText={formErrors.password?.message?.toString() || ' '}
+                            disabled={isSubmitSuccessful}
+                            required
                             inputProps={{ required: false }}
                             InputProps={{
                                 endAdornment: (
@@ -306,7 +304,7 @@ function LocationForm() {
                             }}
                         />
                     </FormControl>
-                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth required disabled={isSubmitSuccessful}>
+                    <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
                         <TextField
                             id="input-passwordrepeat"
                             type={showPassword ? 'text' : 'password'}
@@ -319,12 +317,14 @@ function LocationForm() {
                             })}
                             error={!!formErrors.passwordCheck}
                             helperText={formErrors.passwordCheck?.message?.toString() || ' '}
+                            disabled={isSubmitSuccessful}
+                            required
                             inputProps={{ required: false }}
                         />
                     </FormControl>
 
-                    <Button sx={{ mt: 1, mb: 3 }} fullWidth type="submit">
-                        {/* <Button sx={{ mt: 1, mb: 3 }} fullWidth type="submit" disabled={isSubmitSuccessful}> */}
+                    {/* <Button sx={{ mt: 1, mb: 3 }} fullWidth type="submit"> */}
+                    <Button sx={{ mt: 1, mb: 3 }} fullWidth type="submit" disabled={isSubmitSuccessful}>
                         Rekisteröidy
                     </Button>
                 </Stack>
