@@ -42,7 +42,7 @@ function ErrorBoundary() {
 
     return (
         <Box minHeight={320}>
-            <Alert severity="warning">
+            <Alert severity="error">
                 <AlertTitle>Jokin meni pieleen</AlertTitle>
                 {errorTypes[errorType(error)]}
                 <Box>
