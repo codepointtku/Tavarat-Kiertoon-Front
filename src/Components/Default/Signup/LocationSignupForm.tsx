@@ -31,7 +31,7 @@ import type { userSignupAction } from '../../../Router/actions';
 
 function ModalFooter() {
     return (
-        <Stack alignItems="center">
+        <Stack id="modal-footer-stack" alignItems="center">
             <Typography textAlign="center" mt={2}>
                 Tämän ikkunan voi nyt turvallisesti sulkea.
             </Typography>
