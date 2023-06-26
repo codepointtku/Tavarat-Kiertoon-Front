@@ -1,12 +1,13 @@
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 
 import { Box, Divider, Grid, Typography } from '@mui/material';
+import type { productListLoader } from '../../Router/loaders';
 import TypographyHeading from '../TypographyHeading';
 import ProductCard from './ProductCard';
 
 function SearchResultMessage() {
     const [searchParams] = useSearchParams();
-    const searchQuery = searchParams.getAll('haku', 'kategoria');
+    const searchQuery = searchParams.getAll('haku' /*, 'kategoria'*/);
 
     if (searchParams.has('haku')) {
         return (
@@ -37,6 +38,8 @@ function SearchResultMessage() {
             </Box>
         );
     }
+
+    return null;
 }
 
 function NoSearchResults() {
@@ -51,17 +54,16 @@ function NoSearchResults() {
 }
 
 function ProductList() {
-    const products = useLoaderData();
+    const products = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
 
-    return products.length ? (
+    return products?.length ? (
         <Grid container spacing={2}>
-            {products?.map((product) => (
+            {products.map((product: any) => (
                 <Grid item key={product.id} xs={13} sm={7} md={5} lg={4} xl={3}>
                     <ProductCard
                         id={product.id}
-                        groupId={product.group_id}
+                        groupId={product.id}
                         productName={product.name}
-                        date={product.date}
                         pictures={product.pictures}
                         freeDescription={product.free_description}
                         categoryName={product.category_name}

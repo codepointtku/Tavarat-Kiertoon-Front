@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 
+# generated
+/src/api/client
+/src/api/schema
+
 # testing
 /coverage
 
