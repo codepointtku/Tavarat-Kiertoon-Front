@@ -3,15 +3,12 @@ import { Link, useSubmit, Form, useActionData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import {
-    Box,
     Container,
     Button,
     FormControl,
     InputAdornment,
     IconButton,
-    Avatar,
     Typography,
-    Grid,
     Stack,
     TextField,
 } from '@mui/material';
@@ -25,80 +22,12 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import HomeIcon from '@mui/icons-material/Home';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-import BackButton from '../../BackButton';
 import AlertBox from '../../AlertBox';
-import TypographyTitle from '../../TypographyTitle';
 import MessageModal from '../../MessageModal';
+import HeroHeader from '../../HeroHeader';
+import HeroText from '../../HeroText';
 
 import type { userSignupAction } from '../../../Router/actions';
-
-function HeroText() {
-    return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                marginTop: '1rem',
-            }}
-        >
-            <Typography variant="subtitle2" paragraph>
-                Tili on tarkoitettu yhteiskäyttötiliksi toimipaikan henkilökunnan kesken.
-            </Typography>
-            <Typography variant="body2" paragraph>
-                Anna sähköpostiosoitteeksi toimipaikan Tavarat Kiertoon-vastuuhenkilön osoite.
-            </Typography>
-            <Typography variant="body2" paragraph>
-                Tilille on mahdollista kirjautua käyttäjätunnuksella, tai sähköpostiosoitteella.
-            </Typography>
-            <Button
-                component={Link}
-                to="/ohjeet/tili/toimipaikka"
-                size="small"
-                variant="outlined"
-                endIcon={<HelpOutlineIcon />}
-            >
-                Tarkemmat ohjeet
-            </Button>
-        </Box>
-    );
-}
-
-function Hero() {
-    return (
-        <>
-            <Grid container className="back-btn-avatar-wrapper">
-                <Grid item xs={4}>
-                    <BackButton />
-                </Grid>
-                <Grid
-                    item
-                    xs={4}
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Avatar
-                        sx={{
-                            bgcolor: 'secondary.dark',
-                            width: 48,
-                            height: 48,
-                        }}
-                    >
-                        <VpnKeyIcon />
-                    </Avatar>
-                </Grid>
-                <Grid item xs={4} />
-            </Grid>
-            <Box sx={{ mt: 2, mb: 2 }}>
-                <TypographyTitle text="Luo uusi tili toimipaikalle" />
-                <HeroText />
-            </Box>
-        </>
-    );
-}
 
 function ModalFooter() {
     return (
@@ -407,7 +336,24 @@ function LocationForm() {
 function LocationSignupForm() {
     return (
         <>
-            <Hero />
+            <HeroHeader Icon={<VpnKeyIcon />} />
+            <HeroText
+                title="Luo uusi tili toimipaikalle"
+                subtitle="Tili on tarkoitettu yhteiskäyttötiliksi toimipaikan henkilökunnan kesken."
+                subtext="Anna sähköpostiosoitteeksi toimipaikan Tavarat Kiertoon-vastuuhenkilön osoite."
+                subtext2="Tilille on mahdollista kirjautua käyttäjätunnuksella, tai sähköpostiosoitteella."
+                footer={
+                    <Button
+                        component={Link}
+                        to="/ohjeet/tili/toimipaikka"
+                        size="small"
+                        variant="outlined"
+                        endIcon={<HelpOutlineIcon />}
+                    >
+                        Tarkemmat ohjeet
+                    </Button>
+                }
+            />
             <LocationForm />
         </>
     );
