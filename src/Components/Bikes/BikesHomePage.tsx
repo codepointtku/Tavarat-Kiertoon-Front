@@ -32,11 +32,11 @@ export default function BikesHomePage() {
                     <Box display="flex" alignItems="center">
                         <ListIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
                         <Typography variant="h5" color="primary.main">
-                            Kaikki Polkupyörät
+                            Kaikki Pyörät
                         </Typography>
                     </Box>
                     <Typography variant="body1" mt="1rem" color="primary.main">
-                        Kaikki saatavilla olevat polkupyörät
+                        Kaikki saatavilla olevat pyörät
                     </Typography>
                 </Paper>
                 <Paper
@@ -62,7 +62,7 @@ export default function BikesHomePage() {
                         </Typography>
                     </Box>
                     <Typography variant="body1" mt="1rem" color="primary.main">
-                        Kaikkien saatavilla olevat pyörien mallit
+                        Luo, poista ja muokkaa pyörämalleja.
                     </Typography>
                 </Paper>
             </Box>
