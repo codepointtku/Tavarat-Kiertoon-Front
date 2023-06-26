@@ -45,6 +45,7 @@ function UserForm() {
     const {
         register,
         handleSubmit: createHandleSubmit,
+        watch,
         formState: { isSubmitSuccessful, errors: formErrors },
     } = useForm({ mode: 'onTouched' });
     const submit = useSubmit();
@@ -283,7 +284,11 @@ function UserForm() {
                             {...register('passwordCheck', {
                                 required: { value: true, message: 'Salasana on pakollinen' },
                                 minLength: { value: 2, message: 'Salasanan on oltava vähintään 2 merkkiä' },
-                                // validate: (value) => value === getValues('password') || 'Salasanat eivät täsmää',
+                                validate: (val: string) => {
+                                    if (watch('password') !== val) {
+                                        return 'Salasanat eivät täsmää';
+                                    }
+                                },
                             })}
                             error={!!formErrors.passwordCheck}
                             helperText={formErrors.passwordCheck?.message?.toString() || ' '}
