@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('test', async ({ page }) => {
+test('bikePacketTest', async ({ page }) => {
     await page.goto('http://localhost:3000/pyorat/pyoravarasto/pyorapaketit');
     await page.getByRole('link', { name: 'Uusi paketti' }).click();
     await page.locator('textarea[name="packetName"]').click();
