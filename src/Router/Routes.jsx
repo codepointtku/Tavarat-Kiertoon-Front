@@ -5,6 +5,8 @@ import { ThemeProvider } from '@mui/material';
 
 import AuthContext from '../Context/AuthContext';
 import ErrorBoundary from './ErrorBoundary';
+import BaseBoundary from './BaseBoundary';
+import AdminViewBoundary from './AdminViewBoundary';
 // import HasRole from '../Utils/HasRole';
 
 import DefaultView from '../Views/DefaultView';
@@ -13,7 +15,7 @@ import storageTheme from '../Themes/storageTheme';
 import adminTheme from '../Themes/adminTheme';
 import bikeTheme from '../Themes/bikeTheme';
 
-// import RootLayout from '../Layouts/RootLayout';
+import RootLayout from '../Layouts/RootLayout';
 import BaseLayout from '../Layouts/BaseLayout';
 import StorageLayout from '../Layouts/StorageLayout';
 import AdminLayout from '../Layouts/AdminLayout';
@@ -96,7 +98,7 @@ import {
     storageEditLoader,
     userEditLoader,
     usersListLoader,
-    userSignupLoader,
+    // userSignupLoader,
     shoppingCartLoader,
     bikesDefaultLoader,
     bikesListLoader,
@@ -158,7 +160,7 @@ function Routes() {
             createBrowserRouter([
                 {
                     path: '/',
-                    element: <BaseLayout />,
+                    element: <RootLayout />,
                     errorElement: <ErrorBoundary />,
                     id: 'root',
                     loader: rootLoader,
@@ -170,8 +172,8 @@ function Routes() {
                         // main routes
                         {
                             path: '/',
-                            element: <Outlet />,
-                            errorElement: <ErrorBoundary />,
+                            element: <BaseLayout />,
+                            errorElement: <BaseBoundary />,
                             id: 'frontPage',
                             loader: shoppingCartLoader,
                             action: frontPageActions,
@@ -194,6 +196,7 @@ function Routes() {
                                         {
                                             path: ':id',
                                             element: <ProductDetails />,
+                                            errorElement: <BaseBoundary />,
                                             loader: productDetailsLoader,
                                         },
                                     ],
@@ -453,7 +456,7 @@ function Routes() {
                             id: 'admin',
                             errorElement: (
                                 <ThemeProvider theme={adminTheme}>
-                                    <ErrorBoundary />,
+                                    <AdminViewBoundary />,
                                 </ThemeProvider>
                             ),
                             loader: async () => adminLoader(auth, setAuth),
