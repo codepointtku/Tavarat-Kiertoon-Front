@@ -49,8 +49,8 @@ import { ListItemButtonLink } from '../../MUILinkComponents';
 // list item links data (mapped out variables)
 const tilaukset = [
     { icon: <AutoStoriesIcon />, label: 'Tarkastele', to: '/admin/pagetest' },
-    { icon: <EditIcon />, label: 'Muokkaa', to: '/tilauksetmuokkaa' },
-    { icon: <PostAddIcon />, label: 'Lisää uusi', to: '/tilauksetlisaa' },
+    { icon: <EditIcon />, label: 'Muokkaa', to: '/admin/tilauksetmuokkaa' },
+    { icon: <PostAddIcon />, label: 'Lisää uusi', to: '/admin/tilauksetlisaa' },
 ];
 
 const tuotteet = [

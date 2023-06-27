@@ -11,22 +11,18 @@ import {
     usersApi,
 } from '../api';
 
-const adminLogOut = async (auth, setAuth, request) => {
+const adminLogOut = async (auth, request) => {
+    console.log(request);
     // const formData = await request.formData();
     if (request.method === 'POST') {
-        if (auth.username) {
-            // const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
-            //     formData,
-            // });
-            const response = await usersApi.usersLogoutCreate();
-            // await usersApi.usersLogoutCreate();
-            if (response.status === 200) {
-                // return { type: 'logout', status: true };
-                return redirect('/');
-            }
-            // return { type: 'logout', status: false };
-        }
+        // if (auth.username) {
+        // const response = await usersApi.usersLogoutCreate();
+        await usersApi.usersLogoutCreate();
+        return { type: 'logout', status: true };
+        // }
     }
+    return { type: 'logout', status: false };
+    // return console.log('why you suck? maybe you should try a career as a garbage truck driver instead?');
 };
 
 /**
