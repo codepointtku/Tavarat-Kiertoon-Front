@@ -12,16 +12,11 @@ import {
 } from '../api';
 
 const adminLogOut = async (request) => {
-    // const formData = await request.formData();
     if (request.method === 'POST') {
-        // if (auth.username) {
-        // const response = await usersApi.usersLogoutCreate();
         await usersApi.usersLogoutCreate();
         return { type: 'logout', status: true };
-        // }
     }
     return { type: 'logout', status: false };
-    // return console.log('why you suck? maybe you should try a career as a garbage truck driver instead?');
 };
 
 /**

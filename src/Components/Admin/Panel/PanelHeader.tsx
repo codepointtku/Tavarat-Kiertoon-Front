@@ -57,12 +57,14 @@ function AdminAppBar() {
     return (
         <>
             {responseStatus?.type === 'logout' && responseStatus?.status === true && (
-                // <AlertBox text="asia pihvi, hei hei ja huomiseen" status="success" redirectUrl="/" timer={4000} />
-                <AlertBox text="Kirjauduttu ulos?" status="success" />
+                <AlertBox text="Kirjauduttu ulos" status="success" redirectUrl="/" timer={4000} />
             )}
 
             {responseStatus?.type === 'logout' && responseStatus?.status === false && (
-                <AlertBox text="Käristynyt kananmuna-aivo" status="error" />
+                <AlertBox
+                    text="Uloskirjautumisessa jokin ongelma, yritä uudelleen. Voit vaihtoehtoisesti tyhjentää selaimen välimuistin."
+                    status="error"
+                />
             )}
 
             <AppBar
