@@ -1455,16 +1455,12 @@ paths:
         schema:
           type: string
           enum:
+          - Delivery
           - Finished
-          - Processing
           - Waiting
         description: |-
           * `Waiting` - Waiting
-          * `Processing` - Processing
-          * `Finished` - Finished
-
-          * `Waiting` - Waiting
-          * `Processing` - Processing
+          * `Delivery` - Delivery
           * `Finished` - Finished
       tags:
       - orders
@@ -1695,41 +1691,6 @@ paths:
     get:
       operationId: orders_user_list
       description: View for returning logged in users own orders
-      parameters:
-      - name: ordering
-        required: false
-        in: query
-        description: Which field to use when ordering the results.
-        schema:
-          type: string
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      - name: page_size
-        required: false
-        in: query
-        description: Number of results to return per page.
-        schema:
-          type: integer
-      - in: query
-        name: status
-        schema:
-          type: string
-          enum:
-          - Finished
-          - Processing
-          - Waiting
-        description: |-
-          * `Waiting` - Waiting
-          * `Processing` - Processing
-          * `Finished` - Finished
-
-          * `Waiting` - Waiting
-          * `Processing` - Processing
-          * `Finished` - Finished
       tags:
       - orders
       security:
@@ -1743,7 +1704,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedOrderDetailResponseList'
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderDetailResponse'
           description: ''
   /pictures/:
     get:
@@ -1860,7 +1823,7 @@ paths:
     get:
       operationId: products_list
       description: View for listing and creating products. Create includes creation
-        of ProductItem, Picture and Color
+        of ProductItem and Picture
       parameters:
       - in: query
         name: category
@@ -1919,7 +1882,7 @@ paths:
     post:
       operationId: products_create
       description: View for listing and creating products. Create includes creation
-        of ProductItem, Picture and Color
+        of ProductItem and Picture
       tags:
       - products
       requestBody:
@@ -3933,7 +3896,7 @@ components:
           format: date-time
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusC9fEnum'
+          $ref: '#/components/schemas/StatusEnum'
       required:
       - date
       - email
@@ -3968,7 +3931,7 @@ components:
           format: date-time
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusC9fEnum'
+          $ref: '#/components/schemas/StatusEnum'
       required:
       - date
       - email
@@ -4163,7 +4126,8 @@ components:
           type: integer
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusF71Enum'
+          type: string
+          maxLength: 255
         delivery_address:
           type: string
           maxLength: 255
@@ -4199,6 +4163,7 @@ components:
       - id
       - phone_number
       - product_items
+      - status
     OrderDetailResponse:
       type: object
       properties:
@@ -4215,7 +4180,8 @@ components:
           - $ref: '#/components/schemas/UserFullResponseSchema'
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusF71Enum'
+          type: string
+          maxLength: 255
         delivery_address:
           type: string
           maxLength: 255
@@ -4267,7 +4233,8 @@ components:
           type: integer
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusF71Enum'
+          type: string
+          maxLength: 255
         delivery_address:
           type: string
           maxLength: 255
@@ -4295,6 +4262,7 @@ components:
       - delivery_address
       - id
       - phone_number
+      - status
     OrderResponse:
       type: object
       properties:
@@ -4302,7 +4270,8 @@ components:
           type: integer
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusF71Enum'
+          type: string
+          maxLength: 255
         delivery_address:
           type: string
           maxLength: 255
@@ -4362,26 +4331,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ContactFormResponse'
-    PaginatedOrderDetailResponseList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrderDetailResponse'
     PaginatedOrderResponseList:
       type: object
       properties:
@@ -4496,9 +4445,8 @@ components:
           $ref: '#/components/schemas/ProductItemCreate'
         amount:
           type: integer
-        colors:
-          type: array
-          items: {}
+        color:
+          type: string
         name:
           type: string
           maxLength: 255
@@ -4519,6 +4467,7 @@ components:
       required:
       - amount
       - category
+      - color
       - id
       - name
       - product_item
@@ -4712,9 +4661,8 @@ components:
           type: integer
           nullable: true
         color:
-          type: array
-          items:
-            type: integer
+          type: integer
+          nullable: true
       required:
       - amount
       - category
@@ -4762,15 +4710,14 @@ components:
         category:
           type: integer
           nullable: true
+        color:
+          type: integer
+          nullable: true
         pictures:
           type: array
           items:
             type: integer
           readOnly: true
-        color:
-          type: array
-          items:
-            type: integer
       required:
       - category
       - color
@@ -4800,11 +4747,10 @@ components:
         category:
           type: integer
           nullable: true
-        pictures:
-          type: array
-          items:
-            type: integer
         color:
+          type: integer
+          nullable: true
+        pictures:
           type: array
           items:
             type: integer
@@ -4916,7 +4862,7 @@ components:
         * `MAINTENANCE` - Maintenance
         * `RENTED` - Rented
         * `RETIRED` - Retired
-    StatusC9fEnum:
+    StatusEnum:
       enum:
       - Not read
       - Read
@@ -4926,16 +4872,6 @@ components:
         * `Not read` - Not Read
         * `Read` - Read
         * `Handled` - Handled
-    StatusF71Enum:
-      enum:
-      - Waiting
-      - Processing
-      - Finished
-      type: string
-      description: |-
-        * `Waiting` - Waiting
-        * `Processing` - Processing
-        * `Finished` - Finished
     Storage:
       type: object
       properties:
