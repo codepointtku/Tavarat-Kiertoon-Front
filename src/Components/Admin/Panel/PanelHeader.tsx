@@ -57,7 +57,8 @@ function AdminAppBar() {
     return (
         <>
             {responseStatus?.type === 'logout' && responseStatus?.status === true && (
-                <AlertBox text="asia pihvi, hei hei ja huomiseen" status="success" redirectUrl="/" timer={4000} />
+                // <AlertBox text="asia pihvi, hei hei ja huomiseen" status="success" redirectUrl="/" timer={4000} />
+                <AlertBox text="Kirjauduttu ulos?" status="success" />
             )}
 
             {responseStatus?.type === 'logout' && responseStatus?.status === false && (
