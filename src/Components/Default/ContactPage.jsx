@@ -87,18 +87,20 @@ function ContactForm() {
                 <TextField
                     {...register('email', {
                         required: 'Sähköposti on pakollinen', // add required validation and custom error message
-                        pattern: {
-                            value: /.+@turku.fi$|.+@edu.turku.fi$/,
-                            message: 'Sähköpostin tulee olla muotoa @turku.fi tai @edu.turku.fi', // add pattern validation and custom error message
+                        minLength: {
+                            value: 3,
+                            message: 'Sähköpostin pituuden tulee olla vähintään 3 merkkiä', // add minLength validation and custom error message
                         },
                     })}
                     sx={{ mt: 2 }}
                     label="Sähköpostisi"
                     fullWidth
-                    placeholder="@turku.fi tai @edu.turku.fi"
+                    placeholder=""
                 />
                 {errors.email ? (
-                    <FormHelperText error>{errors.email.message}</FormHelperText>
+                    <FormHelperText error variant="outlined">
+                        {errors.email.message}
+                    </FormHelperText>
                 ) : (
                     <FormHelperText> </FormHelperText>
                     // add error message for subject field
