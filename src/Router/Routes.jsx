@@ -582,7 +582,7 @@ function Routes() {
                                             children: [
                                                 {
                                                     index: true,
-                                                    element: <Navigate to="/pyorat/pyoravarasto/muokkaapaketti" />,
+                                                    element: <Navigate to="/pyorat/pyoravarasto/pyorapaketit" />,
                                                 },
                                                 {
                                                     path: ':id',

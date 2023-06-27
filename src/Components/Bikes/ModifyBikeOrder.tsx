@@ -286,7 +286,7 @@ export default function ModifyBikeOrder({ createNewPacket }: CreateNewPacketInte
                                             </TableCell>
 
                                             <TableCell>
-                                                {/* Lisää nappi */}
+                                                {/* Poista nappi */}
                                                 <IconButton color="primary" onClick={() => handleRemoveModel(index)}>
                                                     <DeleteIcon />
                                                 </IconButton>
