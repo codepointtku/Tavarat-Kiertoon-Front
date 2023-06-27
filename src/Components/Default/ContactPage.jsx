@@ -88,8 +88,8 @@ function ContactForm() {
                     {...register('email', {
                         required: 'Sähköposti on pakollinen', // add required validation and custom error message
                         minLength: {
-                            value: 3,
-                            message: 'Sähköpostin pituuden tulee olla vähintään 3 merkkiä', // add minLength validation and custom error message
+                            value: 5,
+                            message: 'Sähköpostin pituuden tulee olla vähintään 5 merkkiä', // add minLength validation and custom error message
                         },
                     })}
                     sx={{ mt: 2 }}
