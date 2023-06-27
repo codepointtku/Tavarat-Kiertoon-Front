@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
@@ -55,10 +55,10 @@ function OrderListTable() {
     );
 }
 
-OrderListTable.propTypes = {
-    page: PropTypes.number.isRequired,
-    setUsedParams: PropTypes.func.isRequired,
-    rowsPerPage: PropTypes.number.isRequired,
-};
+// OrderListTable.propTypes = {
+//     page: PropTypes.number.isRequired,
+//     setUsedParams: PropTypes.func.isRequired,
+//     rowsPerPage: PropTypes.number.isRequired,
+// };
 
 export default OrderListTable;

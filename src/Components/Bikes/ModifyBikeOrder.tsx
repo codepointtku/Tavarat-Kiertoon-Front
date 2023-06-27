@@ -25,6 +25,7 @@ import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteBikePacketModal from './DeleteBikePacketModal';
 import SaveIcon from '@mui/icons-material/Save';
+import { Link } from 'react-router-dom';
 
 // Interfaces
 interface LoaderDataInterface {
@@ -332,18 +333,17 @@ export default function ModifyBikeOrder({ createNewPacket }: CreateNewPacketInte
                         borderTop="1px solid lightgray"
                     >
                         {/* Submit button */}
-                        <Button type="submit" variant="contained" sx={{ padding: '1rem' }}>
-                            Tallenna <SaveIcon />
+                        <Button to={`/pyorat/pyoravarasto/pyorapaketit`} component={Link} sx={{ padding: '1rem' }}>
+                            Palaa pyörälistaan tallentamatta
                         </Button>
                         {!createNewPacket && (
-                            <Button
-                                color="error"
-                                sx={{ padding: '1rem' }}
-                                onClick={() => setRenderDeleteBikePacket(true)}
-                            >
-                                <DeleteIcon /> Poista paketti
+                            <Button color="error" onClick={() => setRenderDeleteBikePacket(true)}>
+                                Poista tämä paketti
                             </Button>
                         )}
+                        <Button type="submit" sx={{ padding: '1rem' }}>
+                            Tallenna muutokset ja palaa listaan
+                        </Button>
                     </Box>
                 </Box>
             </TableContainer>

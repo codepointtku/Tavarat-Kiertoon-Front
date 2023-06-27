@@ -1575,6 +1575,118 @@ paths:
       responses:
         '204':
           description: No response body
+  /orders/emailrecipients/:
+    get:
+      operationId: orders_emailrecipients_list
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderEmailRecipient'
+          description: ''
+    post:
+      operationId: orders_emailrecipients_create
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderEmailRecipient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderEmailRecipient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderEmailRecipient'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderEmailRecipient'
+          description: ''
+  /orders/emailrecipients/{id}/:
+    get:
+      operationId: orders_emailrecipients_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderEmailRecipient'
+          description: ''
+    put:
+      operationId: orders_emailrecipients_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderEmailRecipient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderEmailRecipient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderEmailRecipient'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderEmailRecipient'
+          description: ''
+    delete:
+      operationId: orders_emailrecipients_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
   /orders/user/:
     get:
       operationId: orders_user_list
@@ -4019,6 +4131,8 @@ components:
         delivery_address:
           type: string
           maxLength: 255
+        delivery_required:
+          type: boolean
         contact:
           type: string
           maxLength: 255
@@ -4071,6 +4185,8 @@ components:
         delivery_address:
           type: string
           maxLength: 255
+        delivery_required:
+          type: boolean
         contact:
           type: string
           maxLength: 255
@@ -4098,6 +4214,18 @@ components:
       - product_items
       - status
       - user
+    OrderEmailRecipient:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          maxLength: 255
+      required:
+      - email
+      - id
     OrderRequest:
       type: object
       properties:
@@ -4110,6 +4238,8 @@ components:
         delivery_address:
           type: string
           maxLength: 255
+        delivery_required:
+          type: boolean
         contact:
           type: string
           maxLength: 255
@@ -4145,6 +4275,8 @@ components:
         delivery_address:
           type: string
           maxLength: 255
+        delivery_required:
+          type: boolean
         contact:
           type: string
           maxLength: 255
