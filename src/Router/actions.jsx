@@ -11,8 +11,7 @@ import {
     usersApi,
 } from '../api';
 
-const adminLogOut = async (auth, request) => {
-    console.log(request);
+const adminLogOut = async (request) => {
     // const formData = await request.formData();
     if (request.method === 'POST') {
         // if (auth.username) {

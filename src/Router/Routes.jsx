@@ -460,7 +460,7 @@ function Routes() {
                                 </ThemeProvider>
                             ),
                             loader: async () => adminLoader(auth, setAuth),
-                            action: async ({ request }) => adminLogOut(auth, setAuth, request),
+                            action: ({ request }) => adminLogOut(request),
                             children: [
                                 {
                                     index: true,
