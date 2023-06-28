@@ -11,16 +11,12 @@ import {
     TableBody,
     Typography,
 } from '@mui/material';
-// import { useState, useRef } from 'react';
-import { useLoaderData, useNavigate, generatePath, useActionData } from 'react-router';
-import { Form, useSubmit } from 'react-router-dom';
-// import AlertBox from '../AlertBox';
+import { useLoaderData, useNavigate, generatePath } from 'react-router';
+import { Form } from 'react-router-dom';
 import StyledTableRow from '../StyledTableRow';
 import StyledTableCell from '../StyledTableCell';
-// import ConfirmWindow from '../Admin/ConfirmWindow';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { type orderEditLoader } from '../../Router/loaders';
-// import { CenterFocusStrong } from '@mui/icons-material';
 
 export type OrderEditLoaderType = Awaited<ReturnType<typeof orderEditLoader>>;
 
@@ -39,7 +35,6 @@ type FormValues = {
  * @returns JSX Element
  */
 function OrderEdit() {
-    // data from backend
     const orderData = useLoaderData() as OrderEditLoaderType;
 
     // array with an array for each unique product_item.product.id and all products with that id
@@ -55,7 +50,6 @@ function OrderEdit() {
             productRenderItems[productIndex].push(productItem);
         }
     });
-    // console.log('### OrderEdit: productRenderItems', productRenderItems);
 
     // hook form functions and default values
     const { control, formState, register, watch } = useForm<FormValues>({
@@ -73,6 +67,7 @@ function OrderEdit() {
     // field array functions
     // NOTE! fields should be the same as productRenderItems i.e. array of arrays of objects [ [{},{}],[{},{}] ]
     //       but for some reason useFieldsArray makes it to array of objects of objects [{ {},{} },{ {},{} }]
+    //       and adds an extra "id" key to the end.
     //       so in mapping "Object.keys(productItemGroup).length - 1" is used instead of "productItemGroup.length"
     //       - JTo -
     const { fields } = useFieldArray({
@@ -80,15 +75,11 @@ function OrderEdit() {
         control,
     });
 
-    // error messages
     const { errors } = formState;
-
-    // navigation for QRcodereader
     const navigate = useNavigate();
 
     // Add new product/productItem handler
     const addProduct = () => {
-        // add here apiCall to find item by ID
         console.log('### orderEdit: addProduct');
     };
 
@@ -97,14 +88,33 @@ function OrderEdit() {
         console.log('### orderEdit: removeProduct', val);
     };
 
-    // Moify the number of productItems
+    // Modify the number of productItems
     const modifyProductItemAmounts = (id: number, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         console.log('### orderEdit: modifyProductItemAmounts', id, event.target.value);
     };
 
-    console.log('### orderData', orderData);
-    console.log('### productRenderItems', productRenderItems);
-    console.log('### fields', fields);
+    // create a new product_item list and send it to backend
+    const saveChanges = () => {
+        console.log('### saveChanges, replace this with SUBMIT');
+        const newProductItemList: OrderEditLoaderType['product_items'] = [];
+        // all products
+        fields.forEach((product, index) => {
+            // all productItems
+            const numberOfItems: number = Number(watch(`orderEditProductItems.${index}`).length);
+            Object.values(product).forEach((productItem, index) => {
+                // only items with valid "item.id" field
+                productItem.id && newProductItemList.push(productItem);
+                console.log('####', numberOfItems, index, productItem.id);
+            });
+        });
+        console.log('### newProductItemList', newProductItemList);
+    };
+
+    // console.log('### orderData', orderData);
+    // console.log('### productRenderItems', productRenderItems);
+    console.log('### fields', fields, fields.length);
+    // console.log('### keys', Object.keys(fields[0]));
+    // console.log('### watch 0', watch(`orderEditProductItems.${0}`));
 
     // RENDER
     return (
@@ -278,15 +288,7 @@ function OrderEdit() {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {/*
-                                         *
-                                         *
-                                         *
-                                         * ProductItemGroup map
-                                         *
-                                         *
-                                         *
-                                         */}
+                                        {/* ProductItemGroup map */}
                                         {fields.map((productItemGroup, index) => (
                                             <StyledTableRow key={productItemGroup[0].id}>
                                                 <TableCell>{productItemGroup[0].product.name}</TableCell>
@@ -372,7 +374,9 @@ function OrderEdit() {
                             </Box>
                             <Box width="100%" display="flex" justifyContent="space-evenly" marginTop="3rem">
                                 <Button onClick={() => navigate(-1)}>Palaa tallentamatta</Button>
-                                <Button color="error">Tallenna muutokset</Button>
+                                <Button color="error" onClick={() => saveChanges()}>
+                                    Tallenna muutokset
+                                </Button>
                             </Box>
                         </TableContainer>
                     </Box>
