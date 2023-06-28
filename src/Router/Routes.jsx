@@ -475,6 +475,7 @@ function Routes() {
                                 {
                                     path: 'tilaukset',
                                     element: <OrdersGrid />,
+                                    loader: ordersListLoader,
                                 },
                                 {
                                     path: 'tilaukset/uusi',

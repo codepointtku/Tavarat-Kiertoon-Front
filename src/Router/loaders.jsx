@@ -108,29 +108,29 @@ const productDetailsLoader = async ({ params }) => {
  * Get all orders.
  */
 const ordersListLoader = async ({ params }) => {
-    const { data } = await ordersApi.ordersList();
+    const response = await ordersApi.ordersList();
     // num will tell back-end which entries to bring
     // view is order status, unless archived can bring all?
     // or will be replaced into the back-end later?
-    const statuses = {
-        waiting: 2,
-        delivery: 1,
-        finished: 0,
-    };
-    statuses[params.view] = 10;
-    data.results.sort((a, b) => {
-        if (statuses[a.status] > statuses[b.status]) {
-            return -1;
-        }
-        if (a.status === b.status) {
-            if (a.id > b.id) {
-                return -1;
-            }
-        }
-        return 1;
-    });
+    // const statuses = {
+    //     waiting: 2,
+    //     delivery: 1,
+    //     finished: 0,
+    // };
+    // statuses[params.view] = 10;
+    // data.results.sort((a, b) => {
+    //     if (statuses[a.status] > statuses[b.status]) {
+    //         return -1;
+    //     }
+    //     if (a.status === b.status) {
+    //         if (a.id > b.id) {
+    //             return -1;
+    //         }
+    //     }
+    //     return 1;
+    // });
 
-    return data.results;
+    return response.data;
 };
 
 /**
