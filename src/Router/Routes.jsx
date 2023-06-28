@@ -28,6 +28,8 @@ import QrScanner from '../Components/Storage/QrScanner';
 
 import Overview from '../Components/Admin/Panel/Overview/Overview';
 import PageTest from '../Components/Admin/Panel/PageTest';
+import OrdersGrid from '../Components/Admin/OrdersGrid';
+import ProductsGrid from '../Components/Admin/ProductsGrid';
 import AdminInbox from '../Components/Admin/AdminInbox';
 
 import UsersList from '../Components/Admin/UsersList';
@@ -467,12 +469,24 @@ function Routes() {
                                     element: <Overview />,
                                 },
                                 {
-                                    path: 'pagetest',
-                                    element: <PageTest />,
-                                },
-                                {
                                     path: 'tilastot',
                                     element: <Stats />,
+                                },
+                                {
+                                    path: 'tilaukset',
+                                    element: <OrdersGrid />,
+                                },
+                                {
+                                    path: 'tilaukset/uusi',
+                                    element: <OrdersGrid />,
+                                },
+                                {
+                                    path: 'tuotteet',
+                                    element: <ProductsGrid />,
+                                },
+                                {
+                                    path: 'tuotteet/uusi',
+                                    element: <ProductsGrid />,
                                 },
                                 {
                                     path: 'kayttajat',

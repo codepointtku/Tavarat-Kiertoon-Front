@@ -48,15 +48,13 @@ import { ListItemButtonLink } from '../../MUILinkComponents';
 
 // list item links data (mapped out variables)
 const tilaukset = [
-    { icon: <AutoStoriesIcon />, label: 'Tarkastele', to: '/admin/pagetest' },
-    { icon: <EditIcon />, label: 'Muokkaa', to: '/admin/tilauksetmuokkaa' },
-    { icon: <PostAddIcon />, label: 'Lisää uusi', to: '/admin/tilauksetlisaa' },
+    { icon: <AutoStoriesIcon />, label: 'Tarkastele', to: '/admin/tilaukset' },
+    { icon: <PostAddIcon />, label: 'Lisää uusi', to: '/admin/tilaukset/uusi' },
 ];
 
 const tuotteet = [
-    { icon: <ManageSearchIcon />, label: 'Tarkastele', to: '/placeholder' },
-    { icon: <EditIcon />, label: 'Muokkaa', to: '/placeholder' },
-    { icon: <PlaylistAddIcon />, label: 'Lisää uusi', to: '/placeholder' },
+    { icon: <ManageSearchIcon />, label: 'Tarkastele', to: '/admin/tuotteet' },
+    { icon: <PlaylistAddIcon />, label: 'Lisää uusi', to: '/admin/tuotteet/uusi' },
 ];
 
 const kayttajat = [
@@ -141,7 +139,7 @@ function NavigationTree() {
         setAnchorEl(null);
     };
 
-    // navigation bar list items (links):
+    // navigation accordion list items (links):
     // tilaukset
     const ordersListItems = (
         <Box
