@@ -321,7 +321,7 @@ function OrderEdit() {
                                                 <TableCell align="right">
                                                     <Button
                                                         onClick={() => {
-                                                            removeProduct(productItemGroup.length);
+                                                            removeProduct(Object.keys(productItemGroup).length - 1);
                                                         }}
                                                     >
                                                         Poista tuote.
@@ -371,7 +371,7 @@ function OrderEdit() {
                                 </Table>
                             </Box>
                             <Box width="100%" display="flex" justifyContent="space-evenly" marginTop="3rem">
-                                <Button>Palaa tallentamatta</Button>
+                                <Button onClick={() => navigate(-1)}>Palaa tallentamatta</Button>
                                 <Button color="error">Tallenna muutokset</Button>
                             </Box>
                         </TableContainer>
