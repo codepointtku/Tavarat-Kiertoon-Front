@@ -523,7 +523,7 @@ function Routes() {
                                 {
                                     path: 'tiedotteet',
                                     element: <BulletinPosts />,
-                                    action: async ({ request }) => adminBulletinsAction(auth, setAuth, request),
+                                    action: async ({ request }) => adminBulletinsAction(request),
                                 },
                                 {
                                     path: 'tiedotteet/:id/muokkaa',

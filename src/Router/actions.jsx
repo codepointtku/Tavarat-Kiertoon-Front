@@ -732,21 +732,16 @@ const createBikeModelAction = async (auth, setAuth, request) => {
  * @param {*} request
  * @returns
  */
-const adminBulletinsAction = async (auth, setAuth, request) => {
+const adminBulletinsAction = async (request) => {
+    const formData = await request.formData();
     if (request.method === 'DELETE') {
-        const formData = await request.formData();
-        // const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'delete');
-        const response = await bulletinsApi.bulletinsRetrieve(formData.get('id'));
+        const response = await bulletinsApi.bulletinsDestroy(formData.get('id'));
         if (response.status === 204) {
             return { type: 'deleted', status: true };
         }
         return { type: 'deleted', status: false };
     }
-    const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'put', {
-    //     title: formData.get('title'),
-    //     content: formData.get('content'),
-    // });
+
     const response = await bulletinsApi.bulletinsUpdate(formData.get('id'), {
         title: formData.get('title'),
         content: formData.get('content'),
