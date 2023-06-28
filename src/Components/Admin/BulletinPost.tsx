@@ -28,15 +28,16 @@ function BulletinPost({ title, date, content, id }: Props) {
                     <TypographyHeading text={title} />
                 </Grid>
                 <Grid item>
-                    <Stack direction="row">
+                    <Stack id="bulletin-actions-btns-stack" direction="row">
                         <Button
+                            id="bulletin-edit-btn"
                             sx={{ mr: 1 }}
                             onClick={() => navigate(`${id}/muokkaa`, { state: { id, title, content } })}
                         >
                             Muokkaa
                         </Button>
                         <Box component={Form} onSubmit={handleSubmit(handleBulletinDel)}>
-                            <Button color="error" type="submit">
+                            <Button id="bulletin-del-btn" color="error" type="submit">
                                 Poista
                             </Button>
                         </Box>
