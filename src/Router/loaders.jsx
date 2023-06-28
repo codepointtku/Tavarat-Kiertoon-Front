@@ -90,9 +90,9 @@ const productListLoader = async ({ request }) => {
         return data.results;
     }
 
-    const { data } = await productsApi.productsList();
+    const response = await productsApi.productsList();
 
-    return data.results;
+    return response.data;
 };
 
 /**

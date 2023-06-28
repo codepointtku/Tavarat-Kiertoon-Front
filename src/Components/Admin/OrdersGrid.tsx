@@ -54,7 +54,8 @@ function OrdersGrid() {
         { field: 'delivery_address', headerName: 'Toimitusosoite', flex: 1 },
         { field: 'delivery_required', headerName: 'Toimitus?' },
         { field: 'contact', headerName: 'Yhteystieto', flex: 1 },
-        { field: 'order_info', headerName: 'Tilaus_inhvo', flex: 1 },
+        { field: 'phone_number', headerName: 'Puhelinnumero', flex: 1 },
+        { field: 'order_info', headerName: 'Lisätiedot', flex: 1 },
         {
             field: 'id',
             headerName: 'Toiminnot',

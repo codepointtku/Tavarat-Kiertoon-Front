@@ -27,9 +27,13 @@ import OrderEdit from '../Components/Storage/OrderEdit';
 import QrScanner from '../Components/Storage/QrScanner';
 
 import Overview from '../Components/Admin/Panel/Overview/Overview';
-import PageTest from '../Components/Admin/Panel/PageTest';
+// import PageTest from '../Components/Admin/Panel/PageTest';
 import OrdersGrid from '../Components/Admin/OrdersGrid';
+import AdminOrderEdit from '../Components/Admin/AdminOrderEdit';
+import AdminOrderCreate from '../Components/Admin/AdminOrderCreate';
 import ProductsGrid from '../Components/Admin/ProductsGrid';
+import AdminProductEdit from '../Components/Admin/AdminProductEdit';
+import AdminProductCreate from '../Components/Admin/AdminProductCreate';
 import AdminInbox from '../Components/Admin/AdminInbox';
 
 import UsersList from '../Components/Admin/UsersList';
@@ -478,16 +482,29 @@ function Routes() {
                                     loader: ordersListLoader,
                                 },
                                 {
+                                    path: 'tilaukset/:id',
+                                    element: <AdminOrderEdit />,
+                                    loader: ({ params }) => orderEditLoader(params),
+                                },
+                                {
                                     path: 'tilaukset/uusi',
-                                    element: <OrdersGrid />,
+                                    element: <AdminOrderCreate />,
+                                    action: () => console.log('moro'),
                                 },
                                 {
                                     path: 'tuotteet',
                                     element: <ProductsGrid />,
+                                    loader: productListLoader,
+                                },
+                                {
+                                    path: 'tuotteet/:id',
+                                    element: <AdminProductEdit />,
+                                    loader: ({ params }) => productDetailsLoader(params),
                                 },
                                 {
                                     path: 'tuotteet/uusi',
-                                    element: <ProductsGrid />,
+                                    element: <AdminProductCreate />,
+                                    action: () => console.log('poro'),
                                 },
                                 {
                                     path: 'kayttajat',

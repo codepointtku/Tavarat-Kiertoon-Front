@@ -18,10 +18,38 @@ import {
 
 import TypographyTitle from '../TypographyTitle';
 
-import type { usersListLoader } from '../../Router/loaders';
+import type { productListLoader } from '../../Router/loaders';
 
 function ProductsGrid() {
-    const { count, next, previous, results } = useLoaderData() as Awaited<ReturnType<typeof usersListLoader>>;
+    const { count, next, previous, results } = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
+
+    // swagger GET/products:
+
+    // {
+    //   "count": 123,
+    //   "next": "http://api.example.org/accounts/?page=4",
+    //   "previous": "http://api.example.org/accounts/?page=2",
+    //   "results": [
+    //     {
+    //       "id": 0,
+    //       "pictures": [
+    //         {
+    //           "id": 0,
+    //           "picture_address": "string"
+    //         }
+    //       ],
+    //       "amount": 0,
+    //       "total_amount": 0,
+    //       "name": "string",
+    //       "price": 0,
+    //       "free_description": "string",
+    //       "measurements": "string",
+    //       "weight": 0,
+    //       "category": 0,
+    //       "color": 0
+    //     }
+    //   ]
+    // }
 
     const pageSize = 10; // page_size @ BE: 10
     const pageCount = Math.ceil(count! / pageSize);
@@ -32,17 +60,17 @@ function ProductsGrid() {
     }, [pageCount, setRowCountState]);
 
     const columns: GridColDef[] = [
-        { field: 'email', headerName: 'Sähköposti', flex: 2 },
-        { field: 'username', headerName: 'Käyttäjänimi', flex: 1 },
-        { field: 'first_name', headerName: 'Etunimi' },
-        { field: 'last_name', headerName: 'Sukunimi' },
-        { field: 'phone_number', headerName: 'Puhelinnumero', flex: 1 },
+        { field: 'name', headerName: 'Tuotenimi', flex: 1 },
+        { field: 'amount', headerName: 'Määrä' },
+        { field: 'total_amount', headerName: 'Kokonaismäärä' },
+        { field: 'category', headerName: 'Kategoriatunnus' },
+        { field: 'free_description', headerName: 'Kuvaus', flex: 1 },
         {
             field: 'id',
             headerName: 'Toiminnot',
             renderCell: (params) => (
                 <Button variant="outlined">
-                    <MuiLink component={Link} to={`/admin/kayttajat/${params.value}`}>
+                    <MuiLink component={Link} to={`/admin/tilaukset/${params.value}`}>
                         Avaa
                     </MuiLink>
                 </Button>
@@ -262,7 +290,7 @@ function ProductsGrid() {
 
     return (
         <Stack id="components-stack" alignItems="center" width="100%">
-            <TypographyTitle text="Kaikki käyttäjät" />
+            <TypographyTitle text="Kaikki tuotteet" />
             <div
                 id="datagrid-parent"
                 style={{ display: 'flex', height: '100%', width: '100%', margin: '1rem 0 1rem 0' }}
