@@ -780,6 +780,26 @@ const adminInboxAction = async (auth, setAuth, request) => {
     return { type: 'markasread', status: false };
 };
 
+const adminEmailRecipientsAction = async ({ request }) => {
+    console.log(request);
+    const formData = await request.formData();
+    const recipient = formData.get('email');
+
+    if (request.method === 'POST') {
+        await ordersApi.ordersEmailrecipientsCreate({ email: recipient });
+        return { type: 'emailrecipient', status: true };
+    }
+
+    if (request.method === 'DELETE') {
+        // const id = Number(formData.get('id'));
+        // console.log(id);
+        // await ordersApi.ordersEmailrecipientsDestroy(id);
+        return { type: 'emailrecipient', status: true };
+    }
+
+    return { type: 'emailrecipient', status: false };
+};
+
 export {
     userSignupAction,
     frontPageActions,
@@ -805,6 +825,7 @@ export {
     adminLogOut,
     modifyBikeOrderAction,
     adminInboxAction,
+    adminEmailRecipientsAction,
     createBikeModelAction,
     deleteBikeModelAction,
     emailChangeSuccessfulAction,

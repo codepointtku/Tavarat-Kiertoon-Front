@@ -34,6 +34,8 @@ import AdminOrderCreate from '../Components/Admin/AdminOrderCreate';
 import ProductsGrid from '../Components/Admin/ProductsGrid';
 import AdminProductEdit from '../Components/Admin/AdminProductEdit';
 import AdminProductCreate from '../Components/Admin/AdminProductCreate';
+import AdminOrderEmailList from '../Components/Admin/AdminOrderEmailList';
+
 import AdminInbox from '../Components/Admin/AdminInbox';
 
 import UsersList from '../Components/Admin/UsersList';
@@ -116,6 +118,7 @@ import {
     modifyBikeOrderLoader,
     adminLoader,
     adminInboxLoader,
+    emailRecipientsLoader,
     bikeNewModelLoader,
     createBikeOrderLoader,
 } from './loaders';
@@ -147,6 +150,7 @@ import {
     emailChangeSuccessfulAction,
     changeEmailAction,
     adminBulletinsAction,
+    adminEmailRecipientsAction,
     createNewPacketAction,
     deletePacketAction,
 } from './actions';
@@ -490,6 +494,12 @@ function Routes() {
                                     path: 'tilaukset/uusi',
                                     element: <AdminOrderCreate />,
                                     action: () => console.log('moro'),
+                                },
+                                {
+                                    path: 'tilaukset/sahkopostilista',
+                                    element: <AdminOrderEmailList />,
+                                    loader: emailRecipientsLoader,
+                                    action: adminEmailRecipientsAction,
                                 },
                                 {
                                     path: 'tuotteet',

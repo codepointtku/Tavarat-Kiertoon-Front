@@ -150,6 +150,11 @@ const orderEditLoader = async (auth, setAuth, params) => {
     return data;
 };
 
+const emailRecipientsLoader = async () => {
+    const { data } = await ordersApi.ordersEmailrecipientsList();
+    return data;
+};
+
 /**
  * Get all categories and storages
  */
@@ -503,6 +508,7 @@ export {
     shoppingProcessLoader,
     adminLoader,
     adminInboxLoader,
+    emailRecipientsLoader,
     modifyBikeOrderLoader,
     bikeNewModelLoader,
     createBikeOrderLoader,
