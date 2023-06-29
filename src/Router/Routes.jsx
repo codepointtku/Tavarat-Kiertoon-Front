@@ -145,6 +145,7 @@ import {
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
+import LoginPage from '../Components/LoginPage';
 
 createStore({});
 
@@ -286,6 +287,10 @@ function Routes() {
                                 {
                                     path: '/tiedotteet',
                                     element: <Bulletins />,
+                                },
+                                {
+                                    path: '/kirjaudu',
+                                    element: <LoginPage />,
                                 },
                                 {
                                     path: 'rekisteroidy',

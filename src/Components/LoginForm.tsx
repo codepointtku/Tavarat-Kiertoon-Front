@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useContext, useState } from 'react';
-import { Link, useSubmit, Form, useActionData, useFetcher } from 'react-router-dom';
+import { Link, useSubmit, Form, useActionData, useFetcher, useLocation } from 'react-router-dom';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
 import {
@@ -38,6 +38,7 @@ interface Props {
 function LoginForm(redirectUrl: Props) {
     const { register, handleSubmit } = useForm<FormValues>();
     const { auth } = useContext(AuthContext);
+    const location = useLocation();
     const fetcher = useFetcher();
     const responseStatus = fetcher.data;
     console.log('responseStatus', responseStatus);
@@ -90,7 +91,14 @@ function LoginForm(redirectUrl: Props) {
                             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                                 <LockOutlinedIcon />
                             </Avatar>
-                            <Typography variant="h5">Kirjaudu sisään</Typography>
+                            {/* TODO add from prop to navigation from signup pages  */}
+                            {location.state?.from.includes('rekisteroidy') ? (
+                                <Typography>
+                                    Kun olet käynyt sähköpostissa aktivoimassa tilisi, voit kirjautua tässä
+                                </Typography>
+                            ) : (
+                                <Typography variant="h5">Kirjaudu sisään</Typography>
+                            )}
 
                             <Box>
                                 <FormControl sx={{ mt: 2 }} variant="outlined" fullWidth required>

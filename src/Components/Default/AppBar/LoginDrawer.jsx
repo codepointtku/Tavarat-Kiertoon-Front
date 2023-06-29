@@ -51,7 +51,9 @@ function LoginDrawer({ setCurrentOpenDrawer, notLoggedIn }) {
 
     return (
         <>
-            <LoginForm redirectUrl={'/'} />
+            <LoginForm
+            // redirectUrl={'/'}
+            />
 
             {/* {responseStatus?.type === 'login' && !responseStatus?.status && (
                 <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" timer={3000} />
