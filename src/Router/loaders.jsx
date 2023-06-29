@@ -78,21 +78,19 @@ const productListLoader = async ({ request }) => {
             }
         });
         url.searchParams.delete('kategoria');
-        // const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
-        // get all categories
+
         const { data } = await productsApi.productsList(url.searchParams.getAll('category'));
-        return data.results;
+        return data;
     }
 
     if (url.searchParams.has('haku')) {
-        //const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
         const { data } = await productsApi.productsList(null, null, null, null, null, url.searchParams.get('haku'));
-        return data.results;
+        return data;
     }
 
-    const response = await productsApi.productsList();
+    const { data } = await productsApi.productsList();
 
-    return response.data;
+    return data;
 };
 
 /**
