@@ -35,17 +35,17 @@ interface Search {
     searchString: string | null;
 }
 
-interface Product {
-    id: number;
-    name: string;
-    barcode: string;
-    category: number;
-    storage: number;
-    amount: number;
-    storage_name: string;
-    created: string;
-    modified_date: string;
-}
+// interface Product {
+//     id: number;
+//     name: string;
+//     barcode: string;
+//     category: number;
+//     storage: number;
+//     amount: number;
+//     storage_name: string;
+//     created: string;
+//     modified_date: string;
+// }
 
 function StorageProductsTable() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -108,18 +108,18 @@ function StorageProductsTable() {
                 </TableHead>
                 {/* todo: näytä nollasaldoiset tuotteet -ruksi */}
                 {/* todo: näytä tilauksille varatut tuotteet ja kplmäärä? */}
-                {products?.results.length === 0 ? (
+                {products?.results?.length === 0 ? (
                     // todo: tyylittely
                     <Typography padding={3} fontSize={24}>
                         Ei hakutuloksia...
                     </Typography>
                 ) : (
                     <TableBody>
-                        {products?.results?.map((product: Product) => (
+                        {products?.results?.map((product) => (
                             <StyledTableRow key={product.id}>
                                 <StyledTableCell component="th" scope="row">
                                     {/* TODO: varastopuolen tuotesivu, ProductDetails komponenttia hyödyntäen */}
-                                    <Link to={`/varasto/tuotteet/${product.id}/muokkaa`}>{product.barcode}</Link>
+                                    <Link to={`/varasto/tuotteet/${product.id}/muokkaa`}>tässä oli viivakoodi</Link>
                                 </StyledTableCell>
                                 <StyledTableCell>
                                     <Button
@@ -137,16 +137,18 @@ function StorageProductsTable() {
                                     <Link to={`/varasto/tuotteet/${product.id}/muokkaa`}>{product.name}</Link>
                                 </StyledTableCell>
                                 <StyledTableCell align="right">{product.amount}</StyledTableCell>
-                                <StyledTableCell align="right">{product.storage_name}</StyledTableCell>
-                                <StyledTableCell align="right">{categories[product.category].name}</StyledTableCell>
-                                <StyledTableCell align="right">
+                                <StyledTableCell align="right">tässä storage_name</StyledTableCell>
+                                {/* <StyledTableCell align="right">{categories[product.category].name}</StyledTableCell> */}
+                                <StyledTableCell align="right">tässä category_name</StyledTableCell>
+                                {/* <StyledTableCell align="right">
                                     {new Date(product.modified_date).toLocaleTimeString('fi-FI', {
                                         hour: '2-digit',
                                         minute: '2-digit',
                                     }) +
                                         '   ' +
                                         new Date(product.modified_date).toLocaleDateString('fi-FI')}
-                                </StyledTableCell>
+                                </StyledTableCell> */}
+                                <StyledTableCell align="right">tässä created / modified</StyledTableCell>
                             </StyledTableRow>
                         ))}
                     </TableBody>
