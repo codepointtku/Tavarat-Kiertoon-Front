@@ -2,7 +2,7 @@ import { useLoaderData, useActionData } from 'react-router-dom';
 import { useSubmit, Form } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-import { Box, Button, Divider, Grid, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, Divider, Grid, Stack, TextField, Typography } from '@mui/material';
 
 import HeroText from '../HeroText';
 import TypographyHeading from '../TypographyHeading';
@@ -136,16 +136,18 @@ function AdminOrderEmailList() {
                 <AlertBox text="Sähköpostin vastaanottaja poistettu listalta" status="success" />
             )}
 
-            <Stack id="email-recipients-component-stack">
-                <HeroText
-                    title="Sähköpostilista"
-                    subtitle="Lisää ja poista osoitteita, mihin lähetetään sähköposti tilauksen vahvistuksen yhteydessä."
-                />
-                <TypographyHeading text="Vastaanottajat" />
-                <EmailRecipients />
-                <Divider sx={{ margin: '2rem 0 2rem 0' }} />
-                <AddRecipient />
-            </Stack>
+            <Container maxWidth="md">
+                <Stack id="email-recipients-component-stack">
+                    <HeroText
+                        title="Sähköpostilista"
+                        subtext2="Lisää ja poista osoitteita, mihin lähetetään sähköposti tilauksen vahvistuksen yhteydessä."
+                    />
+                    <TypographyHeading text="Vastaanottajat" />
+                    <EmailRecipients />
+                    <Divider sx={{ margin: '2rem 0 2rem 0' }} />
+                    <AddRecipient />
+                </Stack>
+            </Container>
         </>
     );
 }
