@@ -328,3 +328,10 @@ test.describe('muokkaatiedotetta', () => {
         await expect(page.getByText('Etsimääsi sijaintia /admin/tiedotteet/2/muokkaa')).not.toBeVisible();
     });
 });
+
+test.describe('admin-emailrecipients', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tilaukset/sahkopostilista');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/tilaukset/sahkopostilista')).not.toBeVisible();
+    });
+});

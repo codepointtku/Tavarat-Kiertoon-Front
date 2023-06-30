@@ -182,10 +182,18 @@ test.describe('fail-test', () => {
         await expect(page.getByText('Virhe sijainnissa /test/failing')).not.toBeVisible();
     });
 });
+
 test.describe('luotiedote', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/admin/tiedotteet/luo');
-        await expect(page.getByText('Etsimääsi sijaintia /admin/tiedotteet/luo')).not.toBeVisible();
+        await expect(page.getByText('Virhe sijainnissa /admin/tiedotteet/luo')).not.toBeVisible();
+    });
+});
+
+test.describe('admin-emailrecipientslist', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tilaukset/sahkopostilista');
+        await expect(page.getByText('Virhe sijainnissa /admin/tilaukset/sahkopostilista')).not.toBeVisible();
     });
 });
 
