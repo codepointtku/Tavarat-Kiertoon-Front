@@ -200,8 +200,7 @@ const storageEditLoader = async (auth, setAuth, params) => {
  * Get all users.
  * Used in src/Components/Admin/UserList.jsx
  */
-const usersListLoader = async (auth, setAuth) => {
-    // const { data: users } = await apiCall(auth, setAuth, '/users', 'get');
+const usersListLoader = async () => {
     const { data: users } = await usersApi.usersList();
     return users;
 };

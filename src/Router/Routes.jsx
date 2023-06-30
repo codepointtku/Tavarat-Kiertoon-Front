@@ -533,7 +533,7 @@ function Routes() {
                                             element: <UsersList />,
                                             errorElement: <UserError />,
                                             id: 'kayttajat',
-                                            loader: async () => usersListLoader(auth, setAuth),
+                                            loader: usersListLoader,
                                         },
                                         {
                                             path: ':id',
