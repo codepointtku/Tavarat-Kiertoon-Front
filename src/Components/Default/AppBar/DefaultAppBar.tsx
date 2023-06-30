@@ -334,7 +334,7 @@ function DefaultAppBar() {
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
                 {auth.username ? (
-                    <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} showCloseDrawerButton={true} auth={auth} />
+                    <Welcome />
                 ) : (
                     <LoginDrawer setCurrentOpenDrawer={setCurrentOpenDrawer} notLoggedIn={notLoggedIn} />
                 )}

@@ -1,9 +1,12 @@
+import { useContext } from 'react';
 import { Form, useSubmit } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { Typography, Button, Container, Box } from '@mui/material';
+import AuthContext from '../../../Context/AuthContext';
 
-function Welcome({ auth }) {
+function Welcome() {
+    const { auth } = useContext(AuthContext);
     const { handleSubmit } = useForm();
     const submit = useSubmit();
 

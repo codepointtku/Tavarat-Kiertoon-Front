@@ -70,7 +70,7 @@ function LoginForm(redirectUrl: Props) {
                             redirectUrl={redirectUrl as string}
                         />
                     )}
-                    <Welcome auth={auth} />
+                    <Welcome />
                 </>
             ) : (
                 <>
