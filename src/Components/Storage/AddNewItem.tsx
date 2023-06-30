@@ -150,7 +150,7 @@ function AddNewItem() {
                 onClose={() => {
                     setQrScanOpen(false);
                 }}
-                justifyContent="center"
+                // justifyContent="center"
             >
                 <Box width={700}>
                     <Html5QrcodePlugin
@@ -335,7 +335,6 @@ function AddNewItem() {
                         <Button variant="contained" component="label" size="large">
                             Lisää kuvat
                             <input
-                                name="pictures"
                                 type="file"
                                 accept="image/*"
                                 multiple
@@ -350,8 +349,6 @@ function AddNewItem() {
                                 // }}
                                 // inputProps={{ required: false }}
                                 required
-                                error={!!errors.pictures}
-                                helperText={errors.pictures?.message}
                             />
                         </Button>
                     </CardActions>
