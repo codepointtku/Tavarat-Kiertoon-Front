@@ -158,6 +158,8 @@ import {
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
 
+import UserError from './ErrorElements/UserError';
+
 createStore({});
 
 function Routes() {
@@ -487,9 +489,15 @@ function Routes() {
                                 },
                                 {
                                     path: 'tilaukset/:id',
-                                    element: <AdminOrderEdit />,
-                                    loader: ({ params }) => orderEditLoader(params),
+                                    element: <OrderView />,
+                                    errorElement: <UserError />,
+                                    loader: ({ params }) => orderViewLoader(params),
                                 },
+                                // {
+                                //     path: 'tilaukset/:id',
+                                //     element: <AdminOrderEdit />,
+                                //     loader: ({ params }) => orderEditLoader(params),
+                                // },
                                 {
                                     path: 'tilaukset/uusi',
                                     element: <AdminOrderCreate />,
@@ -523,15 +531,16 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <UsersList />,
+                                            errorElement: <UserError />,
                                             id: 'kayttajat',
                                             loader: async () => usersListLoader(auth, setAuth),
                                         },
                                         {
                                             path: ':id',
                                             element: <UserEdit />,
-                                            loader: async ({ params }) => userEditLoader(auth, setAuth, params),
-                                            action: async ({ request, params }) =>
-                                                userEditAction(auth, setAuth, request, params),
+                                            errorElement: <UserError />,
+                                            loader: ({ params }) => userEditLoader(params),
+                                            action: ({ request, params }) => userEditAction(request, params),
                                         },
                                     ],
                                 },

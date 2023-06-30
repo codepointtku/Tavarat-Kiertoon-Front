@@ -29,7 +29,7 @@ function HeroText({ title, subtitle, text, subtext, subtext2, footer }: Props) {
                 )}
 
                 {subtext && (
-                    <Typography textAlign="center" variant="body2" paragraph>
+                    <Typography textAlign="center" variant="body2" paragraph sx={{ mt: '1rem' }}>
                         {subtext}
                     </Typography>
                 )}

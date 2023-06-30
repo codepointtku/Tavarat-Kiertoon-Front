@@ -211,7 +211,7 @@ const usersListLoader = async (auth, setAuth) => {
  * Array item 0 === user data, item 1 === auth groups.
  * Used in src/Components/Admin/UserEdit.jsx
  */
-const userEditLoader = async (auth, setAuth, params) => {
+const userEditLoader = async (params) => {
     const dataList = [];
     // let { data } = await apiCall(auth, setAuth, `/users/${params.id}`, 'get');
     let { data } = await usersApi.usersRetrieve(params.id);
