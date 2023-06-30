@@ -140,7 +140,7 @@ function AdminOrderEmailList() {
                 <Stack id="email-recipients-component-stack">
                     <HeroText
                         title="Sähköpostilista"
-                        subtext2="Lisää ja poista osoitteita, mihin lähetetään sähköposti tilauksen vahvistuksen yhteydessä."
+                        subtext="Lisää ja poista osoitteita, mihin lähetetään sähköposti tilauksen vahvistuksen yhteydessä."
                     />
                     <TypographyHeading text="Vastaanottajat" />
                     <EmailRecipients />
