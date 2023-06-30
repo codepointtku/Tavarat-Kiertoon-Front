@@ -781,9 +781,10 @@ const adminInboxAction = async (auth, setAuth, request) => {
 };
 
 const adminEmailRecipientsAction = async ({ request }) => {
-    console.log(request);
     const formData = await request.formData();
     const recipient = formData.get('email');
+    const id = formData.get('id');
+    console.log(id);
 
     if (request.method === 'POST') {
         await ordersApi.ordersEmailrecipientsCreate({ email: recipient });
@@ -791,10 +792,9 @@ const adminEmailRecipientsAction = async ({ request }) => {
     }
 
     if (request.method === 'DELETE') {
-        // const id = Number(formData.get('id'));
-        // console.log(id);
-        // await ordersApi.ordersEmailrecipientsDestroy(id);
-        return { type: 'emailrecipient', status: true };
+        console.log('actionis', id);
+        await ordersApi.ordersEmailrecipientsDestroy(id);
+        return { type: 'emailrecipient-del', status: true };
     }
 
     return { type: 'emailrecipient', status: false };
