@@ -21,7 +21,7 @@ function App() {
         bicycle_group: false,
     });
 
-    const authorized = useMemo(() => ({ auth, setAuth }), [auth]);
+    const authorized = useMemo(() => ({ auth, setAuth }), [auth, setAuth]);
     // https://github.com/jsx-eslint/eslint-plugin-react/blob/master/docs/rules/jsx-no-constructed-context-values.md
 
     return (

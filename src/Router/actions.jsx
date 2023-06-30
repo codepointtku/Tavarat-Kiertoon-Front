@@ -20,10 +20,12 @@ const adminLogOut = async (auth, setAuth, request) => {
             //     formData,
             // });
             const response = await usersApi.usersLogoutCreate();
+            // await usersApi.usersLogoutCreate();
             if (response.status === 200) {
-                return { type: 'logout', status: true };
+                // return { type: 'logout', status: true };
+                return redirect('/');
             }
-            return { type: 'logout', status: false };
+            // return { type: 'logout', status: false };
         }
     }
 };
@@ -31,15 +33,21 @@ const adminLogOut = async (auth, setAuth, request) => {
 /**
  * logins or logouts user, adds a product to shopping cart and deletes product from shopping cart
  */
-const frontPageActions = async (auth, setAuth, request) => {
+const frontPageActions = async ({ request }) => {
     const formData = await request.formData();
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : 0;
     if (request.method === 'POST') {
-        if (auth.username) {
-            // const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
-            //     formData,
-            // });
+        if (formData.get('password')) {
+            const response = await usersApi.usersLoginCreate({
+                username: formData.get('email'),
+                password: formData.get('password'),
+            });
+            if (response.status === 200) {
+                return { type: 'login', status: true };
+            }
+            return { type: 'login', status: false };
+        } else {
             const response = await usersApi.usersLogoutCreate();
 
             if (response.status === 200) {
@@ -51,22 +59,8 @@ const frontPageActions = async (auth, setAuth, request) => {
         //     username: formData.get('email'),
         //     password: formData.get('password'),
         // });
-        const response = await usersApi.usersLoginCreate({
-            username: formData.get('email'),
-            password: formData.get('password'),
-        });
-
-        if (response.status === 200) {
-            return { type: 'login', status: true };
-        }
-        return { type: 'login', status: false };
     }
     if (request.method === 'PUT') {
-        if (auth.user_group === false) {
-            // eslint-disable-next-line no-alert
-            alert('log in as with user_group rights first');
-            return null;
-        }
         if (!id) {
             // clear cart if no id is being sent or clear cart and return "type: orderCreated" when a new order is created.
             // const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
@@ -75,10 +69,6 @@ const frontPageActions = async (auth, setAuth, request) => {
             const response = await shoppingCartApi.shoppingCartUpdate({
                 amount: -1,
             });
-
-            if (formData.has('order')) {
-                return { type: 'orderCreated', status: true };
-            }
             return response;
         }
         // const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
@@ -118,10 +108,8 @@ const frontPageActions = async (auth, setAuth, request) => {
  * creates new user
  */
 
-const userSignupAction = async (auth, setAuth, request) => {
-    // both single user signup form, and location signup form use this same action
-    // and url in backend.
-
+const userSignupAction = async (request) => {
+    // both single user signup form and location signup form use this same action
     // a single user does not have an username -- email-value is copied to username-value in BE.
 
     // this action defaults without username-field.
@@ -144,14 +132,21 @@ const userSignupAction = async (auth, setAuth, request) => {
         userSignUpValues = { ...userSignUpValues, username: formData.get('username') };
     }
 
-    // const response = await apiCall(auth, setAuth, '/users/create/', 'post', userSignUpValues);
-    const response = await usersApi.usersCreateCreate(userSignUpValues);
-
-    if (response.status === 201) {
-        return { type: 'create', status: true };
+    try {
+        const response = await usersApi.usersCreateCreate(userSignUpValues);
+        if (response.status === 201) {
+            return { type: 'create', status: true, message: response.data.message };
+        }
+        if (response.status === 400) {
+            // console.log(',0ooiuioh');
+            return { type: 'create', status: false, message: response.data.message };
+        }
+    } catch (error) {
+        // console.log('cats', error);
+        return { type: 'create', status: false, message: request.responseText };
     }
 
-    return { type: 'create', status: false };
+    return { type: 'create', status: false, r: 'returnauksien returnaus' };
 };
 
 /**
@@ -168,7 +163,6 @@ const contactAction = async (auth, setAuth, request) => {
  */
 const bikeOrderAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    // console.log('@bikeorderAction', formData.get('contactPersonName'));
     // const response = await apiCall(auth, setAuth, '/bikes/rental/', 'post', {
     //     contact_name: formData.get('contactPersonName'),
     //     contact_phone_number: formData.get('contactPersonPhoneNumber'),
@@ -449,7 +443,7 @@ const itemUpdateAction = async (auth, setAuth, request) => {
  * adds or removes items from shopping cart while in ordering process phase 1
  */
 
-const cartViewAction = async (auth, setAuth, request) => {
+const cartViewAction = async ({ request }) => {
     const formData = await request.formData();
     const amount = request.method === 'PUT' ? 1 : -1;
     const id = Number(formData.get('id'));
@@ -491,30 +485,24 @@ const cartViewAction = async (auth, setAuth, request) => {
  * Adds an item in order
  */
 
-const confirmationAction = async (auth, setAuth, request) => {
+const confirmationAction = async ({ request }) => {
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/orders/', 'post', {
-    //     contact: formData.get('email'),
-    //     delivery_address: formData.get('deliveryAddress'),
-    //     phone_number: formData.get('phoneNumber'),
-    //     status: 'Waiting',
-    //     user: formData.get('id'),
-    //     order_info: formData.get('orderInfo'),
-    //     // products: formData.get('productIds'),
-    // });
+
     const response = await ordersApi.ordersCreate({
         contact: formData.get('email'),
         delivery_address: formData.get('deliveryAddress'),
         phone_number: formData.get('phoneNumber'),
-        status: 'Waiting',
         user: Number(formData.get('id')),
         order_info: formData.get('orderInfo'),
-        // products: formData.get('productIds'),
+        delivery_required: formData.get('deliveryRequired'),
+        status: 'Waiting',
     });
-    if (response.status === 200) {
-        return { type: 'post', status: true };
+
+    if (response.status === 201) {
+        return { type: 'orderCreated', status: true };
     }
-    return { type: 'post', status: false };
+
+    return { type: 'orderCreated', status: false };
 };
 
 /**
@@ -581,7 +569,7 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
     // send data and redirect back to bike list
     // await apiCall(auth, setAuth, `/bikes/stock/${params.id}/`, 'put', submission);
     await bikesApi.bikesStockUpdate(params.id, submission);
-    return redirect('/pyorat/pyoravarasto');
+    return redirect('/pyorat/pyoravarasto/pyoralista');
 };
 
 const createNewBikeAction = async (auth, setAuth, request) => {
@@ -600,15 +588,13 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     // send data and redirect back to bike list
     // await apiCall(auth, setAuth, `/bikes/stock/`, 'post', submission);
     await bikesApi.bikesStockCreate(submission);
-    return redirect('/pyorat/pyoravarasto');
+    return redirect('/pyorat/pyoravarasto/pyoralista');
 };
 
 // kommentti
 const modifyBikeOrderAction = async (auth, setAuth, request, params) => {
-    console.log('p:', params);
     // collect data that needs to be sent to backend
     const data = await request.formData();
-    // console.log('### data', data);
     const submission = {
         name: data.get('packetName'),
         description: data.get('packetDescription'),
@@ -616,8 +602,26 @@ const modifyBikeOrderAction = async (auth, setAuth, request, params) => {
     };
     // send data and redirect back to bike list
     // await apiCall(auth, setAuth, `/bikes/packages/${params.id}/`, 'put', submission);
-    console.log('### submission', submission);
     await bikesApi.bikesPackagesUpdate(params.id, submission);
+    return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+};
+const createNewPacketAction = async (auth, setAuth, request) => {
+    // collect data that needs to be sent to backend
+    const data = await request.formData();
+    const submission = {
+        name: data.get('packetName'),
+        description: data.get('packetDescription'),
+        bikes: JSON.parse(data.get('bikes')),
+    };
+
+    // send data and redirect back to bike list
+    // await apiCall(auth, setAuth, `/bikes/stock/`, 'post', submission);
+    await bikesApi.bikesPackagesCreate(submission);
+    return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+};
+const deletePacketAction = async (auth, setAuth, params) => {
+    // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
+    await bikesApi.bikesPackagesDestroy(params.id);
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
 
@@ -681,7 +685,7 @@ const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
 const deleteBikeAction = async (auth, setAuth, params) => {
     // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     await bikesApi.bikesStockDestroy(params.id);
-    return redirect('/pyorat/pyoravarasto');
+    return redirect('/pyorat/pyoravarasto/pyoralista');
 };
 
 /**
@@ -885,4 +889,6 @@ export {
     deleteBikeModelAction,
     emailChangeSuccessfulAction,
     changeEmailAction,
+    createNewPacketAction,
+    deletePacketAction,
 };

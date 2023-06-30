@@ -7,7 +7,7 @@
 
 # generated
 /src/api/client
-/src/api/schema.yaml
+/src/api/schema
 
 # testing
 /coverage

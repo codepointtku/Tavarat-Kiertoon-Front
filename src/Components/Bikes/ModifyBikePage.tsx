@@ -235,7 +235,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                      * Unfortenately field can not be disabled cause the value is still used in form
                                      * When adding new bike this field needs to be shown
                                      */}
-                                    <TableRow style={{ display: 'none' }}>
+                                    <TableRow style={{ display: createNewBike ? '' : 'none' }}>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Numero:</TableCell>
                                         <TableCell colSpan={3} align="right">
                                             <TextField
@@ -360,7 +360,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                         paddingTop="20px"
                         borderTop="1px solid lightgray"
                     >
-                        <Button to={`/pyorat/pyoravarasto`} component={Link} sx={{ padding: '1rem' }}>
+                        <Button to={`/pyorat/pyoravarasto/pyoralista`} component={Link} sx={{ padding: '1rem' }}>
                             Palaa pyörälistaan tallentamatta
                         </Button>
                         {!createNewBike && (

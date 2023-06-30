@@ -18,7 +18,7 @@ import {
 /**
  * Get various defaults for the site
  */
-const rootLoader = async (auth, setAuth) => {
+const rootLoader = async () => {
     const [{ data: contacts }, { data: colors }, { data: categories }, { data: bulletins }, { data: categoryTree }] =
         await Promise.all([
             contactsApi.contactsList(),
@@ -26,7 +26,7 @@ const rootLoader = async (auth, setAuth) => {
             categoriesApi.categoriesList(),
             bulletinsApi.bulletinsList(),
             categoriesApi.categoriesTreeRetrieve(),
-            usersApi.usersLoginRefreshCreate(),
+            //usersApi.usersLoginRefreshCreate(),
         ]);
 
     return { contacts, colors, categories, bulletins, categoryTree };
@@ -35,7 +35,7 @@ const rootLoader = async (auth, setAuth) => {
 /**
  * Get shoppingCart for logged in user
  */
-const shoppingCartLoader = async (auth, setAuth) => {
+const shoppingCartLoader = async () => {
     const { data: cart } = await shoppingCartApi.shoppingCartRetrieve();
     const { data: amountList } = await shoppingCartApi.shoppingCartAvailableAmountList();
     // console.log('@shoppingCartLoader, cart.product_items:', cart?.product_items);
@@ -68,7 +68,7 @@ const shoppingCartLoader = async (auth, setAuth) => {
 /**
  * Get all products / get products based on category id || search string
  */
-const productListLoader = async (auth, setAuth, request) => {
+const productListLoader = async ({ request }) => {
     const url = new URL(request.url);
 
     if (url.searchParams.has('kategoria')) {
@@ -98,7 +98,7 @@ const productListLoader = async (auth, setAuth, request) => {
 /**
  * Get one product
  */
-const productDetailsLoader = async (auth, setAuth, params) => {
+const productDetailsLoader = async ({ params }) => {
     // const { data } = await apiCall(auth, setAuth, `/products/${params.id}`, 'get');
     const { data } = await productsApi.productsRetrieve(params.id);
     return data;
@@ -107,7 +107,7 @@ const productDetailsLoader = async (auth, setAuth, params) => {
 /**
  * Get all orders.
  */
-const ordersListLoader = async (auth, setAuth, params) => {
+const ordersListLoader = async ({ params }) => {
     const { data } = await ordersApi.ordersList();
     // num will tell back-end which entries to bring
     // view is order status, unless archived can bring all?
@@ -278,6 +278,21 @@ const modifyBikeOrderLoader = async (auth, setAuth, params) => {
     ]);
     return { packet, models };
 };
+const createBikeOrderLoader = async (auth, setAuth, params) => {
+    // console.log('lauantai');
+    const [{ data: models }] = await Promise.all([
+        // apiCall(auth, setAuth, `/bikes/packages/${params.id}`, 'get'),
+        // apiCall(auth, setAuth, `/bikes/models/`, 'get'),
+        bikesApi.bikesModelsList(),
+    ]);
+    const packet = {
+        // id: number;
+        name: '',
+        description: '',
+        bikes: [],
+    };
+    return { packet, models };
+};
 
 /**
  * Get information needed to modify a single bike
@@ -401,7 +416,7 @@ const userSignupLoader = async () => null;
 /**
  * Gets user info for shopping cart process
  */
-const shoppingProcessLoader = async (auth, setAuth) => {
+const shoppingProcessLoader = async () => {
     // const { data: user } = await apiCall(auth, setAuth, '/user/', 'get');
     const { data: user } = await userApi.userRetrieve();
     return user;
@@ -492,4 +507,5 @@ export {
     adminInboxLoader,
     modifyBikeOrderLoader,
     bikeNewModelLoader,
+    createBikeOrderLoader,
 };

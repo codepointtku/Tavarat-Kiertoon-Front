@@ -1,6 +1,6 @@
 import { Box, Stack } from '@mui/material';
 
-import Header from './Components/Header';
+import PanelHeader from '../Components/Admin/Panel/PanelHeader';
 import AdminPanel from '../Components/Admin/Panel/AdminPanel';
 import Footer from './Components/Footer';
 
@@ -9,13 +9,11 @@ import Footer from './Components/Footer';
 function AdminLayout() {
     return (
         <Stack id="admin-view-layout-stack" sx={{ minHeight: ['100vh', '100svh'] }}>
-            <Header />
-            <Box id="admin-layout-admin-panel-container" sx={{ display: 'flex', flex: 1 }}>
-                <main>
-                    <AdminPanel />
-                </main>
+            <PanelHeader />
+            <Box id="admin-layout-admin-panel-container" sx={{ display: 'flex' }}>
+                <AdminPanel />
             </Box>
-            <footer>
+            <footer style={{ marginTop: 'auto' }}>
                 <Footer />
             </footer>
         </Stack>

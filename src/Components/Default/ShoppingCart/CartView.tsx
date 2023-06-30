@@ -1,6 +1,6 @@
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { Grid, Typography, ButtonPropsSizeOverrides } from '@mui/material';
+import { Grid, Typography, ButtonPropsSizeOverrides, Divider } from '@mui/material';
 
 import CartButtons from './CartButtons';
 import AddMoreToCart from '../../AddMoreToCart';
@@ -24,8 +24,6 @@ function CartView() {
         navigate('/ostoskori/vaihe2');
     };
 
-    console.log(cartProducts);
-
     return (
         <>
             <Grid container direction="row" justifyContent="space-around">
@@ -35,9 +33,11 @@ function CartView() {
                     <>
                         <Grid container direction="column" sx={{ width: 'auto' }}>
                             {cartProducts?.map((product_item: { product: { name: string; id: number } }) => (
-                                <Typography variant="h6" sx={{ p: 0.5 }} key={product_item.product.id}>
-                                    {product_item.product.name}
-                                </Typography>
+                                <Grid item key={product_item.product.id}>
+                                    <Typography variant="h6" sx={{ p: 0.5 }} key={product_item.product.id}>
+                                        {product_item.product.name}
+                                    </Typography>
+                                </Grid>
                             ))}
                         </Grid>
                         <Grid container direction="column" gap={1.5} sx={{ width: 'auto' }}>
@@ -65,7 +65,7 @@ function CartView() {
                     </>
                 )}
             </Grid>
-            <hr />
+            <Divider sx={{ margin: '1rem 0 1rem 0' }} />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <CartButtons backText="Jatka ostoksia" forwardText="Seuraava" cartEmpty={cartProducts?.length === 0} />
             </form>
