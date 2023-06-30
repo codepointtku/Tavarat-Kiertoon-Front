@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 import br from '../../../public/br.jpg';
 import HeroHeader from '../../Components/HeroHeader';
+import HeroText from '../../Components/HeroText';
 
 import MoodBadIcon from '@mui/icons-material/MoodBad';
-import HeroText from '../../Components/HeroText';
 
 const SuperLink = MuiLink as typeof MuiLink | typeof Link;
 
@@ -25,7 +25,7 @@ function HeroFooter() {
 
 function UserError() {
     return (
-        <Box padding="2rem">
+        <Box id="error-element" padding="2rem">
             <HeroHeader Icon={<MoodBadIcon />} />
             <HeroText
                 title="Whooops!"
