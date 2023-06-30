@@ -12,21 +12,24 @@ import {
     Typography,
 } from '@mui/material';
 import { useLoaderData, useNavigate, generatePath } from 'react-router';
-import { Form } from 'react-router-dom';
+import { Form, useSubmit } from 'react-router-dom';
 import StyledTableRow from '../StyledTableRow';
 import StyledTableCell from '../StyledTableCell';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, type FieldValues } from 'react-hook-form';
 import { type orderEditLoader } from '../../Router/loaders';
+import { useState } from 'react';
 
 export type OrderEditLoaderType = Awaited<ReturnType<typeof orderEditLoader>>;
 
 type FormValues = {
-    orderEditModifyContact: OrderEditLoaderType['contact'];
-    orderEditModifyNumber: OrderEditLoaderType['phone_number'];
-    orderEditModifyAddress: OrderEditLoaderType['delivery_address'];
-    orderEditModifyStatus: OrderEditLoaderType['status'];
-    orderEditModifyOrderInfo: OrderEditLoaderType['order_info'];
-    orderEditProductItems: OrderEditLoaderType['product_items'][];
+    orderId: number;
+    contact: OrderEditLoaderType['contact'];
+    phoneNumber: OrderEditLoaderType['phone_number'];
+    deliveryAddress: OrderEditLoaderType['delivery_address'];
+    status: OrderEditLoaderType['status'];
+    orderInfo: OrderEditLoaderType['order_info'];
+    productItems: OrderEditLoaderType['product_items'];
+    productRenderItems: OrderEditLoaderType['product_items'][];
 };
 
 /**
@@ -39,39 +42,47 @@ function OrderEdit() {
 
     // array with an array for each unique product_item.product.id and all products with that id
     const productRenderItems: OrderEditLoaderType['product_items'][] = [];
+    const productRenderItemAmounts: number[] = [];
     orderData.product_items.forEach((productItem) => {
         // check if array already contains an item.product.id array
         const productIndex = productRenderItems.findIndex((index) => index[0]?.product.id === productItem.product.id);
         if (productIndex < 0) {
             // if not, push a new array with this item as its first object
             productRenderItems.push([productItem]);
+            productRenderItemAmounts.push(1);
         } else {
             // if yes, push this item to that array
             productRenderItems[productIndex].push(productItem);
+            productRenderItemAmounts[productIndex]++;
         }
     });
 
+    // keep track of new product amounts
+    const [amounts, setAmounts] = useState<number[]>(productRenderItemAmounts);
+
     // hook form functions and default values
-    const { control, formState, register, watch } = useForm<FormValues>({
+    const { control, formState, handleSubmit, register, watch } = useForm<FormValues>({
         mode: 'onTouched',
         defaultValues: {
-            orderEditModifyContact: orderData.contact,
-            orderEditModifyNumber: orderData.phone_number,
-            orderEditModifyAddress: orderData.delivery_address,
-            orderEditModifyStatus: orderData.status,
-            orderEditModifyOrderInfo: orderData.order_info,
-            orderEditProductItems: productRenderItems,
+            orderId: orderData.id,
+            contact: orderData.contact,
+            phoneNumber: orderData.phone_number,
+            deliveryAddress: orderData.delivery_address,
+            status: orderData.status,
+            orderInfo: orderData.order_info,
+            productItems: orderData.product_items,
+            productRenderItems: productRenderItems,
         },
     });
 
     // field array functions
-    // NOTE! fields should be the same as productRenderItems i.e. array of arrays of objects [ [{},{}],[{},{}] ]
-    //       but for some reason useFieldsArray makes it to array of objects of objects [{ {},{} },{ {},{} }]
-    //       and adds an extra "id" key to the end.
-    //       so in mapping "Object.keys(productItemGroup).length - 1" is used instead of "productItemGroup.length"
+    // NOTE! fields should be the same as productRenderItems i.e. array of arrays of objects [ [{},{}],[{},{}] ].
+    //       but for some reason useFieldArray makes it to array of objects of objects [{ {},{} },{ {},{} }].
+    //       useFieldArray also adds an "id" field to the end so need to deduct 1 from length when using it.
+    //        => in mapping "Object.keys(productItemGroup).length - 1" is used instead of "productItemGroup.length"
     //       - JTo -
     const { fields } = useFieldArray({
-        name: 'orderEditProductItems',
+        name: 'productRenderItems',
         control,
     });
 
@@ -84,37 +95,56 @@ function OrderEdit() {
     };
 
     // Remove product handler
-    const removeProduct = (val: number) => {
-        console.log('### orderEdit: removeProduct', val);
+    const removeProduct = (index: number) => {
+        console.log('### orderEdit: removeProduct', index);
+        const newValue = [...amounts];
+        newValue[index] = 0;
+        setAmounts(newValue);
     };
 
-    // Modify the number of productItems
-    const modifyProductItemAmounts = (id: number, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        console.log('### orderEdit: modifyProductItemAmounts', id, event.target.value);
+    // Modify the number of productRenderItems
+    const modifyProductItemAmounts = (
+        id: number,
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        index: number
+    ) => {
+        console.log('### orderEdit: modifyProductItemAmounts', id, event.target.value, index);
+        const newValue = [...amounts];
+        newValue[index] = Number(event.target.value);
+        setAmounts(newValue);
     };
 
-    // create a new product_item list and send it to backend
-    const saveChanges = () => {
-        console.log('### saveChanges, replace this with SUBMIT');
-        const newProductItemList: OrderEditLoaderType['product_items'] = [];
-        // all products
-        fields.forEach((product, index) => {
-            // all productItems
-            const numberOfItems: number = Number(watch(`orderEditProductItems.${index}`).length);
-            Object.values(product).forEach((productItem, index) => {
-                // only items with valid "item.id" field
-                productItem.id && newProductItemList.push(productItem);
-                console.log('####', numberOfItems, index, productItem.id);
-            });
+    // submit
+    // amounts:                       new length
+    // productRenderItems[x].length:  old length
+    const submit = useSubmit();
+    const onSubmit = async (data: FieldValues) => {
+        console.log('### ONSUBMIT formData', data, '### amounts', amounts);
+        data.productRenderItems.forEach((item: OrderEditLoaderType['product_items'][], index: number) => {
+            if (item.length > amounts[index]) {
+                console.log('### Vähennä määrää');
+            } else if (item.length < amounts[index]) {
+                console.log('### Lisää määrää');
+            } else {
+                console.log('### Juuri sopivasti');
+            }
         });
-        console.log('### newProductItemList', newProductItemList);
+        const productItemIds = data.productItems.map((item: OrderEditLoaderType['product_items'][number]) => item.id);
+        console.log(productItemIds);
+        const formData = { ...data, productItems: JSON.stringify(productItemIds) };
+        await submit(formData, {
+            method: 'put',
+            action: `/varasto/tilaus/${data.orderId}/muokkaa`,
+        });
     };
 
     // console.log('### orderData', orderData);
     // console.log('### productRenderItems', productRenderItems);
-    console.log('### fields', fields, fields.length);
+    // console.log('### productRenderItemAmounts', productRenderItemAmounts);
+    // console.log('### fields', fields);
     // console.log('### keys', Object.keys(fields[0]));
-    // console.log('### watch 0', watch(`orderEditProductItems.${0}`));
+    // console.log('### watch 0', watch(`productItems.${0}`));
+    // console.log('### amounts', amounts);
 
     // RENDER
     return (
@@ -124,7 +154,7 @@ function OrderEdit() {
             </Typography>
             {orderData && (
                 <>
-                    <Box component={Form}>
+                    <Box component={Form} onSubmit={handleSubmit(onSubmit)}>
                         <TableContainer
                             component={Paper}
                             sx={{
@@ -147,16 +177,14 @@ function OrderEdit() {
                                             <TableCell>
                                                 <TextField
                                                     label="Muokka yhteystietoa"
-                                                    value={watch('orderEditModifyContact')}
-                                                    {...register('orderEditModifyContact', {
+                                                    value={watch('contact')}
+                                                    {...register('contact', {
                                                         required: 'Pakollinen kenttä',
                                                     })}
                                                     fullWidth
-                                                    color={errors.orderEditModifyContact ? 'error' : 'primary'}
-                                                    error={!!errors.orderEditModifyContact}
-                                                    helperText={
-                                                        errors.orderEditModifyContact?.message?.toString() || ' '
-                                                    }
+                                                    color={errors.contact ? 'error' : 'primary'}
+                                                    error={!!errors.contact}
+                                                    helperText={errors.contact?.message?.toString() || ' '}
                                                     required
                                                     sx={{ marginBottom: '-1rem' }}
                                                 />
@@ -165,16 +193,14 @@ function OrderEdit() {
                                             <TableCell>
                                                 <TextField
                                                     label="Muokkaa puhelinnumeroa"
-                                                    value={watch('orderEditModifyNumber')}
-                                                    {...register('orderEditModifyNumber', {
+                                                    value={watch('phoneNumber')}
+                                                    {...register('phoneNumber', {
                                                         required: 'Pakollinen kenttä',
                                                     })}
                                                     fullWidth
-                                                    color={errors.orderEditModifyNumber ? 'error' : 'primary'}
-                                                    error={!!errors.orderEditModifyNumber}
-                                                    helperText={
-                                                        errors.orderEditModifyNumber?.message?.toString() || ' '
-                                                    }
+                                                    color={errors.phoneNumber ? 'error' : 'primary'}
+                                                    error={!!errors.phoneNumber}
+                                                    helperText={errors.phoneNumber?.message?.toString() || ' '}
                                                     required
                                                     sx={{ marginBottom: '-1rem' }}
                                                 />
@@ -185,16 +211,14 @@ function OrderEdit() {
                                             <TableCell>
                                                 <TextField
                                                     label="Muokkaa osoitetta"
-                                                    value={watch('orderEditModifyAddress')}
-                                                    {...register('orderEditModifyAddress', {
+                                                    value={watch('deliveryAddress')}
+                                                    {...register('deliveryAddress', {
                                                         required: 'Pakollinen kenttä',
                                                     })}
                                                     fullWidth
-                                                    color={errors.orderEditModifyAddress ? 'error' : 'primary'}
-                                                    error={!!errors.orderEditModifyAddress}
-                                                    helperText={
-                                                        errors.orderEditModifyAddress?.message?.toString() || ' '
-                                                    }
+                                                    color={errors.deliveryAddress ? 'error' : 'primary'}
+                                                    error={!!errors.deliveryAddress}
+                                                    helperText={errors.deliveryAddress?.message?.toString() || ' '}
                                                     required
                                                     sx={{ marginBottom: '-1rem' }}
                                                 />
@@ -203,16 +227,14 @@ function OrderEdit() {
                                             <TableCell>
                                                 <TextField
                                                     label="Muokkaa tilaa"
-                                                    value={watch('orderEditModifyStatus')}
-                                                    {...register('orderEditModifyStatus', {
+                                                    value={watch('status')}
+                                                    {...register('status', {
                                                         required: 'Pakollinen kenttä',
                                                     })}
                                                     fullWidth
-                                                    color={errors.orderEditModifyStatus ? 'error' : 'primary'}
-                                                    error={!!errors.orderEditModifyStatus}
-                                                    helperText={
-                                                        errors.orderEditModifyStatus?.message?.toString() || ' '
-                                                    }
+                                                    color={errors.status ? 'error' : 'primary'}
+                                                    error={!!errors.status}
+                                                    helperText={errors.status?.message?.toString() || ' '}
                                                     required
                                                     sx={{ marginBottom: '-1rem' }}
                                                 />
@@ -225,16 +247,14 @@ function OrderEdit() {
                                             <TableCell colSpan={3} sx={{ border: 'none' }}>
                                                 <TextField
                                                     label="Muokkaa lisätietoa"
-                                                    value={watch('orderEditModifyOrderInfo')}
-                                                    {...register('orderEditModifyOrderInfo', {
+                                                    value={watch('orderInfo')}
+                                                    {...register('orderInfo', {
                                                         required: 'Pakollinen kenttä',
                                                     })}
                                                     fullWidth
-                                                    color={errors.orderEditModifyOrderInfo ? 'error' : 'primary'}
-                                                    error={!!errors.orderEditModifyOrderInfo}
-                                                    helperText={
-                                                        errors.orderEditModifyOrderInfo?.message?.toString() || ' '
-                                                    }
+                                                    color={errors.orderInfo ? 'error' : 'primary'}
+                                                    error={!!errors.orderInfo}
+                                                    helperText={errors.orderInfo?.message?.toString() || ' '}
                                                     required
                                                     multiline
                                                     sx={{ marginBottom: '-1rem' }}
@@ -305,7 +325,8 @@ function OrderEdit() {
                                                     <TextField
                                                         type="number"
                                                         size="small"
-                                                        defaultValue={Object.keys(productItemGroup).length - 1}
+                                                        value={amounts[index]}
+                                                        // defaultValue={Object.keys(productItemGroup).length - 1}
                                                         InputProps={{
                                                             inputProps: {
                                                                 min: 0,
@@ -316,17 +337,24 @@ function OrderEdit() {
                                                             },
                                                         }}
                                                         onChange={(event) => {
-                                                            modifyProductItemAmounts(productItemGroup[0].id, event);
+                                                            modifyProductItemAmounts(
+                                                                productItemGroup[0].id,
+                                                                event,
+                                                                index
+                                                            );
                                                         }}
                                                     />
                                                 </TableCell>
                                                 <TableCell align="right">
                                                     <Button
+                                                        disabled={amounts[index] === 0 ? true : false}
                                                         onClick={() => {
-                                                            removeProduct(Object.keys(productItemGroup).length - 1);
+                                                            // removeProduct(Object.keys(productItemGroup).length - 1);
+                                                            removeProduct(index);
                                                         }}
+                                                        sx={{ width: '120px' }}
                                                     >
-                                                        Poista tuote.
+                                                        {amounts[index] === 0 ? 'Poistettu' : 'Poista tuote.'}
                                                     </Button>
                                                 </TableCell>
                                             </StyledTableRow>
@@ -374,7 +402,11 @@ function OrderEdit() {
                             </Box>
                             <Box width="100%" display="flex" justifyContent="space-evenly" marginTop="3rem">
                                 <Button onClick={() => navigate(-1)}>Palaa tallentamatta</Button>
-                                <Button color="error" onClick={() => saveChanges()}>
+                                <Button
+                                    color="error"
+                                    // onClick={() => saveChanges()}
+                                    type="submit"
+                                >
                                     Tallenna muutokset
                                 </Button>
                             </Box>
