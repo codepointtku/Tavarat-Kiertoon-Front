@@ -23,14 +23,14 @@ function HeroFooter() {
     );
 }
 
-function UserError() {
+function CommonErrorMessage() {
     return (
         <Box id="error-element" padding="2rem">
             <HeroHeader Icon={<MoodBadIcon />} />
             <HeroText
-                title="Hmmm..."
-                subtitle="Käyttäjä-datan käsittelyssä tapahtui virhe"
-                subtext="Lisää tekstiä, palataan asiaan joskus ja jouluna."
+                title="Whooops!"
+                subtitle="Tapahtui odottamaton virhe"
+                subtext="Ei hätää, lähetimme koulutetut apinamme tutkimaan asiaa."
                 subtext2="Voit kokeilla sivun uudelleenlataamista."
                 footer={<HeroFooter />}
             />
@@ -39,4 +39,4 @@ function UserError() {
     );
 }
 
-export default UserError;
+export default CommonErrorMessage;
