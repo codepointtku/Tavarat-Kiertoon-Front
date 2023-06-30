@@ -335,3 +335,45 @@ test.describe('admin-emailrecipients', () => {
         await expect(page.getByText('Etsimääsi sijaintia /admin/tilaukset/sahkopostilista')).not.toBeVisible();
     });
 });
+
+test.describe('admin-orderslist', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tilaukset');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/tilaukset')).not.toBeVisible();
+    });
+});
+
+// test.describe('admin-singleorderview', () => {
+//     test('no errors', async ({ page }) => {
+//         await page.goto('/admin/tilaukset');
+//         await expect(page.getByText('Etsimääsi sijaintia /admin/tilaukset/1')).not.toBeVisible();
+//     });
+// });
+
+test.describe('admin-createorder', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tilaukset/uusi');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/tilaukset/uusi')).not.toBeVisible();
+    });
+});
+
+test.describe('admin-productslist', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tuotteet');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/tuotteet')).not.toBeVisible();
+    });
+});
+
+// test.describe('admin-singleproductview', () => {
+//     test('no errors', async ({ page }) => {
+//         await page.goto('/admin/tuotteet/1');
+//         await expect(page.getByText('Etsimääsi sijaintia /admin/tuotteet/1')).not.toBeVisible();
+//     });
+// });
+
+test.describe('admin-createproduct', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tilaukset/uusi');
+        await expect(page.getByText('Etsimääsi sijaintia /admin/tuotteet/uusi')).not.toBeVisible();
+    });
+});
