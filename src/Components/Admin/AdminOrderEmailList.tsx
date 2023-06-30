@@ -81,14 +81,14 @@ function AddRecipient() {
     return (
         <>
             <TypographyHeading text="Uuden vastaanottajan lisääminen" />
-            <Box component={Form} onSubmit={createHandleSubmit(handleCreate)} sx={{ marginTop: '1rem' }}>
+            <Box component={Form} onSubmit={createHandleSubmit(handleCreate)} sx={{ margin: '1rem 0 1rem 0' }}>
                 <Stack>
                     <TextField
                         id="input-email"
                         type="text"
                         label="Sähköpostiosoite"
                         {...register('email', {
-                            required: { value: true, message: 'Kirjoita lisättävä sähköpostiosoite' },
+                            required: { value: true, message: 'Kirjoita listaan lisättävä sähköpostiosoite' },
                             minLength: { value: 5, message: 'Sähköpostiosoitteen on oltava vähintään 5 merkkiä' },
                             pattern: {
                                 value: /.+@turku.fi$|.+@edu.turku.fi$/,
