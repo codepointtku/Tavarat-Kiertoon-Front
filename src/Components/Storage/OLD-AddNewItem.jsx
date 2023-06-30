@@ -5,7 +5,7 @@ import { useRouteLoaderData, useLoaderData, useSubmit, Form, useActionData } fro
 
 import { TextField, Box, MenuItem, Button, Modal, Grid } from '@mui/material';
 
-// import imageCompression from 'browser-image-compression';
+import imageCompression from 'browser-image-compression';
 import Html5QrcodePlugin from '../../Utils/qrcodeScanner';
 import Barcode from 'react-barcode';
 
@@ -50,8 +50,8 @@ function AddNewItem() {
             name: 'testi',
             free_description: 'testikuvaus',
             category: 1,
-            // color can a id as a string or new color as a string
-            color: '1',
+            // color can be a id (as a string) or new color as a string
+            colors: ['1', '2'],
             // // pictures: [1],
         },
     });
@@ -71,17 +71,17 @@ function AddNewItem() {
         const formData = new FormData();
 
         Object.keys(data).forEach((key) => {
+            //     if (key === 'product_item') {
+            //         Object.keys(data[key]).forEach((key2) => {
+            //             formData.append(key2, data[key][key2]);
+            //         });
+            //     } else if (key !== 'pictures') formData.append(key, data[key]);
+            // });
             if (key === 'product_item') {
-                Object.keys(data[key]).forEach((key2) => {
-                    formData.append(key2, data[key][key2]);
-                });
+                console.log('product_item:', JSON.stringify(data[key]));
+                formData.append(key, JSON.stringify(data[key]));
             } else if (key !== 'pictures') formData.append(key, data[key]);
         });
-        // if (key === 'product_item') {
-        //     console.log('product_item:', data[key]);
-        // }
-        //     if (key !== 'pictures') formData.append(key, data[key]);
-        // });
 
         Object.values(data.pictures).forEach((value) => formData.append('pictures[]', value));
 
@@ -115,8 +115,9 @@ function AddNewItem() {
     //     // const response = await axios.post('http://localhost:8000/pictures/', uploads, {
     //     //     headers: { 'content-type': 'multipart/form-data' },
     //     // });
-    //     // console.log('axios pictures post', response.data);
-    //     // setValue('pictures', response.data);
+
+    //     console.log('axios pictures post', response.data);
+    //     setValue('pictures', response.data);
     //     setValue('pictures', uploads);
     // };
 
@@ -269,24 +270,24 @@ function AddNewItem() {
                         id="color-select"
                         select
                         label="Väri"
-                        {...register('color', { required: { value: true, message: 'Tuotteella on oltava väri' } })}
+                        {...register('colors', { required: { value: true, message: 'Tuotteella on oltava väri' } })}
                         inputProps={{ required: false }}
                         required
-                        error={!!errors.color}
-                        helperText={errors.color?.message || ' '}
+                        error={!!errors.colors}
+                        helperText={errors.colors?.message || ' '}
                     >
                         {/* TODO värikenttä, uuden värin lisäys mahdollisuus, backend hyväksyy(?) stringin ja luo uuden ellei ole olemassa. Lisäkenttä lisää uusi väri */}
                         {/* TODO uuden värin lisäyksen yhteydessä rootLoaderin on mahdollisesti lauettava uudelleen, jotta uusi väri näkyy heti valikossa */}
                         <MenuItem
                         // onClick={() => setValue()}
-                        // key={color.id}
-                        // value={color.name}
+                        // key={colors.id}
+                        // value={colors.name}
                         >
                             {/* TODO värin nimen oltava muotoa iso alkukirjain, ilman välejä, muutettava oikeaksi ennen lähetystä jottei tule "meren sininen" ja "Merensininen" */}
                             <Button variant="contained">Luo uusi</Button>
                         </MenuItem>
                         {colors?.map((color) => (
-                            <MenuItem onClick={() => setValue('color', color.id)} key={color.id} value={color.id}>
+                            <MenuItem onClick={() => setValue('colors', color.id)} key={color.id} value={color.id}>
                                 {color.name}
                             </MenuItem>
                         ))}
