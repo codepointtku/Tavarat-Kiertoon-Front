@@ -22,7 +22,7 @@ function UserProfilePage() {
         }
     }
 
-    function handleSectionChange(event, newSection) {
+    function handleSectionChange(event: React.SyntheticEvent<Element, Event>, newSection: string) {
         setValue(newSection);
     }
 
