@@ -3,7 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { Container, Grid, Paper, Card, CardActionArea, CardContent, CardMedia, Typography, Box } from '@mui/material';
 
 import OrderStepper from './OrderStepper';
-// import CustomizedTimeline from './CustomizedTimeline';
+import BackButton from '../../BackButton';
 import TypographyHeading from '../../TypographyHeading';
 
 interface Product {
@@ -23,6 +23,9 @@ function OrderPage() {
 
     return (
         <Container disableGutters>
+            <Box sx={{ my: 2 }}>
+                <BackButton />
+            </Box>
             <Grid container id="main-order-separating-grid" direction="row">
                 <Grid item xs={6} component={Paper} square variant="outlined" sx={{ p: 5 }}>
                     <TypographyHeading text="Tilauksesi tila" />
