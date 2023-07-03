@@ -2,11 +2,16 @@ import { useRouteLoaderData } from 'react-router-dom';
 import { Box, Grid, Typography } from '@mui/material';
 
 import OrderCard from './OrderCard';
-import type { userInfoLoader } from '../../../Router/loaders';
+import { OrderDetailResponse } from '../../../api';
+
+interface UserOrders {
+    userOrders: { results: OrderDetailResponse[] };
+}
 
 function ProfileInfo() {
-    const { userOrders } = useRouteLoaderData('profile') as Awaited<ReturnType<typeof userInfoLoader>>;
-    const activeOrders = userOrders.filter((order) => order.status !== 'Finished');
+    const { userOrders } = useRouteLoaderData('profile') as Awaited<UserOrders>;
+
+    const activeOrders = userOrders.results.filter((order) => order.status !== 'Finished');
     const activeOrdersCards = activeOrders.map((order) => <OrderCard key={order.id} orderInfo={order} />);
 
     return (
