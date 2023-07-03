@@ -813,7 +813,7 @@ const userProfilePageAction = async (auth, setAuth, request) => {
 
 const modifyUserAddressesAction = async (request) => {
     const formData = await request.formData();
-    if (request.formData === 'PUT') {
+    if (request.method === 'PUT') {
         const response = await userApi.userAddressEditUpdate({
             id: formData.get('id'),
             address: formData.get('address'),
