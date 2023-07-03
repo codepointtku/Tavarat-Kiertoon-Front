@@ -108,10 +108,8 @@ const frontPageActions = async ({ request }) => {
  * creates new user
  */
 
-const userSignupAction = async (auth, setAuth, request) => {
-    // both single user signup form, and location signup form use this same action
-    // and url in backend.
-
+const userSignupAction = async (request) => {
+    // both single user signup form and location signup form use this same action
     // a single user does not have an username -- email-value is copied to username-value in BE.
 
     // this action defaults without username-field.
@@ -134,14 +132,21 @@ const userSignupAction = async (auth, setAuth, request) => {
         userSignUpValues = { ...userSignUpValues, username: formData.get('username') };
     }
 
-    // const response = await apiCall(auth, setAuth, '/users/create/', 'post', userSignUpValues);
-    const response = await usersApi.usersCreateCreate(userSignUpValues);
-
-    if (response.status === 201) {
-        return { type: 'create', status: true };
+    try {
+        const response = await usersApi.usersCreateCreate(userSignUpValues);
+        if (response.status === 201) {
+            return { type: 'create', status: true, message: response.data.message };
+        }
+        if (response.status === 400) {
+            // console.log(',0ooiuioh');
+            return { type: 'create', status: false, message: response.data.message };
+        }
+    } catch (error) {
+        // console.log('cats', error);
+        return { type: 'create', status: false, message: request.responseText };
     }
 
-    return { type: 'create', status: false };
+    return { type: 'create', status: false, r: 'returnauksien returnaus' };
 };
 
 /**

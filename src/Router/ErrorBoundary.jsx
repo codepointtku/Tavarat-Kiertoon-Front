@@ -11,15 +11,13 @@ function ErrorBoundary() {
     };
 
     const errorType = (err) => {
-        // console.log(err);
+        console.log(err);
         if (err?.name === 'AxiosError') {
             return 'axios';
         }
         if (err?.status === 404) {
             return 'noroute';
         }
-        // for development console logging errors
-        console.log('error boundary');
         return 'else';
     };
 
@@ -31,7 +29,7 @@ function ErrorBoundary() {
                     {
                         axios: (
                             <Typography variant="h6">
-                                Yhteysongelma sijainnissa {location.pathname}, yritä uudelleen.
+                                Yhteysongelma sijainnissa {location.pathname}, yritä uudelleeeeeeen.
                             </Typography>
                         ),
 
