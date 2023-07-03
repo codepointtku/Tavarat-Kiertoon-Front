@@ -484,7 +484,7 @@ const adminInboxLoader = async (auth, setAuth, request) => {
 const userInfoLoader = async () => {
     const [{ data: userInfo }, { data: userOrders }] = await Promise.all([
         userApi.userRetrieve(),
-        ordersApi.ordersUserList(),
+        ordersApi.ordersUserList('status=Finished'),
     ]);
 
     return { userInfo, userOrders };

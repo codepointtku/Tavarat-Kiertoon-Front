@@ -11,6 +11,7 @@ interface UserOrders {
 
 function OrdersHistory() {
     const { userOrders } = useRouteLoaderData('profile') as Awaited<UserOrders>;
+    console.log(userOrders);
     const finishedOrders = userOrders.results.filter((order) => order.status === 'Finished');
     const ordersHistoryCards = finishedOrders.map((order) => <OrderCard key={order.id} orderInfo={order} />);
 
