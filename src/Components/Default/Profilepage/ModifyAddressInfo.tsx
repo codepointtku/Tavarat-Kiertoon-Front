@@ -39,6 +39,7 @@ function ModifyAddressInfo() {
         handleSubmit,
         formState: { errors },
     } = useForm({
+        mode: 'onTouched',
         defaultValues: {
             address: currAddressInfo.action === 'modify' ? currAddressInfo.address : '',
             city: currAddressInfo.action === 'modify' ? currAddressInfo.city : '',
@@ -81,25 +82,44 @@ function ModifyAddressInfo() {
             >
                 <Grid item>
                     <TextField
-                        {...register('address', { required: true, minLength: 1, maxLength: 255 })}
+                        {...register('address', {
+                            required: 'Tämä kenttä on täytettävä',
+                            minLength: { value: 2, message: 'Sisältö on liian lyhyt' },
+                            maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
+                        })}
                         label="Osoite"
                         placeholder="Osoite"
+                        error={!!errors.address}
+                        helperText={errors.address?.message?.toString() || ' '}
                         sx={{ width: '150%' }}
                     />
                 </Grid>
                 <Grid item>
                     <TextField
-                        {...register('city', { required: true, minLength: 1, maxLength: 255 })}
+                        {...register('city', {
+                            required: 'Tämä kenttä on täytettävä',
+                            minLength: { value: 2, message: 'Sisältö on liian lyhyt' },
+                            maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
+                        })}
                         label="Kaupunki"
                         placeholder="Kaupunki"
+                        error={!!errors.city}
+                        helperText={errors.city?.message?.toString() || ' '}
                         sx={{ width: '150%' }}
                     />
                 </Grid>
                 <Grid item>
                     <TextField
-                        {...register('zip_code', { required: true, minLength: 1, maxLength: 10 })}
+                        {...register('zip_code', {
+                            required: 'Tämä kenttä on täytettävä',
+                            minLength: { value: 2, message: 'Sisältö on liian lyhyt' },
+                            maxLength: { value: 10, message: 'Sisältö on liian pitkä' },
+                            pattern: { value: /^\d+$/, message: 'Sisällön täytyy koostua vain numeroista' },
+                        })}
                         label="Postinumero"
                         placeholder="Postinumero"
+                        error={!!errors.zip_code}
+                        helperText={errors.zip_code?.message?.toString() || ' '}
                         sx={{ width: '150%' }}
                     />
                 </Grid>
