@@ -1,7 +1,9 @@
 import { useRouteLoaderData } from 'react-router-dom';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography, Container } from '@mui/material';
 import OrderCard from './OrderCard';
 import { OrderDetailResponse } from '../../../api';
+
+import TypographyTitle from '../../TypographyTitle';
 
 interface UserOrders {
     userOrders: { results: OrderDetailResponse[] };
@@ -18,7 +20,13 @@ function OrdersHistory() {
                 Tilaushistoria
             </Typography>
             <Grid direction="row" gap={5} container>
-                {ordersHistoryCards}
+                {ordersHistoryCards.length === 0 ? (
+                    <Container sx={{ mt: 2 }}>
+                        <TypographyTitle text="Ei valmiita tilauksia" />
+                    </Container>
+                ) : (
+                    ordersHistoryCards
+                )}
             </Grid>
         </Box>
     );
