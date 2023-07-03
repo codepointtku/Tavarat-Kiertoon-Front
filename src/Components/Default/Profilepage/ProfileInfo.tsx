@@ -66,8 +66,8 @@ function ProfileInfo() {
                         >
                             <TextField
                                 {...register('username')}
-                                label="Käyttäjänimi"
-                                placeholder="Käyttäjänimi"
+                                label="Käyttäjätunnus"
+                                placeholder="Käyttäjätunnus"
                                 disabled
                             />
                         </Tooltip>

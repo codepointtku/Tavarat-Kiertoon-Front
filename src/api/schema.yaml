@@ -1575,118 +1575,6 @@ paths:
       responses:
         '204':
           description: No response body
-  /orders/emailrecipients/:
-    get:
-      operationId: orders_emailrecipients_list
-      tags:
-      - orders
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/OrderEmailRecipient'
-          description: ''
-    post:
-      operationId: orders_emailrecipients_create
-      tags:
-      - orders
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/OrderEmailRecipient'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/OrderEmailRecipient'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/OrderEmailRecipient'
-        required: true
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OrderEmailRecipient'
-          description: ''
-  /orders/emailrecipients/{id}/:
-    get:
-      operationId: orders_emailrecipients_retrieve
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - orders
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OrderEmailRecipient'
-          description: ''
-    put:
-      operationId: orders_emailrecipients_update
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - orders
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/OrderEmailRecipient'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/OrderEmailRecipient'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/OrderEmailRecipient'
-        required: true
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OrderEmailRecipient'
-          description: ''
-    delete:
-      operationId: orders_emailrecipients_destroy
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - orders
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '204':
-          description: No response body
   /orders/user/:
     get:
       operationId: orders_user_list
@@ -2553,7 +2441,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/UserUpdate'
-        required: true
       security:
       - CustomJWTAuthentication: []
       responses:
@@ -2655,18 +2542,6 @@ paths:
       operationId: users_list
       description: List all users with all database fields, no POST here
       parameters:
-      - in: query
-        name: groups
-        schema:
-          type: array
-          items:
-            type: integer
-        explode: true
-        style: form
-      - in: query
-        name: is_active
-        schema:
-          type: boolean
       - name: ordering
         required: false
         in: query
@@ -2746,7 +2621,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/UserUpdate'
-        required: true
       security:
       - CustomJWTAuthentication: []
       responses:
@@ -2756,24 +2630,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserUpdateReturnSchema'
           description: ''
-    delete:
-      operationId: users_destroy
-      description: |-
-        Get specific users info,
-        only some field can be updated
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - users
-      security:
-      - CustomJWTAuthentication: []
-      responses:
-        '204':
-          description: No response body
   /users/{id}/groups/permission/:
     get:
       operationId: users_groups_permission_retrieve
@@ -2860,7 +2716,11 @@ paths:
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
   /users/address/{id}/:
     get:
       operationId: users_address_retrieve
@@ -2939,10 +2799,7 @@ paths:
   /users/create/:
     post:
       operationId: users_create_create
-      description: |-
-        List all users, and create with POST
-        if username field comes = joint user
-        if no username = normal user and email address gets copied to username and will be used to login
+      description: List all users, and create with POST
       tags:
       - users
       requestBody:
@@ -2970,8 +2827,6 @@ paths:
   /users/emailchange/:
     post:
       operationId: users_emailchange_create
-      description: Sends email change link to entered email address for the logged
-        in user account
       tags:
       - users
       requestBody:
@@ -2990,7 +2845,11 @@ paths:
       - CustomJWTAuthentication: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewEmail'
+          description: ''
   /users/emailchange/finish/:
     post:
       operationId: users_emailchange_finish_create
@@ -3015,7 +2874,11 @@ paths:
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewEmailFinishValidation'
+          description: ''
   /users/groups/:
     get:
       operationId: users_groups_list
@@ -3117,7 +2980,11 @@ paths:
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
   /users/password/resetemail/:
     post:
       operationId: users_password_resetemail_create
@@ -3263,10 +3130,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/Color'
           readOnly: true
-        picture:
-          allOf:
-          - $ref: '#/components/schemas/Picture'
-          readOnly: true
         name:
           type: string
           maxLength: 255
@@ -3279,7 +3142,6 @@ components:
       - description
       - id
       - name
-      - picture
       - size
       - type
     BikeModelCreate:
@@ -3304,9 +3166,6 @@ components:
           type: integer
           nullable: true
         color:
-          type: integer
-          nullable: true
-        picture:
           type: integer
           nullable: true
       required:
@@ -3335,9 +3194,6 @@ components:
           type: integer
           nullable: true
         color:
-          type: integer
-          nullable: true
-        picture:
           type: integer
           nullable: true
       required:
@@ -3573,9 +3429,6 @@ components:
         description:
           type: string
           maxLength: 255
-        picture:
-          type: integer
-          nullable: true
       required:
       - brand
       - color
@@ -4093,6 +3946,14 @@ components:
       required:
       - amount
       - bike
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
+          maxLength: 255
+      required:
+      - message
     NewEmail:
       type: object
       description: Serializer for inputting new email address
@@ -4131,8 +3992,6 @@ components:
         delivery_address:
           type: string
           maxLength: 255
-        delivery_required:
-          type: boolean
         contact:
           type: string
           maxLength: 255
@@ -4175,18 +4034,12 @@ components:
           items:
             $ref: '#/components/schemas/ProductItemResponse'
           readOnly: true
-        user:
-          allOf:
-          - $ref: '#/components/schemas/UserFullResponseSchema'
-          readOnly: true
         status:
           type: string
           maxLength: 255
         delivery_address:
           type: string
           maxLength: 255
-        delivery_required:
-          type: boolean
         contact:
           type: string
           maxLength: 255
@@ -4203,6 +4056,9 @@ components:
           type: string
           format: date-time
           readOnly: true
+        user:
+          type: integer
+          nullable: true
       required:
       - contact
       - creation_date
@@ -4214,18 +4070,6 @@ components:
       - product_items
       - status
       - user
-    OrderEmailRecipient:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        email:
-          type: string
-          maxLength: 255
-      required:
-      - email
-      - id
     OrderRequest:
       type: object
       properties:
@@ -4238,8 +4082,6 @@ components:
         delivery_address:
           type: string
           maxLength: 255
-        delivery_required:
-          type: boolean
         contact:
           type: string
           maxLength: 255
@@ -4275,8 +4117,6 @@ components:
         delivery_address:
           type: string
           maxLength: 255
-        delivery_required:
-          type: boolean
         contact:
           type: string
           maxLength: 255
@@ -5026,6 +4866,7 @@ components:
       - last_name
       - password
       - phone_number
+      - username
       - zip_code
     UserCreateReturnResponseSchema:
       type: object
@@ -5075,9 +4916,11 @@ components:
           nullable: true
         first_name:
           type: string
+          nullable: true
           maxLength: 255
         last_name:
           type: string
+          nullable: true
           maxLength: 255
         email:
           type: string
@@ -5170,26 +5013,27 @@ components:
       properties:
         first_name:
           type: string
+          nullable: true
           maxLength: 255
         last_name:
           type: string
+          nullable: true
           maxLength: 255
         phone_number:
           type: string
           nullable: true
           maxLength: 255
-      required:
-      - first_name
-      - last_name
     UserUpdateReturnSchema:
       type: object
       description: FOR SCHEMA, Serializer for users, for updating user information
       properties:
         first_name:
           type: string
+          nullable: true
           maxLength: 255
         last_name:
           type: string
+          nullable: true
           maxLength: 255
         phone_number:
           type: string
