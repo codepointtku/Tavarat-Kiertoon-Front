@@ -5,8 +5,7 @@ import { Grid, Pagination } from '@mui/material';
 
 function UserOrderPagination({ userOrders }: UserOrders) {
     const [searchParams, setSearchParams] = useSearchParams();
-    const pageCount = Math.ceil(userOrders.count / userOrders.results.length);
-    // location.href.includes('tilaushistoria') && setSearchParams({ tila: 'Toimitettu' });
+    const pageCount = Math.ceil(userOrders.count / 5);
 
     function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
         let assignedParams;
