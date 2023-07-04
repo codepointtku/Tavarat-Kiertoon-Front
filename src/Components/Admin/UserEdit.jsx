@@ -90,9 +90,9 @@ function UserEdit() {
 
             <Box id="user-edit-wrapper-form-component" component={Form} onSubmit={handleSubmit}>
                 <Stack id="stack-dat">
-                    <Grid container sx={{ border: '1px solid blue' }}>
+                    <Grid container>
                         {/* Common info */}
-                        <Grid item xs={3}>
+                        <Grid item xs={6}>
                             <Box
                                 sx={{
                                     display: 'flex',
@@ -134,9 +134,9 @@ function UserEdit() {
                             </Box>
                         </Grid>
 
-                        {/* Name etc */}
-                        <Grid item xs={3}>
-                            <Stack id="user-edition-fields-stack-column">
+                        {/* Name, phone */}
+                        <Grid item xs={6}>
+                            <Stack id="user-edition-fields-stack-column" sx={{ marginTop: '2rem' }}>
                                 <Stack id="fname-lname-stacker" direction="row" spacing={1}>
                                     <TextField
                                         id="textfield-fname"
@@ -156,6 +156,7 @@ function UserEdit() {
                                         error={!!formStateErrors.first_name}
                                         helperText={formStateErrors.first_name?.message || ' '}
                                         color={dirtyFields.first_name && 'warning'}
+                                        fullWidth
                                     />
 
                                     <TextField
@@ -175,6 +176,7 @@ function UserEdit() {
                                         error={!!formStateErrors.last_name}
                                         helperText={formStateErrors.last_name?.message || ' '}
                                         color={dirtyFields.last_name && 'warning'}
+                                        fullWidth
                                     />
                                 </Stack>
 
@@ -201,7 +203,7 @@ function UserEdit() {
                         </Grid>
 
                         {/* Address stuff */}
-                        <Grid item xs={3}>
+                        <Grid item xs={6}>
                             <Box id="user-address-info-wrapper">
                                 <TypographyHeading text="Osoitetiedot" />
 
@@ -280,7 +282,7 @@ function UserEdit() {
                                         id="address-boxes"
                                         direction="row"
                                         spacing={2}
-                                        justifyContent="space-between"
+                                        justifyContent="space-evenly"
                                         alignItems="center"
                                         sx={{ margin: '1rem 0 1rem 0' }}
                                     >
@@ -304,7 +306,7 @@ function UserEdit() {
                         </Grid>
 
                         {/* Auth groups */}
-                        <Grid item xs={3}>
+                        <Grid item xs={6}>
                             <Box id="user-edition-checkboxes-wrapper">
                                 <TypographyHeading text="Käyttäjän käyttöoikeudet" />
                                 <Stack id="usergroups-checkboxes-stack-column">
