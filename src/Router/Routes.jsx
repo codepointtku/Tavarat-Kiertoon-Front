@@ -394,7 +394,7 @@ function Routes() {
                                     ],
                                 },
                                 {
-                                    path: 'profiili/:tilaustila/:tila/tilaus/:id',
+                                    path: 'profiili/:tilaustila/tilaus/:id',
                                     element: <OrderPage />,
                                 },
                             ],

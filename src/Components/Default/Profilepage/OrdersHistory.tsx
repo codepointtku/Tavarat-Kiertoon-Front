@@ -12,8 +12,7 @@ export interface UserOrders {
 
 function OrdersHistory() {
     const { userOrders } = useRouteLoaderData('profile') as Awaited<UserOrders>;
-    const finishedOrders = userOrders.results.filter((order) => order.status === 'Finished');
-    const ordersHistoryCards = finishedOrders.map((order) => <OrderCard key={order.id} orderInfo={order} />);
+    const ordersHistoryCards = userOrders.results.map((order) => <OrderCard key={order.id} orderInfo={order} />);
 
     return (
         <Box sx={{ p: 2 }}>
