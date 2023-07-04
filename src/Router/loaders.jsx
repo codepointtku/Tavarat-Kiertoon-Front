@@ -485,12 +485,13 @@ const userInfoLoader = async (request) => {
     const searchParams = new URL(request.url).searchParams;
     const statusMap = {
         Odottaa: 'Waiting',
-        Lukemattomat: 'Not read',
-        Hoidetut: 'Handled',
+        Käsittelyssä: 'Processing',
+        Toimitettu: 'Finished',
     };
+    const status = statusMap[searchParams.get('tila')] || null;
     const [{ data: userInfo }, { data: userOrders }] = await Promise.all([
         userApi.userRetrieve(),
-        ordersApi.ordersUserList(),
+        ordersApi.ordersUserList(null, searchParams.get('sivu'), null, status),
     ]);
 
     return { userInfo, userOrders };

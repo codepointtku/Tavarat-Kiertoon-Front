@@ -384,11 +384,11 @@ function Routes() {
                                             action: async ({ request }) => modifyUserAddressesAction(request),
                                         },
                                         {
-                                            path: 'aktiivisettilaukset/:tila',
+                                            path: 'aktiivisettilaukset',
                                             element: <OrdersActive />,
                                         },
                                         {
-                                            path: 'tilaushistoria/:tila',
+                                            path: 'tilaushistoria',
                                             element: <OrdersHistory />,
                                         },
                                     ],

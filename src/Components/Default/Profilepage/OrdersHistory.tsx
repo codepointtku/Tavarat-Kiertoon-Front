@@ -16,6 +16,19 @@ function OrdersHistory() {
     const finishedOrders = userOrders.results.filter((order) => order.status === 'Finished');
     const ordersHistoryCards = finishedOrders.map((order) => <OrderCard key={order.id} orderInfo={order} />);
 
+    function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
+        let assignedParams;
+        if (searchParams.has('tila')) {
+            assignedParams = {
+                tila: searchParams.get('tila') as string,
+                sivu: String(newPage),
+            };
+        } else {
+            assignedParams = { sivu: String(newPage) };
+        }
+        setSearchParams(assignedParams);
+    }
+
     return (
         <Box sx={{ p: 2 }}>
             <Typography variant="h5" color="primary.main" align="center" sx={{ mb: 2 }}>
@@ -31,7 +44,14 @@ function OrdersHistory() {
                 )}
             </Grid>
             <Grid justifyContent="center" sx={{ mt: 5 }} container>
-                <Pagination size="large" color="primary" count={pageCount} showFirstButton showLastButton />
+                <Pagination
+                    size="large"
+                    color="primary"
+                    count={pageCount}
+                    onChange={handlePageChange}
+                    showFirstButton
+                    showLastButton
+                />
             </Grid>
         </Box>
     );
