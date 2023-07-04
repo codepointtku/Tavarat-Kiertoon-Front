@@ -480,7 +480,7 @@ const adminInboxLoader = async (auth, setAuth, request) => {
     return messages;
 };
 
-/* get logged in users data */
+/* get logged in users data and user orders*/
 const userInfoLoader = async (request) => {
     const searchParams = new URL(request.url).searchParams;
     const statusMap = {

@@ -2,12 +2,9 @@ import { useRouteLoaderData } from 'react-router-dom';
 import { Box, Grid, Typography, Container } from '@mui/material';
 
 import OrderCard from './OrderCard';
-import { OrderDetailResponse } from '../../../api';
+import { UserOrders } from './OrdersHistory';
+import UserOrderPagination from './UserOrderPagination';
 import TypographyTitle from '../../TypographyTitle';
-
-interface UserOrders {
-    userOrders: { results: OrderDetailResponse[] };
-}
 
 function ProfileInfo() {
     const { userOrders } = useRouteLoaderData('profile') as Awaited<UserOrders>;
@@ -29,6 +26,7 @@ function ProfileInfo() {
                     activeOrdersCards
                 )}
             </Grid>
+            <UserOrderPagination userOrders={userOrders} />
         </Box>
     );
 }

@@ -48,7 +48,7 @@ function UserProfilePage() {
             <Tabs value={value} onChange={handleSectionChange} centered>
                 <Tab component={Link} to="" value="userInfo" label="Käyttäjätiedot" />
                 <Tab component={Link} to="aktiivisettilaukset" value="activeOrders" label="Aktiiviset tilaukset" />
-                <Tab component={Link} to="tilaushistoria" value="orderHistory" label="Tilaushistoria" />
+                <Tab component={Link} to="tilaushistoria?tila=Toimitettu" value="orderHistory" label="Tilaushistoria" />
             </Tabs>
             <Grid flexDirection="row">
                 <Outlet />
