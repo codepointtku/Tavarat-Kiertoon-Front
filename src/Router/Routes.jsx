@@ -371,7 +371,7 @@ function Routes() {
                                     path: 'profiili',
                                     element: <UserProfilePage />,
                                     id: 'profile',
-                                    loader: userInfoLoader,
+                                    loader: async ({ request }) => userInfoLoader(request),
                                     action: async ({ request }) => userProfilePageAction(auth, setAuth, request),
                                     children: [
                                         {
@@ -384,17 +384,17 @@ function Routes() {
                                             action: async ({ request }) => modifyUserAddressesAction(request),
                                         },
                                         {
-                                            path: 'aktiivisettilaukset',
+                                            path: 'aktiivisettilaukset/:tila',
                                             element: <OrdersActive />,
                                         },
                                         {
-                                            path: 'tilaushistoria',
+                                            path: 'tilaushistoria/:tila',
                                             element: <OrdersHistory />,
                                         },
                                     ],
                                 },
                                 {
-                                    path: 'profiili/:tilaustila/tilaus/:id',
+                                    path: 'profiili/:tilaustila/:tila/tilaus/:id',
                                     element: <OrderPage />,
                                 },
                             ],

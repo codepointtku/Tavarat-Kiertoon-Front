@@ -481,10 +481,16 @@ const adminInboxLoader = async (auth, setAuth, request) => {
 };
 
 /* get logged in users data */
-const userInfoLoader = async () => {
+const userInfoLoader = async (request) => {
+    const searchParams = new URL(request.url).searchParams;
+    const statusMap = {
+        Odottaa: 'Waiting',
+        Lukemattomat: 'Not read',
+        Hoidetut: 'Handled',
+    };
     const [{ data: userInfo }, { data: userOrders }] = await Promise.all([
         userApi.userRetrieve(),
-        ordersApi.ordersUserList('status=Finished'),
+        ordersApi.ordersUserList(),
     ]);
 
     return { userInfo, userOrders };

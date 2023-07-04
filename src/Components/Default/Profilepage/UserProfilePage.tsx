@@ -13,9 +13,9 @@ function UserProfilePage() {
         switch (true) {
             case url.endsWith('profiili/'):
                 return 'userInfo';
-            case url.endsWith('aktiivisettilaukset'):
+            case url.includes('aktiivisettilaukset'):
                 return 'activeOrders';
-            case url.endsWith('tilaushistoria'):
+            case url.includes('tilaushistoria'):
                 return 'orderHistory';
             default:
                 return 'userInfo';
@@ -47,8 +47,13 @@ function UserProfilePage() {
             </Grid>
             <Tabs value={value} onChange={handleSectionChange} centered>
                 <Tab component={Link} to="" value="userInfo" label="Käyttäjätiedot" />
-                <Tab component={Link} to="aktiivisettilaukset" value="activeOrders" label="Aktiiviset tilaukset" />
-                <Tab component={Link} to="tilaushistoria" value="orderHistory" label="Tilaushistoria" />
+                <Tab
+                    component={Link}
+                    to="aktiivisettilaukset/sivu=1"
+                    value="activeOrders"
+                    label="Aktiiviset tilaukset"
+                />
+                <Tab component={Link} to="tilaushistoria/sivu=1" value="orderHistory" label="Tilaushistoria" />
             </Tabs>
             <Grid flexDirection="row">
                 <Outlet />
