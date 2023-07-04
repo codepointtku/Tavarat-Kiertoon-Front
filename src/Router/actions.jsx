@@ -198,7 +198,6 @@ const orderEditAction = async (auth, setAuth, request, params) => {
         order_info: formData.get('orderInfo'),
         product_items: JSON.parse(formData.get('productItems')),
     };
-    // console.log('### orderEditAction', submission);
     await ordersApi.ordersUpdate(params.id, submission);
     return redirect(`/varasto/tilaus/${params.id}`);
 

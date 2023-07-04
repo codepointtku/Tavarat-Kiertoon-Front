@@ -61,6 +61,37 @@ function OrderEdit() {
 
     // keep track of new product amounts
     const [amounts, setAmounts] = useState<number[]>(productRenderItemAmounts);
+    const [newProduct, setNewProduct] = useState<number>(0);
+
+    // handler for adding product
+    const newProductOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        event.preventDefault();
+        // only allow numbers
+        if (!isNaN(Number(event.target.value))) {
+            setNewProduct(Number(event.target.value));
+        }
+    };
+
+    // NOTE!!! Change axios to api call -JTo-
+    // Add new product/productItem handler
+    const addNewProduct = async () => {
+        console.log('### orderEdit: addNewProduct', newProduct);
+        console.log('###', productRenderItems);
+
+        if (typeof newProduct === 'number' && newProduct !== 0) {
+            const response = await axios.get(
+                `http://localhost:8000/products/items/?product=${newProduct}&available=true`
+            );
+            // 'get' ok, return needed item ids
+            if (response.status === 200) {
+                const newItems = [...response.data.results];
+                const firstItem = newItems[0];
+                console.log('### newItems', firstItem);
+                // productRenderItems.push([newItems[0]]);
+                // console.log('### productRenderItems', productRenderItems);
+            }
+        }
+    };
 
     // hook form functions and default values
     const { control, formState, handleSubmit, register, watch } = useForm<FormValues>({
@@ -83,7 +114,7 @@ function OrderEdit() {
     //       useFieldArray also adds an "id" field to the end so need to deduct 1 from length when using it.
     //        => in mapping "Object.keys(productItemGroup).length - 1" is used instead of "productItemGroup.length"
     //       - JTo -
-    const { fields } = useFieldArray({
+    const { fields, append } = useFieldArray({
         name: 'productRenderItems',
         control,
     });
@@ -91,14 +122,8 @@ function OrderEdit() {
     const { errors } = formState;
     const navigate = useNavigate();
 
-    // Add new product/productItem handler
-    const addProduct = () => {
-        console.log('### orderEdit: addProduct');
-    };
-
     // Remove product handler
     const removeProduct = (index: number) => {
-        console.log('### orderEdit: removeProduct', index);
         const newValue = [...amounts];
         newValue[index] = 0;
         setAmounts(newValue);
@@ -120,13 +145,11 @@ function OrderEdit() {
     const addNewItems = async (id: number, amount: number) => {
         // const response = await productsApi.productsList();
         const response = await axios.get(`http://localhost:8000/products/items/?product=${id}&available=true`);
-        console.log('### response.data.results', response.data.results);
 
         // 'get' ok, return needed item ids
         if (response.status === 200) {
             const newItems = [...response.data.results];
             newItems.splice(amount);
-            console.log('### addNewItems: newItems', newItems);
             return newItems;
         }
         // 'get' failed
@@ -143,20 +166,16 @@ function OrderEdit() {
             if (item.length > amounts[index]) {
                 item.splice(item.length - (item.length - amounts[index]));
                 productItems.push(...item);
-                console.log('### REDUCE: productItems:', productItems);
             }
             // add number of productItems
             else if (item.length < amounts[index]) {
                 productItems.push(...item);
                 const newItems = await addNewItems(item[0].product.id, amounts[index] - item.length);
-                console.log('### onSubmit: newItems', newItems);
                 productItems.push(...newItems);
-                console.log('### INCREAsE: productItems:', productItems);
             }
             // keep the numbeer of productItems the same
             else {
                 productItems.push(...item);
-                console.log('### KEEP: productItems:', productItems);
             }
         }
         // create array of product_item_ids for backend and submit data
@@ -167,6 +186,8 @@ function OrderEdit() {
             action: `/varasto/tilaus/${data.orderId}/muokkaa`,
         });
     };
+
+    console.log('### PRODUCTRENDERITEMS', fields);
 
     // RENDER
     return (
@@ -305,13 +326,15 @@ function OrderEdit() {
                                 <TextField
                                     label="Esine-ID"
                                     size="small"
+                                    value={newProduct === 0 ? '' : newProduct}
+                                    onChange={newProductOnChangeHandler}
                                     // onChange={(event) => {
                                     //     handleChange('newItem', event);
                                     // }}
                                     // defaultValue={orderData.newItem}
                                 />
 
-                                <Button onClick={() => addProduct()}>Lisää esine ID:n perusteella</Button>
+                                <Button onClick={() => addNewProduct()}>Lisää esine ID:n perusteella</Button>
                             </Box>
                             {/*
                              * List products area
@@ -369,7 +392,6 @@ function OrderEdit() {
                                                     <Button
                                                         disabled={amounts[index] === 0 ? true : false}
                                                         onClick={() => {
-                                                            // removeProduct(Object.keys(productItemGroup).length - 1);
                                                             removeProduct(index);
                                                         }}
                                                         sx={{ width: '120px' }}
