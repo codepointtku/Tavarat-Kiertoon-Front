@@ -149,6 +149,7 @@ const orderViewLoader = async (auth, setAuth, params) => {
 const orderEditLoader = async (auth, setAuth, params) => {
     // const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
     const { data } = await ordersApi.ordersRetrieve(params.id);
+    console.log('### orderEditLoader', data);
     return data;
 };
 

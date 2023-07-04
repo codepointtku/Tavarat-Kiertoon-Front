@@ -18,6 +18,8 @@ import StyledTableCell from '../StyledTableCell';
 import { useForm, useFieldArray, type FieldValues } from 'react-hook-form';
 import { type orderEditLoader } from '../../Router/loaders';
 import { useState } from 'react';
+// import { productsApi } from '../../api';
+import axios from 'axios';
 
 export type OrderEditLoaderType = Awaited<ReturnType<typeof orderEditLoader>>;
 
@@ -108,43 +110,63 @@ function OrderEdit() {
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         index: number
     ) => {
-        console.log('### orderEdit: modifyProductItemAmounts', id, event.target.value, index);
         const newValue = [...amounts];
         newValue[index] = Number(event.target.value);
         setAmounts(newValue);
     };
 
+    // NOTE!!! Change axios to api call -JTo-
+    // add new productitems to an existing product
+    const addNewItems = async (id: number, amount: number) => {
+        // const response = await productsApi.productsList();
+        const response = await axios.get(`http://localhost:8000/products/items/?product=${id}&available=true`);
+        console.log('### response.data.results', response.data.results);
+
+        // 'get' ok, return needed item ids
+        if (response.status === 200) {
+            const newItems = [...response.data.results];
+            newItems.splice(amount);
+            console.log('### addNewItems: newItems', newItems);
+            return newItems;
+        }
+        // 'get' failed
+        return [];
+    };
+
     // submit
-    // amounts:                       new length
-    // productRenderItems[x].length:  old length
     const submit = useSubmit();
     const onSubmit = async (data: FieldValues) => {
-        console.log('### ONSUBMIT formData', data, '### amounts', amounts);
-        data.productRenderItems.forEach((item: OrderEditLoaderType['product_items'][], index: number) => {
+        // Create new productItem list for each product
+        const productItems: OrderEditLoaderType['product_items'][] = [];
+        for (const [index, item] of data.productRenderItems.entries()) {
+            // reduce number of productItems
             if (item.length > amounts[index]) {
-                console.log('### Vähennä määrää');
-            } else if (item.length < amounts[index]) {
-                console.log('### Lisää määrää');
-            } else {
-                console.log('### Juuri sopivasti');
+                item.splice(item.length - (item.length - amounts[index]));
+                productItems.push(...item);
+                console.log('### REDUCE: productItems:', productItems);
             }
-        });
-        const productItemIds = data.productItems.map((item: OrderEditLoaderType['product_items'][number]) => item.id);
-        console.log(productItemIds);
+            // add number of productItems
+            else if (item.length < amounts[index]) {
+                productItems.push(...item);
+                const newItems = await addNewItems(item[0].product.id, amounts[index] - item.length);
+                console.log('### onSubmit: newItems', newItems);
+                productItems.push(...newItems);
+                console.log('### INCREAsE: productItems:', productItems);
+            }
+            // keep the numbeer of productItems the same
+            else {
+                productItems.push(...item);
+                console.log('### KEEP: productItems:', productItems);
+            }
+        }
+        // create array of product_item_ids for backend and submit data
+        const productItemIds = productItems.map((item: OrderEditLoaderType['product_items'][number]) => item.id);
         const formData = { ...data, productItems: JSON.stringify(productItemIds) };
         await submit(formData, {
             method: 'put',
             action: `/varasto/tilaus/${data.orderId}/muokkaa`,
         });
     };
-
-    // console.log('### orderData', orderData);
-    // console.log('### productRenderItems', productRenderItems);
-    // console.log('### productRenderItemAmounts', productRenderItemAmounts);
-    // console.log('### fields', fields);
-    // console.log('### keys', Object.keys(fields[0]));
-    // console.log('### watch 0', watch(`productItems.${0}`));
-    // console.log('### amounts', amounts);
 
     // RENDER
     return (
@@ -321,12 +343,10 @@ function OrderEdit() {
                                                         productItemGroup[0].product.amount}
                                                 </TableCell>
                                                 <TableCell align="right">
-                                                    {/* Tuotteet */}
                                                     <TextField
                                                         type="number"
                                                         size="small"
                                                         value={amounts[index]}
-                                                        // defaultValue={Object.keys(productItemGroup).length - 1}
                                                         InputProps={{
                                                             inputProps: {
                                                                 min: 0,
@@ -359,44 +379,6 @@ function OrderEdit() {
                                                 </TableCell>
                                             </StyledTableRow>
                                         ))}
-                                        {/* {productRenderItems.map((productItemGroup, index) => (
-                                            <StyledTableRow key={productItemGroup[0].id}>
-                                                <TableCell>{productItemGroup[0].product.name}</TableCell>
-                                                <TableCell>{productItemGroup[0].id}</TableCell>
-                                                <TableCell>{productItemGroup[0].barcode}</TableCell>
-                                                <TableCell>{productItemGroup.length}</TableCell>
-                                                <TableCell>
-                                                    {productItemGroup.length + productItemGroup[0].product.amount}
-                                                </TableCell>
-                                                <TableCell align="right">
-                                                    <TextField
-                                                        type="number"
-                                                        size="small"
-                                                        defaultValue={productItemGroup.length}
-                                                        InputProps={{
-                                                            inputProps: {
-                                                                min: 0,
-                                                                max:
-                                                                    productItemGroup.length +
-                                                                    productItemGroup[0].product.amount,
-                                                            },
-                                                        }}
-                                                        onChange={(event) => {
-                                                            modifyProductItemAmounts(productItemGroup[0].id, event);
-                                                        }}
-                                                    />
-                                                </TableCell>
-                                                <TableCell align="right">
-                                                    <Button
-                                                        onClick={() => {
-                                                            removeProduct(productItemGroup.length);
-                                                        }}
-                                                    >
-                                                        Poista tuote.
-                                                    </Button>
-                                                </TableCell>
-                                            </StyledTableRow>
-                                        ))} */}
                                     </TableBody>
                                 </Table>
                             </Box>
