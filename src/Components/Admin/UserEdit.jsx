@@ -22,7 +22,9 @@ const groupNames = {
 };
 
 function UserEdit() {
-    // todo: re-render after submit, helpertexts indicating edited fields
+    // todo:
+    // - helpertexts indicating edited fields
+    // - address edit id render bug fix
 
     const loaderData = useLoaderData();
     // loaderData === [{}, []]
@@ -42,11 +44,10 @@ function UserEdit() {
     lastLoginDateInfo.push(lastLoginDate.toLocaleTimeString());
 
     const [showAddressEditFields, setShowAddressEditFields] = useState({ aid: null, aindex: null });
-
     const iidee = showAddressEditFields.aid;
 
-    console.log('iidee on:', iidee);
-    console.log('%c Steitissä oleva aid:', 'color: red', showAddressEditFields.aid);
+    // console.log('iidee on:', iidee);
+    // console.log('%c Steitissä oleva aid:', 'color: red', showAddressEditFields.aid);
 
     const {
         register,
@@ -60,8 +61,8 @@ function UserEdit() {
     });
 
     const handleAddressEdit = (aid, aindex) => {
-        console.log('%c Klikattiin osoitetta', 'color: red; font-weight: bold');
-        console.log('address id', aid, 'index', aindex);
+        // console.log('%c Klikattiin osoitetta', 'color: red; font-weight: bold');
+        // console.log('address id', aid, 'index', aindex);
         setShowAddressEditFields({ aid: aid, aindex: aindex });
     };
 
@@ -72,8 +73,8 @@ function UserEdit() {
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data) => {
-        console.log('%c Submittiin menevä kama', 'color: blue');
-        console.log(data);
+        // console.log('%c Submitissa menevä tieto', 'color: blue');
+        // console.log(data);
         submit(data, {
             method: 'put',
         });
@@ -99,7 +100,6 @@ function UserEdit() {
                                     flexDirection: 'column',
                                     // justifyContent: 'flex-start',
                                     // alignItems: 'center',
-                                    padding: '1rem',
                                 }}
                             >
                                 <TypographyTitle text={`Käyttäjä ${userInfo.email}`} />
@@ -136,7 +136,7 @@ function UserEdit() {
 
                         {/* Name, phone */}
                         <Grid item xs={6}>
-                            <Stack id="user-edition-fields-stack-column" sx={{ marginTop: '2rem' }}>
+                            <Stack id="user-edition-fields-stack-column" sx={{ marginTop: '1rem' }}>
                                 <Stack id="fname-lname-stacker" direction="row" spacing={1}>
                                     <TextField
                                         id="textfield-fname"
@@ -187,7 +187,7 @@ function UserEdit() {
                                     placeholder="Käyttäjän puhelinnumero, muodossa 0401234567"
                                     {...register('phone_number', {
                                         required: { value: true, message: 'Käyttäjän puhelinnumero ei voi olla tyhjä' },
-                                        maxLength: { value: 30, message: 'Puhelinnumero on liian pitkä' },
+                                        maxLength: { value: 11, message: 'Puhelinnumero on liian pitkä' },
                                         minLength: {
                                             value: 10,
                                             message: 'Puhelinnumero on 10 merkkiä pitkä, muodossa 0401234567',
