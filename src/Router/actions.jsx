@@ -291,14 +291,18 @@ const userEditAction = async (request, params) => {
         phone_number: formData.get('phone_number'),
     });
 
-    // works if used perfectly. needs more validation. not yet ready for production. disabled for this pr.
-    // const newAddress = {
-    //     address: formData.get('address'),
-    //     zipcode: formData.get('zip_code'),
-    //     city: formData.get('city'),
-    // };
+    const newAddress = {
+        address: formData.get('address'),
+        zip_code: formData.get('zip_code'),
+        city: formData.get('city'),
+        user: params.id,
+    };
 
-    // response = await apiCall(auth, setAuth, `/users/address/${params.id}/`, 'patch', newAddress);
+    const wutAddress = formData.get('mehu');
+
+    if (wutAddress) {
+        response = await usersApi.usersAddressUpdate(wutAddress, newAddress);
+    }
 
     const selectedAuthGroups = formData
         .getAll('groups')[0]

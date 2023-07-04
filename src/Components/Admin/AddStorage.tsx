@@ -21,19 +21,15 @@ function AddStorage() {
         validator.isLength(String(storage.name), { min: 3, max: 255 }) &&
         validator.isLength(String(storage.address), { min: 3, max: 255 });
     return (
-        <Box sx={{ padding: '24px' }}>
+        <Box id="laatikko">
             {responseStatus?.type === 'post' && !responseStatus?.status && (
-                <>
-                    <AlertBox text="Varaston luominen epäonnistui! Lataa sivu uudestaan." status="error" />
-                    <br />
-                </>
+                <AlertBox text="Varaston luominen epäonnistui! Lataa sivu uudestaan." status="error" />
             )}
+
             {responseStatus?.type === 'post' && responseStatus?.status && (
-                <>
-                    <AlertBox text="Varaston luominen onnistui" status="success" />
-                    <br />
-                </>
+                <AlertBox text="Varasto luotu" status="success" />
             )}
+
             <Card sx={{ maxWidth: '60vw' }}>
                 <h2 style={{ textDecoration: 'underline' }}>Uusi varasto</h2>
                 <Box
