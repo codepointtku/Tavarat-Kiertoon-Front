@@ -62,8 +62,8 @@ function ModifyAddressInfo() {
                 <AlertBox
                     text={
                         currAddressInfo.action === 'create'
-                            ? 'Osoite luotu onnistuneesti'
-                            : 'Osoitteen tietoja muokattu onnistuneesti'
+                            ? 'Osoite luotu onnistuneesti. Sinut ohjataan pian takaisin profiilisivulle.'
+                            : 'Osoitteen tietoja muokattu onnistuneesti. Sinut ohjataan pian takaisin profiilisivulle.'
                     }
                     status="success"
                     timer={5000}
