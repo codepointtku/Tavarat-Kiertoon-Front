@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { Form, Link, useSubmit, useRouteLoaderData } from 'react-router-dom';
 import { Grid, TextField, Typography, MenuItem, Button } from '@mui/material';
 import type { userInfoLoader } from '../../../Router/loaders';
-import Tooltip from '../../Tooltip';
 
 interface FormData {
     [key: string]: string;
@@ -58,69 +57,66 @@ function ProfileInfo() {
                 Käyttäjäprofiilin tiedot
             </Typography>
             <Grid container id="user-info-container" direction="row" justifyContent="space-evenly" sx={{ mb: 5 }}>
-                <Grid container direction="column" alignContent="center" gap={2}>
-                    <Grid item>
-                        <Tooltip
-                            title="Käyttäjätunnus luodaan automaattisesti järjestelmässä, ja sen muokkaaminen on estetty"
-                            position="right"
-                        >
-                            <TextField
-                                {...register('username')}
-                                label="Käyttäjätunnus"
-                                placeholder="Käyttäjätunnus"
-                                disabled
-                            />
-                        </Tooltip>
-                    </Grid>
+                <Grid container sx={{ width: '50%' }} direction="column" alignItems="center" gap={2}>
                     <Grid item>
                         <TextField {...register('first_name')} label="Etunimi" placeholder="Etunimi" />
                     </Grid>
                     <Grid item>
                         <TextField {...register('last_name')} label="Sukunimi" placeholder="Sukunimi" />
                     </Grid>
-                </Grid>
-                <Grid container direction="column" alignItems="center" gap={2}>
                     <Grid item>
                         <TextField {...register('phone_number')} label="Puhelin numero" placeholder="Puhelin numero" />
                     </Grid>
-                    <Grid item sx={{ ml: 26.25 }}>
-                        <TextField
-                            {...register('userAddress')}
-                            value={selectedAddress}
-                            label="Osoitteet"
-                            placeholder="Osoitteet"
-                            onChange={(event) => setSelectedAddress(event.target.value)}
-                            sx={{ minWidth: 210 }}
-                            select
-                        >
-                            {userInfo.address_list?.map((a) => (
-                                <MenuItem key={a.id} value={a.address}>
-                                    {a.address}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        <Button
-                            component={Link}
-                            to={`osoitetiedot/${selectedAddressInfo[0].id}`}
-                            state={{ ...selectedAddressInfo[0], action: 'modify' }}
-                            sx={{ ml: 2, p: 2 }}
-                        >
-                            Muokkaa
-                        </Button>
-                        <Button
-                            component={Link}
-                            to={`osoitetiedot/${selectedAddressInfo[0].id}`}
-                            state={{ ...selectedAddressInfo[0], action: 'create' }}
-                            sx={{ ml: 2, p: 2 }}
-                        >
-                            Luo uusi
-                        </Button>
+                </Grid>
+                <Grid container sx={{ width: '50%' }} direction="column" gap={2}>
+                    <Grid container direction="row" justifyContent="center" gap={1}>
+                        <Grid item>
+                            <TextField
+                                {...register('userAddress')}
+                                value={selectedAddress}
+                                label="Osoitteet"
+                                placeholder="Osoitteet"
+                                onChange={(event) => setSelectedAddress(event.target.value)}
+                                sx={{ minWidth: 210 }}
+                                select
+                            >
+                                {userInfo.address_list?.map((a) => (
+                                    <MenuItem key={a.id} value={a.address}>
+                                        {a.address}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                component={Link}
+                                to={`osoitetiedot/${selectedAddressInfo[0].id}`}
+                                state={{ ...selectedAddressInfo[0], action: 'modify' }}
+                                sx={{ p: 2 }}
+                            >
+                                Muokkaa
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                component={Link}
+                                to={`osoitetiedot/${selectedAddressInfo[0].id}`}
+                                state={{ ...selectedAddressInfo[0], action: 'create' }}
+                                sx={{ p: 2 }}
+                            >
+                                Luo uusi
+                            </Button>
+                        </Grid>
                     </Grid>
-                    <Grid item sx={{ ml: 13.5 }}>
-                        <TextField {...register('email')} label="Sähköposti" placeholder="Sähköposti" disabled />
-                        <Button component={Link} to="/sahkopostinvaihto" sx={{ ml: 2, p: 2 }}>
-                            Muokkaa
-                        </Button>
+                    <Grid container direction="row" justifyContent="center" gap={1}>
+                        <Grid item>
+                            <TextField {...register('email')} label="Sähköposti" placeholder="Sähköposti" disabled />
+                        </Grid>
+                        <Grid item>
+                            <Button component={Link} to="/sahkopostinvaihto" sx={{ p: 2, mr: 11.5 }}>
+                                Muokkaa
+                            </Button>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>
