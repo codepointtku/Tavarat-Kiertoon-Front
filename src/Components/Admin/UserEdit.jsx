@@ -44,10 +44,8 @@ function UserEdit() {
     lastLoginDateInfo.push(lastLoginDate.toLocaleTimeString());
 
     const [showAddressEditFields, setShowAddressEditFields] = useState({ aid: null, aindex: null });
-    const iidee = showAddressEditFields.aid;
-
-    // console.log('iidee on:', iidee);
-    // console.log('%c Steitissä oleva aid:', 'color: red', showAddressEditFields.aid);
+    console.log('%c Steitissä oleva aid:', 'color: red', showAddressEditFields.aid);
+    let addressId = showAddressEditFields.aid;
 
     const {
         register,
@@ -61,8 +59,7 @@ function UserEdit() {
     });
 
     const handleAddressEdit = (aid, aindex) => {
-        // console.log('%c Klikattiin osoitetta', 'color: red; font-weight: bold');
-        // console.log('address id', aid, 'index', aindex);
+        console.log('%c Klikattiin osoitetta', 'color: red; font-weight: bold', 'address id', aid, 'index', aindex);
         setShowAddressEditFields({ aid: aid, aindex: aindex });
     };
 
@@ -73,7 +70,7 @@ function UserEdit() {
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data) => {
-        // console.log('%c Submitissa menevä tieto', 'color: blue');
+        console.log('%c Submitissa menevä tieto', 'color: blue', data);
         // console.log(data);
         submit(data, {
             method: 'put',
@@ -90,7 +87,7 @@ function UserEdit() {
             )}
 
             <Box id="user-edit-wrapper-form-component" component={Form} onSubmit={handleSubmit}>
-                <Stack id="stack-dat">
+                <Stack id="stack-main">
                     <Grid container>
                         {/* Common info */}
                         <Grid item xs={6}>
@@ -150,7 +147,7 @@ function UserEdit() {
                                                 message: 'Maksimipituus 50 merkkiä',
                                             },
                                         })}
-                                        // Needs to be required: false to disable browser error message
+                                        // Needs to be 'required: false' to disable browser error message
                                         inputProps={{ required: false }}
                                         required
                                         error={!!formStateErrors.first_name}
@@ -212,7 +209,7 @@ function UserEdit() {
                                         <Typography variant="body2" gutterBottom>
                                             Osoitteen muokkaus:
                                         </Typography>
-                                        <Input value={iidee} {...register('mehu')} />
+                                        <Input value={addressId} {...register('aid')} />
                                         <TextField
                                             // id={`useraddress-${showAddressEditFields.aid}`}
                                             type="text"

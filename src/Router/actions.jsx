@@ -273,15 +273,14 @@ const storageEditAction = async (auth, setAuth, request, params) => {
 
 const userEditAction = async (request, params) => {
     // This action handles user data: info, addressinfo and users auth groups.
-    // User data has different BE endpoints for different user data sections.
+    // User data has different BE endpoints for these different user data sections.
 
     // First apicall updates users editable info.
-    // Second apicall patches users addressinfo. (not finalized, working on it)
-
+    // Second apicall patches users addressinfo.
     // Third apicall updates users auth groups: BE expects integers (representing different auth groups) in an array.
-    // It gets all the checked checkboxes values into an array's first index.
-    // The array is then splitted by comma into an array of strings. These indexes are then mapped into an array of integers,
-    // and then sent to the BE in a composition BE expects.
+    // - It gets all the checked checkboxes values into an array's first index.
+    // - The array is then splitted by comma into an array of strings. These indexes are then mapped into an array of integers,
+    // - and then sent to the BE in a composition BE expects.
 
     const formData = await request.formData();
 
@@ -298,10 +297,10 @@ const userEditAction = async (request, params) => {
         user: params.id,
     };
 
-    const wutAddress = formData.get('mehu');
+    let addressId = formData.get('aid');
 
-    if (wutAddress) {
-        response = await usersApi.usersAddressUpdate(wutAddress, newAddress);
+    if (addressId) {
+        response = await usersApi.usersAddressUpdate(addressId, newAddress);
     }
 
     const selectedAuthGroups = formData
