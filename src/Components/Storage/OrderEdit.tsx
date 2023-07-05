@@ -86,7 +86,11 @@ function OrderEdit() {
                     append({ 0: firstItem });
                     setAmounts([...amounts, 1]);
                 }
+            } else {
+                alert('Hups: OrderEdit: addNewProduct');
             }
+        } else {
+            alert('Hupsista: OrderEdit: addNewProduct');
         }
     };
 
@@ -128,7 +132,6 @@ function OrderEdit() {
 
     // Modify the number of productRenderItems
     const modifyProductItemAmounts = (
-        id: number,
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         index: number
     ) => {
@@ -143,11 +146,13 @@ function OrderEdit() {
         // const response = await productsApi.productsList();
         const response = await axios.get(`http://localhost:8000/products/items/?product=${id}&available=true`);
 
-        // 'get' ok, return needed item ids
+        // 'get' ok, return needed items
         if (response.status === 200) {
             const newItems = [...response.data.results];
             newItems.splice(amount);
             return newItems;
+        } else {
+            alert('Hups: OrderEdit: addNewItems');
         }
         // 'get' failed
         return [];
@@ -157,8 +162,6 @@ function OrderEdit() {
     const submit = useSubmit();
     const onSubmit = async (data: FieldValues) => {
         // Create new productItem list for each product
-        console.log('### onSubmit: data:', data);
-
         const productItems: OrderEditLoaderType['product_items'][] = [];
         for (const [index, item] of data.productRenderItems.entries()) {
             // existing product ( array(s) )
@@ -187,7 +190,6 @@ function OrderEdit() {
         }
         // create array of product_item_ids for backend and submit data
         const productItemIds = productItems.map((item: OrderEditLoaderType['product_items'][number]) => item.id);
-        console.log('### productItemIds', productItemIds);
         const formData = { ...data, productItems: JSON.stringify(productItemIds) };
         await submit(formData, {
             method: 'put',
@@ -316,7 +318,8 @@ function OrderEdit() {
                             {/*
                              * Add product area
                              */}
-                            <Box paddingTop="2rem" borderTop="2px solid rgba(0,0,0,0.1)" width="100%">
+                            <Box width="100%" display="flex" justifyContent="space-evenly" marginY="3rem">
+                                {/* <Box paddingTop="2rem" borderTop="2px solid rgba(0,0,0,0.1)" width="100%"> */}
                                 <Button
                                     onClick={() =>
                                         navigate(generatePath('/varasto/koodinlukija'), {
@@ -329,23 +332,21 @@ function OrderEdit() {
                                 >
                                     Lisää esine viivakoodin perusteella
                                 </Button>
-                                <TextField
-                                    label="Esine-ID"
-                                    size="small"
-                                    value={newProduct === 0 ? '' : newProduct}
-                                    onChange={newProductOnChangeHandler}
-                                    // onChange={(event) => {
-                                    //     handleChange('newItem', event);
-                                    // }}
-                                    // defaultValue={orderData.newItem}
-                                />
+                                <Box>
+                                    <TextField
+                                        label="Esine-ID"
+                                        size="small"
+                                        value={newProduct === 0 ? '' : newProduct}
+                                        onChange={newProductOnChangeHandler}
+                                    />
 
-                                <Button onClick={() => addNewProduct()}>Lisää esine ID:n perusteella</Button>
+                                    <Button onClick={() => addNewProduct()}>Lisää esine ID:n perusteella</Button>
+                                </Box>
                             </Box>
                             {/*
                              * List products area
                              */}
-                            <Box marginTop="2rem" width="100%">
+                            <Box width="100%">
                                 <Table>
                                     <TableHead>
                                         <TableRow>
@@ -369,7 +370,8 @@ function OrderEdit() {
                                                 <TableCell>
                                                     {Object.keys(productItemGroup).length -
                                                         1 +
-                                                        productItemGroup[0].product.amount}
+                                                        productItemGroup[0].product.amount -
+                                                        (productItemGroup[0].available ? 1 : 0)}
                                                 </TableCell>
                                                 <TableCell align="right">
                                                     <TextField
@@ -382,15 +384,12 @@ function OrderEdit() {
                                                                 max:
                                                                     Object.keys(productItemGroup).length -
                                                                     1 +
-                                                                    productItemGroup[0].product.amount,
+                                                                    productItemGroup[0].product.amount -
+                                                                    (productItemGroup[0].available ? 1 : 0),
                                                             },
                                                         }}
                                                         onChange={(event) => {
-                                                            modifyProductItemAmounts(
-                                                                productItemGroup[0].id,
-                                                                event,
-                                                                index
-                                                            );
+                                                            modifyProductItemAmounts(event, index);
                                                         }}
                                                     />
                                                 </TableCell>
@@ -400,6 +399,7 @@ function OrderEdit() {
                                                         onClick={() => {
                                                             removeProduct(index);
                                                         }}
+                                                        variant="outlined"
                                                         sx={{ width: '120px' }}
                                                     >
                                                         {amounts[index] === 0 ? 'Poistettu' : 'Poista tuote.'}
@@ -410,17 +410,13 @@ function OrderEdit() {
                                     </TableBody>
                                 </Table>
                             </Box>
-                            <Box width="100%" display="flex" justifyContent="space-evenly" marginTop="3rem">
-                                <Button onClick={() => navigate(-1)}>Palaa tallentamatta</Button>
-                                <Button
-                                    color="error"
-                                    // onClick={() => saveChanges()}
-                                    type="submit"
-                                >
-                                    Tallenna muutokset
-                                </Button>
-                            </Box>
                         </TableContainer>
+                        <Box width="100%" display="flex" justifyContent="space-evenly" marginY="3rem">
+                            <Button onClick={() => navigate(-1)}>Palaa tallentamatta</Button>
+                            <Button color="error" type="submit">
+                                Tallenna muutokset
+                            </Button>
+                        </Box>
                     </Box>
                 </>
             )}
