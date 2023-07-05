@@ -18,7 +18,6 @@ import StyledTableCell from '../StyledTableCell';
 import { useForm, useFieldArray, type FieldValues } from 'react-hook-form';
 import { type orderEditLoader } from '../../Router/loaders';
 import { useState } from 'react';
-// import { productsApi } from '../../api';
 import axios from 'axios';
 
 export type OrderEditLoaderType = Awaited<ReturnType<typeof orderEditLoader>>;
@@ -75,9 +74,6 @@ function OrderEdit() {
     // NOTE!!! Change axios to api call -JTo-
     // Add new product/productItem handler
     const addNewProduct = async () => {
-        // console.log('### orderEdit: addNewProduct', newProduct);
-        // console.log('###', productRenderItems);
-
         if (typeof newProduct === 'number' && newProduct !== 0) {
             const response = await axios.get(
                 `http://localhost:8000/products/items/?product=${newProduct}&available=true`
@@ -85,9 +81,11 @@ function OrderEdit() {
             // 'get' ok, return needed item ids
             if (response.status === 200) {
                 const newItems = [...response.data.results];
-                const firstItem = newItems[0];
-                append([{ 0: firstItem }]);
-                setAmounts([...amounts, 1]);
+                if (newItems.length > 0) {
+                    const firstItem = newItems[0];
+                    append({ 0: firstItem });
+                    setAmounts([...amounts, 1]);
+                }
             }
         }
     };
@@ -163,7 +161,7 @@ function OrderEdit() {
 
         const productItems: OrderEditLoaderType['product_items'][] = [];
         for (const [index, item] of data.productRenderItems.entries()) {
-            // existing product
+            // existing product ( array(s) )
             if (Array.isArray(item)) {
                 // reduce number of productItems
                 if (item.length > amounts[index]) {
@@ -181,10 +179,10 @@ function OrderEdit() {
                     productItems.push(...item);
                 }
             }
-            // new product
+            // new product ( object(s) )
             else {
-                const itemValue = Object.values(item);
-                productItems.push(...itemValue);
+                const newItems = await addNewItems(item[0].product.id, amounts[index]);
+                productItems.push(...newItems);
             }
         }
         // create array of product_item_ids for backend and submit data
@@ -196,12 +194,6 @@ function OrderEdit() {
             action: `/varasto/tilaus/${data.orderId}/muokkaa`,
         });
     };
-
-    // fields.map((pig, index) => {
-    //     console.log('### PRODUCTRENDERITEMS', index, pig);
-    // });
-
-    // console.log('### amounts', amounts);
 
     // RENDER
     return (
