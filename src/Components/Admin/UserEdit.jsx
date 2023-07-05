@@ -50,28 +50,29 @@ function UserEdit() {
     const {
         register,
         handleSubmit: createHandleSubmit,
+        reset,
         formState: { errors: formStateErrors, isDirty, dirtyFields },
     } = useForm({
-        mode: 'onTouched',
+        mode: 'all',
         defaultValues: {
             ...userInfo,
         },
     });
 
     const handleAddressEdit = (aid, aindex) => {
-        console.log('%c Klikattiin osoitetta', 'color: red; font-weight: bold', 'address id', aid, 'index', aindex);
+        // console.log('%c Klikattiin osoitetta', 'color: red; font-weight: bold', 'address id:', aid, 'index:', aindex);
         setShowAddressEditFields({ aid: aid, aindex: aindex });
     };
 
     const closeAddressEdit = () => {
         setShowAddressEditFields({ aid: null, aindex: null });
+        reset();
     };
 
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data) => {
-        console.log('%c Submitissa menevä tieto', 'color: blue', data);
-        // console.log(data);
+        // console.log('%c Submitissa menevä tieto', 'color: blue', data);
         submit(data, {
             method: 'put',
         });
@@ -200,7 +201,7 @@ function UserEdit() {
                         </Grid>
 
                         {/* Address stuff */}
-                        <Grid item xs={6}>
+                        <Grid item xs={6} sx={{ padding: '0 1rem 0 0' }}>
                             <Box id="user-address-info-wrapper">
                                 <TypographyHeading text="Osoitetiedot" />
 
@@ -209,13 +210,14 @@ function UserEdit() {
                                         <Typography variant="body2" gutterBottom>
                                             Osoitteen muokkaus:
                                         </Typography>
-                                        <Input value={addressId} {...register('aid')} />
+
+                                        <input value={addressId} {...register('aid')} type="hidden" />
+
                                         <TextField
-                                            // id={`useraddress-${showAddressEditFields.aid}`}
+                                            id={`useraddress-${showAddressEditFields.aid}`}
                                             type="text"
                                             label="Osoite"
                                             placeholder="Tavaran vastaanotto-osoite"
-                                            fullWidth
                                             {...register('address', {
                                                 required: { value: true, message: 'Osoite ei voi olla tyhjä' },
                                                 maxLength: { value: 100, message: 'Osoite on liian pitkä' },
@@ -229,8 +231,10 @@ function UserEdit() {
                                             error={!!formStateErrors.address}
                                             helperText={formStateErrors.address?.message || ' '}
                                             color={dirtyFields.address && 'warning'}
+                                            fullWidth
                                             sx={{ marginTop: '1rem' }}
                                         />
+
                                         <Stack direction="row" spacing={1}>
                                             <TextField
                                                 id="addresscity"
@@ -250,6 +254,7 @@ function UserEdit() {
                                                 error={!!formStateErrors.city}
                                                 helperText={formStateErrors.city?.message || ' '}
                                                 color={dirtyFields.city && 'warning'}
+                                                fullWidth
                                             />
 
                                             <TextField
@@ -267,12 +272,15 @@ function UserEdit() {
                                                 })}
                                                 inputProps={{ required: false }}
                                                 required
-                                                error={!!formStateErrors.zipcode}
-                                                helperText={formStateErrors.zipcode?.message || ' '}
+                                                error={!!formStateErrors.zip_code}
+                                                helperText={formStateErrors.zip_code?.message || ' '}
                                                 color={dirtyFields.zip_code && 'warning'}
+                                                fullWidth
                                             />
-                                            <Button onClick={closeAddressEdit}>Älä</Button>
                                         </Stack>
+                                        <Button fullWidth onClick={closeAddressEdit}>
+                                            Peruuta
+                                        </Button>
                                     </Box>
                                 ) : (
                                     <Stack
