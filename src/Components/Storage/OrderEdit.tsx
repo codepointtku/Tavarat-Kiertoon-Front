@@ -75,8 +75,8 @@ function OrderEdit() {
     // NOTE!!! Change axios to api call -JTo-
     // Add new product/productItem handler
     const addNewProduct = async () => {
-        console.log('### orderEdit: addNewProduct', newProduct);
-        console.log('###', productRenderItems);
+        // console.log('### orderEdit: addNewProduct', newProduct);
+        // console.log('###', productRenderItems);
 
         if (typeof newProduct === 'number' && newProduct !== 0) {
             const response = await axios.get(
@@ -86,9 +86,8 @@ function OrderEdit() {
             if (response.status === 200) {
                 const newItems = [...response.data.results];
                 const firstItem = newItems[0];
-                console.log('### newItems', firstItem);
-                // productRenderItems.push([newItems[0]]);
-                // console.log('### productRenderItems', productRenderItems);
+                append([{ 0: firstItem }]);
+                setAmounts([...amounts, 1]);
             }
         }
     };
@@ -160,26 +159,37 @@ function OrderEdit() {
     const submit = useSubmit();
     const onSubmit = async (data: FieldValues) => {
         // Create new productItem list for each product
+        console.log('### onSubmit: data:', data);
+
         const productItems: OrderEditLoaderType['product_items'][] = [];
         for (const [index, item] of data.productRenderItems.entries()) {
-            // reduce number of productItems
-            if (item.length > amounts[index]) {
-                item.splice(item.length - (item.length - amounts[index]));
-                productItems.push(...item);
+            // existing product
+            if (Array.isArray(item)) {
+                // reduce number of productItems
+                if (item.length > amounts[index]) {
+                    item.splice(item.length - (item.length - amounts[index]));
+                    productItems.push(...item);
+                }
+                // add number of productItems
+                else if (item.length < amounts[index]) {
+                    productItems.push(...item);
+                    const newItems = await addNewItems(item[0].product.id, amounts[index] - item.length);
+                    productItems.push(...newItems);
+                }
+                // keep the numbeer of productItems the same
+                else {
+                    productItems.push(...item);
+                }
             }
-            // add number of productItems
-            else if (item.length < amounts[index]) {
-                productItems.push(...item);
-                const newItems = await addNewItems(item[0].product.id, amounts[index] - item.length);
-                productItems.push(...newItems);
-            }
-            // keep the numbeer of productItems the same
+            // new product
             else {
-                productItems.push(...item);
+                const itemValue = Object.values(item);
+                productItems.push(...itemValue);
             }
         }
         // create array of product_item_ids for backend and submit data
         const productItemIds = productItems.map((item: OrderEditLoaderType['product_items'][number]) => item.id);
+        console.log('### productItemIds', productItemIds);
         const formData = { ...data, productItems: JSON.stringify(productItemIds) };
         await submit(formData, {
             method: 'put',
@@ -187,7 +197,11 @@ function OrderEdit() {
         });
     };
 
-    console.log('### PRODUCTRENDERITEMS', fields);
+    // fields.map((pig, index) => {
+    //     console.log('### PRODUCTRENDERITEMS', index, pig);
+    // });
+
+    // console.log('### amounts', amounts);
 
     // RENDER
     return (

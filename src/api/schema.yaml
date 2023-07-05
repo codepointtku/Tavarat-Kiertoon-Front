@@ -1522,7 +1522,10 @@ paths:
       tags:
       - orders
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
+      - CustomJWTAuthentication: []
       - {}
       responses:
         '200':
@@ -1554,7 +1557,10 @@ paths:
               $ref: '#/components/schemas/OrderDetailRequest'
         required: true
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
+      - CustomJWTAuthentication: []
       - {}
       responses:
         '200':
@@ -1574,7 +1580,10 @@ paths:
       tags:
       - orders
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
+      - CustomJWTAuthentication: []
       - {}
       responses:
         '204':
@@ -2817,6 +2826,7 @@ paths:
       description: |-
         Update users permissions, should be only allowed to admins, on testing phase allowing fo users
         id = user id whose permission will be updated as id/pk parameter in url
+        users changing their own permissions isnt allowed
       parameters:
       - in: path
         name: id
@@ -2842,6 +2852,7 @@ paths:
       description: |-
         Update users permissions, should be only allowed to admins, on testing phase allowing fo users
         id = user id whose permission will be updated as id/pk parameter in url
+        users changing their own permissions isnt allowed
       parameters:
       - in: path
         name: id
@@ -3188,6 +3199,8 @@ components:
       - Removed from shopping cart
       - Timed out from shopping cart
       - Ordered
+      - Added to order
+      - Removed from order
       - Came back to circulation
       - Modified at storage
       - Gifted away
@@ -3198,6 +3211,8 @@ components:
         * `Removed from shopping cart` - Cart Remove
         * `Timed out from shopping cart` - Cart Timeout
         * `Ordered` - Order
+        * `Added to order` - Order Add
+        * `Removed from order` - Order Remove
         * `Came back to circulation` - Circulation
         * `Modified at storage` - Modify
         * `Gifted away` - Gift
