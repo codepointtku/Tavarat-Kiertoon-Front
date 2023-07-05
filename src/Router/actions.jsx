@@ -796,7 +796,7 @@ const adminInboxAction = async (auth, setAuth, request) => {
     return { type: 'markasread', status: false };
 };
 
-const userProfilePageAction = async (auth, setAuth, request) => {
+const userProfilePageAction = async (request) => {
     const formData = await request.formData();
     const response = await userApi.userUpdate({
         username: formData.get('username'),
@@ -804,11 +804,10 @@ const userProfilePageAction = async (auth, setAuth, request) => {
         last_name: formData.get('last_name'),
         phone_number: formData.get('phone_number'),
     });
-    // apiCall(auth, setAuth, '/user/', 'put', formData);
     if (response.status === 200) {
-        return { type: 'markasread', status: true };
+        return { type: 'userinfoupdated', status: true };
     }
-    return { type: 'markasread', status: false };
+    return { type: 'userinfoupdated', status: false };
 };
 
 const modifyUserAddressesAction = async (request) => {
@@ -821,9 +820,9 @@ const modifyUserAddressesAction = async (request) => {
             zip_code: formData.get('zip_code'),
         });
         if (response.status === 200) {
-            return { type: 'addressModified', status: true };
+            return { type: 'addressmodified', status: true };
         }
-        return { type: 'addressModified', status: false };
+        return { type: 'addressmodified', status: false };
     }
     const response = await userApi.userAddressEditCreate({
         address: formData.get('address'),
@@ -831,9 +830,9 @@ const modifyUserAddressesAction = async (request) => {
         zip_code: formData.get('zip_code'),
     });
     if (response.status === 200) {
-        return { type: 'addressCreated', status: true };
+        return { type: 'addresscreated', status: true };
     }
-    return { type: 'addressCreated', status: false };
+    return { type: 'addresscreated', status: false };
 };
 
 export {

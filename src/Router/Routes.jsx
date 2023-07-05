@@ -372,7 +372,7 @@ function Routes() {
                                     element: <UserProfilePage />,
                                     id: 'profile',
                                     loader: async ({ request }) => userInfoLoader(request),
-                                    action: async ({ request }) => userProfilePageAction(auth, setAuth, request),
+                                    action: async ({ request }) => userProfilePageAction(request),
                                     children: [
                                         {
                                             index: true,

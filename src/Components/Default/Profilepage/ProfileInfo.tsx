@@ -1,30 +1,36 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Form, Link, useSubmit, useRouteLoaderData } from 'react-router-dom';
-import { Grid, TextField, Typography, MenuItem, Button } from '@mui/material';
-import type { userInfoLoader } from '../../../Router/loaders';
+import { Form, Link, useSubmit, useRouteLoaderData, SubmitTarget, useActionData } from 'react-router-dom';
 
-interface FormData {
-    [key: string]: string;
+import { Grid, TextField, Typography, MenuItem, Button } from '@mui/material';
+import AlertBox from '../../AlertBox';
+
+import type { userInfoLoader } from '../../../Router/loaders';
+import { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
+
+interface FormData extends SubmitHandler<FieldValues> {
+    [key: string]: string | null;
     username: string;
     first_name: string;
     last_name: string;
-    phone_number: string;
+    phone_number: string | null;
     email: string;
     userAddress: string;
 }
 
-// interface Submit extends SubmitHandler<FormData> {
-//     first_name: string;
-//     last_name: string;
-//     phone_number: string;
-// }
+interface ResponseStatus {
+    type: string;
+    status: number;
+}
 
 function ProfileInfo() {
     const { userInfo } = useRouteLoaderData('profile') as Awaited<ReturnType<typeof userInfoLoader>>;
     const submit = useSubmit();
+    const responseStatus = useActionData() as ResponseStatus;
     const address = userInfo.address_list.map((item) => item.address);
     const [selectedAddress, setSelectedAddress] = useState(address[0]);
+
+    console.log(responseStatus);
 
     const {
         register,
@@ -44,15 +50,20 @@ function ProfileInfo() {
     const onSubmit = (data: FormData) => {
         const formData = { ...data };
         Object.assign(formData, { id: userInfo.id });
-        submit(data, { method: 'put', action: '/profiili' });
+        submit(formData as SubmitTarget, { method: 'put', action: '/profiili' });
     };
 
     const selectedAddressInfo = userInfo.address_list.filter((addressInfo) => addressInfo.address === selectedAddress);
 
-    // Submit ei toimi | Typescript error
-
     return (
-        <Grid container component={Form} onSubmit={handleSubmit(() => onSubmit)} justifyContent="center" sx={{ p: 2 }}>
+        <Grid
+            container
+            component={Form}
+            onSubmit={handleSubmit(onSubmit as FormData)}
+            justifyContent="center"
+            sx={{ p: 2 }}
+        >
+            {responseStatus?.status && <AlertBox text="Käyttäjätiedot päivitetty onnistuneesti." status="success" />}
             <Typography variant="h5" color="primary.main" sx={{ mb: 2 }}>
                 Käyttäjäprofiilin tiedot
             </Typography>
