@@ -1,8 +1,10 @@
 import {
     Button,
     Box,
+    IconButton,
     Paper,
     MenuItem,
+    Stack,
     TextField,
     TableCell,
     TableContainer,
@@ -20,6 +22,8 @@ import { useForm, useFieldArray, type FieldValues } from 'react-hook-form';
 import { type orderEditLoader } from '../../Router/loaders';
 import { useState } from 'react';
 import axios from 'axios';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 
 export type OrderEditLoaderType = Awaited<ReturnType<typeof orderEditLoader>>;
 
@@ -88,10 +92,14 @@ function OrderEdit() {
                         const firstItem = newItems[0];
                         append({ 0: firstItem });
                         setAmounts([...amounts, 1]);
+                    } else {
+                        alert(
+                            '### HUPSISTA ###\nOrderEdit: addNewProduct\nValitettavasti tuotteita ei ole tällä hetkellä vapaana'
+                        );
                     }
                 }
             }
-        } catch (error) {
+        } catch (error: any) {
             alert(
                 '### HUPSISTA ###\nOrderEdit: addNewProduct\n' +
                     error.message +
@@ -142,11 +150,19 @@ function OrderEdit() {
     // Modify the number of productRenderItems
     const modifyProductItemAmounts = (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-        index: number
+        index: number,
+        min: number,
+        max: number
     ) => {
-        const newValue = [...amounts];
-        newValue[index] = Number(event.target.value);
-        setAmounts(newValue);
+        const regex = /^[0-9\b]+$/;
+        if (event.target.value === '' || regex.test(event.target.value)) {
+            const newValue = [...amounts];
+            const newNumber = Number(event.target.value);
+            if (newNumber < min) newValue[index] = min;
+            else if (newNumber > max) newValue[index] = max;
+            else newValue[index] = Number(event.target.value);
+            setAmounts(newValue);
+        }
     };
 
     // NOTE!!! Change axios to api call -JTo-
@@ -162,7 +178,7 @@ function OrderEdit() {
                 newItems.splice(amount);
                 return newItems;
             }
-        } catch (error) {
+        } catch (error: any) {
             alert(
                 '### HUPSISTA ###\nOrderEdit: addNewItems\n' +
                     error.message +
@@ -382,7 +398,7 @@ function OrderEdit() {
                                             <StyledTableCell>Viivakoodi</StyledTableCell>
                                             <StyledTableCell>Saldo</StyledTableCell>
                                             <StyledTableCell>max</StyledTableCell>
-                                            <StyledTableCell align="right">Tuotteet</StyledTableCell>
+                                            <StyledTableCell align="center">Tuotteet</StyledTableCell>
                                             <StyledTableCell> </StyledTableCell>
                                         </TableRow>
                                     </TableHead>
@@ -401,24 +417,65 @@ function OrderEdit() {
                                                         (productItemGroup[0].available ? 1 : 0)}
                                                 </TableCell>
                                                 <TableCell align="right">
-                                                    <TextField
-                                                        type="number"
-                                                        size="small"
-                                                        value={amounts[index]}
-                                                        InputProps={{
-                                                            inputProps: {
-                                                                min: 0,
-                                                                max:
+                                                    <Stack justifyContent="center" alignItems="center" direction="row">
+                                                        <IconButton
+                                                            size="large"
+                                                            color="primary"
+                                                            onClick={() => {
+                                                                const newAmounts = [...amounts];
+                                                                if (newAmounts[index] > 0) {
+                                                                    newAmounts[index]--;
+                                                                    setAmounts(newAmounts);
+                                                                }
+                                                            }}
+                                                            sx={{ m: 0, p: 0 }}
+                                                        >
+                                                            <IndeterminateCheckBoxIcon
+                                                                sx={{ fontSize: '2.5rem', m: 0, p: 0 }}
+                                                            />
+                                                        </IconButton>
+                                                        <TextField
+                                                            // type="number"
+                                                            size="small"
+                                                            value={amounts[index]}
+                                                            InputProps={{
+                                                                inputProps: {
+                                                                    style: { textAlign: 'center' },
+                                                                },
+                                                            }}
+                                                            onChange={(event) => {
+                                                                modifyProductItemAmounts(
+                                                                    event,
+                                                                    index,
+                                                                    0,
                                                                     Object.keys(productItemGroup).length -
-                                                                    1 +
-                                                                    productItemGroup[0].product.amount -
-                                                                    (productItemGroup[0].available ? 1 : 0),
-                                                            },
-                                                        }}
-                                                        onChange={(event) => {
-                                                            modifyProductItemAmounts(event, index);
-                                                        }}
-                                                    />
+                                                                        1 +
+                                                                        productItemGroup[0].product.amount -
+                                                                        (productItemGroup[0].available ? 1 : 0)
+                                                                );
+                                                            }}
+                                                            sx={{ width: '4rem', m: 0, p: 0 }}
+                                                        />
+                                                        <IconButton
+                                                            color="primary"
+                                                            onClick={() => {
+                                                                const newAmounts = [...amounts];
+                                                                if (
+                                                                    newAmounts[index] <
+                                                                    Object.keys(productItemGroup).length -
+                                                                        1 +
+                                                                        productItemGroup[0].product.amount -
+                                                                        (productItemGroup[0].available ? 1 : 0)
+                                                                ) {
+                                                                    newAmounts[index]++;
+                                                                    setAmounts(newAmounts);
+                                                                }
+                                                            }}
+                                                            sx={{ m: 0, p: 0 }}
+                                                        >
+                                                            <AddBoxIcon sx={{ fontSize: '2.5rem', m: 0, p: 0 }} />
+                                                        </IconButton>
+                                                    </Stack>
                                                 </TableCell>
                                                 <TableCell align="right">
                                                     <Button
