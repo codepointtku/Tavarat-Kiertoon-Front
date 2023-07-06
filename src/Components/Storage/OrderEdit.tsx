@@ -74,24 +74,31 @@ function OrderEdit() {
     // NOTE!!! Change axios to api call -JTo-
     // Add new product/productItem handler
     const addNewProduct = async () => {
-        if (typeof newProduct === 'number' && newProduct !== 0) {
-            const response = await axios.get(
-                `http://localhost:8000/products/items/?product=${newProduct}&available=true`
-            );
-            // 'get' ok, return needed item ids
-            if (response.status === 200) {
-                const newItems = [...response.data.results];
-                if (newItems.length > 0) {
-                    const firstItem = newItems[0];
-                    append({ 0: firstItem });
-                    setAmounts([...amounts, 1]);
+        try {
+            if (typeof newProduct === 'number' && newProduct !== 0) {
+                const response = await axios.get(
+                    `http://localhost:8000/products/items/?product=${newProduct}&available=true`
+                );
+                // 'get' ok, return needed item ids
+                if (response.status === 200) {
+                    const newItems = [...response.data.results];
+                    if (newItems.length > 0) {
+                        const firstItem = newItems[0];
+                        append({ 0: firstItem });
+                        setAmounts([...amounts, 1]);
+                    }
                 }
-            } else {
-                alert('Hups: OrderEdit: addNewProduct');
             }
-        } else {
-            alert('Hupsista: OrderEdit: addNewProduct');
+        } catch (error) {
+            alert(
+                '### HUPSISTA ###\nOrderEdit: addNewProduct\n' +
+                    error.message +
+                    '\n' +
+                    error.response.data.product[0] +
+                    '\n'
+            );
         }
+        setNewProduct(0);
     };
 
     // hook form functions and default values
@@ -143,16 +150,24 @@ function OrderEdit() {
     // NOTE!!! Change axios to api call -JTo-
     // add new productitems to an existing product
     const addNewItems = async (id: number, amount: number) => {
-        // const response = await productsApi.productsList();
-        const response = await axios.get(`http://localhost:8000/products/items/?product=${id}&available=true`);
+        try {
+            // const response = await productsApi.productsList();
+            const response = await axios.get(`http://localhost:8000/products/items/?product=${id}&available=true`);
 
-        // 'get' ok, return needed items
-        if (response.status === 200) {
-            const newItems = [...response.data.results];
-            newItems.splice(amount);
-            return newItems;
-        } else {
-            alert('Hups: OrderEdit: addNewItems');
+            // 'get' ok, return needed items
+            if (response.status === 200) {
+                const newItems = [...response.data.results];
+                newItems.splice(amount);
+                return newItems;
+            }
+        } catch (error) {
+            alert(
+                '### HUPSISTA ###\nOrderEdit: addNewItems\n' +
+                    error.message +
+                    '\n' +
+                    error.response.data.product[0] +
+                    '\n'
+            );
         }
         // 'get' failed
         return [];
