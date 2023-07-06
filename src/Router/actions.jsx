@@ -256,7 +256,7 @@ const addProductAction = async (auth, setAuth, request) => {
     const formDataWithProductItem = {
         barcode: formData.get('barcode'),
         available: formData.get('available'),
-        storage: formData.get('storage'),
+        storage: formData.get('storages'),
         shelf_id: formData.get('shelf_id'),
 
         amount: formData.get('amount'),
@@ -264,9 +264,10 @@ const addProductAction = async (auth, setAuth, request) => {
         free_description: formData.get('free_description'),
         price: formData.get('price'),
         category: formData.get('category'),
-        storage: formData.get('storages'),
+        // storage: formData.get('storages'),
         // kuvan lisäys ei toimi bäkissä
-        pictures: formData.get('pictures[]'),
+        pictures: formData.getAll('pictures[]'),
+        //pictures: JSON.parse(formData.get('pictures')),
         colors: formData.get('colors'),
     };
     console.log(formDataWithProductItem);
