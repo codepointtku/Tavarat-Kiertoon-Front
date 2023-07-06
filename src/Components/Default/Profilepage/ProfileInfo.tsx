@@ -64,8 +64,6 @@ function ProfileInfo() {
         (addressInfo: { address: string }) => addressInfo.address === selectedAddress
     );
 
-    console.log(isDirty, userInfo.last_name);
-
     return (
         <Container
             component={Form}
