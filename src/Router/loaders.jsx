@@ -484,8 +484,7 @@ const adminInboxLoader = async (auth, setAuth, request) => {
 const userInfoLoader = async (request) => {
     const searchParams = new URL(request.url).searchParams;
     const statusMap = {
-        Odottaa: 'Waiting',
-        Käsittelyssä: 'Processing',
+        Aktiivinen: 'Waiting&status=Processing',
         Toimitettu: 'Finished',
     };
     const status = statusMap[searchParams.get('tila')] || null;
