@@ -431,7 +431,7 @@ function Routes() {
                                 {
                                     path: 'tuotteet/:id/muokkaa',
                                     element: <EditProduct />,
-                                    loader: async ({ params }) => productDetailsLoader(auth, setAuth, params),
+                                    loader: productDetailsLoader,
                                     // action: async ({ request, params }) => editProductAction(auth, setAuth, request, params),
                                 },
                                 {

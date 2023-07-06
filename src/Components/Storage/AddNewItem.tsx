@@ -83,17 +83,16 @@ function AddNewItem() {
         setValue('barcode', decodedText);
     };
 
-    const onSubmit = async (data: Object) => {
+    const onSubmit = async (data: any) => {
         const formData = new FormData();
 
+        console.log(data);
         Object.entries(data).forEach(([key, value]) => {
-            if (key !== 'pictures') formData.append(key, value);
-            else {
-                value.foreach((pic: string | Blob) => formData.append('pictures[]', pic));
-            }
+            console.log(key, value);
+            if (key !== 'pictures') formData.append(key, data[key]);
         });
 
-        // Object.values(data?.pictures).forEach((value) => formData.append('pictures[]', value));
+        Object.values(data?.pictures).forEach((pic: any) => formData.append('pictures[]', pic));
 
         // console.log('pictures AddNewItemissä', formData.get('pictures'));
         // console.log('onSubmit formData:', formData);
@@ -236,7 +235,7 @@ function AddNewItem() {
                         error={!!errors.storages}
                         helperText={errors.storages?.message}
                     >
-                        {storages?.map((location) => (
+                        {storages?.map((location: any) => (
                             <MenuItem key={location.id} value={location.id}>
                                 {location.name}
                             </MenuItem>
@@ -256,7 +255,7 @@ function AddNewItem() {
                     >
                         {/* TODO Uusia kategorioita voi luoda vain admin, huomautus varastokäyttäjälle? */}
                         {/* TODO kategorian valikkoon valittavaksi vain alimmat kategoriat. ylemmät väliotsikoiksi?  */}
-                        {categories?.map((category) => (
+                        {categories?.map((category: any) => (
                             <MenuItem
                                 onClick={() => setValue('category', category.id)}
                                 key={category.id}
@@ -286,7 +285,7 @@ function AddNewItem() {
                             {/* TODO värin nimen oltava muotoa iso alkukirjain, ilman välejä, muutettava oikeaksi ennen lähetystä jottei tule "meren sininen" ja "Merensininen" */}
                             <Button variant="contained">Luo uusi</Button>
                         </MenuItem>
-                        {colors?.map((color) => (
+                        {colors?.map((color: any) => (
                             <MenuItem onClick={() => setValue('colors', color.id)} key={color.id} value={color.id}>
                                 {color.name}
                             </MenuItem>
