@@ -10,6 +10,11 @@ export type OrderCardProps = {
 function OrderCard({ orderInfo }: OrderCardProps) {
     const date = new Date(orderInfo.delivery_date as string);
     const readableDeliveryDate = date.toLocaleDateString();
+    const statusMap = {
+        Waiting: 'Odottaa',
+        Processing: 'Käsittelyssä',
+        Finished: 'Toimitettu',
+    };
     return (
         <Card
             sx={{
@@ -43,7 +48,7 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                                 </Typography>
                             </Grid>
                             <Grid item>
-                                <Typography variant="body2">{orderInfo.status}</Typography>
+                                <Typography variant="body2">{statusMap[orderInfo.status]}</Typography>
                             </Grid>
                         </Grid>
                         <Grid direction="row" spacing={1} container>
