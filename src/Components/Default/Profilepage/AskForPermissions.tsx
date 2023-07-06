@@ -27,7 +27,7 @@ function AskForPermissions() {
         console.log(data);
     };
     return (
-        <Container sx={{ border: '1px solid red' }}>
+        <Container>
             <Typography
                 variant="h5"
                 color="primary.main"

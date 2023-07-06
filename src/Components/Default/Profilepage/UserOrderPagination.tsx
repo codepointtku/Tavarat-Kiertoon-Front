@@ -22,14 +22,16 @@ function UserOrderPagination({ userOrders }: UserOrders) {
 
     return (
         <Grid justifyContent="center" sx={{ mt: 5 }} container>
-            <Pagination
-                size="large"
-                color="primary"
-                count={pageCount}
-                onChange={handlePageChange}
-                showFirstButton
-                showLastButton
-            />
+            {pageCount > 1 && (
+                <Pagination
+                    size="large"
+                    color="primary"
+                    count={pageCount}
+                    onChange={handlePageChange}
+                    showFirstButton
+                    showLastButton
+                />
+            )}
         </Grid>
     );
 }
