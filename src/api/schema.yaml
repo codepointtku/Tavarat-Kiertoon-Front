@@ -1717,11 +1717,13 @@ paths:
       - in: query
         name: status
         schema:
-          type: string
-          enum:
-          - Finished
-          - Processing
-          - Waiting
+          type: array
+          items:
+            type: string
+            enum:
+            - Finished
+            - Processing
+            - Waiting
         description: |-
           * `Waiting` - Waiting
           * `Processing` - Processing
@@ -1730,6 +1732,8 @@ paths:
           * `Waiting` - Waiting
           * `Processing` - Processing
           * `Finished` - Finished
+        explode: true
+        style: form
       tags:
       - orders
       security:
@@ -1860,7 +1864,7 @@ paths:
     get:
       operationId: products_list
       description: View for listing and creating products. Create includes creation
-        of ProductItem and Picture
+        of ProductItem, Picture and Color
       parameters:
       - in: query
         name: category
@@ -1919,7 +1923,7 @@ paths:
     post:
       operationId: products_create
       description: View for listing and creating products. Create includes creation
-        of ProductItem and Picture
+        of ProductItem, Picture and Color
       tags:
       - products
       requestBody:
@@ -2817,6 +2821,7 @@ paths:
       description: |-
         Update users permissions, should be only allowed to admins, on testing phase allowing fo users
         id = user id whose permission will be updated as id/pk parameter in url
+        users changing their own permissions isnt allowed
       parameters:
       - in: path
         name: id
@@ -2842,6 +2847,7 @@ paths:
       description: |-
         Update users permissions, should be only allowed to admins, on testing phase allowing fo users
         id = user id whose permission will be updated as id/pk parameter in url
+        users changing their own permissions isnt allowed
       parameters:
       - in: path
         name: id
@@ -4492,12 +4498,20 @@ components:
         id:
           type: integer
           readOnly: true
-        product_item:
-          $ref: '#/components/schemas/ProductItemCreate'
         amount:
           type: integer
-        color:
+        available:
+          type: boolean
+        barcode:
           type: string
+        storage:
+          type: integer
+        shelf_id:
+          type: string
+        colors:
+          type: array
+          items:
+            type: string
         name:
           type: string
           maxLength: 255
@@ -4517,32 +4531,12 @@ components:
           nullable: true
       required:
       - amount
-      - category
-      - color
-      - id
-      - name
-      - product_item
-    ProductItemCreate:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        available:
-          type: boolean
-        shelf_id:
-          type: string
-          maxLength: 255
-        barcode:
-          type: string
-          maxLength: 255
-        storage:
-          type: integer
-          nullable: true
-      required:
       - available
       - barcode
+      - category
+      - colors
       - id
+      - name
       - storage
     ProductItemDetailResponse:
       type: object
@@ -4712,8 +4706,9 @@ components:
           type: integer
           nullable: true
         color:
-          type: integer
-          nullable: true
+          type: array
+          items:
+            type: integer
       required:
       - amount
       - category
@@ -4761,14 +4756,15 @@ components:
         category:
           type: integer
           nullable: true
-        color:
-          type: integer
-          nullable: true
         pictures:
           type: array
           items:
             type: integer
           readOnly: true
+        color:
+          type: array
+          items:
+            type: integer
       required:
       - category
       - color
@@ -4798,10 +4794,11 @@ components:
         category:
           type: integer
           nullable: true
-        color:
-          type: integer
-          nullable: true
         pictures:
+          type: array
+          items:
+            type: integer
+        color:
           type: array
           items:
             type: integer
