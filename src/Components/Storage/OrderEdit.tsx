@@ -2,6 +2,7 @@ import {
     Button,
     Box,
     Paper,
+    MenuItem,
     TextField,
     TableCell,
     TableContainer,
@@ -40,6 +41,7 @@ type FormValues = {
  */
 function OrderEdit() {
     const orderData = useLoaderData() as OrderEditLoaderType;
+    const currentStatus = ['Waiting', 'Processing', 'Finished'];
 
     // array with an array for each unique product_item.product.id and all products with that id
     const productRenderItems: OrderEditLoaderType['product_items'][] = [];
@@ -292,18 +294,28 @@ function OrderEdit() {
                                             <TableCell sx={{ fontWeight: 'bold' }}>Tila:</TableCell>
                                             <TableCell>
                                                 <TextField
+                                                    id="status-select"
+                                                    select
                                                     label="Muokkaa tilaa"
-                                                    value={watch('status')}
                                                     {...register('status', {
-                                                        required: 'Pakollinen kenttä',
+                                                        required: 'Pakollinen Kenttä',
                                                     })}
+                                                    value={watch('status')}
                                                     fullWidth
                                                     color={errors.status ? 'error' : 'primary'}
                                                     error={!!errors.status}
                                                     helperText={errors.status?.message?.toString() || ' '}
-                                                    required
                                                     sx={{ marginBottom: '-1rem' }}
-                                                />
+                                                    required
+                                                >
+                                                    {currentStatus?.map((status) => {
+                                                        return (
+                                                            <MenuItem key={status} value={status}>
+                                                                {status}
+                                                            </MenuItem>
+                                                        );
+                                                    })}
+                                                </TextField>
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
