@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Form, Link, useSubmit, useRouteLoaderData, SubmitTarget, useActionData } from 'react-router-dom';
+import { Form, Link, useSubmit, useRouteLoaderData, useActionData } from 'react-router-dom';
 
 import { Grid, TextField, Typography, MenuItem, Button } from '@mui/material';
 import AlertBox from '../../AlertBox';
@@ -23,14 +23,19 @@ interface ResponseStatus {
     status: number;
 }
 
+type SubmitTarget =
+    | HTMLFormElement
+    | {
+          [name: string]: string;
+      }
+    | null;
+
 function ProfileInfo() {
     const { userInfo } = useRouteLoaderData('profile') as Awaited<ReturnType<typeof userInfoLoader>>;
     const submit = useSubmit();
     const responseStatus = useActionData() as ResponseStatus;
     const address = userInfo.address_list.map((item) => item.address);
     const [selectedAddress, setSelectedAddress] = useState(address[0]);
-
-    console.log(responseStatus);
 
     const {
         register,
@@ -53,7 +58,9 @@ function ProfileInfo() {
         submit(formData as SubmitTarget, { method: 'put', action: '/profiili' });
     };
 
-    const selectedAddressInfo = userInfo.address_list.filter((addressInfo) => addressInfo.address === selectedAddress);
+    const selectedAddressInfo = userInfo.address_list.filter(
+        (addressInfo: { address: string }) => addressInfo.address === selectedAddress
+    );
 
     return (
         <Grid
@@ -124,7 +131,7 @@ function ProfileInfo() {
                             <TextField {...register('email')} label="Sähköposti" placeholder="Sähköposti" disabled />
                         </Grid>
                         <Grid item>
-                            <Button component={Link} to="/sahkopostinvaihto" sx={{ p: 2, mr: 11.5 }}>
+                            <Button component={Link} to="/sahkopostinvaihto" sx={{ p: 2, mr: 13.5 }}>
                                 Muokkaa
                             </Button>
                         </Grid>
