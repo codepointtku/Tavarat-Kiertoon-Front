@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, Link, useSubmit, useRouteLoaderData, useActionData } from 'react-router-dom';
 
-import { Grid, TextField, Typography, MenuItem, Button } from '@mui/material';
+import { Grid, TextField, Typography, MenuItem, Button, Container } from '@mui/material';
 import AlertBox from '../../AlertBox';
 
 import type { userInfoLoader } from '../../../Router/loaders';
@@ -39,6 +39,7 @@ function ProfileInfo() {
 
     const {
         register,
+        reset,
         handleSubmit,
         formState: { isDirty },
     } = useForm({
@@ -56,19 +57,21 @@ function ProfileInfo() {
         const formData = { ...data };
         Object.assign(formData, { id: userInfo.id });
         submit(formData as SubmitTarget, { method: 'put', action: '/profiili' });
+        reset(formData);
     };
 
     const selectedAddressInfo = userInfo.address_list.filter(
         (addressInfo: { address: string }) => addressInfo.address === selectedAddress
     );
 
+    console.log(isDirty, userInfo.last_name);
+
     return (
-        <Grid
-            container
+        <Container
             component={Form}
             onSubmit={handleSubmit(onSubmit as FormData)}
-            justifyContent="center"
-            sx={{ p: 2 }}
+            sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+            disableGutters
         >
             {responseStatus?.status && <AlertBox text="Käyttäjätiedot päivitetty onnistuneesti." status="success" />}
             <Typography variant="h5" color="primary.main" sx={{ mb: 2 }}>
@@ -87,7 +90,7 @@ function ProfileInfo() {
                     </Grid>
                 </Grid>
                 <Grid container sx={{ width: '50%' }} direction="column" gap={2}>
-                    <Grid container direction="row" justifyContent="center" gap={1}>
+                    <Grid container direction="row" gap={1} sx={{ pl: '11rem' }}>
                         <Grid item>
                             <TextField
                                 {...register('userAddress')}
@@ -95,7 +98,7 @@ function ProfileInfo() {
                                 label="Osoitteet"
                                 placeholder="Osoitteet"
                                 onChange={(event) => setSelectedAddress(event.target.value)}
-                                sx={{ minWidth: 210 }}
+                                sx={{ width: '13.25rem' }}
                                 select
                             >
                                 {userInfo.address_list?.map((a) => (
@@ -126,34 +129,32 @@ function ProfileInfo() {
                             </Button>
                         </Grid>
                     </Grid>
-                    <Grid container direction="row" justifyContent="center" gap={1}>
+                    <Grid container direction="row" gap={1} sx={{ pl: '11rem' }}>
                         <Grid item>
                             <TextField {...register('email')} label="Sähköposti" placeholder="Sähköposti" disabled />
                         </Grid>
                         <Grid item>
-                            <Button component={Link} to="/sahkopostinvaihto" sx={{ p: 2, mr: 15.75 }}>
+                            <Button component={Link} to="/sahkopostinvaihto" sx={{ p: 2 }}>
                                 Vaihda
                             </Button>
                         </Grid>
                     </Grid>
-                    <Grid container direction="row" justifyContent="center" gap={1}>
-                        <Grid item>
-                            <Typography sx={{ mt: '1rem' }}>Haluatko vaihtaa salasanan?</Typography>
+                    <Grid container direction="row" gap={1} sx={{ pl: '11rem' }}>
+                        <Grid item alignSelf="center">
+                            <Typography>Haluatko vaihtaa salasanan?</Typography>
                         </Grid>
                         <Grid item>
-                            <Button sx={{ p: 2, mr: 4.5 }} component={Link} to="/salasananvaihto">
+                            <Button sx={{ p: 2 }} component={Link} to="/salasananvaihto">
                                 Salasanan vaihto
                             </Button>
                         </Grid>
                     </Grid>
                 </Grid>
             </Grid>
-            {isDirty && (
-                <Button sx={{ width: 200, p: 2 }} type="submit">
-                    Vahvista muutokset
-                </Button>
-            )}
-        </Grid>
+            <Button sx={{ width: 200, p: 2 }} type="submit" disabled={!isDirty}>
+                Vahvista muutokset
+            </Button>
+        </Container>
     );
 }
 
