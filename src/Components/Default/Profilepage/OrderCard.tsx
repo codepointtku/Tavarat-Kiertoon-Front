@@ -28,8 +28,9 @@ function OrderCard({ orderInfo }: OrderCardProps) {
             >
                 <CardHeader
                     component={Typography}
+                    sx={{ backgroundColor: 'primary.light' }}
                     align="center"
-                    color="primary.main"
+                    color="primary.dark"
                     variant="overline"
                     title={`Tilaus #${orderInfo.id}`}
                 />
@@ -37,7 +38,7 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                     <Grid container direction="column" justifyContent="space-around" gap={0.5} sx={{ width: 'auto' }}>
                         <Grid direction="row" spacing={1} container>
                             <Grid item>
-                                <Typography variant="body2" color="primary.main">
+                                <Typography variant="body2" color="primary.dark">
                                     Tilauksen tila:
                                 </Typography>
                             </Grid>
@@ -47,7 +48,7 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                         </Grid>
                         <Grid direction="row" spacing={1} container>
                             <Grid item>
-                                <Typography variant="body2" color="primary.main">
+                                <Typography variant="body2" color="primary.dark">
                                     Toimitusosoite:
                                 </Typography>
                             </Grid>
@@ -57,7 +58,7 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                         </Grid>
                         <Grid direction="row" spacing={1} container>
                             <Grid item>
-                                <Typography variant="body2" color="primary.main">
+                                <Typography variant="body2" color="primary.dark">
                                     Tilaajan sähköposti:
                                 </Typography>
                             </Grid>
@@ -67,7 +68,7 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                         </Grid>
                         <Grid direction="row" spacing={1} container>
                             <Grid item>
-                                <Typography variant="body2" color="primary.main">
+                                <Typography variant="body2" color="primary.dark">
                                     Tilauksen tiedot:
                                 </Typography>
                             </Grid>
@@ -84,7 +85,7 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                         </Grid>
                         <Grid direction="row" spacing={1} container>
                             <Grid item>
-                                <Typography variant="body2" color="primary.main">
+                                <Typography variant="body2" color="primary.dark">
                                     Toimituspäivä:
                                 </Typography>
                             </Grid>
@@ -94,7 +95,7 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                         </Grid>
                         <Grid direction="row" spacing={1} container>
                             <Grid item>
-                                <Typography variant="body2" color="primary.main">
+                                <Typography variant="body2" color="primary.dark">
                                     Tilaajan puhelinnumero:
                                 </Typography>
                             </Grid>
