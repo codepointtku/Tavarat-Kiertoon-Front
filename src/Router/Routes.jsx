@@ -335,7 +335,7 @@ function Routes() {
                                     action: async ({ request }) => emailChangeSuccessfulAction(auth, setAuth, request),
                                 },
                                 {
-                                    path: 'unohtunutsalasana',
+                                    path: 'salasananvaihto',
                                     element: <ForgotPassword />,
                                     action: async ({ request }) => resetEmailAction(auth, setAuth, request),
                                 },

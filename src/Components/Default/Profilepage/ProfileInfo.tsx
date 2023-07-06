@@ -131,8 +131,18 @@ function ProfileInfo() {
                             <TextField {...register('email')} label="Sähköposti" placeholder="Sähköposti" disabled />
                         </Grid>
                         <Grid item>
-                            <Button component={Link} to="/sahkopostinvaihto" sx={{ p: 2, mr: 13.5 }}>
-                                Muokkaa
+                            <Button component={Link} to="/sahkopostinvaihto" sx={{ p: 2, mr: 15.75 }}>
+                                Vaihda
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <Grid container direction="row" justifyContent="center" gap={1}>
+                        <Grid item>
+                            <Typography sx={{ mt: '1rem' }}>Haluatko vaihtaa salasanan?</Typography>
+                        </Grid>
+                        <Grid item>
+                            <Button sx={{ p: 2, mr: 4.5 }} component={Link} to="/salasananvaihto">
+                                Salasanan vaihto
                             </Button>
                         </Grid>
                     </Grid>
