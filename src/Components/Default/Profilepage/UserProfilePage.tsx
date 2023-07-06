@@ -17,6 +17,8 @@ function UserProfilePage() {
                 return 'activeOrders';
             case url.includes('tilaushistoria'):
                 return 'orderHistory';
+            case url.includes('kayttooikeudet'):
+                return 'userGroupPermissions';
             default:
                 return 'userInfo';
         }
@@ -47,6 +49,7 @@ function UserProfilePage() {
             </Grid>
             <Tabs value={value} onChange={handleSectionChange} centered>
                 <Tab component={Link} to="" value="userInfo" label="Käyttäjätiedot" />
+                <Tab component={Link} to="kayttooikeudet" value="userGroupPermissions" label="Käyttöoikeudet" />
                 <Tab component={Link} to="aktiivisettilaukset" value="activeOrders" label="Aktiiviset tilaukset" />
                 <Tab component={Link} to="tilaushistoria?tila=Toimitettu" value="orderHistory" label="Tilaushistoria" />
             </Tabs>
