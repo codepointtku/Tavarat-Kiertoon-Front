@@ -21,7 +21,6 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                 width: 400,
                 minHeight: 300,
                 border: orderInfo.status === 'Finished' ? '1px solid #81C784' : '1px solid #0062ae',
-                mt: 2,
             }}
             raised
         >

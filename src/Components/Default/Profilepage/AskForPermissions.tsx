@@ -50,18 +50,12 @@ function AskForPermissions() {
                         <FormControl component="fieldset">
                             <FormLabel>Käyttöoikeudet</FormLabel>
                             <FormGroup>
-                                <FormControlLabel
-                                    control={<Checkbox {...register('admin')} />}
-                                    label="Admin"
-                                ></FormControlLabel>
-                                <FormControlLabel
-                                    control={<Checkbox {...register('storage')} />}
-                                    label="Varasto"
-                                ></FormControlLabel>
+                                <FormControlLabel control={<Checkbox {...register('admin')} />} label="Admin" />
+                                <FormControlLabel control={<Checkbox {...register('storage')} />} label="Varasto" />
                                 <FormControlLabel
                                     control={<Checkbox {...register('bikestorage')} />}
                                     label="Pyörävarasto"
-                                ></FormControlLabel>
+                                />
                             </FormGroup>
                         </FormControl>
                     </Grid>

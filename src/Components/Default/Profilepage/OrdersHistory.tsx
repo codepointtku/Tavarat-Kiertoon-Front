@@ -16,10 +16,10 @@ function OrdersHistory() {
 
     return (
         <Box sx={{ p: 2 }}>
-            <Typography variant="h5" color="primary.main" align="center" sx={{ mb: 2 }}>
+            <Typography variant="h5" color="primary.main" align="center">
                 Tilaushistoria
             </Typography>
-            <Grid direction="row" gap={5} container>
+            <Grid direction="row" gap={5} justifyContent="center" sx={{ mt: 2, p: 2 }} container>
                 {ordersHistoryCards.length === 0 ? (
                     <Container sx={{ mt: 2 }}>
                         <TypographyTitle text="Ei valmiita tilauksia" />

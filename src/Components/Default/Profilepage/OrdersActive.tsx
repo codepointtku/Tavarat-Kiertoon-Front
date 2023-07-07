@@ -14,10 +14,10 @@ function ProfileInfo() {
 
     return (
         <Box sx={{ p: 2 }}>
-            <Typography variant="h5" color="primary.main" align="center" sx={{ mb: 2 }}>
+            <Typography variant="h5" color="primary.main" align="center">
                 Aktiiviset tilaukset
             </Typography>
-            <Grid container direction="row" gap={5} sx={{ p: 2 }}>
+            <Grid container direction="row" gap={5} justifyContent="center" sx={{ p: 2, mt: 2 }}>
                 {activeOrdersCards.length === 0 ? (
                     <Container sx={{ mt: 2 }}>
                         <TypographyTitle text="Ei aktiivisia tilauksia" />
