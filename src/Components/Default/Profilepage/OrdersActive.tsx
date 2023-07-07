@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useRouteLoaderData } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useRouteLoaderData, useSearchParams } from 'react-router-dom';
 import { Box, Grid, Typography, Container, Select, FormControl, InputLabel, MenuItem } from '@mui/material';
 
 import OrderCard from './OrderCard';
@@ -9,12 +9,19 @@ import { UserOrders } from './OrdersHistory';
 
 function ProfileInfo() {
     const [filter, setFilter] = useState({ ordering: 'creationDateDescending', status: 'all' });
+    const [searchParams, setSearchParams] = useSearchParams();
     const { userOrders } = useRouteLoaderData('profile') as Awaited<UserOrders>;
 
     const activeOrders = userOrders.results.filter((order) => order.status !== 'Finished');
     const activeOrdersCards = activeOrders.map((order) => <OrderCard key={order.id} orderInfo={order} />);
 
-    console.log(filter);
+    useEffect(() => {
+        switch (filter.ordering) {
+            case 'creationDateDescending':
+                setSearchParams();
+                break;
+        }
+    }, [filter]);
 
     return (
         <Box sx={{ p: 2 }}>
