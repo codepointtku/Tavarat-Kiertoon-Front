@@ -8,9 +8,9 @@ import {
     FormLabel,
     FormControlLabel,
     Checkbox,
-    Box,
     FormGroup,
     Button,
+    TextField,
 } from '@mui/material';
 import { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
 
@@ -35,7 +35,16 @@ function AskForPermissions() {
             >
                 Hae käyttöoikeuksia
             </Typography>
-            <Box component={Form} onSubmit={handleSubmit(onSubmit as SubmitData)}>
+            <Typography variant="body2" color="primary.main" align="center">
+                Hakemus lähetetään sivuston ylläpidolle.
+            </Typography>
+            <Grid
+                container
+                sx={{ mt: 5 }}
+                direction="row"
+                component={Form}
+                onSubmit={handleSubmit(onSubmit as SubmitData)}
+            >
                 <Grid container sx={{ width: '50%' }} justifyContent="center">
                     <Grid item>
                         <FormControl component="fieldset">
@@ -57,13 +66,15 @@ function AskForPermissions() {
                         </FormControl>
                     </Grid>
                 </Grid>
-                <Grid container sx={{ width: '50%' }}></Grid>
+                <Grid container sx={{ width: '50%' }} justifyContent="center">
+                    <TextField label="Lisätietoa" placeholder="Lisätietoa" multiline rows={5} />
+                </Grid>
                 <Grid container justifyContent="center">
-                    <Button sx={{ width: 200, p: 2 }} type="submit">
-                        Lähetä tiedot
+                    <Button sx={{ width: 200, p: 2, mt: 5 }} type="submit">
+                        Lähetä hakemus
                     </Button>
                 </Grid>
-            </Box>
+            </Grid>
         </Container>
     );
 }
