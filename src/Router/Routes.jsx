@@ -569,7 +569,7 @@ function Routes() {
                                 {
                                     path: 'varastot/luo',
                                     element: <CreateStorage />,
-                                    action: async ({ request }) => storageCreateAction(auth, setAuth, request),
+                                    action: ({ request }) => storageCreateAction(request),
                                 },
                                 {
                                     path: 'tiedotteet',

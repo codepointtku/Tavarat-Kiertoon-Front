@@ -227,21 +227,21 @@ const orderEditAction = async (auth, setAuth, request, params) => {
 /*
 creates new storage
 */
-const storageCreateAction = async (auth, setAuth, request) => {
+const storageCreateAction = async (request) => {
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/storages/', 'post', {
-    //     address: formData.get('address'),
-    //     name: formData.get('name'),
-    //     in_use: formData.get('in_use') === 'käytössä' ? true : false,
-    // });
-    const response = await storagesApi.storagesCreate({
-        address: formData.get('address'),
+
+    const newStorage = {
         name: formData.get('name'),
-        in_use: formData.get('in_use') === 'käytössä' ? true : false,
-    });
+        address: formData.get('address'),
+        in_use: formData.get('in_use') === 'Käytössä' ? true : false,
+    };
+
+    const response = await storagesApi.storagesCreate(newStorage);
+
     if (response.status === 201) {
         return { type: 'post', status: true };
     }
+
     return { type: 'post', status: false };
 };
 

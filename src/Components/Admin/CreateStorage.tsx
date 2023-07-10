@@ -1,29 +1,40 @@
 import { useForm } from 'react-hook-form';
 import { Form, useActionData, useSubmit } from 'react-router-dom';
 
-import { Box, Button, Container, Stack, TextField } from '@mui/material';
+import { Box, Button, Container, Grid, IconButton, MenuItem, Stack, TextField } from '@mui/material';
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 import AlertBox from '../AlertBox';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
 import type { storageCreateAction } from '../../Router/actions';
+import Tooltip from '../Tooltip';
 
 function CreateStorage() {
     const responseStatus = useActionData() as Awaited<ReturnType<typeof storageCreateAction>>;
 
-    // const choices = ['käytössä', 'ei käytössä'];
+    const storageStates = ['Käytössä', 'Ei käytössä'];
 
     const {
         register,
-        handleSubmit,
+        handleSubmit: createHandleSubmit,
+        reset,
         formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors, isDirty, dirtyFields },
     } = useForm();
+
     const submit = useSubmit();
 
-    const onSubmit = () => {
-        console.log('pleis houlderi');
+    const handleSubmit = createHandleSubmit((data) => {
+        // console.log('%c Submitissa menevä tieto', 'color: blue', data);
+        submit(data, {
+            method: 'post',
+        });
+    });
+
+    const formReset = () => {
+        reset();
     };
 
     return (
@@ -42,7 +53,7 @@ function CreateStorage() {
                 <Box
                     id="storage-creation-form"
                     component={Form}
-                    onSubmit={handleSubmit(onSubmit)}
+                    onSubmit={handleSubmit}
                     autoComplete="off"
                     sx={{ marginTop: '2rem' }}
                 >
@@ -87,13 +98,51 @@ function CreateStorage() {
                             fullWidth
                         />
 
-                        <Button
-                            disabled={!isDirty || isSubmitting || isSubmitSuccessful}
-                            type="submit"
-                            sx={{ mt: '1rem' }}
+                        <TextField
+                            select
+                            label="Käyttötila"
+                            defaultValue="Ei käytössä"
+                            {...register('in_use', {
+                                required: { value: true, message: 'Valitse varaston tila' },
+                            })}
+                            inputProps={{ required: false }}
+                            required
+                            error={!!formStateErrors.state}
+                            helperText={formStateErrors.state?.message?.toString() || ' '}
+                            color={dirtyFields.state && 'warning'}
+                            fullWidth
                         >
-                            Lisää uusi varasto
-                        </Button>
+                            {storageStates.map((state) => (
+                                <MenuItem key={state} value={state}>
+                                    {state}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+
+                        <Grid container id="submit-reset-btns">
+                            <Grid item xs={11}>
+                                <Button
+                                    id="submit-btn"
+                                    type="submit"
+                                    disabled={!isDirty || isSubmitting || isSubmitSuccessful}
+                                    fullWidth
+                                    sx={{
+                                        '&:hover': {
+                                            backgroundColor: 'success.dark',
+                                        },
+                                    }}
+                                >
+                                    Lisää uusi varasto
+                                </Button>
+                            </Grid>
+                            <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Tooltip title="Tyhjennä lomake">
+                                    <IconButton id="reset-form-btn" onClick={() => formReset()}>
+                                        <RefreshIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </Grid>
+                        </Grid>
                     </Stack>
                 </Box>
             </Container>
