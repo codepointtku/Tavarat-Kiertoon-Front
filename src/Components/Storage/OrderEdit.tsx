@@ -21,9 +21,9 @@ import StyledTableCell from '../StyledTableCell';
 import { useForm, useFieldArray, type FieldValues } from 'react-hook-form';
 import { type orderEditLoader } from '../../Router/loaders';
 import { useState } from 'react';
-import axios from 'axios';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import { productsApi } from '../../api';
 
 export type OrderEditLoaderType = Awaited<ReturnType<typeof orderEditLoader>>;
 
@@ -82,9 +82,9 @@ function OrderEdit() {
     const addNewProduct = async () => {
         try {
             if (typeof newProduct === 'number' && newProduct !== 0) {
-                const response = await axios.get(
-                    `http://localhost:8000/products/items/?product=${newProduct}&available=true`
-                );
+                const response = await productsApi.productsItemsList(true, undefined, undefined, undefined, [
+                    newProduct,
+                ]);
                 // 'get' ok, return needed item ids
                 if (response.status === 200) {
                     const newItems = [...response.data.results];
@@ -169,8 +169,7 @@ function OrderEdit() {
     // add new productitems to an existing product
     const addNewItems = async (id: number, amount: number) => {
         try {
-            // const response = await productsApi.productsList();
-            const response = await axios.get(`http://localhost:8000/products/items/?product=${id}&available=true`);
+            const response = await productsApi.productsItemsList(true, undefined, undefined, undefined, [id]);
 
             // 'get' ok, return needed items
             if (response.status === 200) {
