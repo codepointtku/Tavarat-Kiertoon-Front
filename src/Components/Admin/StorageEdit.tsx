@@ -15,6 +15,7 @@ import type { storageEditAction } from '../../Router/actions';
 
 function StorageEdit() {
     const storageData = useLoaderData() as Awaited<ReturnType<typeof storageEditLoader>>;
+    console.log(storageData);
     const responseStatus = useActionData() as Awaited<ReturnType<typeof storageEditAction>>;
 
     const storageStates = ['Käytössä', 'Ei käytössä'];
@@ -29,11 +30,16 @@ function StorageEdit() {
         // defaultValues: {
         // ...storageData,
         // },
+        // defaultValues: {
+        //     name: storageData.name,
+        //     address: storageData.address,
+        //     in_use: storageData.in_use,
+        // },
     });
 
     const submit = useSubmit();
 
-    const handleSubmit = createHandleSubmit((data) => {
+    const handleSubmit = createHandleSubmit((data: any) => {
         // console.log('%c Submitissa menevä tieto', 'color: blue', data);
         submit(data, {
             method: 'post',
@@ -56,7 +62,7 @@ function StorageEdit() {
 
             <Container maxWidth="lg">
                 <HeroHeader Icon={<DomainIcon />} hideInAdmin />
-                <HeroText title="Varasto" subtitle="Varaston tietojen muokkaus" />
+                <HeroText title={`${storageData.name}`} subtitle="Varaston tietojen muokkaus" />
                 <Box
                     id="storage-edit-form"
                     component={Form}
@@ -139,7 +145,7 @@ function StorageEdit() {
                                         },
                                     }}
                                 >
-                                    Lisää uusi varasto
+                                    Tallenna tiedot
                                 </Button>
                             </Grid>
                             <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
