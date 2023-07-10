@@ -1,10 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { Form, useSubmit, useRouteLoaderData } from 'react-router-dom';
 
-import { Container, TextField, Button, Box, Stack } from '@mui/material';
+import { Container, TextField, Button, Box, Stack, Grid, IconButton } from '@mui/material';
 import FeedIcon from '@mui/icons-material/Feed';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 import AlertBox from '../AlertBox';
+import Tooltip from '../Tooltip';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
@@ -15,6 +17,7 @@ function CreateBulletinPost() {
 
     const {
         register,
+        reset,
         handleSubmit,
         formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors, isDirty, dirtyFields },
     } = useForm();
@@ -29,16 +32,13 @@ function CreateBulletinPost() {
         });
     };
 
+    const formReset = () => {
+        reset();
+    };
+
     return (
         <>
-            {isSubmitSuccessful && (
-                <AlertBox
-                    text="Tiedote lisätty onnistuneesti"
-                    status="success"
-                    redirectUrl="/admin/tiedotteet"
-                    timer={1500}
-                />
-            )}
+            {isSubmitSuccessful && <AlertBox text="Tiedote lisätty onnistuneesti" status="success" />}
 
             <Container maxWidth="lg">
                 <HeroHeader Icon={<FeedIcon />} hideInAdmin />
@@ -87,13 +87,30 @@ function CreateBulletinPost() {
                             fullWidth
                         />
 
-                        <Button
-                            disabled={!isDirty || isSubmitting || isSubmitSuccessful}
-                            type="submit"
-                            sx={{ mt: '1rem' }}
-                        >
-                            Lisää tiedote
-                        </Button>
+                        <Grid container id="submit-reset-btns">
+                            <Grid item xs={11}>
+                                <Button
+                                    id="submit-btn"
+                                    type="submit"
+                                    disabled={!isDirty || isSubmitting || isSubmitSuccessful}
+                                    fullWidth
+                                    sx={{
+                                        '&:hover': {
+                                            backgroundColor: 'success.dark',
+                                        },
+                                    }}
+                                >
+                                    Lisää uusi tiedote
+                                </Button>
+                            </Grid>
+                            <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Tooltip title="Tyhjennä lomake">
+                                    <IconButton id="reset-form-btn" onClick={() => formReset()}>
+                                        <RefreshIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </Grid>
+                        </Grid>
                     </Stack>
                 </Box>
             </Container>
