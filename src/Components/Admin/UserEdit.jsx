@@ -124,7 +124,7 @@ function UserEdit() {
                                     <Typography>
                                         Viimeisin sisäänkirjautuminen:{' '}
                                         {userInfo.last_login
-                                            ? `${lastLoginDateInfo[0] / lastLoginDateInfo[1]}`
+                                            ? `${lastLoginDateInfo[0]} / ${lastLoginDateInfo[1]}`
                                             : 'Ei koskaan'}
                                     </Typography>
                                     <Typography>Käyttäjän tunnistenumero: {userInfo.id}</Typography>
