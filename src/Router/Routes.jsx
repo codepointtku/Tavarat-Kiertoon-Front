@@ -47,7 +47,7 @@ import Stats from '../Components/Admin/Stats/Stats';
 
 import StoragesList from '../Components/Admin/StoragesList';
 import StorageEdit from '../Components/Admin/StorageEdit';
-import AddStorage from '../Components/Admin/AddStorage';
+import CreateStorage from '../Components/Admin/CreateStorage';
 import AddItem from '../Components/Storage/AddItem';
 
 import PDFView from '../Components/Storage/PDFView';
@@ -568,7 +568,7 @@ function Routes() {
                                 },
                                 {
                                     path: 'varastot/luo',
-                                    element: <AddStorage />,
+                                    element: <CreateStorage />,
                                     action: async ({ request }) => storageCreateAction(auth, setAuth, request),
                                 },
                                 {
