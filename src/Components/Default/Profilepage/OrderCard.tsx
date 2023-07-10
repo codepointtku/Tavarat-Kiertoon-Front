@@ -10,6 +10,8 @@ export type OrderCardProps = {
 function OrderCard({ orderInfo }: OrderCardProps) {
     const date = new Date(orderInfo.delivery_date as string);
     const readableDeliveryDate = date.toLocaleDateString();
+    const orderDate = new Date(orderInfo.creation_date);
+    const readableOrderDate = orderDate.toLocaleDateString();
     const statusMap = {
         Waiting: 'Odottaa',
         Processing: 'Käsittelyssä',
@@ -105,6 +107,16 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                             </Grid>
                             <Grid item>
                                 <Typography variant="body2">{orderInfo.phone_number}</Typography>
+                            </Grid>
+                        </Grid>
+                        <Grid direction="row" spacing={1} container>
+                            <Grid item>
+                                <Typography variant="body2" color="primary.dark">
+                                    Tilauspäivä:
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="body2">{readableOrderDate}</Typography>
                             </Grid>
                         </Grid>
                     </Grid>
