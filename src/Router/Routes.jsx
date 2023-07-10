@@ -29,7 +29,7 @@ import QrScanner from '../Components/Storage/QrScanner';
 import Overview from '../Components/Admin/Panel/Overview/Overview';
 // import PageTest from '../Components/Admin/Panel/PageTest';
 import OrdersGrid from '../Components/Admin/OrdersGrid';
-import AdminOrderEdit from '../Components/Admin/AdminOrderEdit';
+// import AdminOrderEdit from '../Components/Admin/AdminOrderEdit';
 import AdminOrderCreate from '../Components/Admin/AdminOrderCreate';
 import ProductsGrid from '../Components/Admin/ProductsGrid';
 import AdminProductEdit from '../Components/Admin/AdminProductEdit';
@@ -555,14 +555,13 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <StoragesList />,
-                                            loader: async () => storagesListLoader(auth, setAuth),
+                                            loader: storagesListLoader,
                                         },
                                         {
                                             path: ':id',
                                             element: <StorageEdit />,
-                                            loader: async ({ params }) => storageEditLoader(auth, setAuth, params),
-                                            action: async ({ request, params }) =>
-                                                storageEditAction(auth, setAuth, request, params),
+                                            loader: ({ params }) => storageEditLoader(params),
+                                            action: ({ request, params }) => storageEditAction(request, params),
                                         },
                                     ],
                                 },

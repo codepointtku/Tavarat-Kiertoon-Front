@@ -184,14 +184,12 @@ const pdfViewLoader = async (auth, setAuth, params) => {
 /**
  * Get all storages
  */
-const storagesListLoader = async (auth, setAuth) => {
-    // const { data } = await apiCall(auth, setAuth, '/storages', 'get');
+const storagesListLoader = async () => {
     const { data } = await storagesApi.storagesList();
     return data;
 };
 
-const storageEditLoader = async (auth, setAuth, params) => {
-    // const { data } = await apiCall(auth, setAuth, `/storages/${params.id}`, 'get');
+const storageEditLoader = async (params) => {
     const { data } = await storagesApi.storagesRetrieve(params.id);
     return data;
 };
