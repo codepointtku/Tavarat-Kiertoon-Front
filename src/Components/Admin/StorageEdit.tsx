@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
-import { Form, useActionData, useSubmit } from 'react-router-dom';
+import { Form, useLoaderData, useActionData, useSubmit } from 'react-router-dom';
 
 import { Box, Button, Container, Grid, IconButton, MenuItem, Stack, TextField } from '@mui/material';
-import DomainAddIcon from '@mui/icons-material/DomainAdd';
+import DomainIcon from '@mui/icons-material/Domain';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 import AlertBox from '../AlertBox';
@@ -10,10 +10,12 @@ import Tooltip from '../Tooltip';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
-import type { storageCreateAction } from '../../Router/actions';
+import type { storageEditLoader } from '../../Router/loaders';
+import type { storageEditAction } from '../../Router/actions';
 
-function CreateStorage() {
-    const responseStatus = useActionData() as Awaited<ReturnType<typeof storageCreateAction>>;
+function StorageEdit() {
+    const storageData = useLoaderData() as Awaited<ReturnType<typeof storageEditLoader>>;
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof storageEditAction>>;
 
     const storageStates = ['Käytössä', 'Ei käytössä'];
 
@@ -22,7 +24,12 @@ function CreateStorage() {
         handleSubmit: createHandleSubmit,
         reset,
         formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors, isDirty, dirtyFields },
-    } = useForm();
+    } = useForm({
+        mode: 'all',
+        // defaultValues: {
+        // ...storageData,
+        // },
+    });
 
     const submit = useSubmit();
 
@@ -40,24 +47,24 @@ function CreateStorage() {
     return (
         <>
             {responseStatus?.type === 'post' && !responseStatus?.status && (
-                <AlertBox text="Varaston luominen epäonnistui" status="error" />
+                <AlertBox text="Varaston tietojen päivitys epäonnistui" status="error" />
             )}
 
             {responseStatus?.type === 'post' && responseStatus?.status && (
-                <AlertBox text="Varasto luotu" status="success" />
+                <AlertBox text="Varaston tiedot päivitetty" status="success" />
             )}
 
             <Container maxWidth="lg">
-                <HeroHeader Icon={<DomainAddIcon />} hideInAdmin />
-                <HeroText title="Uusi varasto" subtitle="Uuden varaston luominen tietokantaan" />
+                <HeroHeader Icon={<DomainIcon />} hideInAdmin />
+                <HeroText title="Varasto" subtitle="Varaston tietojen muokkaus" />
                 <Box
-                    id="storage-creation-form"
+                    id="storage-edit-form"
                     component={Form}
                     onSubmit={handleSubmit}
                     autoComplete="off"
                     sx={{ marginTop: '2rem' }}
                 >
-                    <Stack id="storage-creation-textfields-stacker">
+                    <Stack id="storage-edit-textfields-stacker">
                         <TextField
                             id="textfield-storage-name"
                             type="text"
@@ -107,9 +114,9 @@ function CreateStorage() {
                             })}
                             inputProps={{ required: false }}
                             required
-                            error={!!formStateErrors.state}
-                            helperText={formStateErrors.state?.message?.toString() || ' '}
-                            color={dirtyFields.state && 'warning'}
+                            error={!!formStateErrors.in_use}
+                            helperText={formStateErrors.in_use?.message?.toString() || ' '}
+                            color={dirtyFields.in_use && 'warning'}
                             fullWidth
                         >
                             {storageStates.map((state) => (
@@ -150,4 +157,4 @@ function CreateStorage() {
     );
 }
 
-export default CreateStorage;
+export default StorageEdit;
