@@ -9,9 +9,10 @@ function UserOrderPagination({ userOrders }: UserOrders) {
 
     function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
         let assignedParams;
-        if (searchParams.has('tila')) {
+        if (searchParams.has('järjestys') && searchParams.has('tila')) {
             assignedParams = {
                 tila: searchParams.get('tila') as string,
+                järjestys: searchParams.get('järjestys') as string,
                 sivu: String(newPage),
             };
         } else {

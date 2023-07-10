@@ -52,7 +52,7 @@ function UserProfilePage() {
                 <Tab component={Link} to="kayttooikeudet" value="userGroupPermissions" label="Käyttöoikeudet" />
                 <Tab
                     component={Link}
-                    to="aktiivisettilaukset?tila=Aktiivinen"
+                    to="aktiivisettilaukset?tila=Aktiivinen&järjestys=Uusinensin"
                     value="activeOrders"
                     label="Aktiiviset tilaukset"
                 />
