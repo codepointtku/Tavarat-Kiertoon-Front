@@ -96,7 +96,7 @@ function AdminAppBar() {
                         </Box>
                         <Box id="mail" sx={{ margin: '0 1rem 0 1rem' }}>
                             <Tooltip title="Uudet viestit">
-                                <IconButton>
+                                <IconButton component={Link} to="/admin/saapuneet?tila=Lukemattomat">
                                     <Badge badgeContent={messages.count} color="error">
                                         <MailIcon sx={{ color: 'primary.contrastText' }} />
                                     </Badge>
