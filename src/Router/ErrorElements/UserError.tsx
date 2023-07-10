@@ -1,7 +1,7 @@
 import { Box, Link as MuiLink, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-import br from '../../../public/br.jpg';
+import br from '../../Assets/br.jpg';
 import HeroHeader from '../../Components/HeroHeader';
 import HeroText from '../../Components/HeroText';
 

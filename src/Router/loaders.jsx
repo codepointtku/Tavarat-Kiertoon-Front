@@ -422,12 +422,10 @@ const shoppingProcessLoader = async () => {
     return user;
 };
 
-const adminLoader = async (auth, setAuth) => {
+const adminLoader = async () => {
     const [{ data: user }, { data: messages }] = await Promise.all([
-        // apiCall(auth, setAuth, '/user/', 'get'),
         userApi.userRetrieve(),
-        // apiCall(auth, setAuth, '/contact_forms/?status=Not read', 'get'),
-        contactFormsApi.contactFormsList(null, null, null, { status: 'Not read' }),
+        contactFormsApi.contactFormsList(null, null, null, 'Not read'),
     ]);
 
     return { user, messages };
@@ -435,12 +433,6 @@ const adminLoader = async (auth, setAuth) => {
 
 const adminInboxLoader = async (auth, setAuth, request) => {
     const searchParams = new URL(request.url).searchParams;
-    // const status =
-    //     searchParams.get('tila') === 'Luetut'
-    //         ? 'Read'
-    //         : searchParams.get('tila') === 'Lukemattomat'
-    //         ? 'Not read'
-    //         : (searchParams.get('tila') === 'Hoidetut' && 'Handled') || null;
 
     const statusMap = {
         Luetut: 'Read',
@@ -450,32 +442,7 @@ const adminInboxLoader = async (auth, setAuth, request) => {
 
     const status = statusMap[searchParams.get('tila')] || null;
 
-    // if (status) {
-    //     // const { data: messages } = await apiCall(
-    //     //     auth,
-    //     //     setAuth,
-    //     //     searchParams.has('sivu')
-    //     //         ? `/contact_forms/?page=${searchParams.get('sivu')}&status=${status}`
-    //     //         : `/contact_forms/?status=${status}`,
-    //     //     'get'
-    //     // );
-    //     const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null , searchParams.get('tila'));
-    //     return messages;
-
-    // } else if (searchParams.has('sivu') && searchParams.get('sivu') != 0) {
-    //     const { data: messages } = await apiCall(
-    //         auth,
-    //         setAuth,
-    //         `/contact_forms/?page=${searchParams.get('sivu')}`,
-    //         'get'
-    //     );
-    //     return messages;
-    // }
-
     const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null, status);
-
-    // // const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
-    // const { data: messages } = await contactFormsApi.contactFormsList();
 
     return messages;
 };

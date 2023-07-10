@@ -279,7 +279,7 @@ const userEditAction = async (request, params) => {
     // Second apicall patches users addressinfo.
     // Third apicall updates users auth groups: BE expects integers (representing different auth groups) in an array.
     // - It gets all the checked checkboxes values into an array's first index.
-    // - The array is then splitted by comma into an array of strings. These indexes are then mapped into an array of integers,
+    // - The array is then splitted by comma into an array of strings. These values are then mapped into an array of integers,
     // - and then sent to the BE in a composition BE expects.
 
     const formData = await request.formData();
