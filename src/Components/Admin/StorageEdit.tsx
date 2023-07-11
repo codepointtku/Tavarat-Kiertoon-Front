@@ -5,6 +5,7 @@ import { Box, Button, Container, Grid, IconButton, MenuItem, Stack, TextField } 
 import DomainIcon from '@mui/icons-material/Domain';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 import AlertBox from '../AlertBox';
 import Tooltip from '../Tooltip';
@@ -163,7 +164,6 @@ function StorageEdit() {
                                     size="small"
                                     component={Link}
                                     to="/admin/varastot/"
-                                    // color="error"
                                     startIcon={<ArrowBackIcon />}
                                     sx={{ margin: '4rem 0 1rem 0' }}
                                 >
@@ -171,8 +171,14 @@ function StorageEdit() {
                                 </Button>
                             </Grid>
                             <Grid item xs={4} />
-                            <Grid item xs={4}>
-                                <Button id="initialize-deletion-process-btn" size="small" color="error">
+                            <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                <Button
+                                    id="initialize-deletion-process-btn"
+                                    size="small"
+                                    color="error"
+                                    endIcon={<DeleteForeverIcon />}
+                                    sx={{ margin: '4rem 0 1rem 0' }}
+                                >
                                     Poista tämä varasto
                                 </Button>
                             </Grid>
