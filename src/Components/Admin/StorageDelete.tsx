@@ -16,14 +16,15 @@ import type { storageEditLoader } from '../../Router/loaders';
 //
 
 function StorageDelete({ randomInt }: any) {
+    // console.log('rInt:', randomInt, typeof randomInt);
     const storageData = useLoaderData() as Awaited<ReturnType<typeof storageEditLoader>>;
 
     const storageInfo = storageData.storageInfo;
-    const storageHasAvailableProducts = storageData.hasProducts.count;
 
-    console.log('product count in this storage:', storageHasAvailableProducts);
+    // todo: If the selected storage has productitems related to it the selected storage cannot be deleted.
 
-    // console.log('rInt:', randomInt, typeof randomInt);
+    // const storageHasAvailableProducts = storageData.hasProducts.count;
+    // console.log('product count in this storage:', storageHasAvailableProducts);
 
     const {
         register,
@@ -107,7 +108,9 @@ function StorageDelete({ randomInt }: any) {
                         <Grid item xs={3} />
                         <Grid item xs={6}>
                             <Stack id="storage-delete-textfield-stacker" alignItems="center" gap={1}>
-                                <Typography variant="h6">{randomInt}</Typography>
+                                <Typography id="validation-numberset-typography-render" variant="h6">
+                                    {randomInt}
+                                </Typography>
 
                                 <TextField
                                     id="textfield-validation-numberset"

@@ -268,17 +268,8 @@ const storageEditAction = async ({ request, params }) => {
  * Deletes storage information
  */
 const storageDeleteAction = async ({ params }) => {
-    // const response = await storagesApi.storagesDestroy(params.id);
     await storagesApi.storagesDestroy(params.id);
-
-    // if (response.status === 200) {
-    //     return { type: 'deletestorage', status: true };
-    // }
-    // if (response.status) {
     return redirect('/admin/varastot');
-    // }
-
-    // return { type: 'deletestorage', status: false };
 };
 
 const userEditAction = async (request, params) => {
