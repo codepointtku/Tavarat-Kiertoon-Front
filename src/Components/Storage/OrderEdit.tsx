@@ -88,13 +88,32 @@ function OrderEdit() {
                 // 'get' ok, return needed item ids
                 if (response.status === 200) {
                     const newItems = response.data.results ? [...response.data.results] : [];
+                    // are there possible new products
                     if (newItems.length > 0) {
                         const firstItem = newItems[0];
-                        // append({ 0: firstItem });
-                        const appendItem: any = { 0: firstItem }; // TODO: fix 'any' -JTo-
-                        append(appendItem);
-                        setAmounts([...amounts, 1]);
-                    } else {
+
+                        // check if product is already on the list (product id read from each products first productItem)
+                        let oktogoon = 0;
+                        for (const key in fields) {
+                            if (Object.values(fields[key])[0].product.id === firstItem.product.id) {
+                                oktogoon++;
+                            }
+                        }
+                        // not on the list: add it
+                        if (oktogoon === 0) {
+                            const appendItem: any = { 0: firstItem }; // TODO: fix 'any' -JTo-
+                            append(appendItem);
+                            setAmounts([...amounts, 1]);
+                        }
+                        // already on the list: show alert
+                        else {
+                            alert(
+                                `### HUPSISTA ###\nOrderEdit: addNewProduct\n"${firstItem.product.name}" on jo listalla`
+                            );
+                        }
+                    }
+                    // no new products: show alert
+                    else {
                         alert(
                             '### HUPSISTA ###\nOrderEdit: addNewProduct\nValitettavasti tuotteita ei ole tällä hetkellä vapaana'
                         );
@@ -105,9 +124,9 @@ function OrderEdit() {
             // TODO: fix 'any' -JTo-
             alert(
                 '### HUPSISTA ###\nOrderEdit: addNewProduct\n' +
-                    error.message +
+                    error?.message +
                     '\n' +
-                    error.response.data.product[0] +
+                    error?.response?.data?.product[0] +
                     '\n'
             );
         }
@@ -264,16 +283,25 @@ function OrderEdit() {
                                             <TableCell sx={{ fontWeight: 'bold' }}>Yhteystieto:</TableCell>
                                             <TableCell>
                                                 <TextField
-                                                    label="Muokka yhteystietoa"
+                                                    label="Muokkaa yhteystietoa"
                                                     value={watch('contact')}
                                                     {...register('contact', {
-                                                        required: 'Pakollinen kenttä',
+                                                        required: { value: true, message: 'Pakollinen kenttä' },
+                                                        maxLength: {
+                                                            value: 255,
+                                                            message: 'Yhteystiedon maksimipituus 255 merkkiä',
+                                                        },
+                                                        pattern: {
+                                                            value: /.+@turku.fi$|.+@edu.turku.fi$/,
+                                                            message: '...@turku.fi tai ...@edu.turku.fi',
+                                                        },
                                                     })}
                                                     fullWidth
                                                     color={errors.contact ? 'error' : 'primary'}
                                                     error={!!errors.contact}
                                                     helperText={errors.contact?.message?.toString() || ' '}
                                                     required
+                                                    inputProps={{ required: false }}
                                                     sx={{ marginBottom: '-1rem' }}
                                                 />
                                             </TableCell>
