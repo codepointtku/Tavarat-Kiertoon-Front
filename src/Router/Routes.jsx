@@ -60,7 +60,6 @@ import ProfileInfo from '../Components/Default/Profilepage/ProfileInfo';
 import ModifyAddressInfo from '../Components/Default/Profilepage/ModifyAddressInfo';
 import OrdersHistory from '../Components/Default/Profilepage/OrdersHistory';
 import OrdersActive from '../Components/Default/Profilepage/OrdersActive';
-import AskForPermissions from '../Components/Default/Profilepage/AskForPermissions';
 
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
@@ -378,10 +377,6 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <ProfileInfo />,
-                                        },
-                                        {
-                                            path: 'kayttooikeudet',
-                                            element: <AskForPermissions />,
                                         },
                                         {
                                             path: 'osoitetiedot/:id',
