@@ -21,6 +21,8 @@ function StorageEdit() {
     const responseStatus = useActionData() as Awaited<ReturnType<typeof storageEditAction>>;
 
     const storageInfo = storageData.storageInfo;
+    const storageAvailableProductsCount = storageData.hasProducts.count;
+    console.log('product count in this storage:', storageAvailableProductsCount);
 
     const storageStates = ['Käytössä', 'Ei käytössä'];
 
@@ -64,6 +66,7 @@ function StorageEdit() {
                 <HeroText
                     title={`Muokattava varasto: ${storageInfo.name}`}
                     subtitle={`Varaston tunnistenumero: ${storageInfo.id}`}
+                    subtext={`Tuotemäärä: ${storageAvailableProductsCount}`}
                 />
                 <Box
                     id="storage-edit-form"

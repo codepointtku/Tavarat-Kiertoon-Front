@@ -161,6 +161,7 @@ import {
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
 import { getRandomInt } from '../Utils/getRandomInt';
+import StorageProductsTransfer from '../Components/Admin/StorageProductsTransfer';
 
 createStore({});
 
@@ -570,6 +571,10 @@ function Routes() {
                                             element: <StorageDelete randomInt={getRandomInt()} />,
                                             loader: storageEditLoader,
                                             action: storageDeleteAction,
+                                        },
+                                        {
+                                            path: 'siirto',
+                                            element: <StorageProductsTransfer />,
                                         },
                                     ],
                                 },
