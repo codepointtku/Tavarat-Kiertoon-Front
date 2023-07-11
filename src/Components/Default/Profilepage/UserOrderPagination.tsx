@@ -15,6 +15,11 @@ function UserOrderPagination({ userOrders }: UserOrders) {
                 järjestys: searchParams.get('järjestys') as string,
                 sivu: String(newPage),
             };
+        } else if (searchParams.has('tila')) {
+            assignedParams = {
+                tila: searchParams.get('tila') as string,
+                sivu: String(newPage),
+            };
         } else {
             assignedParams = { sivu: String(newPage) };
         }

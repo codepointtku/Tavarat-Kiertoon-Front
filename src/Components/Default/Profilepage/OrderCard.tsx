@@ -62,6 +62,16 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                             <Grid direction="row" spacing={1} container>
                                 <Grid item>
                                     <Typography variant="body2" color="primary.dark">
+                                        Tilauspäivä:
+                                    </Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant="body2">{readableOrderDate}</Typography>
+                                </Grid>
+                            </Grid>
+                            <Grid direction="row" spacing={1} container>
+                                <Grid item>
+                                    <Typography variant="body2" color="primary.dark">
                                         Toimitusosoite:
                                     </Typography>
                                 </Grid>
@@ -114,16 +124,6 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                                 </Grid>
                                 <Grid item>
                                     <Typography variant="body2">{orderInfo.phone_number}</Typography>
-                                </Grid>
-                            </Grid>
-                            <Grid direction="row" spacing={1} container>
-                                <Grid item>
-                                    <Typography variant="body2" color="primary.dark">
-                                        Tilauspäivä:
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Typography variant="body2">{readableOrderDate}</Typography>
                                 </Grid>
                             </Grid>
                         </Grid>
