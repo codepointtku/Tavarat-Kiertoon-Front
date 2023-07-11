@@ -14,6 +14,7 @@ import {
     Container,
     Grid,
     Paper,
+    Box,
 } from '@mui/material';
 
 import AuthContext from '../../Context/AuthContext';
@@ -151,6 +152,27 @@ function ProductDetails() {
                                 </CardContent>
                             </Grid>
                         </Grid>
+
+                        <Box sx={{ mx: 2 }}>
+                            {auth.storage ||
+                                (auth.admin && (
+                                    <>
+                                        <Typography gutterBottom variant="h5" component="div">
+                                            Yksityiskohtaisemmat tiedot
+                                        </Typography>
+                                        <Paper variant="outlined" sx={{ p: 5 }}>
+                                            {/* show id if component used in storageview or admin */}
+                                            <Typography variant="body2" color="text.secondary">
+                                                Product id: {productId}
+                                            </Typography>
+                                            {/* generate barcode if component used in storageview or admin */}
+                                            <Typography variant="body2" color="text.secondary">
+                                                Barcode: {barcode}
+                                            </Typography>
+                                        </Paper>
+                                    </>
+                                ))}
+                        </Box>
                     </Card>
                 </Grid>
             </Grid>
@@ -159,17 +181,3 @@ function ProductDetails() {
 }
 
 export default ProductDetails;
-
-// {/* show id if component used in storageview or admin */}
-// {auth.storage || auth.admin ? (
-//     <Typography variant="body6" color="text.secondary">
-//         Product id: {productId}
-//     </Typography>
-// ) : null}
-
-// {/* generate barcode if component used in storageview or admin */}
-// {auth.storage || auth.admin ? (
-//     <Typography variant="body2" color="text.secondary">
-//         Barcode: {barcode}
-//     </Typography>
-// ) : null}
