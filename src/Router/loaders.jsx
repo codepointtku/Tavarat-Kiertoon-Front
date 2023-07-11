@@ -190,8 +190,12 @@ const storagesListLoader = async () => {
 };
 
 const storageEditLoader = async ({ params }) => {
-    const { data } = await storagesApi.storagesRetrieve(params.id);
-    return data;
+    const [{ data: storageInfo }, { data: hasProducts }] = await Promise.all([
+        storagesApi.storagesRetrieve(params.id),
+        productsApi.productsItemsList(true, null, null, null, null, null, params.id),
+    ]);
+
+    return { storageInfo, hasProducts };
 };
 
 /**

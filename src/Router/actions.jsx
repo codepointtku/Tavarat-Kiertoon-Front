@@ -225,8 +225,8 @@ const orderEditAction = async (auth, setAuth, request, params) => {
 };
 
 /*
-creates new storage
-*/
+ * Creates a new storage
+ */
 const storageCreateAction = async (request) => {
     const formData = await request.formData();
 
@@ -246,7 +246,7 @@ const storageCreateAction = async (request) => {
 };
 
 /**
- * edits storage information
+ * Edits storage information
  */
 const storageEditAction = async ({ request, params }) => {
     const formData = await request.formData();
@@ -265,7 +265,7 @@ const storageEditAction = async ({ request, params }) => {
 };
 
 /**
- * delete storage information
+ * Deletes storage information
  */
 const storageDeleteAction = async ({ params }) => {
     const response = await storagesApi.storagesDestroy(params.id);

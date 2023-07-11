@@ -20,6 +20,8 @@ function StorageEdit() {
     const storageData = useLoaderData() as Awaited<ReturnType<typeof storageEditLoader>>;
     const responseStatus = useActionData() as Awaited<ReturnType<typeof storageEditAction>>;
 
+    const storageInfo = storageData.storageInfo;
+
     const storageStates = ['Käytössä', 'Ei käytössä'];
 
     const {
@@ -30,7 +32,7 @@ function StorageEdit() {
     } = useForm({
         mode: 'all',
         defaultValues: {
-            ...storageData,
+            ...storageInfo,
         },
     });
 
@@ -49,7 +51,6 @@ function StorageEdit() {
 
     return (
         <>
-            {/* fuck */}
             {responseStatus?.type === 'updatestorage' && !responseStatus?.status && (
                 <AlertBox text="Varaston tietojen päivitys epäonnistui" status="error" />
             )}
@@ -61,11 +62,8 @@ function StorageEdit() {
             <Container maxWidth="md">
                 <HeroHeader Icon={<DomainIcon />} hideInAdmin />
                 <HeroText
-                    // title="Varaston tietojen muokkaus"
-                    title={`Muokattava varasto: ${storageData.name}`}
-                    // subtitle={`Varaston nimi: ${storageData.name}`}
-                    // text={`Varaston nimi: ${storageData.name}`}
-                    subtitle={`Varaston tunnistenumero: ${storageData.id}`}
+                    title={`Muokattava varasto: ${storageInfo.name}`}
+                    subtitle={`Varaston tunnistenumero: ${storageInfo.id}`}
                 />
                 <Box
                     id="storage-edit-form"
@@ -172,17 +170,19 @@ function StorageEdit() {
                             </Grid>
                             <Grid item xs={4} />
                             <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                <Button
-                                    id="initialize-deletion-process-btn"
-                                    size="small"
-                                    color="error"
-                                    component={Link}
-                                    to={`/admin/varastot/poista/${storageData.id}`}
-                                    endIcon={<DeleteForeverIcon />}
-                                    sx={{ margin: '4rem 0 1rem 0' }}
-                                >
-                                    Poista tämä varasto
-                                </Button>
+                                <Tooltip title="Siirry poistonäkymään">
+                                    <Button
+                                        id="initialize-deletion-process-btn"
+                                        size="small"
+                                        color="error"
+                                        component={Link}
+                                        to={`/admin/varastot/poista/${storageInfo.id}`}
+                                        endIcon={<DeleteForeverIcon />}
+                                        sx={{ margin: '4rem 0 1rem 0' }}
+                                    >
+                                        Varaston poistonäkymä
+                                    </Button>
+                                </Tooltip>
                             </Grid>
                         </Grid>
                     </Stack>
