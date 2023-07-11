@@ -248,25 +248,20 @@ const storageCreateAction = async (request) => {
 /**
  * edits storage information
  */
-const storageEditAction = async (request, params) => {
+const storageEditAction = async ({ request, params }) => {
     const formData = await request.formData();
-    if (request.method === 'POST') {
-        if (formData.get('type') === 'put') {
-            const response = await storagesApi.storagesUpdate(params.id, {
-                address: formData.get('address'),
-                name: formData.get('name'),
-                in_use: formData.get('in_use'),
-            });
 
-            if (response.status === 200) {
-                return { type: 'update', status: true };
-            }
+    const response = await storagesApi.storagesUpdate(params.id, {
+        address: formData.get('address'),
+        name: formData.get('name'),
+        in_use: formData.get('in_use') === 'Käytössä' ? true : false,
+    });
 
-            return { type: 'update', status: false };
-        }
+    if (response.status === 200) {
+        return { type: 'updatestorage', status: true };
     }
 
-    return null;
+    return { type: 'updatestorage', status: false };
 };
 
 const userEditAction = async (request, params) => {
@@ -334,13 +329,14 @@ const itemCreateAction = async (auth, setAuth, request) => {
  * create new bulletin post
  */
 
-const createBulletinAction = async (auth, setAuth, request) => {
+const createBulletinAction = async ({ request }) => {
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/bulletins/', 'post', formData);
     const response = await bulletinsApi.bulletinsCreate(Object.fromEntries(formData.entries()));
+
     if (response.status === 200) {
         return { type: 'createnewannouncement', status: true };
     }
+
     return { type: 'createnewannouncement', status: false };
 };
 

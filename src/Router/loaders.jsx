@@ -189,7 +189,7 @@ const storagesListLoader = async () => {
     return data;
 };
 
-const storageEditLoader = async (params) => {
+const storageEditLoader = async ({ params }) => {
     const { data } = await storagesApi.storagesRetrieve(params.id);
     return data;
 };

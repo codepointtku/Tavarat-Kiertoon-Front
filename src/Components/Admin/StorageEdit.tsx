@@ -4,6 +4,7 @@ import { Form, useLoaderData, useActionData, useSubmit } from 'react-router-dom'
 import { Box, Button, Container, Grid, IconButton, MenuItem, Stack, TextField } from '@mui/material';
 import DomainIcon from '@mui/icons-material/Domain';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import AlertBox from '../AlertBox';
 import Tooltip from '../Tooltip';
@@ -12,10 +13,10 @@ import HeroText from '../HeroText';
 
 import type { storageEditLoader } from '../../Router/loaders';
 import type { storageEditAction } from '../../Router/actions';
+import { Link } from 'react-router-dom';
 
 function StorageEdit() {
     const storageData = useLoaderData() as Awaited<ReturnType<typeof storageEditLoader>>;
-    console.log(storageData);
     const responseStatus = useActionData() as Awaited<ReturnType<typeof storageEditAction>>;
 
     const storageStates = ['Käytössä', 'Ei käytössä'];
@@ -24,17 +25,12 @@ function StorageEdit() {
         register,
         handleSubmit: createHandleSubmit,
         reset,
-        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors, isDirty, dirtyFields },
+        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors, dirtyFields, isDirty },
     } = useForm({
         mode: 'all',
-        // defaultValues: {
-        // ...storageData,
-        // },
-        // defaultValues: {
-        //     name: storageData.name,
-        //     address: storageData.address,
-        //     in_use: storageData.in_use,
-        // },
+        defaultValues: {
+            ...storageData,
+        },
     });
 
     const submit = useSubmit();
@@ -52,17 +48,24 @@ function StorageEdit() {
 
     return (
         <>
-            {responseStatus?.type === 'post' && !responseStatus?.status && (
+            {/* fuck */}
+            {responseStatus?.type === 'updatestorage' && !responseStatus?.status && (
                 <AlertBox text="Varaston tietojen päivitys epäonnistui" status="error" />
             )}
 
-            {responseStatus?.type === 'post' && responseStatus?.status && (
+            {responseStatus?.type === 'updatestorage' && responseStatus?.status && (
                 <AlertBox text="Varaston tiedot päivitetty" status="success" />
             )}
 
-            <Container maxWidth="lg">
+            <Container maxWidth="md">
                 <HeroHeader Icon={<DomainIcon />} hideInAdmin />
-                <HeroText title={`${storageData.name}`} subtitle="Varaston tietojen muokkaus" />
+                <HeroText
+                    // title="Varaston tietojen muokkaus"
+                    title={`Muokattava varasto: ${storageData.name}`}
+                    // subtitle={`Varaston nimi: ${storageData.name}`}
+                    // text={`Varaston nimi: ${storageData.name}`}
+                    subtitle={`Varaston tunnistenumero: ${storageData.id}`}
+                />
                 <Box
                     id="storage-edit-form"
                     component={Form}
@@ -88,7 +91,7 @@ function StorageEdit() {
                             required
                             error={!!formStateErrors.name}
                             helperText={formStateErrors.name?.message?.toString() || ' '}
-                            color={dirtyFields.name && 'warning'}
+                            color={dirtyFields.name ? 'warning' : 'primary'}
                             fullWidth
                         />
 
@@ -107,7 +110,7 @@ function StorageEdit() {
                             required
                             error={!!formStateErrors.address}
                             helperText={formStateErrors.address?.message?.toString() || ' '}
-                            color={dirtyFields.address && 'warning'}
+                            color={dirtyFields.address ? 'warning' : 'primary'}
                             fullWidth
                         />
 
@@ -122,7 +125,7 @@ function StorageEdit() {
                             required
                             error={!!formStateErrors.in_use}
                             helperText={formStateErrors.in_use?.message?.toString() || ' '}
-                            color={dirtyFields.in_use && 'warning'}
+                            color={dirtyFields.in_use ? 'warning' : 'primary'}
                             fullWidth
                         >
                             {storageStates.map((state) => (
@@ -132,28 +135,46 @@ function StorageEdit() {
                             ))}
                         </TextField>
 
-                        <Grid container id="submit-reset-btns">
-                            <Grid item xs={11}>
+                        <Stack id="submit-reset-btns" direction="row" gap={2}>
+                            <Button
+                                id="submit-btn"
+                                type="submit"
+                                disabled={!isDirty || isSubmitting || isSubmitSuccessful}
+                                fullWidth
+                                sx={{
+                                    '&:hover': {
+                                        backgroundColor: 'success.dark',
+                                    },
+                                }}
+                            >
+                                Tallenna tiedot
+                            </Button>
+                            <Tooltip title="Tyhjennä lomake">
+                                <IconButton id="reset-form-btn" onClick={() => formReset()}>
+                                    <RefreshIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Stack>
+
+                        <Grid container>
+                            <Grid item xs={4}>
                                 <Button
-                                    id="submit-btn"
-                                    type="submit"
-                                    disabled={!isDirty || isSubmitting || isSubmitSuccessful}
-                                    fullWidth
-                                    sx={{
-                                        '&:hover': {
-                                            backgroundColor: 'success.dark',
-                                        },
-                                    }}
+                                    id="cancel-btn"
+                                    size="small"
+                                    component={Link}
+                                    to="/admin/varastot/"
+                                    // color="error"
+                                    startIcon={<ArrowBackIcon />}
+                                    sx={{ margin: '4rem 0 1rem 0' }}
                                 >
-                                    Tallenna tiedot
+                                    Poistu tallentamatta
                                 </Button>
                             </Grid>
-                            <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <Tooltip title="Tyhjennä lomake">
-                                    <IconButton id="reset-form-btn" onClick={() => formReset()}>
-                                        <RefreshIcon />
-                                    </IconButton>
-                                </Tooltip>
+                            <Grid item xs={4} />
+                            <Grid item xs={4}>
+                                <Button id="initialize-deletion-process-btn" size="small" color="error">
+                                    Poista tämä varasto
+                                </Button>
                             </Grid>
                         </Grid>
                     </Stack>

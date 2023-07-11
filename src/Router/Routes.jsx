@@ -560,8 +560,8 @@ function Routes() {
                                         {
                                             path: ':id',
                                             element: <StorageEdit />,
-                                            loader: ({ params }) => storageEditLoader(params),
-                                            action: ({ request, params }) => storageEditAction(request, params),
+                                            loader: storageEditLoader,
+                                            action: storageEditAction,
                                         },
                                     ],
                                 },
@@ -582,7 +582,7 @@ function Routes() {
                                 {
                                     path: 'tiedotteet/luo',
                                     element: <CreateBulletinPost />,
-                                    action: async ({ request }) => createBulletinAction(auth, setAuth, request),
+                                    action: createBulletinAction,
                                 },
                                 {
                                     path: ':saapuneet',
