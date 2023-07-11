@@ -233,6 +233,9 @@ const userEditLoader = async (auth, setAuth, params) => {
 const bikesDefaultLoader = async (auth, setAuth) => {
     // const { data } = await apiCall(auth, setAuth, '/bikes', 'get');
     const { data } = await bikesApi.bikesList();
+
+    console.log('### bikesDefaultLoader', data);
+
     return data;
 };
 
@@ -246,22 +249,21 @@ const bikesDefaultLoader = async (auth, setAuth) => {
 const bikesListLoader = async (auth, setAuth) => {
     // const { data } = await apiCall(auth, setAuth, '/bikes/stock', 'get');
     const { data } = await bikesApi.bikesStockList();
+
+    console.log('### bikesListLoader', data);
+
     return data;
 };
 /**
  * Get all bikepackets and models
  */
 const bikesPacketLoader = async (auth, setAuth) => {
-    // console.log('perjantai');
-    // const [{ data: packet }, { data: models }] = await Promise.all([
-    //     apiCall(auth, setAuth, `/bikes/packages/`, 'get'),
-    //     apiCall(auth, setAuth, `/bikes/models/`, 'get'),
-    // ]);
-
     const [{ data: packet }, { data: models }] = await Promise.all([
         bikesApi.bikesPackagesList(),
         bikesApi.bikesModelsList(),
     ]);
+
+    console.log('### bikesPacketLoader: packet', packet);
 
     return { packet, models };
 };

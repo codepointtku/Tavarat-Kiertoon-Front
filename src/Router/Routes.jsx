@@ -74,6 +74,7 @@ import GuideBikes from '../Components/Default/Instructions/GuideBikes';
 
 import ModifyBikeOrder from '../Components/Bikes/ModifyBikeOrder';
 import BikesPage from '../Components/Bikes/BikesPage';
+import BikesPage2 from '../Components/Bikes/BikesPage2';
 import Bikes from '../Components/Bikes/Bikes';
 import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 import BikePackets from '../Components/Bikes/BikePackets';
@@ -549,7 +550,7 @@ function Routes() {
                             children: [
                                 {
                                     index: true,
-                                    element: <BikesPage />,
+                                    element: <BikesPage2 />,
                                     loader: async () => bikesDefaultLoader(auth, setAuth),
                                     action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                                 },
