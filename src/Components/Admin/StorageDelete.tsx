@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Form, useLoaderData, useActionData, useSubmit, Link } from 'react-router-dom';
+import { Form, useLoaderData, useSubmit, Link } from 'react-router-dom';
 
 import { Box, Button, Container, Grid, Stack, TextField, Typography } from '@mui/material';
 import DomainDisabledIcon from '@mui/icons-material/DomainDisabled';
@@ -8,30 +8,28 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-import AlertBox from '../AlertBox';
-// import Tooltip from '../Tooltip';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
 import type { storageEditLoader } from '../../Router/loaders';
-import type { storageDeleteAction } from '../../Router/actions';
 
 //
 
 function StorageDelete({ randomInt }: any) {
     const storageData = useLoaderData() as Awaited<ReturnType<typeof storageEditLoader>>;
-    const responseStatus = useActionData() as Awaited<ReturnType<typeof storageDeleteAction>>;
 
     const storageInfo = storageData.storageInfo;
-    const storageHasAvailableProducts = storageData.hasProducts;
+    const storageHasAvailableProducts = storageData.hasProducts.count;
 
-    console.log(storageHasAvailableProducts);
+    console.log('product count in this storage:', storageHasAvailableProducts);
+
+    // console.log('rInt:', randomInt, typeof randomInt);
 
     const {
         register,
         watch,
         handleSubmit: createHandleSubmit,
-        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors, isDirty, isValid },
+        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors, isValid },
     } = useForm({
         mode: 'all',
     });
@@ -39,25 +37,13 @@ function StorageDelete({ randomInt }: any) {
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data: any) => {
-        // console.log('%c Submitissa menevä tieto', 'color: blue', data);
         submit(data, {
-            method: 'post',
+            method: 'delete',
         });
     });
 
-    console.log('storageDeletessä:', randomInt);
-    console.log('storageDeletessä:', typeof randomInt);
-
     return (
         <>
-            {responseStatus?.type === 'deletestorage' && !responseStatus?.status && (
-                <AlertBox text="Varaston pysyvä poisto epäonnistui" status="error" />
-            )}
-
-            {responseStatus?.type === 'deletestorage' && responseStatus?.status && (
-                <AlertBox text="Varasto poistettu pysyvästi" status="success" />
-            )}
-
             <Container maxWidth="md">
                 <HeroHeader Icon={<DomainDisabledIcon />} hideInAdmin />
                 <HeroText
@@ -68,8 +54,7 @@ function StorageDelete({ randomInt }: any) {
                 <Box
                     id="warning-text-box"
                     sx={{
-                        // border: '3px double red',
-                        border: '1px solid red',
+                        border: '1px dashed red',
                         padding: '2rem',
                         marginTop: '2rem',
                     }}
@@ -155,7 +140,7 @@ function StorageDelete({ randomInt }: any) {
                                 <Button
                                     id="submit-btn"
                                     type="submit"
-                                    disabled={!isDirty || isSubmitting || isSubmitSuccessful}
+                                    disabled={!isValid || isSubmitting || isSubmitSuccessful}
                                     fullWidth
                                     color="error"
                                 >
