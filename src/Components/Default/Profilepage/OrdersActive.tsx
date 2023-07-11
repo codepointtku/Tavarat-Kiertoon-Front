@@ -1,16 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouteLoaderData, useSearchParams } from 'react-router-dom';
-import {
-    Box,
-    Grid,
-    Typography,
-    Container,
-    Select,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    SelectChangeEvent,
-} from '@mui/material';
+import { Box, Grid, Typography, Container, Select, FormControl, InputLabel, MenuItem, Grow } from '@mui/material';
 
 import OrderCard from './OrderCard';
 import UserOrderPagination from './UserOrderPagination';
@@ -21,9 +11,7 @@ function ProfileInfo() {
     const [filter, setFilter] = useState({ ordering: 'creationDateDescending', status: 'all' });
     const [searchParams, setSearchParams] = useSearchParams();
     const { userOrders } = useRouteLoaderData('profile') as Awaited<UserOrders>;
-
-    const activeOrders = userOrders.results.filter((order) => order.status !== 'Finished');
-    const activeOrdersCards = activeOrders.map((order) => <OrderCard key={order.id} orderInfo={order} />);
+    const activeOrdersCards = userOrders.results.map((order) => <OrderCard key={order.id} orderInfo={order} />);
 
     useEffect(() => {
         switch (filter.status) {
@@ -55,6 +43,10 @@ function ProfileInfo() {
                 break;
         }
     }, [filter.ordering]);
+
+    // const transitionAnimation = {
+    //     '@keyframes active-order-container': {},
+    // };
 
     return (
         <Box sx={{ p: 2 }}>
