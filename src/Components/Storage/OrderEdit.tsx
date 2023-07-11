@@ -227,7 +227,6 @@ function OrderEdit() {
         // create array of product_item_ids for backend and submit data
         // const productItemIds = productItems.map((item: OrderEditLoaderType['product_items'][number]) => item.id);
         const productItemIds = productItems.map((item: any) => item.id); // TODO: fix 'any' -JTo-
-        console.log('### productItems[0]', productItems[0]);
         const formData = { ...data, productItems: JSON.stringify(productItemIds) };
         await submit(formData, {
             method: 'put',
