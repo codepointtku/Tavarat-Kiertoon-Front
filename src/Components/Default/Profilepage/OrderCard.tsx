@@ -9,9 +9,9 @@ export type OrderCardProps = {
 
 function OrderCard({ orderInfo }: OrderCardProps) {
     const date = new Date(orderInfo.delivery_date as string);
-    const readableDeliveryDate = date.toLocaleDateString();
+    const readableDeliveryDate = date.toLocaleDateString('fi-FI');
     const orderDate = new Date(orderInfo.creation_date);
-    const readableOrderDate = orderDate.toLocaleDateString();
+    const readableOrderDate = orderDate.toLocaleDateString('fi-FI');
     const statusMap = {
         Waiting: 'Odottaa',
         Processing: 'Käsittelyssä',
