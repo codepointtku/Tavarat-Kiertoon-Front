@@ -7,6 +7,7 @@ import AuthContext from '../Context/AuthContext';
 import ErrorBoundary from './ErrorBoundary';
 import BaseBoundary from './BaseBoundary';
 import AdminViewBoundary from './AdminViewBoundary';
+import UserError from './ErrorElements/UserError';
 // import HasRole from '../Utils/HasRole';
 
 import DefaultView from '../Views/DefaultView';
@@ -47,6 +48,7 @@ import Stats from '../Components/Admin/Stats/Stats';
 
 import StoragesList from '../Components/Admin/StoragesList';
 import StorageEdit from '../Components/Admin/StorageEdit';
+import StorageDelete from '../Components/Admin/StorageDelete';
 import CreateStorage from '../Components/Admin/CreateStorage';
 import AddItem from '../Components/Storage/AddItem';
 
@@ -129,6 +131,7 @@ import {
     orderEditAction,
     storageEditAction,
     storageCreateAction,
+    storageDeleteAction,
     frontPageActions,
     userEditAction,
     cartViewAction,
@@ -157,8 +160,7 @@ import {
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
-
-import UserError from './ErrorElements/UserError';
+import { getRandomInt } from '../Utils/getRandomInt';
 
 createStore({});
 
@@ -562,6 +564,12 @@ function Routes() {
                                             element: <StorageEdit />,
                                             loader: storageEditLoader,
                                             action: storageEditAction,
+                                        },
+                                        {
+                                            path: 'poista/:id',
+                                            element: <StorageDelete randomInt={getRandomInt()} />,
+                                            loader: storageEditLoader,
+                                            action: storageDeleteAction,
                                         },
                                     ],
                                 },

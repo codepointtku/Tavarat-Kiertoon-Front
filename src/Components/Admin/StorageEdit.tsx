@@ -176,6 +176,8 @@ function StorageEdit() {
                                     id="initialize-deletion-process-btn"
                                     size="small"
                                     color="error"
+                                    component={Link}
+                                    to={`/admin/varastot/poista/${storageData.id}`}
                                     endIcon={<DeleteForeverIcon />}
                                     sx={{ margin: '4rem 0 1rem 0' }}
                                 >

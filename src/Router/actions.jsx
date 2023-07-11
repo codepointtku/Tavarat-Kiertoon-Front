@@ -264,6 +264,19 @@ const storageEditAction = async ({ request, params }) => {
     return { type: 'updatestorage', status: false };
 };
 
+/**
+ * delete storage information
+ */
+const storageDeleteAction = async ({ params }) => {
+    const response = await storagesApi.storagesDestroy(params.id);
+
+    if (response.status === 200) {
+        return { type: 'deletestorage', status: true };
+    }
+
+    return { type: 'deletestorage', status: false };
+};
+
 const userEditAction = async (request, params) => {
     // This action handles user data: info, addressinfo and users auth groups.
     // User data has different BE endpoints for these different user data sections.
@@ -796,6 +809,7 @@ export {
     orderEditAction,
     storageCreateAction,
     storageEditAction,
+    storageDeleteAction,
     createBulletinAction,
     userEditAction,
     itemCreateAction,
