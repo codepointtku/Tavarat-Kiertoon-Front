@@ -1726,11 +1726,13 @@ paths:
       - in: query
         name: status
         schema:
-          type: string
-          enum:
-          - Finished
-          - Processing
-          - Waiting
+          type: array
+          items:
+            type: string
+            enum:
+            - Finished
+            - Processing
+            - Waiting
         description: |-
           * `Waiting` - Waiting
           * `Processing` - Processing
@@ -1739,6 +1741,8 @@ paths:
           * `Waiting` - Waiting
           * `Processing` - Processing
           * `Finished` - Finished
+        explode: true
+        style: form
       tags:
       - orders
       security:
@@ -1869,7 +1873,7 @@ paths:
     get:
       operationId: products_list
       description: View for listing and creating products. Create includes creation
-        of ProductItem and Picture
+        of ProductItem, Picture and Color
       parameters:
       - in: query
         name: category
@@ -1928,7 +1932,7 @@ paths:
     post:
       operationId: products_create
       description: View for listing and creating products. Create includes creation
-        of ProductItem and Picture
+        of ProductItem, Picture and Color
       tags:
       - products
       requestBody:
@@ -3585,7 +3589,10 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State6acEnum'
+          $ref: '#/components/schemas/State84aEnum'
+        color:
+          type: integer
+          nullable: true
         bike:
           type: integer
         storage:
@@ -3663,7 +3670,10 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State6acEnum'
+          $ref: '#/components/schemas/State84aEnum'
+        color:
+          type: integer
+          nullable: true
       required:
       - bike
       - created_at
@@ -3696,7 +3706,10 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State6acEnum'
+          $ref: '#/components/schemas/State84aEnum'
+        color:
+          type: integer
+          nullable: true
         storage:
           type: integer
       required:
@@ -3727,7 +3740,10 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State6acEnum'
+          $ref: '#/components/schemas/State84aEnum'
+        color:
+          type: integer
+          nullable: true
         bike:
           type: integer
         storage:
@@ -4507,12 +4523,20 @@ components:
         id:
           type: integer
           readOnly: true
-        product_item:
-          $ref: '#/components/schemas/ProductItemCreate'
         amount:
           type: integer
-        color:
+        available:
+          type: boolean
+        barcode:
           type: string
+        storage:
+          type: integer
+        shelf_id:
+          type: string
+        colors:
+          type: array
+          items:
+            type: string
         name:
           type: string
           maxLength: 255
@@ -4532,32 +4556,12 @@ components:
           nullable: true
       required:
       - amount
-      - category
-      - color
-      - id
-      - name
-      - product_item
-    ProductItemCreate:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        available:
-          type: boolean
-        shelf_id:
-          type: string
-          maxLength: 255
-        barcode:
-          type: string
-          maxLength: 255
-        storage:
-          type: integer
-          nullable: true
-      required:
       - available
       - barcode
+      - category
+      - colors
       - id
+      - name
       - storage
     ProductItemDetailResponse:
       type: object
@@ -4727,8 +4731,9 @@ components:
           type: integer
           nullable: true
         color:
-          type: integer
-          nullable: true
+          type: array
+          items:
+            type: integer
       required:
       - amount
       - category
@@ -4776,14 +4781,15 @@ components:
         category:
           type: integer
           nullable: true
-        color:
-          type: integer
-          nullable: true
         pictures:
           type: array
           items:
             type: integer
           readOnly: true
+        color:
+          type: array
+          items:
+            type: integer
       required:
       - category
       - color
@@ -4813,10 +4819,11 @@ components:
         category:
           type: integer
           nullable: true
-        color:
-          type: integer
-          nullable: true
         pictures:
+          type: array
+          items:
+            type: integer
+        color:
           type: array
           items:
             type: integer
@@ -4916,17 +4923,15 @@ components:
       - id
       - product_items
       - user
-    State6acEnum:
+    State84aEnum:
       enum:
       - AVAILABLE
       - MAINTENANCE
-      - RENTED
       - RETIRED
       type: string
       description: |-
         * `AVAILABLE` - Available
         * `MAINTENANCE` - Maintenance
-        * `RENTED` - Rented
         * `RETIRED` - Retired
     StatusC9fEnum:
       enum:

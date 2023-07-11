@@ -87,10 +87,12 @@ function OrderEdit() {
                 ]);
                 // 'get' ok, return needed item ids
                 if (response.status === 200) {
-                    const newItems = [...response.data.results];
+                    const newItems = response.data.results ? [...response.data.results] : [];
                     if (newItems.length > 0) {
                         const firstItem = newItems[0];
-                        append({ 0: firstItem });
+                        // append({ 0: firstItem });
+                        const appendItem: any = { 0: firstItem }; // TODO: fix 'any' -JTo-
+                        append(appendItem);
                         setAmounts([...amounts, 1]);
                     } else {
                         alert(
@@ -100,6 +102,7 @@ function OrderEdit() {
                 }
             }
         } catch (error: any) {
+            // TODO: fix 'any' -JTo-
             alert(
                 '### HUPSISTA ###\nOrderEdit: addNewProduct\n' +
                     error.message +
@@ -173,11 +176,12 @@ function OrderEdit() {
 
             // 'get' ok, return needed items
             if (response.status === 200) {
-                const newItems = [...response.data.results];
+                const newItems = response.data.results ? [...response.data.results] : [];
                 newItems.splice(amount);
                 return newItems;
             }
         } catch (error: any) {
+            // TODO: fix 'any' -JTo-
             alert(
                 '### HUPSISTA ###\nOrderEdit: addNewItems\n' +
                     error.message +
@@ -206,7 +210,7 @@ function OrderEdit() {
                 // add number of productItems
                 else if (item.length < amounts[index]) {
                     productItems.push(...item);
-                    const newItems = await addNewItems(item[0].product.id, amounts[index] - item.length);
+                    const newItems: any = await addNewItems(item[0].product.id, amounts[index] - item.length); // TODO: fix 'any' -JTo-
                     productItems.push(...newItems);
                 }
                 // keep the numbeer of productItems the same
@@ -216,12 +220,14 @@ function OrderEdit() {
             }
             // new product ( object(s) )
             else {
-                const newItems = await addNewItems(item[0].product.id, amounts[index]);
+                const newItems: any = await addNewItems(item[0].product.id, amounts[index]); // TODO: fix 'any' -JTo-
                 productItems.push(...newItems);
             }
         }
         // create array of product_item_ids for backend and submit data
-        const productItemIds = productItems.map((item: OrderEditLoaderType['product_items'][number]) => item.id);
+        // const productItemIds = productItems.map((item: OrderEditLoaderType['product_items'][number]) => item.id);
+        const productItemIds = productItems.map((item: any) => item.id); // TODO: fix 'any' -JTo-
+        console.log('### productItems[0]', productItems[0]);
         const formData = { ...data, productItems: JSON.stringify(productItemIds) };
         await submit(formData, {
             method: 'put',
