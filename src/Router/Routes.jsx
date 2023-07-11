@@ -49,9 +49,9 @@ import Stats from '../Components/Admin/Stats/Stats';
 import StoragesList from '../Components/Admin/StoragesList';
 import StorageEdit from '../Components/Admin/StorageEdit';
 import StorageDelete from '../Components/Admin/StorageDelete';
-import CreateStorage from '../Components/Admin/CreateStorage';
-import AddItem from '../Components/Storage/AddItem';
+import StorageCreate from '../Components/Admin/StorageCreate';
 
+import AddItem from '../Components/Storage/AddItem';
 import PDFView from '../Components/Storage/PDFView';
 
 import ProductDetails from '../Components/Default/ProductDetails';
@@ -575,7 +575,7 @@ function Routes() {
                                 },
                                 {
                                     path: 'varastot/luo',
-                                    element: <CreateStorage />,
+                                    element: <StorageCreate />,
                                     action: ({ request }) => storageCreateAction(request),
                                 },
                                 {

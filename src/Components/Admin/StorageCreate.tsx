@@ -12,7 +12,7 @@ import HeroText from '../HeroText';
 
 import type { storageCreateAction } from '../../Router/actions';
 
-function CreateStorage() {
+function StorageCreate() {
     const responseStatus = useActionData() as Awaited<ReturnType<typeof storageCreateAction>>;
 
     const storageStates = ['Käytössä', 'Ei käytössä'];
@@ -39,11 +39,11 @@ function CreateStorage() {
 
     return (
         <>
-            {responseStatus?.type === 'post' && !responseStatus?.status && (
+            {responseStatus?.type === 'createstorage' && !responseStatus?.status && (
                 <AlertBox text="Varaston luominen epäonnistui" status="error" />
             )}
 
-            {responseStatus?.type === 'post' && responseStatus?.status && (
+            {responseStatus?.type === 'createstorage' && responseStatus?.status && (
                 <AlertBox text="Varasto luotu" status="success" />
             )}
 
@@ -150,4 +150,4 @@ function CreateStorage() {
     );
 }
 
-export default CreateStorage;
+export default StorageCreate;

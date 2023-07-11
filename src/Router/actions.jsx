@@ -239,10 +239,10 @@ const storageCreateAction = async (request) => {
     const response = await storagesApi.storagesCreate(newStorage);
 
     if (response.status === 201) {
-        return { type: 'post', status: true };
+        return { type: 'createstorage', status: true };
     }
 
-    return { type: 'post', status: false };
+    return { type: 'createstorage', status: false };
 };
 
 /**
