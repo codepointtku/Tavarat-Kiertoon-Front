@@ -90,10 +90,8 @@ export default function Bikes() {
                                 <div>Varattu</div>
                                 <div>pakettiin</div>
                             </StyledTableCell>
-                            <StyledTableCell align="right" width="30%">
-                                Runkonumero
-                            </StyledTableCell>
-                            <StyledTableCell align="right" width="10%">
+                            <StyledTableCell align="right">Runkonumero</StyledTableCell>
+                            <StyledTableCell align="right" width="15%">
                                 Muokkaa
                             </StyledTableCell>
                         </TableRow>
@@ -111,7 +109,7 @@ export default function Bikes() {
                                     <TableCell align="right">{bike.bike.type.name}</TableCell>
                                     <TableCell align="right">{bike.bike.color.name}</TableCell>
                                     <TableCell align="right">{bike.package_only ? <CheckIcon /> : ''}</TableCell>
-                                    <TableCell align="right">{bike.frame_number}</TableCell>
+                                    <TableCell align="right">{bike.number}</TableCell>
                                     <TableCell align="right">
                                         <Button
                                             to={`/pyorat/pyoravarasto/muokkaa/${bike.id}`}

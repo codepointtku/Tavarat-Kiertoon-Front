@@ -20,6 +20,23 @@ paths:
                 items:
                   $ref: '#/components/schemas/MainBikeListSchema'
           description: ''
+  /bikes/availabilitylist/:
+    get:
+      operationId: bikes_availabilitylist_list
+      tags:
+      - bikes
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BikeAvailabilityList'
+          description: ''
   /bikes/brand/:
     get:
       operationId: bikes_brand_list
@@ -3285,6 +3302,19 @@ components:
       - amount
       - bike
       - id
+    BikeAvailabilityList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        rental:
+          type: array
+          items:
+            $ref: '#/components/schemas/BikeRental'
+      required:
+      - id
+      - rental
     BikeBrand:
       type: object
       properties:
@@ -3463,6 +3493,49 @@ components:
       - description
       - id
       - name
+    BikeRental:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        state:
+          $ref: '#/components/schemas/State28bEnum'
+        delivery_address:
+          type: string
+          maxLength: 255
+        pickup:
+          type: boolean
+        contact_name:
+          type: string
+          maxLength: 255
+        contact_phone_number:
+          type: string
+          maxLength: 255
+        extra_info:
+          type: string
+          maxLength: 255
+        user:
+          type: integer
+          nullable: true
+        bike_stock:
+          type: array
+          items:
+            type: integer
+      required:
+      - bike_stock
+      - contact_name
+      - contact_phone_number
+      - delivery_address
+      - end_date
+      - id
+      - start_date
     BikeRentalSchemaPost:
       type: object
       properties:
@@ -3514,7 +3587,7 @@ components:
           type: string
           format: date-time
         state:
-          $ref: '#/components/schemas/BikeRentalSchemaResponseStateEnum'
+          $ref: '#/components/schemas/State28bEnum'
         delivery_address:
           type: string
           maxLength: 255
@@ -3548,16 +3621,6 @@ components:
       - start_date
       - state
       - user
-    BikeRentalSchemaResponseStateEnum:
-      enum:
-      - WAITING
-      - BEING_PROCESSED
-      - ACTIVE
-      type: string
-      description: |-
-        * `WAITING` - Waiting
-        * `BEING_PROCESSED` - Being Processed
-        * `ACTIVE` - Active
     BikeSize:
       type: object
       properties:
@@ -4923,6 +4986,16 @@ components:
       - id
       - product_items
       - user
+    State28bEnum:
+      enum:
+      - WAITING
+      - BEING_PROCESSED
+      - ACTIVE
+      type: string
+      description: |-
+        * `WAITING` - Waiting
+        * `BEING_PROCESSED` - Being Processed
+        * `ACTIVE` - Active
     State84aEnum:
       enum:
       - AVAILABLE

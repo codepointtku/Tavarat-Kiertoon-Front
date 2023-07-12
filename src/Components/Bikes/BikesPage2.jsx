@@ -118,7 +118,7 @@ export default function BikesPage() {
             };
         });
 
-    // "Vuokraustiedot" side info and confirmation button
+    // "Lainaustiedot" side info and confirmation button
     const storageTypeForm = (
         <Controller
             name="storageType"
@@ -172,452 +172,543 @@ export default function BikesPage() {
         setIsThankYouModalVisible(true);
     };
 
+    // ************************************************************************************
+    // Kokeilu
+    // ************************************************************************************
+
+    // states
+    const [showIntro, setShowIntro] = useState(true);
+
+    // loan start and end dates
+    const minDate2 = parseISO(loaderData.date_info.available_from);
+    const maxDate2 = parseISO(loaderData.date_info.available_to);
+
+    // "Lainaustiedot" side info and confirmation button
+    const storageTypeForm2 = (
+        <Controller
+            name="storageType"
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, onBlur, value } }) => (
+                <FormControl required sx={{ maxWidth: 560 }}>
+                    <FormLabel id="storage-label">Säilytystapa 2</FormLabel>
+                    <Typography variant="caption">
+                        Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä, tuomme ne
+                        lukittavassa kärryssä. Huom. kärryn valitseminen voi rajoittaa saatavuutta.
+                    </Typography>
+                    <RadioGroup
+                        row
+                        aria-labelledby="storage-label"
+                        name="storage"
+                        value={value}
+                        onChange={(_, option) => onChange(option)}
+                        onBlur={onBlur}
+                    >
+                        <FormControlLabel value="inside" control={<Radio />} label="Sisällä" />
+                        <FormControlLabel value="outside" control={<Radio />} label="Kärryssä" />
+                    </RadioGroup>
+                </FormControl>
+            )}
+        />
+    );
+
+    // submit
+    const onSubmit2 = () => {
+        console.log('### onSubmit2');
+    };
+
+    // RENDER
     return (
-        <Container component={Form} onSubmit={handleSubmit(onSubmit)} sx={{ mb: 6 }} ref={containerRef}>
-            <Typography
-                variant="h3"
-                align="center"
-                color="primary.main"
-                my={3}
-                pb={3}
-                sx={{ borderBottom: '2px solid #0062ae' }}
-            >
-                Polkupyörien lainaus 2
-            </Typography>
-            <TransitionGroup>
-                {!isConfirmationVisible ? (
-                    <Slide direction="right" key="main-page" container={containerRef.current} appear={false}>
-                        <Box>
-                            <TransitionGroup>
-                                {isIntroVisible ? (
-                                    /*
-                                     * ************************************************************************
-                                     * ************************************************************************
-                                     *
-                                     * START - Intro
-                                     *
-                                     * ************************************************************************
-                                     * ************************************************************************
-                                     */
-                                    <Fade key="main-page-intro" appear={false}>
-                                        <Card
-                                            sx={{
-                                                p: 2,
-                                                pt: 1,
-                                                width: '100%',
-                                                top: '20px',
-                                                mt: 2,
-                                                mb: 1,
-                                                // backgroundColor: 'primary.main',
-                                            }}
-                                        >
-                                            <Stack gap={3} justifyContent="space-between">
-                                                <Typography align="center" variant="h6">
-                                                    Laina-aika 2
-                                                </Typography>
-                                                <Stack gap={1} alignItems="center">
-                                                    <Stack
-                                                        gap={2}
-                                                        flexDirection="row"
-                                                        justifyContent="center"
-                                                        alignItems="center"
-                                                    >
-                                                        <Controller
-                                                            name="startDate"
-                                                            control={control}
-                                                            rules={{ required: true }}
-                                                            render={({ field: { onChange, onBlur, value } }) => (
-                                                                <BikeCalendar
-                                                                    onChange={onChange}
-                                                                    onBlur={onBlur}
-                                                                    startDate={value}
-                                                                    endDate={watch('endDate')}
-                                                                    minDate={minDate}
-                                                                    maxDate={maxDate}
-                                                                />
-                                                            )}
-                                                        />
-                                                        <Controller
-                                                            name="endDate"
-                                                            control={control}
-                                                            rules={{ required: true }}
-                                                            render={({ field: { onChange, onBlur, value } }) => (
-                                                                <BikeCalendar
-                                                                    onChange={onChange}
-                                                                    onBlur={onBlur}
-                                                                    startDate={watch('startDate')}
-                                                                    endDate={value}
-                                                                    minDate={minDate}
-                                                                    maxDate={maxDate}
-                                                                    isStartDate={false}
-                                                                />
-                                                            )}
-                                                        />
-                                                    </Stack>
-                                                    <Typography align="center">Enintään 2 viikkoa</Typography>
-                                                    {storageTypeForm}
-                                                </Stack>
-                                                <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-                                                    <Button
-                                                        color="success"
-                                                        onClick={() => setIsIntroVisible(false)}
-                                                        disabled={
-                                                            !watch('startDate') ||
-                                                            !watch('endDate') ||
-                                                            !watch('storageType')
-                                                        }
-                                                    >
-                                                        Seuraava
-                                                    </Button>
-                                                </Box>
-                                            </Stack>
-                                        </Card>
-                                    </Fade>
-                                ) : (
-                                    /*
-                                     * ************************************************************************
-                                     * ************************************************************************
-                                     *
-                                     * END - Intro
-                                     *
-                                     * ************************************************************************
-                                     * ************************************************************************
-                                     */
-                                    <Fade key="main-page-main">
-                                        <Stack gap={2} flexDirection="row" justifyContent="space-between">
-                                            <Box sx={{ flex: 1 }}>
-                                                <Typography my={2} variant="h6" color="primary.main">
-                                                    Valitse haluamasi pyöräpaketit ja mahdolliset yksittäiset pyörät 2
-                                                </Typography>
-                                                <Box mb={2} mt={1}>
-                                                    {/*
-                                                     * ************************************************************************
-                                                     * ************************************************************************
-                                                     *
-                                                     * START - Sorting by size, color, brand or type
-                                                     *
-                                                     * ************************************************************************
-                                                     * ************************************************************************
-                                                     */}
-                                                    <Stack my={1} flexDirection="row" justifyContent="space-between">
-                                                        <Autocomplete
-                                                            disablePortal
-                                                            id="size-filter"
-                                                            options={Array.from(sizeOptionsSet).sort()}
-                                                            sx={{ width: 170 }}
-                                                            onChange={(_, newOption) =>
-                                                                handleFilterChange('size', newOption)
-                                                            }
-                                                            value={
-                                                                searchParams.get('filters') &&
-                                                                JSON.parse(searchParams.get('filters')).size
-                                                                    ? JSON.parse(searchParams.get('filters')).size
-                                                                    : null
-                                                            }
-                                                            renderInput={(params) => (
-                                                                <TextField {...params} label="Koko" />
-                                                            )}
-                                                            size="small"
-                                                        />
-                                                        <Autocomplete
-                                                            disablePortal
-                                                            id="color-filter"
-                                                            options={Array.from(colorOptionsSet).sort()}
-                                                            sx={{ width: 170 }}
-                                                            onChange={(_, newOption) =>
-                                                                handleFilterChange('color', newOption)
-                                                            }
-                                                            value={
-                                                                searchParams.get('filters') &&
-                                                                JSON.parse(searchParams.get('filters')).color
-                                                                    ? JSON.parse(searchParams.get('filters')).color
-                                                                    : null
-                                                            }
-                                                            renderInput={(params) => (
-                                                                <TextField {...params} label="Väri" />
-                                                            )}
-                                                            size="small"
-                                                        />
-                                                        <Autocomplete
-                                                            disablePortal
-                                                            id="brand-filter"
-                                                            options={Array.from(brandOptionsSet).sort()}
-                                                            sx={{ width: 170 }}
-                                                            onChange={(_, newOption) =>
-                                                                handleFilterChange('brand', newOption)
-                                                            }
-                                                            value={
-                                                                searchParams.get('filters') &&
-                                                                JSON.parse(searchParams.get('filters')).brand
-                                                                    ? JSON.parse(searchParams.get('filters')).brand
-                                                                    : null
-                                                            }
-                                                            renderInput={(params) => (
-                                                                <TextField {...params} label="Merkki" />
-                                                            )}
-                                                            size="small"
-                                                        />
-                                                        <Autocomplete
-                                                            disablePortal
-                                                            id="type-filter"
-                                                            options={Array.from(typeOptionsSet).sort()}
-                                                            sx={{ width: 170 }}
-                                                            onChange={(_, newOption) =>
-                                                                handleFilterChange('type', newOption)
-                                                            }
-                                                            value={
-                                                                searchParams.get('filters') &&
-                                                                JSON.parse(searchParams.get('filters')).type
-                                                                    ? JSON.parse(searchParams.get('filters')).type
-                                                                    : null
-                                                            }
-                                                            renderInput={(params) => (
-                                                                <TextField {...params} label="Tyyppi" />
-                                                            )}
-                                                            size="small"
-                                                        />
-                                                    </Stack>
-                                                    {/*
-                                                     * ************************************************************************
-                                                     * ************************************************************************
-                                                     *
-                                                     * END - Sorting by size, color, brand or type
-                                                     *
-                                                     * ************************************************************************
-                                                     * ************************************************************************
-                                                     */}
-                                                </Box>
-                                                {/*
-                                                 * ************************************************************************
-                                                 * ************************************************************************
-                                                 *
-                                                 *  START - Bikes / Packages area
-                                                 *
-                                                 * ************************************************************************
-                                                 * ************************************************************************
-                                                 */}
-                                                <Controller
-                                                    control={control}
-                                                    name="selectedBikes"
-                                                    render={({ field: { onChange, value } }) => (
-                                                        <>
-                                                            {filteredBikes.map((bike) => (
-                                                                <BikeCard
-                                                                    key={bike.id}
-                                                                    bike={bike}
-                                                                    dateInfo={loaderData.date_info}
-                                                                    amountSelected={value[bike.id] ?? 0}
-                                                                    onChange={(newValue) => {
-                                                                        if (
-                                                                            Number.isNaN(newValue) ||
-                                                                            !Number(newValue)
-                                                                        ) {
-                                                                            const newSelectedBikes = {
-                                                                                ...value,
-                                                                            };
-                                                                            delete newSelectedBikes[bike.id];
-                                                                            onChange(newSelectedBikes);
-                                                                        } else if (
-                                                                            newValue >= 0 &&
-                                                                            newValue <= bike.package_only_count
-                                                                                ? bike.max_available -
-                                                                                  bike.package_only_count
-                                                                                : bike.max_available
-                                                                        )
-                                                                            onChange({
-                                                                                ...value,
-                                                                                [bike.id]: Number(newValue),
-                                                                            });
-                                                                    }}
-                                                                    startDate={watch('startDate')}
-                                                                    endDate={watch('endDate')}
-                                                                />
-                                                            ))}
-                                                        </>
-                                                    )}
-                                                />
-                                                {/*
-                                                 * ************************************************************************
-                                                 * ************************************************************************
-                                                 *
-                                                 *  END - Bikes / Packages area
-                                                 *
-                                                 * ************************************************************************
-                                                 * ************************************************************************
-                                                 */}
-                                            </Box>
-                                            {/*
-                                             * ************************************************************************
-                                             * ************************************************************************
-                                             *
-                                             * START - Oikea laita: Lainaustiedot
-                                             *
-                                             * ************************************************************************
-                                             * ************************************************************************
-                                             */}
-                                            <Box sx={{ width: '300px' }}>
-                                                <Card
-                                                    sx={{
-                                                        flex: 1,
-                                                        p: 2,
-                                                        pt: 1,
-                                                        width: '100%',
-                                                        position: 'sticky',
-                                                        top: '20px',
-                                                        mt: 2,
-                                                        mb: 1,
-                                                        // backgroundColor: 'primary.main',
-                                                    }}
-                                                >
-                                                    <Stack gap={3} justifyContent="space-between">
-                                                        <Typography align="center" variant="h6">
-                                                            Lainaustiedot 2
-                                                        </Typography>
-                                                        <Stack gap={2}>
-                                                            <Controller
-                                                                name="startDate"
-                                                                control={control}
-                                                                rules={{ required: true }}
-                                                                render={({ field: { onChange, onBlur, value } }) => (
-                                                                    <BikeCalendar
-                                                                        onChange={onChange}
-                                                                        onBlur={onBlur}
-                                                                        startDate={value}
-                                                                        endDate={watch('endDate')}
-                                                                        minDate={minDate}
-                                                                        maxDate={maxDate}
-                                                                    />
+        <>
+            <Container component={Form} onSubmit={handleSubmit(onSubmit2)} sx={{ mb: 6 }}>
+                {/* Heading */}
+                <Typography
+                    variant="h3"
+                    align="center"
+                    color="primary.main"
+                    my="3rem"
+                    pb="3rem"
+                    sx={{ borderBottom: '2px solid #0062ae' }}
+                >
+                    Polkupyörien lainaus 2
+                </Typography>
+
+                {/* Intro: ask loan dates and storage option */}
+                {showIntro ? (
+                    <IntroSection
+                        control={control}
+                        minDate={minDate2}
+                        maxDate={maxDate2}
+                        storageTypeForm={storageTypeForm2}
+                    />
+                ) : (
+                    <div>
+                        <p>NOT intro</p>
+                        <button onClick={() => setShowIntro(!showIntro)}>switch</button>
+                    </div>
+                )}
+                <hr />
+            </Container>
+
+            {/* ********************************************************************************************************************************* */}
+
+            <Container component={Form} onSubmit={handleSubmit(onSubmit)} sx={{ mb: 6 }} ref={containerRef}>
+                <Typography
+                    variant="h3"
+                    align="center"
+                    color="primary.main"
+                    my={3}
+                    pb={3}
+                    sx={{ borderBottom: '2px solid #0062ae' }}
+                >
+                    Polkupyörien lainaus 2
+                </Typography>
+                <TransitionGroup>
+                    {!isConfirmationVisible ? (
+                        <Slide direction="right" key="main-page" container={containerRef.current} appear={false}>
+                            <Box>
+                                <TransitionGroup>
+                                    {isIntroVisible ? (
+                                        /*
+                                         * ************************************************************************
+                                         * ************************************************************************
+                                         *
+                                         * START - Intro
+                                         *
+                                         * ************************************************************************
+                                         * ************************************************************************
+                                         */
+                                        <Fade key="main-page-intro" appear={false}>
+                                            <div>Tässä oli intro</div>
+                                        </Fade>
+                                    ) : (
+                                        /*
+                                         * ************************************************************************
+                                         * ************************************************************************
+                                         *
+                                         * END - Intro
+                                         *
+                                         * ************************************************************************
+                                         * ************************************************************************
+                                         */
+                                        <Fade key="main-page-main">
+                                            <Stack gap={2} flexDirection="row" justifyContent="space-between">
+                                                <Box sx={{ flex: 1 }}>
+                                                    <Typography my={2} variant="h6" color="primary.main">
+                                                        Valitse haluamasi pyöräpaketit ja mahdolliset yksittäiset pyörät
+                                                        2
+                                                    </Typography>
+                                                    <Box mb={2} mt={1}>
+                                                        {/*
+                                                         * ************************************************************************
+                                                         * ************************************************************************
+                                                         *
+                                                         * START - Sorting by size, color, brand or type
+                                                         *
+                                                         * ************************************************************************
+                                                         * ************************************************************************
+                                                         */}
+                                                        <Stack
+                                                            my={1}
+                                                            flexDirection="row"
+                                                            justifyContent="space-between"
+                                                        >
+                                                            <Autocomplete
+                                                                disablePortal
+                                                                id="size-filter"
+                                                                options={Array.from(sizeOptionsSet).sort()}
+                                                                sx={{ width: 170 }}
+                                                                onChange={(_, newOption) =>
+                                                                    handleFilterChange('size', newOption)
+                                                                }
+                                                                value={
+                                                                    searchParams.get('filters') &&
+                                                                    JSON.parse(searchParams.get('filters')).size
+                                                                        ? JSON.parse(searchParams.get('filters')).size
+                                                                        : null
+                                                                }
+                                                                renderInput={(params) => (
+                                                                    <TextField {...params} label="Koko" />
                                                                 )}
+                                                                size="small"
                                                             />
-                                                            <Controller
-                                                                name="endDate"
-                                                                control={control}
-                                                                rules={{ required: true }}
-                                                                render={({ field: { onChange, onBlur, value } }) => (
-                                                                    <BikeCalendar
-                                                                        onChange={onChange}
-                                                                        onBlur={onBlur}
-                                                                        startDate={watch('startDate')}
-                                                                        endDate={value}
-                                                                        minDate={minDate}
-                                                                        maxDate={maxDate}
-                                                                        isStartDate={false}
-                                                                    />
+                                                            <Autocomplete
+                                                                disablePortal
+                                                                id="color-filter"
+                                                                options={Array.from(colorOptionsSet).sort()}
+                                                                sx={{ width: 170 }}
+                                                                onChange={(_, newOption) =>
+                                                                    handleFilterChange('color', newOption)
+                                                                }
+                                                                value={
+                                                                    searchParams.get('filters') &&
+                                                                    JSON.parse(searchParams.get('filters')).color
+                                                                        ? JSON.parse(searchParams.get('filters')).color
+                                                                        : null
+                                                                }
+                                                                renderInput={(params) => (
+                                                                    <TextField {...params} label="Väri" />
                                                                 )}
+                                                                size="small"
+                                                            />
+                                                            <Autocomplete
+                                                                disablePortal
+                                                                id="brand-filter"
+                                                                options={Array.from(brandOptionsSet).sort()}
+                                                                sx={{ width: 170 }}
+                                                                onChange={(_, newOption) =>
+                                                                    handleFilterChange('brand', newOption)
+                                                                }
+                                                                value={
+                                                                    searchParams.get('filters') &&
+                                                                    JSON.parse(searchParams.get('filters')).brand
+                                                                        ? JSON.parse(searchParams.get('filters')).brand
+                                                                        : null
+                                                                }
+                                                                renderInput={(params) => (
+                                                                    <TextField {...params} label="Merkki" />
+                                                                )}
+                                                                size="small"
+                                                            />
+                                                            <Autocomplete
+                                                                disablePortal
+                                                                id="type-filter"
+                                                                options={Array.from(typeOptionsSet).sort()}
+                                                                sx={{ width: 170 }}
+                                                                onChange={(_, newOption) =>
+                                                                    handleFilterChange('type', newOption)
+                                                                }
+                                                                value={
+                                                                    searchParams.get('filters') &&
+                                                                    JSON.parse(searchParams.get('filters')).type
+                                                                        ? JSON.parse(searchParams.get('filters')).type
+                                                                        : null
+                                                                }
+                                                                renderInput={(params) => (
+                                                                    <TextField {...params} label="Tyyppi" />
+                                                                )}
+                                                                size="small"
                                                             />
                                                         </Stack>
-                                                        <Box minHeight={44}>
-                                                            <List>
-                                                                <TransitionGroup>
-                                                                    {Object.keys(watch('selectedBikes')).length ? (
-                                                                        Object.entries(watch('selectedBikes')).map(
-                                                                            ([key, value]) => {
-                                                                                const bike = bikes.find(
-                                                                                    (_bike) =>
-                                                                                        String(_bike.id) === String(key)
-                                                                                );
-                                                                                return (
-                                                                                    !!value && (
-                                                                                        <Collapse key={key}>
-                                                                                            <Typography
-                                                                                                sx={
-                                                                                                    isValidBikeAmount(
-                                                                                                        watch(
-                                                                                                            'startDate'
-                                                                                                        ),
-                                                                                                        watch(
-                                                                                                            'endDate'
-                                                                                                        ),
-                                                                                                        watch(
-                                                                                                            'selectedBikes'
-                                                                                                        ),
-                                                                                                        bikes,
-                                                                                                        [bike]
-                                                                                                    )
-                                                                                                        ? {}
-                                                                                                        : {
-                                                                                                              color: 'red',
-                                                                                                          }
-                                                                                                }
-                                                                                            >
-                                                                                                {`${value}x ${bike.name}`}
-                                                                                            </Typography>
-                                                                                        </Collapse>
-                                                                                    )
-                                                                                );
-                                                                            }
-                                                                        )
-                                                                    ) : (
-                                                                        <Collapse>
-                                                                            <Typography>Valitse pyörä *</Typography>
-                                                                        </Collapse>
+                                                        {/*
+                                                         * ************************************************************************
+                                                         * ************************************************************************
+                                                         *
+                                                         * END - Sorting by size, color, brand or type
+                                                         *
+                                                         * ************************************************************************
+                                                         * ************************************************************************
+                                                         */}
+                                                    </Box>
+                                                    {/*
+                                                     * ************************************************************************
+                                                     * ************************************************************************
+                                                     *
+                                                     *  START - Bikes / Packages area
+                                                     *
+                                                     * ************************************************************************
+                                                     * ************************************************************************
+                                                     */}
+                                                    <Controller
+                                                        control={control}
+                                                        name="selectedBikes"
+                                                        render={({ field: { onChange, value } }) => (
+                                                            <>
+                                                                {filteredBikes.map((bike) => (
+                                                                    <BikeCard
+                                                                        key={bike.id}
+                                                                        bike={bike}
+                                                                        dateInfo={loaderData.date_info}
+                                                                        amountSelected={value[bike.id] ?? 0}
+                                                                        onChange={(newValue) => {
+                                                                            if (
+                                                                                Number.isNaN(newValue) ||
+                                                                                !Number(newValue)
+                                                                            ) {
+                                                                                const newSelectedBikes = {
+                                                                                    ...value,
+                                                                                };
+                                                                                delete newSelectedBikes[bike.id];
+                                                                                onChange(newSelectedBikes);
+                                                                            } else if (
+                                                                                newValue >= 0 &&
+                                                                                newValue <= bike.package_only_count
+                                                                                    ? bike.max_available -
+                                                                                      bike.package_only_count
+                                                                                    : bike.max_available
+                                                                            )
+                                                                                onChange({
+                                                                                    ...value,
+                                                                                    [bike.id]: Number(newValue),
+                                                                                });
+                                                                        }}
+                                                                        startDate={watch('startDate')}
+                                                                        endDate={watch('endDate')}
+                                                                    />
+                                                                ))}
+                                                            </>
+                                                        )}
+                                                    />
+                                                    {/*
+                                                     * ************************************************************************
+                                                     * ************************************************************************
+                                                     *
+                                                     *  END - Bikes / Packages area
+                                                     *
+                                                     * ************************************************************************
+                                                     * ************************************************************************
+                                                     */}
+                                                </Box>
+                                                {/*
+                                                 * ************************************************************************
+                                                 * ************************************************************************
+                                                 *
+                                                 * START - Oikea laita: Lainaustiedot
+                                                 *
+                                                 * ************************************************************************
+                                                 * ************************************************************************
+                                                 */}
+                                                <Box sx={{ width: '300px' }}>
+                                                    <Card
+                                                        sx={{
+                                                            flex: 1,
+                                                            p: 2,
+                                                            pt: 1,
+                                                            width: '100%',
+                                                            position: 'sticky',
+                                                            top: '20px',
+                                                            mt: 2,
+                                                            mb: 1,
+                                                            // backgroundColor: 'primary.main',
+                                                        }}
+                                                    >
+                                                        <Stack gap={3} justifyContent="space-between">
+                                                            <Typography align="center" variant="h6">
+                                                                Lainaustiedot 2
+                                                            </Typography>
+                                                            <Stack gap={2}>
+                                                                <Controller
+                                                                    name="startDate"
+                                                                    control={control}
+                                                                    rules={{ required: true }}
+                                                                    render={({
+                                                                        field: { onChange, onBlur, value },
+                                                                    }) => (
+                                                                        <BikeCalendar
+                                                                            onChange={onChange}
+                                                                            onBlur={onBlur}
+                                                                            startDate={value}
+                                                                            endDate={watch('endDate')}
+                                                                            minDate={minDate}
+                                                                            maxDate={maxDate}
+                                                                        />
                                                                     )}
-                                                                </TransitionGroup>
-                                                            </List>
-                                                        </Box>
-                                                        {storageTypeForm}
-                                                        <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-                                                            <Button
-                                                                color="success"
-                                                                onClick={() => setIsConfirmationVisible(true)}
-                                                                disabled={
-                                                                    !isValidBikeAmount(
-                                                                        watch('startDate'),
-                                                                        watch('endDate'),
-                                                                        watch('selectedBikes'),
-                                                                        bikes
-                                                                    ) ||
-                                                                    !Object.keys(watch('selectedBikes')).length ||
-                                                                    !watch('startDate') ||
-                                                                    !watch('endDate') ||
-                                                                    !watch('storageType')
-                                                                }
-                                                            >
-                                                                Vahvistus
-                                                            </Button>
-                                                        </Box>
-                                                    </Stack>
-                                                </Card>
-                                            </Box>
-                                            {/*
-                                             * ************************************************************************
-                                             * ************************************************************************
-                                             *
-                                             * END - Oikea laita: Lainaustiedot
-                                             *
-                                             * ************************************************************************
-                                             * ************************************************************************
-                                             */}
-                                        </Stack>
-                                    </Fade>
-                                )}
-                            </TransitionGroup>
-                        </Box>
-                    </Slide>
-                ) : (
-                    <Slide direction="left" key="BikeConfirmation" container={containerRef.current} appear={false}>
-                        {/* <Box> */}
-                        <BikeConfirmation
-                            startDate={watch('startDate')}
-                            endDate={watch('endDate')}
-                            selectedBikes={watch('selectedBikes')}
+                                                                />
+                                                                <Controller
+                                                                    name="endDate"
+                                                                    control={control}
+                                                                    rules={{ required: true }}
+                                                                    render={({
+                                                                        field: { onChange, onBlur, value },
+                                                                    }) => (
+                                                                        <BikeCalendar
+                                                                            onChange={onChange}
+                                                                            onBlur={onBlur}
+                                                                            startDate={watch('startDate')}
+                                                                            endDate={value}
+                                                                            minDate={minDate}
+                                                                            maxDate={maxDate}
+                                                                            isStartDate={false}
+                                                                        />
+                                                                    )}
+                                                                />
+                                                            </Stack>
+                                                            <Box minHeight={44}>
+                                                                <List>
+                                                                    <TransitionGroup>
+                                                                        {Object.keys(watch('selectedBikes')).length ? (
+                                                                            Object.entries(watch('selectedBikes')).map(
+                                                                                ([key, value]) => {
+                                                                                    const bike = bikes.find(
+                                                                                        (_bike) =>
+                                                                                            String(_bike.id) ===
+                                                                                            String(key)
+                                                                                    );
+                                                                                    return (
+                                                                                        !!value && (
+                                                                                            <Collapse key={key}>
+                                                                                                <Typography
+                                                                                                    sx={
+                                                                                                        isValidBikeAmount(
+                                                                                                            watch(
+                                                                                                                'startDate'
+                                                                                                            ),
+                                                                                                            watch(
+                                                                                                                'endDate'
+                                                                                                            ),
+                                                                                                            watch(
+                                                                                                                'selectedBikes'
+                                                                                                            ),
+                                                                                                            bikes,
+                                                                                                            [bike]
+                                                                                                        )
+                                                                                                            ? {}
+                                                                                                            : {
+                                                                                                                  color: 'red',
+                                                                                                              }
+                                                                                                    }
+                                                                                                >
+                                                                                                    {`${value}x ${bike.name}`}
+                                                                                                </Typography>
+                                                                                            </Collapse>
+                                                                                        )
+                                                                                    );
+                                                                                }
+                                                                            )
+                                                                        ) : (
+                                                                            <Collapse>
+                                                                                <Typography>Valitse pyörä *</Typography>
+                                                                            </Collapse>
+                                                                        )}
+                                                                    </TransitionGroup>
+                                                                </List>
+                                                            </Box>
+                                                            {storageTypeForm}
+                                                            <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+                                                                <Button
+                                                                    color="success"
+                                                                    onClick={() => setIsConfirmationVisible(true)}
+                                                                    disabled={
+                                                                        !isValidBikeAmount(
+                                                                            watch('startDate'),
+                                                                            watch('endDate'),
+                                                                            watch('selectedBikes'),
+                                                                            bikes
+                                                                        ) ||
+                                                                        !Object.keys(watch('selectedBikes')).length ||
+                                                                        !watch('startDate') ||
+                                                                        !watch('endDate') ||
+                                                                        !watch('storageType')
+                                                                    }
+                                                                >
+                                                                    Vahvistus
+                                                                </Button>
+                                                            </Box>
+                                                        </Stack>
+                                                    </Card>
+                                                </Box>
+                                                {/*
+                                                 * ************************************************************************
+                                                 * ************************************************************************
+                                                 *
+                                                 * END - Oikea laita: Lainaustiedot
+                                                 *
+                                                 * ************************************************************************
+                                                 * ************************************************************************
+                                                 */}
+                                            </Stack>
+                                        </Fade>
+                                    )}
+                                </TransitionGroup>
+                            </Box>
+                        </Slide>
+                    ) : (
+                        <Slide direction="left" key="BikeConfirmation" container={containerRef.current} appear={false}>
+                            {/* <Box> */}
+                            <BikeConfirmation
+                                startDate={watch('startDate')}
+                                endDate={watch('endDate')}
+                                selectedBikes={watch('selectedBikes')}
+                                control={control}
+                                bikes={bikes}
+                                setIsConfirmationVisible={setIsConfirmationVisible}
+                            />
+                            {/* </Box> */}
+                        </Slide>
+                    )}
+                </TransitionGroup>
+                <BikeThankYouModal
+                    isThankYouModalVisible={isThankYouModalVisible}
+                    setIsThankYouModalVisible={setIsThankYouModalVisible}
+                    setIsConfirmationVisible={setIsConfirmationVisible}
+                    setIsIntroVisible={setIsIntroVisible}
+                    reset={reset}
+                    getValues={getValues}
+                    bikes={bikes}
+                />
+            </Container>
+        </>
+    );
+}
+
+/**
+ *
+ * @param {*} param0
+ * @returns
+ */
+function IntroSection({ control, minDate, maxDate, storageTypeForm }) {
+    return (
+        <Card
+            sx={{
+                p: 2,
+                pt: 1,
+                width: '100%',
+                top: '20px',
+                mt: 2,
+                mb: 1,
+            }}
+        >
+            <Stack gap={3} justifyContent="space-between">
+                <Typography align="center" variant="h6">
+                    Laina-aika 2
+                </Typography>
+                <Stack gap={1} alignItems="center">
+                    <Stack gap={2} flexDirection="row" justifyContent="center" alignItems="center">
+                        <Controller
+                            name="startDate"
                             control={control}
-                            bikes={bikes}
-                            setIsConfirmationVisible={setIsConfirmationVisible}
+                            rules={{ required: true }}
+                            render={({ field: { onChange, onBlur, value } }) => (
+                                <BikeCalendar
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                    startDate={value}
+                                    endDate={watch('endDate')}
+                                    minDate={minDate}
+                                    maxDate={maxDate}
+                                />
+                            )}
                         />
-                        {/* </Box> */}
-                    </Slide>
-                )}
-            </TransitionGroup>
-            <BikeThankYouModal
-                isThankYouModalVisible={isThankYouModalVisible}
-                setIsThankYouModalVisible={setIsThankYouModalVisible}
-                setIsConfirmationVisible={setIsConfirmationVisible}
-                setIsIntroVisible={setIsIntroVisible}
-                reset={reset}
-                getValues={getValues}
-                bikes={bikes}
-            />
-        </Container>
+                        <Controller
+                            name="endDate"
+                            control={control}
+                            rules={{ required: true }}
+                            render={({ field: { onChange, onBlur, value } }) => (
+                                <BikeCalendar
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                    startDate={watch('startDate')}
+                                    endDate={value}
+                                    minDate={minDate}
+                                    maxDate={maxDate}
+                                    isStartDate={false}
+                                />
+                            )}
+                        />
+                    </Stack>
+                    <Typography align="center">Enintään 2 viikkoa</Typography>
+                    {storageTypeForm}
+                </Stack>
+                <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+                    <Button
+                        color="success"
+                        onClick={() => setIsIntroVisible(false)}
+                        disabled={!watch('startDate') || !watch('endDate') || !watch('storageType')}
+                    >
+                        Seuraava
+                    </Button>
+                </Box>
+            </Stack>
+        </Card>
     );
 }
