@@ -242,9 +242,8 @@ const addProductAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     console.log('formData actionissa :', formData);
-    console.log('formData.get name actionissa :', formData.get('name'));
-    console.log('formData.get pictures actionissa :', formData.get('pictures[]'));
-    console.log('formData.get product_item actionissa :', formData.get('product_item'));
+    console.log('get colors', formData.get('colors[]'));
+    console.log('getAll colors', formData.getAll('colors[]'));
 
     // formData.append('product_item', {
     //     barcode: formData.get('barcode'),
@@ -265,10 +264,10 @@ const addProductAction = async (auth, setAuth, request) => {
         price: formData.get('price'),
         category: formData.get('category'),
         // storage: formData.get('storages'),
+        colors: formData.getAll('colors[]'),
         // kuvan lisäys ei toimi bäkissä
         pictures: formData.getAll('pictures[]'),
         //pictures: JSON.parse(formData.get('pictures')),
-        colors: formData.get('colors'),
     };
     console.log(formDataWithProductItem);
 

@@ -3,7 +3,24 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouteLoaderData, useLoaderData, useSubmit, Form, useActionData } from 'react-router-dom';
 
-import { TextField, Box, MenuItem, Button, Card, CardActions, CardContent, Modal } from '@mui/material';
+import {
+    TextField,
+    Box,
+    MenuItem,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    Modal,
+    Select,
+    Checkbox,
+    ListItemText,
+    Chip,
+    FormHelperText,
+    FormControl,
+    InputLabel,
+    type SelectChangeEvent,
+} from '@mui/material';
 
 // import imageCompression from 'browser-image-compression';
 import Html5QrcodePlugin from '../../Utils/qrcodeScanner';
@@ -44,7 +61,7 @@ function AddNewItem() {
         barcode: string;
         free_description: string;
         category: number;
-        colors: number;
+        colors: number[];
         pictures: number[];
     }>({
         // validates and shows errors when fields have been touched and lost focus
@@ -55,7 +72,7 @@ function AddNewItem() {
             available: true,
             shelf_id: '',
             barcode: '',
-            storages: undefined,
+            // storages: undefined,
 
             // amount: 1,
             // price: 99.0,
@@ -66,8 +83,8 @@ function AddNewItem() {
             // name: 'testi',
             // barcode: '1234',
             // free_description: 'testi',
-            category: undefined,
-            // colors: 1,
+            // category: undefined,
+            colors: [],
             // // pictures: [1],
         },
     });
@@ -76,11 +93,16 @@ function AddNewItem() {
 
     const description = watch('free_description');
     const barcode = watch('barcode');
+    const colorsSelected = watch('colors');
 
     // QR code scanner
     const onNewScanResult = (decodedText: string, decodedResult: any) => {
         setQrScanOpen(false);
         setValue('barcode', decodedText);
+    };
+
+    const handleSelectChange = (event: SelectChangeEvent<number[]>) => {
+        setValue('colors', event.target.value as number[]);
     };
 
     const onSubmit = async (data: any) => {
@@ -89,9 +111,10 @@ function AddNewItem() {
         console.log(data);
         Object.entries(data).forEach(([key, value]) => {
             console.log(key, value);
-            if (key !== 'pictures') formData.append(key, data[key]);
+            if (key !== 'pictures' && key !== 'colors') formData.append(key, data[key]);
         });
 
+        Object.values(data?.colors).forEach((color: any) => formData.append('colors[]', color));
         Object.values(data?.pictures).forEach((pic: any) => formData.append('pictures[]', pic));
 
         // console.log('pictures AddNewItemissä', formData.get('pictures'));
@@ -241,6 +264,7 @@ function AddNewItem() {
                             </MenuItem>
                         ))}
                     </TextField>
+                    {/* TODO: shelf id -hyllypaikka, joko vapaa kenttä, tai tietyn varaston hyllypaikat valikko */}
                     <TextField
                         id="category-select"
                         select
@@ -265,32 +289,69 @@ function AddNewItem() {
                             </MenuItem>
                         ))}
                     </TextField>
-                    <TextField
+                    <FormControl error={!!errors.colors}>
+                        <InputLabel htmlFor="component-outlined">Väri</InputLabel>
+                        <Select
+                            id="color-select"
+                            label="Väri"
+                            multiple
+                            {...register('colors', { required: { value: true, message: 'Tuotteella on oltava väri' } })}
+                            required
+                            inputProps={{ required: false }}
+                            error={!!errors.colors}
+                            value={colorsSelected}
+                            onChange={handleSelectChange}
+                            renderValue={(selected) => (
+                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                    {selected.map((value) => (
+                                        <Chip key={value} label={colors.find((color) => color.id === value)?.name} />
+                                    ))}
+                                </Box>
+                            )}
+                        >
+                            {colors?.map((color) => (
+                                <MenuItem key={color.id} value={color.id}>
+                                    {/* {color.name} */}
+                                    <Checkbox checked={colorsSelected.indexOf(color.id) > -1} />
+                                    <ListItemText primary={color.name} />
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <FormHelperText>{errors.colors ? errors.colors.message : ' '}</FormHelperText>
+                    </FormControl>
+                    {/* <TextField
                         id="color-select"
                         select
+                        multiple
                         label="Väri"
-                        {...register('colors', { required: { value: true, message: 'Tuotteella on oltava väri' } })}
+                        {...register('colors[]', { required: { value: true, message: 'Tuotteella on oltava väri' } })}
                         inputProps={{ required: false }}
                         required
                         error={!!errors.colors}
                         helperText={errors.colors?.message}
                     >
                         {/* TODO värikenttä, uuden värin lisäys mahdollisuus, backend hyväksyy(?) stringin ja luo uuden ellei ole olemassa. Lisäkenttä lisää uusi väri */}
-                        {/* TODO uuden värin lisäyksen yhteydessä rootLoaderin on mahdollisesti lauettava uudelleen, jotta uusi väri näkyy heti valikossa */}
-                        <MenuItem
+                    {/* TODO uuden värin lisäyksen yhteydessä rootLoaderin on mahdollisesti lauettava uudelleen, jotta uusi väri näkyy heti valikossa */}
+
+                    {/* <MenuItem
                         // onClick={() => setValue()}
                         // key={color.id}
                         // value={color.name}
                         >
                             {/* TODO värin nimen oltava muotoa iso alkukirjain, ilman välejä, muutettava oikeaksi ennen lähetystä jottei tule "meren sininen" ja "Merensininen" */}
-                            <Button variant="contained">Luo uusi</Button>
+                    {/* <Button variant="contained">Luo uusi</Button>
                         </MenuItem>
                         {colors?.map((color: any) => (
-                            <MenuItem onClick={() => setValue('colors', color.id)} key={color.id} value={color.id}>
+                            <MenuItem
+                                // onClick={() => setValue('colors', [getValues('colors'), color.id])}
+                                onClick={}
+                                key={color.id}
+                                value={color.id}
+                            >
                                 {color.name}
                             </MenuItem>
                         ))}
-                    </TextField>
+                    </TextField>  */}
                     <TextField
                         id="amount"
                         type="number"
