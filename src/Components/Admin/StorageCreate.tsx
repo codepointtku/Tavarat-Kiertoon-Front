@@ -44,7 +44,7 @@ function StorageCreate() {
             )}
 
             {responseStatus?.type === 'createstorage' && responseStatus?.status && (
-                <AlertBox text="Varasto luotu" status="success" />
+                <AlertBox text="Varasto luotu" status="success" timer={3000} redirectUrl="/admin/varastot" />
             )}
 
             <Container maxWidth="lg">
