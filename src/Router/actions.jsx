@@ -8,6 +8,7 @@ import {
     ordersApi,
     shoppingCartApi,
     storagesApi,
+    userApi,
     usersApi,
 } from '../api';
 
@@ -795,6 +796,45 @@ const adminInboxAction = async (auth, setAuth, request) => {
     return { type: 'markasread', status: false };
 };
 
+const userProfilePageAction = async (request) => {
+    const formData = await request.formData();
+    const response = await userApi.userUpdate({
+        username: formData.get('username'),
+        first_name: formData.get('first_name'),
+        last_name: formData.get('last_name'),
+        phone_number: formData.get('phone_number'),
+    });
+    if (response.status === 200) {
+        return { type: 'userinfoupdated', status: true };
+    }
+    return { type: 'userinfoupdated', status: false };
+};
+
+const modifyUserAddressesAction = async (request) => {
+    const formData = await request.formData();
+    if (request.method === 'PUT') {
+        const response = await userApi.userAddressEditUpdate({
+            id: formData.get('id'),
+            address: formData.get('address'),
+            city: formData.get('city'),
+            zip_code: formData.get('zip_code'),
+        });
+        if (response.status === 200) {
+            return { type: 'addressmodified', status: true };
+        }
+        return { type: 'addressmodified', status: false };
+    }
+    const response = await userApi.userAddressEditCreate({
+        address: formData.get('address'),
+        city: formData.get('city'),
+        zip_code: formData.get('zip_code'),
+    });
+    if (response.status === 200) {
+        return { type: 'addresscreated', status: true };
+    }
+    return { type: 'addresscreated', status: false };
+};
+
 export {
     userSignupAction,
     frontPageActions,
@@ -824,6 +864,8 @@ export {
     deleteBikeModelAction,
     emailChangeSuccessfulAction,
     changeEmailAction,
+    userProfilePageAction,
     createNewPacketAction,
     deletePacketAction,
+    modifyUserAddressesAction,
 };
