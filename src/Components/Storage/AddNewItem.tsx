@@ -289,11 +289,12 @@ function AddNewItem() {
                             </MenuItem>
                         ))}
                     </TextField>
-                    <FormControl error={!!errors.colors}>
+                    <FormControl error={!!errors.colors} sx={{ margin: '1rem' }}>
                         <InputLabel htmlFor="component-outlined">Väri</InputLabel>
                         <Select
                             id="color-select"
                             label="Väri"
+                            sx={{ minWidth: 300 }}
                             multiple
                             {...register('colors', { required: { value: true, message: 'Tuotteella on oltava väri' } })}
                             required
@@ -392,8 +393,10 @@ function AddNewItem() {
                         helperText={errors.free_description?.message || `${description?.length || 0}/1000`}
                     />
                     <CardActions>
+                        {/* TODO preview kuville */}
                         <Button variant="contained" component="label" size="large">
                             Lisää kuvat
+                            {/* TODO mui input? */}
                             <input
                                 type="file"
                                 accept="image/*"
