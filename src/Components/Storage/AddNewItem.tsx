@@ -44,6 +44,7 @@ function AddNewItem() {
         handleSubmit,
         watch,
         setValue,
+        getValues,
         formState: {
             errors,
             // isValid can be used in disabling submit button
@@ -56,7 +57,7 @@ function AddNewItem() {
         shelf_id: string;
         measurements: string;
         weight: number;
-        storages: number;
+        storages: string;
         name: string;
         barcode: string;
         free_description: string;
@@ -83,7 +84,7 @@ function AddNewItem() {
             // name: 'testi',
             // barcode: '1234',
             // free_description: 'testi',
-            // category: undefined,
+            // category: 10,
             colors: [],
             // // pictures: [1],
         },
@@ -94,6 +95,8 @@ function AddNewItem() {
     const description = watch('free_description');
     const barcode = watch('barcode');
     const colorsSelected = watch('colors');
+    const pictures = watch('pictures');
+    console.log('pictures:', pictures);
 
     // QR code scanner
     const onNewScanResult = (decodedText: string, decodedResult: any) => {
@@ -168,6 +171,7 @@ function AddNewItem() {
                 <AlertBox status="error" text="Tuotteen luonti epäonnistui" timer={3000} />
             )}
             <Modal
+                component={Box}
                 open={qrScanOpen}
                 onClose={() => {
                     setQrScanOpen(false);
@@ -249,6 +253,7 @@ function AddNewItem() {
                         id="storage-select"
                         select
                         label="Sijainti"
+                        defaultValue={getValues('storages') || ''}
                         {...register('storages', {
                             required: { value: true, message: 'Varasto on valittava' },
                         })}
@@ -259,7 +264,7 @@ function AddNewItem() {
                         helperText={errors.storages?.message || ' '}
                     >
                         {storages?.map((location: any) => (
-                            <MenuItem key={location.id} value={location.id}>
+                            <MenuItem key={location.id} value={location.id.toString()}>
                                 {location.name}
                             </MenuItem>
                         ))}
@@ -269,6 +274,7 @@ function AddNewItem() {
                         id="category-select"
                         select
                         label="Kategoria"
+                        defaultValue={getValues('category') || ''}
                         {...register('category', {
                             required: { value: true, message: 'Tuotteella on oltava yksi kategoria' },
                         })}
@@ -414,6 +420,12 @@ function AddNewItem() {
                                 required
                             />
                         </Button>
+                        {pictures?.length > 0 && (
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                {/* image upload with multiple image preview pics here */}
+                                pics here
+                            </Box>
+                        )}
                     </CardActions>
                     <CardActions>
                         <Button
