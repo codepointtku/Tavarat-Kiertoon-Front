@@ -211,7 +211,7 @@ function AddNewItem() {
                         inputProps={{ required: false }}
                         required
                         error={!!errors.name}
-                        helperText={errors.name?.message}
+                        helperText={errors.name?.message || ' '}
                     />
                     <TextField
                         // TODO: Mitä tapahtuu jos viivakoodi löytyy jo järjestelmästä? Ohjataanko vanhan tuotteen editointiin?  Mikä response backista
@@ -235,7 +235,7 @@ function AddNewItem() {
                         inputProps={{ required: false }}
                         required
                         error={!!errors.barcode}
-                        helperText={errors.barcode?.message}
+                        helperText={errors.barcode?.message || ' '}
                     >
                         Viivakoodi
                     </TextField>
@@ -256,7 +256,7 @@ function AddNewItem() {
                         inputProps={{ required: false }}
                         required
                         error={!!errors.storages}
-                        helperText={errors.storages?.message}
+                        helperText={errors.storages?.message || ' '}
                     >
                         {storages?.map((location: any) => (
                             <MenuItem key={location.id} value={location.id}>
@@ -275,7 +275,7 @@ function AddNewItem() {
                         inputProps={{ required: false }}
                         required
                         error={!!errors.category}
-                        helperText={errors.category?.message}
+                        helperText={errors.category?.message || ' '}
                     >
                         {/* TODO Uusia kategorioita voi luoda vain admin, huomautus varastokäyttäjälle? */}
                         {/* TODO kategorian valikkoon valittavaksi vain alimmat kategoriat. ylemmät väliotsikoiksi?  */}
@@ -375,7 +375,7 @@ function AddNewItem() {
                         }}
                         required
                         error={!!errors.amount}
-                        helperText={errors.amount?.message}
+                        helperText={errors.amount?.message || ' '}
                     ></TextField>
                     <TextField
                         id="description"
