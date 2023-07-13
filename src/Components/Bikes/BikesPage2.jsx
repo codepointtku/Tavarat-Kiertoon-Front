@@ -51,6 +51,7 @@ export default function BikesPage() {
     const [isIntroVisible, setIsIntroVisible] = useState(true);
     const [isThankYouModalVisible, setIsThankYouModalVisible] = useState(false);
     const containerRef = useRef(null);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     // loaderData contains:
     //  - individual bikes list (bikes that are not in packages)
@@ -77,7 +78,7 @@ export default function BikesPage() {
             ),
         })),
     ].sort((a, b) => b.max_available - a.max_available);
-    const [searchParams, setSearchParams] = useSearchParams();
+
     const filteredBikes = searchParams.get('filters')
         ? bikes.filter((bike) =>
               Object.entries(JSON.parse(searchParams.get('filters'))).every(
@@ -90,33 +91,33 @@ export default function BikesPage() {
               bike.package_only_count ? bike.max_available > bike.package_only_count : bike.max_available
           );
 
-    const sizeOptionsSet = new Set();
-    const colorOptionsSet = new Set();
-    const brandOptionsSet = new Set();
-    const typeOptionsSet = new Set();
+    // const sizeOptionsSet = new Set();
+    // const colorOptionsSet = new Set();
+    // const brandOptionsSet = new Set();
+    // const typeOptionsSet = new Set();
 
-    bikes.forEach((bike) => {
-        if (bike.size !== null) sizeOptionsSet.add(bike.size);
-        if (bike.color !== null) colorOptionsSet.add(bike.color);
-        if (bike.brand !== null) brandOptionsSet.add(bike.brand);
-        if (bike.type !== null) typeOptionsSet.add(bike.type);
-    });
+    // bikes.forEach((bike) => {
+    //     if (bike.size !== null) sizeOptionsSet.add(bike.size);
+    //     if (bike.color !== null) colorOptionsSet.add(bike.color);
+    //     if (bike.brand !== null) brandOptionsSet.add(bike.brand);
+    //     if (bike.type !== null) typeOptionsSet.add(bike.type);
+    // });
 
-    const handleFilterChange = (filter, newOption) =>
-        setSearchParams((prevSearchParams) => {
-            if (newOption === null) {
-                const newFilters = JSON.parse(prevSearchParams.get('filters'));
-                delete newFilters[filter];
-                return { filters: JSON.stringify({ ...newFilters }) };
-            }
-            const newFilters = JSON.parse(prevSearchParams.get('filters')) ?? {};
-            return {
-                filters: JSON.stringify({
-                    ...newFilters,
-                    [filter]: newOption,
-                }),
-            };
-        });
+    // const handleFilterChange = (filter, newOption) =>
+    //     setSearchParams((prevSearchParams) => {
+    //         if (newOption === null) {
+    //             const newFilters = JSON.parse(prevSearchParams.get('filters'));
+    //             delete newFilters[filter];
+    //             return { filters: JSON.stringify({ ...newFilters }) };
+    //         }
+    //         const newFilters = JSON.parse(prevSearchParams.get('filters')) ?? {};
+    //         return {
+    //             filters: JSON.stringify({
+    //                 ...newFilters,
+    //                 [filter]: newOption,
+    //             }),
+    //         };
+    //     });
 
     // "Lainaustiedot" side info and confirmation button
     const storageTypeForm = (
@@ -178,8 +179,10 @@ export default function BikesPage() {
 
     // states
     const [showIntro, setShowIntro] = useState(true);
+    const [showSelection, setShowSelection] = useState(false);
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
-    // loan start and end dates
+    // rent start and end dates
     const minDate2 = parseISO(loaderData.date_info.available_from);
     const maxDate2 = parseISO(loaderData.date_info.available_to);
 
@@ -219,7 +222,7 @@ export default function BikesPage() {
 
     // RENDER
     return (
-        <>
+        <div>
             <Container component={Form} onSubmit={handleSubmit(onSubmit2)} sx={{ mb: 6 }}>
                 {/* Heading */}
                 <Typography
@@ -233,27 +236,80 @@ export default function BikesPage() {
                     Polkupyörien lainaus 2
                 </Typography>
 
-                {/* Intro: ask loan dates and storage option */}
+                {/* Intro: ask rent dates and storage option */}
                 {showIntro ? (
                     <IntroSection
                         control={control}
                         minDate={minDate2}
                         maxDate={maxDate2}
                         storageTypeForm={storageTypeForm2}
+                        startDate={watch('startDate')}
+                        endDate={watch('endDate')}
+                        storageType={watch('storageType')}
+                        setShowIntro={setShowIntro}
+                        setShowSelection={setShowSelection}
+                        setShowConfirmation={setShowConfirmation}
+                    />
+                ) : showSelection ? (
+                    <Stack gap={2} flexDirection="row" justifyContent="space-between">
+                        <SelectionSection
+                            control={control}
+                            bikes={bikes}
+                            filteredBikes={filteredBikes}
+                            loaderData={loaderData}
+                            startDate={watch('startDate')}
+                            endDate={watch('endDate')}
+                            searchParams={searchParams}
+                            setSearchParams={setSearchParams}
+                            setShowIntro={setShowIntro}
+                            setShowSelection={setShowSelection}
+                            setShowConfirmation={setShowConfirmation}
+                        />
+                        <IntroDataSideWindow
+                            control={control}
+                            minDate={minDate2}
+                            maxDate={maxDate2}
+                            startDate={watch('startDate')}
+                            endDate={watch('endDate')}
+                            selectedBikes={watch('selectedBikes')}
+                            storageType={watch('storageType')}
+                            bikes={bikes}
+                            storageTypeForm={storageTypeForm}
+                            setShowIntro={setShowIntro}
+                            setShowSelection={setShowSelection}
+                            setShowConfirmation={setShowConfirmation}
+                        />
+                    </Stack>
+                ) : showConfirmation ? (
+                    <BikeConfirmation
+                        startDate={watch('startDate')}
+                        endDate={watch('endDate')}
+                        selectedBikes={watch('selectedBikes')}
+                        control={control}
+                        bikes={bikes}
+                        setShowIntro={setShowIntro}
+                        setShowSelection={setShowSelection}
+                        setShowConfirmation={setShowConfirmation}
+                        setIsConfirmationVisible={setIsConfirmationVisible}
                     />
                 ) : (
-                    <div>
-                        <p>NOT intro</p>
-                        <button onClick={() => setShowIntro(!showIntro)}>switch</button>
-                    </div>
+                    // <ConfirmationSection
+                    //     setShowIntro={setShowIntro}
+                    //     setShowSelection={setShowSelection}
+                    //     setShowConfirmation={setShowConfirmation}
+                    // />
+                    <>
+                        <h1>Virhe pyörälainauksessa</h1>
+                    </>
                 )}
-                <hr />
             </Container>
+            <hr />
+            <hr />
 
             {/* ********************************************************************************************************************************* */}
 
             <Container component={Form} onSubmit={handleSubmit(onSubmit)} sx={{ mb: 6 }} ref={containerRef}>
-                <Typography
+                {/* <Typography
                     variant="h3"
                     align="center"
                     color="primary.main"
@@ -262,7 +318,8 @@ export default function BikesPage() {
                     sx={{ borderBottom: '2px solid #0062ae' }}
                 >
                     Polkupyörien lainaus 2
-                </Typography>
+                </Typography> */}
+                <div>Tässä oli Heading</div>
                 <TransitionGroup>
                     {!isConfirmationVisible ? (
                         <Slide direction="right" key="main-page" container={containerRef.current} appear={false}>
@@ -293,167 +350,100 @@ export default function BikesPage() {
                                          */
                                         <Fade key="main-page-main">
                                             <Stack gap={2} flexDirection="row" justifyContent="space-between">
-                                                <Box sx={{ flex: 1 }}>
-                                                    <Typography my={2} variant="h6" color="primary.main">
-                                                        Valitse haluamasi pyöräpaketit ja mahdolliset yksittäiset pyörät
-                                                        2
-                                                    </Typography>
-                                                    <Box mb={2} mt={1}>
-                                                        {/*
-                                                         * ************************************************************************
-                                                         * ************************************************************************
-                                                         *
-                                                         * START - Sorting by size, color, brand or type
-                                                         *
-                                                         * ************************************************************************
-                                                         * ************************************************************************
-                                                         */}
-                                                        <Stack
-                                                            my={1}
-                                                            flexDirection="row"
-                                                            justifyContent="space-between"
-                                                        >
-                                                            <Autocomplete
-                                                                disablePortal
-                                                                id="size-filter"
-                                                                options={Array.from(sizeOptionsSet).sort()}
-                                                                sx={{ width: 170 }}
-                                                                onChange={(_, newOption) =>
-                                                                    handleFilterChange('size', newOption)
-                                                                }
-                                                                value={
-                                                                    searchParams.get('filters') &&
-                                                                    JSON.parse(searchParams.get('filters')).size
-                                                                        ? JSON.parse(searchParams.get('filters')).size
-                                                                        : null
-                                                                }
-                                                                renderInput={(params) => (
-                                                                    <TextField {...params} label="Koko" />
-                                                                )}
-                                                                size="small"
-                                                            />
-                                                            <Autocomplete
-                                                                disablePortal
-                                                                id="color-filter"
-                                                                options={Array.from(colorOptionsSet).sort()}
-                                                                sx={{ width: 170 }}
-                                                                onChange={(_, newOption) =>
-                                                                    handleFilterChange('color', newOption)
-                                                                }
-                                                                value={
-                                                                    searchParams.get('filters') &&
-                                                                    JSON.parse(searchParams.get('filters')).color
-                                                                        ? JSON.parse(searchParams.get('filters')).color
-                                                                        : null
-                                                                }
-                                                                renderInput={(params) => (
-                                                                    <TextField {...params} label="Väri" />
-                                                                )}
-                                                                size="small"
-                                                            />
-                                                            <Autocomplete
-                                                                disablePortal
-                                                                id="brand-filter"
-                                                                options={Array.from(brandOptionsSet).sort()}
-                                                                sx={{ width: 170 }}
-                                                                onChange={(_, newOption) =>
-                                                                    handleFilterChange('brand', newOption)
-                                                                }
-                                                                value={
-                                                                    searchParams.get('filters') &&
-                                                                    JSON.parse(searchParams.get('filters')).brand
-                                                                        ? JSON.parse(searchParams.get('filters')).brand
-                                                                        : null
-                                                                }
-                                                                renderInput={(params) => (
-                                                                    <TextField {...params} label="Merkki" />
-                                                                )}
-                                                                size="small"
-                                                            />
-                                                            <Autocomplete
-                                                                disablePortal
-                                                                id="type-filter"
-                                                                options={Array.from(typeOptionsSet).sort()}
-                                                                sx={{ width: 170 }}
-                                                                onChange={(_, newOption) =>
-                                                                    handleFilterChange('type', newOption)
-                                                                }
-                                                                value={
-                                                                    searchParams.get('filters') &&
-                                                                    JSON.parse(searchParams.get('filters')).type
-                                                                        ? JSON.parse(searchParams.get('filters')).type
-                                                                        : null
-                                                                }
-                                                                renderInput={(params) => (
-                                                                    <TextField {...params} label="Tyyppi" />
-                                                                )}
-                                                                size="small"
-                                                            />
-                                                        </Stack>
-                                                        {/*
-                                                         * ************************************************************************
-                                                         * ************************************************************************
-                                                         *
-                                                         * END - Sorting by size, color, brand or type
-                                                         *
-                                                         * ************************************************************************
-                                                         * ************************************************************************
-                                                         */}
-                                                    </Box>
+                                                <Box mb={2} mt={1}>
                                                     {/*
                                                      * ************************************************************************
                                                      * ************************************************************************
                                                      *
-                                                     *  START - Bikes / Packages area
+                                                     * START - Sorting by size, color, brand or type
                                                      *
                                                      * ************************************************************************
                                                      * ************************************************************************
                                                      */}
-                                                    <Controller
-                                                        control={control}
-                                                        name="selectedBikes"
-                                                        render={({ field: { onChange, value } }) => (
-                                                            <>
-                                                                {filteredBikes.map((bike) => (
-                                                                    <BikeCard
-                                                                        key={bike.id}
-                                                                        bike={bike}
-                                                                        dateInfo={loaderData.date_info}
-                                                                        amountSelected={value[bike.id] ?? 0}
-                                                                        onChange={(newValue) => {
-                                                                            if (
-                                                                                Number.isNaN(newValue) ||
-                                                                                !Number(newValue)
-                                                                            ) {
-                                                                                const newSelectedBikes = {
-                                                                                    ...value,
-                                                                                };
-                                                                                delete newSelectedBikes[bike.id];
-                                                                                onChange(newSelectedBikes);
-                                                                            } else if (
-                                                                                newValue >= 0 &&
-                                                                                newValue <= bike.package_only_count
-                                                                                    ? bike.max_available -
-                                                                                      bike.package_only_count
-                                                                                    : bike.max_available
-                                                                            )
-                                                                                onChange({
-                                                                                    ...value,
-                                                                                    [bike.id]: Number(newValue),
-                                                                                });
-                                                                        }}
-                                                                        startDate={watch('startDate')}
-                                                                        endDate={watch('endDate')}
-                                                                    />
-                                                                ))}
-                                                            </>
-                                                        )}
-                                                    />
+                                                    {/* <Stack my={1} flexDirection="row" justifyContent="space-between">
+                                                        <Autocomplete
+                                                            disablePortal
+                                                            id="size-filter"
+                                                            options={Array.from(sizeOptionsSet).sort()}
+                                                            sx={{ width: 170 }}
+                                                            onChange={(_, newOption) =>
+                                                                handleFilterChange('size', newOption)
+                                                            }
+                                                            value={
+                                                                searchParams.get('filters') &&
+                                                                JSON.parse(searchParams.get('filters')).size
+                                                                    ? JSON.parse(searchParams.get('filters')).size
+                                                                    : null
+                                                            }
+                                                            renderInput={(params) => (
+                                                                <TextField {...params} label="Koko" />
+                                                            )}
+                                                            size="small"
+                                                        />
+                                                        <Autocomplete
+                                                            disablePortal
+                                                            id="color-filter"
+                                                            options={Array.from(colorOptionsSet).sort()}
+                                                            sx={{ width: 170 }}
+                                                            onChange={(_, newOption) =>
+                                                                handleFilterChange('color', newOption)
+                                                            }
+                                                            value={
+                                                                searchParams.get('filters') &&
+                                                                JSON.parse(searchParams.get('filters')).color
+                                                                    ? JSON.parse(searchParams.get('filters')).color
+                                                                    : null
+                                                            }
+                                                            renderInput={(params) => (
+                                                                <TextField {...params} label="Väri" />
+                                                            )}
+                                                            size="small"
+                                                        />
+                                                        <Autocomplete
+                                                            disablePortal
+                                                            id="brand-filter"
+                                                            options={Array.from(brandOptionsSet).sort()}
+                                                            sx={{ width: 170 }}
+                                                            onChange={(_, newOption) =>
+                                                                handleFilterChange('brand', newOption)
+                                                            }
+                                                            value={
+                                                                searchParams.get('filters') &&
+                                                                JSON.parse(searchParams.get('filters')).brand
+                                                                    ? JSON.parse(searchParams.get('filters')).brand
+                                                                    : null
+                                                            }
+                                                            renderInput={(params) => (
+                                                                <TextField {...params} label="Merkki" />
+                                                            )}
+                                                            size="small"
+                                                        />
+                                                        <Autocomplete
+                                                            disablePortal
+                                                            id="type-filter"
+                                                            options={Array.from(typeOptionsSet).sort()}
+                                                            sx={{ width: 170 }}
+                                                            onChange={(_, newOption) =>
+                                                                handleFilterChange('type', newOption)
+                                                            }
+                                                            value={
+                                                                searchParams.get('filters') &&
+                                                                JSON.parse(searchParams.get('filters')).type
+                                                                    ? JSON.parse(searchParams.get('filters')).type
+                                                                    : null
+                                                            }
+                                                            renderInput={(params) => (
+                                                                <TextField {...params} label="Tyyppi" />
+                                                            )}
+                                                            size="small"
+                                                        />
+                                                    </Stack> */}
+                                                    <div>Tässä oli Filter bar</div>
                                                     {/*
                                                      * ************************************************************************
                                                      * ************************************************************************
                                                      *
-                                                     *  END - Bikes / Packages area
+                                                     * END - Sorting by size, color, brand or type
                                                      *
                                                      * ************************************************************************
                                                      * ************************************************************************
@@ -463,12 +453,31 @@ export default function BikesPage() {
                                                  * ************************************************************************
                                                  * ************************************************************************
                                                  *
+                                                 *  START - Bikes / Packages area
+                                                 *
+                                                 * ************************************************************************
+                                                 * ************************************************************************
+                                                 */}
+                                                <div>Tässä oli Bikes / Packages area</div>
+                                                {/*
+                                                 * ************************************************************************
+                                                 * ************************************************************************
+                                                 *
+                                                 *  END - Bikes / Packages area
+                                                 *
+                                                 * ************************************************************************
+                                                 * ************************************************************************
+                                                 */}
+                                                {/*
+                                                 * ************************************************************************
+                                                 * ************************************************************************
+                                                 *
                                                  * START - Oikea laita: Lainaustiedot
                                                  *
                                                  * ************************************************************************
                                                  * ************************************************************************
                                                  */}
-                                                <Box sx={{ width: '300px' }}>
+                                                {/* <Box sx={{ width: '300px' }}>
                                                     <Card
                                                         sx={{
                                                             flex: 1,
@@ -596,7 +605,8 @@ export default function BikesPage() {
                                                             </Box>
                                                         </Stack>
                                                     </Card>
-                                                </Box>
+                                                </Box> */}
+                                                <div>Tässä oli oikean laidan flouttaava ikkuna</div>
                                                 {/*
                                                  * ************************************************************************
                                                  * ************************************************************************
@@ -637,16 +647,29 @@ export default function BikesPage() {
                     bikes={bikes}
                 />
             </Container>
-        </>
+        </div>
     );
 }
 
 /**
+ * Intro section
+ * First part of rental process: select start and end dates and storage method (trailer or own storage)
  *
  * @param {*} param0
  * @returns
  */
-function IntroSection({ control, minDate, maxDate, storageTypeForm }) {
+function IntroSection({
+    control,
+    minDate,
+    maxDate,
+    storageTypeForm,
+    startDate,
+    endDate,
+    storageType,
+    setShowIntro,
+    setShowSelection,
+    setShowConfirmation,
+}) {
     return (
         <Card
             sx={{
@@ -673,7 +696,7 @@ function IntroSection({ control, minDate, maxDate, storageTypeForm }) {
                                     onChange={onChange}
                                     onBlur={onBlur}
                                     startDate={value}
-                                    endDate={watch('endDate')}
+                                    endDate={endDate}
                                     minDate={minDate}
                                     maxDate={maxDate}
                                 />
@@ -687,7 +710,7 @@ function IntroSection({ control, minDate, maxDate, storageTypeForm }) {
                                 <BikeCalendar
                                     onChange={onChange}
                                     onBlur={onBlur}
-                                    startDate={watch('startDate')}
+                                    startDate={startDate}
                                     endDate={value}
                                     minDate={minDate}
                                     maxDate={maxDate}
@@ -702,13 +725,365 @@ function IntroSection({ control, minDate, maxDate, storageTypeForm }) {
                 <Box sx={{ display: 'flex', justifyContent: 'end' }}>
                     <Button
                         color="success"
-                        onClick={() => setIsIntroVisible(false)}
-                        disabled={!watch('startDate') || !watch('endDate') || !watch('storageType')}
+                        onClick={() => {
+                            setShowIntro(false);
+                            setShowSelection(true);
+                            setShowConfirmation(false);
+                        }}
+                        disabled={!startDate || !endDate || !storageType}
                     >
                         Seuraava
                     </Button>
                 </Box>
             </Stack>
         </Card>
+    );
+}
+
+/**
+ * Selection section
+ * Second part of rental process: select packets and bikes you want to rent
+ *
+ * @param {*} param0
+ * @returns
+ */
+function SelectionSection({
+    control,
+    bikes,
+    filteredBikes,
+    loaderData,
+    startDate,
+    endDate,
+    searchParams,
+    setSearchParams,
+    setShowIntro,
+    setShowSelection,
+    setShowConfirmation,
+}) {
+    const sizeOptionsSet = new Set();
+    const colorOptionsSet = new Set();
+    const brandOptionsSet = new Set();
+    const typeOptionsSet = new Set();
+
+    bikes.forEach((bike) => {
+        if (bike.size !== null) sizeOptionsSet.add(bike.size);
+        if (bike.color !== null) colorOptionsSet.add(bike.color);
+        if (bike.brand !== null) brandOptionsSet.add(bike.brand);
+        if (bike.type !== null) typeOptionsSet.add(bike.type);
+    });
+
+    const handleFilterChange = (filter, newOption) =>
+        setSearchParams((prevSearchParams) => {
+            if (newOption === null) {
+                const newFilters = JSON.parse(prevSearchParams.get('filters'));
+                delete newFilters[filter];
+                return { filters: JSON.stringify({ ...newFilters }) };
+            }
+            const newFilters = JSON.parse(prevSearchParams.get('filters')) ?? {};
+            return {
+                filters: JSON.stringify({
+                    ...newFilters,
+                    [filter]: newOption,
+                }),
+            };
+        });
+
+    return (
+        <Box>
+            {/* Section ehading */}
+            <Typography my={2} variant="h6" color="primary.main">
+                Valitse haluamasi pyöräpaketit ja mahdolliset yksittäiset pyörät 2
+            </Typography>
+
+            {/* Filter visible bikes */}
+            <FilterDataBar
+                sizeOptionsSet={sizeOptionsSet}
+                colorOptionsSet={colorOptionsSet}
+                brandOptionsSet={brandOptionsSet}
+                typeOptionsSet={typeOptionsSet}
+                handleFilterChange={handleFilterChange}
+                searchParams={searchParams}
+            />
+
+            {/* Bikes and packages */}
+            <Box>
+                <Controller
+                    control={control}
+                    name="selectedBikes"
+                    render={({ field: { onChange, value } }) => (
+                        <>
+                            {filteredBikes.map((bike) => (
+                                <BikeCard
+                                    key={bike.id}
+                                    bike={bike}
+                                    dateInfo={loaderData.date_info}
+                                    amountSelected={value[bike.id] ?? 0}
+                                    onChange={(newValue) => {
+                                        if (Number.isNaN(newValue) || !Number(newValue)) {
+                                            const newSelectedBikes = {
+                                                ...value,
+                                            };
+                                            delete newSelectedBikes[bike.id];
+                                            onChange(newSelectedBikes);
+                                        } else if (
+                                            newValue >= 0 && newValue <= bike.package_only_count
+                                                ? bike.max_available - bike.package_only_count
+                                                : bike.max_available
+                                        )
+                                            onChange({
+                                                ...value,
+                                                [bike.id]: Number(newValue),
+                                            });
+                                    }}
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                />
+                            ))}
+                        </>
+                    )}
+                />
+            </Box>
+
+            <button
+                onClick={() => {
+                    setShowIntro(false);
+                    setShowSelection(false);
+                    setShowConfirmation(true);
+                }}
+            >
+                TEST: go to ConfirmationSection
+            </button>
+        </Box>
+    );
+}
+
+/**
+ * Confirmation section
+ * Third (and final) part of rental process: add delivery info and confirm rental
+ *
+ * @param {*} param0
+ * @returns
+ */
+function ConfirmationSection({ setShowIntro, setShowSelection, setShowConfirmation }) {
+    return (
+        <>
+            <h1>ConfirmationSection</h1>
+            <button
+                onClick={() => {
+                    setShowIntro(true);
+                    setShowSelection(false);
+                    setShowConfirmation(false);
+                }}
+            >
+                TEST: go to IntroSection
+            </button>
+        </>
+    );
+}
+
+/**
+ * Intro Data side window
+ * Floating window on the right side of the window that allows to modify the rental dates and storage option
+ *
+ * @param {*} param0
+ * @returns
+ */
+function IntroDataSideWindow({
+    control,
+    minDate,
+    maxDate,
+    startDate, // watch('startDate')
+    endDate, // watch('endDate')
+    selectedBikes, // watch('selectedBikes')
+    storageType, // watch('storageType'
+    bikes,
+    storageTypeForm,
+    setShowIntro,
+    setShowSelection,
+    setShowConfirmation,
+}) {
+    return (
+        <Box sx={{ width: '300px' }}>
+            <Card
+                sx={{
+                    flex: 1,
+                    p: 2,
+                    pt: 1,
+                    width: '100%',
+                    position: 'sticky',
+                    top: '20px',
+                    mt: 2,
+                    mb: 1,
+                    // backgroundColor: 'primary.main',
+                }}
+            >
+                <Stack gap={3} justifyContent="space-between">
+                    <Typography align="center" variant="h6">
+                        Lainaustiedot 2
+                    </Typography>
+                    <Stack gap={2}>
+                        <Controller
+                            name="startDate"
+                            control={control}
+                            rules={{ required: true }}
+                            render={({ field: { onChange, onBlur, value } }) => (
+                                <BikeCalendar
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                    startDate={value}
+                                    endDate={endDate}
+                                    minDate={minDate}
+                                    maxDate={maxDate}
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="endDate"
+                            control={control}
+                            rules={{ required: true }}
+                            render={({ field: { onChange, onBlur, value } }) => (
+                                <BikeCalendar
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                    startDate={startDate}
+                                    endDate={value}
+                                    minDate={minDate}
+                                    maxDate={maxDate}
+                                    isStartDate={false}
+                                />
+                            )}
+                        />
+                    </Stack>
+                    <Box minHeight={44}>
+                        <List>
+                            <TransitionGroup>
+                                {Object.keys(selectedBikes).length ? (
+                                    Object.entries(selectedBikes).map(([key, value]) => {
+                                        const bike = bikes.find((_bike) => String(_bike.id) === String(key));
+                                        return (
+                                            !!value && (
+                                                <Collapse key={key}>
+                                                    <Typography
+                                                        sx={
+                                                            isValidBikeAmount(
+                                                                startDate,
+                                                                endDate,
+                                                                selectedBikes,
+                                                                bikes,
+                                                                [bike]
+                                                            )
+                                                                ? {}
+                                                                : {
+                                                                      color: 'red',
+                                                                  }
+                                                        }
+                                                    >
+                                                        {`${value}x ${bike.name}`}
+                                                    </Typography>
+                                                </Collapse>
+                                            )
+                                        );
+                                    })
+                                ) : (
+                                    <Collapse>
+                                        <Typography>Valitse pyörä *</Typography>
+                                    </Collapse>
+                                )}
+                            </TransitionGroup>
+                        </List>
+                    </Box>
+                    {storageTypeForm}
+                    <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+                        <Button
+                            color="success"
+                            onClick={() => {
+                                setShowIntro(false);
+                                setShowSelection(false);
+                                setShowConfirmation(true);
+                            }}
+                            disabled={
+                                !isValidBikeAmount(startDate, endDate, selectedBikes, bikes) ||
+                                !Object.keys(selectedBikes).length ||
+                                !startDate ||
+                                !endDate ||
+                                !storageType
+                            }
+                        >
+                            Vahvistus
+                        </Button>
+                    </Box>
+                </Stack>
+            </Card>
+        </Box>
+    );
+}
+
+function FilterDataBar({
+    sizeOptionsSet,
+    colorOptionsSet,
+    brandOptionsSet,
+    typeOptionsSet,
+    handleFilterChange,
+    searchParams,
+}) {
+    return (
+        <Stack my={1} flexDirection="row" justifyContent="space-between" mb="2rem">
+            <Autocomplete
+                disablePortal
+                id="size-filter"
+                options={Array.from(sizeOptionsSet).sort()}
+                sx={{ width: 170 }}
+                onChange={(_, newOption) => handleFilterChange('size', newOption)}
+                value={
+                    searchParams.get('filters') && JSON.parse(searchParams.get('filters')).size
+                        ? JSON.parse(searchParams.get('filters')).size
+                        : null
+                }
+                renderInput={(params) => <TextField {...params} label="Koko" />}
+                size="small"
+            />
+            <Autocomplete
+                disablePortal
+                id="color-filter"
+                options={Array.from(colorOptionsSet).sort()}
+                sx={{ width: 170 }}
+                onChange={(_, newOption) => handleFilterChange('color', newOption)}
+                value={
+                    searchParams.get('filters') && JSON.parse(searchParams.get('filters')).color
+                        ? JSON.parse(searchParams.get('filters')).color
+                        : null
+                }
+                renderInput={(params) => <TextField {...params} label="Väri" />}
+                size="small"
+            />
+            <Autocomplete
+                disablePortal
+                id="brand-filter"
+                options={Array.from(brandOptionsSet).sort()}
+                sx={{ width: 170 }}
+                onChange={(_, newOption) => handleFilterChange('brand', newOption)}
+                value={
+                    searchParams.get('filters') && JSON.parse(searchParams.get('filters')).brand
+                        ? JSON.parse(searchParams.get('filters')).brand
+                        : null
+                }
+                renderInput={(params) => <TextField {...params} label="Merkki" />}
+                size="small"
+            />
+            <Autocomplete
+                disablePortal
+                id="type-filter"
+                options={Array.from(typeOptionsSet).sort()}
+                sx={{ width: 170 }}
+                onChange={(_, newOption) => handleFilterChange('type', newOption)}
+                value={
+                    searchParams.get('filters') && JSON.parse(searchParams.get('filters')).type
+                        ? JSON.parse(searchParams.get('filters')).type
+                        : null
+                }
+                renderInput={(params) => <TextField {...params} label="Tyyppi" />}
+                size="small"
+            />
+        </Stack>
     );
 }

@@ -40,6 +40,9 @@ export default function BikeConfirmation({
     selectedBikes,
     control,
     bikes,
+    setShowIntro,
+    setShowSelection,
+    setShowConfirmation,
     setIsConfirmationVisible,
 }: BikeConfirmationInterface) {
     const [requiredCheckboxes, setRequiredCheckboxes] = useState({ education: false, responsibilities: false });
@@ -270,7 +273,15 @@ export default function BikeConfirmation({
                     />
                 </Stack>
                 <Stack flexDirection="row" justifyContent="space-between" mt={2}>
-                    <Button color="error" onClick={() => setIsConfirmationVisible(false)}>
+                    <Button
+                        color="error"
+                        onClick={() => {
+                            setShowIntro(false);
+                            setShowSelection(true);
+                            setShowConfirmation(false);
+                            setIsConfirmationVisible(false);
+                        }}
+                    >
                         Takaisin
                     </Button>
                     <Button
