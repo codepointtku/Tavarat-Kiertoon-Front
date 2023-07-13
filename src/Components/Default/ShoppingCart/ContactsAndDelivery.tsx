@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { useStateMachine } from 'little-state-machine';
@@ -39,6 +39,7 @@ function ContactsAndDelivery() {
 
     const navigate = useNavigate();
     const onSubmit = (data: CartFormData) => {
+        console.log(data);
         actions.Update(data);
         navigate('/ostoskori/vaihe3');
     };
@@ -52,6 +53,11 @@ function ContactsAndDelivery() {
         setValue('email', user.email);
         setValue('phoneNumber', user.phone_number);
     }
+
+    useEffect(() => {
+        setValue('zipcode', correctAddress[0]?.zip_code);
+        setValue('city', correctAddress[0]?.city);
+    }, [selectedAddress]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
