@@ -10,14 +10,15 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Checkbox from '@mui/material/Checkbox';
 import Divider from '@mui/material/Divider';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-import { Avatar, Box, Button, Container, Grid, IconButton, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Button, Container, FormHelperText, Grid, IconButton, Stack, Typography } from '@mui/material';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import InputIcon from '@mui/icons-material/Input';
+import { Forward } from '@mui/icons-material';
 
 import AlertBox from '../AlertBox';
 import HeroHeader from '../HeroHeader';
@@ -25,6 +26,7 @@ import HeroText from '../HeroText';
 
 import type { productTransferLoader } from '../../Router/loaders';
 import type { productsTransferAction } from '../../Router/actions';
+import Tooltip from '../Tooltip';
 
 //
 
@@ -71,8 +73,9 @@ function StorageProductsTransfer() {
 
     const {
         register,
+        reset,
         handleSubmit: createHandleSubmit,
-        formState: { isSubmitting, isSubmitSuccessful },
+        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors },
     } = useForm({
         mode: 'all',
     });
@@ -85,6 +88,10 @@ function StorageProductsTransfer() {
             method: 'put',
         });
     });
+
+    const formReset = () => {
+        reset();
+    };
 
     //
 
@@ -195,40 +202,40 @@ function StorageProductsTransfer() {
             )}
             <Container maxWidth="md">
                 <HeroHeader Icon={<ImportExportIcon />} hideInAdmin />
-                <HeroText
-                    title="Tuotteiden siirto"
-                    subtitle="Siirrä tuotteita varastosta toiseen"
-                    // text="Täst näi siirrät kato tuotteet toisest paikast toisee"
-                    // subtext="ainaki tällee näi tikitaalisesti tiiäksä"
-                    // subtext2="Se oikee fyysine tavaroire siirto on sit jonku muun homma! Mut ainaki sää oot tehny ny hommas ku painat tost noi! Hyvä"
-                />
+                <HeroText title="Tuotteiden siirto" subtitle="Siirrä kaikki tuotteet varastosta toiseen" />
 
                 <Box component={Form} onSubmit={handleSubmit}>
-                    <Typography>Tuotteita valitussa varastossa:</Typography>
-                    <Typography>{storageAvailableProducts.count}</Typography>
-                    <Typography>Tuotteiden id't:</Typography>
-                    {/* <Typography {...register('product_ids')}>{storageAvailableProductsIds}</Typography> */}
-                    <input value={JSON.stringify(storageAvailableProductsIds)} {...register('product_ids')} />
+                    <input
+                        type="hidden"
+                        value={JSON.stringify(storageAvailableProductsIds)}
+                        {...register('product_ids')}
+                    />
 
                     <Grid container margin="1rem 0 1rem 0">
                         <Grid
                             item
                             xs={4}
                             sx={{
-                                border: '1px solid blue',
                                 display: 'flex',
-                                justifyContent: 'center',
+                                justifyContent: 'flex-start',
                                 alignItems: 'center',
                             }}
                         >
-                            <Typography>Varastosta:</Typography>
-                            <Typography>{storageInfo.name}</Typography>
+                            <Box id="storage-info-box">
+                                <Typography variant="h5" gutterBottom>
+                                    Varastosta:
+                                </Typography>
+                                <Stack id="storage-info-data" gap={1} paddingLeft="2rem">
+                                    <Typography variant="body2">{`Varaston nimi: ${storageInfo.name}`}</Typography>
+                                    <Typography variant="body2">{`Varaston tunnistenumero: ${storageInfo.id}`}</Typography>
+                                    <Typography variant="body2">{`Tuotemäärä: ${storageAvailableProducts.count}`}</Typography>
+                                </Stack>
+                            </Box>
                         </Grid>
                         <Grid
                             item
                             xs={4}
                             sx={{
-                                border: '1px solid blue',
                                 display: 'flex',
                                 justifyContent: 'center',
                                 alignItems: 'center',
@@ -236,7 +243,7 @@ function StorageProductsTransfer() {
                         >
                             <IconButton>
                                 <Avatar sx={{ bgcolor: 'secondary.main' }}>
-                                    <ArrowCircleRightIcon fontSize="large" />
+                                    <InputIcon fontSize="large" />
                                 </Avatar>
                             </IconButton>
                         </Grid>
@@ -244,23 +251,29 @@ function StorageProductsTransfer() {
                             item
                             xs={4}
                             sx={{
-                                border: '1px solid blue',
                                 display: 'flex',
-                                justifyContent: 'center',
+                                justifyContent: 'flex-end',
                                 alignItems: 'center',
                             }}
                         >
-                            <Stack direction="row">
-                                <Typography>Varastoon:</Typography>
+                            <Stack id="storage-to-stack" gap={2}>
+                                <Typography variant="h5" gutterBottom align="right">
+                                    Varastoon:
+                                </Typography>
 
                                 <Box sx={{ minWidth: 120 }}>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label">Valitse</InputLabel>
+                                    <FormControl fullWidth error={!!formStateErrors.storage_to} sx={{ width: 256 }}>
+                                        {/* <InputLabel id="demo-simple-select-label">Valitse</InputLabel> */}
                                         <Select
-                                            labelId="demo-simple-select-label"
+                                            // labelId="demo-simple-select-label"
                                             id="storage-select"
                                             value={selectedStorage}
-                                            {...register('storage_to')}
+                                            {...register('storage_to', {
+                                                required: { value: true, message: 'Valitse varasto' },
+                                            })}
+                                            required
+                                            inputProps={{ required: false }}
+                                            error={!!formStateErrors.storage_to}
                                             onChange={handleStorageSelectChange}
                                         >
                                             {storagesList.map((storage) => (
@@ -269,14 +282,35 @@ function StorageProductsTransfer() {
                                                 </MenuItem>
                                             ))}
                                         </Select>
+                                        <FormHelperText>
+                                            {formStateErrors.storage_to ? 'Valitse varasto' : ' '}
+                                        </FormHelperText>
                                     </FormControl>
                                 </Box>
                             </Stack>
                         </Grid>
                     </Grid>
 
-                    {/* <Button type="submit" disabled={isSubmitting || isSubmitSuccessful}> */}
-                    <Button type="submit">Suorita siirto</Button>
+                    <Stack id="submit-reset-btns" gap={2}>
+                        <Button
+                            id="submit-btn"
+                            type="submit"
+                            disabled={isSubmitting || isSubmitSuccessful}
+                            fullWidth
+                            sx={{
+                                '&:hover': {
+                                    backgroundColor: 'success.dark',
+                                },
+                            }}
+                        >
+                            Suorita siirto
+                        </Button>
+                        <Tooltip title="Uusi siirto">
+                            <IconButton id="reset-form-btn" onClick={() => formReset()}>
+                                <RefreshIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Stack>
                 </Box>
 
                 <Box sx={{ marginTop: '6rem' }}>
