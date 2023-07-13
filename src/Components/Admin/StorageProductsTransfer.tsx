@@ -17,8 +17,9 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Avatar, Box, Button, Container, FormHelperText, Grid, IconButton, Stack, Typography } from '@mui/material';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import InputIcon from '@mui/icons-material/Input';
-import { Forward } from '@mui/icons-material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+// import InputIcon from '@mui/icons-material/Input';
 
 import AlertBox from '../AlertBox';
 import HeroHeader from '../HeroHeader';
@@ -241,11 +242,9 @@ function StorageProductsTransfer() {
                                 alignItems: 'center',
                             }}
                         >
-                            <IconButton>
-                                <Avatar sx={{ bgcolor: 'secondary.main' }}>
-                                    <InputIcon fontSize="large" />
-                                </Avatar>
-                            </IconButton>
+                            <Avatar sx={{ bgcolor: 'secondary.main' }}>
+                                <ArrowRightAltIcon fontSize="large" />
+                            </Avatar>
                         </Grid>
                         <Grid
                             item
@@ -261,11 +260,9 @@ function StorageProductsTransfer() {
                                     Varastoon:
                                 </Typography>
 
-                                <Box sx={{ minWidth: 120 }}>
-                                    <FormControl fullWidth error={!!formStateErrors.storage_to} sx={{ width: 256 }}>
-                                        {/* <InputLabel id="demo-simple-select-label">Valitse</InputLabel> */}
+                                <Box id="storage-to-select-wrapper" sx={{ minWidth: 256 }}>
+                                    <FormControl fullWidth error={!!formStateErrors.storage_to}>
                                         <Select
-                                            // labelId="demo-simple-select-label"
                                             id="storage-select"
                                             value={selectedStorage}
                                             {...register('storage_to', {
@@ -296,7 +293,6 @@ function StorageProductsTransfer() {
                             id="submit-btn"
                             type="submit"
                             disabled={isSubmitting || isSubmitSuccessful}
-                            fullWidth
                             sx={{
                                 '&:hover': {
                                     backgroundColor: 'success.dark',
@@ -305,11 +301,13 @@ function StorageProductsTransfer() {
                         >
                             Suorita siirto
                         </Button>
-                        <Tooltip title="Uusi siirto">
-                            <IconButton id="reset-form-btn" onClick={() => formReset()}>
-                                <RefreshIcon />
-                            </IconButton>
-                        </Tooltip>
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Tooltip title="Uusi siirto">
+                                <IconButton id="reset-form-btn" onClick={() => formReset()}>
+                                    <RefreshIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
                     </Stack>
                 </Box>
 
