@@ -20,9 +20,10 @@ import {
 import AuthContext from '../../Context/AuthContext';
 import BackButton from '../BackButton';
 import AddToCartButton from './AddToCartButton';
+import SimilarProductsCarousel from './SimilarProductsCarousel';
 
 function ProductDetails() {
-    const data = useLoaderData();
+    const { product, products } = useLoaderData();
     const { id: productId } = useParams();
 
     const {
@@ -35,11 +36,9 @@ function ProductDetails() {
         weight,
         color,
         barcode,
-    } = data;
-    const [image, setImage] = useState(data.pictures[0].picture_address);
+    } = product;
+    const [image, setImage] = useState(product.pictures[0].picture_address);
     const { auth } = useContext(AuthContext);
-
-    console.log({ ...color });
 
     return (
         <Container id="product-detail-card">
@@ -60,7 +59,7 @@ function ProductDetails() {
                                     />
                                 </CardActionArea>
                                 <ImageList cols={6} rowHeight={164} sx={{ pl: 2 }}>
-                                    {data.pictures.map((pic) => (
+                                    {product.pictures.map((pic) => (
                                         <ImageListItem
                                             key={pic.picture_address}
                                             onClick={() => setImage(pic.picture_address)}
@@ -175,6 +174,7 @@ function ProductDetails() {
                             <Typography gutterBottom variant="h5" component="div" sx={{ mt: 5 }}>
                                 Samankaltaisia tuotteita
                             </Typography>
+                            <SimilarProductsCarousel similarProducts={products} />
                         </Box>
                     </Card>
                 </Grid>
