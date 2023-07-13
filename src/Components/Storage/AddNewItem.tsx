@@ -33,6 +33,7 @@ import type { addProductAction } from '../../Router/actions';
 
 function AddNewItem() {
     const [qrScanOpen, setQrScanOpen] = useState(false);
+    const [imgUrls, setImgUrls] = useState<string[]>([]);
     const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const { storages, colors } = useLoaderData() as Awaited<ReturnType<typeof storageProductsLoader>>;
     // console.log('categories:', categories, 'storages:', storages, 'colors:', colors);
@@ -104,8 +105,36 @@ function AddNewItem() {
         setValue('barcode', decodedText);
     };
 
-    const handleSelectChange = (event: SelectChangeEvent<number[]>) => {
+    const handleColorSelectChange = (event: SelectChangeEvent<number[]>) => {
         setValue('colors', event.target.value as number[]);
+    };
+
+    const handlePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        console.log('files:', files);
+
+        // // Image preview with base 64 encoding
+        const reader = new FileReader();
+
+        if (files) {
+            Object.entries(files).map((file: any) => {
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    const url = reader.result as string;
+                    setImgUrls([...imgUrls, url]);
+                };
+                return null;
+            });
+            console.log('imgUrls:', imgUrls);
+        } else {
+            setImgUrls([]);
+        }
+
+        // // Simple image add alternative
+        // Array.from(files).map((file) => {
+        //     // TODO clean up objectURLs from memory ???
+        //     setImgUrls([...imgUrls, URL.createObjectURL(file)]);
+        // });
     };
 
     const onSubmit = async (data: any) => {
@@ -119,9 +148,6 @@ function AddNewItem() {
 
         Object.values(data?.colors).forEach((color: any) => formData.append('colors[]', color));
         Object.values(data?.pictures).forEach((pic: any) => formData.append('pictures[]', pic));
-
-        // console.log('pictures AddNewItemissä', formData.get('pictures'));
-        // console.log('onSubmit formData:', formData);
 
         submit(formData, {
             method: 'post',
@@ -307,7 +333,7 @@ function AddNewItem() {
                             inputProps={{ required: false }}
                             error={!!errors.colors}
                             value={colorsSelected}
-                            onChange={handleSelectChange}
+                            onChange={handleColorSelectChange}
                             renderValue={(selected) => (
                                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                     {selected.map((value) => (
@@ -316,6 +342,8 @@ function AddNewItem() {
                                 </Box>
                             )}
                         >
+                            {/* TODO värikenttä, uuden värin lisäys mahdollisuus, backend hyväksyy(?) stringin ja luo uuden ellei ole olemassa. Lisäkenttä lisää uusi väri */}
+                            {/* TODO uuden värin lisäyksen yhteydessä rootLoaderin on mahdollisesti lauettava uudelleen, jotta uusi väri näkyy heti valikossa */}
                             {colors?.map((color) => (
                                 <MenuItem key={color.id} value={color.id}>
                                     {/* {color.name} */}
@@ -399,7 +427,6 @@ function AddNewItem() {
                         helperText={errors.free_description?.message || `${description?.length || 0}/1000`}
                     />
                     <CardActions>
-                        {/* TODO preview kuville */}
                         <Button variant="contained" component="label" size="large">
                             Lisää kuvat
                             {/* TODO mui input? */}
@@ -418,14 +445,9 @@ function AddNewItem() {
                                 // }}
                                 // inputProps={{ required: false }}
                                 required
+                                onChange={handlePictureChange}
                             />
                         </Button>
-                        {pictures?.length > 0 && (
-                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                {/* image upload with multiple image preview pics here */}
-                                pics here
-                            </Box>
-                        )}
                     </CardActions>
                     <CardActions>
                         <Button
@@ -437,6 +459,14 @@ function AddNewItem() {
                         </Button>
                     </CardActions>
                 </CardContent>
+                {imgUrls?.length > 0 && (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {imgUrls.map((url) => (
+                            <img key={url} src={url} alt="preview" width="200" height="200" />
+                            // TODO kuvien poisto
+                        ))}
+                    </Box>
+                )}
             </Box>
         </Card>
     );
