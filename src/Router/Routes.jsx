@@ -110,6 +110,7 @@ import {
     pdfViewLoader,
     productDetailsLoader,
     productListLoader,
+    productTransferLoader,
     rootLoader,
     storagesListLoader,
     storageEditLoader,
@@ -616,7 +617,7 @@ function Routes() {
                                         {
                                             path: 'siirto/:id',
                                             element: <StorageProductsTransfer />,
-                                            loader: storageEditLoader,
+                                            loader: productTransferLoader,
                                             action: productsTransferAction,
                                         },
                                     ],

@@ -314,20 +314,24 @@ const storageDeleteAction = async ({ params }) => {
 /**
  * Products transfer
  */
-
 const productsTransferAction = async ({ request }) => {
     const formData = await request.formData();
 
-    // const productIds = formData.get('product_ids');
-    const selectedStorage = formData.get('storage_to');
+    const selectedStorage = JSON.parse(formData.get('storage_to'));
+    const productIds = JSON.parse(formData.get('product_ids'));
 
     const transfer = {
         storage: selectedStorage,
-        product_items: JSON.parse(formData.get('product_ids')),
+        product_items: productIds,
     };
 
-    await productsApi.productsTransferUpdate(transfer);
-    return { type: 'productstransfer', status: true };
+    const response = await productsApi.productsTransferUpdate(transfer);
+
+    if (response.status === 200) {
+        return { type: 'productstransfer', status: true };
+    }
+
+    return { type: 'productstransfer', status: false };
 };
 
 const userEditAction = async (request, params) => {

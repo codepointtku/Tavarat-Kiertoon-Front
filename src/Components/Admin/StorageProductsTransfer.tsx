@@ -23,7 +23,7 @@ import AlertBox from '../AlertBox';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
-import type { storageEditLoader } from '../../Router/loaders';
+import type { productTransferLoader } from '../../Router/loaders';
 import type { productsTransferAction } from '../../Router/actions';
 
 //
@@ -43,7 +43,7 @@ function union(a: readonly number[], b: readonly number[]) {
 //
 
 function StorageProductsTransfer() {
-    const storageData = useLoaderData() as Awaited<ReturnType<typeof storageEditLoader>>;
+    const storageData = useLoaderData() as Awaited<ReturnType<typeof productTransferLoader>>;
     const responseStatus = useActionData() as Awaited<ReturnType<typeof productsTransferAction>>;
 
     const storagesList = storageData.allStorages;
@@ -191,7 +191,7 @@ function StorageProductsTransfer() {
             )}
 
             {responseStatus?.type === 'productstransfer' && responseStatus?.status && (
-                <AlertBox text="Varaston tuotteet siirretty uuteen sijaintiin" status="success" />
+                <AlertBox text="Varaston tuotteet siirretty onnistuneesti" status="success" />
             )}
             <Container maxWidth="md">
                 <HeroHeader Icon={<ImportExportIcon />} hideInAdmin />
