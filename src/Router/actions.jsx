@@ -319,16 +319,15 @@ const productsTransferAction = async ({ request }) => {
     const formData = await request.formData();
 
     // const productIds = formData.get('product_ids');
-    // const selectedStorage = formData.get('storage_to');
+    const selectedStorage = formData.get('storage_to');
 
     const transfer = {
-        storage: 5,
+        storage: selectedStorage,
         product_items: JSON.parse(formData.get('product_ids')),
     };
 
-    console.log('tuuppaus:', transfer);
     await productsApi.productsTransferUpdate(transfer);
-    return { type: 'kikkare', status: true };
+    return { type: 'productstransfer', status: true };
 };
 
 const userEditAction = async (request, params) => {
