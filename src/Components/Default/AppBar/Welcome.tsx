@@ -1,12 +1,15 @@
-import { useContext } from 'react';
-import { Form, useSubmit } from 'react-router-dom';
+import { Dispatch, SetStateAction } from 'react';
+import { Form, useSubmit, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { Typography, Button, Container, Box } from '@mui/material';
-import AuthContext from '../../../Context/AuthContext';
 
-function Welcome() {
-    const { auth } = useContext(AuthContext);
+interface Props {
+    auth: { username: string };
+    setCurrentOpenDrawer: Dispatch<SetStateAction<string>>;
+}
+
+function Welcome({ auth, setCurrentOpenDrawer }: Props) {
     const { handleSubmit } = useForm();
     const submit = useSubmit();
 
@@ -23,6 +26,15 @@ function Welcome() {
                 <Typography variant="h4" align="center" color="primary.main" sx={{ mt: 5 }}>
                     Tervetuloa {auth.username}!
                 </Typography>
+                <Button
+                    sx={{ mt: 5, backgroundColor: 'primary.dark' }}
+                    onClick={() => setCurrentOpenDrawer('')}
+                    component={Link}
+                    to="profiili"
+                    fullWidth
+                >
+                    Siirry profiiliin
+                </Button>
                 <Button sx={{ mt: 5, mb: 5 }} type="submit" fullWidth>
                     Kirjaudu ulos
                 </Button>
