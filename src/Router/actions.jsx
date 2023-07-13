@@ -6,6 +6,7 @@ import {
     contactFormsApi,
     // contactsApi,
     ordersApi,
+    productsApi,
     shoppingCartApi,
     storagesApi,
     usersApi,
@@ -270,6 +271,26 @@ const storageEditAction = async ({ request, params }) => {
 const storageDeleteAction = async ({ params }) => {
     await storagesApi.storagesDestroy(params.id);
     return redirect('/admin/varastot');
+};
+
+/**
+ * Products transfer
+ */
+
+const productsTransferAction = async ({ request }) => {
+    const formData = await request.formData();
+
+    // const productIds = formData.get('product_ids');
+    // const selectedStorage = formData.get('storage_to');
+
+    const transfer = {
+        storage: 5,
+        product_items: JSON.parse(formData.get('product_ids')),
+    };
+
+    console.log('tuuppaus:', transfer);
+    await productsApi.productsTransferUpdate(transfer);
+    return { type: 'kikkare', status: true };
 };
 
 const userEditAction = async (request, params) => {
@@ -805,6 +826,7 @@ export {
     storageCreateAction,
     storageEditAction,
     storageDeleteAction,
+    productsTransferAction,
     createBulletinAction,
     userEditAction,
     itemCreateAction,
