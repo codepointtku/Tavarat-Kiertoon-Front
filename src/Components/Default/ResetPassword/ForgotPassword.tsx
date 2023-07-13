@@ -22,7 +22,7 @@ function ForgotPassword() {
 
     const onSubmit = (data: any) => {
         const { username } = data;
-        submit({ username }, { method: 'post', action: '/unohtunutsalasana/' });
+        submit({ username }, { method: 'post', action: '/salasananvaihto/' });
     };
 
     return (
@@ -54,7 +54,7 @@ function ForgotPassword() {
                     <Grid item xs={4} />
                 </Grid>
                 <Box sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
-                    <TypographyTitle text="Unohtunut salasana" />
+                    <TypographyTitle text="Salasanan vaihto" />
                 </Box>
             </>
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>

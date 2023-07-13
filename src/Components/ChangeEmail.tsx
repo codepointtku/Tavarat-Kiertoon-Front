@@ -1,21 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { useSubmit, useActionData, Link } from 'react-router-dom';
 
-import {
-    Container,
-    Box,
-    Grid,
-    Typography,
-    Button,
-    Avatar,
-    FormControl,
-    OutlinedInput,
-    InputLabel,
-    Alert,
-} from '@mui/material';
+import { Container, Box, Grid, Typography, Button, FormControl, OutlinedInput, InputLabel, Alert } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import TypographyTitle from './TypographyTitle';
 import AlertBox from './AlertBox';
+import HeroHeader from './HeroHeader';
 
 function ChangeEmail() {
     const submit = useSubmit();
@@ -40,22 +30,10 @@ function ChangeEmail() {
                     status="success"
                 />
             )}
-            <>
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Avatar
-                        sx={{
-                            bgcolor: 'secondary.dark',
-                            width: 48,
-                            height: 48,
-                        }}
-                    >
-                        <EmailIcon fontSize="large" />
-                    </Avatar>
-                </Box>
-                <Box sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
-                    <TypographyTitle text="Sähköpostiosoitteen vaihto" />
-                </Box>
-            </>
+            <HeroHeader Icon={<EmailIcon />} />
+            <Box sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
+                <TypographyTitle text="Sähköpostiosoitteen vaihto" />
+            </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid direction="column" width={500} gap={2} container>
