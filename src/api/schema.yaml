@@ -1522,7 +1522,10 @@ paths:
       tags:
       - orders
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
+      - CustomJWTAuthentication: []
       - {}
       responses:
         '200':
@@ -1554,7 +1557,10 @@ paths:
               $ref: '#/components/schemas/OrderDetailRequest'
         required: true
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
+      - CustomJWTAuthentication: []
       - {}
       responses:
         '200':
@@ -1574,7 +1580,10 @@ paths:
       tags:
       - orders
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
+      - CustomJWTAuthentication: []
       - {}
       responses:
         '204':
@@ -3194,6 +3203,8 @@ components:
       - Removed from shopping cart
       - Timed out from shopping cart
       - Ordered
+      - Added to order
+      - Removed from order
       - Came back to circulation
       - Modified at storage
       - Gifted away
@@ -3204,6 +3215,8 @@ components:
         * `Removed from shopping cart` - Cart Remove
         * `Timed out from shopping cart` - Cart Timeout
         * `Ordered` - Order
+        * `Added to order` - Order Add
+        * `Removed from order` - Order Remove
         * `Came back to circulation` - Circulation
         * `Modified at storage` - Modify
         * `Gifted away` - Gift
@@ -3576,7 +3589,10 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State6acEnum'
+          $ref: '#/components/schemas/State84aEnum'
+        color:
+          type: integer
+          nullable: true
         bike:
           type: integer
         storage:
@@ -3654,7 +3670,10 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State6acEnum'
+          $ref: '#/components/schemas/State84aEnum'
+        color:
+          type: integer
+          nullable: true
       required:
       - bike
       - created_at
@@ -3687,7 +3706,10 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State6acEnum'
+          $ref: '#/components/schemas/State84aEnum'
+        color:
+          type: integer
+          nullable: true
         storage:
           type: integer
       required:
@@ -3718,7 +3740,10 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State6acEnum'
+          $ref: '#/components/schemas/State84aEnum'
+        color:
+          type: integer
+          nullable: true
         bike:
           type: integer
         storage:
@@ -4898,17 +4923,15 @@ components:
       - id
       - product_items
       - user
-    State6acEnum:
+    State84aEnum:
       enum:
       - AVAILABLE
       - MAINTENANCE
-      - RENTED
       - RETIRED
       type: string
       description: |-
         * `AVAILABLE` - Available
         * `MAINTENANCE` - Maintenance
-        * `RENTED` - Rented
         * `RETIRED` - Retired
     StatusC9fEnum:
       enum:
