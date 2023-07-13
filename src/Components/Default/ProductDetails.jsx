@@ -85,7 +85,7 @@ function ProductDetails() {
                                         container
                                         direction="column"
                                         gap={2}
-                                        sx={{ p: 2 }}
+                                        sx={{ p: 2, borderColor: 'primary.light' }}
                                     >
                                         <Grid item>
                                             <Typography variant="body1" color="text.secondary" gutterBottom>
@@ -171,6 +171,9 @@ function ProductDetails() {
                                         </Paper>
                                     </>
                                 ))}
+                            <Typography gutterBottom variant="h5" component="div" color="primary.main">
+                                Samankaltaisia tuotteita
+                            </Typography>
                             <SimilarProductsCarousel similarProducts={products} />
                         </Box>
                     </Card>

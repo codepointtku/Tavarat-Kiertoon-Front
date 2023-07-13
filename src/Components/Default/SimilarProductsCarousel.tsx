@@ -1,4 +1,4 @@
-import { Paper } from '@mui/material';
+import { Paper, Grid } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
 import SimilarProductCard from './SimilarProductCard';
 import { SimilarProduct } from './SimilarProductCard';
@@ -18,13 +18,24 @@ function SimilarProductsCarousel({ similarProducts }: Props) {
     }
 
     return (
-        <Carousel animation="slide">
-            <Paper sx={{ p: 2 }}>
-                {similarProducts.results.map((product) => (
-                    <SimilarProductCard product={product as SimilarProduct['product']} />
+        <Paper variant="outlined" sx={{ p: 2, mb: 2, borderColor: 'primary.light' }}>
+            <Carousel
+                animation="slide"
+                autoPlay={false}
+                cycleNavigation={false}
+                indicatorIconButtonProps={{ style: { color: '#bfe6f6' } }}
+                activeIndicatorIconButtonProps={{ style: { color: '#009bd8' } }}
+                navButtonsAlwaysInvisible
+            >
+                {carouselPageContents.map((productCards) => (
+                    <Grid container direction="row" gap={5} sx={{ ml: 6 }}>
+                        {productCards.map((product) => (
+                            <SimilarProductCard product={product as SimilarProduct['product']} />
+                        ))}
+                    </Grid>
                 ))}
-            </Paper>
-        </Carousel>
+            </Carousel>
+        </Paper>
     );
 }
 
