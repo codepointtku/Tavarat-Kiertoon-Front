@@ -1,7 +1,7 @@
+import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, useLoaderData, useActionData, useSubmit } from 'react-router-dom';
 
-import * as React from 'react';
 import List from '@mui/material/List';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -10,7 +10,6 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Checkbox from '@mui/material/Checkbox';
 import Divider from '@mui/material/Divider';
-
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -20,10 +19,12 @@ import { Avatar, Box, Button, Container, Grid, IconButton, Stack, Typography } f
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
+import AlertBox from '../AlertBox';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
 import type { storageEditLoader } from '../../Router/loaders';
+import type { productsTransferAction } from '../../Router/actions';
 
 //
 
@@ -43,6 +44,7 @@ function union(a: readonly number[], b: readonly number[]) {
 
 function StorageProductsTransfer() {
     const storageData = useLoaderData() as Awaited<ReturnType<typeof storageEditLoader>>;
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof productsTransferAction>>;
 
     const storagesList = storageData.allStorages;
     // console.log('%c all storages:', 'color: blue', storagesList);
@@ -52,8 +54,6 @@ function StorageProductsTransfer() {
     const handleStorageSelectChange = (event: SelectChangeEvent) => {
         setSelectedStorage(event.target.value as string);
     };
-
-    // console.log('selectedStorage', selectedStorage);
 
     //
 
@@ -185,125 +185,134 @@ function StorageProductsTransfer() {
 
     // main component return
     return (
-        <Container maxWidth="md">
-            <HeroHeader Icon={<ImportExportIcon />} hideInAdmin />
-            <HeroText
-                title="Tuotteiden siirto"
-                subtitle="Siirrä tuotteita varastosta toiseen"
-                // text="Täst näi siirrät kato tuotteet toisest paikast toisee"
-                // subtext="ainaki tällee näi tikitaalisesti tiiäksä"
-                // subtext2="Se oikee fyysine tavaroire siirto on sit jonku muun homma! Mut ainaki sää oot tehny ny hommas ku painat tost noi! Hyvä"
-            />
+        <>
+            {responseStatus?.type === 'productstransfer' && !responseStatus?.status && (
+                <AlertBox text="Varaston tuotteiden siirto epäonnistui" status="error" />
+            )}
 
-            <Box component={Form} onSubmit={handleSubmit}>
-                <Typography>Tuotteita valitussa varastossa:</Typography>
-                <Typography>{storageAvailableProducts.count}</Typography>
-                <Typography>Tuotteiden id't:</Typography>
-                {/* <Typography {...register('product_ids')}>{storageAvailableProductsIds}</Typography> */}
-                <input value={JSON.stringify(storageAvailableProductsIds)} {...register('product_ids')} />
+            {responseStatus?.type === 'productstransfer' && responseStatus?.status && (
+                <AlertBox text="Varaston tuotteet siirretty uuteen sijaintiin" status="success" />
+            )}
+            <Container maxWidth="md">
+                <HeroHeader Icon={<ImportExportIcon />} hideInAdmin />
+                <HeroText
+                    title="Tuotteiden siirto"
+                    subtitle="Siirrä tuotteita varastosta toiseen"
+                    // text="Täst näi siirrät kato tuotteet toisest paikast toisee"
+                    // subtext="ainaki tällee näi tikitaalisesti tiiäksä"
+                    // subtext2="Se oikee fyysine tavaroire siirto on sit jonku muun homma! Mut ainaki sää oot tehny ny hommas ku painat tost noi! Hyvä"
+                />
 
-                <Grid container margin="1rem 0 1rem 0">
-                    <Grid
-                        item
-                        xs={4}
-                        sx={{
-                            border: '1px solid blue',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Typography>Varastosta:</Typography>
-                        <Typography>{storageInfo.name}</Typography>
-                    </Grid>
-                    <Grid
-                        item
-                        xs={4}
-                        sx={{
-                            border: '1px solid blue',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <IconButton>
-                            <Avatar sx={{ bgcolor: 'secondary.main' }}>
-                                <ArrowCircleRightIcon fontSize="large" />
-                            </Avatar>
-                        </IconButton>
-                    </Grid>
-                    <Grid
-                        item
-                        xs={4}
-                        sx={{
-                            border: '1px solid blue',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Stack direction="row">
-                            <Typography>Varastoon:</Typography>
+                <Box component={Form} onSubmit={handleSubmit}>
+                    <Typography>Tuotteita valitussa varastossa:</Typography>
+                    <Typography>{storageAvailableProducts.count}</Typography>
+                    <Typography>Tuotteiden id't:</Typography>
+                    {/* <Typography {...register('product_ids')}>{storageAvailableProductsIds}</Typography> */}
+                    <input value={JSON.stringify(storageAvailableProductsIds)} {...register('product_ids')} />
 
-                            <Box sx={{ minWidth: 120 }}>
-                                <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">Valitse</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="storage-select"
-                                        value={selectedStorage}
-                                        onChange={handleStorageSelectChange}
-                                    >
-                                        {storagesList.map((storage) => (
-                                            <MenuItem key={storage.id} value={storage.id} {...register('storage_to')}>
-                                                {storage.name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Box>
-                        </Stack>
-                    </Grid>
-                </Grid>
+                    <Grid container margin="1rem 0 1rem 0">
+                        <Grid
+                            item
+                            xs={4}
+                            sx={{
+                                border: '1px solid blue',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Typography>Varastosta:</Typography>
+                            <Typography>{storageInfo.name}</Typography>
+                        </Grid>
+                        <Grid
+                            item
+                            xs={4}
+                            sx={{
+                                border: '1px solid blue',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <IconButton>
+                                <Avatar sx={{ bgcolor: 'secondary.main' }}>
+                                    <ArrowCircleRightIcon fontSize="large" />
+                                </Avatar>
+                            </IconButton>
+                        </Grid>
+                        <Grid
+                            item
+                            xs={4}
+                            sx={{
+                                border: '1px solid blue',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Stack direction="row">
+                                <Typography>Varastoon:</Typography>
 
-                <Button type="submit" disabled={isSubmitting || isSubmitSuccessful}>
-                    Suorita siirto
-                </Button>
-            </Box>
-
-            <Box sx={{ marginTop: '6rem' }}>
-                <Grid container spacing={2} justifyContent="center" alignItems="center">
-                    <Grid item>{customList('Tuotteet', left)}</Grid>
-
-                    <Grid item>
-                        <Grid container direction="column" alignItems="center">
-                            <Button
-                                sx={{ my: 0.5 }}
-                                variant="outlined"
-                                size="small"
-                                onClick={handleCheckedRight}
-                                disabled={leftChecked.length === 0}
-                                aria-label="move selected right"
-                            >
-                                &gt;
-                            </Button>
-                            <Button
-                                sx={{ my: 0.5 }}
-                                variant="outlined"
-                                size="small"
-                                onClick={handleCheckedLeft}
-                                disabled={rightChecked.length === 0}
-                                aria-label="move selected left"
-                            >
-                                &lt;
-                            </Button>
+                                <Box sx={{ minWidth: 120 }}>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label">Valitse</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="storage-select"
+                                            value={selectedStorage}
+                                            {...register('storage_to')}
+                                            onChange={handleStorageSelectChange}
+                                        >
+                                            {storagesList.map((storage) => (
+                                                <MenuItem key={storage.id} value={storage.id}>
+                                                    <ListItemText primary={storage.name} />
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </Box>
+                            </Stack>
                         </Grid>
                     </Grid>
 
-                    <Grid item>{customList('Valitut', right)}</Grid>
-                </Grid>
-            </Box>
-        </Container>
+                    {/* <Button type="submit" disabled={isSubmitting || isSubmitSuccessful}> */}
+                    <Button type="submit">Suorita siirto</Button>
+                </Box>
+
+                <Box sx={{ marginTop: '6rem' }}>
+                    <Grid container spacing={2} justifyContent="center" alignItems="center">
+                        <Grid item>{customList('Tuotteet', left)}</Grid>
+
+                        <Grid item>
+                            <Grid container direction="column" alignItems="center">
+                                <Button
+                                    sx={{ my: 0.5 }}
+                                    variant="outlined"
+                                    size="small"
+                                    onClick={handleCheckedRight}
+                                    disabled={leftChecked.length === 0}
+                                    aria-label="move selected right"
+                                >
+                                    &gt;
+                                </Button>
+                                <Button
+                                    sx={{ my: 0.5 }}
+                                    variant="outlined"
+                                    size="small"
+                                    onClick={handleCheckedLeft}
+                                    disabled={rightChecked.length === 0}
+                                    aria-label="move selected left"
+                                >
+                                    &lt;
+                                </Button>
+                            </Grid>
+                        </Grid>
+
+                        <Grid item>{customList('Valitut', right)}</Grid>
+                    </Grid>
+                </Box>
+            </Container>
+        </>
     );
 }
 
