@@ -33,6 +33,8 @@ function Confirmation() {
     const { products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const { id } = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
 
+    console.log(state.zipcode, state.city);
+
     const onSubmit = async () => {
         const { email, deliveryAddress, phoneNumber, orderInfo, deliveryRequired } = state;
         submit(
