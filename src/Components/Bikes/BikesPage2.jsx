@@ -47,9 +47,7 @@ export default function BikesPage() {
         },
     });
 
-    const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
     const [isIntroVisible, setIsIntroVisible] = useState(true);
-    const [isThankYouModalVisible, setIsThankYouModalVisible] = useState(false);
     const containerRef = useRef(null);
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -62,7 +60,6 @@ export default function BikesPage() {
     const maxDate = parseISO(loaderData.date_info.available_to);
 
     const bikes = [
-        ...loaderData.bikes,
         // The bike package id and bike id would have possibility for overlap since they're both just incrementing from 0
         ...loaderData.packages.map((bikePackage) => ({
             ...bikePackage,
@@ -77,7 +74,9 @@ export default function BikesPage() {
                 watch('endDate')
             ),
         })),
-    ].sort((a, b) => b.max_available - a.max_available);
+        ...loaderData.bikes,
+        // ].sort((a, b) => b.max_available - a.max_available);
+    ];
 
     const filteredBikes = searchParams.get('filters')
         ? bikes.filter((bike) =>
@@ -149,29 +148,30 @@ export default function BikesPage() {
     );
 
     const submit = useSubmit();
-    const onSubmit = (data) => {
-        // add hours and minutes to start date
-        const startDateTime = setMinutes(
-            setHours(data.startDate, Math.floor(data.startTime)),
-            (data.startTime - Math.floor(data.startTime)) * 60
-        ).toISOString();
+    // const onSubmit = (data) => {
 
-        // add hours and minutes to end date
-        const endDateTime = setMinutes(
-            setHours(data.endDate, Math.floor(data.endTime)),
-            (data.endTime - Math.floor(data.endTime)) * 60
-        ).toISOString();
+    //     // add hours and minutes to start date
+    //     const startDateTime = setMinutes(
+    //         setHours(data.startDate, Math.floor(data.startTime)),
+    //         (data.startTime - Math.floor(data.startTime)) * 60
+    //     ).toISOString();
 
-        const formData = { ...data, startDateTime, endDateTime, selectedBikes: JSON.stringify(data.selectedBikes) };
+    //     // add hours and minutes to end date
+    //     const endDateTime = setMinutes(
+    //         setHours(data.endDate, Math.floor(data.endTime)),
+    //         (data.endTime - Math.floor(data.endTime)) * 60
+    //     ).toISOString();
 
-        submit(formData, {
-            method: 'post',
-            action: '/pyorat?index',
-        });
+    //     const formData = { ...data, startDateTime, endDateTime, selectedBikes: JSON.stringify(data.selectedBikes) };
 
-        // Show Thank You modal visible
-        setIsThankYouModalVisible(true);
-    };
+    //     submit(formData, {
+    //         method: 'post',
+    //         action: '/pyorat?index',
+    //     });
+
+    //     // Show Thank You modal visible
+    //     setIsThankYouModalVisible(true);
+    // };
 
     // ************************************************************************************
     // Kokeilu
@@ -181,6 +181,8 @@ export default function BikesPage() {
     const [showIntro, setShowIntro] = useState(true);
     const [showSelection, setShowSelection] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const [isThankYouModalVisible, setIsThankYouModalVisible] = useState(false);
+    const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
 
     // rent start and end dates
     const minDate2 = parseISO(loaderData.date_info.available_from);
@@ -216,8 +218,29 @@ export default function BikesPage() {
     );
 
     // submit
-    const onSubmit2 = () => {
+    const onSubmit2 = (data) => {
         console.log('### onSubmit2');
+        // add hours and minutes to start date
+        const startDateTime = setMinutes(
+            setHours(data.startDate, Math.floor(data.startTime)),
+            (data.startTime - Math.floor(data.startTime)) * 60
+        ).toISOString();
+
+        // add hours and minutes to end date
+        const endDateTime = setMinutes(
+            setHours(data.endDate, Math.floor(data.endTime)),
+            (data.endTime - Math.floor(data.endTime)) * 60
+        ).toISOString();
+
+        const formData = { ...data, startDateTime, endDateTime, selectedBikes: JSON.stringify(data.selectedBikes) };
+
+        submit(formData, {
+            method: 'post',
+            action: '/pyorat?index',
+        });
+
+        // Show Thank You modal visible
+        setIsThankYouModalVisible(true);
     };
 
     // RENDER
@@ -293,360 +316,131 @@ export default function BikesPage() {
                         setIsConfirmationVisible={setIsConfirmationVisible}
                     />
                 ) : (
-                    // <ConfirmationSection
-                    //     setShowIntro={setShowIntro}
-                    //     setShowSelection={setShowSelection}
-                    //     setShowConfirmation={setShowConfirmation}
-                    // />
-                    <>
-                        <h1>Virhe pyörälainauksessa</h1>
-                    </>
+                    <h1>Virhe pyörälainauksessa</h1>
                 )}
+                <BikeThankYouModal
+                    isThankYouModalVisible={isThankYouModalVisible}
+                    setIsThankYouModalVisible={setIsThankYouModalVisible}
+                    setShowIntro={setShowIntro}
+                    setShowSelection={setShowSelection}
+                    setShowConfirmation={setShowConfirmation}
+                    setIsConfirmationVisible={setIsConfirmationVisible}
+                    reset={reset}
+                    getValues={getValues}
+                    bikes={bikes}
+                />
             </Container>
             <hr />
             <hr />
 
             {/* ********************************************************************************************************************************* */}
 
-            <Container component={Form} onSubmit={handleSubmit(onSubmit)} sx={{ mb: 6 }} ref={containerRef}>
-                {/* <Typography
-                    variant="h3"
-                    align="center"
-                    color="primary.main"
-                    my={3}
-                    pb={3}
-                    sx={{ borderBottom: '2px solid #0062ae' }}
-                >
-                    Polkupyörien lainaus 2
-                </Typography> */}
-                <div>Tässä oli Heading</div>
-                <TransitionGroup>
-                    {!isConfirmationVisible ? (
-                        <Slide direction="right" key="main-page" container={containerRef.current} appear={false}>
-                            <Box>
-                                <TransitionGroup>
-                                    {isIntroVisible ? (
-                                        /*
-                                         * ************************************************************************
-                                         * ************************************************************************
-                                         *
-                                         * START - Intro
-                                         *
-                                         * ************************************************************************
-                                         * ************************************************************************
-                                         */
-                                        <Fade key="main-page-intro" appear={false}>
-                                            <div>Tässä oli intro</div>
-                                        </Fade>
-                                    ) : (
-                                        /*
-                                         * ************************************************************************
-                                         * ************************************************************************
-                                         *
-                                         * END - Intro
-                                         *
-                                         * ************************************************************************
-                                         * ************************************************************************
-                                         */
-                                        <Fade key="main-page-main">
-                                            <Stack gap={2} flexDirection="row" justifyContent="space-between">
-                                                <Box mb={2} mt={1}>
-                                                    {/*
-                                                     * ************************************************************************
-                                                     * ************************************************************************
-                                                     *
-                                                     * START - Sorting by size, color, brand or type
-                                                     *
-                                                     * ************************************************************************
-                                                     * ************************************************************************
-                                                     */}
-                                                    {/* <Stack my={1} flexDirection="row" justifyContent="space-between">
-                                                        <Autocomplete
-                                                            disablePortal
-                                                            id="size-filter"
-                                                            options={Array.from(sizeOptionsSet).sort()}
-                                                            sx={{ width: 170 }}
-                                                            onChange={(_, newOption) =>
-                                                                handleFilterChange('size', newOption)
-                                                            }
-                                                            value={
-                                                                searchParams.get('filters') &&
-                                                                JSON.parse(searchParams.get('filters')).size
-                                                                    ? JSON.parse(searchParams.get('filters')).size
-                                                                    : null
-                                                            }
-                                                            renderInput={(params) => (
-                                                                <TextField {...params} label="Koko" />
-                                                            )}
-                                                            size="small"
-                                                        />
-                                                        <Autocomplete
-                                                            disablePortal
-                                                            id="color-filter"
-                                                            options={Array.from(colorOptionsSet).sort()}
-                                                            sx={{ width: 170 }}
-                                                            onChange={(_, newOption) =>
-                                                                handleFilterChange('color', newOption)
-                                                            }
-                                                            value={
-                                                                searchParams.get('filters') &&
-                                                                JSON.parse(searchParams.get('filters')).color
-                                                                    ? JSON.parse(searchParams.get('filters')).color
-                                                                    : null
-                                                            }
-                                                            renderInput={(params) => (
-                                                                <TextField {...params} label="Väri" />
-                                                            )}
-                                                            size="small"
-                                                        />
-                                                        <Autocomplete
-                                                            disablePortal
-                                                            id="brand-filter"
-                                                            options={Array.from(brandOptionsSet).sort()}
-                                                            sx={{ width: 170 }}
-                                                            onChange={(_, newOption) =>
-                                                                handleFilterChange('brand', newOption)
-                                                            }
-                                                            value={
-                                                                searchParams.get('filters') &&
-                                                                JSON.parse(searchParams.get('filters')).brand
-                                                                    ? JSON.parse(searchParams.get('filters')).brand
-                                                                    : null
-                                                            }
-                                                            renderInput={(params) => (
-                                                                <TextField {...params} label="Merkki" />
-                                                            )}
-                                                            size="small"
-                                                        />
-                                                        <Autocomplete
-                                                            disablePortal
-                                                            id="type-filter"
-                                                            options={Array.from(typeOptionsSet).sort()}
-                                                            sx={{ width: 170 }}
-                                                            onChange={(_, newOption) =>
-                                                                handleFilterChange('type', newOption)
-                                                            }
-                                                            value={
-                                                                searchParams.get('filters') &&
-                                                                JSON.parse(searchParams.get('filters')).type
-                                                                    ? JSON.parse(searchParams.get('filters')).type
-                                                                    : null
-                                                            }
-                                                            renderInput={(params) => (
-                                                                <TextField {...params} label="Tyyppi" />
-                                                            )}
-                                                            size="small"
-                                                        />
-                                                    </Stack> */}
-                                                    <div>Tässä oli Filter bar</div>
-                                                    {/*
-                                                     * ************************************************************************
-                                                     * ************************************************************************
-                                                     *
-                                                     * END - Sorting by size, color, brand or type
-                                                     *
-                                                     * ************************************************************************
-                                                     * ************************************************************************
-                                                     */}
-                                                </Box>
+            {/* <Container component={Form} onSubmit={handleSubmit(onSubmit)} sx={{ mb: 6 }} ref={containerRef}> */}
+            <div>Tässä oli Heading</div>
+            <TransitionGroup>
+                {!isConfirmationVisible ? (
+                    <Slide direction="right" key="main-page" container={containerRef.current} appear={false}>
+                        <Box>
+                            <TransitionGroup>
+                                {isIntroVisible ? (
+                                    /*
+                                     * ************************************************************************
+                                     * ************************************************************************
+                                     *
+                                     * START - Intro
+                                     *
+                                     */
+                                    <Fade key="main-page-intro" appear={false}>
+                                        <div>Tässä oli intro</div>
+                                    </Fade>
+                                ) : (
+                                    /*
+                                     *
+                                     * END - Intro
+                                     *
+                                     * ************************************************************************
+                                     * ************************************************************************
+                                     */
+                                    <Fade key="main-page-main">
+                                        <Stack gap={2} flexDirection="row" justifyContent="space-between">
+                                            <Box mb={2} mt={1}>
                                                 {/*
                                                  * ************************************************************************
                                                  * ************************************************************************
                                                  *
-                                                 *  START - Bikes / Packages area
+                                                 * START - Sorting by size, color, brand or type
                                                  *
-                                                 * ************************************************************************
-                                                 * ************************************************************************
                                                  */}
-                                                <div>Tässä oli Bikes / Packages area</div>
+                                                <div>Tässä oli Filter bar</div>
                                                 {/*
-                                                 * ************************************************************************
-                                                 * ************************************************************************
                                                  *
-                                                 *  END - Bikes / Packages area
+                                                 * END - Sorting by size, color, brand or type
                                                  *
                                                  * ************************************************************************
                                                  * ************************************************************************
                                                  */}
-                                                {/*
-                                                 * ************************************************************************
-                                                 * ************************************************************************
-                                                 *
-                                                 * START - Oikea laita: Lainaustiedot
-                                                 *
-                                                 * ************************************************************************
-                                                 * ************************************************************************
-                                                 */}
-                                                {/* <Box sx={{ width: '300px' }}>
-                                                    <Card
-                                                        sx={{
-                                                            flex: 1,
-                                                            p: 2,
-                                                            pt: 1,
-                                                            width: '100%',
-                                                            position: 'sticky',
-                                                            top: '20px',
-                                                            mt: 2,
-                                                            mb: 1,
-                                                            // backgroundColor: 'primary.main',
-                                                        }}
-                                                    >
-                                                        <Stack gap={3} justifyContent="space-between">
-                                                            <Typography align="center" variant="h6">
-                                                                Lainaustiedot 2
-                                                            </Typography>
-                                                            <Stack gap={2}>
-                                                                <Controller
-                                                                    name="startDate"
-                                                                    control={control}
-                                                                    rules={{ required: true }}
-                                                                    render={({
-                                                                        field: { onChange, onBlur, value },
-                                                                    }) => (
-                                                                        <BikeCalendar
-                                                                            onChange={onChange}
-                                                                            onBlur={onBlur}
-                                                                            startDate={value}
-                                                                            endDate={watch('endDate')}
-                                                                            minDate={minDate}
-                                                                            maxDate={maxDate}
-                                                                        />
-                                                                    )}
-                                                                />
-                                                                <Controller
-                                                                    name="endDate"
-                                                                    control={control}
-                                                                    rules={{ required: true }}
-                                                                    render={({
-                                                                        field: { onChange, onBlur, value },
-                                                                    }) => (
-                                                                        <BikeCalendar
-                                                                            onChange={onChange}
-                                                                            onBlur={onBlur}
-                                                                            startDate={watch('startDate')}
-                                                                            endDate={value}
-                                                                            minDate={minDate}
-                                                                            maxDate={maxDate}
-                                                                            isStartDate={false}
-                                                                        />
-                                                                    )}
-                                                                />
-                                                            </Stack>
-                                                            <Box minHeight={44}>
-                                                                <List>
-                                                                    <TransitionGroup>
-                                                                        {Object.keys(watch('selectedBikes')).length ? (
-                                                                            Object.entries(watch('selectedBikes')).map(
-                                                                                ([key, value]) => {
-                                                                                    const bike = bikes.find(
-                                                                                        (_bike) =>
-                                                                                            String(_bike.id) ===
-                                                                                            String(key)
-                                                                                    );
-                                                                                    return (
-                                                                                        !!value && (
-                                                                                            <Collapse key={key}>
-                                                                                                <Typography
-                                                                                                    sx={
-                                                                                                        isValidBikeAmount(
-                                                                                                            watch(
-                                                                                                                'startDate'
-                                                                                                            ),
-                                                                                                            watch(
-                                                                                                                'endDate'
-                                                                                                            ),
-                                                                                                            watch(
-                                                                                                                'selectedBikes'
-                                                                                                            ),
-                                                                                                            bikes,
-                                                                                                            [bike]
-                                                                                                        )
-                                                                                                            ? {}
-                                                                                                            : {
-                                                                                                                  color: 'red',
-                                                                                                              }
-                                                                                                    }
-                                                                                                >
-                                                                                                    {`${value}x ${bike.name}`}
-                                                                                                </Typography>
-                                                                                            </Collapse>
-                                                                                        )
-                                                                                    );
-                                                                                }
-                                                                            )
-                                                                        ) : (
-                                                                            <Collapse>
-                                                                                <Typography>Valitse pyörä *</Typography>
-                                                                            </Collapse>
-                                                                        )}
-                                                                    </TransitionGroup>
-                                                                </List>
-                                                            </Box>
-                                                            {storageTypeForm}
-                                                            <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-                                                                <Button
-                                                                    color="success"
-                                                                    onClick={() => setIsConfirmationVisible(true)}
-                                                                    disabled={
-                                                                        !isValidBikeAmount(
-                                                                            watch('startDate'),
-                                                                            watch('endDate'),
-                                                                            watch('selectedBikes'),
-                                                                            bikes
-                                                                        ) ||
-                                                                        !Object.keys(watch('selectedBikes')).length ||
-                                                                        !watch('startDate') ||
-                                                                        !watch('endDate') ||
-                                                                        !watch('storageType')
-                                                                    }
-                                                                >
-                                                                    Vahvistus
-                                                                </Button>
-                                                            </Box>
-                                                        </Stack>
-                                                    </Card>
-                                                </Box> */}
-                                                <div>Tässä oli oikean laidan flouttaava ikkuna</div>
-                                                {/*
-                                                 * ************************************************************************
-                                                 * ************************************************************************
-                                                 *
-                                                 * END - Oikea laita: Lainaustiedot
-                                                 *
-                                                 * ************************************************************************
-                                                 * ************************************************************************
-                                                 */}
-                                            </Stack>
-                                        </Fade>
-                                    )}
-                                </TransitionGroup>
-                            </Box>
-                        </Slide>
-                    ) : (
-                        <Slide direction="left" key="BikeConfirmation" container={containerRef.current} appear={false}>
-                            {/* <Box> */}
-                            <BikeConfirmation
-                                startDate={watch('startDate')}
-                                endDate={watch('endDate')}
-                                selectedBikes={watch('selectedBikes')}
-                                control={control}
-                                bikes={bikes}
-                                setIsConfirmationVisible={setIsConfirmationVisible}
-                            />
-                            {/* </Box> */}
-                        </Slide>
-                    )}
-                </TransitionGroup>
-                <BikeThankYouModal
-                    isThankYouModalVisible={isThankYouModalVisible}
-                    setIsThankYouModalVisible={setIsThankYouModalVisible}
-                    setIsConfirmationVisible={setIsConfirmationVisible}
-                    setIsIntroVisible={setIsIntroVisible}
-                    reset={reset}
-                    getValues={getValues}
-                    bikes={bikes}
-                />
-            </Container>
+                                            </Box>
+                                            {/*
+                                             * ************************************************************************
+                                             * ************************************************************************
+                                             *
+                                             *  START - Bikes / Packages area
+                                             *
+                                             */}
+                                            <div>Tässä oli Bikes / Packages area</div>
+                                            {/*
+                                             *
+                                             *  END - Bikes / Packages area
+                                             *
+                                             * ************************************************************************
+                                             * ************************************************************************
+                                             */}
+                                            {/*
+                                             * ************************************************************************
+                                             * ************************************************************************
+                                             *
+                                             * START - Oikea laita: Lainaustiedot
+                                             *
+                                             */}
+                                            <div>Tässä oli oikean laidan flouttaava ikkuna</div>
+                                            {/*
+                                             *
+                                             * END - Oikea laita: Lainaustiedot
+                                             *
+                                             * ************************************************************************
+                                             * ************************************************************************
+                                             */}
+                                        </Stack>
+                                    </Fade>
+                                )}
+                            </TransitionGroup>
+                        </Box>
+                    </Slide>
+                ) : (
+                    <Slide direction="left" key="BikeConfirmation" container={containerRef.current} appear={false}>
+                        {/* <Box> */}
+                        {/* <BikeConfirmation
+                            startDate={watch('startDate')}
+                            endDate={watch('endDate')}
+                            selectedBikes={watch('selectedBikes')}
+                            control={control}
+                            bikes={bikes}
+                            setIsConfirmationVisible={setIsConfirmationVisible}
+                        /> */}
+                        {/* </Box> */}
+                    </Slide>
+                )}
+            </TransitionGroup>
+            {/* <BikeThankYouModal
+                isThankYouModalVisible={isThankYouModalVisible}
+                setIsThankYouModalVisible={setIsThankYouModalVisible}
+                setIsConfirmationVisible={setIsConfirmationVisible}
+                setIsIntroVisible={setIsIntroVisible}
+                reset={reset}
+                getValues={getValues}
+                bikes={bikes}
+            /> */}
+            {/* </Container> */}
         </div>
     );
 }

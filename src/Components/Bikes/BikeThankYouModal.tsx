@@ -4,8 +4,11 @@ import type { BikeInterface } from '../../Layouts/BikesLayout';
 interface BikeThankYouModalInterface {
     isThankYouModalVisible: boolean;
     setIsThankYouModalVisible: React.Dispatch<React.SetStateAction<null | boolean>>;
-    setIsConfirmationVisible: React.Dispatch<React.SetStateAction<null | boolean>>;
-    setIsIntroVisible: React.Dispatch<React.SetStateAction<null | boolean>>;
+    // setIsConfirmationVisible: React.Dispatch<React.SetStateAction<null | boolean>>;
+    // setIsIntroVisible: React.Dispatch<React.SetStateAction<null | boolean>>;
+    setShowIntro: React.Dispatch<React.SetStateAction<null | boolean>>;
+    setShowSelection: React.Dispatch<React.SetStateAction<null | boolean>>;
+    setShowConfirmation: React.Dispatch<React.SetStateAction<null | boolean>>;
     reset: Function; // JTo: Not sure if this is OK ???
     getValues: Function; // JTo: Not sure if this is OK ???
     bikes: BikeInterface[];
@@ -24,10 +27,13 @@ interface BikeThankYouModalInterface {
  * @returns
  */
 function BikeThankYouModal({
+    setShowIntro,
+    setShowSelection,
+    setShowConfirmation,
     isThankYouModalVisible,
     setIsThankYouModalVisible,
-    setIsConfirmationVisible,
-    setIsIntroVisible,
+    // setIsConfirmationVisible,
+    // setIsIntroVisible,
     reset,
     getValues,
     bikes,
@@ -35,8 +41,12 @@ function BikeThankYouModal({
     // onClick: set Intro view true, set other views false, reset
     const modalExitHandler = () => {
         setIsThankYouModalVisible(false);
-        setIsConfirmationVisible(false);
-        setIsIntroVisible(true);
+        // setIsConfirmationVisible(false);
+        // setIsIntroVisible(true);
+        setShowIntro(true);
+        setShowSelection(false);
+        setShowConfirmation(false);
+
         reset();
     };
 

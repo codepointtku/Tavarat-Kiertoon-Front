@@ -31,6 +31,9 @@ interface BikeConfirmationInterface {
     selectedBikes: SelectedBikesInterface;
     control: Control;
     bikes: BikeInterface[];
+    setShowIntro: Function;
+    setShowSelection: Function;
+    setShowConfirmation: Function;
     setIsConfirmationVisible: Function;
 }
 
