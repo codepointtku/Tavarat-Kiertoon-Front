@@ -96,8 +96,8 @@ function AddNewItem() {
     const description = watch('free_description');
     const barcode = watch('barcode');
     const colorsSelected = watch('colors');
-    const pictures = watch('pictures');
-    console.log('pictures:', pictures);
+    // const pictures = watch('pictures');
+    // console.log('pictures:', pictures);
 
     // QR code scanner
     const onNewScanResult = (decodedText: string, decodedResult: any) => {
@@ -117,11 +117,13 @@ function AddNewItem() {
         const reader = new FileReader();
 
         if (files) {
-            Object.entries(files).map((file: any) => {
+            Array.from(files).map((file) => {
                 reader.readAsDataURL(file);
                 reader.onload = () => {
-                    const url = reader.result as string;
-                    setImgUrls([...imgUrls, url]);
+                    if (typeof reader.result === 'string') {
+                        const url = reader.result;
+                        setImgUrls([...imgUrls, url]);
+                    }
                 };
                 return null;
             });
@@ -344,6 +346,7 @@ function AddNewItem() {
                         >
                             {/* TODO värikenttä, uuden värin lisäys mahdollisuus, backend hyväksyy(?) stringin ja luo uuden ellei ole olemassa. Lisäkenttä lisää uusi väri */}
                             {/* TODO uuden värin lisäyksen yhteydessä rootLoaderin on mahdollisesti lauettava uudelleen, jotta uusi väri näkyy heti valikossa */}
+                            {/* TODO värin nimen oltava muotoa iso alkukirjain, ilman välejä, muutettava oikeaksi ennen lähetystä jottei tule "meren sininen" ja "Merensininen" */}
                             {colors?.map((color) => (
                                 <MenuItem key={color.id} value={color.id}>
                                     {/* {color.name} */}
@@ -354,39 +357,6 @@ function AddNewItem() {
                         </Select>
                         <FormHelperText>{errors.colors ? errors.colors.message : ' '}</FormHelperText>
                     </FormControl>
-                    {/* <TextField
-                        id="color-select"
-                        select
-                        multiple
-                        label="Väri"
-                        {...register('colors[]', { required: { value: true, message: 'Tuotteella on oltava väri' } })}
-                        inputProps={{ required: false }}
-                        required
-                        error={!!errors.colors}
-                        helperText={errors.colors?.message}
-                    >
-                        {/* TODO värikenttä, uuden värin lisäys mahdollisuus, backend hyväksyy(?) stringin ja luo uuden ellei ole olemassa. Lisäkenttä lisää uusi väri */}
-                    {/* TODO uuden värin lisäyksen yhteydessä rootLoaderin on mahdollisesti lauettava uudelleen, jotta uusi väri näkyy heti valikossa */}
-
-                    {/* <MenuItem
-                        // onClick={() => setValue()}
-                        // key={color.id}
-                        // value={color.name}
-                        >
-                            {/* TODO värin nimen oltava muotoa iso alkukirjain, ilman välejä, muutettava oikeaksi ennen lähetystä jottei tule "meren sininen" ja "Merensininen" */}
-                    {/* <Button variant="contained">Luo uusi</Button>
-                        </MenuItem>
-                        {colors?.map((color: any) => (
-                            <MenuItem
-                                // onClick={() => setValue('colors', [getValues('colors'), color.id])}
-                                onClick={}
-                                key={color.id}
-                                value={color.id}
-                            >
-                                {color.name}
-                            </MenuItem>
-                        ))}
-                    </TextField>  */}
                     <TextField
                         id="amount"
                         type="number"
