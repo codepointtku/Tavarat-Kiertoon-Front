@@ -9,6 +9,7 @@ import {
     productsApi,
     shoppingCartApi,
     storagesApi,
+    userApi,
     usersApi,
 } from '../api';
 
@@ -190,6 +191,42 @@ const bikeOrderAction = async (auth, setAuth, request) => {
  */
 const orderEditAction = async (auth, setAuth, request, params) => {
     const formData = await request.formData();
+    const submission = {
+        id: formData.get('orderId'),
+        contact: formData.get('contact'),
+        phone_number: formData.get('phoneNumber'),
+        delivery_address: formData.get('deliveryAddress'),
+        status: formData.get('status'),
+        order_info: formData.get('orderInfo'),
+        product_items: JSON.parse(formData.get('productItems')),
+    };
+    await ordersApi.ordersUpdate(params.id, submission);
+    return redirect(`/varasto/tilaus/${params.id}`);
+
+    /*
+    // collect data that needs to be sent to backend
+    const data = await request.formData();
+    const submission = {
+        name: data.get('packetName'),
+        description: data.get('packetDescription'),
+        bikes: JSON.parse(data.get('bikes')),
+    };
+    // send data and redirect back to bike list
+    // await apiCall(auth, setAuth, `/bikes/packages/${params.id}/`, 'put', submission);
+    await bikesApi.bikesPackagesUpdate(params.id, submission);
+    return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+
+    orderId: orderData.id,
+    contact: orderData.contact,
+    phoneNumber: orderData.phone_number,
+    deliveryAddress: orderData.delivery_address,
+    status: orderData.status,
+    orderInfo: orderData.order_info,
+    productItems: orderData.product_items,
+    productRenderItems: productRenderItems,
+
+    */
+    /*
     // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     // const productName = formData.get('productName');
     if (request.method === 'POST') {
@@ -233,6 +270,7 @@ const orderEditAction = async (auth, setAuth, request, params) => {
     }
 
     return null;
+*/
 };
 
 /*
@@ -859,6 +897,45 @@ const adminInboxAction = async (auth, setAuth, request) => {
     return { type: 'markasread', status: false };
 };
 
+const userProfilePageAction = async (request) => {
+    const formData = await request.formData();
+    const response = await userApi.userUpdate({
+        username: formData.get('username'),
+        first_name: formData.get('first_name'),
+        last_name: formData.get('last_name'),
+        phone_number: formData.get('phone_number'),
+    });
+    if (response.status === 200) {
+        return { type: 'userinfoupdated', status: true };
+    }
+    return { type: 'userinfoupdated', status: false };
+};
+
+const modifyUserAddressesAction = async (request) => {
+    const formData = await request.formData();
+    if (request.method === 'PUT') {
+        const response = await userApi.userAddressEditUpdate({
+            id: formData.get('id'),
+            address: formData.get('address'),
+            city: formData.get('city'),
+            zip_code: formData.get('zip_code'),
+        });
+        if (response.status === 200) {
+            return { type: 'addressmodified', status: true };
+        }
+        return { type: 'addressmodified', status: false };
+    }
+    const response = await userApi.userAddressEditCreate({
+        address: formData.get('address'),
+        city: formData.get('city'),
+        zip_code: formData.get('zip_code'),
+    });
+    if (response.status === 200) {
+        return { type: 'addresscreated', status: true };
+    }
+    return { type: 'addresscreated', status: false };
+};
+
 export {
     userSignupAction,
     frontPageActions,
@@ -889,6 +966,8 @@ export {
     deleteBikeModelAction,
     emailChangeSuccessfulAction,
     changeEmailAction,
+    userProfilePageAction,
     createNewPacketAction,
     deletePacketAction,
+    modifyUserAddressesAction,
 };
