@@ -171,9 +171,6 @@ function ProductDetails() {
                                         </Paper>
                                     </>
                                 ))}
-                            <Typography gutterBottom variant="h5" component="div" sx={{ mt: 5 }}>
-                                Samankaltaisia tuotteita
-                            </Typography>
                             <SimilarProductsCarousel similarProducts={products} />
                         </Box>
                     </Card>
