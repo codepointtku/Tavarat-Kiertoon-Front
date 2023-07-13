@@ -119,7 +119,7 @@ function LoginForm({ setCurrentOpenDrawer, notLoggedIn }) {
                     <MuiLink
                         variant="body2"
                         component={Link}
-                        to="unohtunutsalasana"
+                        to="salasananvaihto"
                         onClick={() => setCurrentOpenDrawer('')}
                         sx={{ display: 'block', mt: 4 }}
                     >

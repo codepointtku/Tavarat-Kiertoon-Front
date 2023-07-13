@@ -170,7 +170,7 @@ export default function BikesPage() {
     return (
         <Container component={Form} onSubmit={handleSubmit(onSubmit)} sx={{ mb: 6 }} ref={containerRef}>
             <Typography variant="h3" align="center" color="primary.main" my={3}>
-                Polkupyörienvuokraus
+                Polkupyörien vuokraus
             </Typography>
             <hr />
             <TransitionGroup>

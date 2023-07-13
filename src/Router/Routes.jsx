@@ -66,6 +66,13 @@ import Activation from '../Components/Default/Signup/Activation';
 import EmailChangeSuccessful from '../Components/EmailChangeSuccessful';
 import ChangeEmail from '../Components/ChangeEmail';
 
+import UserProfilePage from '../Components/Default/Profilepage/UserProfilePage';
+import OrderPage from '../Components/Default/Profilepage/OrderPage';
+import ProfileInfo from '../Components/Default/Profilepage/ProfileInfo';
+import ModifyAddressInfo from '../Components/Default/Profilepage/ModifyAddressInfo';
+import OrdersHistory from '../Components/Default/Profilepage/OrdersHistory';
+import OrdersActive from '../Components/Default/Profilepage/OrdersActive';
+
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
 import DeliveryView from '../Components/DeliveryView';
@@ -123,6 +130,7 @@ import {
     emailRecipientsLoader,
     bikeNewModelLoader,
     createBikeOrderLoader,
+    userInfoLoader,
 } from './loaders';
 
 import {
@@ -157,6 +165,8 @@ import {
     adminEmailRecipientsAction,
     createNewPacketAction,
     deletePacketAction,
+    userProfilePageAction,
+    modifyUserAddressesAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
@@ -345,7 +355,7 @@ function Routes() {
                                     action: async ({ request }) => emailChangeSuccessfulAction(auth, setAuth, request),
                                 },
                                 {
-                                    path: 'unohtunutsalasana',
+                                    path: 'salasananvaihto',
                                     element: <ForgotPassword />,
                                     action: async ({ request }) => resetEmailAction(auth, setAuth, request),
                                 },
@@ -376,6 +386,36 @@ function Routes() {
                                     path: 'aktivointi/:uid/:token',
                                     element: <Activation />,
                                     action: async ({ request }) => activationAction(auth, setAuth, request),
+                                },
+                                {
+                                    path: 'profiili',
+                                    element: <UserProfilePage />,
+                                    id: 'profile',
+                                    loader: async ({ request }) => userInfoLoader(request),
+                                    action: async ({ request }) => userProfilePageAction(request),
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <ProfileInfo />,
+                                        },
+                                        {
+                                            path: 'osoitetiedot/:id',
+                                            element: <ModifyAddressInfo />,
+                                            action: async ({ request }) => modifyUserAddressesAction(request),
+                                        },
+                                        {
+                                            path: 'aktiivisettilaukset',
+                                            element: <OrdersActive />,
+                                        },
+                                        {
+                                            path: 'tilaushistoria',
+                                            element: <OrdersHistory />,
+                                        },
+                                    ],
+                                },
+                                {
+                                    path: 'profiili/:tilaustila/tilaus/:id',
+                                    element: <OrderPage />,
                                 },
                             ],
                         },

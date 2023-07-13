@@ -46,7 +46,9 @@ function OrderListTable() {
                             <TableCell align="right">{row.delivery_address}</TableCell>
                             <TableCell align="right">{row.user}</TableCell>
                             <TableCell align="right">{row.contact}</TableCell>
-                            <TableCell align="right">{dateParse(row.delivery_date)}</TableCell>
+                            <TableCell align="right">
+                                {row.delivery_date ? dateParse(row.delivery_date) : '-'}
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
