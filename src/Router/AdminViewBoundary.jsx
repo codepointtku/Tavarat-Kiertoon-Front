@@ -20,6 +20,7 @@ const errorType = (err) => {
         return 'teapot';
     }
     if (err?.status === 500 || err?.response?.status === 500) {
+        console.log('500 @', err?.response?.request?.responseURL);
         return 'internalservererror';
     }
     if (err?.status === 503 || err?.response?.status === 503) {
@@ -28,7 +29,7 @@ const errorType = (err) => {
     return 'else';
 };
 
-function ErrorBoundary() {
+function AdminViewBoundary() {
     const error = useRouteError();
     const location = useLocation();
     const navigate = useNavigate();
@@ -43,7 +44,7 @@ function ErrorBoundary() {
                 Palvelin ei käsittele tai pysty käsittelemään pyyntöä. {location.pathname}
             </Typography>
         ),
-        noroute: <Typography variant="h6">Sijaintia {location.pathname} ei valitettavasti löydy.</Typography>,
+        noroute: <Typography variant="h6">Hasta ja Vihta, baby! Sijaintia {location.pathname} ei löydy.</Typography>,
         unauthorized: (
             <Typography variant="h6">
                 Sessio on mahdollisesti vanhentunut. Kirjaudu uudestaan sisään ja yritä uudelleen ole hyvä!
@@ -53,19 +54,20 @@ function ErrorBoundary() {
         teapot: <Typography variant="h6">Minä olen teepannu -- siksi en keitä kahvia!</Typography>,
         internalservererror: (
             <Typography variant="h6">
-                Sisäinen palvelinvirhe. Palvelin kohtasi odottamattoman tilan, mikä esti pyynnön toteuttamisen.
+                {/* Sisäinen palvelinvirhe. Palvelin kohtasi odottamattoman tilan, mikä esti pyynnön toteuttamisen. */}
+                ja pieraisi palvelimeen.
             </Typography>
         ),
         serviceunavailable: (
             <Typography variant="h6">Huollamme paraikaa järjestelmäämme! Tule takaisin myöhemmin uudelleen.</Typography>
         ),
-        else: <Typography variant="h6">Virhe sijainnissa {location.pathname}</Typography>,
+        else: <Typography variant="h6">Ny kävi köplästi {location.pathname}</Typography>,
     };
 
     return (
-        <Box minHeight={320}>
-            <Alert severity="error">
-                <AlertTitle>Jokin meni pieleen</AlertTitle>
+        <Box>
+            <Alert severity="info">
+                <AlertTitle>Hetkinen, sanoi Putkinen...</AlertTitle>
                 {errorTypes[errorType(error)]}
                 <Button onClick={handleGoBack} sx={{ margin: '1rem 1rem 0 0' }}>
                     Takaisin
@@ -78,4 +80,4 @@ function ErrorBoundary() {
     );
 }
 
-export default ErrorBoundary;
+export default AdminViewBoundary;

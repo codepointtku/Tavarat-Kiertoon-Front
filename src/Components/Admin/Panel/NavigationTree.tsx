@@ -22,7 +22,7 @@ import Home from '@mui/icons-material/Home';
 import Settings from '@mui/icons-material/Settings';
 import ExpandIcon from '@mui/icons-material/Expand';
 import VerticalAlignCenterIcon from '@mui/icons-material/VerticalAlignCenter';
-// import ImportExportIcon from '@mui/icons-material/ImportExport';
+import ImportExportIcon from '@mui/icons-material/ImportExport';
 import MarkChatReadIcon from '@mui/icons-material/MarkChatRead';
 import LogoutIcon from '@mui/icons-material/Logout';
 
@@ -31,7 +31,7 @@ import Public from '@mui/icons-material/Public';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
-import EditIcon from '@mui/icons-material/Edit';
+// import EditIcon from '@mui/icons-material/Edit';
 // import NotesIcon from '@mui/icons-material/Notes';
 // import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
@@ -48,15 +48,14 @@ import { ListItemButtonLink } from '../../MUILinkComponents';
 
 // list item links data (mapped out variables)
 const tilaukset = [
-    { icon: <AutoStoriesIcon />, label: 'Tarkastele', to: '/admin/pagetest' },
-    { icon: <EditIcon />, label: 'Muokkaa', to: '/tilauksetmuokkaa' },
-    { icon: <PostAddIcon />, label: 'Lisää uusi', to: '/tilauksetlisaa' },
+    { icon: <AutoStoriesIcon />, label: 'Tarkastele', to: '/admin/tilaukset' },
+    { icon: <PostAddIcon />, label: 'Lisää uusi', to: '/admin/tilaukset/uusi' },
+    { icon: <ImportExportIcon />, label: 'Lähetyslista', to: '/admin/tilaukset/sahkopostilista' },
 ];
 
 const tuotteet = [
-    { icon: <ManageSearchIcon />, label: 'Tarkastele', to: '/placeholder' },
-    { icon: <EditIcon />, label: 'Muokkaa', to: '/placeholder' },
-    { icon: <PlaylistAddIcon />, label: 'Lisää uusi', to: '/placeholder' },
+    { icon: <ManageSearchIcon />, label: 'Tarkastele', to: '/admin/tuotteet' },
+    { icon: <PlaylistAddIcon />, label: 'Lisää uusi', to: '/admin/tuotteet/uusi' },
 ];
 
 const kayttajat = [
@@ -141,7 +140,7 @@ function NavigationTree() {
         setAnchorEl(null);
     };
 
-    // navigation bar list items (links):
+    // navigation accordion list items (links):
     // tilaukset
     const ordersListItems = (
         <Box

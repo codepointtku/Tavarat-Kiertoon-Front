@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { useSubmit, Link, useActionData, useRouteLoaderData } from 'react-router-dom';
+import { Form, useSubmit, Link, useActionData, useRouteLoaderData } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import {
     AppBar,
     Avatar,
     Badge,
     Box,
+    Button,
     Grid,
     IconButton,
     Menu,
@@ -20,9 +22,9 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import MailIcon from '@mui/icons-material/Mail';
 
 import Tooltip from '../../Tooltip';
-// import AlertBox from '../../AlertBox';
+import AlertBox from '../../AlertBox';
 
-// import type { adminLogOut } from '../../../Router/actions';
+import type { adminLogOut } from '../../../Router/actions';
 import type { adminLoader } from '../../../Router/loaders';
 
 import logo from '../../../Assets/Turku_vaaka_300ppi_viiva_white.png';
@@ -43,20 +45,28 @@ function AdminAppBar() {
     };
 
     // log out functionality:
-    // const responseStatus = useActionData() as Awaited<ReturnType<typeof adminLogOut>>;
+    const { handleSubmit } = useForm();
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof adminLogOut>>;
     const submit = useSubmit();
     const onClickLogOut = () => {
         submit(null, {
             method: 'post',
-            action: '/admin',
         });
     };
 
     return (
         <>
-            {/* {responseStatus?.type === 'logout' && (
-                <AlertBox text="asia pihvi, hei hei ja huomiseen" status="success" redirectUrl="/" timer={4000} />
-            )} */}
+            {responseStatus?.type === 'logout' && responseStatus?.status === true && (
+                <AlertBox text="Kirjauduttu ulos" status="success" redirectUrl="/" timer={4000} />
+            )}
+
+            {responseStatus?.type === 'logout' && responseStatus?.status === false && (
+                <AlertBox
+                    text="Uloskirjautumisessa jokin ongelma, yritä uudelleen. Voit vaihtoehtoisesti tyhjentää selaimen välimuistin."
+                    status="error"
+                />
+            )}
+
             <AppBar
                 id="admin-panel-appbar"
                 position="static"
@@ -86,7 +96,7 @@ function AdminAppBar() {
                         </Box>
                         <Box id="mail" sx={{ margin: '0 1rem 0 1rem' }}>
                             <Tooltip title="Uudet viestit">
-                                <IconButton>
+                                <IconButton component={Link} to="/admin/saapuneet?tila=Lukemattomat">
                                     <Badge badgeContent={messages.count} color="error">
                                         <MailIcon sx={{ color: 'primary.contrastText' }} />
                                     </Badge>
@@ -106,7 +116,10 @@ function AdminAppBar() {
                                     <MenuItem onClick={handleCloseAvatarDropDownMenu} divider>
                                         Käyttäjäprofiili
                                     </MenuItem>
-                                    <MenuItem onClick={onClickLogOut}>Kirjaudu ulos</MenuItem>
+                                    <Box component={Form} onSubmit={handleSubmit(onClickLogOut)}>
+                                        {/* <MenuItem>Kirjaudu ulos</MenuItem> */}
+                                        <Button type="submit">Kirjaudu ulos</Button>
+                                    </Box>
                                 </Menu>
                             </IconButton>
                             {/* </Tooltip> */}

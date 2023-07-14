@@ -5,6 +5,9 @@ import { ThemeProvider } from '@mui/material';
 
 import AuthContext from '../Context/AuthContext';
 import ErrorBoundary from './ErrorBoundary';
+import BaseBoundary from './BaseBoundary';
+import AdminViewBoundary from './AdminViewBoundary';
+import UserError from './ErrorElements/UserError';
 // import HasRole from '../Utils/HasRole';
 
 import DefaultView from '../Views/DefaultView';
@@ -28,7 +31,15 @@ import AddNewItem from '../Components/Storage/AddNewItem';
 import EditProduct from '../Components/Storage/EditProduct';
 
 import Overview from '../Components/Admin/Panel/Overview/Overview';
-import PageTest from '../Components/Admin/Panel/PageTest';
+// import PageTest from '../Components/Admin/Panel/PageTest';
+import OrdersGrid from '../Components/Admin/OrdersGrid';
+// import AdminOrderEdit from '../Components/Admin/AdminOrderEdit';
+import AdminOrderCreate from '../Components/Admin/AdminOrderCreate';
+import ProductsGrid from '../Components/Admin/ProductsGrid';
+import AdminProductEdit from '../Components/Admin/AdminProductEdit';
+import AdminProductCreate from '../Components/Admin/AdminProductCreate';
+import AdminOrderEmailList from '../Components/Admin/AdminOrderEmailList';
+
 import AdminInbox from '../Components/Admin/AdminInbox';
 
 import UsersList from '../Components/Admin/UsersList';
@@ -40,8 +51,10 @@ import Stats from '../Components/Admin/Stats/Stats';
 
 import StoragesList from '../Components/Admin/StoragesList';
 import StorageEdit from '../Components/Admin/StorageEdit';
-import AddStorage from '../Components/Admin/AddStorage';
+import StorageDelete from '../Components/Admin/StorageDelete';
+import StorageCreate from '../Components/Admin/StorageCreate';
 
+import AddItem from '../Components/Storage/AddItem';
 import PDFView from '../Components/Storage/PDFView';
 
 import ProductDetails from '../Components/Default/ProductDetails';
@@ -99,13 +112,14 @@ import {
     pdfViewLoader,
     productDetailsLoader,
     productListLoader,
+    productTransferLoader,
     rootLoader,
     storagesListLoader,
     storageEditLoader,
     userEditLoader,
     usersListLoader,
-    userSignupLoader,
     storageProductsLoader,
+    // userSignupLoader,
     shoppingCartLoader,
     bikesDefaultLoader,
     bikesListLoader,
@@ -117,6 +131,7 @@ import {
     modifyBikeOrderLoader,
     adminLoader,
     adminInboxLoader,
+    emailRecipientsLoader,
     bikeNewModelLoader,
     createBikeOrderLoader,
     userInfoLoader,
@@ -129,6 +144,8 @@ import {
     storageCreateAction,
     storageEditAction,
     addProductAction,
+    storageDeleteAction,
+    productsTransferAction,
     frontPageActions,
     userEditAction,
     cartViewAction,
@@ -150,6 +167,7 @@ import {
     emailChangeSuccessfulAction,
     changeEmailAction,
     adminBulletinsAction,
+    adminEmailRecipientsAction,
     createNewPacketAction,
     deletePacketAction,
     userProfilePageAction,
@@ -158,6 +176,8 @@ import {
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
+import { getRandomInt } from '../Utils/getRandomInt';
+import StorageProductsTransfer from '../Components/Admin/StorageProductsTransfer';
 
 createStore({});
 
@@ -184,6 +204,7 @@ function Routes() {
                         {
                             path: '/',
                             element: <BaseLayout />,
+                            errorElement: <BaseBoundary />,
                             id: 'frontPage',
                             loader: shoppingCartLoader,
                             action: frontPageActions,
@@ -206,6 +227,7 @@ function Routes() {
                                         {
                                             path: ':id',
                                             element: <ProductDetails />,
+                                            errorElement: <BaseBoundary />,
                                             loader: productDetailsLoader,
                                         },
                                     ],
@@ -508,23 +530,61 @@ function Routes() {
                             id: 'admin',
                             errorElement: (
                                 <ThemeProvider theme={adminTheme}>
-                                    <ErrorBoundary />,
+                                    <AdminViewBoundary />,
                                 </ThemeProvider>
                             ),
                             loader: async () => adminLoader(auth, setAuth),
-                            action: async ({ request }) => adminLogOut(auth, setAuth, request),
+                            action: ({ request }) => adminLogOut(request),
                             children: [
                                 {
                                     index: true,
                                     element: <Overview />,
                                 },
                                 {
-                                    path: 'pagetest',
-                                    element: <PageTest />,
-                                },
-                                {
                                     path: 'tilastot',
                                     element: <Stats />,
+                                },
+                                {
+                                    path: 'tilaukset',
+                                    element: <OrdersGrid />,
+                                    loader: ordersListLoader,
+                                },
+                                {
+                                    path: 'tilaukset/:id',
+                                    element: <OrderView />,
+                                    errorElement: <UserError />,
+                                    loader: ({ params }) => orderViewLoader(params),
+                                },
+                                // {
+                                //     path: 'tilaukset/:id',
+                                //     element: <AdminOrderEdit />,
+                                //     loader: ({ params }) => orderEditLoader(params),
+                                // },
+                                {
+                                    path: 'tilaukset/uusi',
+                                    element: <AdminOrderCreate />,
+                                    action: () => console.log('moro'),
+                                },
+                                {
+                                    path: 'tilaukset/sahkopostilista',
+                                    element: <AdminOrderEmailList />,
+                                    loader: emailRecipientsLoader,
+                                    action: adminEmailRecipientsAction,
+                                },
+                                {
+                                    path: 'tuotteet',
+                                    element: <ProductsGrid />,
+                                    loader: productListLoader,
+                                },
+                                {
+                                    path: 'tuotteet/:id',
+                                    element: <AdminProductEdit />,
+                                    loader: ({ params }) => productDetailsLoader(params),
+                                },
+                                {
+                                    path: 'tuotteet/uusi',
+                                    element: <AdminProductCreate />,
+                                    action: () => console.log('poro'),
                                 },
                                 {
                                     path: 'kayttajat',
@@ -533,15 +593,16 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <UsersList />,
+                                            errorElement: <UserError />,
                                             id: 'kayttajat',
-                                            loader: async () => usersListLoader(auth, setAuth),
+                                            loader: usersListLoader,
                                         },
                                         {
                                             path: ':id',
                                             element: <UserEdit />,
-                                            loader: async ({ params }) => userEditLoader(auth, setAuth, params),
-                                            action: async ({ request, params }) =>
-                                                userEditAction(auth, setAuth, request, params),
+                                            errorElement: <UserError />,
+                                            loader: ({ params }) => userEditLoader(params),
+                                            action: ({ request, params }) => userEditAction(request, params),
                                         },
                                     ],
                                 },
@@ -556,31 +617,42 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <StoragesList />,
-                                            loader: async () => storagesListLoader(auth, setAuth),
+                                            loader: storagesListLoader,
                                         },
                                         {
                                             path: ':id',
                                             element: <StorageEdit />,
-                                            loader: async ({ params }) => storageEditLoader(auth, setAuth, params),
-                                            action: async ({ request, params }) =>
-                                                storageEditAction(auth, setAuth, request, params),
+                                            loader: storageEditLoader,
+                                            action: storageEditAction,
+                                        },
+                                        {
+                                            path: 'poista/:id',
+                                            element: <StorageDelete randomInt={getRandomInt()} />,
+                                            loader: storageEditLoader,
+                                            action: storageDeleteAction,
+                                        },
+                                        {
+                                            path: 'siirto/:id',
+                                            element: <StorageProductsTransfer />,
+                                            loader: productTransferLoader,
+                                            action: productsTransferAction,
                                         },
                                         {
                                             path: 'luo',
-                                            element: <AddStorage />,
+                                            element: <StorageCreate />,
                                             action: async ({ request }) => storageCreateAction(auth, setAuth, request),
                                         },
                                     ],
                                 },
                                 {
                                     path: 'varastot/luo',
-                                    element: <AddStorage />,
-                                    action: async ({ request }) => storageCreateAction(auth, setAuth, request),
+                                    element: <StorageCreate />,
+                                    action: ({ request }) => storageCreateAction(request),
                                 },
                                 {
                                     path: 'tiedotteet',
                                     element: <BulletinPosts />,
-                                    action: async ({ request }) => adminBulletinsAction(auth, setAuth, request),
+                                    action: async ({ request }) => adminBulletinsAction(request),
                                 },
                                 {
                                     path: 'tiedotteet/:id/muokkaa',
@@ -589,7 +661,7 @@ function Routes() {
                                 {
                                     path: 'tiedotteet/luo',
                                     element: <CreateBulletinPost />,
-                                    action: async ({ request }) => createBulletinAction(auth, setAuth, request),
+                                    action: createBulletinAction,
                                 },
                                 {
                                     path: ':saapuneet',

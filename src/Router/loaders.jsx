@@ -78,21 +78,19 @@ const productListLoader = async ({ request }) => {
             }
         });
         url.searchParams.delete('kategoria');
-        // const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
-        // get all categories
+
         const { data } = await productsApi.productsList(url.searchParams.getAll('category'));
-        return data.results;
+        return data;
     }
 
     if (url.searchParams.has('haku')) {
-        //const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
         const { data } = await productsApi.productsList(null, null, null, null, null, url.searchParams.get('haku'));
-        return data.results;
+        return data;
     }
 
     const { data } = await productsApi.productsList();
 
-    return data.results;
+    return data;
 };
 
 /**
@@ -108,29 +106,29 @@ const productDetailsLoader = async ({ params }) => {
  * Get all orders.
  */
 const ordersListLoader = async ({ params }) => {
-    const { data } = await ordersApi.ordersList();
+    const response = await ordersApi.ordersList();
     // num will tell back-end which entries to bring
     // view is order status, unless archived can bring all?
     // or will be replaced into the back-end later?
-    const statuses = {
-        waiting: 2,
-        delivery: 1,
-        finished: 0,
-    };
-    statuses[params.view] = 10;
-    data.results.sort((a, b) => {
-        if (statuses[a.status] > statuses[b.status]) {
-            return -1;
-        }
-        if (a.status === b.status) {
-            if (a.id > b.id) {
-                return -1;
-            }
-        }
-        return 1;
-    });
+    // const statuses = {
+    //     waiting: 2,
+    //     delivery: 1,
+    //     finished: 0,
+    // };
+    // statuses[params.view] = 10;
+    // data.results.sort((a, b) => {
+    //     if (statuses[a.status] > statuses[b.status]) {
+    //         return -1;
+    //     }
+    //     if (a.status === b.status) {
+    //         if (a.id > b.id) {
+    //             return -1;
+    //         }
+    //     }
+    //     return 1;
+    // });
 
-    return data.results;
+    return response.data;
 };
 
 /**
@@ -149,6 +147,11 @@ const orderViewLoader = async (auth, setAuth, params) => {
 const orderEditLoader = async (auth, setAuth, params) => {
     // const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
     const { data } = await ordersApi.ordersRetrieve(params.id);
+    return data;
+};
+
+const emailRecipientsLoader = async () => {
+    const { data } = await ordersApi.ordersEmailrecipientsList();
     return data;
 };
 
@@ -181,24 +184,56 @@ const pdfViewLoader = async (auth, setAuth, params) => {
 /**
  * Get all storages
  */
-const storagesListLoader = async (auth, setAuth) => {
-    // const { data } = await apiCall(auth, setAuth, '/storages', 'get');
+const storagesListLoader = async () => {
     const { data } = await storagesApi.storagesList();
     return data;
 };
 
-const storageEditLoader = async (auth, setAuth, params) => {
-    // const { data } = await apiCall(auth, setAuth, `/storages/${params.id}`, 'get');
-    const { data } = await storagesApi.storagesRetrieve(params.id);
-    return data;
+/**
+ * Get all storages data and (available) products relations
+ */
+const storageEditLoader = async ({ params }) => {
+    const [{ data: storageInfo }, { data: hasProducts }, { data: allStorages }] = await Promise.all([
+        storagesApi.storagesRetrieve(params.id),
+        productsApi.productsItemsList(true, null, null, null, null, null, params.id),
+        storagesApi.storagesList(),
+    ]);
+
+    return { storageInfo, hasProducts, allStorages };
+};
+
+/**
+ * Get all storages data and products relations
+ */
+const productTransferLoader = async ({ params }) => {
+    // first, makes calls to create a variable for pagination.
+    // - this enables to get all products in a storage (params.id === storage id)
+    const [{ data: storage }, { data: products }] = await Promise.all([
+        storagesApi.storagesRetrieve(params.id),
+        productsApi.productsItemsList(true, null, null, null, null, null, params.id),
+    ]);
+
+    const variable = { storage, products };
+    console.log('kasa', variable);
+
+    const paginationOverride = variable.products.count;
+    // product count === page size.
+
+    // main call. This data is used at component levels.
+    const [{ data: storageInfo }, { data: hasProducts }, { data: allStorages }] = await Promise.all([
+        storagesApi.storagesRetrieve(params.id),
+        productsApi.productsItemsList(true, null, null, paginationOverride, null, null, params.id),
+        storagesApi.storagesList(),
+    ]);
+
+    return { storageInfo, hasProducts, allStorages };
 };
 
 /**
  * Get all users.
  * Used in src/Components/Admin/UserList.jsx
  */
-const usersListLoader = async (auth, setAuth) => {
-    // const { data: users } = await apiCall(auth, setAuth, '/users', 'get');
+const usersListLoader = async () => {
     const { data: users } = await usersApi.usersList();
     return users;
 };
@@ -208,13 +243,11 @@ const usersListLoader = async (auth, setAuth) => {
  * Array item 0 === user data, item 1 === auth groups.
  * Used in src/Components/Admin/UserEdit.jsx
  */
-const userEditLoader = async (auth, setAuth, params) => {
+const userEditLoader = async (params) => {
     const dataList = [];
-    // let { data } = await apiCall(auth, setAuth, `/users/${params.id}`, 'get');
     let { data } = await usersApi.usersRetrieve(params.id);
     data.groups = data.groups.map((group) => group.id);
     dataList.push(data);
-    // data = await apiCall(auth, setAuth, '/users/groups', 'get');
     data = await usersApi.usersGroupsList();
     dataList.push(data.data);
     if (dataList) {
@@ -422,12 +455,10 @@ const shoppingProcessLoader = async () => {
     return user;
 };
 
-const adminLoader = async (auth, setAuth) => {
+const adminLoader = async () => {
     const [{ data: user }, { data: messages }] = await Promise.all([
-        // apiCall(auth, setAuth, '/user/', 'get'),
         userApi.userRetrieve(),
-        // apiCall(auth, setAuth, '/contact_forms/?status=Not read', 'get'),
-        contactFormsApi.contactFormsList(null, null, null, { status: 'Not read' }),
+        contactFormsApi.contactFormsList(null, null, null, 'Not read'),
     ]);
 
     return { user, messages };
@@ -435,12 +466,6 @@ const adminLoader = async (auth, setAuth) => {
 
 const adminInboxLoader = async (auth, setAuth, request) => {
     const searchParams = new URL(request.url).searchParams;
-    // const status =
-    //     searchParams.get('tila') === 'Luetut'
-    //         ? 'Read'
-    //         : searchParams.get('tila') === 'Lukemattomat'
-    //         ? 'Not read'
-    //         : (searchParams.get('tila') === 'Hoidetut' && 'Handled') || null;
 
     const statusMap = {
         Luetut: 'Read',
@@ -450,32 +475,7 @@ const adminInboxLoader = async (auth, setAuth, request) => {
 
     const status = statusMap[searchParams.get('tila')] || null;
 
-    // if (status) {
-    //     // const { data: messages } = await apiCall(
-    //     //     auth,
-    //     //     setAuth,
-    //     //     searchParams.has('sivu')
-    //     //         ? `/contact_forms/?page=${searchParams.get('sivu')}&status=${status}`
-    //     //         : `/contact_forms/?status=${status}`,
-    //     //     'get'
-    //     // );
-    //     const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null , searchParams.get('tila'));
-    //     return messages;
-
-    // } else if (searchParams.has('sivu') && searchParams.get('sivu') != 0) {
-    //     const { data: messages } = await apiCall(
-    //         auth,
-    //         setAuth,
-    //         `/contact_forms/?page=${searchParams.get('sivu')}`,
-    //         'get'
-    //     );
-    //     return messages;
-    // }
-
     const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null, status);
-
-    // // const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
-    // const { data: messages } = await contactFormsApi.contactFormsList();
 
     return messages;
 };
@@ -510,6 +510,7 @@ export {
     rootLoader,
     productListLoader,
     productDetailsLoader,
+    productTransferLoader,
     ordersListLoader,
     orderViewLoader,
     orderEditLoader,
@@ -531,6 +532,7 @@ export {
     shoppingProcessLoader,
     adminLoader,
     adminInboxLoader,
+    emailRecipientsLoader,
     modifyBikeOrderLoader,
     bikeNewModelLoader,
     createBikeOrderLoader,

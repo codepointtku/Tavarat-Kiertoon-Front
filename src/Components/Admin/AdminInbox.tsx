@@ -2,8 +2,12 @@ import { useLoaderData, useSearchParams } from 'react-router-dom';
 import { Stack, Grid, Container, ButtonGroup, Button, Box, Pagination } from '@mui/material';
 import HeroText from '../HeroText';
 import MessageCard from './MessageCard';
-import type { adminInboxLoader } from '../../Router/loaders';
 
+import MailIcon from '@mui/icons-material/Mail';
+
+import HeroHeader from '../HeroHeader';
+
+import type { adminInboxLoader } from '../../Router/loaders';
 // interface Message {
 //     subject: string;
 //     date: Date & string;
@@ -53,9 +57,16 @@ function AdminInbox() {
 
     return (
         <Container maxWidth="lg" component={Grid} direction="column" container>
+            <HeroHeader Icon={<MailIcon />} hideInAdmin />
             <HeroText title="Saapuneet viestit" />
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <ButtonGroup variant="contained" aria-label="read-and-unread-buttons" size="large">
+                <ButtonGroup
+                    id="inbox-btns"
+                    variant="contained"
+                    aria-label="read-and-unread-buttons"
+                    size="large"
+                    sx={{ marginBottom: '1rem' }}
+                >
                     <Button
                         sx={{
                             backgroundColor:
