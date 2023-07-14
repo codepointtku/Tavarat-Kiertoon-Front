@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSubmit, useRouteLoaderData, useSearchParams } from 'react-router-dom';
+import { useSubmit, useRouteLoaderData, useSearchParams, useFetcher } from 'react-router-dom';
 import { type OverridableStringUnion } from '@material-ui/types';
 import { Box, Button, type ButtonPropsSizeOverrides } from '@mui/material';
 
@@ -21,11 +21,12 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
     const [, setAddedToCart] = useState(false);
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
+    const fetcher = useFetcher();
 
     const product = products?.find((product_item: { product: { id: number } }) => product_item.product.id == id);
 
     const onSubmit = async () => {
-        submit(
+        fetcher.submit(
             { id },
             {
                 method: 'put',

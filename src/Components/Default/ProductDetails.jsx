@@ -156,7 +156,7 @@ function ProductDetails() {
                                             <AddToCartButton
                                                 size="large"
                                                 id={Number(productId)}
-                                                productName={productName}
+                                                groupId={Number(productId)}
                                             />
                                         </CardActions>
                                     </Grid>

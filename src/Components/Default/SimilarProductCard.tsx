@@ -32,7 +32,7 @@ export interface SimilarProduct {
 
 function SimilarProductCard({ product }: SimilarProduct) {
     return (
-        <Card sx={{ width: 200, height: 300 }}>
+        <Card sx={{ width: 200, height: 265 }}>
             <CardActionArea component={Link} to={`/tuotteet/${product.id}`}>
                 <CardMedia
                     component={Box}
@@ -50,7 +50,7 @@ function SimilarProductCard({ product }: SimilarProduct) {
                 />
             </CardActionArea>
             <CardActions>
-                <Grid container direction="row" justifyContent="space-evenly" alignItems="center" sx={{ mt: 4 }}>
+                <Grid container direction="row" justifyContent="space-evenly" alignItems="center">
                     <Grid item>
                         <AddToCartButton
                             size={
