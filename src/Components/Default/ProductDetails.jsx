@@ -1,5 +1,5 @@
 import { useLoaderData, useParams } from 'react-router-dom';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 
 import {
     Button,
@@ -38,6 +38,10 @@ function ProductDetails() {
     } = product;
     const [image, setImage] = useState(product.pictures[0].picture_address);
     const { auth } = useContext(AuthContext);
+
+    useEffect(() => {
+        setImage(product.pictures[0].picture_address);
+    }, [location.pathname]);
 
     return (
         <Container id="product-detail-card">
