@@ -54,7 +54,6 @@ import StorageEdit from '../Components/Admin/StorageEdit';
 import StorageDelete from '../Components/Admin/StorageDelete';
 import StorageCreate from '../Components/Admin/StorageCreate';
 
-import AddItem from '../Components/Storage/AddItem';
 import PDFView from '../Components/Storage/PDFView';
 
 import ProductDetails from '../Components/Default/ProductDetails';
@@ -197,7 +196,9 @@ function Routes() {
                     loader: rootLoader,
                     // Loads data only at first page load, not with every route
                     shouldRevalidate: ({ currentUrl }) => {
-                        return currentUrl.pathname === '/admin/tiedotteet' || '/admin/tiedotteet/';
+                        return (
+                            currentUrl.pathname === '/admin/tiedotteet' || currentUrl.pathname === '/admin/tiedotteet/'
+                        );
                     },
                     children: [
                         // main routes
