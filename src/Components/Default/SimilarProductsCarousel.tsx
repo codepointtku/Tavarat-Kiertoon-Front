@@ -22,10 +22,9 @@ function SimilarProductsCarousel({ similarProducts }: Props) {
             <Carousel
                 animation="slide"
                 autoPlay={false}
-                cycleNavigation={false}
+                // cycleNavigation={false}
                 indicatorIconButtonProps={{ style: { color: '#bfe6f6' } }}
                 activeIndicatorIconButtonProps={{ style: { color: '#009bd8' } }}
-                navButtonsAlwaysInvisible
             >
                 {carouselPageContents.map((productCards) => (
                     <Grid container direction="row" gap={5} sx={{ ml: 6 }}>

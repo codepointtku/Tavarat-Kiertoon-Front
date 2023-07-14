@@ -1,9 +1,25 @@
-import { Card, CardActionArea, CardActions, CardContent, CardMedia, CardHeader, Box, Grid } from '@mui/material';
+import { Link } from 'react-router-dom';
+
+import {
+    Card,
+    CardActionArea,
+    CardActions,
+    CardMedia,
+    CardHeader,
+    Box,
+    Grid,
+    ButtonPropsSizeOverrides,
+    Typography,
+    IconButton,
+    Tooltip,
+} from '@mui/material';
+import { OverridableStringUnion } from '@material-ui/types';
 import AddToCartButton from './AddToCartButton';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 export interface SimilarProduct {
     product: {
-        id: number;
+        id: number & string;
         amount: number;
         color: [number];
         free_description: string;
@@ -16,24 +32,51 @@ export interface SimilarProduct {
 
 function SimilarProductCard({ product }: SimilarProduct) {
     return (
-        <Card sx={{ width: 200, height: 243 }}>
-            <CardActionArea>
+        <Card sx={{ width: 200, height: 300 }}>
+            <CardActionArea component={Link} to={`/tuotteet/${product.id}`}>
                 <CardMedia
                     component={Box}
                     sx={{ alt: 'kuva' }}
                     height={100}
                     image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product.pictures[0].picture_address}`}
                 />
-                <CardHeader title={product.name} />
+                <CardHeader
+                    title={product.name}
+                    subheader={
+                        <Typography variant="subtitle1" fontWeight="400" lineHeight="1" sx={{ mt: 0.5 }}>
+                            {product.amount} kpl
+                        </Typography>
+                    }
+                />
             </CardActionArea>
-            <CardContent>
-                <CardActions>
-                    <Grid container>
-                        <Grid item></Grid>
-                        <Grid item></Grid>
+            <CardActions>
+                <Grid container direction="row" justifyContent="space-evenly" alignItems="center" sx={{ mt: 4 }}>
+                    <Grid item>
+                        <AddToCartButton
+                            size={
+                                'small' as OverridableStringUnion<
+                                    'small' | 'medium' | 'large',
+                                    ButtonPropsSizeOverrides
+                                >
+                            }
+                            id={product.id}
+                            groupId={product.id}
+                        />
                     </Grid>
-                </CardActions>
-            </CardContent>
+                    <Grid item>
+                        <Tooltip
+                            title="Klikkaa saadaksesi lisätietoa tuotteesta"
+                            placement="top"
+                            sx={{ color: 'primary.main' }}
+                            arrow
+                        >
+                            <IconButton component={Link} to={`/tuotteet/${product.id}`}>
+                                <InfoOutlinedIcon sx={{ color: 'primary.main' }} />
+                            </IconButton>
+                        </Tooltip>
+                    </Grid>
+                </Grid>
+            </CardActions>
         </Card>
     );
 }
