@@ -63,7 +63,6 @@ function ProductCard({
             <Card sx={{ width: 300, height: 365 }}>
                 <CardActionArea component={Box}>
                     <Carousel
-                        animation="slide"
                         duration={850}
                         interval={2000}
                         autoPlay={false}

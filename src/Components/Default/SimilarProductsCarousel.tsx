@@ -18,7 +18,7 @@ function SimilarProductsCarousel({ similarProducts }: Props) {
     }
 
     return (
-        <Paper variant="outlined" sx={{ p: 2, mb: 2, borderColor: 'primary.light' }}>
+        <Paper variant="outlined" sx={{ p: 2, mb: 5, borderColor: 'primary.light' }}>
             <Carousel
                 autoPlay={false}
                 indicatorIconButtonProps={{ style: { color: '#bfe6f6' } }}

@@ -39,8 +39,6 @@ function ProductDetails() {
     const [image, setImage] = useState(product.pictures[0].picture_address);
     const { auth } = useContext(AuthContext);
 
-    console.log(product);
-
     return (
         <Container id="product-detail-card">
             <Grid container mt={2} mb={2}>
@@ -55,7 +53,7 @@ function ProductDetails() {
                                     <CardMedia
                                         component="img"
                                         alt="product image"
-                                        height="460"
+                                        height="350"
                                         image={`${window.location.protocol}//${window.location.hostname}:8000/media/${image}`}
                                     />
                                 </CardActionArea>
@@ -66,7 +64,10 @@ function ProductDetails() {
                                             onClick={() => setImage(pic.picture_address)}
                                         >
                                             <Card
-                                                sx={{ border: image === pic.picture_address && '2px solid #009bd8' }}
+                                                sx={{
+                                                    border: image === pic.picture_address && '2px ridge #009bd8',
+                                                    opacity: image === pic.picture_address ? 1 : 0.7,
+                                                }}
                                                 square
                                             >
                                                 <CardActionArea>
@@ -78,19 +79,19 @@ function ProductDetails() {
                                                     />
                                                 </CardActionArea>
                                             </Card>
-                                            {/* <img
-                                                src={`${window.location.protocol}//${window.location.hostname}:8000/media/${pic.picture_address}`}
-                                                srcSet={`${window.location.protocol}//${window.location.hostname}:8000/media/${pic.picture_address}`}
-                                                alt="kuva"
-                                                loading="lazy"
-                                            /> */}
                                         </ImageListItem>
                                     ))}
                                 </ImageList>
                             </Grid>
                             <Grid item xs={6}>
                                 <CardContent>
-                                    <Typography gutterBottom variant="h5" align="center" component="div">
+                                    <Typography
+                                        gutterBottom
+                                        variant="h5"
+                                        align="center"
+                                        component="div"
+                                        color="primary.main"
+                                    >
                                         {productName}
                                     </Typography>
                                     <Paper
@@ -106,14 +107,12 @@ function ProductDetails() {
                                                 Tuotekuvaus: {description}
                                             </Typography>
                                         </Grid>
-                                        <Grid container direction="row" gap={5}>
+                                        <Grid container direction="row" gap={4}>
                                             <Grid item>
                                                 <Typography variant="body2" color="text.secondary">
                                                     Määrä: {amount}
                                                 </Typography>
                                             </Grid>
-                                        </Grid>
-                                        <Grid container direction="row" gap={5}>
                                             <Grid item>
                                                 <Typography variant="body2" color="text.secondary">
                                                     Paino: {weight}
@@ -124,13 +123,13 @@ function ProductDetails() {
                                                     Mitat: {measurements}
                                                 </Typography>
                                             </Grid>
-                                        </Grid>
-                                        <Grid container direction="row" gap={5}>
                                             <Grid item>
                                                 <Typography variant="body2" color="text.secondary">
                                                     Värit: {color.join(', ')}
                                                 </Typography>
                                             </Grid>
+                                        </Grid>
+                                        <Grid container direction="row" gap={2}>
                                             <Grid item>
                                                 <Typography variant="body2" color="text.secondary">
                                                     Kategoriat:
