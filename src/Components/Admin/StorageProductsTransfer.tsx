@@ -17,7 +17,6 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Avatar, Box, Button, Container, FormHelperText, Grid, IconButton, Stack, Typography } from '@mui/material';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 // import InputIcon from '@mui/icons-material/Input';
 
@@ -84,7 +83,7 @@ function StorageProductsTransfer() {
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data: any) => {
-        console.log('%c Submitissa menevä tieto', 'color: blue', data);
+        // console.log('%c Submitissa menevä tieto', 'color: blue', data);
         submit(data, {
             method: 'put',
         });
