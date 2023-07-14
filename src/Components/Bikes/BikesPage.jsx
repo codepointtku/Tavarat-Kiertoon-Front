@@ -56,7 +56,6 @@ export default function BikesPage() {
     const minDate = parseISO(loaderData.date_info.available_from);
     const maxDate = parseISO(loaderData.date_info.available_to);
     const bikes = [
-        ...loaderData.bikes,
         // The bike package id and bike id would have possibility for overlap since they're both just incrementing from 0
         ...loaderData.packages.map((bikePackage) => ({
             ...bikePackage,
@@ -71,7 +70,9 @@ export default function BikesPage() {
                 watch('endDate')
             ),
         })),
-    ].sort((a, b) => b.max_available - a.max_available);
+        ...loaderData.bikes,
+    ];
+    // ].sort((a, b) => b.max_available - a.max_available);
     const [searchParams, setSearchParams] = useSearchParams();
     const filteredBikes = searchParams.get('filters')
         ? bikes.filter((bike) =>

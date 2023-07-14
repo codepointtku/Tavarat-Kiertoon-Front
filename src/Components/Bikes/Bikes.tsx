@@ -82,20 +82,17 @@ export default function Bikes() {
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell align="right">Merkki</StyledTableCell>
-                            <StyledTableCell align="right">Koko</StyledTableCell>
+                            <StyledTableCell align="right">Numero</StyledTableCell>
                             <StyledTableCell align="right">Tyyppi</StyledTableCell>
+                            {/* <StyledTableCell align="right">Merkki</StyledTableCell>
+                            <StyledTableCell align="right">Koko</StyledTableCell>
+                            <StyledTableCell align="right">Tyyppi</StyledTableCell> */}
                             <StyledTableCell align="right">Väri</StyledTableCell>
                             <StyledTableCell align="right">
                                 <div>Varattu</div>
                                 <div>pakettiin</div>
                             </StyledTableCell>
-                            <StyledTableCell align="right" width="30%">
-                                Runkonumero
-                            </StyledTableCell>
-                            <StyledTableCell align="right" width="10%">
-                                Muokkaa
-                            </StyledTableCell>
+                            <StyledTableCell align="right">Muokkaa</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -106,12 +103,13 @@ export default function Bikes() {
                                     sx={{ background: index % 2 ? 'rgba(199, 215, 235, 0.1)' : 'white' }}
                                     hover
                                 >
-                                    <TableCell align="right">{bike.bike.brand.name}</TableCell>
+                                    <TableCell align="right">{bike.number}</TableCell>
+                                    <TableCell align="right">{bike.bike.name}</TableCell>
+                                    {/* <TableCell align="right">{bike.bike.brand.name}</TableCell>
                                     <TableCell align="right">{bike.bike.size.name}</TableCell>
-                                    <TableCell align="right">{bike.bike.type.name}</TableCell>
+                                    <TableCell align="right">{bike.bike.type.name}</TableCell> */}
                                     <TableCell align="right">{bike.bike.color.name}</TableCell>
                                     <TableCell align="right">{bike.package_only ? <CheckIcon /> : ''}</TableCell>
-                                    <TableCell align="right">{bike.frame_number}</TableCell>
                                     <TableCell align="right">
                                         <Button
                                             to={`/pyorat/pyoravarasto/muokkaa/${bike.id}`}

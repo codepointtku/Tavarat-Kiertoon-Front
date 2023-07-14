@@ -685,6 +685,9 @@ const getOrCreateBikeModelIds = async (auth, setAuth, data) => {
     // if selected type, brand or size do not exist they need to be created
     // need to create new is indicated by setting the bikeModelXXXId to -1 in the form
     let typeId = data.get('bikeModelTypeId');
+
+    let bikeName =
+        data.get('bikeModelSizeName') + '" ' + data.get('bikeModelTypeName') + ' ' + data.get('bikeModelBrandName');
     if (typeId <= 0) {
         // const response = await apiCall(auth, setAuth, `/bikes/type/`, 'post', { name: data.get('bikeModelTypeName') });
         const response = await bikesApi.bikesTypeCreate({ name: data.get('bikeModelTypeName') });
@@ -704,7 +707,7 @@ const getOrCreateBikeModelIds = async (auth, setAuth, data) => {
         const response = await bikesApi.bikesSizeCreate({ name: data.get('bikeModelSizeName') });
         sizeId = response.data.id;
     }
-    return { typeId, brandId, sizeId };
+    return { typeId, brandId, sizeId, bikeName };
 };
 
 /**
@@ -722,12 +725,16 @@ const modifyBikeModelAction = async (auth, setAuth, request, params) => {
     const data = await request.formData();
 
     // get or create new ids for type, brand and size
-    const { typeId, brandId, sizeId } = await getOrCreateBikeModelIds(auth, setAuth, data);
+    const { typeId, brandId, sizeId, bikeName } = await getOrCreateBikeModelIds(auth, setAuth, data);
+
+    console.log('### modifyBikeModelAction', bikeName);
 
     // append modified data to form data
-    data.append('name', data.get('bikeModelName'));
+    // data.append('name', data.get('bikeModelName'));
+    data.append('name', bikeName);
     data.append('description', data.get('bikeModelDescription'));
-    data.append('color', data.get('bikeModelColorId'));
+    // data.append('color', data.get('bikeModelColorId'));
+    data.append('color', 1);
     data.append('type', typeId);
     data.append('brand', brandId);
     data.append('size', sizeId);
@@ -754,12 +761,16 @@ const createBikeModelAction = async (auth, setAuth, request) => {
     const data = await request.formData();
 
     // get or create new ids for type, brand and size
-    const { typeId, brandId, sizeId } = await getOrCreateBikeModelIds(auth, setAuth, data);
+    const { typeId, brandId, sizeId, bikeName } = await getOrCreateBikeModelIds(auth, setAuth, data);
+
+    console.log('### createBikeModelAction', bikeName);
 
     // append modified data to form data
-    data.append('name', data.get('bikeModelName'));
+    // data.append('name', data.get('bikeModelName'));
+    data.append('name', bikeName);
     data.append('description', data.get('bikeModelDescription'));
-    data.append('color', data.get('bikeModelColorId'));
+    // data.append('color', data.get('bikeModelColorId'));
+    data.append('color', 1);
     data.append('type', typeId);
     data.append('brand', brandId);
     data.append('size', sizeId);

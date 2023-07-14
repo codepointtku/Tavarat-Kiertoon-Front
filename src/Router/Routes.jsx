@@ -427,10 +427,10 @@ function Routes() {
                                     path: 'tilaus',
                                     element: <Outlet />,
                                     children: [
-                                        // {
-                                        //     index: true,
-                                        //     element: <Navigate to="/varasto" />,
-                                        // },
+                                        {
+                                            index: true,
+                                            element: <Navigate to="/varasto" />,
+                                        },
                                         {
                                             path: ':id',
                                             element: <Outlet />,
