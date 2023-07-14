@@ -29,7 +29,6 @@ function ProductDetails() {
     const {
         name: productName,
         free_description: description,
-        date,
         category,
         amount,
         measurements,
@@ -39,6 +38,8 @@ function ProductDetails() {
     } = product;
     const [image, setImage] = useState(product.pictures[0].picture_address);
     const { auth } = useContext(AuthContext);
+
+    console.log(product);
 
     return (
         <Container id="product-detail-card">
@@ -58,18 +59,31 @@ function ProductDetails() {
                                         image={`${window.location.protocol}//${window.location.hostname}:8000/media/${image}`}
                                     />
                                 </CardActionArea>
-                                <ImageList cols={6} rowHeight={164} sx={{ pl: 2 }}>
+                                <ImageList cols={6} rowHeight={90} sx={{ mt: 0 }}>
                                     {product.pictures.map((pic) => (
                                         <ImageListItem
                                             key={pic.picture_address}
                                             onClick={() => setImage(pic.picture_address)}
                                         >
-                                            <img
+                                            <Card
+                                                sx={{ border: image === pic.picture_address && '2px solid #009bd8' }}
+                                                square
+                                            >
+                                                <CardActionArea>
+                                                    <CardMedia
+                                                        component={Box}
+                                                        sx={{ alt: 'kuvan valinta' }}
+                                                        height={100}
+                                                        image={`${window.location.protocol}//${window.location.hostname}:8000/media/${pic.picture_address}`}
+                                                    />
+                                                </CardActionArea>
+                                            </Card>
+                                            {/* <img
                                                 src={`${window.location.protocol}//${window.location.hostname}:8000/media/${pic.picture_address}`}
                                                 srcSet={`${window.location.protocol}//${window.location.hostname}:8000/media/${pic.picture_address}`}
                                                 alt="kuva"
                                                 loading="lazy"
-                                            />
+                                            /> */}
                                         </ImageListItem>
                                     ))}
                                 </ImageList>
@@ -93,11 +107,6 @@ function ProductDetails() {
                                             </Typography>
                                         </Grid>
                                         <Grid container direction="row" gap={5}>
-                                            <Grid item>
-                                                <Typography variant="body2" color="text.secondary">
-                                                    Lisätty: {new Date(date).toLocaleDateString('fi-FI')}
-                                                </Typography>
-                                            </Grid>
                                             <Grid item>
                                                 <Typography variant="body2" color="text.secondary">
                                                     Määrä: {amount}

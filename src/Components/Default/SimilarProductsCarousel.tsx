@@ -20,14 +20,12 @@ function SimilarProductsCarousel({ similarProducts }: Props) {
     return (
         <Paper variant="outlined" sx={{ p: 2, mb: 2, borderColor: 'primary.light' }}>
             <Carousel
-                animation="slide"
                 autoPlay={false}
-                // cycleNavigation={false}
                 indicatorIconButtonProps={{ style: { color: '#bfe6f6' } }}
                 activeIndicatorIconButtonProps={{ style: { color: '#009bd8' } }}
             >
                 {carouselPageContents.map((productCards) => (
-                    <Grid container direction="row" gap={5} sx={{ ml: 6 }}>
+                    <Grid container direction="row" gap={5} sx={{ pl: 5 }}>
                         {productCards.map((product) => (
                             <SimilarProductCard product={product as SimilarProduct['product']} />
                         ))}
