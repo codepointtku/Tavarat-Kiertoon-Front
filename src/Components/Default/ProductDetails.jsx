@@ -186,7 +186,7 @@ function ProductDetails() {
                             <Typography gutterBottom variant="h5" component="div" color="primary.main">
                                 Samankaltaisia tuotteita
                             </Typography>
-                            <SimilarProductsCarousel similarProducts={products} />
+                            <SimilarProductsCarousel currentId={productId} similarProducts={products} />
                         </Box>
                     </Card>
                 </Grid>

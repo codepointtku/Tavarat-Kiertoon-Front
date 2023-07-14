@@ -5,16 +5,20 @@ import { SimilarProduct } from './SimilarProductCard';
 
 interface Props {
     similarProducts: { count: number; results: [{}] };
+    currentId: number;
 }
 
-function SimilarProductsCarousel({ similarProducts }: Props) {
+function SimilarProductsCarousel({ similarProducts, currentId }: Props) {
     const carouselPageContents = [];
+    const similarProductsWithoutSelectedProduct = similarProducts.results.filter(
+        (product: any) => product.id != currentId
+    );
     const pageCount = similarProducts.results.length / 3;
     var a = 0;
 
     for (let i = 0; i < pageCount; i++) {
         a += 3;
-        carouselPageContents.push(similarProducts.results.slice(a - 3, a));
+        carouselPageContents.push(similarProductsWithoutSelectedProduct.slice(a - 3, a));
     }
 
     return (
