@@ -3589,10 +3589,7 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State84aEnum'
-        color:
-          type: integer
-          nullable: true
+          $ref: '#/components/schemas/State6acEnum'
         bike:
           type: integer
         storage:
@@ -3670,10 +3667,7 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State84aEnum'
-        color:
-          type: integer
-          nullable: true
+          $ref: '#/components/schemas/State6acEnum'
       required:
       - bike
       - created_at
@@ -3706,10 +3700,7 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State84aEnum'
-        color:
-          type: integer
-          nullable: true
+          $ref: '#/components/schemas/State6acEnum'
         storage:
           type: integer
       required:
@@ -3740,10 +3731,7 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State84aEnum'
-        color:
-          type: integer
-          nullable: true
+          $ref: '#/components/schemas/State6acEnum'
         bike:
           type: integer
         storage:
@@ -4923,15 +4911,17 @@ components:
       - id
       - product_items
       - user
-    State84aEnum:
+    State6acEnum:
       enum:
       - AVAILABLE
       - MAINTENANCE
+      - RENTED
       - RETIRED
       type: string
       description: |-
         * `AVAILABLE` - Available
         * `MAINTENANCE` - Maintenance
+        * `RENTED` - Rented
         * `RETIRED` - Retired
     StatusC9fEnum:
       enum:

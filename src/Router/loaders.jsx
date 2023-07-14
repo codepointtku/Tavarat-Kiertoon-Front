@@ -206,23 +206,15 @@ const storageEditLoader = async ({ params }) => {
  * Get all storages data and products relations
  */
 const productTransferLoader = async ({ params }) => {
-    // first, makes calls to create a variable for pagination.
-    // - this enables to get all products in a storage (params.id === storage id)
-    const [{ data: storage }, { data: products }] = await Promise.all([
-        storagesApi.storagesRetrieve(params.id),
-        productsApi.productsItemsList(true, null, null, null, null, null, params.id),
-    ]);
+    const { data } = await productsApi.productsItemsList(true, null, null, null, null, null, params.id);
 
-    const variable = { storage, products };
-    console.log('kasa', variable);
-
-    const paginationOverride = variable.products.count;
+    const availableProductsCount = data.count;
     // product count === page size.
 
-    // main call. This data is used at component levels.
+    // main call. This data is used at component level.
     const [{ data: storageInfo }, { data: hasProducts }, { data: allStorages }] = await Promise.all([
         storagesApi.storagesRetrieve(params.id),
-        productsApi.productsItemsList(true, null, null, paginationOverride, null, null, params.id),
+        productsApi.productsItemsList(true, null, null, availableProductsCount, null, null, params.id),
         storagesApi.storagesList(),
     ]);
 
