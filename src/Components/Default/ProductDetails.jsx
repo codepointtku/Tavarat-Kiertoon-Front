@@ -182,7 +182,13 @@ function ProductDetails() {
                                     </Paper>
                                 </>
                             )}
-                            <Typography gutterBottom variant="h5" component="div" color="primary.main">
+                            <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="div"
+                                color="primary.main"
+                                sx={{ mt: '7rem' }}
+                            >
                                 Samankaltaisia tuotteita
                             </Typography>
                             <SimilarProductsCarousel currentId={productId} similarProducts={products} />

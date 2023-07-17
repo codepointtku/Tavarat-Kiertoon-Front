@@ -1,4 +1,4 @@
-import { Paper, Grid } from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
 import SimilarProductCard from './SimilarProductCard';
 import { SimilarProduct } from './SimilarProductCard';
@@ -22,10 +22,11 @@ function SimilarProductsCarousel({ similarProducts, currentId }: Props) {
     }
 
     return (
-        <Paper variant="outlined" sx={{ p: 2, mb: 5, borderColor: 'primary.light' }}>
+        <Box sx={{ p: 2, mb: 5 }}>
             <Carousel
                 autoPlay={false}
                 cycleNavigation={false}
+                navButtonsAlwaysVisible
                 indicatorIconButtonProps={{ style: { color: '#bfe6f6' } }}
                 activeIndicatorIconButtonProps={{ style: { color: '#009bd8' } }}
             >
@@ -37,7 +38,7 @@ function SimilarProductsCarousel({ similarProducts, currentId }: Props) {
                     </Grid>
                 ))}
             </Carousel>
-        </Paper>
+        </Box>
     );
 }
 
