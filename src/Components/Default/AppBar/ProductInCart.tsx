@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSubmit } from 'react-router-dom';
+import { useFetcher } from 'react-router-dom';
 import { ListItem, ListItemButton, ListItemText, IconButton, Input, Button, Typography } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
@@ -13,10 +13,10 @@ interface Props {
 }
 
 function ProductInCart({ name, id, count, maxCount }: Props) {
+    const fetcher = useFetcher();
     const [changeAmount, setChangeAmount] = useState(true);
     const [amountN, setAmountN] = useState(count);
     const [selectedAmount, setSelectedAmount] = useState(count);
-    const submit = useSubmit();
 
     function addAmount() {
         setAmountN(amountN + 1);
@@ -46,7 +46,7 @@ function ProductInCart({ name, id, count, maxCount }: Props) {
     const handleSubmit = (action: string) => {
         const amount = amountN.toString();
         if (action === 'add') {
-            submit(
+            fetcher.submit(
                 { id, amount },
                 {
                     method: 'put',
@@ -56,7 +56,7 @@ function ProductInCart({ name, id, count, maxCount }: Props) {
             setSelectedAmount(amountN);
             setChangeAmount(true);
         } else if (action === 'remove') {
-            submit({ id }, { method: 'delete', action: '/' });
+            fetcher.submit({ id }, { method: 'delete', action: '/' });
         }
     };
 
