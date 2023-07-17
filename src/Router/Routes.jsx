@@ -583,9 +583,9 @@ function Routes() {
                                         {
                                             path: ':id',
                                             element: <UserEdit />,
-                                            errorElement: <UserError />,
+                                            // errorElement: <UserError />,
                                             loader: ({ params }) => userEditLoader(params),
-                                            action: ({ request, params }) => userEditAction(request, params),
+                                            action: userEditAction,
                                         },
                                     ],
                                 },

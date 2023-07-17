@@ -22,16 +22,13 @@ const groupNames = {
 };
 
 function UserEdit() {
-    // todo:
-    // - helpertexts indicating edited fields
-    // - address edit id render bug fix
-
     const loaderData = useLoaderData();
     // loaderData === [{}, []]
     const userInfo = loaderData[0];
     const allGroups = loaderData[1];
 
-    const responseStatus = useActionData();
+    const actionData = useActionData();
+    console.log('sdfsf:', actionData);
 
     const creationDateInfo = [];
     const creationDate = new Date(userInfo.creation_date);
@@ -44,7 +41,7 @@ function UserEdit() {
     lastLoginDateInfo.push(lastLoginDate.toLocaleTimeString());
 
     const [showAddressEditFields, setShowAddressEditFields] = useState({ aid: null, aindex: null });
-    console.log('%c Steitissä oleva aid:', 'color: red', showAddressEditFields.aid);
+    // console.log('%c Steitissä oleva aid:', 'color: red', showAddressEditFields.aid);
     let addressId = showAddressEditFields.aid;
 
     const {
@@ -76,14 +73,15 @@ function UserEdit() {
         submit(data, {
             method: 'put',
         });
+        reset();
     });
 
     return (
         <>
-            {responseStatus?.type === 'update' && !responseStatus?.status && (
+            {actionData?.type === 'update' && actionData?.status === false && (
                 <AlertBox text="Käyttäjätietojen tallennus epäonnistui. Lataa sivu uudestaan." status="error" />
             )}
-            {responseStatus?.type === 'update' && responseStatus?.status && (
+            {actionData?.type === 'update' && actionData?.status && (
                 <AlertBox text="Käyttäjätiedot tallennettu onnistuneesti" status="success" />
             )}
 
@@ -211,7 +209,7 @@ function UserEdit() {
                                             Osoitteen muokkaus:
                                         </Typography>
 
-                                        <input value={addressId} {...register('aid')} type="hidden" />
+                                        <input value={addressId} {...register('aid')} />
 
                                         <TextField
                                             id={`useraddress-${showAddressEditFields.aid}`}

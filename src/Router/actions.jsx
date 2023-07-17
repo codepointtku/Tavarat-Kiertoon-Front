@@ -334,24 +334,29 @@ const productsTransferAction = async ({ request }) => {
     return { type: 'productstransfer', status: false };
 };
 
-const userEditAction = async (request, params) => {
+const userEditAction = async ({ request, params }) => {
     // This action handles user data: info, addressinfo and users auth groups.
     // User data has different BE endpoints for these different user data sections.
 
     // First apicall updates users editable info.
-    // Second apicall patches users addressinfo.
-    // Third apicall updates users auth groups: BE expects integers (representing different auth groups) in an array.
+    // Second apicall updates users auth groups: BE expects integers (representing different auth groups) in an array.
     // - It gets all the checked checkboxes values into an array's first index.
     // - The array is then splitted by comma into an array of strings. These values are then mapped into an array of integers,
     // - and then sent to the BE in a composition BE expects.
+    // Third apicall patches users addressinfo.
 
     const formData = await request.formData();
 
-    let response = await usersApi.usersUpdate(params.id, {
+    const userCall = {
         first_name: formData.get('first_name'),
         last_name: formData.get('last_name'),
         phone_number: formData.get('phone_number'),
-    });
+    };
+
+    const selectedAuthGroups = formData
+        .getAll('groups')[0]
+        .split(',')
+        .map((group) => Number(group));
 
     const newAddress = {
         address: formData.get('address'),
@@ -360,22 +365,42 @@ const userEditAction = async (request, params) => {
         user: params.id,
     };
 
-    let addressId = formData.get('aid');
+    const addressId = formData.get('aid');
 
-    if (addressId) {
-        response = await usersApi.usersAddressUpdate(addressId, newAddress);
+    const userInfoUpdateResponse = await usersApi.usersUpdate(params.id, userCall);
+    const userPermissionsUpdate = await usersApi.usersGroupsPermissionUpdate(params.id, { groups: selectedAuthGroups });
+    let userAddressUpdateResponse;
+
+    if (addressId !== null) {
+        userAddressUpdateResponse = await usersApi.usersAddressUpdate(addressId, newAddress);
     }
 
-    const selectedAuthGroups = formData
-        .getAll('groups')[0]
-        .split(',')
-        .map((group) => Number(group));
+    const allCalls = { userInfoUpdateResponse, userPermissionsUpdate, userAddressUpdateResponse };
+    console.table(allCalls);
 
-    response = await usersApi.usersGroupsPermissionUpdate(params.id, { groups: selectedAuthGroups });
+    let alerts = [];
 
-    if (response.status === 200) {
-        return { type: 'update', status: true };
+    const addAlert = (msg) => {
+        alerts.push(msg);
+    };
+
+    if (allCalls.userInfoUpdateResponse.status === 200) {
+        console.log('userInfoUpdateResponse 200');
+        addAlert('jee userinfo!');
     }
+    if (allCalls.userPermissionsUpdate.status === 200) {
+        console.log('userPermissionsUpdate 200');
+        addAlert('jee permissions!');
+    }
+    if (allCalls.userAddressUpdateResponse.status === 200) {
+        console.log('addressUpdateResponse 200');
+        addAlert('jee address');
+    }
+
+    if (allCalls) {
+        return { type: 'update', status: true, alerts: alerts };
+    }
+
     return { type: 'update', status: false };
 };
 
