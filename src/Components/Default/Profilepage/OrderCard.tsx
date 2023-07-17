@@ -113,7 +113,9 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                                     </Typography>
                                 </Grid>
                                 <Grid item>
-                                    <Typography variant="body2">{readableDeliveryDate}</Typography>
+                                    <Typography variant="body2">
+                                        {readableDeliveryDate.includes('1970') ? '' : readableDeliveryDate}
+                                    </Typography>
                                 </Grid>
                             </Grid>
                             <Grid direction="row" spacing={1} container>
