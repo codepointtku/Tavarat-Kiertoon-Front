@@ -105,7 +105,7 @@ const productDetailsLoader = async ({ params }) => {
 /**
  * Get all orders.
  */
-const ordersListLoader = async ({ params }) => {
+const ordersListLoader = async () => {
     const response = await ordersApi.ordersList();
     // num will tell back-end which entries to bring
     // view is order status, unless archived can bring all?
