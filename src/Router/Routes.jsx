@@ -103,7 +103,6 @@ import {
     storageEditLoader,
     userEditLoader,
     usersListLoader,
-    userSignupLoader,
     shoppingCartLoader,
     bikesDefaultLoader,
     bikesListLoader,
