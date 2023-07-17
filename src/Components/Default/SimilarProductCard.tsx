@@ -32,7 +32,7 @@ export interface SimilarProduct {
 
 function SimilarProductCard({ product }: SimilarProduct) {
     return (
-        <Card sx={{ width: 200, height: 265 }}>
+        <Card sx={{ width: 200, height: 280 }}>
             <CardActionArea component={Link} to={`/tuotteet/${product.id}`}>
                 <CardMedia
                     component={Box}
@@ -41,7 +41,7 @@ function SimilarProductCard({ product }: SimilarProduct) {
                     image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product.pictures[0].picture_address}`}
                 />
                 <CardHeader
-                    title={product.name}
+                    title={<Typography variant="h6">{product.name}</Typography>}
                     subheader={
                         <Typography variant="subtitle1" fontWeight="400" lineHeight="1" sx={{ mt: 0.5 }}>
                             {product.amount} kpl

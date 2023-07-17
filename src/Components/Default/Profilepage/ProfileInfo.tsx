@@ -113,6 +113,7 @@ function ProfileInfo() {
                             placeholder="Puhelin numero"
                             error={!!errors.phone_number}
                             helperText={errors.phone_number?.message?.toString() || ''}
+                            sx={{ width: 211 }}
                         />
                     </Grid>
                 </Grid>

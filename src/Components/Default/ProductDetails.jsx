@@ -165,24 +165,23 @@ function ProductDetails() {
                         </Grid>
 
                         <Box sx={{ mx: 2 }}>
-                            {auth.storage ||
-                                (auth.admin && (
-                                    <>
-                                        <Typography gutterBottom variant="h5" component="div">
-                                            Yksityiskohtaisemmat tiedot
+                            {(auth.storage || auth.admin) && (
+                                <>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        Yksityiskohtaisemmat tiedot
+                                    </Typography>
+                                    <Paper variant="outlined" sx={{ p: 5 }}>
+                                        {/* show id if component used in storageview or admin */}
+                                        <Typography variant="body2" color="text.secondary">
+                                            Product id: {productId}
                                         </Typography>
-                                        <Paper variant="outlined" sx={{ p: 5 }}>
-                                            {/* show id if component used in storageview or admin */}
-                                            <Typography variant="body2" color="text.secondary">
-                                                Product id: {productId}
-                                            </Typography>
-                                            {/* generate barcode if component used in storageview or admin */}
-                                            <Typography variant="body2" color="text.secondary">
-                                                Barcode: {barcode}
-                                            </Typography>
-                                        </Paper>
-                                    </>
-                                ))}
+                                        {/* generate barcode if component used in storageview or admin */}
+                                        <Typography variant="body2" color="text.secondary">
+                                            Barcode: {barcode}
+                                        </Typography>
+                                    </Paper>
+                                </>
+                            )}
                             <Typography gutterBottom variant="h5" component="div" color="primary.main">
                                 Samankaltaisia tuotteita
                             </Typography>
