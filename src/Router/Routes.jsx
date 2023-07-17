@@ -415,10 +415,6 @@ function Routes() {
                                 </ThemeProvider>
                             ),
                             children: [
-                                // {
-                                //     index: true,
-                                //     element: <Navigate to="0/delivery?page=0&rows=5" />,
-                                // },
                                 {
                                     index: true,
                                     // path: ':num/:view',
@@ -429,10 +425,10 @@ function Routes() {
                                     path: 'tilaus',
                                     element: <Outlet />,
                                     children: [
-                                        // {
-                                        //     index: true,
-                                        //     element: <Navigate to="/varasto" />,
-                                        // },
+                                        {
+                                            index: true,
+                                            element: <Navigate to="/varasto" />,
+                                        },
                                         {
                                             path: ':id',
                                             element: <Outlet />,
