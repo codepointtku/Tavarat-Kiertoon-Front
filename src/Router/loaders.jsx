@@ -434,11 +434,6 @@ const bikeNewModelLoader = async (auth, setAuth, params) => {
 };
 
 /**
- * returns null load
- */
-const userSignupLoader = async () => null;
-
-/**
  * Gets user info for shopping cart process
  */
 const shoppingProcessLoader = async () => {
@@ -512,7 +507,6 @@ export {
     storageEditLoader,
     usersListLoader,
     userEditLoader,
-    userSignupLoader,
     userInfoLoader,
     bikesDefaultLoader,
     bikesListLoader,

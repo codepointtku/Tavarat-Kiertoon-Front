@@ -116,7 +116,6 @@ import {
     storageEditLoader,
     userEditLoader,
     usersListLoader,
-    // userSignupLoader,
     shoppingCartLoader,
     bikesDefaultLoader,
     bikesListLoader,
@@ -193,7 +192,9 @@ function Routes() {
                     loader: rootLoader,
                     // Loads data only at first page load, not with every route
                     shouldRevalidate: ({ currentUrl }) => {
-                        return currentUrl.pathname === '/admin/tiedotteet' || '/admin/tiedotteet/';
+                        return (
+                            currentUrl.pathname === '/admin/tiedotteet' || currentUrl.pathname === '/admin/tiedotteet/'
+                        );
                     },
                     children: [
                         // main routes
@@ -329,13 +330,11 @@ function Routes() {
                                         {
                                             path: 'kayttaja',
                                             element: <SignupPage isLocationForm={false} />,
-                                            // loader: userSignupLoader,
                                             action: async ({ request }) => userSignupAction(request),
                                         },
                                         {
                                             path: 'toimipaikka',
                                             element: <SignupPage isLocationForm />,
-                                            // loader: userSignupLoader,
                                             action: async ({ request }) => userSignupAction(request),
                                         },
                                     ],
@@ -434,10 +433,6 @@ function Routes() {
                                 </ThemeProvider>
                             ),
                             children: [
-                                // {
-                                //     index: true,
-                                //     element: <Navigate to="0/delivery?page=0&rows=5" />,
-                                // },
                                 {
                                     index: true,
                                     // path: ':num/:view',
@@ -448,10 +443,10 @@ function Routes() {
                                     path: 'tilaus',
                                     element: <Outlet />,
                                     children: [
-                                        // {
-                                        //     index: true,
-                                        //     element: <Navigate to="/varasto" />,
-                                        // },
+                                        {
+                                            index: true,
+                                            element: <Navigate to="/varasto" />,
+                                        },
                                         {
                                             path: ':id',
                                             element: <Outlet />,
