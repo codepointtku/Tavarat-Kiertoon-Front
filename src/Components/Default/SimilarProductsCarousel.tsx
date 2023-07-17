@@ -31,8 +31,8 @@ function SimilarProductsCarousel({ similarProducts, currentId }: Props) {
             >
                 {carouselPageContents.map((productCards) => (
                     <Grid container direction="row" justifyContent="center" gap={5}>
-                        {productCards.map((product) => (
-                            <SimilarProductCard product={product as SimilarProduct['product']} />
+                        {productCards.map((product: any) => (
+                            <SimilarProductCard key={product.id} product={product as SimilarProduct['product']} />
                         ))}
                     </Grid>
                 ))}

@@ -173,7 +173,7 @@ function ProductDetails() {
                                     <Paper variant="outlined" sx={{ p: 5 }}>
                                         {/* show id if component used in storageview or admin */}
                                         <Typography variant="body2" color="text.secondary">
-                                            Product id: {productId}
+                                            Tuotteen tunnus: {productId}
                                         </Typography>
                                         {/* generate barcode if component used in storageview or admin */}
                                         <Typography variant="body2" color="text.secondary">

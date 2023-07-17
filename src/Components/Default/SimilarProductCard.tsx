@@ -32,7 +32,7 @@ export interface SimilarProduct {
 
 function SimilarProductCard({ product }: SimilarProduct) {
     return (
-        <Card sx={{ width: 200, height: 280 }}>
+        <Card sx={{ width: 200 }}>
             <CardActionArea component={Link} to={`/tuotteet/${product.id}`}>
                 <CardMedia
                     component={Box}
