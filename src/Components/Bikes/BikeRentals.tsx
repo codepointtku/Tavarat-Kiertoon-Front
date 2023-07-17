@@ -15,6 +15,15 @@ interface Rental {
     user: number;
     bike_stock: number[];
 }
+function getYearAndMonth(dateString: string) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // add 1 since getMonth() returns 0-indexed months
+    // return `${day}.${month}.${year}`;
+    return date.toLocaleDateString('FI-fi');
+    // return day.toString() + '.' + month.toString() + '.' + year.toString();
+}
 
 export default function BikeRentals() {
     const data = useLoaderData() as Rental[]; // useLoaderData() returns the data passed to it in the loader function
@@ -23,7 +32,7 @@ export default function BikeRentals() {
     return (
         <div>
             <Typography variant="h3" align="center" color="primary.main" width="100%">
-                Varaukset{' '}
+                Tilaukset{' '}
             </Typography>
 
             <TableContainer component={Paper} sx={{ padding: '2rem' }}>
@@ -46,8 +55,8 @@ export default function BikeRentals() {
                         {data?.map((rental) => {
                             return (
                                 <TableRow key={rental.id} hover>
-                                    <TableCell align="right">{rental.start_date}</TableCell>
-                                    <TableCell align="right">{rental.end_date}</TableCell>
+                                    <TableCell align="right">{getYearAndMonth(rental.start_date)}</TableCell>
+                                    <TableCell align="right">{getYearAndMonth(rental.end_date)}</TableCell>
                                     <TableCell align="right">{rental.state}</TableCell>
                                     <TableCell align="right">{rental.delivery_address}</TableCell>
                                     <TableCell align="right">{rental.pickup ? 'Kyllä' : 'Ei'}</TableCell>
