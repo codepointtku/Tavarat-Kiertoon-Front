@@ -108,7 +108,7 @@ function UserEdit() {
                                     {/* <TypographyTitle text={`Käyttäjä ${userInfo.email}`} /> */}
                                     <Box id="user-common-info" sx={{ margin: '1rem 0 1rem 0' }}>
                                         <Typography>
-                                            Rekisteröitymispäivämäärä: {creationDateInfo[0]} / {creationDateInfo[1]}
+                                            Rekisteröitymisaika: {creationDateInfo[0]} / {creationDateInfo[1]}
                                         </Typography>
                                         <Stack direction="row">
                                             <Typography>Tili aktivoitu: </Typography>

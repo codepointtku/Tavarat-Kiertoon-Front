@@ -340,14 +340,14 @@ const userEditAction = async ({ request, params }) => {
 
     // First apicall updates users editable info.
     // Second apicall updates users auth groups: BE expects integers (representing different auth groups) in an array.
-    // - It gets all the checked checkboxes values into an array's first index.
+    // - Get all the checked checkboxes values into an array's first index.
     // - The array is then splitted by comma into an array of strings. These values are then mapped into an array of integers,
     // - and then sent to the BE in a composition BE expects.
     // Third apicall patches users addressinfo.
 
     const formData = await request.formData();
 
-    const userCall = {
+    const userInfo = {
         first_name: formData.get('first_name'),
         last_name: formData.get('last_name'),
         phone_number: formData.get('phone_number'),
@@ -358,47 +358,31 @@ const userEditAction = async ({ request, params }) => {
         .split(',')
         .map((group) => Number(group));
 
-    const newAddress = {
+    const modifiedAddressId = formData.get('aid');
+
+    const modifiedAddress = {
         address: formData.get('address'),
         zip_code: formData.get('zip_code'),
         city: formData.get('city'),
         user: params.id,
     };
 
-    const addressId = formData.get('aid');
-
-    const userInfoUpdateResponse = await usersApi.usersUpdate(params.id, userCall);
-    const userPermissionsUpdate = await usersApi.usersGroupsPermissionUpdate(params.id, { groups: selectedAuthGroups });
+    const userInfoUpdateResponse = await usersApi.usersUpdate(params.id, userInfo);
+    const userPermissionsUpdateResponse = await usersApi.usersGroupsPermissionUpdate(params.id, {
+        groups: selectedAuthGroups,
+    });
     let userAddressUpdateResponse;
 
-    if (addressId !== null) {
-        userAddressUpdateResponse = await usersApi.usersAddressUpdate(addressId, newAddress);
+    if (modifiedAddressId !== null) {
+        userAddressUpdateResponse = await usersApi.usersAddressUpdate(modifiedAddressId, modifiedAddress);
     }
 
-    const allCalls = { userInfoUpdateResponse, userPermissionsUpdate, userAddressUpdateResponse };
-    console.table(allCalls);
-
-    let alerts = [];
-
-    const addAlert = (msg) => {
-        alerts.push(msg);
-    };
-
-    if (allCalls.userInfoUpdateResponse.status === 200) {
-        console.log('userInfoUpdateResponse 200');
-        addAlert('jee userinfo!');
-    }
-    if (allCalls.userPermissionsUpdate.status === 200) {
-        console.log('userPermissionsUpdate 200');
-        addAlert('jee permissions!');
-    }
-    if (allCalls.userAddressUpdateResponse.status === 200) {
-        console.log('addressUpdateResponse 200');
-        addAlert('jee address');
-    }
-
-    if (allCalls) {
-        return { type: 'update', status: true, alerts: alerts };
+    if (
+        userInfoUpdateResponse.status === 200 &&
+        userPermissionsUpdateResponse.status === 200 &&
+        userAddressUpdateResponse.status === 200
+    ) {
+        return { type: 'update', status: true };
     }
 
     return { type: 'update', status: false };
