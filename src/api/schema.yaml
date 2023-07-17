@@ -1888,7 +1888,7 @@ paths:
         schema:
           type: array
           items:
-            type: integer
+            type: string
         explode: true
         style: form
       - name: ordering
@@ -2992,7 +2992,7 @@ paths:
     post:
       operationId: users_create_create
       description: |-
-        List all users, and create with POST
+        create with POST
         if username field comes = joint user
         if no username = normal user and email address gets copied to username and will be used to login
       tags:
@@ -3087,6 +3087,79 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/GroupName'
+          description: ''
+  /users/log/:
+    get:
+      operationId: users_log_list
+      description: user log list view
+      parameters:
+      - in: query
+        name: action
+        schema:
+          type: string
+          enum:
+          - User address info was changed
+          - User address info was deleted
+          - User info was changed
+          - User was activated
+          - User was created
+          - Users email was changed
+          - Users password was changed
+          - Users permissions were changed
+        description: |-
+          * `User was created` - Created
+          * `User was activated` - Activated
+          * `Users password was changed` - Password
+          * `User info was changed` - User Info
+          * `User address info was changed` - User Address Info
+          * `User address info was deleted` - User Address Info Delete
+          * `Users permissions were changed` - Permissions
+          * `Users email was changed` - Email
+
+          * `User was created` - Created
+          * `User was activated` - Activated
+          * `Users password was changed` - Password
+          * `User info was changed` - User Info
+          * `User address info was changed` - User Address Info
+          * `User address info was deleted` - User Address Info Delete
+          * `Users permissions were changed` - Permissions
+          * `Users email was changed` - Email
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: target
+        schema:
+          type: integer
+      - in: query
+        name: user_who_did_this_action
+        schema:
+          type: integer
+      tags:
+      - users
+      security:
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserLogResponseSchemaList'
           description: ''
   /users/login/:
     post:
@@ -3196,30 +3269,6 @@ paths:
           description: No response body
 components:
   schemas:
-    ActionEnum:
-      enum:
-      - Created
-      - Added to shopping cart
-      - Removed from shopping cart
-      - Timed out from shopping cart
-      - Ordered
-      - Added to order
-      - Removed from order
-      - Came back to circulation
-      - Modified at storage
-      - Gifted away
-      type: string
-      description: |-
-        * `Created` - Create
-        * `Added to shopping cart` - Cart Add
-        * `Removed from shopping cart` - Cart Remove
-        * `Timed out from shopping cart` - Cart Timeout
-        * `Ordered` - Order
-        * `Added to order` - Order Add
-        * `Removed from order` - Order Remove
-        * `Came back to circulation` - Circulation
-        * `Modified at storage` - Modify
-        * `Gifted away` - Gift
     BikeAmount:
       type: object
       properties:
@@ -3570,6 +3619,18 @@ components:
       required:
       - id
       - name
+    BikeStateEnum:
+      enum:
+      - AVAILABLE
+      - MAINTENANCE
+      - RENTED
+      - RETIRED
+      type: string
+      description: |-
+        * `AVAILABLE` - Available
+        * `MAINTENANCE` - Maintenance
+        * `RENTED` - Rented
+        * `RETIRED` - Retired
     BikeStockCreate:
       type: object
       properties:
@@ -3589,10 +3650,7 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State84aEnum'
-        color:
-          type: integer
-          nullable: true
+          $ref: '#/components/schemas/BikeStateEnum'
         bike:
           type: integer
         storage:
@@ -3670,10 +3728,7 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State84aEnum'
-        color:
-          type: integer
-          nullable: true
+          $ref: '#/components/schemas/BikeStateEnum'
       required:
       - bike
       - created_at
@@ -3706,10 +3761,7 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State84aEnum'
-        color:
-          type: integer
-          nullable: true
+          $ref: '#/components/schemas/BikeStateEnum'
         storage:
           type: integer
       required:
@@ -3740,10 +3792,7 @@ components:
           format: date-time
           readOnly: true
         state:
-          $ref: '#/components/schemas/State84aEnum'
-        color:
-          type: integer
-          nullable: true
+          $ref: '#/components/schemas/BikeStateEnum'
         bike:
           type: integer
         storage:
@@ -3964,7 +4013,7 @@ components:
           format: date-time
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusC9fEnum'
+          $ref: '#/components/schemas/ContactFormStatusEnum'
       required:
       - date
       - email
@@ -3999,7 +4048,7 @@ components:
           format: date-time
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusC9fEnum'
+          $ref: '#/components/schemas/ContactFormStatusEnum'
       required:
       - date
       - email
@@ -4009,6 +4058,16 @@ components:
       - order_id
       - status
       - subject
+    ContactFormStatusEnum:
+      enum:
+      - Not read
+      - Read
+      - Handled
+      type: string
+      description: |-
+        * `Not read` - Not Read
+        * `Read` - Read
+        * `Handled` - Handled
     GroupName:
       type: object
       description: Serializer for Groups
@@ -4194,7 +4253,7 @@ components:
           type: integer
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusF71Enum'
+          $ref: '#/components/schemas/OrderStatusEnum'
         delivery_address:
           type: string
           maxLength: 255
@@ -4246,7 +4305,7 @@ components:
           - $ref: '#/components/schemas/UserFullResponseSchema'
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusF71Enum'
+          $ref: '#/components/schemas/OrderStatusEnum'
         delivery_address:
           type: string
           maxLength: 255
@@ -4298,7 +4357,7 @@ components:
           type: integer
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusF71Enum'
+          $ref: '#/components/schemas/OrderStatusEnum'
         delivery_address:
           type: string
           maxLength: 255
@@ -4333,7 +4392,7 @@ components:
           type: integer
           readOnly: true
         status:
-          $ref: '#/components/schemas/StatusF71Enum'
+          $ref: '#/components/schemas/OrderStatusEnum'
         delivery_address:
           type: string
           maxLength: 255
@@ -4373,6 +4432,16 @@ components:
       - product_items
       - status
       - user
+    OrderStatusEnum:
+      enum:
+      - Waiting
+      - Processing
+      - Finished
+      type: string
+      description: |-
+        * `Waiting` - Waiting
+        * `Processing` - Processing
+        * `Finished` - Finished
     PaginatedContactFormResponseList:
       type: object
       properties:
@@ -4493,6 +4562,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserFullResponseSchema'
+    PaginatedUserLogResponseSchemaList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserLogResponseSchema'
     Picture:
       type: object
       properties:
@@ -4533,10 +4622,6 @@ components:
           type: integer
         shelf_id:
           type: string
-        colors:
-          type: array
-          items:
-            type: string
         name:
           type: string
           maxLength: 255
@@ -4559,7 +4644,6 @@ components:
       - available
       - barcode
       - category
-      - colors
       - id
       - name
       - storage
@@ -4610,7 +4694,7 @@ components:
           format: date-time
           readOnly: true
         action:
-          $ref: '#/components/schemas/ActionEnum'
+          $ref: '#/components/schemas/ProductItemLogEntryResponseActionEnum'
         user:
           type: integer
           nullable: true
@@ -4619,6 +4703,30 @@ components:
       - date
       - id
       - user
+    ProductItemLogEntryResponseActionEnum:
+      enum:
+      - Created
+      - Added to shopping cart
+      - Removed from shopping cart
+      - Timed out from shopping cart
+      - Ordered
+      - Added to order
+      - Removed from order
+      - Came back to circulation
+      - Modified at storage
+      - Gifted away
+      type: string
+      description: |-
+        * `Created` - Create
+        * `Added to shopping cart` - Cart Add
+        * `Removed from shopping cart` - Cart Remove
+        * `Timed out from shopping cart` - Cart Timeout
+        * `Ordered` - Order
+        * `Added to order` - Order Add
+        * `Removed from order` - Order Remove
+        * `Came back to circulation` - Circulation
+        * `Modified at storage` - Modify
+        * `Gifted away` - Gift
     ProductItemResponse:
       type: object
       properties:
@@ -4730,14 +4838,14 @@ components:
         category:
           type: integer
           nullable: true
-        color:
+        colors:
           type: array
           items:
             type: integer
       required:
       - amount
       - category
-      - color
+      - colors
       - free_description
       - id
       - measurements
@@ -4786,13 +4894,13 @@ components:
           items:
             type: integer
           readOnly: true
-        color:
+        colors:
           type: array
           items:
             type: integer
       required:
       - category
-      - color
+      - colors
       - id
       - name
       - pictures
@@ -4823,13 +4931,13 @@ components:
           type: array
           items:
             type: integer
-        color:
+        colors:
           type: array
           items:
             type: integer
       required:
       - category
-      - color
+      - colors
       - free_description
       - id
       - measurements
@@ -4923,36 +5031,6 @@ components:
       - id
       - product_items
       - user
-    State84aEnum:
-      enum:
-      - AVAILABLE
-      - MAINTENANCE
-      - RETIRED
-      type: string
-      description: |-
-        * `AVAILABLE` - Available
-        * `MAINTENANCE` - Maintenance
-        * `RETIRED` - Retired
-    StatusC9fEnum:
-      enum:
-      - Not read
-      - Read
-      - Handled
-      type: string
-      description: |-
-        * `Not read` - Not Read
-        * `Read` - Read
-        * `Handled` - Handled
-    StatusF71Enum:
-      enum:
-      - Waiting
-      - Processing
-      - Finished
-      type: string
-      description: |-
-        * `Waiting` - Waiting
-        * `Processing` - Processing
-        * `Finished` - Finished
     Storage:
       type: object
       properties:
@@ -5190,6 +5268,53 @@ components:
       - last_name
       - phone_number
       - username
+    UserLogEnum:
+      enum:
+      - User was created
+      - User was activated
+      - Users password was changed
+      - User info was changed
+      - User address info was changed
+      - User address info was deleted
+      - Users permissions were changed
+      - Users email was changed
+      type: string
+      description: |-
+        * `User was created` - Created
+        * `User was activated` - Activated
+        * `Users password was changed` - Password
+        * `User info was changed` - User Info
+        * `User address info was changed` - User Address Info
+        * `User address info was deleted` - User Address Info Delete
+        * `Users permissions were changed` - Permissions
+        * `Users email was changed` - Email
+    UserLogResponseSchema:
+      type: object
+      description: |-
+        Serializer for user logs
+        FOR SCHEMA
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        date:
+          type: string
+          format: date-time
+          readOnly: true
+        action:
+          $ref: '#/components/schemas/UserLogEnum'
+        target:
+          type: integer
+          nullable: true
+        user_who_did_this_action:
+          type: integer
+          nullable: true
+      required:
+      - action
+      - date
+      - id
+      - target
+      - user_who_did_this_action
     UserLoginPost:
       type: object
       description: needed login information

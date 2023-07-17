@@ -90,6 +90,7 @@ import BikeModels from '../Components/Bikes/BikeModels';
 import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
 
 import {
+    bikeRentalLoader,
     bikesPacketLoader,
     addItemLoader,
     orderEditLoader,
@@ -608,6 +609,7 @@ function Routes() {
                                         },
                                         {
                                             path: 'pyoratilaukset',
+                                            loader: async () => bikeRentalLoader(auth, setAuth),
                                             element: <BikeRentals />,
                                         },
                                         {

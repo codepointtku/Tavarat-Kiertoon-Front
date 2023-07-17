@@ -248,6 +248,13 @@ const bikesListLoader = async (auth, setAuth) => {
     const { data } = await bikesApi.bikesStockList();
     return data;
 };
+
+// bike rental list
+const bikeRentalLoader = async (auth, setAuth) => {
+    const { data } = await bikesApi.bikesRentalList();
+    console.log(data);
+    return data;
+};
 /**
  * Get all bikepackets and models
  */
@@ -534,4 +541,5 @@ export {
     modifyBikeOrderLoader,
     bikeNewModelLoader,
     createBikeOrderLoader,
+    bikeRentalLoader,
 };
