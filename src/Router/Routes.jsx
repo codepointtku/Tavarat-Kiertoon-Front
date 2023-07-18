@@ -42,6 +42,7 @@ import AdminInbox from '../Components/Admin/AdminInbox';
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
 import UserAddressEdit from '../Components/Admin/UserAddressEdit';
+import UserAddressCreate from '../Components/Admin/UserAddressCreate';
 
 import BulletinPosts from '../Components/Admin/BulletinPosts';
 import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
@@ -53,6 +54,7 @@ import StoragesList from '../Components/Admin/StoragesList';
 import StorageEdit from '../Components/Admin/StorageEdit';
 import StorageDelete from '../Components/Admin/StorageDelete';
 import StorageCreate from '../Components/Admin/StorageCreate';
+import StorageProductsTransfer from '../Components/Admin/StorageProductsTransfer';
 
 import AddItem from '../Components/Storage/AddItem';
 import PDFView from '../Components/Storage/PDFView';
@@ -119,6 +121,7 @@ import {
     storageEditLoader,
     userEditLoader,
     userAddressEditLoader,
+    userAddressCreateLoader,
     usersListLoader,
     userInfoLoader,
     shoppingCartLoader,
@@ -147,6 +150,8 @@ import {
     productsTransferAction,
     frontPageActions,
     userEditAction,
+    adminUserAddressEditAction,
+    adminUserAddressCreateAction,
     cartViewAction,
     createBulletinAction,
     bikeOrderAction,
@@ -171,13 +176,12 @@ import {
     deletePacketAction,
     userProfilePageAction,
     modifyUserAddressesAction,
-    adminUserAddressEditAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
-import BikesHomePage from '../Components/Bikes/BikesHomePage';
 import { getRandomInt } from '../Utils/getRandomInt';
-import StorageProductsTransfer from '../Components/Admin/StorageProductsTransfer';
+
+import BikesHomePage from '../Components/Bikes/BikesHomePage';
 
 createStore({});
 
@@ -584,15 +588,22 @@ function Routes() {
                                             path: ':userid',
                                             element: <UserEdit />,
                                             // errorElement: <UserError />,
-                                            loader: ({ params }) => userEditLoader(params),
+                                            loader: userEditLoader,
                                             action: userEditAction,
                                         },
                                         {
                                             path: ':userid/osoitteet/:aid',
                                             element: <UserAddressEdit />,
                                             // errorElement: <UserError />,
-                                            loader: ({ params }) => userAddressEditLoader(params),
+                                            loader: userAddressEditLoader,
                                             action: adminUserAddressEditAction,
+                                        },
+                                        {
+                                            path: ':userid/osoitteet/luo',
+                                            element: <UserAddressCreate />,
+                                            // errorElement: <UserError />,
+                                            loader: userAddressCreateLoader,
+                                            action: adminUserAddressCreateAction,
                                         },
                                     ],
                                 },

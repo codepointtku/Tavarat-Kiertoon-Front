@@ -15,13 +15,13 @@ import {
     Container,
     Card,
     CardContent,
-    CardActionArea,
     CardActions,
 } from '@mui/material';
 
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 import AlertBox from '../AlertBox';
 import TypographyHeading from '../TypographyHeading';
@@ -58,7 +58,7 @@ function UserEdit() {
         register,
         handleSubmit: createHandleSubmit,
         reset,
-        formState: { errors: formStateErrors, isDirty, dirtyFields },
+        formState: { errors: formStateErrors, isDirty, dirtyFields, isValid },
     } = useForm({
         mode: 'all',
         defaultValues: {
@@ -85,29 +85,26 @@ function UserEdit() {
                 <AlertBox text="Käyttäjätiedot tallennettu onnistuneesti" status="success" />
             )}
 
-            <Container maxWidth="lg">
+            <Container maxWidth="xl">
                 <HeroHeader Icon={<AccountCircleIcon />} />
                 <HeroText title={`Käyttäjä ${userInfo.email}`} />
 
                 <Box id="user-edit-wrapper-form-component" component={Form} onSubmit={handleSubmit}>
                     <Stack id="stack-main">
-                        <Grid container>
+                        <Grid container flexWrap="wrap">
                             {/* Common info */}
                             <Grid item xs={6}>
                                 <Box
                                     sx={{
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        // justifyContent: 'flex-start',
-                                        // alignItems: 'center',
                                     }}
                                 >
-                                    {/* <TypographyTitle text={`Käyttäjä ${userInfo.email}`} /> */}
                                     <Box id="user-common-info" sx={{ margin: '1rem 0 1rem 0' }}>
                                         <Typography>
                                             Rekisteröitymisaika: {creationDateInfo[0]} / {creationDateInfo[1]}
                                         </Typography>
-                                        <Stack direction="row">
+                                        <Stack direction="row" sx={{ display: 'flex', alignItems: 'center' }}>
                                             <Typography>Tili aktivoitu: </Typography>
                                             {userInfo.is_active ? (
                                                 <CheckCircleOutlineIcon
@@ -210,14 +207,15 @@ function UserEdit() {
 
                             {/* Address stuff */}
                             <Grid item xs={6} sx={{ padding: '0 2rem 0 0' }}>
-                                <Box id="user-address-info-wrapper">
+                                <Box id="user-address-info-wrapper" marginBottom="1rem">
                                     <TypographyHeading text="Osoitteet" />
                                     <Stack
                                         id="address-boxes"
                                         direction="row"
-                                        spacing={2}
+                                        gap={1}
                                         justifyContent="space-between"
                                         alignItems="center"
+                                        flexWrap="wrap"
                                         sx={{ margin: '1rem 0 0 0' }}
                                     >
                                         {userInfo.address_list.map((item) => (
@@ -241,6 +239,15 @@ function UserEdit() {
                                         ))}
                                     </Stack>
                                 </Box>
+                                <Button
+                                    component={Link}
+                                    to={`/admin/kayttajat/${userInfo.id}/osoitteet/luo`}
+                                    variant="text"
+                                    size="small"
+                                    startIcon={<AddCircleOutlineIcon />}
+                                >
+                                    Lisää osoite
+                                </Button>
                             </Grid>
 
                             {/* Auth groups */}
@@ -286,11 +293,17 @@ function UserEdit() {
                                         backgroundColor: 'success.dark',
                                     },
                                 }}
-                                disabled={!isDirty}
+                                disabled={!isDirty || !isValid}
                             >
                                 Hyväksy ja tallenna muutokset
                             </Button>
-                            <Button id="cancel-btn" component={Link} to="/admin/kayttajat/" color="error">
+                            <Button
+                                variant="outlined"
+                                id="cancel-btn"
+                                component={Link}
+                                to="/admin/kayttajat/"
+                                color="error"
+                            >
                                 Poistu tallentamatta
                             </Button>
                         </Stack>

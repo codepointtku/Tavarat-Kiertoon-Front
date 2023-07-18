@@ -357,8 +357,8 @@ const userEditAction = async ({ request, params }) => {
         .split(',')
         .map((group) => Number(group));
 
-    const userInfoUpdateResponse = await usersApi.usersUpdate(params.id, userInfo);
-    const userPermissionsUpdateResponse = await usersApi.usersGroupsPermissionUpdate(params.id, {
+    const userInfoUpdateResponse = await usersApi.usersUpdate(params.userid, userInfo);
+    const userPermissionsUpdateResponse = await usersApi.usersGroupsPermissionUpdate(params.userid, {
         groups: selectedAuthGroups,
     });
 
@@ -372,9 +372,6 @@ const userEditAction = async ({ request, params }) => {
 const adminUserAddressEditAction = async ({ request, params }) => {
     const formData = await request.formData();
 
-    const addressId = params.aid;
-    console.log('actionissa:', addressId);
-
     const modifiedAddress = {
         address: formData.get('address'),
         zip_code: formData.get('zip_code'),
@@ -382,15 +379,32 @@ const adminUserAddressEditAction = async ({ request, params }) => {
         user: params.userid,
     };
 
-    console.log('modif address actionissa:', modifiedAddress);
-
-    const userAddressUpdateResponse = await usersApi.usersAddressUpdate(addressId, modifiedAddress);
+    const userAddressUpdateResponse = await usersApi.usersAddressUpdate(params.aid, modifiedAddress);
 
     if (userAddressUpdateResponse.status === 200) {
         return { type: 'addressupdate', status: true };
     }
 
     return { type: 'addressupdate', status: false };
+};
+
+const adminUserAddressCreateAction = async ({ request, params }) => {
+    const formData = await request.formData();
+
+    const newAddress = {
+        address: formData.get('address'),
+        zip_code: formData.get('zip_code'),
+        city: formData.get('city'),
+        user: params.userid,
+    };
+
+    const userAddressCreateResponse = await usersApi.(params.aid, newAddress); // !!
+
+    if (userAddressCreateResponse.status === 200) {
+        return { type: 'addresscreate', status: true };
+    }
+
+    return { type: 'addresscreate', status: false };
 };
 
 /**
@@ -923,7 +937,8 @@ export {
     productsTransferAction,
     createBulletinAction,
     userEditAction,
-    adminUserAddressEditAction, //
+    adminUserAddressEditAction,
+    adminUserAddressCreateAction,
     itemCreateAction,
     itemUpdateAction,
     cartViewAction,

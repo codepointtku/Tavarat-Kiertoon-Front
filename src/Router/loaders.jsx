@@ -235,7 +235,7 @@ const usersListLoader = async () => {
  * Array item 0 === user data, item 1 === auth groups.
  * Used in src/Components/Admin/UserEdit.jsx
  */
-const userEditLoader = async (params) => {
+const userEditLoader = async ({ params }) => {
     const dataList = [];
     let { data } = await usersApi.usersRetrieve(params.userid);
     data.groups = data.groups.map((group) => group.id);
@@ -248,12 +248,19 @@ const userEditLoader = async (params) => {
     return null;
 };
 
-const userAddressEditLoader = async (params) => {
+const userAddressEditLoader = async ({ params }) => {
     const [{ data: userData }, { data: addressData }] = await Promise.all([
         await usersApi.usersRetrieve(params.userid),
         await usersApi.usersAddressRetrieve(params.aid),
     ]);
     return { userData, addressData };
+};
+
+const userAddressCreateLoader = async ({ params }) => {
+    // aka get user loader
+    const { data: userData } = await usersApi.usersRetrieve(params.userid);
+
+    return { userData };
 };
 
 /**
@@ -516,6 +523,7 @@ export {
     usersListLoader,
     userEditLoader,
     userAddressEditLoader,
+    userAddressCreateLoader,
     userInfoLoader,
     bikesDefaultLoader,
     bikesListLoader,

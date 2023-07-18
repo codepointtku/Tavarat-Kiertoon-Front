@@ -3,49 +3,31 @@ import { Form, useSubmit, Link } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
 
-import {
-    Box,
-    Button,
-    Container,
-    // FormControl,
-    // FormHelperText,
-    // ListItemText,
-    // MenuItem,
-    Stack,
-    TextField,
-    Typography,
-} from '@mui/material';
+import { Box, Button, Container, Stack, TextField, Typography } from '@mui/material';
 
-import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 
 import AlertBox from '../AlertBox';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
-import type { adminUserAddressEditAction } from '../../Router/actions';
-import type { userAddressEditLoader } from '../../Router/loaders';
+// import type { adminUserAddressEditAction } from '../../Router/actions';
+import type { userAddressCreateLoader } from '../../Router/loaders';
 
-function UserAddressEdit() {
-    const loaderData = useLoaderData() as Awaited<ReturnType<typeof userAddressEditLoader>>;
+function UserAddressCreate() {
+    const loaderData = useLoaderData() as Awaited<ReturnType<typeof userAddressCreateLoader>>;
 
     console.log('louderdata komponentis:', loaderData);
 
-    const actionData = useActionData() as Awaited<ReturnType<typeof adminUserAddressEditAction>>;
+    // const actionData = useActionData() as Awaited<ReturnType<typeof adminUserAddressEditAction>>;
 
     const {
         register,
         handleSubmit: createHandleSubmit,
         // reset,
-        formState: { errors: formStateErrors, isDirty, dirtyFields, isValid, isSubmitting, isSubmitSuccessful },
+        formState: { errors: formStateErrors, isDirty, dirtyFields, isSubmitting, isSubmitSuccessful },
     } = useForm({
         mode: 'all',
-        defaultValues: {
-            id: String(loaderData.addressData.id),
-            address: loaderData.addressData.address,
-            zip_code: loaderData.addressData.zip_code,
-            city: loaderData.addressData.city,
-            user: String(loaderData.userData.id),
-        },
     });
 
     const submit = useSubmit();
@@ -59,26 +41,24 @@ function UserAddressEdit() {
 
     return (
         <>
-            {actionData?.type === 'addressupdate' && actionData?.status === false && (
-                <AlertBox text="Osoitetietojen tallennus epäonnistui" status="error" />
+            {/* {actionData?.type === 'addresscreate' && actionData?.status === false && (
+                <AlertBox text="Osoitteen lisäys epäonnistui" status="error" />
             )}
-            {actionData?.type === 'addressupdate' && actionData?.status && (
+            {actionData?.type === 'addresscreate' && actionData?.status && (
                 <AlertBox
-                    text="Osoitetiedot tallennettu onnistuneesti"
+                    text="Uusi osoite lisätty onnistuneesti"
                     status="success"
                     timer={3000}
                     redirectUrl={`/admin/kayttajat/${loaderData.userData.id}`}
                 />
-            )}
+            )} */}
 
             <Container maxWidth="xl">
-                <HeroHeader Icon={<EditLocationAltIcon />} />
-                <HeroText title={`Käyttäjän ${loaderData.userData.email} osoitteen pahoinpitely`} />
+                <HeroHeader Icon={<AddLocationAltIcon />} hideInAdmin />
+                <HeroText title={`Uusi osoite käyttäjälle ${loaderData.userData.email}`} />
 
-                <Container maxWidth="md">
-                    <Box id="user-edit-wrapper-form-component" component={Form} onSubmit={handleSubmit}>
-                        <Typography variant="body2">Osoitteen tunnistenumero: {loaderData.addressData.id}</Typography>
-
+                <Container maxWidth="sm">
+                    <Box id="add-address-wrapper-form-component" component={Form} onSubmit={handleSubmit}>
                         <TextField
                             type="text"
                             label="Osoite"
@@ -163,18 +143,17 @@ function UserAddressEdit() {
                                     },
                                 }}
                                 disabled={!isDirty || isSubmitting || isSubmitSuccessful}
-                                color={isValid ? 'success' : 'primary'}
                             >
-                                Hyväksy ja tallenna muutokset
+                                Tallenna osoite
                             </Button>
                             <Button
-                                id="cancel-btn"
+                                id="back-btn"
+                                variant="text"
                                 component={Link}
                                 to={`/admin/kayttajat/${loaderData.userData.id}`}
-                                variant="outlined"
-                                color="error"
+                                // color="error"
                             >
-                                Poistu tallentamatta
+                                Takaisin
                             </Button>
                         </Stack>
                     </Box>
@@ -184,4 +163,4 @@ function UserAddressEdit() {
     );
 }
 
-export default UserAddressEdit;
+export default UserAddressCreate;
