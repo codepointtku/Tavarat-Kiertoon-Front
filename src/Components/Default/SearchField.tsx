@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Form, useSearchParams, useRouteLoaderData } from 'react-router-dom';
 
@@ -29,42 +29,49 @@ type SearchInputValue = {
 
 function SearchField() {
     const { colors, categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
-    const [categoriesAndColors, setCategoriesAndColors] = useState({ categories: [''], colors: [''] });
+    const categoriesAndColors = { categories: [''], colors: [''] };
     const { handleSubmit, register, watch, reset, setValue } = useForm<SearchInputValue>();
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const onSubmit: SubmitHandler<SearchInputValue> = (formData) => {
-        categoriesAndColors.colors.includes('') && categoriesAndColors.colors.shift();
-        categoriesAndColors.categories.includes('') && categoriesAndColors.categories.shift();
-        colors.map(
-            (color) =>
-                formData.search.includes(color.name) &&
-                setCategoriesAndColors((categoriesAndColors) => ({
-                    categories: categoriesAndColors.categories,
-                    colors: categoriesAndColors.colors.includes(color.name)
-                        ? [...categoriesAndColors.colors]
-                        : [...categoriesAndColors.colors, color.name],
-                }))
-        );
-        categories.map(
-            (category) =>
-                formData.search.includes(category.name) &&
-                setCategoriesAndColors((categoriesAndColors) => ({
-                    categories: categoriesAndColors.categories.includes(category.name)
-                        ? [...categoriesAndColors.categories]
-                        : [...categoriesAndColors.categories, category.name],
-                    colors: categoriesAndColors.colors,
-                }))
-        );
-        // categories.map(
-        //     (category) =>
-        //         formData.search.includes(category.name) &&
-        //         setSearchParams({ haku: formData.search, kategoria: category.name })
-        // );
-        // setSearchParams({ haku: formData.search });
-    };
+    const onSubmit: SubmitHandler<SearchInputValue> = async (formData) => {
+        const filteredSearch = [];
+        colors.map((color) => {
+            if (formData.search.includes(color.name)) {
+                categoriesAndColors.colors[0] === ''
+                    ? categoriesAndColors.colors.splice(0, 1, String(color.id))
+                    : categoriesAndColors.colors.push(String(color.id));
+                filteredSearch.push(formData.search.replace(color.name, 'b'));
+            }
+        });
+        categories.map((category) => {
+            if (formData.search.includes(category.name)) {
+                categoriesAndColors.categories[0] === ''
+                    ? categoriesAndColors.categories.splice(0, 1, String(category.id))
+                    : categoriesAndColors.categories.push(String(category.id));
+                filteredSearch.push(formData.search.replace(category.name, 'c'));
+            }
+        });
 
-    console.log(categoriesAndColors);
+        // console.log(filteredSearch);
+        switch (true) {
+            case categoriesAndColors.categories[0] !== '' && categoriesAndColors.colors[0] !== '':
+                setSearchParams({
+                    haku: formData.search,
+                    varit: categoriesAndColors.colors,
+                    kategoriat: categoriesAndColors.categories,
+                });
+                break;
+            case categoriesAndColors.categories[0] !== '':
+                setSearchParams({ haku: formData.search, kategoriat: categoriesAndColors.categories });
+                break;
+            case categoriesAndColors.colors[0] !== '':
+                setSearchParams({ haku: formData.search, varit: categoriesAndColors.colors });
+                break;
+            case categoriesAndColors.categories[0] === '' && categoriesAndColors.colors[0] === '':
+                setSearchParams({ haku: formData.search });
+                break;
+        }
+    };
 
     const searchParamFromUrl = searchParams.get('haku');
     const searchFieldHasInput = watch('search');
@@ -81,10 +88,12 @@ function SearchField() {
 
     const clearInputField = () => {
         reset();
+        categoriesAndColors.categories = [''];
+        categoriesAndColors.colors = [''];
         if (searchParams.has('haku')) {
             searchParams.delete('haku');
-            searchParams.delete('vari');
-            searchParams.delete('kategoria');
+            searchParams.delete('varit');
+            searchParams.delete('kategoriat');
             setSearchParams(searchParams);
         }
     };

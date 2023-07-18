@@ -84,9 +84,17 @@ const productListLoader = async ({ request }) => {
         return data.results;
     }
 
-    if (url.searchParams.has('haku')) {
+    if (url.searchParams.has('haku') || url.searchParams.has('varit')) {
         //const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
-        const { data } = await productsApi.productsList(null, null, null, null, null, url.searchParams.get('haku'));
+        console.log(url.searchParams.get('kategoriat'), url.searchParams.get('varit'));
+        const { data } = await productsApi.productsList(
+            url.searchParams.get('kategoriat'),
+            url.searchParams.get('varit'),
+            null,
+            null,
+            null,
+            url.searchParams.get('haku')
+        );
         return data.results;
     }
 
