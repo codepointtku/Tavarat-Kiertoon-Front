@@ -41,9 +41,12 @@ import AdminInbox from '../Components/Admin/AdminInbox';
 
 import UsersList from '../Components/Admin/UsersList';
 import UserEdit from '../Components/Admin/UserEdit';
+import UserAddressEdit from '../Components/Admin/UserAddressEdit';
+
 import BulletinPosts from '../Components/Admin/BulletinPosts';
 import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
 import ModifyBulletinPost from '../Components/Admin/ModifyBulletinPost';
+
 import Stats from '../Components/Admin/Stats/Stats';
 
 import StoragesList from '../Components/Admin/StoragesList';
@@ -174,7 +177,6 @@ import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
 import { getRandomInt } from '../Utils/getRandomInt';
 import StorageProductsTransfer from '../Components/Admin/StorageProductsTransfer';
-import UserAddressEdit from '../Components/Admin/UserAddressEdit';
 
 createStore({});
 
@@ -578,14 +580,14 @@ function Routes() {
                                             loader: usersListLoader,
                                         },
                                         {
-                                            path: ':id',
+                                            path: ':userid',
                                             element: <UserEdit />,
                                             // errorElement: <UserError />,
                                             loader: ({ params }) => userEditLoader(params),
                                             action: userEditAction,
                                         },
                                         {
-                                            path: ':id/osoitteenmuokkaus',
+                                            path: ':userid/osoitteenmuokkaus',
                                             element: <UserAddressEdit />,
                                             // errorElement: <UserError />,
                                             loader: ({ params }) => userEditLoader(params),

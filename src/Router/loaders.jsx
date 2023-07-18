@@ -237,7 +237,7 @@ const usersListLoader = async () => {
  */
 const userEditLoader = async (params) => {
     const dataList = [];
-    let { data } = await usersApi.usersRetrieve(params.id);
+    let { data } = await usersApi.usersRetrieve(params.userid);
     data.groups = data.groups.map((group) => group.id);
     dataList.push(data);
     data = await usersApi.usersGroupsList();
