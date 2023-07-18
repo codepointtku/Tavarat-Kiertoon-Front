@@ -118,7 +118,9 @@ import {
     storagesListLoader,
     storageEditLoader,
     userEditLoader,
+    userAddressEditLoader,
     usersListLoader,
+    userInfoLoader,
     shoppingCartLoader,
     bikesDefaultLoader,
     bikesListLoader,
@@ -133,7 +135,6 @@ import {
     emailRecipientsLoader,
     bikeNewModelLoader,
     createBikeOrderLoader,
-    userInfoLoader,
 } from './loaders';
 
 import {
@@ -587,10 +588,10 @@ function Routes() {
                                             action: userEditAction,
                                         },
                                         {
-                                            path: ':userid/osoitteenmuokkaus',
+                                            path: ':userid/osoitteet/:aid',
                                             element: <UserAddressEdit />,
                                             // errorElement: <UserError />,
-                                            loader: ({ params }) => userEditLoader(params),
+                                            loader: ({ params }) => userAddressEditLoader(params),
                                             action: adminUserAddressEditAction,
                                         },
                                     ],

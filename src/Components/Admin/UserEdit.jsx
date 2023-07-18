@@ -3,7 +3,21 @@ import { Form, useSubmit, Link } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
 
-import { Box, Button, Checkbox, FormControlLabel, Stack, TextField, Typography, Grid, Container } from '@mui/material';
+import {
+    Box,
+    Button,
+    Checkbox,
+    FormControlLabel,
+    Stack,
+    TextField,
+    Typography,
+    Grid,
+    Container,
+    Card,
+    CardContent,
+    CardActionArea,
+    CardActions,
+} from '@mui/material';
 
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
@@ -195,33 +209,37 @@ function UserEdit() {
                             </Grid>
 
                             {/* Address stuff */}
-                            <Grid item xs={6} sx={{ padding: '0 1rem 0 0' }}>
+                            <Grid item xs={6} sx={{ padding: '0 2rem 0 0' }}>
                                 <Box id="user-address-info-wrapper">
                                     <TypographyHeading text="Osoitteet" />
                                     <Stack
                                         id="address-boxes"
                                         direction="row"
                                         spacing={2}
-                                        justifyContent="space-evenly"
+                                        justifyContent="space-between"
                                         alignItems="center"
-                                        sx={{ margin: '1rem 0 1rem 0' }}
+                                        sx={{ margin: '1rem 0 0 0' }}
                                     >
-                                        {userInfo.address_list.map((item, index) => (
-                                            <Box className="address-box" key={index}>
-                                                <Typography>{item.address}</Typography>
-                                                <Typography>{item.city}</Typography>
-                                                <Typography>{item.zip_code}</Typography>
-                                                <Typography>Tunniste: {item.id}</Typography>
+                                        {userInfo.address_list.map((item) => (
+                                            <Box className="address-box" key={item.id}>
+                                                <Card sx={{ minWidth: 160 }}>
+                                                    <CardContent>
+                                                        <Typography variant="body2">{item.address}</Typography>
+                                                        <Typography variant="body2">{item.city}</Typography>
+                                                        <Typography variant="body2">{item.zip_code}</Typography>
+                                                    </CardContent>
+                                                    <CardActions>
+                                                        <Button
+                                                            component={Link}
+                                                            to={`/admin/kayttajat/${userInfo.id}/osoitteet/${item.id}`}
+                                                        >
+                                                            Muokkaa
+                                                        </Button>
+                                                    </CardActions>
+                                                </Card>
                                             </Box>
                                         ))}
                                     </Stack>
-                                    <Button
-                                        component={Link}
-                                        to={`/admin/kayttajat/${userInfo.id}/osoitteenmuokkaus`}
-                                        sx={{ marginTop: '1rem' }}
-                                    >
-                                        Osoitetietojen muokkaus
-                                    </Button>
                                 </Box>
                             </Grid>
 

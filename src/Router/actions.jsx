@@ -372,8 +372,8 @@ const userEditAction = async ({ request, params }) => {
 const adminUserAddressEditAction = async ({ request, params }) => {
     const formData = await request.formData();
 
-    const modifiedAddressId = formData.get('aid');
-    console.log('actionissa:', modifiedAddressId);
+    const addressId = params.aid;
+    console.log('actionissa:', addressId);
 
     const modifiedAddress = {
         address: formData.get('address'),
@@ -382,13 +382,9 @@ const adminUserAddressEditAction = async ({ request, params }) => {
         user: params.userid,
     };
 
-    console.log(modifiedAddress);
+    console.log('modif address actionissa:', modifiedAddress);
 
-    let userAddressUpdateResponse;
-
-    if (modifiedAddressId !== null) {
-        userAddressUpdateResponse = await usersApi.usersAddressUpdate(modifiedAddressId, modifiedAddress);
-    }
+    const userAddressUpdateResponse = await usersApi.usersAddressUpdate(addressId, modifiedAddress);
 
     if (userAddressUpdateResponse.status === 200) {
         return { type: 'addressupdate', status: true };

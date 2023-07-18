@@ -7,10 +7,10 @@ import {
     Box,
     Button,
     Container,
-    FormControl,
-    FormHelperText,
-    ListItemText,
-    MenuItem,
+    // FormControl,
+    // FormHelperText,
+    // ListItemText,
+    // MenuItem,
     Stack,
     TextField,
     Typography,
@@ -23,12 +23,12 @@ import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
 import type { adminUserAddressEditAction } from '../../Router/actions';
-import type { userEditLoader } from '../../Router/loaders';
+import type { userAddressEditLoader } from '../../Router/loaders';
 
 function UserAddressEdit() {
-    const loaderData = useLoaderData() as Awaited<ReturnType<typeof userEditLoader>>;
-    const userInfo = loaderData![0];
-    // console.log(userInfo);
+    const loaderData = useLoaderData() as Awaited<ReturnType<typeof userAddressEditLoader>>;
+
+    console.log('louderdata komponentis:', loaderData);
 
     const actionData = useActionData() as Awaited<ReturnType<typeof adminUserAddressEditAction>>;
 
@@ -36,22 +36,22 @@ function UserAddressEdit() {
         register,
         handleSubmit: createHandleSubmit,
         // reset,
-        watch,
-        formState: { errors: formStateErrors, isDirty, dirtyFields },
+        formState: { errors: formStateErrors, isDirty, dirtyFields, isSubmitting, isSubmitted, isSubmitSuccessful },
     } = useForm({
         mode: 'all',
-        // defaultValues: {
-        //     id: null,
-        //     address: null,
-        //     zip_code: null,
-        //     city: null,
-        // },
+        defaultValues: {
+            id: String(loaderData.addressData.id),
+            address: loaderData.addressData.address,
+            zip_code: loaderData.addressData.zip_code,
+            city: loaderData.addressData.city,
+            user: String(loaderData.userData.id),
+        },
     });
 
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data) => {
-        // console.log('%c Submitissa menevä tieto', 'color: blue', data);
+        console.log('%c Submitissa menevä tieto', 'color: blue', data);
         submit(data, {
             method: 'put',
         });
@@ -60,65 +60,27 @@ function UserAddressEdit() {
     return (
         <>
             {actionData?.type === 'addressupdate' && actionData?.status === false && (
-                <AlertBox text="Osoitetietojen tallennus epäonnistui. Lataa sivu uudestaan." status="error" />
+                <AlertBox text="Osoitetietojen tallennus epäonnistui" status="error" />
             )}
             {actionData?.type === 'addressupdate' && actionData?.status && (
-                <AlertBox text="Osoitetiedot tallennettu onnistuneesti" status="success" />
+                <AlertBox
+                    text="Osoitetiedot tallennettu onnistuneesti"
+                    status="success"
+                    timer={3000}
+                    redirectUrl={`/admin/kayttajat/${loaderData.userData.id}`}
+                />
             )}
 
             <Container maxWidth="xl">
                 <HeroHeader Icon={<EditLocationAltIcon />} />
-                <HeroText title={`Käyttäjän ${userInfo.email} osoitteiden pahoinpitely`} />
-
-                <Stack
-                    id="address-boxes"
-                    direction="row"
-                    spacing={2}
-                    justifyContent="space-around"
-                    alignItems="center"
-                    sx={{ margin: '1rem 0 2rem 0' }}
-                >
-                    {userInfo.address_list.map((item: any, index: number) => (
-                        <Box className="address-box" key={index}>
-                            <Typography>osote: {item.address}</Typography>
-                            <Typography>kapunni: {item.city}</Typography>
-                            <Typography>zipkode: {item.zip_code}</Typography>
-                            <Typography>id: {item.id}</Typography>
-                        </Box>
-                    ))}
-                </Stack>
+                <HeroText title={`Käyttäjän ${loaderData.userData.email} osoitteen pahoinpitely`} />
 
                 <Container maxWidth="md">
-                    <Stack id="address-stack">
-                        <Typography gutterBottom align="left">
-                            Valitse muokattava osoite:
-                        </Typography>
-
-                        <Box id="address-select-wrapper">
-                            <FormControl fullWidth error={!!formStateErrors.storage_to}>
-                                <TextField
-                                    select
-                                    id="address-select"
-                                    value={watch('aid')}
-                                    required
-                                    inputProps={{ required: false }}
-                                    error={!!formStateErrors.address}
-                                >
-                                    {userInfo.address_list.map((address: any) => (
-                                        <MenuItem key={address.id} value={address.id}>
-                                            <ListItemText primary={address.address} />
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                                <FormHelperText>{formStateErrors.address ? 'Valitse osoite' : ' '}</FormHelperText>
-                            </FormControl>
-                        </Box>
-                    </Stack>
-
                     <Box id="user-edit-wrapper-form-component" component={Form} onSubmit={handleSubmit}>
                         <Stack direction="row" gap={1} sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography variant="body2">Osoitteen tunnistenumero:</Typography>
-                            <input value={watch('aid')} {...register('aid')} />
+                            <Typography variant="body2">
+                                Osoitteen tunnistenumero: {loaderData.addressData.id}
+                            </Typography>
                         </Stack>
 
                         <TextField
@@ -137,7 +99,7 @@ function UserAddressEdit() {
                             required
                             error={!!formStateErrors.address}
                             helperText={formStateErrors.address?.message?.toString() || ' '}
-                            color={dirtyFields.address && 'warning'}
+                            color={dirtyFields.address ? 'warning' : 'primary'}
                             fullWidth
                             sx={{ marginTop: '1rem' }}
                         />
@@ -166,7 +128,7 @@ function UserAddressEdit() {
                                 required
                                 error={!!formStateErrors.city}
                                 helperText={formStateErrors.city?.message?.toString() || ' '}
-                                color={dirtyFields.city && 'warning'}
+                                color={dirtyFields.city ? 'warning' : 'primary'}
                                 fullWidth
                             />
 
@@ -182,7 +144,7 @@ function UserAddressEdit() {
                                     },
                                     maxLength: { value: 5, message: 'Postinumero on liian pitkä' },
                                     minLength: {
-                                        value: 1,
+                                        value: 5,
                                         message: 'Osoitteen postinumero on vaadittu',
                                     },
                                 })}
@@ -190,7 +152,7 @@ function UserAddressEdit() {
                                 required
                                 error={!!formStateErrors.zip_code}
                                 helperText={formStateErrors.zip_code?.message?.toString() || ' '}
-                                color={dirtyFields.zip_code && 'warning'}
+                                color={dirtyFields.zip_code ? 'warning' : 'primary'}
                                 fullWidth
                             />
                         </Stack>
@@ -204,7 +166,7 @@ function UserAddressEdit() {
                                         backgroundColor: 'success.dark',
                                     },
                                 }}
-                                disabled={!isDirty}
+                                disabled={!isDirty || isSubmitting || isSubmitSuccessful}
                             >
                                 Hyväksy ja tallenna muutokset
                             </Button>

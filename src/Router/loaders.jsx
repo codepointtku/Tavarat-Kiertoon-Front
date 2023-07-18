@@ -248,6 +248,14 @@ const userEditLoader = async (params) => {
     return null;
 };
 
+const userAddressEditLoader = async (params) => {
+    const [{ data: userData }, { data: addressData }] = await Promise.all([
+        await usersApi.usersRetrieve(params.userid),
+        await usersApi.usersAddressRetrieve(params.aid),
+    ]);
+    return { userData, addressData };
+};
+
 /**
  * Get lists of bikes and packets for front page
  *
@@ -507,6 +515,7 @@ export {
     storageEditLoader,
     usersListLoader,
     userEditLoader,
+    userAddressEditLoader,
     userInfoLoader,
     bikesDefaultLoader,
     bikesListLoader,
