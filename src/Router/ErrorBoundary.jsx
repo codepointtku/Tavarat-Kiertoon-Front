@@ -29,7 +29,7 @@ function ErrorBoundary() {
                     {
                         axios: (
                             <Typography variant="h6">
-                                Yhteysongelma sijainnissa {location.pathname}, yritä uudelleeeeeeen.
+                                Yhteysongelma sijainnissa {location.pathname}, yritä uudelleen.
                             </Typography>
                         ),
 
