@@ -11,15 +11,12 @@ import AlertBox from '../AlertBox';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
-// import type { adminUserAddressEditAction } from '../../Router/actions';
+import type { adminUserAddressCreateAction } from '../../Router/actions';
 import type { userAddressCreateLoader } from '../../Router/loaders';
 
 function UserAddressCreate() {
     const loaderData = useLoaderData() as Awaited<ReturnType<typeof userAddressCreateLoader>>;
-
-    console.log('louderdata komponentis:', loaderData);
-
-    // const actionData = useActionData() as Awaited<ReturnType<typeof adminUserAddressEditAction>>;
+    const actionData = useActionData() as Awaited<ReturnType<typeof adminUserAddressCreateAction>>;
 
     const {
         register,
@@ -41,9 +38,10 @@ function UserAddressCreate() {
 
     return (
         <>
-            {/* {actionData?.type === 'addresscreate' && actionData?.status === false && (
+            {actionData?.type === 'addresscreate' && actionData?.status === false && (
                 <AlertBox text="Osoitteen lisäys epäonnistui" status="error" />
             )}
+
             {actionData?.type === 'addresscreate' && actionData?.status && (
                 <AlertBox
                     text="Uusi osoite lisätty onnistuneesti"
@@ -51,7 +49,7 @@ function UserAddressCreate() {
                     timer={3000}
                     redirectUrl={`/admin/kayttajat/${loaderData.userData.id}`}
                 />
-            )} */}
+            )}
 
             <Container maxWidth="xl">
                 <HeroHeader Icon={<AddLocationAltIcon />} hideInAdmin />

@@ -86,7 +86,7 @@ function UserEdit() {
             )}
 
             <Container maxWidth="xl">
-                <HeroHeader Icon={<AccountCircleIcon />} />
+                <HeroHeader Icon={<AccountCircleIcon />} hideInAdmin />
                 <HeroText title={`Käyttäjä ${userInfo.email}`} />
 
                 <Box id="user-edit-wrapper-form-component" component={Form} onSubmit={handleSubmit}>
@@ -213,7 +213,7 @@ function UserEdit() {
                                         id="address-boxes"
                                         direction="row"
                                         gap={1}
-                                        justifyContent="space-between"
+                                        justifyContent="flex-start"
                                         alignItems="center"
                                         flexWrap="wrap"
                                         sx={{ margin: '1rem 0 0 0' }}

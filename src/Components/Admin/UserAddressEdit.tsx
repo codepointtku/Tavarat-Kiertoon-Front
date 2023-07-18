@@ -28,8 +28,6 @@ import type { userAddressEditLoader } from '../../Router/loaders';
 function UserAddressEdit() {
     const loaderData = useLoaderData() as Awaited<ReturnType<typeof userAddressEditLoader>>;
 
-    console.log('louderdata komponentis:', loaderData);
-
     const actionData = useActionData() as Awaited<ReturnType<typeof adminUserAddressEditAction>>;
 
     const {

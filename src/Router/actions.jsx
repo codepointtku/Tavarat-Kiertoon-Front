@@ -398,9 +398,9 @@ const adminUserAddressCreateAction = async ({ request, params }) => {
         user: params.userid,
     };
 
-    const userAddressCreateResponse = await usersApi.(params.aid, newAddress); // !!
+    const userAddressCreateResponse = await usersApi.usersAddressCreate(newAddress);
 
-    if (userAddressCreateResponse.status === 200) {
+    if (userAddressCreateResponse.status === 201) {
         return { type: 'addresscreate', status: true };
     }
 
