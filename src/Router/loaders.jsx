@@ -268,22 +268,24 @@ const bikesPacketLoader = async (auth, setAuth) => {
 /**
  * Get one bikepacket and all models
  */
-const modifyBikeOrderLoader = async (auth, setAuth, params) => {
+const modifyBikePacketLoader = async (auth, setAuth, params) => {
     // console.log('lauantai');
-    const [{ data: packet }, { data: models }] = await Promise.all([
+    const [{ data: packet }, { data: models }, { data: bikes }] = await Promise.all([
         // apiCall(auth, setAuth, `/bikes/packages/${params.id}`, 'get'),
         // apiCall(auth, setAuth, `/bikes/models/`, 'get'),
         bikesApi.bikesPackagesRetrieve(params.id),
         bikesApi.bikesModelsList(),
+        bikesApi.bikesStockList(),
     ]);
-    return { packet, models };
+    return { packet, models, bikes };
 };
-const createBikeOrderLoader = async (auth, setAuth, params) => {
+const createBikePacketLoader = async (auth, setAuth, params) => {
     // console.log('lauantai');
-    const [{ data: models }] = await Promise.all([
+    const [{ data: models }, { data: bikes }] = await Promise.all([
         // apiCall(auth, setAuth, `/bikes/packages/${params.id}`, 'get'),
         // apiCall(auth, setAuth, `/bikes/models/`, 'get'),
         bikesApi.bikesModelsList(),
+        bikesApi.bikesStockList(),
     ]);
     const packet = {
         // id: number;
@@ -291,7 +293,7 @@ const createBikeOrderLoader = async (auth, setAuth, params) => {
         description: '',
         bikes: [],
     };
-    return { packet, models };
+    return { packet, models, bikes };
 };
 
 /**
@@ -542,7 +544,7 @@ export {
     shoppingProcessLoader,
     adminLoader,
     adminInboxLoader,
-    modifyBikeOrderLoader,
+    modifyBikePacketLoader,
     bikeNewModelLoader,
-    createBikeOrderLoader,
+    createBikePacketLoader,
 };

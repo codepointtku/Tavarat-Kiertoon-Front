@@ -566,7 +566,7 @@ const createNewBikeAction = async (auth, setAuth, request) => {
 };
 
 // kommentti
-const modifyBikeOrderAction = async (auth, setAuth, request, params) => {
+const modifyBikePacketAction = async (auth, setAuth, request, params) => {
     // collect data that needs to be sent to backend
     const data = await request.formData();
     const submission = {
@@ -576,9 +576,12 @@ const modifyBikeOrderAction = async (auth, setAuth, request, params) => {
     };
     // send data and redirect back to bike list
     // await apiCall(auth, setAuth, `/bikes/packages/${params.id}/`, 'put', submission);
-    await bikesApi.bikesPackagesUpdate(params.id, submission);
+    const response = await bikesApi.bikesPackagesUpdate(params.id, submission);
+    console.log(response);
+
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
+
 const createNewPacketAction = async (auth, setAuth, request) => {
     // collect data that needs to be sent to backend
     const data = await request.formData();
@@ -906,7 +909,7 @@ export {
     modifyBikeModelAction,
     deleteBikeAction,
     adminLogOut,
-    modifyBikeOrderAction,
+    modifyBikePacketAction,
     adminInboxAction,
     createBikeModelAction,
     deleteBikeModelAction,
