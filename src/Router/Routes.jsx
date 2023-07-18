@@ -627,13 +627,13 @@ function Routes() {
                                             action: storageEditAction,
                                         },
                                         {
-                                            path: 'poista/:id',
+                                            path: ':id/poista',
                                             element: <StorageDelete randomInt={getRandomInt()} />,
                                             loader: storageEditLoader,
                                             action: storageDeleteAction,
                                         },
                                         {
-                                            path: 'siirto/:id',
+                                            path: ':id/siirto',
                                             element: <StorageProductsTransfer />,
                                             loader: productTransferLoader,
                                             action: productsTransferAction,

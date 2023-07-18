@@ -65,14 +65,14 @@ function StorageDelete({ randomInt }: any) {
                             Tämä toimenpide on pysyvä, eikä tietoja voi sen jälkeen palauttaa.
                         </Typography>
                         <Stack id="warning-typographies-stack" gap={1}>
-                            <Stack direction="row" gap={1}>
+                            <Stack direction="row" gap={1} alignItems="center">
                                 <DeleteForeverIcon color="error" />
                                 <Typography variant="subtitle2" textAlign="center">
                                     Poistaa varaston omat tiedot (tunniste, nimi, tila, osoite), sekä tiedon varastoon
                                     liitetyistä tuotteista.
                                 </Typography>
                             </Stack>
-                            <Stack direction="row" gap={1}>
+                            <Stack direction="row" gap={1} alignItems="center">
                                 <CheckCircleOutlineIcon color="success" />
                                 <Typography variant="subtitle2" textAlign="center" gutterBottom>
                                     Tuotteet ja tuotteiden omat tiedot säilyvät ennallaan.
@@ -80,7 +80,7 @@ function StorageDelete({ randomInt }: any) {
                             </Stack>
                         </Stack>
                         <Stack id="infograph-return-btn stack" gap={1}>
-                            <Stack direction="row" gap={1}>
+                            <Stack direction="row" gap={1} alignItems="center">
                                 <InfoOutlinedIcon color="info" />
                                 <Typography variant="body2" textAlign="center">
                                     Varaston voi asettaa "pois käytöstä"-tilaan. Tällöin tieto varastoon liitetyistä

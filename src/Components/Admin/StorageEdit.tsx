@@ -22,7 +22,7 @@ function StorageEdit() {
 
     const storageInfo = storageData.storageInfo;
     const storageAvailableProductsCount = storageData.hasProducts.count;
-    console.log('product count in this storage:', storageAvailableProductsCount);
+    // console.log('product count in this storage:', storageAvailableProductsCount);
 
     const storageStates = ['Käytössä', 'Ei käytössä'];
 
@@ -179,7 +179,7 @@ function StorageEdit() {
                                         size="small"
                                         color="error"
                                         component={Link}
-                                        to={`/admin/varastot/poista/${storageInfo.id}`}
+                                        to={`/admin/varastot/${storageInfo.id}/poista`}
                                         endIcon={<DeleteForeverIcon />}
                                         sx={{ margin: '4rem 0 1rem 0' }}
                                     >
