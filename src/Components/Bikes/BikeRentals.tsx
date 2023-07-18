@@ -1,4 +1,14 @@
-import { Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Typography } from '@mui/material';
+import {
+    Paper,
+    TableContainer,
+    Table,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody,
+    Typography,
+    Box,
+} from '@mui/material';
 import { useLoaderData } from 'react-router';
 import StyledTableCell from '../StyledTableCell';
 
@@ -30,11 +40,10 @@ export default function BikeRentals() {
     console.log(data);
 
     return (
-        <div>
+        <Box width="100%">
             <Typography variant="h3" align="center" color="primary.main" width="100%">
                 Tilaukset{' '}
             </Typography>
-
             <TableContainer component={Paper} sx={{ padding: '2rem' }}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
@@ -69,6 +78,6 @@ export default function BikeRentals() {
                     </TableBody>
                 </Table>
             </TableContainer>
-        </div>
+        </Box>
     );
 }
