@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { useLoaderData, useActionData } from 'react-router';
 import { Form, useSubmit, Link } from 'react-router-dom';
 
@@ -12,7 +10,6 @@ import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import AlertBox from '../AlertBox';
-import TypographyTitle from '../TypographyTitle';
 import TypographyHeading from '../TypographyHeading';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
@@ -43,10 +40,6 @@ function UserEdit() {
     lastLoginDateInfo.push(lastLoginDate.toLocaleDateString());
     lastLoginDateInfo.push(lastLoginDate.toLocaleTimeString());
 
-    const [showAddressEditFields, setShowAddressEditFields] = useState({ aid: null, aindex: null });
-    // console.log('%c Steitissä oleva aid:', 'color: red', showAddressEditFields.aid);
-    let addressId = showAddressEditFields.aid;
-
     const {
         register,
         handleSubmit: createHandleSubmit,
@@ -58,16 +51,6 @@ function UserEdit() {
             ...userInfo,
         },
     });
-
-    const handleAddressEdit = (aid, aindex) => {
-        // console.log('%c Klikattiin osoitetta', 'color: red; font-weight: bold', 'address id:', aid, 'index:', aindex);
-        setShowAddressEditFields({ aid: aid, aindex: aindex });
-    };
-
-    const closeAddressEdit = () => {
-        setShowAddressEditFields({ aid: null, aindex: null });
-        reset();
-    };
 
     const submit = useSubmit();
 
@@ -214,119 +197,31 @@ function UserEdit() {
                             {/* Address stuff */}
                             <Grid item xs={6} sx={{ padding: '0 1rem 0 0' }}>
                                 <Box id="user-address-info-wrapper">
-                                    <TypographyHeading text="Osoitetiedot" />
-
-                                    {showAddressEditFields.aid ? (
-                                        <Box sx={{ margin: '1rem 0 1rem 0' }}>
-                                            <Typography variant="body2" gutterBottom>
-                                                Osoitteen muokkaus:
-                                            </Typography>
-
-                                            <input value={addressId} {...register('aid')} />
-
-                                            <TextField
-                                                id={`useraddress-${showAddressEditFields.aid}`}
-                                                type="text"
-                                                label="Osoite"
-                                                placeholder="Tavaran vastaanotto-osoite"
-                                                {...register('address', {
-                                                    required: { value: true, message: 'Osoite ei voi olla tyhjä' },
-                                                    maxLength: { value: 100, message: 'Osoite on liian pitkä' },
-                                                    minLength: {
-                                                        value: 1,
-                                                        message: 'Tavaran vastaanotto-osoite on vaadittu',
-                                                    },
-                                                })}
-                                                inputProps={{ required: false }}
-                                                required
-                                                error={!!formStateErrors.address}
-                                                helperText={formStateErrors.address?.message || ' '}
-                                                color={dirtyFields.address && 'warning'}
-                                                fullWidth
-                                                sx={{ marginTop: '1rem' }}
-                                            />
-
-                                            <Stack direction="row" spacing={1}>
-                                                <TextField
-                                                    id="addresscity"
-                                                    type="text"
-                                                    label="Kaupunki"
-                                                    placeholder="Kaupunki"
-                                                    {...register('city', {
-                                                        required: {
-                                                            value: true,
-                                                            message: 'Kaupunki ei voi olla tyhjä',
-                                                        },
-                                                        maxLength: {
-                                                            value: 50,
-                                                            message: 'Kaupungin nimi on liian pitkä',
-                                                        },
-                                                        minLength: {
-                                                            value: 1,
-                                                            message: 'Osoitteen kaupunki on vaadittu',
-                                                        },
-                                                    })}
-                                                    inputProps={{ required: false }}
-                                                    required
-                                                    error={!!formStateErrors.city}
-                                                    helperText={formStateErrors.city?.message || ' '}
-                                                    color={dirtyFields.city && 'warning'}
-                                                    fullWidth
-                                                />
-
-                                                <TextField
-                                                    id="addresszipcode"
-                                                    type="text"
-                                                    label="Postinumero"
-                                                    placeholder="Postinumero"
-                                                    {...register('zip_code', {
-                                                        required: {
-                                                            value: true,
-                                                            message: 'Postinumero ei voi olla tyhjä',
-                                                        },
-                                                        maxLength: { value: 5, message: 'Postinumero on liian pitkä' },
-                                                        minLength: {
-                                                            value: 1,
-                                                            message: 'Osoitteen postinumero on vaadittu',
-                                                        },
-                                                    })}
-                                                    inputProps={{ required: false }}
-                                                    required
-                                                    error={!!formStateErrors.zip_code}
-                                                    helperText={formStateErrors.zip_code?.message || ' '}
-                                                    color={dirtyFields.zip_code && 'warning'}
-                                                    fullWidth
-                                                />
-                                            </Stack>
-                                            <Button fullWidth onClick={closeAddressEdit}>
-                                                Peruuta
-                                            </Button>
-                                        </Box>
-                                    ) : (
-                                        <Stack
-                                            id="address-boxes"
-                                            direction="row"
-                                            spacing={2}
-                                            justifyContent="space-evenly"
-                                            alignItems="center"
-                                            sx={{ margin: '1rem 0 1rem 0' }}
-                                        >
-                                            {userInfo.address_list.map((item, index) => (
-                                                <Box className="address-box" key={index}>
-                                                    <Typography>{item.address}</Typography>
-                                                    <Typography>{item.city}</Typography>
-                                                    <Typography>{item.zip_code}</Typography>
-                                                    <Typography>{item.id}</Typography>
-                                                    <Button
-                                                        sx={{ marginTop: '1rem' }}
-                                                        onClick={() => handleAddressEdit(item.id, index)}
-                                                    >
-                                                        Muokkaa
-                                                    </Button>
-                                                </Box>
-                                            ))}
-                                        </Stack>
-                                    )}
+                                    <TypographyHeading text="Osoitteet" />
+                                    <Stack
+                                        id="address-boxes"
+                                        direction="row"
+                                        spacing={2}
+                                        justifyContent="space-evenly"
+                                        alignItems="center"
+                                        sx={{ margin: '1rem 0 1rem 0' }}
+                                    >
+                                        {userInfo.address_list.map((item, index) => (
+                                            <Box className="address-box" key={index}>
+                                                <Typography>{item.address}</Typography>
+                                                <Typography>{item.city}</Typography>
+                                                <Typography>{item.zip_code}</Typography>
+                                                <Typography>Tunniste: {item.id}</Typography>
+                                            </Box>
+                                        ))}
+                                    </Stack>
+                                    <Button
+                                        component={Link}
+                                        to={`/admin/kayttajat/${userInfo.id}/osoitteenmuokkaus`}
+                                        sx={{ marginTop: '1rem' }}
+                                    >
+                                        Osoitetietojen muokkaus
+                                    </Button>
                                 </Box>
                             </Grid>
 
@@ -368,13 +263,12 @@ function UserEdit() {
                                 id="save-changes-btn"
                                 type="submit"
                                 sx={{
-                                    margin: '1rem 0 1rem 0',
+                                    margin: '4rem 0 1rem 0',
                                     '&:hover': {
                                         backgroundColor: 'success.dark',
                                     },
                                 }}
                                 disabled={!isDirty}
-                                onClick={() => setShowAddressEditFields({ aid: null, index: null })}
                             >
                                 Hyväksy ja tallenna muutokset
                             </Button>

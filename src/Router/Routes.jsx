@@ -168,12 +168,14 @@ import {
     deletePacketAction,
     userProfilePageAction,
     modifyUserAddressesAction,
+    adminUserAddressEditAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
 import { getRandomInt } from '../Utils/getRandomInt';
 import StorageProductsTransfer from '../Components/Admin/StorageProductsTransfer';
+import UserAddressEdit from '../Components/Admin/UserAddressEdit';
 
 createStore({});
 
@@ -586,6 +588,13 @@ function Routes() {
                                             // errorElement: <UserError />,
                                             loader: ({ params }) => userEditLoader(params),
                                             action: userEditAction,
+                                        },
+                                        {
+                                            path: ':id/osoitteenmuokkaus',
+                                            element: <UserAddressEdit />,
+                                            // errorElement: <UserError />,
+                                            loader: ({ params }) => userEditLoader(params),
+                                            action: adminUserAddressEditAction,
                                         },
                                     ],
                                 },

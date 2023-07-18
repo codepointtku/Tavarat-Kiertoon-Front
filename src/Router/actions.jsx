@@ -335,7 +335,7 @@ const productsTransferAction = async ({ request }) => {
 };
 
 const userEditAction = async ({ request, params }) => {
-    // This action handles user data: info, addressinfo and users auth groups.
+    // This action handles user data: info and users auth groups.
     // User data has different BE endpoints for these different user data sections.
 
     // First apicall updates users editable info.
@@ -343,7 +343,6 @@ const userEditAction = async ({ request, params }) => {
     // - Get all the checked checkboxes values into an array's first index.
     // - The array is then splitted by comma into an array of strings. These values are then mapped into an array of integers,
     // - and then sent to the BE in a composition BE expects.
-    // Third apicall patches users addressinfo.
 
     const formData = await request.formData();
 
@@ -358,7 +357,23 @@ const userEditAction = async ({ request, params }) => {
         .split(',')
         .map((group) => Number(group));
 
+    const userInfoUpdateResponse = await usersApi.usersUpdate(params.id, userInfo);
+    const userPermissionsUpdateResponse = await usersApi.usersGroupsPermissionUpdate(params.id, {
+        groups: selectedAuthGroups,
+    });
+
+    if (userInfoUpdateResponse.status === 200 && userPermissionsUpdateResponse.status === 200) {
+        return { type: 'update', status: true };
+    }
+
+    return { type: 'update', status: false };
+};
+
+const adminUserAddressEditAction = async ({ request, params }) => {
+    const formData = await request.formData();
+
     const modifiedAddressId = formData.get('aid');
+    console.log('actionissa:', modifiedAddressId);
 
     const modifiedAddress = {
         address: formData.get('address'),
@@ -367,25 +382,19 @@ const userEditAction = async ({ request, params }) => {
         user: params.id,
     };
 
-    const userInfoUpdateResponse = await usersApi.usersUpdate(params.id, userInfo);
-    const userPermissionsUpdateResponse = await usersApi.usersGroupsPermissionUpdate(params.id, {
-        groups: selectedAuthGroups,
-    });
+    console.log(modifiedAddress);
+
     let userAddressUpdateResponse;
 
     if (modifiedAddressId !== null) {
         userAddressUpdateResponse = await usersApi.usersAddressUpdate(modifiedAddressId, modifiedAddress);
     }
 
-    if (
-        userInfoUpdateResponse.status === 200 &&
-        userPermissionsUpdateResponse.status === 200 &&
-        userAddressUpdateResponse.status === 200
-    ) {
-        return { type: 'update', status: true };
+    if (userAddressUpdateResponse.status === 200) {
+        return { type: 'addressupdate', status: true };
     }
 
-    return { type: 'update', status: false };
+    return { type: 'addressupdate', status: false };
 };
 
 /**
@@ -918,6 +927,7 @@ export {
     productsTransferAction,
     createBulletinAction,
     userEditAction,
+    adminUserAddressEditAction, //
     itemCreateAction,
     itemUpdateAction,
     cartViewAction,
