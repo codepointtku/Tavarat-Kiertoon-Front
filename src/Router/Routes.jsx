@@ -629,12 +629,11 @@ function Routes() {
                                                     loader: async ({ params }) =>
                                                         modifyBikePacketLoader(auth, setAuth, params),
                                                     action: async ({ request, params }) =>
-                                                        modifyBikePacketAction(auth, setAuth, request, params),
+                                                        modifyBikePacketAction(request, params),
                                                     children: [
                                                         {
                                                             path: 'poista',
-                                                            action: async ({ params }) =>
-                                                                deletePacketAction(auth, setAuth, params),
+                                                            action: async ({ params }) => deletePacketAction(params),
                                                         },
                                                     ],
                                                 },
@@ -645,7 +644,7 @@ function Routes() {
                                             element: <ModifyBikePacket createNewPacket={true} />,
                                             loader: async ({ params }) => createBikePacketLoader(auth, setAuth, params),
                                             action: async ({ request, params }) =>
-                                                createNewPacketAction(auth, setAuth, request, params),
+                                                createNewPacketAction(request, params),
                                         },
                                         {
                                             path: 'muokkaa',

@@ -565,20 +565,12 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     return redirect('/pyorat/pyoravarasto/pyoralista');
 };
 
-// kommentti
-const modifyBikePacketAction = async (auth, setAuth, request, params) => {
-    // collect data that needs to be sent to backend
-    const data = await request.formData();
-    const submission = {
-        name: data.get('packetName'),
-        description: data.get('packetDescription'),
-        bikes: JSON.parse(data.get('bikes')),
-    };
-    // send data and redirect back to bike list
-    // await apiCall(auth, setAuth, `/bikes/packages/${params.id}/`, 'put', submission);
-    await bikesApi.bikesPackagesUpdate(params.id, submission);
-
-    /* ---------------------------------------------------------------------------------------------------------- */
+/**
+ * Update the 'packet_only' flag on each individual bike
+ * This function is needed when individual bikes are not put on packets. Instead the packets
+ * just know how many of each bikeModel is included in the package
+ */
+const updateBikesStockPacketOnlyFlag = async () => {
     // create a list of all bike ID's and their amounts
     const allPackets = await bikesApi.bikesPackagesList();
     const bikeAmounts = [];
@@ -597,7 +589,7 @@ const modifyBikePacketAction = async (auth, setAuth, request, params) => {
         });
     });
 
-    // get all bikes, compare their package_only flagged bike amounts to packets amounts
+    // Get all bikes, compare their package_only flagged bike amounts to packets amounts
     // and change the needed number of flags to true or false
     const allBikes = await bikesApi.bikesStockList();
     const uniqueBikeIds = [...new Set(allBikes.data.map((item) => item.bike.id))];
@@ -624,12 +616,38 @@ const modifyBikePacketAction = async (auth, setAuth, request, params) => {
             await bikesApi.bikesStockUpdate(bikesWithuniqueBikeId[i].id, newBike);
         }
     }
-    /* ---------------------------------------------------------------------------------------------------------- */
+};
+
+/**
+ * Modify existing bike packet
+ *
+ * @param {*} request
+ * @param {*} params
+ * @returns
+ */
+const modifyBikePacketAction = async (request, params) => {
+    // collect data that needs to be sent to backend
+    const data = await request.formData();
+    const submission = {
+        name: data.get('packetName'),
+        description: data.get('packetDescription'),
+        bikes: JSON.parse(data.get('bikes')),
+    };
+    // send data and redirect back to bike list
+    // await apiCall(auth, setAuth, `/bikes/packages/${params.id}/`, 'put', submission);
+    await bikesApi.bikesPackagesUpdate(params.id, submission);
+    await updateBikesStockPacketOnlyFlag();
 
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
 
-const createNewPacketAction = async (auth, setAuth, request) => {
+/**
+ * Create a new bike packet
+ *
+ * @param {*} request
+ * @returns
+ */
+const createNewPacketAction = async (request) => {
     // collect data that needs to be sent to backend
     const data = await request.formData();
     const submission = {
@@ -641,11 +659,22 @@ const createNewPacketAction = async (auth, setAuth, request) => {
     // send data and redirect back to bike list
     // await apiCall(auth, setAuth, `/bikes/stock/`, 'post', submission);
     await bikesApi.bikesPackagesCreate(submission);
+    await updateBikesStockPacketOnlyFlag();
+
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
-const deletePacketAction = async (auth, setAuth, params) => {
+
+/**
+ * Delete existing bike packet
+ *
+ * @param {*} params
+ * @returns
+ */
+const deletePacketAction = async (params) => {
     // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     await bikesApi.bikesPackagesDestroy(params.id);
+    await updateBikesStockPacketOnlyFlag();
+
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
 
