@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link, useSubmit, Form, useActionData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import AuthContext from '../../../Context/AuthContext';
 
 import {
     Avatar,
@@ -28,6 +29,7 @@ import CloseDrawerButton from './CloseDrawerButton';
 
 function LoginForm({ setCurrentOpenDrawer, notLoggedIn }) {
     const { register, handleSubmit } = useForm();
+    const { auth } = useContext(AuthContext);
     const submit = useSubmit();
     const responseStatus = useActionData();
 
@@ -54,7 +56,7 @@ function LoginForm({ setCurrentOpenDrawer, notLoggedIn }) {
             {responseStatus?.type === 'login' && !responseStatus?.status && (
                 <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" timer={3000} />
             )}
-            {responseStatus?.type === 'login' && responseStatus?.status && (
+            {auth?.username && responseStatus?.type === 'login' && responseStatus?.status && (
                 <AlertBox text="Sisäänkirjautuminen onnistui" status="success" timer={3000} />
             )}
 

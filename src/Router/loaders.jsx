@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 // import apiCall from '../Utils/apiCall';
 import {
     bikesApi,
