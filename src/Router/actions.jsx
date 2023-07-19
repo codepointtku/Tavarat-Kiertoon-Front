@@ -576,8 +576,55 @@ const modifyBikePacketAction = async (auth, setAuth, request, params) => {
     };
     // send data and redirect back to bike list
     // await apiCall(auth, setAuth, `/bikes/packages/${params.id}/`, 'put', submission);
-    const response = await bikesApi.bikesPackagesUpdate(params.id, submission);
-    console.log(response);
+    await bikesApi.bikesPackagesUpdate(params.id, submission);
+
+    /* ---------------------------------------------------------------------------------------------------------- */
+    // create a list of all bike ID's and their amounts
+    const allPackets = await bikesApi.bikesPackagesList();
+    const bikeAmounts = [];
+    // loop through all bikeIds in all packets
+    allPackets.data.forEach((packet) => {
+        packet.bikes.forEach((bike) => {
+            const index = bikeAmounts.findIndex((entry) => entry.bikeId === bike.bike);
+            if (index < 0) {
+                // bikeId not found, create new bikeId and amount
+                const newEntry = { bikeId: bike.bike, amount: bike.amount };
+                bikeAmounts.push(newEntry);
+            } else {
+                // add amount to existing bikeId
+                bikeAmounts[index].amount += bike.amount;
+            }
+        });
+    });
+
+    // get all bikes, compare their package_only flagged bike amounts to packets amounts
+    // and change the needed number of flags to true or false
+    const allBikes = await bikesApi.bikesStockList();
+    const uniqueBikeIds = [...new Set(allBikes.data.map((item) => item.bike.id))];
+    // uniqueBikeIds.forEach((uniqueBikeId) => {
+    for (const uniqueBikeId of uniqueBikeIds) {
+        const bikesWithuniqueBikeId = allBikes.data.filter((item) => item.bike.id === uniqueBikeId);
+        const amountNeeded = bikeAmounts.find((item) => item.bikeId === uniqueBikeId)?.amount ?? 0;
+        // bikes with packet_only === true
+        for (let i = 0; i < amountNeeded; i++) {
+            const newBike = {
+                ...bikesWithuniqueBikeId[i],
+                bike: bikesWithuniqueBikeId[i].bike.id,
+                package_only: true,
+            };
+            await bikesApi.bikesStockUpdate(bikesWithuniqueBikeId[i].id, newBike);
+        }
+        // bikes with packet_only === false
+        for (let i = amountNeeded; i < bikesWithuniqueBikeId.length; i++) {
+            const newBike = {
+                ...bikesWithuniqueBikeId[i],
+                bike: bikesWithuniqueBikeId[i].bike.id,
+                package_only: false,
+            };
+            await bikesApi.bikesStockUpdate(bikesWithuniqueBikeId[i].id, newBike);
+        }
+    }
+    /* ---------------------------------------------------------------------------------------------------------- */
 
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
@@ -730,8 +777,6 @@ const modifyBikeModelAction = async (auth, setAuth, request, params) => {
     // get or create new ids for type, brand and size
     const { typeId, brandId, sizeId, bikeName } = await getOrCreateBikeModelIds(auth, setAuth, data);
 
-    console.log('### modifyBikeModelAction', bikeName);
-
     // append modified data to form data
     // data.append('name', data.get('bikeModelName'));
     data.append('name', bikeName);
@@ -765,8 +810,6 @@ const createBikeModelAction = async (auth, setAuth, request) => {
 
     // get or create new ids for type, brand and size
     const { typeId, brandId, sizeId, bikeName } = await getOrCreateBikeModelIds(auth, setAuth, data);
-
-    console.log('### createBikeModelAction', bikeName);
 
     // append modified data to form data
     // data.append('name', data.get('bikeModelName'));

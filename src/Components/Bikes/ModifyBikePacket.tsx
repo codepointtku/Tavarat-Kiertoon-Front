@@ -102,7 +102,6 @@ interface CreateNewPacketInterface {
 export default function ModifyBikePacket({ createNewPacket }: CreateNewPacketInterface) {
     // data from backend
     const { packet, models, bikes } = useLoaderData() as LoaderDataInterface;
-    // console.log('### packet', packet, '\n### models', models, '\n### bikes', bikes);
 
     // Local states
     const [, setSelectedModels] = useState<number[]>(models[0] ? [models[0].id] : []);
@@ -137,17 +136,12 @@ export default function ModifyBikePacket({ createNewPacket }: CreateNewPacketInt
             if (bike.bike.id === field.bike && bike.package_only === false) counter += 1;
             return counter;
         }, 0);
-        // console.log(watch(`bikes.${index}.amount`));
         return count + field.amount;
     });
-    // console.log('### maxAmounts', maxAmounts);
 
     // submit
     const submit = useSubmit();
     const onSubmit = async (data: FieldValues) => {
-        console.log('### ModifyBikePacket: data.bikes', data.bikes);
-        console.log('### ModifyBikePacket: packet.bikes', packet.bikes);
-
         const formData = { ...data, bikes: JSON.stringify(data.bikes) };
         await submit(formData, {
             method: createNewPacket ? 'post' : 'put',
@@ -168,7 +162,7 @@ export default function ModifyBikePacket({ createNewPacket }: CreateNewPacketInt
     // decrease the number of bikes (of a model)
     const handleRemoveBike = (index: number) => {
         const currentAmount = watch(`bikes.${index}.amount`);
-        if (currentAmount > 1) {
+        if (currentAmount > 0) {
             setValue(`bikes.${index}.amount`, currentAmount - 1);
         }
     };
@@ -179,7 +173,7 @@ export default function ModifyBikePacket({ createNewPacket }: CreateNewPacketInt
         if (!isModelAlreadyAdded) {
             const newBike: NewBikeInterface = {
                 bike: selectedModel,
-                amount: 1,
+                amount: 0,
             };
             append(newBike);
         }
