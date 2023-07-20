@@ -107,7 +107,7 @@ function StorageProductsHandleItemsTransfer() {
     // form
     const {
         register,
-        // setValue,
+        setValue,
         handleSubmit: createHandleSubmit,
         formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors },
     } = useForm({
@@ -118,6 +118,13 @@ function StorageProductsHandleItemsTransfer() {
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data: any) => {
+        // setValue(
+        //     'product_ids',
+        //     right.map((item) => item.itemId)
+        // );
+
+        setValue('product_ids', JSON.stringify(right.map((item) => item.itemId)));
+
         submit(data, {
             method: 'put',
         });
@@ -250,8 +257,8 @@ function StorageProductsHandleItemsTransfer() {
                     <input
                         // type="hidden"
                         {...register('product_ids')}
-                        value={JSON.stringify(right.map((item) => item.itemId))}
-                        // defaultValue={JSON.stringify(right.map((item) => item.itemId))}
+                        // value={JSON.stringify(right.map((item) => item.itemId))}
+                        defaultValue={JSON.stringify(right.map((item) => item.itemId))}
                     />
                     <Grid container margin="1rem 0 0rem 0">
                         <Grid

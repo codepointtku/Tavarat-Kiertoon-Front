@@ -319,6 +319,7 @@ const productsTransferAction = async ({ request }) => {
 
     const selectedStorage = JSON.parse(formData.get('storage_to'));
     const productIds = JSON.parse(formData.get('product_ids'));
+    // const productIds = formData.get('product_ids');
 
     console.log('selected storage a:', selectedStorage);
     console.log('selected prodIds a:', productIds);
