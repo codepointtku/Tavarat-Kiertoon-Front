@@ -182,6 +182,7 @@ import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
 
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
+import StorageProductsHandleItemsTransfer from '../Components/Admin/StorageProductsHandleItemsTransfer';
 
 createStore({});
 
@@ -635,6 +636,12 @@ function Routes() {
                                         {
                                             path: ':id/siirto',
                                             element: <StorageProductsTransfer />,
+                                            loader: productTransferLoader,
+                                            action: productsTransferAction,
+                                        },
+                                        {
+                                            path: ':id/siirtotemp',
+                                            element: <StorageProductsHandleItemsTransfer />,
                                             loader: productTransferLoader,
                                             action: productsTransferAction,
                                         },
