@@ -48,41 +48,35 @@ interface ListItemType {
     itemId: number;
 }
 
+function not(a: ListItemType[], b: ListItemType[]): ListItemType[] {
+    return a.filter((item) => !b.find((selectedItem) => selectedItem.itemId === item.itemId));
+}
 // Function: not(a, b)
 // This function takes two arrays, a and b, as input parameters and returns a new array containing elements that are present in array a but not in array b.
 
 // Explanation:
+//  - The filter() method is used on the a array to iterate over its elements and create a new array based on a condition.
+//  - For each element in array a, the arrow function (item) => !b.find((selectedItem) => selectedItem.itemId === item.itemId) is used to determine if the element is present in array b.
+//  - The find() method is used to search for an element in array b that matches the condition selectedItem.itemId === item.itemId.
+//  - If the find() method does not find a matching element in array b, it returns undefined.
+//  - The arrow function item => !b.find(...) returns true, indicating that the element is not present in array b (since find() returned undefined).
+//  - The filter() method will include the current item in the new array only if the condition !b.find(...) is true, i.e., the element is not in array b.
+//  - The resulting new array contains only those elements that are not present in array b.
 
-//     The filter() method is used on the a array to iterate over its elements and create a new array based on a condition.
-//     For each element in array a, the arrow function (value) => b.indexOf(value) === -1 is used to determine if the element is present in array b.
-//     The indexOf() method is used to find the index of the current value in array b.
-//     If the value is not found in array b, indexOf() will return -1, which means the element is not present in b.
-//     The filter() method will include the current value in the new array only if the condition b.indexOf(value) === -1 is true, i.e., the element is not in array b.
-//     The resulting new array contains only those elements that are not present in array b.
-// function not(a: any, b: any) {
-//     return a.filter((value: any) => b.indexOf(value) === -1);
-// }
-function not(a: ListItemType[], b: ListItemType[]): ListItemType[] {
-    return a.filter((item) => !b.find((selectedItem) => selectedItem.itemId === item.itemId));
+function intersection(a: ListItemType[], b: ListItemType[]): ListItemType[] {
+    return a.filter((item) => b.find((selectedItem) => selectedItem.itemId === item.itemId));
 }
-
 // Function: intersection(a, b)
 // This function takes two arrays, a and b, as input parameters and returns a new array containing elements that are common to both a and b.
 
 // Explanation:
-
-//     The filter() method is used on the a array to iterate over its elements and create a new array based on a condition.
-//     For each element in array a, the arrow function (value) => b.indexOf(value) !== -1 is used to determine if the element is present in array b.
-//     The indexOf() method is used to find the index of the current value in array b.
-//     If the value is found in array b, indexOf() will return the index, which means the element is present in b.
-//     The filter() method will include the current value in the new array only if the condition b.indexOf(value) !== -1 is true, i.e., the element is present in both arrays a and b.
-//     The resulting new array contains only those elements that are common to both arrays a and b.
-// function intersection(a: any, b: any) {
-//     return a.filter((value: any) => b.indexOf(value) !== -1);
-// }
-function intersection(a: ListItemType[], b: ListItemType[]): ListItemType[] {
-    return a.filter((item) => b.find((selectedItem) => selectedItem.itemId === item.itemId));
-}
+//  - The filter() method is used on the a array to iterate over its elements and create a new array based on a condition.
+//  - For each element in array a, the arrow function (item) => b.find((selectedItem) => selectedItem.itemId === item.itemId) is used to determine if the element is present in array b.
+//  - The find() method is used to search for an element in array b that matches the condition selectedItem.itemId === item.itemId.
+//  - If the find() method finds a matching element in array b, it returns that element.
+//  - The arrow function item => b.find(...) returns true, indicating that the element is present in array b (since find() returned a truthy value, i.e., the matching element).
+//  - The filter() method will include the current item in the new array only if the condition b.find(...) is true, i.e., the element is present in both arrays a and b.
+//  - The resulting new array contains only those elements that are common to both arrays a and b.
 
 //
 
@@ -133,16 +127,12 @@ function StorageProductsHandleItemsTransfer() {
     ///
     ////  transfer list
     const [checked, setChecked] = React.useState<ListItemType[]>([]);
-    // console.log('checked:', checked);
     const [left, setLeft] = React.useState<ListItemType[]>(storageAvailableProductItems);
-    // console.log('left:', left);
     const [right, setRight] = React.useState<ListItemType[]>([]);
     // console.log('right:', right);
 
     const leftChecked = intersection(checked, left);
-    // console.log('leftChecked:', leftChecked);
     const rightChecked = intersection(checked, right);
-    // console.log('rightChecked:', rightChecked);
 
     const handleToggle = (item: ListItemType) => () => {
         const currentIndex = checked.findIndex((checkedItem) => checkedItem.itemId === item.itemId);
@@ -209,7 +199,7 @@ function StorageProductsHandleItemsTransfer() {
                 component="div"
                 role="list"
             >
-                {items.map((item: any, index: number) => {
+                {items.map((item: ListItemType) => {
                     const labelId = `transfer-list-item-${item}-label`;
 
                     return (
