@@ -1,10 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { Form, useLoaderData, useActionData, useSubmit } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Box, Button, Container, Grid, IconButton, MenuItem, Stack, TextField } from '@mui/material';
 import DomainIcon from '@mui/icons-material/Domain';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import InputIcon from '@mui/icons-material/Input';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 import AlertBox from '../AlertBox';
@@ -14,7 +16,6 @@ import HeroText from '../HeroText';
 
 import type { storageEditLoader } from '../../Router/loaders';
 import type { storageEditAction } from '../../Router/actions';
-import { Link } from 'react-router-dom';
 
 function StorageEdit() {
     const storageData = useLoaderData() as Awaited<ReturnType<typeof storageEditLoader>>;
@@ -73,7 +74,7 @@ function StorageEdit() {
                     component={Form}
                     onSubmit={handleSubmit}
                     autoComplete="off"
-                    sx={{ marginTop: '2rem' }}
+                    sx={{ marginTop: '1rem' }}
                 >
                     <Stack id="storage-edit-textfields-stacker">
                         <TextField
@@ -151,7 +152,7 @@ function StorageEdit() {
                             >
                                 Tallenna tiedot
                             </Button>
-                            <Tooltip title="Tyhjennä lomake">
+                            <Tooltip title="Palauta alkutilaan">
                                 <IconButton id="reset-form-btn" onClick={() => formReset()}>
                                     <RefreshIcon />
                                 </IconButton>
@@ -160,18 +161,34 @@ function StorageEdit() {
 
                         <Grid container>
                             <Grid item xs={4}>
-                                <Button
-                                    id="cancel-btn"
-                                    size="small"
-                                    component={Link}
-                                    to="/admin/varastot/"
-                                    startIcon={<ArrowBackIcon />}
-                                    sx={{ margin: '4rem 0 1rem 0' }}
-                                >
-                                    Poistu tallentamatta
-                                </Button>
+                                <Tooltip title="Takaisin varastot-listaukseen">
+                                    <Button
+                                        id="cancel-btn"
+                                        size="small"
+                                        component={Link}
+                                        to="/admin/varastot/"
+                                        startIcon={<ArrowBackIcon />}
+                                        sx={{ margin: '4rem 0 1rem 0' }}
+                                    >
+                                        Poistu tallentamatta
+                                    </Button>
+                                </Tooltip>
                             </Grid>
-                            <Grid item xs={4} />
+                            <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center' }}>
+                                <Tooltip title="Siirry tuotteiden siirtonäkymään">
+                                    <Button
+                                        id="productstransfer-process-btn"
+                                        size="small"
+                                        variant="outlined"
+                                        component={Link}
+                                        to={`/admin/varastot/${storageInfo.id}/siirto`}
+                                        endIcon={<InputIcon />}
+                                        sx={{ margin: '4rem 0 1rem 0' }}
+                                    >
+                                        Tuotteiden siirto
+                                    </Button>
+                                </Tooltip>
+                            </Grid>
                             <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                                 <Tooltip title="Siirry poistonäkymään">
                                     <Button
