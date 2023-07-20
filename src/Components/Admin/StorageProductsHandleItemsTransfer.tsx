@@ -63,6 +63,14 @@ function StorageProductsHandleItemsTransfer() {
 
     const storagesList = storageData.allStorages;
     // console.log('%c all storages:', 'color: blue', storagesList);
+    const storageInfo = storageData.storageInfo;
+    const storageAvailableProducts = storageData.hasProducts;
+    // console.log('%c products in this storage:', 'color: green', storageAvailableProducts);
+    // console.log('%c products count:', 'color: green', storageAvailableProducts.count);
+    // const storageAvailableProductsNames = storageAvailableProducts.results?.map((product) => product.product.name);
+    // console.log('%c mapped product names:', 'color: cyan', storageAvailableProductsNames);
+    const storageAvailableProductsIds = storageAvailableProducts.results?.map((product) => product.id);
+    // console.log('%c mapped product ids:', 'color: red', storageAvailableProductsIds);
 
     const [selectedStorage, setSelectedStorage] = React.useState('');
 
@@ -70,39 +78,7 @@ function StorageProductsHandleItemsTransfer() {
         setSelectedStorage(event.target.value as string);
     };
 
-    //
-
-    const storageInfo = storageData.storageInfo;
-    const storageAvailableProducts = storageData.hasProducts;
-    // console.log('%c products in this storage:', 'color: green', storageAvailableProducts);
-    // console.log('%c products count:', 'color: green', storageAvailableProducts.count);
-
-    // const storageAvailableProductsNames = storageAvailableProducts.results?.map((product) => product.product.name);
-    // console.log('%c mapped product names:', 'color: cyan', storageAvailableProductsNames);
-    const storageAvailableProductsIds = storageAvailableProducts.results?.map((product) => product.id);
-    // console.log('%c mapped product ids:', 'color: red', storageAvailableProductsIds);
-
-    //
-
-    const {
-        register,
-        handleSubmit: createHandleSubmit,
-        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors },
-    } = useForm({
-        mode: 'all',
-    });
-
-    const submit = useSubmit();
-
-    const handleSubmit = createHandleSubmit((data: any) => {
-        // console.log('%c Submitissa menevä tieto', 'color: blue', data);
-        submit(data, {
-            method: 'put',
-        });
-    });
-
-    //
-
+    // transfer list logics
     const [checked, setChecked] = React.useState<readonly number[]>([]);
     const [left, setLeft] = React.useState<readonly number[]>([0, 1, 2, 3, 666]);
     const [right, setRight] = React.useState<readonly number[]>([]);
@@ -176,10 +152,10 @@ function StorageProductsHandleItemsTransfer() {
                 role="list"
             >
                 {items.map((value: any, index) => {
-                    const labelId = `transfer-list-all-item-${value}-label`;
+                    const labelId = `transfer-list-item-${value}-label`;
 
                     return (
-                        <ListItem key={index} role="listitem" button onClick={handleToggle(value)}>
+                        <ListItem key={index} role="listitem" onClick={handleToggle(value)}>
                             <ListItemIcon>
                                 <Checkbox
                                     checked={checked.indexOf(value) !== -1}
@@ -197,6 +173,23 @@ function StorageProductsHandleItemsTransfer() {
             </List>
         </Card>
     );
+
+    const {
+        register,
+        handleSubmit: createHandleSubmit,
+        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors },
+    } = useForm({
+        mode: 'all',
+    });
+
+    const submit = useSubmit();
+
+    const handleSubmit = createHandleSubmit((data: any) => {
+        // console.log('%c Submitissa menevä tieto', 'color: blue', data);
+        submit(data, {
+            method: 'put',
+        });
+    });
 
     // main component return
     return (
@@ -225,6 +218,7 @@ function StorageProductsHandleItemsTransfer() {
                         {...register('product_ids')}
                     />
 
+                    {/* /// */}
                     <Grid container margin="1rem 0 0rem 0">
                         <Grid
                             item
@@ -303,15 +297,16 @@ function StorageProductsHandleItemsTransfer() {
 
                     {/* TransferList */}
                     <Box sx={{ margin: '2rem 0 2rem 0' }}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={4}>
+                        <Grid container>
+                            <Grid id="product-items-list-select--container" item xs={4} justifyContent="flex-start">
                                 {customList('Tuotteet', left)}
                             </Grid>
 
-                            <Grid item xs={4}>
-                                <Grid container direction="column" alignItems="center">
+                            <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Stack id="transfer-btns-stack">
                                     <Button
-                                        sx={{ my: 0.5 }}
+                                        id="transfer-btn-move-selected-right"
+                                        sx={{ my: '0.5rem' }}
                                         variant="outlined"
                                         size="small"
                                         onClick={handleCheckedRight}
@@ -321,7 +316,8 @@ function StorageProductsHandleItemsTransfer() {
                                         &gt;
                                     </Button>
                                     <Button
-                                        sx={{ my: 0.5 }}
+                                        id="transfer-btn-move-selected-left"
+                                        sx={{ my: '0.5rem' }}
                                         variant="outlined"
                                         size="small"
                                         onClick={handleCheckedLeft}
@@ -330,15 +326,16 @@ function StorageProductsHandleItemsTransfer() {
                                     >
                                         &lt;
                                     </Button>
-                                </Grid>
+                                </Stack>
                             </Grid>
 
-                            <Grid item xs={4} justifyContent="flex-end">
+                            <Grid id="product-items-list-selected-container" item xs={4} justifyContent="flex-end">
                                 {customList('Valitut', right)}
                             </Grid>
                         </Grid>
                     </Box>
 
+                    {/* Btns */}
                     <Stack id="submit-reset-btns">
                         <Button
                             id="submit-btn"
