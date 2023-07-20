@@ -42,7 +42,6 @@ function UserEdit() {
     const allGroups = loaderData[1];
 
     const actionData = useActionData();
-    console.log('sdfsf:', actionData);
 
     const creationDateInfo = [];
     const creationDate = new Date(userInfo.creation_date);

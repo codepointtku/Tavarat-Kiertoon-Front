@@ -49,7 +49,7 @@ function UserAddressEdit() {
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data) => {
-        console.log('%c Submitissa menevä tieto', 'color: blue', data);
+        // console.log('%c Submitissa menevä tieto', 'color: blue', data);
         submit(data, {
             method: 'put',
         });
@@ -71,7 +71,7 @@ function UserAddressEdit() {
 
             <Container maxWidth="xl">
                 <HeroHeader Icon={<EditLocationAltIcon />} />
-                <HeroText title={`Käyttäjän ${loaderData.userData.email} osoitteen pahoinpitely`} />
+                <HeroText title={`Käyttäjän ${loaderData.userData.email} osoitteen muokkaus`} />
 
                 <Container maxWidth="md">
                     <Box id="user-edit-wrapper-form-component" component={Form} onSubmit={handleSubmit}>

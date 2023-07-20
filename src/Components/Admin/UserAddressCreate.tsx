@@ -21,7 +21,6 @@ function UserAddressCreate() {
     const {
         register,
         handleSubmit: createHandleSubmit,
-        // reset,
         formState: { errors: formStateErrors, isDirty, dirtyFields, isSubmitting, isSubmitSuccessful },
     } = useForm({
         mode: 'all',
@@ -30,7 +29,7 @@ function UserAddressCreate() {
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data) => {
-        console.log('%c Submitissa menevä tieto', 'color: blue', data);
+        // console.log('%c Submitissa menevä tieto', 'color: blue', data);
         submit(data, {
             method: 'put',
         });
@@ -55,7 +54,7 @@ function UserAddressCreate() {
                 <HeroHeader Icon={<AddLocationAltIcon />} hideInAdmin />
                 <HeroText title={`Uusi osoite käyttäjälle ${loaderData.userData.email}`} />
 
-                <Container maxWidth="sm">
+                <Container maxWidth="md">
                     <Box id="add-address-wrapper-form-component" component={Form} onSubmit={handleSubmit}>
                         <TextField
                             type="text"
