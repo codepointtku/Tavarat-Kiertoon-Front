@@ -107,6 +107,7 @@ function StorageProductsHandleItemsTransfer() {
     // form
     const {
         register,
+        // setValue,
         handleSubmit: createHandleSubmit,
         formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors },
     } = useForm({
@@ -117,10 +118,10 @@ function StorageProductsHandleItemsTransfer() {
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data: any) => {
-        // console.log('%c Submitissa menevä tieto', 'color: blue', data);
         submit(data, {
             method: 'put',
         });
+        console.log('%c Submitissa menevä tieto', 'color: blue', data);
     });
 
     //
@@ -129,7 +130,7 @@ function StorageProductsHandleItemsTransfer() {
     const [checked, setChecked] = React.useState<ListItemType[]>([]);
     const [left, setLeft] = React.useState<ListItemType[]>(storageAvailableProductItems);
     const [right, setRight] = React.useState<ListItemType[]>([]);
-    // console.log('right:', right);
+    console.log('right:', right);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -246,6 +247,12 @@ function StorageProductsHandleItemsTransfer() {
 
                 <Box component={Form} onSubmit={handleSubmit}>
                     {/* /// */}
+                    <input
+                        // type="hidden"
+                        {...register('product_ids')}
+                        value={JSON.stringify(right.map((item) => item.itemId))}
+                        // defaultValue={JSON.stringify(right.map((item) => item.itemId))}
+                    />
                     <Grid container margin="1rem 0 0rem 0">
                         <Grid
                             item
