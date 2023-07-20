@@ -32,8 +32,10 @@ function SearchField() {
     const categoriesAndColors = { categories: [''], colors: [''] };
     const { handleSubmit, register, watch, reset, setValue } = useForm<SearchInputValue>();
     const [searchParams, setSearchParams] = useSearchParams();
+    var searchInput = '';
 
     const onSubmit: SubmitHandler<SearchInputValue> = async (formData) => {
+        searchInput = formData.search;
         const searchCategoriesAndColorsNames = [] as string[];
         colors.map((color) => {
             if (formData.search.includes(color.name)) {
@@ -79,7 +81,7 @@ function SearchField() {
                 setSearchParams({ haku: filteredSearch, varit: categoriesAndColors.colors });
                 break;
             case categoriesAndColors.categories[0] === '' && categoriesAndColors.colors[0] === '':
-                setSearchParams({ haku: filteredSearch });
+                setSearchParams({ haku: formData.search });
                 break;
         }
     };
@@ -92,10 +94,10 @@ function SearchField() {
         if (searchFieldHasInput) {
             reset();
         }
-        if (searchParamFromUrl !== null) {
-            setValue('search', searchParamFromUrl);
+        if (searchInput !== null) {
+            setValue('search', searchInput);
         }
-    }, [searchParamFromUrl, setValue, reset]);
+    }, [searchInput, setValue, reset]);
 
     const clearInputField = () => {
         reset();
