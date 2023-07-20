@@ -1,9 +1,8 @@
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useLoaderData, useParams, useRouteLoaderData } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { SimilarProductCarouselProps } from './SimilarProductsCarousel';
 
 import {
-    Button,
     Card,
     CardActions,
     CardActionArea,
@@ -24,23 +23,21 @@ import BackButton from '../BackButton';
 import AddToCartButton from './AddToCartButton';
 import SimilarProductsCarousel from './SimilarProductsCarousel';
 import type { productDetailsLoader } from '../../Router/loaders';
+import type { rootLoader } from '../../Router/loaders';
 import { OverridableStringUnion } from '@material-ui/types';
 
 function ProductDetails() {
     const { product, products } = useLoaderData() as Awaited<ReturnType<typeof productDetailsLoader>>;
+    const { colors: allColors, categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const { id: productId } = useParams();
 
-    const {
-        name: productName,
-        free_description: description,
-        category,
-        amount,
-        measurements,
-        weight,
-        colors,
-    } = product;
+    const { name: productName, free_description: description, amount, measurements, weight, colors } = product;
     const [image, setImage] = useState(product.pictures[0].picture_address);
     const { auth } = useContext(AuthContext);
+
+    const productCategory = categories.find((category) => category.id === product.category);
+    const productColors = allColors.filter((color) => colors.includes(color.id));
+    const colorNames = productColors.map((color) => color.name);
 
     useEffect(() => {
         setImage(product.pictures[0].picture_address);
@@ -132,24 +129,16 @@ function ProductDetails() {
                                             </Grid>
                                             <Grid item>
                                                 <Typography variant="body2" color="text.secondary">
-                                                    Värit: {colors.join(', ')}
+                                                    Värit: {colorNames.join(', ')}
                                                 </Typography>
                                             </Grid>
                                         </Grid>
                                         <Grid container direction="row" gap={2}>
                                             <Grid item>
                                                 <Typography variant="body2" color="text.secondary">
-                                                    Kategoriat:
+                                                    Kategoria: {productCategory?.name}
                                                 </Typography>
-                                                <Button
-                                                    variant="contained"
-                                                    size="small"
-                                                    sx={{ width: '4rem' }}
-                                                    disabled
-                                                >
-                                                    {/* to be implemented when backend is ready */}
-                                                    {category}
-                                                </Button>
+                                                {/* to be implemented when backend is ready */}
                                             </Grid>
                                         </Grid>
                                         {/* miten näyttää kategoriat, buttoneina? */}
