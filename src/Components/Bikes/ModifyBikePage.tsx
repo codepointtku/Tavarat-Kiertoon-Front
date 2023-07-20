@@ -13,7 +13,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import type { BikeInterface, BikeModelInterface, StorageInterface } from './Bikes';
+import type { BikeInterface, BikeModelInterface, StorageInterface, ColorInterface } from './Bikes';
 import { Form, Link, useSubmit } from 'react-router-dom';
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
@@ -31,6 +31,7 @@ interface ModifyBikePageInterface {
  * - bikeData : data for current bike
  * - bikeModelsData[] : list of bike models in database
  * - storagesData[] : list of all storage places in database
+ * - colors: ColorInterface[] : list of colors for the bike
  *
  * @param createNewBike boolean : true = creates a new bike : false = modifies an existing bike
  * @returns JSX.Element
@@ -40,10 +41,11 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     const [renderDeleteBikeModal, setRenderDeleteBikeModal] = useState(false);
 
     // get loader data
-    const { bikeData, bikeModelsData, storagesData } = useLoaderData() as {
+    const { bikeData, bikeModelsData, storagesData, colors } = useLoaderData() as {
         bikeData: BikeInterface;
         bikeModelsData: BikeModelInterface[];
         storagesData: StorageInterface[];
+        colors: ColorInterface[];
     };
 
     // hook form functions and default values
@@ -55,6 +57,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
             bikeFrameNumberTextField: createNewBike ? '' : bikeData.frame_number,
             bikeNumberTextField: createNewBike ? '' : bikeData.number,
             bikeStatusSelect: createNewBike ? 'AVAILABLE' : bikeData.state,
+            bikeColorIdSelect: createNewBike ? 1 : bikeData.color,
             bikePackageOnlyCheckBox: createNewBike ? false : bikeData.package_only,
         },
     });
@@ -102,19 +105,12 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                             <Table aria-label="customized table">
                                 <TableBody>
                                     <TableRow>
-                                        <TableCell sx={{ fontWeight: 'bold' }}>Nimi:</TableCell>
-                                        <TableCell>
-                                            {
-                                                bikeModelsData.find(
-                                                    (model) => model.id === (watch('bikeModelIdSelect') as number)
-                                                )?.name
-                                            }
-                                        </TableCell>
-                                        <TableCell align="right">
+                                        <TableCell sx={{ fontWeight: 'bold', width: '35%' }}>Nimi:</TableCell>
+                                        <TableCell colSpan={2} align="right">
                                             <TextField
                                                 id="change-bike-model"
                                                 select
-                                                label="Vaihda pyörämalli"
+                                                label={createNewBike ? 'Valitse pyörämalli' : 'Vaihda pyörämalli'}
                                                 {...register('bikeModelIdSelect', {
                                                     required: 'Pakollinen tieto puuttuu',
                                                 })}
@@ -140,7 +136,6 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Merkki:</TableCell>
-                                        {/* <TableCell>{bikeState.bike.brand?.name}</TableCell> */}
                                         <TableCell>
                                             {
                                                 bikeModelsData.find(
@@ -173,24 +168,45 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                         <TableCell></TableCell>
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell sx={{ fontWeight: 'bold' }}>Väri:</TableCell>
-                                        <TableCell>
-                                            {
-                                                bikeModelsData.find(
-                                                    (model) => model.id === (watch('bikeModelIdSelect') as number)
-                                                )?.color.name
-                                            }
-                                        </TableCell>
-                                        <TableCell></TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Kuvaus:</TableCell>
-                                        <TableCell colSpan={2} sx={{ border: 0 }}>
+                                        <TableCell sx={{ fontWeight: 'bold' }}>Kuvaus:</TableCell>
+                                        <TableCell colSpan={2}>
                                             {
                                                 bikeModelsData.find(
                                                     (model) => model.id === (watch('bikeModelIdSelect') as number)
                                                 )?.description
                                             }
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell colSpan={3} sx={{ border: 0 }}></TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Väri:</TableCell>
+                                        <TableCell colSpan={2} align="right" sx={{ border: 0 }}>
+                                            <TextField
+                                                id="bike-model-color-name"
+                                                select
+                                                label="Väri"
+                                                {...register('bikeColorIdSelect', {
+                                                    required: 'Pakollinen tieto puuttuu',
+                                                })}
+                                                value={watch('bikeColorIdSelect')}
+                                                fullWidth
+                                                inputProps={{ required: false }}
+                                                required
+                                                color={errors.bikeColorIdSelect ? 'error' : 'primary'}
+                                                error={!!errors.bikeColorIdSelect}
+                                                helperText={errors.bikeColorIdSelect?.message || ' '}
+                                                sx={{ marginBottom: '-1rem' }}
+                                            >
+                                                {colors?.map((color) => {
+                                                    return (
+                                                        <MenuItem key={color.id} value={color.id}>
+                                                            {color.name}
+                                                        </MenuItem>
+                                                    );
+                                                })}
+                                            </TextField>
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -213,7 +229,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                             <Table aria-label="customized table">
                                 <TableBody>
                                     <TableRow>
-                                        <TableCell sx={{ fontWeight: 'bold' }}>Runkonumero:</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', width: '35%' }}>Runkonumero:</TableCell>
                                         <TableCell colSpan={3} align="right">
                                             <TextField
                                                 label="Muokkaa runkonumeroa"
@@ -302,7 +318,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                             <Table aria-label="customized table">
                                 <TableBody>
                                     <TableRow>
-                                        <TableCell sx={{ fontWeight: 'bold' }}>Varaston nimi:</TableCell>
+                                        <TableCell sx={{ fontWeight: 'bold', width: '35%' }}>Varaston nimi:</TableCell>
                                         <TableCell>
                                             {
                                                 storagesData.find(

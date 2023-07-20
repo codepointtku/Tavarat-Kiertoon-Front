@@ -106,7 +106,7 @@ import {
     shoppingCartLoader,
     bikesDefaultLoader,
     bikesListLoader,
-    bikeLoader,
+    modifyBikeLoader,
     createNewBikeLoader,
     bikeModelsLoader,
     bikeSingleModelLoader,
@@ -653,7 +653,8 @@ function Routes() {
                                                 {
                                                     path: ':id',
                                                     element: <ModifyBikePage createNewBike={false} />,
-                                                    loader: async ({ params }) => bikeLoader(auth, setAuth, params),
+                                                    loader: async ({ params }) =>
+                                                        modifyBikeLoader(auth, setAuth, params),
                                                     action: async ({ request, params }) =>
                                                         modifyBikeAction(auth, setAuth, request, params),
                                                     children: [

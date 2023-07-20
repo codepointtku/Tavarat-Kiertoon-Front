@@ -1,16 +1,5 @@
 import { useMemo, useState } from 'react';
-import {
-    Autocomplete,
-    Box,
-    Button,
-    Card,
-    CardMedia,
-    Grid,
-    // MenuItem,
-    // Select,
-    TextField,
-    Typography,
-} from '@mui/material';
+import { Autocomplete, Box, Button, Card, CardMedia, Grid, TextField, Typography } from '@mui/material';
 import { useLoaderData } from 'react-router';
 import { Form, Link, useSubmit } from 'react-router-dom';
 import { type FieldValues, useForm } from 'react-hook-form';
@@ -18,11 +7,6 @@ import DeleteBikeModelModal from './DeleteBikeModelModal';
 
 // interface(s)
 import type { BikeModelInterface } from './Bikes';
-// interface ColorInterface {
-//     id: number;
-//     name: string;
-//     default: boolean;
-// }
 interface NameIdInterface {
     id: number;
     name: string;
@@ -42,10 +26,8 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
     const [renderDeleteBikeModelModal, setRenderDeleteBikeModelModal] = useState(false);
 
     // input data
-    // const { bikeModel, colors, brands, types, sizes } = useLoaderData() as {
     const { bikeModel, brands, types, sizes } = useLoaderData() as {
         bikeModel: BikeModelInterface;
-        // colors: ColorInterface[];
         brands: NameIdInterface[];
         types: NameIdInterface[];
         sizes: NameIdInterface[];
@@ -55,17 +37,13 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
     const { register, handleSubmit, watch, formState } = useForm({
         mode: 'onTouched',
         defaultValues: {
-            // bikeModelName: createNewBikeModel ? '' : (bikeModel.name as string),
             bikeModelBrandName: createNewBikeModel ? '' : (bikeModel.brand.name as string),
-            // bikeModelColorId: createNewBikeModel ? '' : (bikeModel.color.id as number),
             bikeModelSizeName: createNewBikeModel ? '' : (bikeModel.size.name as string),
             bikeModelTypeName: createNewBikeModel ? '' : (bikeModel.type.name as string),
             bikeModelDescription: createNewBikeModel ? '' : (bikeModel.description as string),
             pictures: createNewBikeModel ? '' : (bikeModel.picture.picture_address as string),
         },
     });
-
-    // const tmpName = watch('bikeModelSizeName') + watch('bikeModelBrandName') + watch('bikeModelTypeName');
 
     // error messages
     const { errors } = formState;
@@ -193,21 +171,6 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
                             }
                         </Box>
                         <Grid container flexDirection="row" spacing={2} paddingTop="1rem">
-                            {/* <Grid item xs={6}>
-                                <TextField
-                                    label="Nimi"
-                                    value={watch('bikeModelName')}
-                                    // value={tmpName}
-                                    {...register('bikeModelName', { required: 'Pakollinen tieto puuttuu' })}
-                                    fullWidth
-                                    color={errors.bikeModelName ? 'error' : 'primary'}
-                                    error={!!errors.bikeModelName}
-                                    helperText={errors.bikeModelName?.message?.toString() || ' '}
-                                    required
-                                    sx={{ marginBottom: '-1rem' }}
-                                />
-                            </Grid>
-                            <Grid item xs={6}></Grid> */}
                             <Grid item xs={6}>
                                 {/*  */}
                                 <Autocomplete
@@ -234,55 +197,6 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
                                 {/*  */}
                             </Grid>
                             <Grid item xs={6}>
-                                {/* <FormControl fullWidth>
-                                    <InputLabel id="bike-model-color-name-label">Väri</InputLabel>
-                                    <Select
-                                        labelId="bike-model-color-name-label"
-                                        id="bike-model-color-name"
-                                        label="Väri"
-                                        {...register('bikeModelColorId', {
-                                            required: 'Pakollinen tieto puuttuu',
-                                        })}
-                                        value={watch('bikeModelColorId')}
-                                        color={errors.bikeModelColorId ? 'error' : 'primary'}
-                                        error={!!errors.bikeModelColorId}
-                                        // helperText={errors.bikeModelColorId?.message?.toString() || ' '}
-                                        required
-                                        sx={{ marginBottom: '-1rem' }}
-                                    >
-                                        {colors.map((color) => {
-                                            return (
-                                                <MenuItem key={color.id} value={color.id}>
-                                                    {color.name}
-                                                </MenuItem>
-                                            );
-                                        })}
-                                    </Select>
-                                </FormControl> */}
-                                {/* <TextField
-                                    id="bike-model-color-name"
-                                    select
-                                    label="Väri"
-                                    {...register('bikeModelColorId', {
-                                        required: 'Pakollinen tieto puuttuu',
-                                    })}
-                                    value={watch('bikeModelColorId')}
-                                    fullWidth
-                                    inputProps={{ required: false }}
-                                    required
-                                    color={errors.bikeModelColorId ? 'error' : 'primary'}
-                                    error={!!errors.bikeModelColorId}
-                                    helperText={errors.bikeModelColorId?.message || ' '}
-                                    sx={{ marginBottom: '-1rem' }}
-                                >
-                                    {colors?.map((color) => {
-                                        return (
-                                            <MenuItem key={color.id} value={color.id}>
-                                                {color.name}
-                                            </MenuItem>
-                                        );
-                                    })}
-                                </TextField> */}
                                 <Autocomplete
                                     freeSolo
                                     id="bike-model-type-name"
@@ -328,29 +242,7 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
                                     sx={{ width: '100%' }}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
-                                {/* <Autocomplete
-                                    freeSolo
-                                    id="bike-model-type-name"
-                                    options={types.map((type) => type.name)}
-                                    value={watch('bikeModelTypeName')}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            label="Tyyppi"
-                                            {...register('bikeModelTypeName', {
-                                                required: 'Pakollinen tieto puuttuu',
-                                            })}
-                                            color={errors.bikeModelTypeName ? 'error' : 'primary'}
-                                            error={!!errors.bikeModelTypeName}
-                                            helperText={errors.bikeModelTypeName?.message?.toString() || ' '}
-                                            required
-                                            sx={{ marginBottom: '-1rem' }}
-                                        />
-                                    )}
-                                    sx={{ width: '100%' }}
-                                /> */}
-                            </Grid>
+                            <Grid item xs={6}></Grid>
                             <Grid item xs={12}>
                                 {/*  */}
                                 <TextField
