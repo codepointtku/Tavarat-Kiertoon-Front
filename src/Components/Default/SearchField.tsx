@@ -34,13 +34,13 @@ function SearchField() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const onSubmit: SubmitHandler<SearchInputValue> = async (formData) => {
-        const filteredSearch = [];
+        const searchCategoriesAndColorsNames = [] as string[];
         colors.map((color) => {
             if (formData.search.includes(color.name)) {
                 categoriesAndColors.colors[0] === ''
                     ? categoriesAndColors.colors.splice(0, 1, String(color.id))
                     : categoriesAndColors.colors.push(String(color.id));
-                filteredSearch.push(formData.search.replace(color.name, 'b'));
+                searchCategoriesAndColorsNames.push(color.name);
             }
         });
         categories.map((category) => {
@@ -48,27 +48,38 @@ function SearchField() {
                 categoriesAndColors.categories[0] === ''
                     ? categoriesAndColors.categories.splice(0, 1, String(category.id))
                     : categoriesAndColors.categories.push(String(category.id));
-                filteredSearch.push(formData.search.replace(category.name, 'c'));
+                searchCategoriesAndColorsNames.push(category.name);
             }
         });
 
-        // console.log(filteredSearch);
+        const initialValue = '';
+
+        const filteredSearchWithSpace = searchCategoriesAndColorsNames.reduce((accumulator, currValue, index) => {
+            if (index === 0) {
+                return formData.search.replace(currValue, '');
+            } else {
+                var updatedSearch = accumulator.replace(currValue, '');
+                return updatedSearch;
+            }
+        }, initialValue);
+        const filteredSearch = filteredSearchWithSpace.replace(/\s/g, '');
+
         switch (true) {
             case categoriesAndColors.categories[0] !== '' && categoriesAndColors.colors[0] !== '':
                 setSearchParams({
-                    haku: formData.search,
+                    haku: filteredSearch,
                     varit: categoriesAndColors.colors,
                     kategoriat: categoriesAndColors.categories,
                 });
                 break;
             case categoriesAndColors.categories[0] !== '':
-                setSearchParams({ haku: formData.search, kategoriat: categoriesAndColors.categories });
+                setSearchParams({ haku: filteredSearch, kategoriat: categoriesAndColors.categories });
                 break;
             case categoriesAndColors.colors[0] !== '':
-                setSearchParams({ haku: formData.search, varit: categoriesAndColors.colors });
+                setSearchParams({ haku: filteredSearch, varit: categoriesAndColors.colors });
                 break;
             case categoriesAndColors.categories[0] === '' && categoriesAndColors.colors[0] === '':
-                setSearchParams({ haku: formData.search });
+                setSearchParams({ haku: filteredSearch });
                 break;
         }
     };
