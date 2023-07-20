@@ -43,6 +43,7 @@ function ProfileInfo() {
         handleSubmit,
         formState: { isDirty, errors },
     } = useForm({
+        mode: 'onTouched',
         defaultValues: {
             username: userInfo.username,
             first_name: userInfo.first_name,
@@ -85,8 +86,10 @@ function ProfileInfo() {
                             })}
                             label="Etunimi"
                             placeholder="Etunimi"
+                            inputProps={{ required: false }}
                             error={!!errors.first_name}
-                            helperText={errors.first_name?.message?.toString() || ''}
+                            helperText={errors.first_name?.message?.toString() || ' '}
+                            required
                         />
                     </Grid>
                     <Grid item>
@@ -97,8 +100,10 @@ function ProfileInfo() {
                             })}
                             label="Sukunimi"
                             placeholder="Sukunimi"
+                            inputProps={{ required: false }}
                             error={!!errors.last_name}
-                            helperText={errors.last_name?.message?.toString() || ''}
+                            helperText={errors.last_name?.message?.toString() || ' '}
+                            required
                         />
                     </Grid>
                     <Grid item>
@@ -111,9 +116,11 @@ function ProfileInfo() {
                             })}
                             label="Puhelin numero"
                             placeholder="Puhelin numero"
+                            inputProps={{ required: false }}
                             error={!!errors.phone_number}
-                            helperText={errors.phone_number?.message?.toString() || ''}
+                            helperText={errors.phone_number?.message?.toString() || ' '}
                             sx={{ width: 211 }}
+                            required
                         />
                     </Grid>
                 </Grid>
@@ -126,6 +133,7 @@ function ProfileInfo() {
                                 label="Osoitteet"
                                 placeholder="Osoitteet"
                                 onChange={(event) => setSelectedAddress(event.target.value)}
+                                helperText={' '}
                                 sx={{ width: '13.25rem' }}
                                 select
                             >
@@ -161,6 +169,7 @@ function ProfileInfo() {
                         <Grid item>
                             <TextField
                                 defaultValue={userInfo.email}
+                                helperText={' '}
                                 label="Sähköposti"
                                 placeholder="Sähköposti"
                                 disabled
