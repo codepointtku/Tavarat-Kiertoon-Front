@@ -43,6 +43,11 @@ import type { productsTransferAction } from '../../Router/actions';
 
 //
 
+interface ListItemType {
+    itemName: string;
+    itemId: number;
+}
+
 // Function: not(a, b)
 // This function takes two arrays, a and b, as input parameters and returns a new array containing elements that are present in array a but not in array b.
 
@@ -54,8 +59,11 @@ import type { productsTransferAction } from '../../Router/actions';
 //     If the value is not found in array b, indexOf() will return -1, which means the element is not present in b.
 //     The filter() method will include the current value in the new array only if the condition b.indexOf(value) === -1 is true, i.e., the element is not in array b.
 //     The resulting new array contains only those elements that are not present in array b.
-function not(a: any, b: any) {
-    return a.filter((value: any) => b.indexOf(value) === -1);
+// function not(a: any, b: any) {
+//     return a.filter((value: any) => b.indexOf(value) === -1);
+// }
+function not(a: ListItemType[], b: ListItemType[]): ListItemType[] {
+    return a.filter((item) => !b.find((selectedItem) => selectedItem.itemId === item.itemId));
 }
 
 // Function: intersection(a, b)
@@ -69,21 +77,11 @@ function not(a: any, b: any) {
 //     If the value is found in array b, indexOf() will return the index, which means the element is present in b.
 //     The filter() method will include the current value in the new array only if the condition b.indexOf(value) !== -1 is true, i.e., the element is present in both arrays a and b.
 //     The resulting new array contains only those elements that are common to both arrays a and b.
-function intersection(a: any, b: any) {
-    return a.filter((value: any) => b.indexOf(value) !== -1);
-}
-
-// Function: union(a, b)
-// This function takes two arrays, a and b, as input parameters and returns a new array containing all unique elements from both arrays, effectively combining them into one array.
-
-// Explanation:
-
-//     The spread operator ... is used to create a new array.
-//     The not() function is used to find elements in array a that are not present in array b.
-//     The spread operator ... is used again to concatenate the elements of a and the result of not(b, a) (elements from b not present in a).
-//     The resulting new array contains all unique elements from both arrays a and b.
-function union(a: any, b: any) {
-    return [...a, ...not(b, a)];
+// function intersection(a: any, b: any) {
+//     return a.filter((value: any) => b.indexOf(value) !== -1);
+// }
+function intersection(a: ListItemType[], b: ListItemType[]): ListItemType[] {
+    return a.filter((item) => b.find((selectedItem) => selectedItem.itemId === item.itemId));
 }
 
 //
@@ -98,11 +96,12 @@ function StorageProductsHandleItemsTransfer() {
     // console.log('%c product item count:', 'color: green', storageAvailableProductItems.count);
 
     //// main ingredient:
-    const storageAvailableProductItems = storageData.hasProducts.results?.map((productItem) => ({
-        itemName: productItem.product.name,
-        itemId: productItem.id,
-    }));
-    console.log('%c mapped out product items:', 'color: blue ; font-weight: bold', storageAvailableProductItems);
+    const storageAvailableProductItems =
+        storageData.hasProducts.results?.map((productItem) => ({
+            itemName: productItem.product.name,
+            itemId: productItem.id,
+        })) ?? [];
+    // console.log('%c mapped out product items:', 'color: blue ; font-weight: bold', storageAvailableProductItems);
 
     // select
     const [selectedStorage, setSelectedStorage] = React.useState('');
@@ -133,11 +132,11 @@ function StorageProductsHandleItemsTransfer() {
     //
     ///
     ////  transfer list
-    const [checked, setChecked] = React.useState([]);
+    const [checked, setChecked] = React.useState<ListItemType[]>([]);
     // console.log('checked:', checked);
-    const [left, setLeft] = React.useState([1, 2, 3]); /// arr mis objektei
+    const [left, setLeft] = React.useState<ListItemType[]>(storageAvailableProductItems);
     // console.log('left:', left);
-    const [right, setRight] = React.useState([]);
+    const [right, setRight] = React.useState<ListItemType[]>([]);
     // console.log('right:', right);
 
     const leftChecked = intersection(checked, left);
@@ -145,12 +144,12 @@ function StorageProductsHandleItemsTransfer() {
     const rightChecked = intersection(checked, right);
     // console.log('rightChecked:', rightChecked);
 
-    const handleToggle = (value: any) => () => {
-        const currentIndex = checked.indexOf(value);
+    const handleToggle = (item: ListItemType) => () => {
+        const currentIndex = checked.findIndex((checkedItem) => checkedItem.itemId === item.itemId);
         const newChecked = [...checked];
 
         if (currentIndex === -1) {
-            newChecked.push(value);
+            newChecked.push(item);
         } else {
             newChecked.splice(currentIndex, 1);
         }
@@ -158,13 +157,13 @@ function StorageProductsHandleItemsTransfer() {
         setChecked(newChecked);
     };
 
-    const numberOfChecked = (items) => intersection(checked, items).length;
+    const numberOfChecked = (items: ListItemType[]) => intersection(checked, items).length;
 
-    const handleToggleAll = (items) => () => {
+    const handleToggleAll = (items: ListItemType[]) => () => {
         if (numberOfChecked(items) === items.length) {
             setChecked(not(checked, items));
         } else {
-            setChecked(union(checked, items));
+            setChecked(checked.concat(items));
         }
     };
 
@@ -180,7 +179,7 @@ function StorageProductsHandleItemsTransfer() {
         setChecked(not(checked, rightChecked));
     };
 
-    const customList = (title: React.ReactNode, items: any) => (
+    const customList = (title: React.ReactNode, items: ListItemType[]) => (
         <Card>
             <CardHeader
                 sx={{ px: 2, py: 1 }}
@@ -214,10 +213,12 @@ function StorageProductsHandleItemsTransfer() {
                     const labelId = `transfer-list-item-${item}-label`;
 
                     return (
-                        <ListItem key={index} role="listitem" onClick={handleToggle(item)}>
+                        <ListItem key={item.itemId} role="listitem" onClick={handleToggle(item)}>
                             <ListItemIcon>
                                 <Checkbox
-                                    checked={checked.indexOf(item) !== -1}
+                                    checked={
+                                        checked.findIndex((checkedItem) => checkedItem.itemId === item.itemId) !== -1
+                                    }
                                     tabIndex={-1}
                                     disableRipple
                                     inputProps={{
@@ -225,7 +226,7 @@ function StorageProductsHandleItemsTransfer() {
                                     }}
                                 />
                             </ListItemIcon>
-                            <ListItemText id={labelId} primary={item} />
+                            <ListItemText id={labelId} primary={`${item.itemName} (${item.itemId})`} />
                         </ListItem>
                     );
                 })}
@@ -272,7 +273,7 @@ function StorageProductsHandleItemsTransfer() {
                                 <Stack id="storage-info-data" gap={1} paddingLeft="2rem">
                                     <Typography variant="body2">{`Varaston nimi: ${storageInfo.name}`}</Typography>
                                     <Typography variant="body2">{`Varaston tunnistenumero: ${storageInfo.id}`}</Typography>
-                                    <Typography variant="body2">{`Tuotemäärä: ${storageAvailableProductItems.count}`}</Typography>
+                                    <Typography variant="body2">{`Kokonaistuotemäärä: ${storageData.hasProducts.count}`}</Typography>
                                 </Stack>
                             </Box>
                         </Grid>
