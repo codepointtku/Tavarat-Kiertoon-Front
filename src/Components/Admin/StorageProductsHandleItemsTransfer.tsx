@@ -64,13 +64,15 @@ function StorageProductsHandleItemsTransfer() {
     const storagesList = storageData.allStorages;
     // console.log('%c all storages:', 'color: blue', storagesList);
     const storageInfo = storageData.storageInfo;
-    const storageAvailableProducts = storageData.hasProducts;
-    // console.log('%c products in this storage:', 'color: green', storageAvailableProducts);
-    // console.log('%c products count:', 'color: green', storageAvailableProducts.count);
-    // const storageAvailableProductsNames = storageAvailableProducts.results?.map((product) => product.product.name);
-    // console.log('%c mapped product names:', 'color: cyan', storageAvailableProductsNames);
-    const storageAvailableProductsIds = storageAvailableProducts.results?.map((product) => product.id);
-    // console.log('%c mapped product ids:', 'color: red', storageAvailableProductsIds);
+    const storageAvailableProductItems = storageData.hasProducts;
+    // console.log('%c product items in this storage:', 'color: green', storageAvailableProductItems);
+    // console.log('%c product item count:', 'color: green', storageAvailableProductItems.count);
+    const storageAvailableProductItemsNames = storageAvailableProductItems.results?.map((productItem) =>
+        productItem.product.name.concat(' , ')
+    );
+    // console.log('%c mapped product item names:', 'color: cyan', storageAvailableProductItemsNames);
+    const storageAvailableProductItemIds = storageAvailableProductItems.results?.map((productItem) => productItem.id);
+    // console.log('%c mapped product item ids:', 'color: red', storageAvailableProductsIds);
 
     const [selectedStorage, setSelectedStorage] = React.useState('');
 
@@ -80,11 +82,16 @@ function StorageProductsHandleItemsTransfer() {
 
     // transfer list logics
     const [checked, setChecked] = React.useState<readonly number[]>([]);
+    // console.log('checked:', checked);
     const [left, setLeft] = React.useState<readonly number[]>([0, 1, 2, 3, 666]);
+    // console.log('left:', left);
     const [right, setRight] = React.useState<readonly number[]>([]);
+    // console.log('right:', right);
 
     const leftChecked = intersection(checked, left);
+    // console.log('leftChecked:', leftChecked);
     const rightChecked = intersection(checked, right);
+    // console.log('rightChecked:', rightChecked);
 
     const handleToggle = (value: number) => () => {
         const currentIndex = checked.indexOf(value);
@@ -214,9 +221,11 @@ function StorageProductsHandleItemsTransfer() {
                 <Box component={Form} onSubmit={handleSubmit}>
                     <input
                         // type="hidden"
-                        value={JSON.stringify(storageAvailableProductsIds)}
+                        value={JSON.stringify(storageAvailableProductItemIds)}
                         {...register('product_ids')}
                     />
+
+                    <Typography>Tuotteiden nimet: {storageAvailableProductItemsNames}</Typography>
 
                     {/* /// */}
                     <Grid container margin="1rem 0 0rem 0">
@@ -236,7 +245,7 @@ function StorageProductsHandleItemsTransfer() {
                                 <Stack id="storage-info-data" gap={1} paddingLeft="2rem">
                                     <Typography variant="body2">{`Varaston nimi: ${storageInfo.name}`}</Typography>
                                     <Typography variant="body2">{`Varaston tunnistenumero: ${storageInfo.id}`}</Typography>
-                                    <Typography variant="body2">{`Tuotemäärä: ${storageAvailableProducts.count}`}</Typography>
+                                    <Typography variant="body2">{`Tuotemäärä: ${storageAvailableProductItems.count}`}</Typography>
                                 </Stack>
                             </Box>
                         </Grid>
