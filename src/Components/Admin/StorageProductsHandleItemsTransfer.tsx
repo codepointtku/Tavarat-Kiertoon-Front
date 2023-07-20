@@ -39,19 +39,50 @@ import type { productsTransferAction } from '../../Router/actions';
 
 //
 
-// NOT USED anywhere CURRENTLY
+// (this component) NOT USED anywhere CURRENTLY
 
 //
 
-function not(a: readonly number[], b: readonly number[]) {
-    return a.filter((value) => b.indexOf(value) === -1);
+// Function: not(a, b)
+// This function takes two arrays, a and b, as input parameters and returns a new array containing elements that are present in array a but not in array b.
+
+// Explanation:
+
+//     The filter() method is used on the a array to iterate over its elements and create a new array based on a condition.
+//     For each element in array a, the arrow function (value) => b.indexOf(value) === -1 is used to determine if the element is present in array b.
+//     The indexOf() method is used to find the index of the current value in array b.
+//     If the value is not found in array b, indexOf() will return -1, which means the element is not present in b.
+//     The filter() method will include the current value in the new array only if the condition b.indexOf(value) === -1 is true, i.e., the element is not in array b.
+//     The resulting new array contains only those elements that are not present in array b.
+function not(a: any, b: any) {
+    return a.filter((value: any) => b.indexOf(value) === -1);
 }
 
-function intersection(a: readonly number[], b: readonly number[]) {
-    return a.filter((value) => b.indexOf(value) !== -1);
+// Function: intersection(a, b)
+// This function takes two arrays, a and b, as input parameters and returns a new array containing elements that are common to both a and b.
+
+// Explanation:
+
+//     The filter() method is used on the a array to iterate over its elements and create a new array based on a condition.
+//     For each element in array a, the arrow function (value) => b.indexOf(value) !== -1 is used to determine if the element is present in array b.
+//     The indexOf() method is used to find the index of the current value in array b.
+//     If the value is found in array b, indexOf() will return the index, which means the element is present in b.
+//     The filter() method will include the current value in the new array only if the condition b.indexOf(value) !== -1 is true, i.e., the element is present in both arrays a and b.
+//     The resulting new array contains only those elements that are common to both arrays a and b.
+function intersection(a: any, b: any) {
+    return a.filter((value: any) => b.indexOf(value) !== -1);
 }
 
-function union(a: readonly number[], b: readonly number[]) {
+// Function: union(a, b)
+// This function takes two arrays, a and b, as input parameters and returns a new array containing all unique elements from both arrays, effectively combining them into one array.
+
+// Explanation:
+
+//     The spread operator ... is used to create a new array.
+//     The not() function is used to find elements in array a that are not present in array b.
+//     The spread operator ... is used again to concatenate the elements of a and the result of not(b, a) (elements from b not present in a).
+//     The resulting new array contains all unique elements from both arrays a and b.
+function union(a: any, b: any) {
     return [...a, ...not(b, a)];
 }
 
@@ -64,28 +95,49 @@ function StorageProductsHandleItemsTransfer() {
     const storagesList = storageData.allStorages;
     // console.log('%c all storages:', 'color: blue', storagesList);
     const storageInfo = storageData.storageInfo;
-    const storageAvailableProductItems = storageData.hasProducts;
-    // console.log('%c product items in this storage:', 'color: green', storageAvailableProductItems);
     // console.log('%c product item count:', 'color: green', storageAvailableProductItems.count);
-    const storageAvailableProductItemsNames = storageAvailableProductItems.results?.map((productItem) =>
-        productItem.product.name.concat(' , ')
-    );
-    // console.log('%c mapped product item names:', 'color: cyan', storageAvailableProductItemsNames);
-    const storageAvailableProductItemIds = storageAvailableProductItems.results?.map((productItem) => productItem.id);
-    // console.log('%c mapped product item ids:', 'color: red', storageAvailableProductsIds);
 
+    //// main ingredient:
+    const storageAvailableProductItems = storageData.hasProducts.results?.map((productItem) => ({
+        itemName: productItem.product.name,
+        itemId: productItem.id,
+    }));
+    console.log('%c mapped out product items:', 'color: blue ; font-weight: bold', storageAvailableProductItems);
+
+    // select
     const [selectedStorage, setSelectedStorage] = React.useState('');
 
     const handleStorageSelectChange = (event: SelectChangeEvent) => {
         setSelectedStorage(event.target.value as string);
     };
 
-    // transfer list logics
-    const [checked, setChecked] = React.useState<readonly number[]>([]);
+    // form
+    const {
+        register,
+        handleSubmit: createHandleSubmit,
+        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors },
+    } = useForm({
+        mode: 'all',
+    });
+
+    // submit
+    const submit = useSubmit();
+
+    const handleSubmit = createHandleSubmit((data: any) => {
+        // console.log('%c Submitissa menevä tieto', 'color: blue', data);
+        submit(data, {
+            method: 'put',
+        });
+    });
+
+    //
+    ///
+    ////  transfer list
+    const [checked, setChecked] = React.useState([]);
     // console.log('checked:', checked);
-    const [left, setLeft] = React.useState<readonly number[]>([0, 1, 2, 3, 666]);
+    const [left, setLeft] = React.useState([1, 2, 3]); /// arr mis objektei
     // console.log('left:', left);
-    const [right, setRight] = React.useState<readonly number[]>([]);
+    const [right, setRight] = React.useState([]);
     // console.log('right:', right);
 
     const leftChecked = intersection(checked, left);
@@ -93,7 +145,7 @@ function StorageProductsHandleItemsTransfer() {
     const rightChecked = intersection(checked, right);
     // console.log('rightChecked:', rightChecked);
 
-    const handleToggle = (value: number) => () => {
+    const handleToggle = (value: any) => () => {
         const currentIndex = checked.indexOf(value);
         const newChecked = [...checked];
 
@@ -106,9 +158,9 @@ function StorageProductsHandleItemsTransfer() {
         setChecked(newChecked);
     };
 
-    const numberOfChecked = (items: readonly number[]) => intersection(checked, items).length;
+    const numberOfChecked = (items) => intersection(checked, items).length;
 
-    const handleToggleAll = (items: readonly number[]) => () => {
+    const handleToggleAll = (items) => () => {
         if (numberOfChecked(items) === items.length) {
             setChecked(not(checked, items));
         } else {
@@ -128,7 +180,7 @@ function StorageProductsHandleItemsTransfer() {
         setChecked(not(checked, rightChecked));
     };
 
-    const customList = (title: React.ReactNode, items: readonly number[]) => (
+    const customList = (title: React.ReactNode, items: any) => (
         <Card>
             <CardHeader
                 sx={{ px: 2, py: 1 }}
@@ -158,14 +210,14 @@ function StorageProductsHandleItemsTransfer() {
                 component="div"
                 role="list"
             >
-                {items.map((value: any, index) => {
-                    const labelId = `transfer-list-item-${value}-label`;
+                {items.map((item: any, index: number) => {
+                    const labelId = `transfer-list-item-${item}-label`;
 
                     return (
-                        <ListItem key={index} role="listitem" onClick={handleToggle(value)}>
+                        <ListItem key={index} role="listitem" onClick={handleToggle(item)}>
                             <ListItemIcon>
                                 <Checkbox
-                                    checked={checked.indexOf(value) !== -1}
+                                    checked={checked.indexOf(item) !== -1}
                                     tabIndex={-1}
                                     disableRipple
                                     inputProps={{
@@ -173,30 +225,13 @@ function StorageProductsHandleItemsTransfer() {
                                     }}
                                 />
                             </ListItemIcon>
-                            <ListItemText id={labelId} primary={value} />
+                            <ListItemText id={labelId} primary={item} />
                         </ListItem>
                     );
                 })}
             </List>
         </Card>
     );
-
-    const {
-        register,
-        handleSubmit: createHandleSubmit,
-        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors },
-    } = useForm({
-        mode: 'all',
-    });
-
-    const submit = useSubmit();
-
-    const handleSubmit = createHandleSubmit((data: any) => {
-        // console.log('%c Submitissa menevä tieto', 'color: blue', data);
-        submit(data, {
-            method: 'put',
-        });
-    });
 
     // main component return
     return (
@@ -219,14 +254,6 @@ function StorageProductsHandleItemsTransfer() {
                 <HeroText title="Tuotteiden siirto" subtitle="Siirrä tuotteita varastosta toiseen" />
 
                 <Box component={Form} onSubmit={handleSubmit}>
-                    <input
-                        // type="hidden"
-                        value={JSON.stringify(storageAvailableProductItemIds)}
-                        {...register('product_ids')}
-                    />
-
-                    <Typography>Tuotteiden nimet: {storageAvailableProductItemsNames}</Typography>
-
                     {/* /// */}
                     <Grid container margin="1rem 0 0rem 0">
                         <Grid
