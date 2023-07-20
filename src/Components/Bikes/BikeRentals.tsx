@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     Paper,
     TableContainer,
@@ -8,10 +9,12 @@ import {
     TableBody,
     Typography,
     Box,
+    IconButton,
 } from '@mui/material';
 import { useLoaderData } from 'react-router';
 import StyledTableCell from '../StyledTableCell';
-
+import { GridDeleteIcon } from '@mui/x-data-grid';
+import { useState } from 'react';
 interface Rental {
     id: number;
     start_date: string;
@@ -25,6 +28,7 @@ interface Rental {
     user: number;
     bike_stock: number[];
 }
+
 function getYearAndMonth(dateString: string) {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -36,8 +40,19 @@ function getYearAndMonth(dateString: string) {
 }
 
 export default function BikeRentals() {
-    const data = useLoaderData() as Rental[]; // useLoaderData() returns the data passed to it in the loader function
-    console.log(data);
+    const peruna = useLoaderData() as Rental[]; // useLoaderData() returns the data passed to it in the loader function
+
+    const [data, setData] = useState(peruna);
+
+    const handleRemoveOrder = (id: number) => {
+        // Filter the data array to remove the order with the specified id
+        const updatedData = data?.filter((rental) => rental.id !== id);
+        // You may want to perform additional actions (e.g., update the server) here.
+        // ...
+
+        // Update the component's state with the updated data
+        setData(updatedData);
+    };
 
     return (
         <Box width="100%">
@@ -58,6 +73,7 @@ export default function BikeRentals() {
                             <StyledTableCell align="right">Tilaaja</StyledTableCell>
                             <StyledTableCell align="right">Puh</StyledTableCell>
                             <StyledTableCell align="right">extra info</StyledTableCell>
+                            <StyledTableCell align="right">Remove</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -72,6 +88,11 @@ export default function BikeRentals() {
                                     <TableCell align="right">{rental.contact_name}</TableCell>
                                     <TableCell align="right">{rental.contact_phone_number}</TableCell>
                                     <TableCell align="right">{rental.extra_info}</TableCell>
+                                    <TableCell align="right">
+                                        <IconButton onClick={() => handleRemoveOrder(rental.id)}>
+                                            <GridDeleteIcon />
+                                        </IconButton>
+                                    </TableCell>
                                 </TableRow>
                             );
                         })}

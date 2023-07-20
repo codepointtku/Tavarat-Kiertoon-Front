@@ -1884,11 +1884,11 @@ paths:
         explode: true
         style: form
       - in: query
-        name: color
+        name: colors
         schema:
           type: array
           items:
-            type: string
+            type: integer
         explode: true
         style: form
       - name: ordering
@@ -2913,6 +2913,35 @@ paths:
       responses:
         '200':
           description: No response body
+  /users/address/:
+    post:
+      operationId: users_address_create
+      description: |-
+        add new address for user with POST
+        For use of admins only
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAddress'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserAddress'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserAddress'
+        required: true
+      security:
+      - CustomJWTAuthentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAddress'
+          description: ''
   /users/address/{id}/:
     get:
       operationId: users_address_retrieve
@@ -5325,6 +5354,9 @@ components:
         password:
           type: string
           maxLength: 128
+        remember_me:
+          type: boolean
+          default: false
       required:
       - password
       - username
