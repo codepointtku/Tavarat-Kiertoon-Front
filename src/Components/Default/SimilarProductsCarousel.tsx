@@ -3,12 +3,12 @@ import Carousel from 'react-material-ui-carousel';
 import SimilarProductCard from './SimilarProductCard';
 import { SimilarProduct } from './SimilarProductCard';
 
-interface Props {
+export interface SimilarProductCarouselProps {
     similarProducts: { count: number; results: [{}] };
     currentId: number;
 }
 
-function SimilarProductsCarousel({ similarProducts, currentId }: Props) {
+function SimilarProductsCarousel({ similarProducts, currentId }: SimilarProductCarouselProps) {
     const carouselPageContents = [];
     const similarProductsWithoutSelectedProduct = similarProducts.results.filter(
         (product: any) => product.id != currentId

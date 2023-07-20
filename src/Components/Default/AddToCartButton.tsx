@@ -9,7 +9,7 @@ import AddMoreToCart from '../AddMoreToCart';
 import type { shoppingCartLoader } from '../../Router/loaders';
 
 interface Props {
-    size?: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides>;
+    size: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides> | undefined;
     id: number & string;
     groupId: number;
     count?: number;

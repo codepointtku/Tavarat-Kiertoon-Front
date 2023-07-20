@@ -1,5 +1,6 @@
 import { useLoaderData, useParams } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
+import { SimilarProductCarouselProps } from './SimilarProductsCarousel';
 
 import {
     Button,
@@ -15,15 +16,18 @@ import {
     Grid,
     Paper,
     Box,
+    ButtonPropsSizeOverrides,
 } from '@mui/material';
 
 import AuthContext from '../../Context/AuthContext';
 import BackButton from '../BackButton';
 import AddToCartButton from './AddToCartButton';
 import SimilarProductsCarousel from './SimilarProductsCarousel';
+import type { productDetailsLoader } from '../../Router/loaders';
+import { OverridableStringUnion } from '@material-ui/types';
 
 function ProductDetails() {
-    const { product, products } = useLoaderData();
+    const { product, products } = useLoaderData() as Awaited<ReturnType<typeof productDetailsLoader>>;
     const { id: productId } = useParams();
 
     const {
@@ -33,8 +37,7 @@ function ProductDetails() {
         amount,
         measurements,
         weight,
-        color,
-        barcode,
+        colors,
     } = product;
     const [image, setImage] = useState(product.pictures[0].picture_address);
     const { auth } = useContext(AuthContext);
@@ -69,7 +72,7 @@ function ProductDetails() {
                                         >
                                             <Card
                                                 sx={{
-                                                    border: image === pic.picture_address && '2px ridge #009bd8',
+                                                    border: image === pic.picture_address ? '2px ridge #009bd8' : '',
                                                     opacity: image === pic.picture_address ? 1 : 0.7,
                                                 }}
                                                 square
@@ -129,7 +132,7 @@ function ProductDetails() {
                                             </Grid>
                                             <Grid item>
                                                 <Typography variant="body2" color="text.secondary">
-                                                    Värit: {color.join(', ')}
+                                                    Värit: {colors.join(', ')}
                                                 </Typography>
                                             </Grid>
                                         </Grid>
@@ -154,8 +157,13 @@ function ProductDetails() {
                                     <Grid container justifyContent="center" sx={{ mt: 5 }}>
                                         <CardActions>
                                             <AddToCartButton
-                                                size="large"
-                                                id={Number(productId)}
+                                                size={
+                                                    'large' as OverridableStringUnion<
+                                                        'small' | 'medium' | 'large',
+                                                        ButtonPropsSizeOverrides
+                                                    >
+                                                }
+                                                id={productId as number & string}
                                                 groupId={Number(productId)}
                                             />
                                         </CardActions>
@@ -176,9 +184,9 @@ function ProductDetails() {
                                             Tuotteen tunnus: {productId}
                                         </Typography>
                                         {/* generate barcode if component used in storageview or admin */}
-                                        <Typography variant="body2" color="text.secondary">
+                                        {/* <Typography variant="body2" color="text.secondary">
                                             Barcode: {barcode}
-                                        </Typography>
+                                        </Typography> */}
                                     </Paper>
                                 </>
                             )}
@@ -191,7 +199,10 @@ function ProductDetails() {
                             >
                                 Samankaltaisia tuotteita
                             </Typography>
-                            <SimilarProductsCarousel currentId={productId} similarProducts={products} />
+                            <SimilarProductsCarousel
+                                currentId={Number(productId)}
+                                similarProducts={products as unknown as SimilarProductCarouselProps['similarProducts']}
+                            />
                         </Box>
                     </Card>
                 </Grid>
