@@ -21,8 +21,6 @@ function SimilarProductsCarousel({ similarProducts, currentId }: SimilarProductC
         carouselPageContents.push(similarProductsWithoutSelectedProduct.slice(a - 3, a));
     }
 
-    console.log(carouselPageContents);
-
     return (
         <Box sx={{ p: 2, mb: 5 }}>
             <Carousel

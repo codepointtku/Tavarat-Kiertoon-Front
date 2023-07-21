@@ -179,19 +179,25 @@ function ProductDetails() {
                                     </Paper>
                                 </>
                             )}
-                            <Typography
-                                gutterBottom
-                                variant="h5"
-                                component="div"
-                                color="primary.main"
-                                sx={{ mt: '7rem' }}
-                            >
-                                Samankaltaisia tuotteita
-                            </Typography>
-                            <SimilarProductsCarousel
-                                currentId={Number(productId)}
-                                similarProducts={products as unknown as SimilarProductCarouselProps['similarProducts']}
-                            />
+                            {products.results && products.results.length > 1 && (
+                                <>
+                                    <Typography
+                                        gutterBottom
+                                        variant="h5"
+                                        component="div"
+                                        color="primary.main"
+                                        sx={{ mt: '7rem' }}
+                                    >
+                                        Samankaltaisia tuotteita
+                                    </Typography>
+                                    <SimilarProductsCarousel
+                                        currentId={Number(productId)}
+                                        similarProducts={
+                                            products as unknown as SimilarProductCarouselProps['similarProducts']
+                                        }
+                                    />
+                                </>
+                            )}
                         </Box>
                     </Card>
                 </Grid>

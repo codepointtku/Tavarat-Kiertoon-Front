@@ -8,7 +8,6 @@ import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutl
 import AddMoreToCart from '../AddMoreToCart';
 import type { shoppingCartLoader } from '../../Router/loaders';
 import AuthContext from '../../Context/AuthContext';
-import AlertBox from '../AlertBox';
 
 interface Props {
     size: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides> | undefined;
