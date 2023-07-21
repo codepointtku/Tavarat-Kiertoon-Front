@@ -231,7 +231,6 @@ const userEditLoader = async (auth, setAuth, params) => {
  * @returns
  */
 const bikesDefaultLoader = async (auth, setAuth) => {
-    // const { data } = await apiCall(auth, setAuth, '/bikes', 'get');
     const { data } = await bikesApi.bikesList();
     return data;
 };
@@ -239,25 +238,22 @@ const bikesDefaultLoader = async (auth, setAuth) => {
 /**
  * Get list of all bikes
  *
- * @param {*} auth
- * @param {*} setAuth
  * @returns
  */
 const bikesListLoader = async (auth, setAuth) => {
-    // const { data } = await apiCall(auth, setAuth, '/bikes/stock', 'get');
-    const { data } = await bikesApi.bikesStockList();
-    return data;
+    const [{ data: loaderData }, { data: colors }] = await Promise.all([
+        bikesApi.bikesStockList(),
+        colorsApi.colorsList(),
+    ]);
+    return { loaderData, colors };
 };
+
 /**
  * Get all bikepackets and models
+ *
+ * @returns
  */
 const bikesPacketLoader = async (auth, setAuth) => {
-    // console.log('perjantai');
-    // const [{ data: packet }, { data: models }] = await Promise.all([
-    //     apiCall(auth, setAuth, `/bikes/packages/`, 'get'),
-    //     apiCall(auth, setAuth, `/bikes/models/`, 'get'),
-    // ]);
-
     const [{ data: packet }, { data: models }] = await Promise.all([
         bikesApi.bikesPackagesList(),
         bikesApi.bikesModelsList(),
@@ -265,61 +261,65 @@ const bikesPacketLoader = async (auth, setAuth) => {
 
     return { packet, models };
 };
+
 /**
  * Get one bikepacket and all models
+ *
+ * @param {*} params
+ * @returns
  */
-const modifyBikeOrderLoader = async (auth, setAuth, params) => {
-    // console.log('lauantai');
-    const [{ data: packet }, { data: models }] = await Promise.all([
-        // apiCall(auth, setAuth, `/bikes/packages/${params.id}`, 'get'),
-        // apiCall(auth, setAuth, `/bikes/models/`, 'get'),
+const modifyBikePacketLoader = async (auth, setAuth, params) => {
+    const [{ data: packet }, { data: models }, { data: bikes }] = await Promise.all([
         bikesApi.bikesPackagesRetrieve(params.id),
         bikesApi.bikesModelsList(),
+        bikesApi.bikesStockList(),
     ]);
-    return { packet, models };
+    return { packet, models, bikes };
 };
-const createBikeOrderLoader = async (auth, setAuth, params) => {
-    // console.log('lauantai');
-    const [{ data: models }] = await Promise.all([
-        // apiCall(auth, setAuth, `/bikes/packages/${params.id}`, 'get'),
-        // apiCall(auth, setAuth, `/bikes/models/`, 'get'),
+
+/**
+ *
+ * @param {*} params
+ * @returns
+ */
+const createBikePacketLoader = async (auth, setAuth, params) => {
+    const [{ data: models }, { data: bikes }] = await Promise.all([
         bikesApi.bikesModelsList(),
+        bikesApi.bikesStockList(),
     ]);
     const packet = {
-        // id: number;
         name: '',
         description: '',
         bikes: [],
     };
-    return { packet, models };
+    return { packet, models, bikes };
 };
 
 /**
  * Get information needed to modify a single bike
  *
- * @param {*} auth
- * @param {*} setAuth
  * @param {*} params
  * @returns
  */
-const bikeLoader = async (auth, setAuth, params) => {
-    const [{ data: bikeData }, { data: bikeModelsData }, { data: storagesData }] = await Promise.all([
-        // apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'get'),
+const modifyBikeLoader = async (auth, setAuth, params) => {
+    const [{ data: bikeData }, { data: bikeModelsData }, { data: storagesData }, { data: colors }] = await Promise.all([
         bikesApi.bikesStockRetrieve(params.id),
-        // apiCall(auth, setAuth, '/bikes/models/', 'get'),
         bikesApi.bikesModelsList(),
-        // apiCall(auth, setAuth, '/storages/', 'get'),
         storagesApi.storagesList(),
+        colorsApi.colorsList(),
     ]);
-    return { bikeData, bikeModelsData, storagesData };
+    return { bikeData, bikeModelsData, storagesData, colors };
 };
 
+/**
+ *
+ * @returns
+ */
 const createNewBikeLoader = async (auth, setAuth) => {
-    const [{ data: bikeModelsData }, { data: storagesData }] = await Promise.all([
-        // apiCall(auth, setAuth, '/bikes/models/', 'get'),
+    const [{ data: bikeModelsData }, { data: storagesData }, { data: colors }] = await Promise.all([
         bikesApi.bikesModelsList(),
-        // apiCall(auth, setAuth, '/storages/', 'get'),
         storagesApi.storagesList(),
+        colorsApi.colorsList(),
     ]);
     // Empty bike to show in the page before information is added
     const bikeData = {
@@ -330,18 +330,15 @@ const createNewBikeLoader = async (auth, setAuth) => {
         state: 'AVAILABLE',
         storage: '',
     };
-    return { bikeData, bikeModelsData, storagesData };
+    return { bikeData, bikeModelsData, storagesData, colors };
 };
 
 /**
  * Get ALL Bike Models
  *
- * @param {*} auth
- * @param {*} setAuth
  * @returns
  */
 const bikeModelsLoader = async (auth, setAuth) => {
-    // const { data } = await apiCall(auth, setAuth, `/bikes/models/`, 'get');
     const { data } = await bikesApi.bikesModelsList();
     return data;
 };
@@ -351,26 +348,22 @@ const bikeModelsLoader = async (auth, setAuth) => {
  * Get a single Bike Model based on ID and lists of all colors, brands, types
  * and sizes currently in the database
  *
- * @param {*} auth
- * @param {*} setAuth
  * @param {*} params
  * @returns
  */
 const bikeSingleModelLoader = async (auth, setAuth, params) => {
-    const [{ data: bikeModel }, { data: colors }, { data: brands }, { data: types }, { data: sizes }] =
-        await Promise.all([
-            // apiCall(auth, setAuth, `/bikes/models/${params.id}`, 'get'),
-            bikesApi.bikesModelsRetrieve(params.id),
-            // apiCall(auth, setAuth, `/colors`, 'get'),
-            colorsApi.colorsList(),
-            // apiCall(auth, setAuth, `/bikes/brand`, 'get'),
-            bikesApi.bikesBrandList(),
-            // apiCall(auth, setAuth, `/bikes/type`, 'get'),
-            bikesApi.bikesTypeList(),
-            // apiCall(auth, setAuth, `/bikes/size`, 'get'),
-            bikesApi.bikesSizeList(),
-        ]);
-    return { bikeModel, colors, brands, types, sizes };
+    const [{ data: bikeModel }, { data: brands }, { data: types }, { data: sizes }] = await Promise.all([
+        bikesApi.bikesModelsRetrieve(params.id),
+        bikesApi.bikesBrandList(),
+        bikesApi.bikesTypeList(),
+        bikesApi.bikesSizeList(),
+    ]);
+    return {
+        bikeModel,
+        brands,
+        types,
+        sizes,
+    };
 };
 
 /**
@@ -386,13 +379,9 @@ const bikeSingleModelLoader = async (auth, setAuth, params) => {
  */
 const bikeNewModelLoader = async (auth, setAuth, params) => {
     const [{ data: colors }, { data: brands }, { data: types }, { data: sizes }] = await Promise.all([
-        // apiCall(auth, setAuth, `/colors`, 'get'),
         colorsApi.colorsList(),
-        // apiCall(auth, setAuth, `/bikes/brand`, 'get'),
         bikesApi.bikesBrandList(),
-        // apiCall(auth, setAuth, `/bikes/type`, 'get'),
         bikesApi.bikesTypeList(),
-        // apiCall(auth, setAuth, `/bikes/size`, 'get'),
         bikesApi.bikesSizeList(),
     ]);
 
@@ -517,7 +506,7 @@ export {
     userInfoLoader,
     bikesDefaultLoader,
     bikesListLoader,
-    bikeLoader,
+    modifyBikeLoader,
     createNewBikeLoader,
     bikeModelsLoader,
     bikeSingleModelLoader,
@@ -525,7 +514,7 @@ export {
     shoppingProcessLoader,
     adminLoader,
     adminInboxLoader,
-    modifyBikeOrderLoader,
+    modifyBikePacketLoader,
     bikeNewModelLoader,
-    createBikeOrderLoader,
+    createBikePacketLoader,
 };
