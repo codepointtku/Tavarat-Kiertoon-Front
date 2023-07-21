@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSubmit, useRouteLoaderData, useSearchParams, useFetcher } from 'react-router-dom';
+import { useRouteLoaderData, useSearchParams, useFetcher } from 'react-router-dom';
 import { type OverridableStringUnion } from '@material-ui/types';
 import { Box, Button, type ButtonPropsSizeOverrides } from '@mui/material';
 
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import AddMoreToCart from '../AddMoreToCart';
 import type { shoppingCartLoader } from '../../Router/loaders';
+import AuthContext from '../../Context/AuthContext';
+import AlertBox from '../AlertBox';
 
 interface Props {
     size: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides> | undefined;
@@ -16,7 +18,8 @@ interface Props {
 }
 
 function AddToCartButton({ size, id, groupId, count }: Props) {
-    const submit = useSubmit();
+    const { auth } = useContext(AuthContext);
+    const { username } = auth;
     const { cart, products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const [, setAddedToCart] = useState(false);
     const [searchParams] = useSearchParams();
@@ -48,7 +51,7 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
                         size={size}
                         aria-label="add to shopping cart"
                         startIcon={<AddShoppingCartOutlinedIcon />}
-                        type="submit"
+                        type={username ? 'submit' : 'button'}
                     >
                         Lisää koriin
                     </Button>
