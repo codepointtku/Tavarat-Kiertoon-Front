@@ -321,8 +321,8 @@ const productsTransferAction = async ({ request }) => {
     const productIds = JSON.parse(formData.get('product_ids'));
     // const productIds = formData.get('product_ids');
 
-    console.log('selected storage a:', selectedStorage);
-    console.log('selected prodIds a:', productIds);
+    // console.log('%c selected storage a:', 'color: green; font-weight: bold', selectedStorage);
+    console.log('%c selected prodIds a:', 'color: red; font-weight: bold', productIds);
 
     const transfer = {
         storage: selectedStorage,
@@ -333,6 +333,9 @@ const productsTransferAction = async ({ request }) => {
 
     const response = await productsApi.productsTransferUpdate(transfer);
 
+    if (productIds.length === 0 && response.status === 200) {
+        return { type: 'productstransferempty', status: true };
+    }
     if (response.status === 200) {
         return { type: 'productstransfer', status: true };
     }

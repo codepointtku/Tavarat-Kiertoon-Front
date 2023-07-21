@@ -54,8 +54,7 @@ function BaseBoundary() {
         teapot: <Typography variant="h6">Minä olen teepannu -- siksi en keitä kahvia!</Typography>,
         internalservererror: (
             <Typography variant="h6">
-                {/* Sisäinen palvelinvirhe. Palvelin kohtasi odottamattoman tilan, mikä esti pyynnön toteuttamisen. */}
-                Ny kävi tämmöttis, hittolaane.
+                Sisäinen palvelinvirhe. Palvelin kohtasi odottamattoman tilan, mikä esti pyynnön toteuttamisen.
             </Typography>
         ),
         serviceunavailable: (

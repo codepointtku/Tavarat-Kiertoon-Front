@@ -14,6 +14,7 @@ import {
     FormControl,
     FormHelperText,
     Grid,
+    IconButton,
     List,
     ListItem,
     ListItemIcon,
@@ -27,6 +28,7 @@ import {
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 import AlertBox from '../AlertBox';
 import Tooltip from '../Tooltip';
@@ -108,6 +110,7 @@ function StorageProductsHandleItemsTransfer() {
     const {
         register,
         setValue,
+        reset,
         handleSubmit: createHandleSubmit,
         formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors },
     } = useForm({
@@ -128,8 +131,12 @@ function StorageProductsHandleItemsTransfer() {
         submit(data, {
             method: 'put',
         });
-        console.log('%c Submitissa menevä tieto', 'color: blue', data);
+        console.log('%c Submitissa menevä tieto', 'color: blue; font-weight: bold', data);
     });
+
+    const formReset = () => {
+        reset();
+    };
 
     //
     ///
@@ -137,7 +144,7 @@ function StorageProductsHandleItemsTransfer() {
     const [checked, setChecked] = React.useState<ListItemType[]>([]);
     const [left, setLeft] = React.useState<ListItemType[]>(storageAvailableProductItems);
     const [right, setRight] = React.useState<ListItemType[]>([]);
-    console.log('right:', right);
+    // console.log('right:', right);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -239,6 +246,13 @@ function StorageProductsHandleItemsTransfer() {
                 <AlertBox text="Varaston tuotteiden siirto epäonnistui" status="error" />
             )}
 
+            {responseStatus?.type === 'productstransferempty' && responseStatus?.status && (
+                <AlertBox
+                    text="Varaston tuotteiden siirto epäonnistui, mutta mikään ei mennyt rikki O_o"
+                    status="warning"
+                />
+            )}
+
             {responseStatus?.type === 'productstransfer' && responseStatus?.status && (
                 <AlertBox
                     text="Varaston tuotteet siirretty onnistuneesti"
@@ -255,7 +269,7 @@ function StorageProductsHandleItemsTransfer() {
                 <Box component={Form} onSubmit={handleSubmit}>
                     {/* /// */}
                     <input
-                        // type="hidden"
+                        type="hidden"
                         {...register('product_ids')}
                         // value={JSON.stringify(right.map((item) => item.itemId))}
                         defaultValue={JSON.stringify(right.map((item) => item.itemId))}
@@ -390,6 +404,13 @@ function StorageProductsHandleItemsTransfer() {
                         >
                             Suorita siirto
                         </Button>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', margin: '2rem 0 0 0' }}>
+                            <Tooltip title="Tyhjennä lomake">
+                                <IconButton id="reset-form-btn" onClick={() => formReset()}>
+                                    <RefreshIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                             <Tooltip title="Palaa takaisin">
                                 <Button
