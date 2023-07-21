@@ -1,7 +1,7 @@
 import { Grid, Box } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
 import SimilarProductCard from './SimilarProductCard';
-import { SimilarProduct } from './SimilarProductCard';
+import { type SimilarProduct } from './SimilarProductCard';
 
 export interface SimilarProductCarouselProps {
     similarProducts: { count: number; results: [{}] };
@@ -21,6 +21,8 @@ function SimilarProductsCarousel({ similarProducts, currentId }: SimilarProductC
         carouselPageContents.push(similarProductsWithoutSelectedProduct.slice(a - 3, a));
     }
 
+    console.log(carouselPageContents);
+
     return (
         <Box sx={{ p: 2, mb: 5 }}>
             <Carousel
@@ -31,7 +33,7 @@ function SimilarProductsCarousel({ similarProducts, currentId }: SimilarProductC
                 activeIndicatorIconButtonProps={{ style: { color: '#009bd8' } }}
             >
                 {carouselPageContents.map((productCards) => (
-                    <Grid container direction="row" justifyContent="center" gap={5}>
+                    <Grid container direction="row" justifyContent="center" gap={5} key={Math.random() * 10000}>
                         {productCards.map((product: any) => (
                             <SimilarProductCard key={product.id} product={product as SimilarProduct['product']} />
                         ))}

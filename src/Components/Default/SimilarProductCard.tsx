@@ -8,12 +8,12 @@ import {
     CardHeader,
     Box,
     Grid,
-    ButtonPropsSizeOverrides,
+    type ButtonPropsSizeOverrides,
     Typography,
     IconButton,
     Tooltip,
 } from '@mui/material';
-import { OverridableStringUnion } from '@material-ui/types';
+import { type OverridableStringUnion } from '@material-ui/types';
 import AddToCartButton from './AddToCartButton';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 

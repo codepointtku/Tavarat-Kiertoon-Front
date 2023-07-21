@@ -1,6 +1,6 @@
 import { useLoaderData, useParams, useRouteLoaderData } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
-import { SimilarProductCarouselProps } from './SimilarProductsCarousel';
+import { type SimilarProductCarouselProps } from './SimilarProductsCarousel';
 
 import {
     Card,
@@ -15,7 +15,7 @@ import {
     Grid,
     Paper,
     Box,
-    ButtonPropsSizeOverrides,
+    type ButtonPropsSizeOverrides,
 } from '@mui/material';
 
 import AuthContext from '../../Context/AuthContext';
@@ -24,7 +24,7 @@ import AddToCartButton from './AddToCartButton';
 import SimilarProductsCarousel from './SimilarProductsCarousel';
 import type { productDetailsLoader } from '../../Router/loaders';
 import type { rootLoader } from '../../Router/loaders';
-import { OverridableStringUnion } from '@material-ui/types';
+import { type OverridableStringUnion } from '@material-ui/types';
 
 function ProductDetails() {
     const { product, products } = useLoaderData() as Awaited<ReturnType<typeof productDetailsLoader>>;
@@ -41,7 +41,7 @@ function ProductDetails() {
 
     useEffect(() => {
         setImage(product.pictures[0].picture_address);
-    }, [location.pathname]);
+    }, [product.pictures]);
 
     return (
         <Container id="product-detail-card">
