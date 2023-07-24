@@ -5,7 +5,7 @@ import { ThemeProvider } from '@mui/material';
 
 import AuthContext from '../Context/AuthContext';
 import ErrorBoundary from './ErrorBoundary';
-// import HasRole from '../Utils/HasRole';
+import HasRole from '../Utils/HasRole';
 
 import DefaultView from '../Views/DefaultView';
 
@@ -372,7 +372,11 @@ function Routes() {
                                 },
                                 {
                                     path: 'profiili',
-                                    element: <UserProfilePage />,
+                                    element: (
+                                        <HasRole role="user_group" fallback={<Navigate to="/" />}>
+                                            <UserProfilePage />
+                                        </HasRole>
+                                    ),
                                     id: 'profile',
                                     loader: async ({ request }) => userInfoLoader(request),
                                     action: async ({ request }) => userProfilePageAction(request),
@@ -499,11 +503,12 @@ function Routes() {
                         {
                             path: 'admin',
                             element: (
-                                // <HasRole role="admin_group" fallback={<Navigate to="/" />}>
-                                <ThemeProvider theme={adminTheme}>
-                                    <AdminLayout />
-                                </ThemeProvider>
-                                // </HasRole>
+                                <HasRole role="admin_group" fallback={<Navigate to="/" />}>
+                                    <ThemeProvider theme={adminTheme}>
+                                        {/* TODO ohjaa kirjaudu sivulle */}
+                                        <AdminLayout />
+                                    </ThemeProvider>
+                                </HasRole>
                             ),
                             id: 'admin',
                             errorElement: (

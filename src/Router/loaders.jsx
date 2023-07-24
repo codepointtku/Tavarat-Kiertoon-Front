@@ -1,3 +1,5 @@
+import { redirect } from 'react-router-dom';
+
 // import axios from 'axios';
 // import apiCall from '../Utils/apiCall';
 import {
@@ -423,10 +425,21 @@ const shoppingProcessLoader = async () => {
 };
 
 const adminLoader = async (auth, setAuth) => {
+    // console.log('adminLoader auth', auth);
+    // tämä ei toiminut, auth.admin_group oli edelleen true
+    // if (auth.admin_group === false) {
+    //     return redirect('/');
+    // }
+
     const [{ data: user }, { data: messages }] = await Promise.all([
-        // apiCall(auth, setAuth, '/user/', 'get'),
-        userApi.userRetrieve(),
-        // apiCall(auth, setAuth, '/contact_forms/?status=Not read', 'get'),
+        userApi
+            .userRetrieve()
+            // this could be removed if logic is moved to errorBoundary
+            .catch((e) => {
+                console.log('adminLoader userApi.userRetrieve error', e);
+                // Todo redirect to admin/login or /login
+                return redirect('/kirjaudu');
+            }),
         contactFormsApi.contactFormsList(null, null, null, { status: 'Not read' }),
     ]);
 
