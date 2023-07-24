@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Backdrop, Box, Modal, Fade, Typography, Stack } from '@mui/material/';
+import { Backdrop, Box, Button, Modal, Fade, Typography, Stack } from '@mui/material/';
 
 interface Props {
     title: string;
@@ -51,6 +51,11 @@ function BulletinModal({ title, content, footer }: Props) {
                                 {content}
                             </Typography>
                             {footer}
+                            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                                <Button variant="text" sx={{ margin: '2rem 0 0rem 0' }}>
+                                    Sulje
+                                </Button>
+                            </Box>
                         </Stack>
                     </Box>
                 </Fade>
