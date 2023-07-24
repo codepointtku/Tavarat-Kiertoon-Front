@@ -90,8 +90,10 @@ function ModifyAddressInfo() {
                         label="Osoite"
                         placeholder="Osoite"
                         error={!!errors.address}
+                        inputProps={{ required: false }}
                         helperText={errors.address?.message?.toString() || ' '}
                         sx={{ width: '150%' }}
+                        required
                     />
                 </Grid>
                 <Grid item>
@@ -103,9 +105,11 @@ function ModifyAddressInfo() {
                         })}
                         label="Kaupunki"
                         placeholder="Kaupunki"
+                        inputProps={{ required: false }}
                         error={!!errors.city}
                         helperText={errors.city?.message?.toString() || ' '}
                         sx={{ width: '150%' }}
+                        required
                     />
                 </Grid>
                 <Grid item>
@@ -118,9 +122,11 @@ function ModifyAddressInfo() {
                         })}
                         label="Postinumero"
                         placeholder="Postinumero"
+                        inputProps={{ required: false }}
                         error={!!errors.zip_code}
                         helperText={errors.zip_code?.message?.toString() || ' '}
                         sx={{ width: '150%' }}
+                        required
                     />
                 </Grid>
                 <Grid item>

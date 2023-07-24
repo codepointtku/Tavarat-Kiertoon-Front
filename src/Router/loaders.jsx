@@ -108,8 +108,9 @@ const productListLoader = async ({ request }) => {
  */
 const productDetailsLoader = async ({ params }) => {
     // const { data } = await apiCall(auth, setAuth, `/products/${params.id}`, 'get');
-    const { data } = await productsApi.productsRetrieve(params.id);
-    return data;
+    const { data: product } = await productsApi.productsRetrieve(params.id);
+    const { data: products } = await productsApi.productsList(product.category);
+    return { product, products };
 };
 
 /**
