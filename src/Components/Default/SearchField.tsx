@@ -60,7 +60,7 @@ function SearchField() {
 
         const filteredSearchWithSpace = searchCategoriesAndColorsNames.reduce((accumulator, currValue, index) => {
             if (index === 0) {
-                return formData.search.replace(currValue, '');
+                return formData.search.toLowerCase().replace(currValue, '');
             } else {
                 var updatedSearch = accumulator.replace(currValue, '');
                 return updatedSearch;
