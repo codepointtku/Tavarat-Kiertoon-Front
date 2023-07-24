@@ -213,17 +213,22 @@ function DefaultAppBar() {
                         {!location.pathname.includes('/ostoskori') && (
                             <Tooltip title="Ostoskori">
                                 <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
-                                    <StyledBadge
-                                        isanimated={productsLength === cart?.product_items?.length ? 1 : 0}
-                                        badgeContent={cart?.product_items?.length}
-                                        sx={{ color: 'primary.contrastText' }}
-                                        anchorOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right',
-                                        }}
-                                    >
+                                    {auth.username ? (
+                                        <StyledBadge
+                                            isanimated={productsLength === cart?.product_items?.length ? 1 : 0}
+                                            badgeContent={cart?.product_items?.length}
+                                            sx={{ color: 'primary.contrastText' }}
+                                            anchorOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                        >
+                                            {' '}
+                                            <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
+                                        </StyledBadge>
+                                    ) : (
                                         <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
-                                    </StyledBadge>
+                                    )}
                                 </IconButton>
                             </Tooltip>
                         )}
