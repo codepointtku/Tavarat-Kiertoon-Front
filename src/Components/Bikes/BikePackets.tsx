@@ -13,7 +13,7 @@ import {
 import { useLoaderData } from 'react-router';
 import { Link } from 'react-router-dom';
 import { type bikesPacketLoader } from '../../Router/loaders';
-import { type PacketInterface } from './ModifyBikeOrder';
+import { type PacketInterface } from './ModifyBikePacket';
 
 export default function BikePackets() {
     const { packet } = useLoaderData() as Awaited<ReturnType<typeof bikesPacketLoader>>;
