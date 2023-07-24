@@ -593,6 +593,12 @@ const createNewPacketAction = async (auth, setAuth, request) => {
     await bikesApi.bikesPackagesCreate(submission);
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
+const deleteBikeOrderAction = async (auth, setAuth, params) => {
+    // await apiCall(auth, setAuth, `/bikes/packages/${params.id}`, 'delete');
+    await bikesApi.bikesRentalDestroy(params.id);
+    return;
+};
+
 const deletePacketAction = async (auth, setAuth, params) => {
     // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     await bikesApi.bikesPackagesDestroy(params.id);
@@ -873,6 +879,7 @@ const modifyUserAddressesAction = async (request) => {
 };
 
 export {
+    deleteBikeOrderAction,
     userSignupAction,
     frontPageActions,
     contactAction,

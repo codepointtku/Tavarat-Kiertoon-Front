@@ -122,6 +122,7 @@ import {
 } from './loaders';
 
 import {
+    deleteBikeOrderAction,
     userSignupAction,
     contactAction,
     orderEditAction,

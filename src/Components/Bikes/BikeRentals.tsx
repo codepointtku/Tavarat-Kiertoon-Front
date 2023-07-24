@@ -15,6 +15,9 @@ import { useLoaderData } from 'react-router';
 import StyledTableCell from '../StyledTableCell';
 import { GridDeleteIcon } from '@mui/x-data-grid';
 import { useState } from 'react';
+import { bikeRentalLoader } from '../../Router/loaders';
+import { Form, useSubmit } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 interface Rental {
     id: number;
     start_date: string;
@@ -40,22 +43,21 @@ function getYearAndMonth(dateString: string) {
 }
 
 export default function BikeRentals() {
-    const peruna = useLoaderData() as Rental[]; // useLoaderData() returns the data passed to it in the loader function
+    const peruna = useLoaderData() as Awaited<ReturnType<typeof bikeRentalLoader>>; // useLoaderData() returns the data passed to it in the loader function
 
-    const [data, setData] = useState(peruna);
+    console.log('kaka', peruna.results);
+
+    const [data, setData] = useState<Rental[]>(peruna.results);
 
     const handleRemoveOrder = (id: number) => {
         // Filter the data array to remove the order with the specified id
         const updatedData = data?.filter((rental) => rental.id !== id);
-        // You may want to perform additional actions (e.g., update the server) here.
-        // ...
-
-        // Update the component's state with the updated data
         setData(updatedData);
+        console.log('updatedData', updatedData);
     };
 
     return (
-        <Box width="100%">
+        <Box component={Form} width="100%">
             <Typography variant="h3" align="center" color="primary.main" width="100%">
                 Tilaukset{' '}
             </Typography>

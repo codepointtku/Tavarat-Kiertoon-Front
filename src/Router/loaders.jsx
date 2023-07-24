@@ -252,7 +252,7 @@ const bikesListLoader = async (auth, setAuth) => {
 // bike rental list
 const bikeRentalLoader = async (auth, setAuth) => {
     const { data } = await bikesApi.bikesRentalList();
-    console.log(data);
+    console.log('bikerentalLoader', data);
     return data;
 };
 /**
