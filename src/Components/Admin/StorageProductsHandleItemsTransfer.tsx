@@ -39,12 +39,6 @@ import type { SelectChangeEvent } from '@mui/material/Select';
 import type { productTransferLoader } from '../../Router/loaders';
 import type { productsTransferAction } from '../../Router/actions';
 
-//
-
-// (this component) NOT USED anywhere CURRENTLY
-
-//
-
 interface ListItemType {
     itemName: string;
     itemId: number;
@@ -121,11 +115,6 @@ function StorageProductsHandleItemsTransfer() {
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data: any) => {
-        // setValue(
-        //     'product_ids',
-        //     right.map((item) => item.itemId)
-        // );
-
         setValue('product_ids', JSON.stringify(right.map((item) => item.itemId)));
 
         submit(data, {
