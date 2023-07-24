@@ -47,9 +47,28 @@ export default function BikeCard({
         ? bike.max_available - bike.package_only_count
         : bike.max_available;
 
+    const isPackage = bike.type === 'Paketti' ? true : false;
+
     return (
-        <Card sx={{ my: 1, display: 'flex', flexDirection: 'row', height: '220px' }}>
-            <CardMedia sx={{ width: '220px', height: '220px' }} component="img" alt="kuva" image="/bike.jpg" />
+        <Card sx={{ my: 1, display: 'flex', flexDirection: 'row' }}>
+            <div
+                style={{
+                    width: '220px',
+                    height: '220px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    border: isPackage ? '5px double' : 'none',
+                    borderRadius: '10%',
+                    borderColor: 'rgba(0, 98, 174, 0.2)',
+                    fontWeight: 'bold',
+                    color: '#0062ae',
+                }}
+            >
+                {isPackage ? 'Paketti' : ''}
+                <CardMedia component="img" alt="kuva" image="/bike.jpg" />
+            </div>
             <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Typography variant="h6">{bike.name}</Typography>
                 <Box sx={{ mb: 1 }}>
