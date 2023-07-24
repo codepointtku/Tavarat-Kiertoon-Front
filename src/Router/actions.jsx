@@ -90,7 +90,7 @@ const frontPageActions = async ({ request }) => {
         //     product: id,
         //     amount,
         // });
-        console.log('is in delete block');
+        // console.log('is in delete block');
         const response = await shoppingCartApi.shoppingCartUpdate({
             product: id,
             amount,
@@ -868,7 +868,6 @@ const adminInboxAction = async (auth, setAuth, request) => {
 const userProfilePageAction = async (request) => {
     const formData = await request.formData();
     const response = await userApi.userUpdate({
-        username: formData.get('username'),
         first_name: formData.get('first_name'),
         last_name: formData.get('last_name'),
         phone_number: formData.get('phone_number'),
