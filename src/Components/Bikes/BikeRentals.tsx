@@ -47,13 +47,18 @@ export default function BikeRentals() {
 
     console.log('kaka', peruna.results);
 
-    const [data, setData] = useState<Rental[]>(peruna.results);
+    // Save data to local storage
 
+    // Retrieve data from local storage
+    const savedData = localStorage.getItem('rentals');
+    const [data, setData] = useState<Rental[]>(savedData ? JSON.parse(savedData) : peruna.results);
+    localStorage.setItem('rentals', JSON.stringify(data));
+
+    // Update local storage when data changes
     const handleRemoveOrder = (id: number) => {
-        // Filter the data array to remove the order with the specified id
         const updatedData = data?.filter((rental) => rental.id !== id);
         setData(updatedData);
-        console.log('updatedData', updatedData);
+        localStorage.setItem('rentals', JSON.stringify(updatedData));
     };
 
     return (
