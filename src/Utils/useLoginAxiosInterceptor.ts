@@ -29,6 +29,14 @@ function useAxiosInterceptAuthAPICalls() {
             if (['/users/login/', '/users/logout/', '/users/login/refresh/'].includes(url.pathname)) {
                 // if refresh fails apiCalls to logout in order to remove the cookies
                 if (response.status === 204) {
+                    // remove user goups from auth object
+                    setAuth({
+                        user_group: false,
+                        storage_group: false,
+                        admin_group: false,
+                        bicycle_group: false,
+                        username: false,
+                    });
                     // use different axios instance to avoid infinite loop
                     return axiosWithoutInterceptor.post('/users/logout/');
                 }
