@@ -84,11 +84,11 @@ const productListLoader = async ({ request }) => {
         return data.results;
     }
 
-    if (url.searchParams.has('haku') || url.searchParams.has('varit')) {
+    if (url.searchParams.has('haku')) {
         //const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
         console.log(url.searchParams.get('kategoriat'), url.searchParams.get('varit'));
         const { data } = await productsApi.productsList(
-            url.searchParams.get('kategoriat'),
+            url.searchParams.get('kategoria'),
             url.searchParams.get('varit'),
             null,
             null,

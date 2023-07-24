@@ -27,12 +27,17 @@ type SearchInputValue = {
     search: string;
 };
 
+interface CategoryTreeIndexes {
+    [key: number]: [];
+}
+
 function SearchField() {
-    const { colors, categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
+    const { colors, categories, categoryTree } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const categoriesAndColors = { categories: [''], colors: [''] };
     const { handleSubmit, register, watch, reset, setValue } = useForm<SearchInputValue>();
     const [searchParams, setSearchParams] = useSearchParams();
     var searchInput = '';
+    const categoryTreeIndexes = categoryTree as unknown as CategoryTreeIndexes;
 
     const onSubmit: SubmitHandler<SearchInputValue> = async (formData) => {
         searchInput = formData.search;
@@ -49,12 +54,16 @@ function SearchField() {
         categories.forEach((category) => {
             const categoryNameLowerCase = category.name.toLowerCase();
             if (formData.search.toLowerCase().includes(categoryNameLowerCase)) {
-                categoriesAndColors.categories[0] === ''
-                    ? categoriesAndColors.categories.splice(0, 1, String(category.id))
-                    : categoriesAndColors.categories.push(String(category.id));
+                categoryTreeIndexes[category.id].forEach((categoryIdInTree: number) => {
+                    categoriesAndColors.categories[0] === ''
+                        ? categoriesAndColors.categories.splice(0, 1, String(categoryIdInTree))
+                        : categoriesAndColors.categories.push(String(categoryIdInTree));
+                });
                 searchCategoriesAndColorsNames.push(categoryNameLowerCase);
             }
         });
+
+        console.log(categoriesAndColors.categories);
 
         const initialValue = '';
 
@@ -73,11 +82,11 @@ function SearchField() {
                 setSearchParams({
                     haku: filteredSearch,
                     varit: categoriesAndColors.colors,
-                    kategoriat: categoriesAndColors.categories,
+                    kategoria: categoriesAndColors.categories,
                 });
                 break;
             case categoriesAndColors.categories[0] !== '':
-                setSearchParams({ haku: filteredSearch, kategoriat: categoriesAndColors.categories });
+                setSearchParams({ haku: filteredSearch, kategoria: categoriesAndColors.categories });
                 break;
             case categoriesAndColors.colors[0] !== '':
                 setSearchParams({ haku: filteredSearch, varit: categoriesAndColors.colors });
@@ -108,7 +117,7 @@ function SearchField() {
         if (searchParams.has('haku')) {
             searchParams.delete('haku');
             searchParams.delete('varit');
-            searchParams.delete('kategoriat');
+            searchParams.delete('kategoria');
             setSearchParams(searchParams);
         }
     };
