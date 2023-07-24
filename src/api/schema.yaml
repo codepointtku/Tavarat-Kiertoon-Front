@@ -376,19 +376,59 @@ paths:
   /bikes/rental/:
     get:
       operationId: bikes_rental_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: state
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - ACTIVE
+            - FINISHED
+            - WAITING
+        description: |-
+          * `WAITING` - Waiting
+          * `ACTIVE` - Active
+          * `FINISHED` - Finished
+
+          * `WAITING` - Waiting
+          * `ACTIVE` - Active
+          * `FINISHED` - Finished
+        explode: true
+        style: form
       tags:
       - bikes
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
+      - CustomJWTAuthentication: []
       - {}
       responses:
         '200':
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BikeRentalSchemaResponse'
+                $ref: '#/components/schemas/PaginatedBikeRentalSchemaResponseList'
           description: ''
     post:
       operationId: bikes_rental_create
@@ -407,7 +447,10 @@ paths:
               $ref: '#/components/schemas/BikeRentalSchemaPost'
         required: true
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
+      - CustomJWTAuthentication: []
       - {}
       responses:
         '201':
@@ -437,6 +480,54 @@ paths:
               schema:
                 $ref: '#/components/schemas/BikeRentalSchemaResponse'
           description: ''
+    put:
+      operationId: bikes_rental_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - bikes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BikeRental'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BikeRental'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BikeRental'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BikeRentalSchemaResponse'
+          description: ''
+    delete:
+      operationId: bikes_rental_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - bikes
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
   /bikes/size/:
     get:
       operationId: bikes_size_list
@@ -3541,6 +3632,59 @@ components:
       - description
       - id
       - name
+    BikeRental:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        state:
+          $ref: '#/components/schemas/BikeRentalEnum'
+        delivery_address:
+          type: string
+          maxLength: 255
+        pickup:
+          type: boolean
+        contact_name:
+          type: string
+          maxLength: 255
+        contact_phone_number:
+          type: string
+          maxLength: 255
+        extra_info:
+          type: string
+          maxLength: 255
+        user:
+          type: integer
+          nullable: true
+        bike_stock:
+          type: array
+          items:
+            type: integer
+      required:
+      - bike_stock
+      - contact_name
+      - contact_phone_number
+      - delivery_address
+      - end_date
+      - id
+      - start_date
+    BikeRentalEnum:
+      enum:
+      - WAITING
+      - ACTIVE
+      - FINISHED
+      type: string
+      description: |-
+        * `WAITING` - Waiting
+        * `ACTIVE` - Active
+        * `FINISHED` - Finished
     BikeRentalSchemaPost:
       type: object
       properties:
@@ -3592,7 +3736,7 @@ components:
           type: string
           format: date-time
         state:
-          $ref: '#/components/schemas/BikeRentalSchemaResponseStateEnum'
+          $ref: '#/components/schemas/BikeRentalEnum'
         delivery_address:
           type: string
           maxLength: 255
@@ -3626,16 +3770,6 @@ components:
       - start_date
       - state
       - user
-    BikeRentalSchemaResponseStateEnum:
-      enum:
-      - WAITING
-      - BEING_PROCESSED
-      - ACTIVE
-      type: string
-      description: |-
-        * `WAITING` - Waiting
-        * `BEING_PROCESSED` - Being Processed
-        * `ACTIVE` - Active
     BikeSize:
       type: object
       properties:
@@ -3652,13 +3786,11 @@ components:
       enum:
       - AVAILABLE
       - MAINTENANCE
-      - RENTED
       - RETIRED
       type: string
       description: |-
         * `AVAILABLE` - Available
         * `MAINTENANCE` - Maintenance
-        * `RENTED` - Rented
         * `RETIRED` - Retired
     BikeStockCreate:
       type: object
@@ -3680,6 +3812,9 @@ components:
           readOnly: true
         state:
           $ref: '#/components/schemas/BikeStateEnum'
+        color:
+          type: integer
+          nullable: true
         bike:
           type: integer
         storage:
@@ -3758,6 +3893,9 @@ components:
           readOnly: true
         state:
           $ref: '#/components/schemas/BikeStateEnum'
+        color:
+          type: integer
+          nullable: true
       required:
       - bike
       - created_at
@@ -3791,6 +3929,9 @@ components:
           readOnly: true
         state:
           $ref: '#/components/schemas/BikeStateEnum'
+        color:
+          type: integer
+          nullable: true
         storage:
           type: integer
       required:
@@ -3822,6 +3963,9 @@ components:
           readOnly: true
         state:
           $ref: '#/components/schemas/BikeStateEnum'
+        color:
+          type: integer
+          nullable: true
         bike:
           type: integer
         storage:
@@ -4471,6 +4615,26 @@ components:
         * `Waiting` - Waiting
         * `Processing` - Processing
         * `Finished` - Finished
+    PaginatedBikeRentalSchemaResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BikeRentalSchemaResponse'
     PaginatedContactFormResponseList:
       type: object
       properties:

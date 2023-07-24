@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { Form, useSearchParams, useRouteLoaderData } from 'react-router-dom';
 
 import { Box, Button, IconButton, InputBase } from '@mui/material';
@@ -37,20 +37,22 @@ function SearchField() {
     const onSubmit: SubmitHandler<SearchInputValue> = async (formData) => {
         searchInput = formData.search;
         const searchCategoriesAndColorsNames = [] as string[];
-        colors.map((color) => {
-            if (formData.search.includes(color.name)) {
+        colors.forEach((color) => {
+            const colorNameLowerCase = color.name.toLowerCase();
+            if (formData.search.toLowerCase().includes(colorNameLowerCase)) {
                 categoriesAndColors.colors[0] === ''
                     ? categoriesAndColors.colors.splice(0, 1, String(color.id))
                     : categoriesAndColors.colors.push(String(color.id));
-                searchCategoriesAndColorsNames.push(color.name);
+                searchCategoriesAndColorsNames.push(colorNameLowerCase);
             }
         });
-        categories.map((category) => {
-            if (formData.search.includes(category.name)) {
+        categories.forEach((category) => {
+            const categoryNameLowerCase = category.name.toLowerCase();
+            if (formData.search.toLowerCase().includes(categoryNameLowerCase)) {
                 categoriesAndColors.categories[0] === ''
                     ? categoriesAndColors.categories.splice(0, 1, String(category.id))
                     : categoriesAndColors.categories.push(String(category.id));
-                searchCategoriesAndColorsNames.push(category.name);
+                searchCategoriesAndColorsNames.push(categoryNameLowerCase);
             }
         });
 
@@ -86,7 +88,7 @@ function SearchField() {
         }
     };
 
-    const searchParamFromUrl = searchParams.get('haku');
+    // const searchParamFromUrl = searchParams.get('haku');
     const searchFieldHasInput = watch('search');
 
     // set search string from url to search field, if user is following a link with search string
