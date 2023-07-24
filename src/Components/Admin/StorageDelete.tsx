@@ -87,7 +87,12 @@ function StorageDelete({ randomInt }: any) {
                                     tuotteista säilyy tietokannassa ennallaan.
                                 </Typography>
                             </Stack>
-                            <Button id="return-editview-btn" component={Link} to={`/admin/varastot/${storageInfo.id}`}>
+                            <Button
+                                id="return-editview-btn"
+                                component={Link}
+                                to={`/admin/varastot/${storageInfo.id}`}
+                                sx={{ margin: '1rem 0 0 0' }}
+                            >
                                 Palaa tästä takaisin varaston tietojen ja käyttötilan muokkaus -näkymään
                             </Button>
                         </Stack>

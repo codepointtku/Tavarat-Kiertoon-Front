@@ -119,30 +119,21 @@ function StorageCreate() {
                             ))}
                         </TextField>
 
-                        <Grid container id="submit-reset-btns">
-                            <Grid item xs={11}>
-                                <Button
-                                    id="submit-btn"
-                                    type="submit"
-                                    disabled={!isDirty || isSubmitting || isSubmitSuccessful}
-                                    fullWidth
-                                    sx={{
-                                        '&:hover': {
-                                            backgroundColor: 'success.dark',
-                                        },
-                                    }}
-                                >
-                                    Lisää uusi varasto
-                                </Button>
-                            </Grid>
-                            <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <Tooltip title="Tyhjennä lomake">
-                                    <IconButton id="reset-form-btn" onClick={() => formReset()}>
-                                        <RefreshIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </Grid>
-                        </Grid>
+                        <Box id="submit-btn-container" sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Button
+                                id="submit-btn"
+                                type="submit"
+                                disabled={!isDirty || isSubmitting || isSubmitSuccessful}
+                                fullWidth
+                                sx={{
+                                    '&:hover': {
+                                        backgroundColor: 'success.dark',
+                                    },
+                                }}
+                            >
+                                Lisää uusi varasto
+                            </Button>
+                        </Box>
                     </Stack>
                 </Box>
             </Container>

@@ -71,7 +71,12 @@ function StorageProductsTransfer() {
     return (
         <>
             {responseStatus?.type === 'productstransfer' && !responseStatus?.status && (
-                <AlertBox text="Varaston tuotteiden siirto epäonnistui" status="error" />
+                <AlertBox
+                    text="Varaston tuotteiden siirto epäonnistui"
+                    status="error"
+                    timer={3000}
+                    redirectUrl={`/admin/varastot/${storageInfo.id}`}
+                />
             )}
 
             {responseStatus?.type === 'productstransfer' && responseStatus?.status && (
@@ -183,7 +188,7 @@ function StorageProductsTransfer() {
                         >
                             Suorita siirto
                         </Button>
-                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
                             <Tooltip title="Palaa takaisin">
                                 <Button
                                     id="cancel-btn"
