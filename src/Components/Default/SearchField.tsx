@@ -39,6 +39,8 @@ function SearchField() {
     var searchInput = '';
     const categoryTreeIndexes = categoryTree as unknown as CategoryTreeIndexes;
 
+    // console.log(categoryTree);
+
     const onSubmit: SubmitHandler<SearchInputValue> = async (formData) => {
         searchInput = formData.search;
         const searchCategoriesAndColorsNames = [] as string[];
@@ -53,7 +55,10 @@ function SearchField() {
         });
         categories.forEach((category) => {
             const categoryNameLowerCase = category.name.toLowerCase();
-            if (formData.search.toLowerCase().includes(categoryNameLowerCase)) {
+            if (
+                formData.search.toLowerCase().includes(categoryNameLowerCase) &&
+                RegExp('\\b' + categoryNameLowerCase + '\\b').test(formData.search.toLowerCase())
+            ) {
                 categoryTreeIndexes[category.id].forEach((categoryIdInTree: number) => {
                     categoriesAndColors.categories[0] === ''
                         ? categoriesAndColors.categories.splice(0, 1, String(categoryIdInTree))
@@ -63,9 +68,9 @@ function SearchField() {
             }
         });
 
-        console.log(categoriesAndColors.categories);
-
         const initialValue = '';
+
+        console.log(searchCategoriesAndColorsNames);
 
         const filteredSearchWithSpace = searchCategoriesAndColorsNames.reduce((accumulator, currValue, index) => {
             if (index === 0) {
