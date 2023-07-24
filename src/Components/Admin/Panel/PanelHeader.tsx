@@ -85,7 +85,7 @@ function AdminAppBar() {
                                 </IconButton>
                             </Tooltip>
                         </Box>
-                        <Box id="notifs" sx={{ margin: '0 1rem 0 1rem' }}>
+                        {/* <Box id="notifs" sx={{ margin: '0 1rem 0 1rem' }}>
                             <Tooltip title="Ilmoitukset">
                                 <IconButton>
                                     <Badge badgeContent={4} color="error">
@@ -93,7 +93,7 @@ function AdminAppBar() {
                                     </Badge>
                                 </IconButton>
                             </Tooltip>
-                        </Box>
+                        </Box> */}
                         <Box id="mail" sx={{ margin: '0 1rem 0 1rem' }}>
                             <Tooltip title="Uudet viestit">
                                 <IconButton component={Link} to="/admin/saapuneet?tila=Lukemattomat">
@@ -104,25 +104,35 @@ function AdminAppBar() {
                             </Tooltip>
                         </Box>
                         <Box id="avatar" sx={{ margin: '0 0 0 1rem' }}>
-                            {/* <Tooltip title="Kirjautuminen" position="left-end"> */}
-                            <IconButton onClick={handleClickAvatarDropDownMenu}>
-                                <Avatar sx={{ bgcolor: 'success.dark' }}>A</Avatar>
-                                <Menu
-                                    id="avatar-dropdown-menu"
-                                    anchorEl={anchorEl}
-                                    open={avatarDropDownMenu}
-                                    onClose={handleCloseAvatarDropDownMenu}
-                                >
-                                    <MenuItem onClick={handleCloseAvatarDropDownMenu} divider>
-                                        Käyttäjäprofiili
-                                    </MenuItem>
-                                    <Box component={Form} onSubmit={handleSubmit(onClickLogOut)}>
-                                        {/* <MenuItem>Kirjaudu ulos</MenuItem> */}
-                                        <Button type="submit">Kirjaudu ulos</Button>
-                                    </Box>
-                                </Menu>
-                            </IconButton>
-                            {/* </Tooltip> */}
+                            <Tooltip title="Kirjautuminen" position="left">
+                                <IconButton onClick={handleClickAvatarDropDownMenu}>
+                                    <Avatar sx={{ bgcolor: 'success.dark' }}>A</Avatar>
+                                    <Menu
+                                        id="avatar-dropdown-menu"
+                                        anchorEl={anchorEl}
+                                        open={avatarDropDownMenu}
+                                        onClose={handleCloseAvatarDropDownMenu}
+                                    >
+                                        <MenuItem
+                                            onClick={handleCloseAvatarDropDownMenu}
+                                            component={Link}
+                                            to="/profiili"
+                                        >
+                                            Käyttäjäprofiili
+                                        </MenuItem>
+                                        <Box
+                                            component={Form}
+                                            onSubmit={handleSubmit(onClickLogOut)}
+                                            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                                        >
+                                            {/* <MenuItem>Kirjaudu ulos</MenuItem> */}
+                                            <Button type="submit" variant="text">
+                                                Kirjaudu ulos
+                                            </Button>
+                                        </Box>
+                                    </Menu>
+                                </IconButton>
+                            </Tooltip>
                         </Box>
                     </Stack>
                 </Toolbar>
