@@ -1,12 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { Form, useActionData, useSubmit } from 'react-router-dom';
 
-import { Box, Button, Container, Grid, IconButton, MenuItem, Stack, TextField } from '@mui/material';
+import { Box, Button, Container, MenuItem, Stack, TextField } from '@mui/material';
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
-import RefreshIcon from '@mui/icons-material/Refresh';
 
 import AlertBox from '../AlertBox';
-import Tooltip from '../Tooltip';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
@@ -20,7 +18,6 @@ function StorageCreate() {
     const {
         register,
         handleSubmit: createHandleSubmit,
-        reset,
         formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors, isDirty, dirtyFields },
     } = useForm();
 
@@ -32,10 +29,6 @@ function StorageCreate() {
             method: 'post',
         });
     });
-
-    const formReset = () => {
-        reset();
-    };
 
     return (
         <>
