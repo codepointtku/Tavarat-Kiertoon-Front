@@ -44,21 +44,17 @@ function getYearAndMonth(dateString: string) {
 
 export default function BikeRentals() {
     const peruna = useLoaderData() as Awaited<ReturnType<typeof bikeRentalLoader>>; // useLoaderData() returns the data passed to it in the loader function
+    const submit = useSubmit();
 
     console.log('kaka', peruna.results);
 
-    // Save data to local storage
+    const [data, setData] = useState<Rental[]>(peruna.results);
 
-    // Retrieve data from local storage
-    const savedData = localStorage.getItem('rentals');
-    const [data, setData] = useState<Rental[]>(savedData ? JSON.parse(savedData) : peruna.results);
-    localStorage.setItem('rentals', JSON.stringify(data));
-
-    // Update local storage when data changes
     const handleRemoveOrder = (id: number) => {
+        // Filter the data array to remove the order with the specified id
         const updatedData = data?.filter((rental) => rental.id !== id);
         setData(updatedData);
-        localStorage.setItem('rentals', JSON.stringify(updatedData));
+        submit({ id: id }, { method: 'delete', action: '/pyorat/pyoravarasto/pyoratilaukset/' });
     };
 
     return (

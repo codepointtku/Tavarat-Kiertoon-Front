@@ -611,6 +611,7 @@ function Routes() {
                                         {
                                             path: 'pyoratilaukset',
                                             loader: async () => bikeRentalLoader(auth, setAuth),
+                                            action: deleteBikeOrderAction,
                                             element: <BikeRentals />,
                                         },
                                         {
