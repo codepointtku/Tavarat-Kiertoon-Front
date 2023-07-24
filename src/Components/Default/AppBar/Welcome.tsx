@@ -1,15 +1,16 @@
-import { Dispatch, SetStateAction } from 'react';
+import { useContext, type Dispatch, type SetStateAction } from 'react';
 import { Form, useSubmit, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { Typography, Button, Container, Box } from '@mui/material';
+import AuthContext from '../../../Context/AuthContext';
 
 interface Props {
-    auth: { username: string };
-    setCurrentOpenDrawer: Dispatch<SetStateAction<string>>;
+    setCurrentOpenDrawer?: Dispatch<SetStateAction<string>> | (() => void);
 }
 
-function Welcome({ auth, setCurrentOpenDrawer }: Props) {
+function Welcome({ setCurrentOpenDrawer }: Props) {
+    const auth = useContext(AuthContext);
     const { handleSubmit } = useForm();
     const submit = useSubmit();
 
@@ -28,7 +29,7 @@ function Welcome({ auth, setCurrentOpenDrawer }: Props) {
                 </Typography>
                 <Button
                     sx={{ mt: 5, backgroundColor: 'primary.dark' }}
-                    onClick={() => setCurrentOpenDrawer('')}
+                    onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
                     component={Link}
                     to="profiili"
                     fullWidth

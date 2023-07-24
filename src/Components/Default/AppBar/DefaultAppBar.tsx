@@ -223,7 +223,6 @@ function DefaultAppBar() {
                                                 horizontal: 'right',
                                             }}
                                         >
-                                            {' '}
                                             <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
                                         </StyledBadge>
                                     ) : (

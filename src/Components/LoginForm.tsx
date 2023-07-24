@@ -66,7 +66,7 @@ function LoginForm(redirectUrl: Props) {
                         <AlertBox
                             text="Sisäänkirjautuminen onnistui"
                             status="success"
-                            timer={2000}
+                            timer={1200}
                             redirectUrl={redirectUrl as string}
                         />
                     )}
