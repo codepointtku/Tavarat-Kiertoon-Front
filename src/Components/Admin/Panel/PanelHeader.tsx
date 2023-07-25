@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+// import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import MailIcon from '@mui/icons-material/Mail';
 
 import Tooltip from '../../Tooltip';
@@ -104,15 +104,16 @@ function AdminAppBar() {
                             </Tooltip>
                         </Box>
                         <Box id="avatar" sx={{ margin: '0 0 0 1rem' }}>
-                            <Tooltip title="Kirjautuminen" position="left">
-                                <IconButton onClick={handleClickAvatarDropDownMenu}>
-                                    <Avatar sx={{ bgcolor: 'success.dark' }}>A</Avatar>
-                                    <Menu
-                                        id="avatar-dropdown-menu"
-                                        anchorEl={anchorEl}
-                                        open={avatarDropDownMenu}
-                                        onClose={handleCloseAvatarDropDownMenu}
-                                    >
+                            {/* <Tooltip title="Kirjautuminen" position="left"> */}
+                            <IconButton onClick={handleClickAvatarDropDownMenu}>
+                                <Avatar sx={{ bgcolor: 'success.dark' }}>A</Avatar>
+                                <Menu
+                                    id="avatar-dropdown-menu"
+                                    anchorEl={anchorEl}
+                                    open={avatarDropDownMenu}
+                                    onClose={handleCloseAvatarDropDownMenu}
+                                >
+                                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                         <MenuItem
                                             onClick={handleCloseAvatarDropDownMenu}
                                             component={Link}
@@ -120,19 +121,20 @@ function AdminAppBar() {
                                         >
                                             Käyttäjäprofiili
                                         </MenuItem>
-                                        <Box
-                                            component={Form}
-                                            onSubmit={handleSubmit(onClickLogOut)}
-                                            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                                        >
-                                            {/* <MenuItem>Kirjaudu ulos</MenuItem> */}
-                                            <Button type="submit" variant="text">
-                                                Kirjaudu ulos
-                                            </Button>
-                                        </Box>
-                                    </Menu>
-                                </IconButton>
-                            </Tooltip>
+                                    </Box>
+                                    <Box
+                                        component={Form}
+                                        onSubmit={handleSubmit(onClickLogOut)}
+                                        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                                    >
+                                        {/* <MenuItem>Kirjaudu ulos</MenuItem> */}
+                                        <Button type="submit" variant="text">
+                                            Kirjaudu ulos
+                                        </Button>
+                                    </Box>
+                                </Menu>
+                            </IconButton>
+                            {/* </Tooltip> */}
                         </Box>
                     </Stack>
                 </Toolbar>
