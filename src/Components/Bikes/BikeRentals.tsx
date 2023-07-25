@@ -47,18 +47,18 @@ function getYearAndMonth(dateString: string) {
 export default function BikeRentals() {
     const currentRentalStatus = ['ACTIVE', 'FINISHED', 'WAITING'];
 
-    const peruna = useLoaderData() as Awaited<ReturnType<typeof bikeRentalLoader>>; // useLoaderData() returns the data passed to it in the loader function
+    const dataRental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalLoader>>; // useLoaderData() returns the data passed to it in the loader function
     const submit = useSubmit();
     const onSubmit = (data: any) => {
         console.log('data', data);
         submit(data, { method: 'put', action: '/pyorat/pyoravarasto/pyoratilaukset/' });
     };
 
-    console.log('kaka', peruna.results);
+    console.log('kaka', dataRental.results);
 
-    const [data, setData] = useState<Rental[]>(peruna.results);
+    const [data, setData] = useState<Rental[]>(dataRental.results);
     const { formState, handleSubmit, register, watch } = useForm({
-        defaultValues: { bikeRentalState: '' },
+        defaultValues: { bikeRentalState: dataRental.results[0].state },
     });
     const { errors } = formState;
 
@@ -82,9 +82,7 @@ export default function BikeRentals() {
                             <StyledTableCell align="right">Lopetuspäivä</StyledTableCell>
                             <StyledTableCell align="right">Status</StyledTableCell>
                             <StyledTableCell align="right">Osoite</StyledTableCell>
-                            <StyledTableCell align="right">
-                                <div>Nouto</div>
-                            </StyledTableCell>
+                            <StyledTableCell align="right">Nouto</StyledTableCell>
                             <StyledTableCell align="right">Tilaaja</StyledTableCell>
                             <StyledTableCell align="right">Puh</StyledTableCell>
                             <StyledTableCell align="right">extra info</StyledTableCell>
