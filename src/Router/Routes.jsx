@@ -96,7 +96,7 @@ import GuideOrdering from '../Components/Default/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Default/Instructions/GuideShipping';
 import GuideBikes from '../Components/Default/Instructions/GuideBikes';
 
-import ModifyBikeOrder from '../Components/Bikes/ModifyBikeOrder';
+import ModifyBikePacket from '../Components/Bikes/ModifyBikePacket';
 import BikesPage from '../Components/Bikes/BikesPage';
 import Bikes from '../Components/Bikes/Bikes';
 import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
@@ -127,17 +127,17 @@ import {
     shoppingCartLoader,
     bikesDefaultLoader,
     bikesListLoader,
-    bikeLoader,
+    modifyBikeLoader,
     createNewBikeLoader,
     bikeModelsLoader,
     bikeSingleModelLoader,
     shoppingProcessLoader,
-    modifyBikeOrderLoader,
+    modifyBikePacketLoader,
     adminLoader,
     adminInboxLoader,
     emailRecipientsLoader,
     bikeNewModelLoader,
-    createBikeOrderLoader,
+    createBikePacketLoader,
 } from './loaders';
 
 import {
@@ -162,7 +162,7 @@ import {
     createNewBikeAction,
     activationAction,
     adminLogOut,
-    modifyBikeOrderAction,
+    modifyBikePacketAction,
     deleteBikeAction,
     adminInboxAction,
     modifyBikeModelAction,
@@ -722,16 +722,15 @@ function Routes() {
                                                 },
                                                 {
                                                     path: ':id',
-                                                    element: <ModifyBikeOrder createNewPacket={false} />,
+                                                    element: <ModifyBikePacket createNewPacket={false} />,
                                                     loader: async ({ params }) =>
-                                                        modifyBikeOrderLoader(auth, setAuth, params),
+                                                        modifyBikePacketLoader(auth, setAuth, params),
                                                     action: async ({ request, params }) =>
-                                                        modifyBikeOrderAction(auth, setAuth, request, params),
+                                                        modifyBikePacketAction(request, params),
                                                     children: [
                                                         {
                                                             path: 'poista',
-                                                            action: async ({ params }) =>
-                                                                deletePacketAction(auth, setAuth, params),
+                                                            action: async ({ params }) => deletePacketAction(params),
                                                         },
                                                     ],
                                                 },
@@ -739,10 +738,10 @@ function Routes() {
                                         },
                                         {
                                             path: 'lisaapaketti',
-                                            element: <ModifyBikeOrder createNewPacket={true} />,
-                                            loader: async ({ params }) => createBikeOrderLoader(auth, setAuth, params),
+                                            element: <ModifyBikePacket createNewPacket={true} />,
+                                            loader: async ({ params }) => createBikePacketLoader(auth, setAuth, params),
                                             action: async ({ request, params }) =>
-                                                createNewPacketAction(auth, setAuth, request, params),
+                                                createNewPacketAction(request, params),
                                         },
                                         {
                                             path: 'muokkaa',
@@ -755,7 +754,8 @@ function Routes() {
                                                 {
                                                     path: ':id',
                                                     element: <ModifyBikePage createNewBike={false} />,
-                                                    loader: async ({ params }) => bikeLoader(auth, setAuth, params),
+                                                    loader: async ({ params }) =>
+                                                        modifyBikeLoader(auth, setAuth, params),
                                                     action: async ({ request, params }) =>
                                                         modifyBikeAction(auth, setAuth, request, params),
                                                     children: [

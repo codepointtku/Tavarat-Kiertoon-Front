@@ -81,7 +81,7 @@ const frontPageActions = async ({ request }) => {
         //     product: id,
         //     amount,
         // });
-        console.log('is in delete block');
+        // console.log('is in delete block');
         const response = await shoppingCartApi.shoppingCartUpdate({
             product: id,
             amount,
@@ -149,21 +149,12 @@ const contactAction = async (auth, setAuth, request) => {
     const response = await contactFormsApi.contactFormsCreate(Object.fromEntries(formData));
     return response.data || null;
 };
+
 /**
  * sends bike order form to back-end
  */
 const bikeOrderAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/bikes/rental/', 'post', {
-    //     contact_name: formData.get('contactPersonName'),
-    //     contact_phone_number: formData.get('contactPersonPhoneNumber'),
-    //     delivery_address: formData.get('deliveryAddress'),
-    //     start_date: formData.get('startDateTime'),
-    //     end_date: formData.get('endDateTime'),
-    //     bike_stock: JSON.parse(formData.get('selectedBikes')),
-    //     extra_info: formData.get('extraInfo'),
-    //     pickup: formData.get('pickup'),
-    // });
     const response = await bikesApi.bikesRentalCreate({
         contact_name: formData.get('contactPersonName'),
         contact_phone_number: formData.get('contactPersonPhoneNumber'),
@@ -176,6 +167,7 @@ const bikeOrderAction = async (auth, setAuth, request) => {
     });
     return response.data || null;
 };
+
 /**
  * removes items from the order and edits order data
  */
@@ -193,29 +185,6 @@ const orderEditAction = async (auth, setAuth, request, params) => {
     await ordersApi.ordersUpdate(params.id, submission);
     return redirect(`/varasto/tilaus/${params.id}`);
 
-    /*
-    // collect data that needs to be sent to backend
-    const data = await request.formData();
-    const submission = {
-        name: data.get('packetName'),
-        description: data.get('packetDescription'),
-        bikes: JSON.parse(data.get('bikes')),
-    };
-    // send data and redirect back to bike list
-    // await apiCall(auth, setAuth, `/bikes/packages/${params.id}/`, 'put', submission);
-    await bikesApi.bikesPackagesUpdate(params.id, submission);
-    return redirect('/pyorat/pyoravarasto/pyorapaketit/');
-
-    orderId: orderData.id,
-    contact: orderData.contact,
-    phoneNumber: orderData.phone_number,
-    deliveryAddress: orderData.delivery_address,
-    status: orderData.status,
-    orderInfo: orderData.order_info,
-    productItems: orderData.product_items,
-    productRenderItems: productRenderItems,
-
-    */
     /*
     // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     // const productName = formData.get('productName');
@@ -581,6 +550,7 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
     const packageOnly = data.get('bikePackageOnlyCheckBox');
     const submission = {
         bike: data.get('bikeModelIdSelect'),
+        color: data.get('bikeColorIdSelect'),
         frame_number: data.get('bikeFrameNumberTextField'),
         number: data.get('bikeNumberTextField'),
         storage: data.get('bikeStorageIdSelect'),
@@ -589,7 +559,6 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
     };
 
     // send data and redirect back to bike list
-    // await apiCall(auth, setAuth, `/bikes/stock/${params.id}/`, 'put', submission);
     await bikesApi.bikesStockUpdate(params.id, submission);
     return redirect('/pyorat/pyoravarasto/pyoralista');
 };
@@ -600,6 +569,7 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     const packageOnly = data.get('bikePackageOnlyCheckBox');
     const submission = {
         bike: data.get('bikeModelIdSelect'),
+        color: data.get('bikeColorIdSelect'),
         frame_number: data.get('bikeFrameNumberTextField'),
         number: data.get('bikeNumberTextField'),
         storage: data.get('bikeStorageIdSelect'),
@@ -608,26 +578,70 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     };
 
     // send data and redirect back to bike list
-    // await apiCall(auth, setAuth, `/bikes/stock/`, 'post', submission);
     await bikesApi.bikesStockCreate(submission);
     return redirect('/pyorat/pyoravarasto/pyoralista');
 };
 
-// kommentti
-const modifyBikeOrderAction = async (auth, setAuth, request, params) => {
-    // collect data that needs to be sent to backend
-    const data = await request.formData();
-    const submission = {
-        name: data.get('packetName'),
-        description: data.get('packetDescription'),
-        bikes: JSON.parse(data.get('bikes')),
-    };
-    // send data and redirect back to bike list
-    // await apiCall(auth, setAuth, `/bikes/packages/${params.id}/`, 'put', submission);
-    await bikesApi.bikesPackagesUpdate(params.id, submission);
-    return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+/**
+ * Update the 'packet_only' flag on each individual bike
+ * This function is needed when individual bikes are not put on packets. Instead the packets
+ * just know how many of each bikeModel is included in the package
+ */
+const updateBikesStockPacketOnlyFlag = async () => {
+    // create a list of all bike ID's and their amounts
+    const allPackets = await bikesApi.bikesPackagesList();
+    const bikeAmounts = [];
+    // loop through all bikeIds in all packets
+    allPackets.data.forEach((packet) => {
+        packet.bikes.forEach((bike) => {
+            const index = bikeAmounts.findIndex((entry) => entry.bikeId === bike.bike);
+            if (index < 0) {
+                // bikeId not found, create new bikeId and amount
+                const newEntry = { bikeId: bike.bike, amount: bike.amount };
+                bikeAmounts.push(newEntry);
+            } else {
+                // add amount to existing bikeId
+                bikeAmounts[index].amount += bike.amount;
+            }
+        });
+    });
+
+    // Get all bikes, compare their package_only flagged bike amounts to packets amounts
+    // and change the needed number of flags to true or false
+    const allBikes = await bikesApi.bikesStockList();
+    const uniqueBikeIds = [...new Set(allBikes.data.map((item) => item.bike.id))];
+    for (const uniqueBikeId of uniqueBikeIds) {
+        const bikesWithuniqueBikeId = allBikes.data.filter((item) => item.bike.id === uniqueBikeId);
+        const amountNeeded = bikeAmounts.find((item) => item.bikeId === uniqueBikeId)?.amount ?? 0;
+        // bikes with packet_only === true
+        for (let i = 0; i < amountNeeded; i++) {
+            const newBike = {
+                ...bikesWithuniqueBikeId[i],
+                bike: bikesWithuniqueBikeId[i].bike.id,
+                package_only: true,
+            };
+            await bikesApi.bikesStockUpdate(bikesWithuniqueBikeId[i].id, newBike);
+        }
+        // bikes with packet_only === false
+        for (let i = amountNeeded; i < bikesWithuniqueBikeId.length; i++) {
+            const newBike = {
+                ...bikesWithuniqueBikeId[i],
+                bike: bikesWithuniqueBikeId[i].bike.id,
+                package_only: false,
+            };
+            await bikesApi.bikesStockUpdate(bikesWithuniqueBikeId[i].id, newBike);
+        }
+    }
 };
-const createNewPacketAction = async (auth, setAuth, request) => {
+
+/**
+ * Modify existing bike packet
+ *
+ * @param {*} request
+ * @param {*} params
+ * @returns
+ */
+const modifyBikePacketAction = async (request, params) => {
     // collect data that needs to be sent to backend
     const data = await request.formData();
     const submission = {
@@ -637,13 +651,42 @@ const createNewPacketAction = async (auth, setAuth, request) => {
     };
 
     // send data and redirect back to bike list
-    // await apiCall(auth, setAuth, `/bikes/stock/`, 'post', submission);
-    await bikesApi.bikesPackagesCreate(submission);
+    await bikesApi.bikesPackagesUpdate(params.id, submission);
+    await updateBikesStockPacketOnlyFlag();
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
-const deletePacketAction = async (auth, setAuth, params) => {
-    // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
+
+/**
+ * Create a new bike packet
+ *
+ * @param {*} request
+ * @returns
+ */
+const createNewPacketAction = async (request) => {
+    // collect data that needs to be sent to backend
+    const data = await request.formData();
+    const submission = {
+        name: data.get('packetName'),
+        description: data.get('packetDescription'),
+        bikes: JSON.parse(data.get('bikes')),
+    };
+
+    // send data and redirect back to bike list
+    await bikesApi.bikesPackagesCreate(submission);
+    await updateBikesStockPacketOnlyFlag();
+    return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+};
+
+/**
+ * Delete existing bike packet
+ *
+ * @param {*} params
+ * @returns
+ */
+const deletePacketAction = async (params) => {
     await bikesApi.bikesPackagesDestroy(params.id);
+    await updateBikesStockPacketOnlyFlag();
+
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
 
@@ -705,7 +748,6 @@ const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
  * @returns
  */
 const deleteBikeAction = async (auth, setAuth, params) => {
-    // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     await bikesApi.bikesStockDestroy(params.id);
     return redirect('/pyorat/pyoravarasto/pyoralista');
 };
@@ -714,7 +756,6 @@ const deleteBikeAction = async (auth, setAuth, params) => {
  * Delete a single bike model
  */
 const deleteBikeModelAction = async (auth, setAuth, params) => {
-    // await apiCall(auth, setAuth, `/bikes/models/${params.id}`, 'delete');
     await bikesApi.bikesModelsDestroy(params.id);
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
@@ -733,26 +774,24 @@ const getOrCreateBikeModelIds = async (auth, setAuth, data) => {
     // if selected type, brand or size do not exist they need to be created
     // need to create new is indicated by setting the bikeModelXXXId to -1 in the form
     let typeId = data.get('bikeModelTypeId');
+
+    let bikeName =
+        data.get('bikeModelSizeName') + '" ' + data.get('bikeModelTypeName') + ' ' + data.get('bikeModelBrandName');
     if (typeId <= 0) {
-        // const response = await apiCall(auth, setAuth, `/bikes/type/`, 'post', { name: data.get('bikeModelTypeName') });
         const response = await bikesApi.bikesTypeCreate({ name: data.get('bikeModelTypeName') });
         typeId = response.data.id;
     }
     let brandId = data.get('bikeModelBrandId');
     if (brandId <= 0) {
-        // const response = await apiCall(auth, setAuth, `/bikes/brand/`, 'post', {
-        //     name: data.get('bikeModelBrandName'),
-        // });
         const response = await bikesApi.bikesBrandCreate({ name: data.get('bikeModelBrandName') });
         brandId = response.data.id;
     }
     let sizeId = data.get('bikeModelSizeId');
     if (sizeId <= 0) {
-        // const response = await apiCall(auth, setAuth, `/bikes/size/`, 'post', { name: data.get('bikeModelSizeName') });
         const response = await bikesApi.bikesSizeCreate({ name: data.get('bikeModelSizeName') });
         sizeId = response.data.id;
     }
-    return { typeId, brandId, sizeId };
+    return { typeId, brandId, sizeId, bikeName };
 };
 
 /**
@@ -770,20 +809,17 @@ const modifyBikeModelAction = async (auth, setAuth, request, params) => {
     const data = await request.formData();
 
     // get or create new ids for type, brand and size
-    const { typeId, brandId, sizeId } = await getOrCreateBikeModelIds(auth, setAuth, data);
+    const { typeId, brandId, sizeId, bikeName } = await getOrCreateBikeModelIds(auth, setAuth, data);
 
     // append modified data to form data
-    data.append('name', data.get('bikeModelName'));
+    data.append('name', bikeName);
     data.append('description', data.get('bikeModelDescription'));
-    data.append('color', data.get('bikeModelColorId'));
+    data.append('color', 1);
     data.append('type', typeId);
     data.append('brand', brandId);
     data.append('size', sizeId);
 
     // send data and redirect
-    // await apiCall(auth, setAuth, `/bikes/models/${params.id}/`, 'put', data, {
-    //     headers: { 'Content-Type': 'multipart/form-data' },
-    // });
     await bikesApi.bikesModelsUpdate(params.id, data, { headers: { 'Content-Type': 'multipart/form-data' } });
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
@@ -802,22 +838,18 @@ const createBikeModelAction = async (auth, setAuth, request) => {
     const data = await request.formData();
 
     // get or create new ids for type, brand and size
-    const { typeId, brandId, sizeId } = await getOrCreateBikeModelIds(auth, setAuth, data);
+    const { typeId, brandId, sizeId, bikeName } = await getOrCreateBikeModelIds(auth, setAuth, data);
 
     // append modified data to form data
-    data.append('name', data.get('bikeModelName'));
+    data.append('name', bikeName);
     data.append('description', data.get('bikeModelDescription'));
-    data.append('color', data.get('bikeModelColorId'));
+    data.append('color', 1);
     data.append('type', typeId);
     data.append('brand', brandId);
     data.append('size', sizeId);
 
     // send data and redirect
-    // await apiCall(auth, setAuth, `/bikes/models/`, 'post', data, {
-    //     headers: { 'Content-Type': 'multipart/form-data' },
-    // });
     await bikesApi.bikesModelsCreate(data, { headers: { 'Content-Type': 'multipart/form-data' } });
-
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
 
@@ -899,7 +931,6 @@ const adminEmailRecipientsAction = async ({ request }) => {
 const userProfilePageAction = async (request) => {
     const formData = await request.formData();
     const response = await userApi.userUpdate({
-        username: formData.get('username'),
         first_name: formData.get('first_name'),
         last_name: formData.get('last_name'),
         phone_number: formData.get('phone_number'),
@@ -962,7 +993,7 @@ export {
     modifyBikeModelAction,
     deleteBikeAction,
     adminLogOut,
-    modifyBikeOrderAction,
+    modifyBikePacketAction,
     adminInboxAction,
     adminEmailRecipientsAction,
     createBikeModelAction,
