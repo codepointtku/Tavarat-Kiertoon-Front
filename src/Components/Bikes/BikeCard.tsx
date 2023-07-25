@@ -67,7 +67,7 @@ export default function BikeCard({
                 }}
             >
                 {isPackage ? 'Paketti' : ''}
-                <CardMedia component="img" alt="kuva" image="/bike.jpg" />
+                <CardMedia component="img" alt="kuva" image="/bike.jpg" height="180px" sx={{ objectFit: 'contain' }} />
             </div>
             <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Typography variant="h6">{bike.name}</Typography>
