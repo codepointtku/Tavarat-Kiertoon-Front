@@ -10,6 +10,8 @@ import {
     Typography,
     Box,
     IconButton,
+    TextField,
+    MenuItem,
 } from '@mui/material';
 import { useLoaderData } from 'react-router';
 import StyledTableCell from '../StyledTableCell';
@@ -43,12 +45,22 @@ function getYearAndMonth(dateString: string) {
 }
 
 export default function BikeRentals() {
+    const currentRentalStatus = ['ACTIVE', 'FINISHED', 'WAITING'];
+
     const peruna = useLoaderData() as Awaited<ReturnType<typeof bikeRentalLoader>>; // useLoaderData() returns the data passed to it in the loader function
     const submit = useSubmit();
+    const onSubmit = (data: any) => {
+        console.log('data', data);
+        submit(data, { method: 'put', action: '/pyorat/pyoravarasto/pyoratilaukset/' });
+    };
 
     console.log('kaka', peruna.results);
 
     const [data, setData] = useState<Rental[]>(peruna.results);
+    const { formState, handleSubmit, register, watch } = useForm({
+        defaultValues: { bikeRentalState: '' },
+    });
+    const { errors } = formState;
 
     const handleRemoveOrder = (id: number) => {
         // Filter the data array to remove the order with the specified id
@@ -58,7 +70,7 @@ export default function BikeRentals() {
     };
 
     return (
-        <Box component={Form} width="100%">
+        <Box component={Form} onSubmit={handleSubmit(onSubmit)} width="100%">
             <Typography variant="h3" align="center" color="primary.main" width="100%">
                 Tilaukset{' '}
             </Typography>
@@ -85,7 +97,31 @@ export default function BikeRentals() {
                                 <TableRow key={rental.id} hover>
                                     <TableCell align="right">{getYearAndMonth(rental.start_date)}</TableCell>
                                     <TableCell align="right">{getYearAndMonth(rental.end_date)}</TableCell>
-                                    <TableCell align="right">{rental.state}</TableCell>
+                                    <TextField
+                                        id="bike-status-select"
+                                        select
+                                        label="Valitse pyörän tila"
+                                        {...register('bikeRentalState', {
+                                            required: 'Pakollinen tieto puuttuu',
+                                        })}
+                                        value={watch('bikeRentalState')}
+                                        fullWidth
+                                        inputProps={{ required: false }}
+                                        required
+                                        color={errors.bikeRentalState ? 'error' : 'primary'}
+                                        error={!!errors.bikeRentalState}
+                                        helperText={errors.bikeRentalState?.message || ' '}
+                                        sx={{ marginBottom: '-1rem' }}
+                                    >
+                                        {currentRentalStatus?.map((status) => {
+                                            return (
+                                                <MenuItem key={status} value={status}>
+                                                    {status}
+                                                </MenuItem>
+                                            );
+                                        })}
+                                    </TextField>
+                                    {/* <TableCell align="right">{rental.state}</TableCell> */}
                                     <TableCell align="right">{rental.delivery_address}</TableCell>
                                     <TableCell align="right">{rental.pickup ? 'Kyllä' : 'Ei'}</TableCell>
                                     <TableCell align="right">{rental.contact_name}</TableCell>
