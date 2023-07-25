@@ -86,8 +86,6 @@ export default function BikesPage() {
               bike.package_only_count ? bike.max_available > bike.package_only_count : bike.max_available
           );
 
-    console.log('### filteredBikes', filteredBikes);
-
     const sizeOptionsSet = new Set();
     const colorOptionsSet = new Set();
     const brandOptionsSet = new Set();
@@ -99,11 +97,6 @@ export default function BikesPage() {
         if (bike.brand !== null) brandOptionsSet.add(bike.brand);
         if (bike.type !== null) typeOptionsSet.add(bike.type);
     });
-
-    console.log('###', sizeOptionsSet);
-    console.log('###', colorOptionsSet);
-    console.log('###', brandOptionsSet);
-    console.log('###', typeOptionsSet);
 
     const handleFilterChange = (filter, newOption) =>
         setSearchParams((prevSearchParams) => {
