@@ -20,6 +20,23 @@ paths:
                 items:
                   $ref: '#/components/schemas/MainBikeListSchema'
           description: ''
+  /bikes/availabilitylist/:
+    get:
+      operationId: bikes_availabilitylist_list
+      tags:
+      - bikes
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BikeAvailabilityListResponse'
+          description: ''
   /bikes/brand/:
     get:
       operationId: bikes_brand_list
@@ -276,7 +293,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BikePackageSchemaResponse'
+                  $ref: '#/components/schemas/BikePackageList'
           description: ''
     post:
       operationId: bikes_packages_create
@@ -286,13 +303,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BikePackageCreateResponse'
+              $ref: '#/components/schemas/BikePackageList'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/BikePackageCreateResponse'
+              $ref: '#/components/schemas/BikePackageList'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/BikePackageCreateResponse'
+              $ref: '#/components/schemas/BikePackageList'
         required: true
       security:
       - jwtAuth: []
@@ -302,7 +319,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BikePackageSchemaResponse'
+                $ref: '#/components/schemas/BikePackageList'
           description: ''
   /bikes/packages/{id}/:
     get:
@@ -323,7 +340,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BikePackageSchemaResponse'
+                $ref: '#/components/schemas/BikePackageList'
           description: ''
     put:
       operationId: bikes_packages_update
@@ -339,13 +356,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BikePackage'
+              $ref: '#/components/schemas/BikePackageList'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/BikePackage'
+              $ref: '#/components/schemas/BikePackageList'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/BikePackage'
+              $ref: '#/components/schemas/BikePackageList'
         required: true
       security:
       - jwtAuth: []
@@ -355,7 +372,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BikePackageSchemaResponse'
+                $ref: '#/components/schemas/BikePackageList'
           description: ''
     delete:
       operationId: bikes_packages_destroy
@@ -3389,20 +3406,6 @@ paths:
           description: No response body
 components:
   schemas:
-    BikeAmount:
-      type: object
-      properties:
-        id:
-          type: integer
-        amount:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        bike:
-          type: integer
-      required:
-      - amount
-      - bike
     BikeAmountList:
       type: object
       properties:
@@ -3422,38 +3425,25 @@ components:
       - bike
       - id
       - package
-    BikeAmountSchemaCreate:
+    BikeAvailabilityListResponse:
       type: object
       properties:
         id:
           type: integer
-          readOnly: true
-        amount:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        bike:
-          type: integer
+        available_from:
+          type: string
+          format: date
+        available_to:
+          type: string
+          format: date
+        rental_dates:
+          type: array
+          items: {}
       required:
-      - amount
-      - bike
+      - available_from
+      - available_to
       - id
-    BikeAmountSchemaResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        amount:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        bike:
-          type: integer
-      required:
-      - amount
-      - bike
-      - id
+      - rental_dates
     BikeBrand:
       type: object
       properties:
@@ -3573,7 +3563,7 @@ components:
       - name
       - size
       - type
-    BikePackage:
+    BikePackageList:
       type: object
       properties:
         id:
@@ -3585,50 +3575,12 @@ components:
         description:
           type: string
           maxLength: 255
-        bikes:
+        bike_stock:
           type: array
           items:
-            $ref: '#/components/schemas/BikeAmount'
+            type: integer
       required:
-      - bikes
-      - description
-      - id
-      - name
-    BikePackageCreateResponse:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 255
-        description:
-          type: string
-          maxLength: 255
-        bikes:
-          type: array
-          items:
-            $ref: '#/components/schemas/BikeAmountSchemaCreate'
-      required:
-      - bikes
-      - description
-      - name
-    BikePackageSchemaResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          maxLength: 255
-        description:
-          type: string
-          maxLength: 255
-        bikes:
-          type: array
-          items:
-            $ref: '#/components/schemas/BikeAmountSchemaResponse'
-      required:
-      - bikes
+      - bike_stock
       - description
       - id
       - name
@@ -3667,6 +3619,10 @@ components:
           type: array
           items:
             type: integer
+        packages:
+          type: array
+          items:
+            type: integer
       required:
       - bike_stock
       - contact_name
@@ -3674,6 +3630,7 @@ components:
       - delivery_address
       - end_date
       - id
+      - packages
       - start_date
     BikeRentalEnum:
       enum:
@@ -3715,6 +3672,10 @@ components:
         extra_info:
           type: string
           maxLength: 255
+        packages:
+          type: array
+          items:
+            type: integer
       required:
       - bike_stock
       - contact_name
@@ -3722,6 +3683,7 @@ components:
       - delivery_address
       - end_date
       - id
+      - packages
       - start_date
     BikeRentalSchemaResponse:
       type: object
@@ -3758,6 +3720,10 @@ components:
           type: array
           items:
             type: integer
+        packages:
+          type: array
+          items:
+            type: integer
       required:
       - bike_stock
       - contact_name
@@ -3766,6 +3732,7 @@ components:
       - end_date
       - extra_info
       - id
+      - packages
       - pickup
       - start_date
       - state
@@ -3819,6 +3786,9 @@ components:
           type: integer
         storage:
           type: integer
+        package:
+          type: integer
+          nullable: true
       required:
       - bike
       - created_at
@@ -3896,6 +3866,9 @@ components:
         color:
           type: integer
           nullable: true
+        package:
+          type: integer
+          nullable: true
       required:
       - bike
       - created_at
@@ -3934,6 +3907,9 @@ components:
           nullable: true
         storage:
           type: integer
+        package:
+          type: integer
+          nullable: true
       required:
       - bike
       - created_at
@@ -3970,6 +3946,9 @@ components:
           type: integer
         storage:
           type: integer
+        package:
+          type: integer
+          nullable: true
       required:
       - bike
       - created_at

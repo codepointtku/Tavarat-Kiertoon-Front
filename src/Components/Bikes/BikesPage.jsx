@@ -53,66 +53,53 @@ export default function BikesPage() {
     const containerRef = useRef(null);
 
     const loaderData = useLoaderData();
+    console.log('### BikesPage: loaderData', loaderData);
     const minDate = parseISO(loaderData.date_info.available_from);
     const maxDate = parseISO(loaderData.date_info.available_to);
-    const bikes = [
-        // The bike package id and bike id would have possibility for overlap since they're both just incrementing from 0
-        ...loaderData.packages.map((bikePackage) => ({
-            ...bikePackage,
-            id: `package-${bikePackage.id}`,
-            unavailable: bikePackageUnavailable(
-                bikePackage,
-                minDate,
-                maxDate,
-                loaderData.bikes,
-                watch('selectedBikes'),
-                watch('startDate'),
-                watch('endDate')
-            ),
-        })),
-        ...loaderData.bikes,
-    ];
-    // ].sort((a, b) => b.max_available - a.max_available);
-    const [searchParams, setSearchParams] = useSearchParams();
-    const filteredBikes = searchParams.get('filters')
-        ? bikes.filter((bike) =>
-              Object.entries(JSON.parse(searchParams.get('filters'))).every(
-                  ([filterName, filterValue]) => filterValue === bike[filterName]
-              ) && bike.package_only_count
-                  ? bike.max_available > bike.package_only_count
-                  : bike.max_available
-          )
-        : bikes.filter((bike) =>
-              bike.package_only_count ? bike.max_available > bike.package_only_count : bike.max_available
-          );
+    const bikes = [...loaderData.bikes];
+    const packages = [...loaderData.packages];
+    console.log('### BikesPage: bikes, packages', bikes, packages);
 
-    const sizeOptionsSet = new Set();
-    const colorOptionsSet = new Set();
-    const brandOptionsSet = new Set();
-    const typeOptionsSet = new Set();
+    // const [searchParams, setSearchParams] = useSearchParams();
+    // const filteredBikes = searchParams.get('filters')
+    //     ? bikes.filter((bike) =>
+    //           Object.entries(JSON.parse(searchParams.get('filters'))).every(
+    //               ([filterName, filterValue]) => filterValue === bike[filterName]
+    //           ) && bike.package_only_count
+    //               ? bike.max_available > bike.package_only_count
+    //               : bike.max_available
+    //       )
+    //     : bikes.filter((bike) =>
+    //           bike.package_only_count ? bike.max_available > bike.package_only_count : bike.max_available
+    //       );
 
-    bikes.forEach((bike) => {
-        if (bike.size !== null) sizeOptionsSet.add(bike.size);
-        if (bike.color !== null) colorOptionsSet.add(bike.color);
-        if (bike.brand !== null) brandOptionsSet.add(bike.brand);
-        if (bike.type !== null) typeOptionsSet.add(bike.type);
-    });
+    // const sizeOptionsSet = new Set();
+    // const colorOptionsSet = new Set();
+    // const brandOptionsSet = new Set();
+    // const typeOptionsSet = new Set();
 
-    const handleFilterChange = (filter, newOption) =>
-        setSearchParams((prevSearchParams) => {
-            if (newOption === null) {
-                const newFilters = JSON.parse(prevSearchParams.get('filters'));
-                delete newFilters[filter];
-                return { filters: JSON.stringify({ ...newFilters }) };
-            }
-            const newFilters = JSON.parse(prevSearchParams.get('filters')) ?? {};
-            return {
-                filters: JSON.stringify({
-                    ...newFilters,
-                    [filter]: newOption,
-                }),
-            };
-        });
+    // bikes.forEach((bike) => {
+    //     if (bike.size !== null) sizeOptionsSet.add(bike.size);
+    //     if (bike.color !== null) colorOptionsSet.add(bike.color);
+    //     if (bike.brand !== null) brandOptionsSet.add(bike.brand);
+    //     if (bike.type !== null) typeOptionsSet.add(bike.type);
+    // });
+
+    // const handleFilterChange = (filter, newOption) =>
+    //     setSearchParams((prevSearchParams) => {
+    //         if (newOption === null) {
+    //             const newFilters = JSON.parse(prevSearchParams.get('filters'));
+    //             delete newFilters[filter];
+    //             return { filters: JSON.stringify({ ...newFilters }) };
+    //         }
+    //         const newFilters = JSON.parse(prevSearchParams.get('filters')) ?? {};
+    //         return {
+    //             filters: JSON.stringify({
+    //                 ...newFilters,
+    //                 [filter]: newOption,
+    //             }),
+    //         };
+    //     });
 
     const storageTypeForm = (
         <Controller
@@ -261,7 +248,7 @@ export default function BikesPage() {
                                                 <Typography my={2} variant="h6">
                                                     Valitse vuokraukseen haluamasi pyörät
                                                 </Typography>
-                                                <Box mb={2} mt={1}>
+                                                {/* <Box mb={2} mt={1}>
                                                     <Stack my={1} flexDirection="row" justifyContent="space-between">
                                                         <Autocomplete
                                                             disablePortal
@@ -340,14 +327,15 @@ export default function BikesPage() {
                                                             size="small"
                                                         />
                                                     </Stack>
-                                                </Box>
+                                                </Box> */}
                                                 <Stack gap={1}>
                                                     <Controller
                                                         control={control}
                                                         name="selectedBikes"
                                                         render={({ field: { onChange, value } }) => (
                                                             <TransitionGroup>
-                                                                {filteredBikes.map((bike) => (
+                                                                {/* {filteredBikes.map((bike) => ( */}
+                                                                {bikes.map((bike) => (
                                                                     <Collapse key={bike.id}>
                                                                         <BikeCard
                                                                             bike={bike}

@@ -42,6 +42,7 @@ export default function BikeCard({
     startDate: selectedStartDate,
     endDate: selectedEndDate,
 }: BikeCardInterface) {
+    console.log('### BikeCard: bike, dateInfo, amountSelected, onChange', bike, dateInfo, amountSelected, onChange);
     const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
     const maxNonPackageAvailable = bike.package_only_count
         ? bike.max_available - bike.package_only_count
@@ -49,7 +50,10 @@ export default function BikeCard({
 
     return (
         <Card sx={{ my: 1, display: 'flex', flexDirection: 'row', height: '220px' }}>
+            {/* Picture */}
             <CardMedia sx={{ width: '220px', height: '220px' }} component="img" alt="kuva" image="/bike.jpg" />
+
+            {/* Name, description and "more info" button */}
             <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Typography variant="h6">{bike.name}</Typography>
                 <Box sx={{ mb: 1 }}>
@@ -67,10 +71,13 @@ export default function BikeCard({
                     </Button>
                 </Box>
             </CardContent>
+
+            {/* Amounts and availabilities */}
             <CardActions
                 sx={{ justifyContent: 'space-between', display: 'flex', flexDirection: 'column', alignItems: 'end' }}
             >
                 <Stack justifyContent="space-between" height="100%" pt={1}>
+                    {/* Amount selector with (-) and (+) buttons */}
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', mr: 5, alignItems: 'center' }}>
                         <IconButton
                             aria-label="vähennä yksi"
@@ -94,6 +101,8 @@ export default function BikeCard({
                             <AddCircleIcon fontSize="inherit" />
                         </IconButton>
                     </Box>
+
+                    {/* Availability ("Saatavuus") field */}
                     <BikeAvailability
                         dateInfo={dateInfo}
                         maxAvailable={maxNonPackageAvailable}
