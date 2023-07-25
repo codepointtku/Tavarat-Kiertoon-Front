@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Paper,
     TableContainer,
@@ -20,6 +19,7 @@ import { useState } from 'react';
 import { bikeRentalLoader } from '../../Router/loaders';
 import { Form, useSubmit } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+
 interface Rental {
     id: number;
     start_date: string;
@@ -39,34 +39,33 @@ function getYearAndMonth(dateString: string) {
     const year = date.getFullYear();
     const day = date.getDate();
     const month = date.getMonth() + 1; // add 1 since getMonth() returns 0-indexed months
-    // return `${day}.${month}.${year}`;
     return date.toLocaleDateString('FI-fi');
-    // return day.toString() + '.' + month.toString() + '.' + year.toString();
 }
 
 export default function BikeRentals() {
     const currentRentalStatus = ['ACTIVE', 'FINISHED', 'WAITING'];
 
-    const dataRental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalLoader>>; // useLoaderData() returns the data passed to it in the loader function
+    const dataRental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalLoader>>;
     const submit = useSubmit();
     const onSubmit = (data: any) => {
         console.log('data', data);
         submit(data, { method: 'put', action: '/pyorat/pyoravarasto/pyoratilaukset/' });
     };
 
-    console.log('kaka', dataRental.results);
-
     const [data, setData] = useState<Rental[]>(dataRental.results);
-    const { formState, handleSubmit, register, watch } = useForm({
+    const { formState, handleSubmit, register, watch, setValue } = useForm({
         defaultValues: { bikeRentalState: dataRental.results[0].state },
     });
     const { errors } = formState;
 
     const handleRemoveOrder = (id: number) => {
-        // Filter the data array to remove the order with the specified id
         const updatedData = data?.filter((rental) => rental.id !== id);
         setData(updatedData);
         submit({ id: id }, { method: 'delete', action: '/pyorat/pyoravarasto/pyoratilaukset/' });
+    };
+
+    const handleStatusChange = (id: number, status: string) => {
+        setValue(`bikeRentalState${id}`, status);
     };
 
     return (
@@ -90,49 +89,46 @@ export default function BikeRentals() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data?.map((rental) => {
-                            return (
-                                <TableRow key={rental.id} hover>
-                                    <TableCell align="right">{getYearAndMonth(rental.start_date)}</TableCell>
-                                    <TableCell align="right">{getYearAndMonth(rental.end_date)}</TableCell>
+                        {data?.map((rental) => (
+                            <TableRow key={rental.id} hover>
+                                <TableCell align="right">{getYearAndMonth(rental.start_date)}</TableCell>
+                                <TableCell align="right">{getYearAndMonth(rental.end_date)}</TableCell>
+                                <TableCell align="right">
                                     <TextField
-                                        id="bike-status-select"
                                         select
                                         label="Valitse pyörän tila"
-                                        {...register('bikeRentalState', {
+                                        {...register(`bikeRentalState${rental.id}`, {
                                             required: 'Pakollinen tieto puuttuu',
                                         })}
-                                        value={watch('bikeRentalState')}
+                                        value={watch(`bikeRentalState${rental.id}`, rental.state)}
                                         fullWidth
                                         inputProps={{ required: false }}
                                         required
-                                        color={errors.bikeRentalState ? 'error' : 'primary'}
-                                        error={!!errors.bikeRentalState}
-                                        helperText={errors.bikeRentalState?.message || ' '}
+                                        color={errors[`bikeRentalState${rental.id}`] ? 'error' : 'primary'}
+                                        error={!!errors[`bikeRentalState${rental.id}`]}
+                                        helperText={errors[`bikeRentalState${rental.id}`]?.message || ' '}
                                         sx={{ marginBottom: '-1rem' }}
+                                        onChange={(event) => handleStatusChange(rental.id, event.target.value)}
                                     >
-                                        {currentRentalStatus?.map((status) => {
-                                            return (
-                                                <MenuItem key={status} value={status}>
-                                                    {status}
-                                                </MenuItem>
-                                            );
-                                        })}
+                                        {currentRentalStatus?.map((status) => (
+                                            <MenuItem key={status} value={status}>
+                                                {status}
+                                            </MenuItem>
+                                        ))}
                                     </TextField>
-                                    {/* <TableCell align="right">{rental.state}</TableCell> */}
-                                    <TableCell align="right">{rental.delivery_address}</TableCell>
-                                    <TableCell align="right">{rental.pickup ? 'Kyllä' : 'Ei'}</TableCell>
-                                    <TableCell align="right">{rental.contact_name}</TableCell>
-                                    <TableCell align="right">{rental.contact_phone_number}</TableCell>
-                                    <TableCell align="right">{rental.extra_info}</TableCell>
-                                    <TableCell align="right">
-                                        <IconButton onClick={() => handleRemoveOrder(rental.id)}>
-                                            <GridDeleteIcon />
-                                        </IconButton>
-                                    </TableCell>
-                                </TableRow>
-                            );
-                        })}
+                                </TableCell>
+                                <TableCell align="right">{rental.delivery_address}</TableCell>
+                                <TableCell align="right">{rental.pickup ? 'Kyllä' : 'Ei'}</TableCell>
+                                <TableCell align="right">{rental.contact_name}</TableCell>
+                                <TableCell align="right">{rental.contact_phone_number}</TableCell>
+                                <TableCell align="right">{rental.extra_info}</TableCell>
+                                <TableCell align="right">
+                                    <IconButton onClick={() => handleRemoveOrder(rental.id)}>
+                                        <GridDeleteIcon />
+                                    </IconButton>
+                                </TableCell>
+                            </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
             </TableContainer>
