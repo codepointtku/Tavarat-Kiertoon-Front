@@ -2791,6 +2791,153 @@ paths:
       responses:
         '204':
           description: No response body
+  /user/searchwatch/:
+    get:
+      operationId: user_searchwatch_list
+      description: Get list of all search wacthes user has, and edit them
+      tags:
+      - user
+      security:
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserSearchWatchUser'
+          description: ''
+    post:
+      operationId: user_searchwatch_create
+      description: Get list of all search wacthes user has, and edit them
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSearchWatchSchema'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserSearchWatchSchema'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserSearchWatchSchema'
+        required: true
+      security:
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSearchWatchAdmin'
+          description: ''
+  /user/searchwatch/{id}/:
+    get:
+      operationId: user_searchwatch_retrieve
+      description: Delete the specific address given in kwargs. address needs to match
+        logged in user id as owner
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - user
+      security:
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSearchWatchUser'
+          description: ''
+    put:
+      operationId: user_searchwatch_update
+      description: Delete the specific address given in kwargs. address needs to match
+        logged in user id as owner
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSearchWatchUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserSearchWatchUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserSearchWatchUser'
+        required: true
+      security:
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSearchWatchUser'
+          description: ''
+    patch:
+      operationId: user_searchwatch_partial_update
+      description: Delete the specific address given in kwargs. address needs to match
+        logged in user id as owner
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserSearchWatchUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserSearchWatchUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserSearchWatchUser'
+      security:
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSearchWatchUser'
+          description: ''
+    delete:
+      operationId: user_searchwatch_destroy
+      description: Delete the specific address given in kwargs. address needs to match
+        logged in user id as owner
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - user
+      security:
+      - CustomJWTAuthentication: []
+      responses:
+        '204':
+          description: No response body
   /users/:
     get:
       operationId: users_list
@@ -2960,13 +3107,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GroupPermissions'
+              $ref: '#/components/schemas/GroupPermissionsResponseSchema'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/GroupPermissions'
+              $ref: '#/components/schemas/GroupPermissionsResponseSchema'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/GroupPermissions'
+              $ref: '#/components/schemas/GroupPermissionsResponseSchema'
+        required: true
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -3226,6 +3374,7 @@ paths:
           - Users email was changed
           - Users password was changed
           - Users permissions were changed
+          - Users search watch was edited
         description: |-
           * `User was created` - Created
           * `User was activated` - Activated
@@ -3235,6 +3384,7 @@ paths:
           * `User address info was deleted` - User Address Info Delete
           * `Users permissions were changed` - Permissions
           * `Users email was changed` - Email
+          * `Users search watch was edited` - Watch
 
           * `User was created` - Created
           * `User was activated` - Activated
@@ -3244,6 +3394,7 @@ paths:
           * `User address info was deleted` - User Address Info Delete
           * `Users permissions were changed` - Permissions
           * `Users email was changed` - Email
+          * `Users search watch was edited` - Watch
       - name: ordering
         required: false
         in: query
@@ -3386,6 +3537,128 @@ paths:
       - {}
       responses:
         '200':
+          description: No response body
+  /users/searchwatch/:
+    get:
+      operationId: users_searchwatch_list
+      description: |-
+        user search watches in list:
+        FOR ADMINS
+      tags:
+      - users
+      security:
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserSearchWatchAdmin'
+          description: ''
+    post:
+      operationId: users_searchwatch_create
+      description: |-
+        user search watches in list:
+        FOR ADMINS
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSearchWatchAdmin'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserSearchWatchAdmin'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserSearchWatchAdmin'
+        required: true
+      security:
+      - CustomJWTAuthentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSearchWatchAdmin'
+          description: ''
+  /users/searchwatch/{id}/:
+    get:
+      operationId: users_searchwatch_retrieve
+      description: |-
+        single user search watch:
+        FOR ADMINS
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      security:
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSearchWatchAdmin'
+          description: ''
+    put:
+      operationId: users_searchwatch_update
+      description: |-
+        single user search watch:
+        FOR ADMINS
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSearchWatchAdmin'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserSearchWatchAdmin'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserSearchWatchAdmin'
+        required: true
+      security:
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSearchWatchAdmin'
+          description: ''
+    delete:
+      operationId: users_searchwatch_destroy
+      description: |-
+        single user search watch:
+        FOR ADMINS
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      security:
+      - CustomJWTAuthentication: []
+      responses:
+        '204':
           description: No response body
 components:
   schemas:
@@ -4254,15 +4527,6 @@ components:
       required:
       - id
       - name
-    GroupPermissions:
-      type: object
-      properties:
-        groups:
-          type: array
-          items:
-            type: integer
-          description: The groups this user belongs to. A user will get all permissions
-            granted to each of their groups.
     GroupPermissionsResponseSchema:
       type: object
       description: FOR SCHEMA
@@ -4775,6 +5039,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserLogResponseSchema'
+    PatchedUserSearchWatchUser:
+      type: object
+      description: Serializer for user search watchs for normal users
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        word:
+          type: string
+          maxLength: 255
     Picture:
       type: object
       properties:
@@ -5471,6 +5745,7 @@ components:
       - User address info was deleted
       - Users permissions were changed
       - Users email was changed
+      - Users search watch was edited
       type: string
       description: |-
         * `User was created` - Created
@@ -5481,6 +5756,7 @@ components:
         * `User address info was deleted` - User Address Info Delete
         * `Users permissions were changed` - Permissions
         * `Users email was changed` - Email
+        * `Users search watch was edited` - Watch
     UserLogResponseSchema:
       type: object
       description: |-
@@ -5553,6 +5829,49 @@ components:
           maxLength: 255
       required:
       - username
+    UserSearchWatchAdmin:
+      type: object
+      description: Serializer for user search watchs for admins
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        word:
+          type: string
+          maxLength: 255
+        user:
+          type: integer
+      required:
+      - id
+      - user
+      - word
+    UserSearchWatchSchema:
+      type: object
+      description: Serializer mainly for schema purpose, fields required for creating
+        user watch for user
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        word:
+          type: string
+          maxLength: 255
+      required:
+      - id
+      - word
+    UserSearchWatchUser:
+      type: object
+      description: Serializer for user search watchs for normal users
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        word:
+          type: string
+          maxLength: 255
+      required:
+      - id
+      - word
     UserTokenValidation:
       type: object
       description: Serializer for user activation validations.
