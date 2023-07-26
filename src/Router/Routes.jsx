@@ -609,10 +609,6 @@ function Routes() {
                                     ],
                                 },
                                 {
-                                    path: 'hakemukset',
-                                    element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
-                                },
-                                {
                                     path: 'varastot',
                                     element: <Outlet />,
                                     children: [
