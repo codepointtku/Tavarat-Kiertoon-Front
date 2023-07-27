@@ -205,113 +205,161 @@ test.describe('fail', () => {
 // -- Adminview route tests
 
 test.describe('admin', () => {
-    test('no errors', async ({ page }) => {
+    test('admin root path', async ({ page }) => {
         await page.goto('admin');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
 });
 
-test.describe('admintilastot', () => {
+test.describe('admin statspage', () => {
     test('no errors', async ({ page }) => {
         await page.goto('admin/tilastot');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
 });
 
-test.describe('admintilauslista', () => {
+// orders
+test.describe('admin orderlist', () => {
     test('no errors', async ({ page }) => {
         await page.goto('admin/tilaukset');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
 });
 
-test.describe('admin-uusi-tilaus', () => {
+test.describe('admin order edit', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('admin/tilaukset/1');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
+test.describe('admin order create', () => {
     test('no errors', async ({ page }) => {
         await page.goto('admin/tilaukset/uusi');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
 });
 
-test.describe('kayttajat', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('admin/kayttajat');
-        await expect(page.getByText(`${testText}`)).not.toBeVisible();
-    });
-});
-
-test.describe('kayttaja', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('admin/kayttajat/0');
-        await expect(page.getByText(`${testText}`)).not.toBeVisible();
-    });
-});
-
-test.describe('hakemukset', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/admin/hakemukset');
-        await expect(page.getByText(`${testText}`)).not.toBeVisible();
-    });
-});
-
-test.describe('luotiedote', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/admin/tiedotteet/luo');
-        await expect(page.getByText(`${testText}`)).not.toBeVisible();
-    });
-});
-
-test.describe('arrived', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/admin/saapuneet');
-        await expect(page.getByText(`${testText}`)).not.toBeVisible();
-    });
-});
-
-test.describe('admintiedotteet', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/admin/tiedotteet');
-        await expect(page.getByText(`${testText}`)).not.toBeVisible();
-    });
-});
-
-test.describe('muokkaatiedotetta', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/admin/tiedotteet/2/muokkaa');
-        await expect(page.getByText(`${testText}`)).not.toBeVisible();
-    });
-});
-
-test.describe('admin-emailrecipients', () => {
+test.describe('admin order email recipients', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/admin/tilaukset/sahkopostilista');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
 });
 
-test.describe('admin-orderslist', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/admin/tilaukset');
-        await expect(page.getByText(`${testText}`)).not.toBeVisible();
-    });
-});
-
-test.describe('admin-createorder', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/admin/tilaukset/uusi');
-        await expect(page.getByText(`${testText}`)).not.toBeVisible();
-    });
-});
-
-test.describe('admin-productslist', () => {
+// products
+test.describe('admin products list', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/admin/tuotteet');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
 });
 
-test.describe('admin-createproduct', () => {
+test.describe('admin product edit', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/admin/tilaukset/uusi');
+        await page.goto('/admin/tuotteet/1');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
+test.describe('admin product create', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tuotteet/uusi');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
+// users
+test.describe('admin users list', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('admin/kayttajat');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
+test.describe('admin single user view', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('admin/kayttajat/1');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
+test.describe('admin single user address edit', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('admin/kayttajat/1/osoitteet/1');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
+test.describe('admin single user address create', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('admin/kayttajat/1/osoitteet/luo');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
+// storages
+test.describe('admin storages list', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/varastot');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
+test.describe('admin single storage view', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/varastot/1');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
+test.describe('admin single storage delete view', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/varastot/1/poista');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
+test.describe('admin products transfer view', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/varastot/1/siirto');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
+test.describe('admin storage create', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/varastot/luo');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
+// bulletins
+test.describe('admin bulletins list', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tiedotteet');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
+test.describe('admin bulletin edit', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tiedotteet/2/muokkaa');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
+test.describe('admin bulletin create', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tiedotteet/luo');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
+// contact form messages / mailbox
+test.describe('admin inbox', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/saapuneet');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
 });
