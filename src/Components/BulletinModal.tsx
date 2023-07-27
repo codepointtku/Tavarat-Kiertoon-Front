@@ -20,9 +20,30 @@ const style = {
     p: 4,
 };
 
+const getRandomValueInRange = (min: number, max: number) => {
+    return Math.random() * (max - min) + min;
+};
+
 function BulletinModal({ title, date, content }: Props) {
     const [bulletinModalOpened, setBulletinModalOpened] = React.useState(true);
     const handleClose = () => setBulletinModalOpened(false);
+
+    const getRandomAnimationValues = () => {
+        const maxX = 300;
+        const maxY = 300;
+
+        const randomX = getRandomValueInRange(-maxX, maxX);
+        const randomY = getRandomValueInRange(-maxY, maxY);
+
+        return { x: randomX, y: randomY };
+    };
+
+    const [buttonPosition, setButtonPosition] = React.useState({ x: 0, y: 0 });
+
+    const handleHover = () => {
+        const { x, y } = getRandomAnimationValues();
+        setButtonPosition({ x, y });
+    };
 
     return (
         <div>
@@ -60,9 +81,14 @@ function BulletinModal({ title, date, content }: Props) {
 
                             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                                 <Button
-                                    variant="text"
+                                    variant="outlined"
                                     size="small"
-                                    sx={{ margin: '1rem 0 0rem 0' }}
+                                    onMouseEnter={handleHover}
+                                    sx={{
+                                        marginTop: '1rem',
+                                        transition: 'transform 0.1s ease-out',
+                                        transform: `translateX(${buttonPosition.x}px) translateY(${buttonPosition.y}px)`,
+                                    }}
                                     onClick={handleClose}
                                 >
                                     Sulje
