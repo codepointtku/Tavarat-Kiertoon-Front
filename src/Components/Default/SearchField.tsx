@@ -27,19 +27,36 @@ type SearchInputValue = {
     search: string;
 };
 
-interface CategoryTreeIndexes {
+export interface CategoryTreeIndexes {
     [key: number]: [];
 }
 
-function SearchField() {
+export interface TreeSelectedProps {
+    treeSelectedState: {
+        categoryTreeSelected: boolean;
+        setCategoryTreeSelected: React.Dispatch<React.SetStateAction<boolean>>;
+    };
+}
+
+function SearchField({ treeSelectedState }: TreeSelectedProps) {
     const { colors, categories, categoryTree } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const categoriesAndColors = { categories: [''], colors: [''] };
-    const { handleSubmit, register, watch, reset, setValue } = useForm<SearchInputValue>();
+    const {
+        handleSubmit,
+        register,
+        watch,
+        reset,
+        setValue,
+        formState: { isDirty },
+    } = useForm<SearchInputValue>({ defaultValues: { search: '' } });
     const [searchParams, setSearchParams] = useSearchParams();
     var searchInput = '';
     const categoryTreeIndexes = categoryTree as unknown as CategoryTreeIndexes;
 
     // console.log(categoryTree);
+    // const a = 'öy';
+    // const sana = 'öypöytä';
+    // console.log('RegExp sisältää sanan: ', RegExp(`^[äö]${a}`).test(sana));
 
     const onSubmit: SubmitHandler<SearchInputValue> = async (formData) => {
         searchInput = formData.search;
@@ -57,7 +74,7 @@ function SearchField() {
             const categoryNameLowerCase = category.name.toLowerCase();
             if (
                 formData.search.toLowerCase().includes(categoryNameLowerCase) &&
-                RegExp('\\b' + categoryNameLowerCase + '\\b').test(formData.search.toLowerCase())
+                RegExp(`\\b${categoryNameLowerCase}\\b`).test(formData.search.toLowerCase())
             ) {
                 categoryTreeIndexes[category.id].forEach((categoryIdInTree: number) => {
                     categoriesAndColors.categories[0] === ''
@@ -107,13 +124,16 @@ function SearchField() {
 
     // set search string from url to search field, if user is following a link with search string
     useEffect(() => {
+        if (treeSelectedState.categoryTreeSelected) {
+            clearInputField();
+        }
         if (searchFieldHasInput) {
             reset();
         }
         if (searchInput !== null) {
             setValue('search', searchInput);
         }
-    }, [searchInput, setValue, reset]);
+    }, [searchInput, setValue, reset, treeSelectedState.categoryTreeSelected]);
 
     const clearInputField = () => {
         reset();
@@ -139,6 +159,7 @@ function SearchField() {
                 <InputBase
                     id="search-text-input-field"
                     {...register('search')}
+                    onFocus={() => !isDirty && treeSelectedState.setCategoryTreeSelected(false)}
                     autoFocus
                     placeholder="Etsi tuotteita…"
                     inputProps={{ 'aria-label': 'searchfield' }}

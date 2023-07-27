@@ -8,43 +8,56 @@ import { Box, Typography } from '@mui/material';
 
 import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
+import type { TreeSelectedProps } from './SearchField';
+import type { rootLoader } from '../../Router/loaders';
+import type { CategoryResponse } from '../../api';
+import type { CategoryTreeIndexes } from './SearchField';
 
-function useExpandedCategories(categoryParam, categories) {
+function useExpandedCategories(categoryParam: string, categories: { id: number; parent: null | number }[]) {
     return useMemo(() => {
         const expandedCategories = [];
         const categoryId = Number(categoryParam);
 
         if (categoryParam) {
-            let parent = categoryId;
-            const findParentCategory = (category) => category.id === parent;
+            let parent = categoryId as null | undefined | number;
+            const findParentCategory = (category: { id: number }) => category.id === parent;
 
             while (parent) {
                 const category = categories.find(findParentCategory);
-                expandedCategories.push(String(category.id));
-                parent = category.parent;
+                expandedCategories.push(String(category?.id));
+                parent = category?.parent;
             }
             expandedCategories.reverse();
         }
 
         return expandedCategories;
-    }, []);
+    }, [categoryParam, categories]);
 }
 
-function CategoryTree() {
-    const { categoryTree, categories } = useRouteLoaderData('root');
+interface FullTree {
+    id: string;
+    name: string;
+    children: arrayToTree.Tree<CategoryResponse>[];
+    product_count?: number;
+}
+
+function CategoryTree({ treeSelectedState }: TreeSelectedProps) {
+    const { categoryTree, categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const [searchParams, setSearchParams] = useSearchParams();
     const categoryParams = searchParams.getAll('kategoria');
+    const categoryTreeIndexes = categoryTree as unknown as CategoryTreeIndexes;
 
-    const handleClick = (categoryId) => {
+    const handleClick = (categoryId: string) => {
         const iniParams = new URLSearchParams();
         if (categoryId === 'root') {
             iniParams.delete('kategoria');
         } else {
-            categoryTree[categoryId].forEach((each) => {
+            categoryTreeIndexes[categoryId as unknown as number].forEach((each: string) => {
                 iniParams.append('kategoria', each);
             });
         }
         setSearchParams(iniParams);
+        treeSelectedState.setCategoryTreeSelected(true);
     };
 
     const categoryTreeMain = arrayToTree(categories, {
@@ -60,7 +73,7 @@ function CategoryTree() {
         children: categoryTreeMain,
     };
 
-    const renderTree = (nodes) => (
+    const renderTree = (nodes: FullTree) => (
         <TreeItem
             key={nodes.id}
             nodeId={String(nodes.id)}
@@ -83,7 +96,9 @@ function CategoryTree() {
             expandIcon={<ArrowRightOutlinedIcon />}
             collapseIcon={<ArrowDropDownOutlinedIcon />}
         >
-            {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
+            {Array.isArray(nodes.children)
+                ? nodes.children.map((node) => renderTree(node as unknown as FullTree))
+                : null}
         </TreeItem>
     );
 
