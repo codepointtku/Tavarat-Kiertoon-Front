@@ -13,17 +13,17 @@ import type { rootLoader } from '../Router/loaders';
 
 function BaseLayout() {
     const data = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
-    console.log(data);
+
     const bulletins = data.bulletins;
     const latestBulletin = bulletins[0];
-    console.log(latestBulletin);
+    const latestBulletinDate = new Date(latestBulletin.date).toLocaleDateString();
 
     return (
         <Stack id="default-view-stack" sx={{ minHeight: ['100vh', '100svh'] }}>
             <Header />
             <DefaultAppBar />
             <NavigationBar />
-            <BulletinModal title={latestBulletin.title} content={latestBulletin.content} />
+            <BulletinModal title={latestBulletin.title} content={latestBulletin.content} date={latestBulletinDate} />
             <main>
                 <Box
                     id="main-layout-column-box"

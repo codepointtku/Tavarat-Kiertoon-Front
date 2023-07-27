@@ -4,8 +4,8 @@ import { Backdrop, Box, Button, Modal, Fade, Typography, Stack } from '@mui/mate
 
 interface Props {
     title: string;
+    date?: string;
     content?: string;
-    footer?: string | JSX.Element;
 }
 
 const style = {
@@ -15,13 +15,12 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 600,
     bgcolor: 'background.paper',
-    // border: '0.1rem solid #009bd8',
     borderRadius: '1rem',
     boxShadow: 24,
     p: 4,
 };
 
-function BulletinModal({ title, content, footer }: Props) {
+function BulletinModal({ title, date, content }: Props) {
     const [bulletinModalOpened, setBulletinModalOpened] = React.useState(true);
     const handleClose = () => setBulletinModalOpened(false);
 
@@ -40,21 +39,30 @@ function BulletinModal({ title, content, footer }: Props) {
                     },
                 }}
             >
-                <Fade in={bulletinModalOpened} easing={'2000'}>
+                <Fade in={bulletinModalOpened} easing={'10000'}>
                     <Box sx={style}>
                         <Stack>
-                            <Typography id="bulletin-modal-title" variant="h6" component="h2" textAlign="center">
+                            <Typography
+                                id="bulletin-modal-title"
+                                variant="h6"
+                                component="h2"
+                                textAlign="center"
+                                // gutterBottom
+                            >
                                 {title}
+                            </Typography>
+                            <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
+                                {date}
                             </Typography>
                             <Typography id="bulletin-modal-content" sx={{ mt: 2 }} textAlign="center">
                                 {content}
                             </Typography>
-                            {footer}
+
                             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                                 <Button
                                     variant="text"
                                     size="small"
-                                    sx={{ margin: '2rem 0 0rem 0' }}
+                                    sx={{ margin: '1rem 0 0rem 0' }}
                                     onClick={handleClose}
                                 >
                                     Sulje
