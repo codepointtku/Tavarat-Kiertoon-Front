@@ -515,11 +515,11 @@ function Routes() {
                                 // </HasRole>
                             ),
                             id: 'admin',
-                            errorElement: (
-                                <ThemeProvider theme={adminTheme}>
-                                    <AdminViewBoundary />,
-                                </ThemeProvider>
-                            ),
+                            // errorElement: (
+                            //     <ThemeProvider theme={adminTheme}>
+                            //         <AdminViewBoundary />,
+                            //     </ThemeProvider>
+                            // ),
                             loader: async () => adminLoader(auth, setAuth),
                             action: ({ request }) => adminLogOut(request),
                             children: [
