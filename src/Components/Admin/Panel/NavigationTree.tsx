@@ -27,13 +27,14 @@ import MarkChatReadIcon from '@mui/icons-material/MarkChatRead';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import People from '@mui/icons-material/People';
-// import Public from '@mui/icons-material/Public';
+// import Public from '@mui/icons-material/Public'; // a globe
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
-// import EditIcon from '@mui/icons-material/Edit';
-// import NotesIcon from '@mui/icons-material/Notes';
-// import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+// import EditIcon from '@mui/icons-material/Edit'; // a pen
+// import NotesIcon from '@mui/icons-material/Notes'; // three vertical lines
+// import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch'; // a sheet with magnifying glass
+import WarehouseIcon from '@mui/icons-material/Warehouse';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
@@ -139,11 +140,12 @@ function NavigationTree() {
     };
 
     // navigation accordion list items (links):
+
     // tilaukset
     const ordersListItems = (
         <Box
             sx={{
-                bgcolor: open.ordersNavList ? 'rgba(71, 98, 130, 0.2)' : null,
+                bgcolor: open.ordersNavList ? 'rgba(71, 98, 130, 0.2)' : null, // #476282
                 pb: open.ordersNavList ? 2 : 0,
             }}
         >
@@ -620,6 +622,14 @@ function NavigationTree() {
                                             <ListItemText>Siirry varastonäkymään</ListItemText>
                                             <ListItemIcon>
                                                 <LogoutIcon sx={{ marginLeft: '1rem' }} />
+                                            </ListItemIcon>
+                                        </MenuItem>
+                                    </Tooltip>
+                                    <Tooltip position="right" title="Siirtyy pyörävaraston käyttöliittymään">
+                                        <MenuItem onClick={handleClose} component={Link} to="/pyorat/pyoravarasto">
+                                            <ListItemText>Siirry pyörävarastoon</ListItemText>
+                                            <ListItemIcon>
+                                                <WarehouseIcon sx={{ marginLeft: '1rem' }} />
                                             </ListItemIcon>
                                         </MenuItem>
                                     </Tooltip>
