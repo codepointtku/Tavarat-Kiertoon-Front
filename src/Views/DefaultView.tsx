@@ -11,7 +11,6 @@ import AlertBox from '../Components/AlertBox';
 
 function DefaultView() {
     const [categoryTreeSelected, setCategoryTreeSelected] = useState(false);
-    console.log(categoryTreeSelected);
     const { state: responseStatus } = useLocation();
     return (
         <Box id="front-page-main-block">

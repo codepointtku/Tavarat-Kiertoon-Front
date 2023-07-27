@@ -71,22 +71,22 @@ const shoppingCartLoader = async () => {
 const productListLoader = async ({ request }) => {
     const url = new URL(request.url);
 
-    if (url.searchParams.has('kategoria')) {
-        url.searchParams.forEach((value, key) => {
-            if (key === 'kategoria') {
-                url.searchParams.append('category', value);
-            }
-        });
-        url.searchParams.delete('kategoria');
-        // const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
-        // get all categories
-        const { data } = await productsApi.productsList(url.searchParams.getAll('category'));
-        return data.results;
-    }
+    // if (url.searchParams.has('kategoria')) {
+    //     url.searchParams.forEach((value, key) => {
+    //         if (key === 'kategoria') {
+    //             url.searchParams.append('category', value);
+    //         }
+    //     });
+    //     url.searchParams.delete('kategoria');
+    //     // const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
+    //     // get all categories
+    //     const { data } = await productsApi.productsList(url.searchParams.getAll('category'));
+    //     return data.results;
+    // }
 
     if (url.searchParams.has('haku')) {
         //const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
-        console.log(url.searchParams.get('kategoriat'), url.searchParams.get('varit'));
+        console.log(url.searchParams.get('kategoria'), url.searchParams.get('varit'));
         const { data } = await productsApi.productsList(
             url.searchParams.get('kategoria'),
             url.searchParams.get('varit'),
