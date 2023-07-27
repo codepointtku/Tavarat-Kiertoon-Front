@@ -1,5 +1,5 @@
 function AdminOrderEdit() {
-    return 'hi mom';
+    return <p>order edit</p>;
 }
 
 export default AdminOrderEdit;

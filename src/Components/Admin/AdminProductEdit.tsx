@@ -1,5 +1,5 @@
 function AdminProductEdit() {
-    return 'hi dad';
+    return 'product edit';
 }
 
 export default AdminProductEdit;

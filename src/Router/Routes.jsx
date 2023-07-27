@@ -28,9 +28,8 @@ import OrderEdit from '../Components/Storage/OrderEdit';
 import QrScanner from '../Components/Storage/QrScanner';
 
 import Overview from '../Components/Admin/Panel/Overview/Overview';
-// import PageTest from '../Components/Admin/Panel/PageTest';
 import OrdersGrid from '../Components/Admin/OrdersGrid';
-// import AdminOrderEdit from '../Components/Admin/AdminOrderEdit';
+import AdminOrderEdit from '../Components/Admin/AdminOrderEdit';
 import AdminOrderCreate from '../Components/Admin/AdminOrderCreate';
 import ProductsGrid from '../Components/Admin/ProductsGrid';
 import AdminProductEdit from '../Components/Admin/AdminProductEdit';
@@ -55,6 +54,7 @@ import StorageEdit from '../Components/Admin/StorageEdit';
 import StorageDelete from '../Components/Admin/StorageDelete';
 import StorageCreate from '../Components/Admin/StorageCreate';
 import StorageProductsTransfer from '../Components/Admin/StorageProductsTransfer';
+import StorageProductsHandleItemsTransfer from '../Components/Admin/StorageProductsHandleItemsTransfer';
 
 import AddItem from '../Components/Storage/AddItem';
 import PDFView from '../Components/Storage/PDFView';
@@ -182,7 +182,6 @@ import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
 
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
-import StorageProductsHandleItemsTransfer from '../Components/Admin/StorageProductsHandleItemsTransfer';
 
 createStore({});
 
@@ -539,19 +538,15 @@ function Routes() {
                                 },
                                 {
                                     path: 'tilaukset/:id',
-                                    element: <OrderView />,
-                                    errorElement: <UserError />,
-                                    loader: ({ params }) => orderViewLoader(params),
+                                    element: <AdminOrderEdit />,
+                                    // loader: undefined,
+                                    // action: undefined,
                                 },
-                                // {
-                                //     path: 'tilaukset/:id',
-                                //     element: <AdminOrderEdit />,
-                                //     loader: ({ params }) => orderEditLoader(params),
-                                // },
                                 {
                                     path: 'tilaukset/uusi',
                                     element: <AdminOrderCreate />,
-                                    action: () => console.log('moro'),
+                                    // loader: undefined,
+                                    // action: undefined,
                                 },
                                 {
                                     path: 'tilaukset/sahkopostilista',
@@ -567,12 +562,14 @@ function Routes() {
                                 {
                                     path: 'tuotteet/:id',
                                     element: <AdminProductEdit />,
-                                    loader: ({ params }) => productDetailsLoader(params),
+                                    // loader: productDetailsLoader,
+                                    // action: undefined,
                                 },
                                 {
                                     path: 'tuotteet/uusi',
                                     element: <AdminProductCreate />,
-                                    action: () => console.log('poro'),
+                                    // loader: undefined,
+                                    // action: undefined,
                                 },
                                 {
                                     path: 'kayttajat',
