@@ -61,6 +61,7 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
     const onSubmit: SubmitHandler<SearchInputValue> = async (formData) => {
         searchInput = formData.search;
         const searchCategoriesAndColorsNames = [] as string[];
+        const categoriesRegex = /\b\s\W\b/;
         colors.forEach((color) => {
             const colorNameLowerCase = color.name.toLowerCase();
             if (formData.search.toLowerCase().includes(colorNameLowerCase)) {
