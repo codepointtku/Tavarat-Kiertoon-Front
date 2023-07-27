@@ -23,7 +23,6 @@ const style = {
 
 function BulletinModal({ title, content, footer }: Props) {
     const [bulletinModalOpened, setBulletinModalOpened] = React.useState(true);
-    // const handleOpen = () => setMessageModalOpened(true);
     const handleClose = () => setBulletinModalOpened(false);
 
     return (
@@ -52,7 +51,12 @@ function BulletinModal({ title, content, footer }: Props) {
                             </Typography>
                             {footer}
                             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                                <Button variant="text" sx={{ margin: '2rem 0 0rem 0' }}>
+                                <Button
+                                    variant="text"
+                                    size="small"
+                                    sx={{ margin: '2rem 0 0rem 0' }}
+                                    onClick={handleClose}
+                                >
                                     Sulje
                                 </Button>
                             </Box>
