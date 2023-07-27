@@ -23,7 +23,7 @@ import { type orderEditLoader } from '../../Router/loaders';
 import { useState } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import { productsApi } from '../../api';
+import { type ProductItemResponse, productsApi } from '../../api';
 
 export type OrderEditLoaderType = Awaited<ReturnType<typeof orderEditLoader>>;
 
@@ -77,7 +77,6 @@ function OrderEdit() {
         }
     };
 
-    // NOTE!!! Change axios to api call -JTo-
     // Add new product/productItem handler
     const addNewProduct = async () => {
         try {
@@ -101,7 +100,8 @@ function OrderEdit() {
                         }
                         // not on the list: add it
                         if (oktogoon === 0) {
-                            const appendItem: any = { 0: firstItem }; // TODO: fix 'any' -JTo-
+                            // const appendItem: any = { 0: firstItem }; // works but could not figure out type
+                            const appendItem: ProductItemResponse[][] = [[firstItem]];
                             append(appendItem);
                             setAmounts([...amounts, 1]);
                         }
@@ -121,7 +121,6 @@ function OrderEdit() {
                 }
             }
         } catch (error: any) {
-            // TODO: fix 'any' -JTo-
             alert(
                 '### HUPSISTA ###\nOrderEdit: addNewProduct\n' +
                     error?.message +
@@ -187,7 +186,6 @@ function OrderEdit() {
         }
     };
 
-    // NOTE!!! Change axios to api call -JTo-
     // add new productitems to an existing product
     const addNewItems = async (id: number, amount: number) => {
         try {
@@ -200,7 +198,6 @@ function OrderEdit() {
                 return newItems;
             }
         } catch (error: any) {
-            // TODO: fix 'any' -JTo-
             alert(
                 '### HUPSISTA ###\nOrderEdit: addNewItems\n' +
                     error.message +
@@ -217,7 +214,7 @@ function OrderEdit() {
     const submit = useSubmit();
     const onSubmit = async (data: FieldValues) => {
         // Create new productItem list for each product
-        const productItems: OrderEditLoaderType['product_items'][] = [];
+        const productItems: OrderEditLoaderType['product_items'] = [];
         for (const [index, item] of data.productRenderItems.entries()) {
             // existing product ( array(s) )
             if (Array.isArray(item)) {
@@ -229,7 +226,7 @@ function OrderEdit() {
                 // add number of productItems
                 else if (item.length < amounts[index]) {
                     productItems.push(...item);
-                    const newItems: any = await addNewItems(item[0].product.id, amounts[index] - item.length); // TODO: fix 'any' -JTo-
+                    const newItems = await addNewItems(item[0].product.id, amounts[index] - item.length);
                     productItems.push(...newItems);
                 }
                 // keep the numbeer of productItems the same
@@ -239,13 +236,12 @@ function OrderEdit() {
             }
             // new product ( object(s) )
             else {
-                const newItems: any = await addNewItems(item[0].product.id, amounts[index]); // TODO: fix 'any' -JTo-
+                const newItems = await addNewItems(item[0].product.id, amounts[index]);
                 productItems.push(...newItems);
             }
         }
         // create array of product_item_ids for backend and submit data
-        // const productItemIds = productItems.map((item: OrderEditLoaderType['product_items'][number]) => item.id);
-        const productItemIds = productItems.map((item: any) => item.id); // TODO: fix 'any' -JTo-
+        const productItemIds = productItems.map((item) => item.id);
         const formData = { ...data, productItems: JSON.stringify(productItemIds) };
         await submit(formData, {
             method: 'put',
