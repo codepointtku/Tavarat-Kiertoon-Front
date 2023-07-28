@@ -4,6 +4,7 @@ import { StateMachineProvider, createStore } from 'little-state-machine';
 import { ThemeProvider } from '@mui/material';
 
 import AuthContext from '../Context/AuthContext';
+// import ErrorBoundary from './ErrorBoundary_NewStash';
 import ErrorBoundary from './ErrorBoundary';
 import BaseBoundary from './BaseBoundary';
 // import AdminViewBoundary from './AdminViewBoundary';
