@@ -130,6 +130,8 @@ function ContactsAndDelivery() {
                                 required: true,
                                 maxLength: 255,
                             })}
+                            inputProps={{ required: false }}
+                            required
                         />
                         {errors.firstName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                     </Grid>
@@ -140,6 +142,8 @@ function ContactsAndDelivery() {
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}
                             {...register('lastName', { required: true, maxLength: 255 })}
+                            inputProps={{ required: false }}
+                            required
                         />
                         {errors.lastName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                     </Grid>
@@ -154,6 +158,8 @@ function ContactsAndDelivery() {
                                 pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/,
                                 maxLength: 255,
                             })}
+                            inputProps={{ required: false }}
+                            required
                         />
                         {errors.email && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                     </Grid>
@@ -168,6 +174,8 @@ function ContactsAndDelivery() {
                                 pattern: /^[0-9]+$/,
                                 maxLength: 255,
                             })}
+                            inputProps={{ required: false }}
+                            required
                         />
                         {errors.phoneNumber && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                     </Grid>
@@ -186,8 +194,10 @@ function ContactsAndDelivery() {
                             onChange={(SelectChangeEvent) => {
                                 setSelectedAddress(SelectChangeEvent.target.value);
                             }}
+                            inputProps={{ required: false }}
                             fullWidth
                             select
+                            required
                         >
                             {user.address_list?.map((a: { address: string; id: number }) => (
                                 <MenuItem value={a.address} key={a.id}>
@@ -227,6 +237,8 @@ function ContactsAndDelivery() {
                             }}
                             fullWidth
                             select
+                            inputProps={{ required: false }}
+                            required
                         >
                             <MenuItem value="true">Kuljetus</MenuItem>
                             <MenuItem value="false">Nouto</MenuItem>
@@ -241,7 +253,9 @@ function ContactsAndDelivery() {
                                 label="Noutoaika"
                                 variant="outlined"
                                 placeholder="Noutoaika"
+                                inputProps={{ required: false }}
                                 InputLabelProps={{ shrink: true }}
+                                required
                             />
                         </Grid>
                     )}
