@@ -127,13 +127,14 @@ function ContactsAndDelivery() {
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}
                             {...register('firstName', {
-                                required: true,
-                                maxLength: 255,
+                                required: 'Tämä kenttä on täytettävä',
+                                maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
                             })}
+                            error={!!errors.firstName}
+                            helperText={errors.firstName?.message?.toString() || ' '}
                             inputProps={{ required: false }}
                             required
                         />
-                        {errors.firstName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                     </Grid>
                     <Grid item>
                         <TextField
@@ -141,11 +142,15 @@ function ContactsAndDelivery() {
                             placeholder="Sukunimi"
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}
-                            {...register('lastName', { required: true, maxLength: 255 })}
+                            {...register('lastName', {
+                                required: 'Tämä kenttä on täytettävä',
+                                maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
+                            })}
+                            error={!!errors.lastName}
+                            helperText={errors.lastName?.message?.toString() || ' '}
                             inputProps={{ required: false }}
                             required
                         />
-                        {errors.lastName && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                     </Grid>
                     <Grid item>
                         <TextField
@@ -154,14 +159,18 @@ function ContactsAndDelivery() {
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}
                             {...register('email', {
-                                required: true,
-                                pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/,
-                                maxLength: 255,
+                                required: 'Tämä kenttä on täytettävä',
+                                pattern: {
+                                    value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/,
+                                    message: 'Sisällön täytyy ollan sähköpostin muodossa',
+                                },
+                                maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
                             })}
+                            error={!!errors.email}
+                            helperText={errors.email?.message?.toString() || ' '}
                             inputProps={{ required: false }}
                             required
                         />
-                        {errors.email && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                     </Grid>
                     <Grid item>
                         <TextField
@@ -170,14 +179,15 @@ function ContactsAndDelivery() {
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}
                             {...register('phoneNumber', {
-                                required: true,
-                                pattern: /^[0-9]+$/,
-                                maxLength: 255,
+                                required: 'Tämä kenttä on täytettävä',
+                                pattern: { value: /^[0-9]+$/, message: 'Sisällön täytyy koostua vain numeroista' },
+                                maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
                             })}
+                            error={!!errors.phoneNumber}
+                            helperText={errors.phoneNumber?.message?.toString() || ' '}
                             inputProps={{ required: false }}
                             required
                         />
-                        {errors.phoneNumber && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                     </Grid>
                 </Grid>
 
@@ -190,11 +200,16 @@ function ContactsAndDelivery() {
                             label="Toimitusosoite"
                             variant="outlined"
                             value={selectedAddress}
-                            {...register('deliveryAddress', { required: true })}
+                            {...register('deliveryAddress', {
+                                required: 'Tämä kenttä on täytettävä',
+                                maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
+                            })}
                             onChange={(SelectChangeEvent) => {
                                 setSelectedAddress(SelectChangeEvent.target.value);
                             }}
                             inputProps={{ required: false }}
+                            error={!!errors.deliveryAddress}
+                            helperText={errors.deliveryAddress?.message?.toString() || ' '}
                             fullWidth
                             select
                             required
@@ -228,7 +243,7 @@ function ContactsAndDelivery() {
                     )}
                     <Grid item xs={2} mr="1rem">
                         <TextField
-                            {...register('deliveryRequired', { required: true })}
+                            {...register('deliveryRequired', { required: 'Tämä kenttä on täytettävä' })}
                             label="Toimitustapa"
                             variant="outlined"
                             value={selectedMethod}
@@ -237,13 +252,14 @@ function ContactsAndDelivery() {
                             }}
                             fullWidth
                             select
+                            error={!!errors.deliveryRequired}
+                            helperText={errors.deliveryRequired?.message?.toString() || ' '}
                             inputProps={{ required: false }}
                             required
                         >
                             <MenuItem value="true">Kuljetus</MenuItem>
                             <MenuItem value="false">Nouto</MenuItem>
                         </TextField>
-                        {errors.deliveryRequired && <Alert severity="error">Tämä syöte ei kelpaa.</Alert>}
                     </Grid>
                     {selectedMethod === 'false' && (
                         <Grid item>
@@ -265,9 +281,7 @@ function ContactsAndDelivery() {
             <TypographyTitle text="Lisätietoja / Viesti" />
 
             <OutlinedInput
-                {...register('orderInfo', {
-                    maxLength: 255,
-                })}
+                {...register('orderInfo')}
                 placeholder="Lisätietoa toimituksesta..."
                 fullWidth
                 multiline
