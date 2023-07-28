@@ -2,10 +2,14 @@ import { useLoaderData, useActionData } from 'react-router-dom';
 import { useSubmit, Form } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-import { Box, Button, Container, Divider, Grid, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, Divider, Grid, IconButton, Stack, TextField, Typography } from '@mui/material';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import ListIcon from '@mui/icons-material/List';
 
+import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 import TypographyHeading from '../TypographyHeading';
+import Tooltip from '../Tooltip';
 import AlertBox from '../AlertBox';
 
 import type { emailRecipientsLoader } from '../../Router/loaders';
@@ -66,6 +70,7 @@ function EmailRecipient({ email, id }: RecipientProps) {
 function AddRecipient() {
     const {
         register,
+        reset,
         handleSubmit: createHandleSubmit,
         formState: { isSubmitSuccessful, isDirty, errors: formErrors },
     } = useForm({ mode: 'onTouched' });
@@ -76,6 +81,10 @@ function AddRecipient() {
         submit(formData, {
             method: 'post',
         });
+    };
+
+    const formReset = () => {
+        reset();
     };
 
     return (
@@ -103,17 +112,29 @@ function AddRecipient() {
                         sx={{ marginRight: '1rem' }}
                         fullWidth
                     />
-                    <Button
-                        type="submit"
-                        disabled={isSubmitSuccessful || !isDirty}
-                        sx={{
-                            '&:hover': {
-                                backgroundColor: 'success.dark',
-                            },
-                        }}
-                    >
-                        Lisää uusi
-                    </Button>
+
+                    <Grid container id="submit-reset-btns">
+                        <Grid item xs={11}>
+                            <Button
+                                type="submit"
+                                disabled={isSubmitSuccessful || !isDirty}
+                                sx={{
+                                    '&:hover': {
+                                        backgroundColor: 'success.dark',
+                                    },
+                                }}
+                            >
+                                Lisää uusi
+                            </Button>
+                        </Grid>
+                        <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <Tooltip title="Tyhjennä lomake">
+                                <IconButton id="reset-form-btn" onClick={() => formReset()}>
+                                    <RefreshIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Grid>
+                    </Grid>
                 </Stack>
             </Box>
         </>
@@ -138,6 +159,7 @@ function AdminOrderEmailList() {
 
             <Container maxWidth="md">
                 <Stack id="email-recipients-component-stack">
+                    <HeroHeader Icon={<ListIcon />} hideInAdmin />
                     <HeroText
                         title="Sähköpostilista"
                         subtext="Lisää ja poista osoitteita, mihin lähetetään sähköposti tilauksen vahvistuksen yhteydessä."
