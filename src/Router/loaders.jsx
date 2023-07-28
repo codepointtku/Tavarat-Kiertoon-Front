@@ -86,7 +86,6 @@ const productListLoader = async ({ request }) => {
 
     if (url.searchParams.has('haku') || url.searchParams.has('kategoria')) {
         //const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
-        console.log(url.searchParams.get('kategoria'), url.searchParams.get('varit'));
         const { data } = await productsApi.productsList(
             url.searchParams.getAll('kategoria'),
             url.searchParams.get('varit'),

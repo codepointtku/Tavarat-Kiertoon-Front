@@ -40,6 +40,7 @@ export interface TreeSelectedProps {
 
 function SearchField({ treeSelectedState }: TreeSelectedProps) {
     const { colors, categories, categoryTree } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
+    // Initializes object where categories and colors are stored as arrays each in their own properties
     const categoriesAndColors = { categories: [''], colors: [''] };
     const {
         handleSubmit,
@@ -51,26 +52,29 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
     } = useForm<SearchInputValue>({ defaultValues: { search: '' } });
     const [searchParams, setSearchParams] = useSearchParams();
     var searchInput = '';
+    // Created constant with the value of categoryTree to bypass typescript errors :/
     const categoryTreeIndexes = categoryTree as unknown as CategoryTreeIndexes;
-
-    // console.log(categoryTree);
-    // const a = 'öy';
-    // const sana = 'öypöytä';
-    // console.log('RegExp sisältää sanan: ', RegExp(`^[äö]${a}`).test(sana));
 
     const onSubmit: SubmitHandler<SearchInputValue> = async (formData) => {
         searchInput = formData.search;
+
+        // Initializes array where both categories and colors get added to
+        // Used in reducer to filter all found color and category names to "kategoria" and "varit" params, leaving the rest of search to be added in "haku" param.
         const searchCategoriesAndColorsNames = [] as string[];
-        const categoriesRegex = /\b\s\W\b/;
+
+        // Maps through all colors and adds color name to array if search field includes color name.
         colors.forEach((color) => {
             const colorNameLowerCase = color.name.toLowerCase();
             if (formData.search.toLowerCase().includes(colorNameLowerCase)) {
                 categoriesAndColors.colors[0] === ''
                     ? categoriesAndColors.colors.splice(0, 1, String(color.id))
                     : categoriesAndColors.colors.push(String(color.id));
+                // Pushes category name to array to be filtered out from "haku" search param and added to "varit" searchparam.
                 searchCategoriesAndColorsNames.push(colorNameLowerCase);
             }
         });
+
+        // Maps through all categories and adds category name to array if search field includes category name and if category name is surrounded by empty space.
         categories.forEach((category) => {
             const categoryNameLowerCase = category.name.toLowerCase();
             if (
@@ -82,14 +86,14 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
                         ? categoriesAndColors.categories.splice(0, 1, String(categoryIdInTree))
                         : categoriesAndColors.categories.push(String(categoryIdInTree));
                 });
+                // Pushes category name to array to be filtered out from "haku" search param to be added to "kategoria" searchparam.
                 searchCategoriesAndColorsNames.push(categoryNameLowerCase);
             }
         });
 
         const initialValue = '';
 
-        console.log(searchCategoriesAndColorsNames);
-
+        // Filter all found color and category names to "kategoria" and "varit" params, leaving the rest of search to be added in "haku" param.
         const filteredSearchWithSpace = searchCategoriesAndColorsNames.reduce((accumulator, currValue, index) => {
             if (index === 0) {
                 return formData.search.toLowerCase().replace(currValue, '');
@@ -98,8 +102,10 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
                 return updatedSearch;
             }
         }, initialValue);
+        // Removes white space
         const filteredSearch = filteredSearchWithSpace.replace(/\s/g, '');
 
+        // Decides which params to show based on if they have a value or not.
         switch (true) {
             case categoriesAndColors.categories[0] !== '' && categoriesAndColors.colors[0] !== '':
                 setSearchParams({
