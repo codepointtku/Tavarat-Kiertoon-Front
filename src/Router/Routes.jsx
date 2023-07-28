@@ -6,8 +6,8 @@ import { ThemeProvider } from '@mui/material';
 import AuthContext from '../Context/AuthContext';
 import ErrorBoundary from './ErrorBoundary';
 import BaseBoundary from './BaseBoundary';
-import AdminViewBoundary from './AdminViewBoundary';
-import UserError from './ErrorElements/UserError';
+// import AdminViewBoundary from './AdminViewBoundary';
+// import UserError from './ErrorElements/UserError';
 // import HasRole from '../Utils/HasRole';
 
 import DefaultView from '../Views/DefaultView';
@@ -520,8 +520,8 @@ function Routes() {
                             //         <AdminViewBoundary />,
                             //     </ThemeProvider>
                             // ),
-                            loader: async () => adminLoader(auth, setAuth),
-                            action: ({ request }) => adminLogOut(request),
+                            loader: adminLoader,
+                            action: adminLogOut,
                             children: [
                                 {
                                     index: true,
@@ -533,43 +533,51 @@ function Routes() {
                                 },
                                 {
                                     path: 'tilaukset',
-                                    element: <OrdersGrid />,
-                                    loader: ordersListLoader,
-                                },
-                                {
-                                    path: 'tilaukset/:id',
-                                    element: <AdminOrderEdit />,
-                                    // loader: undefined,
-                                    // action: undefined,
-                                },
-                                {
-                                    path: 'tilaukset/uusi',
-                                    element: <AdminOrderCreate />,
-                                    // loader: undefined,
-                                    // action: undefined,
-                                },
-                                {
-                                    path: 'tilaukset/sahkopostilista',
-                                    element: <AdminOrderEmailList />,
-                                    loader: emailRecipientsLoader,
-                                    action: adminEmailRecipientsAction,
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <OrdersGrid />,
+                                            loader: ordersListLoader,
+                                        },
+                                        {
+                                            path: ':id',
+                                            element: <AdminOrderEdit />,
+                                        },
+                                        {
+                                            path: 'uusi',
+                                            element: <AdminOrderCreate />,
+                                        },
+                                        {
+                                            path: 'sahkopostilista',
+                                            element: <AdminOrderEmailList />,
+                                            loader: emailRecipientsLoader,
+                                            action: adminEmailRecipientsAction,
+                                        },
+                                    ],
                                 },
                                 {
                                     path: 'tuotteet',
-                                    element: <ProductsGrid />,
-                                    loader: productListLoader,
-                                },
-                                {
-                                    path: 'tuotteet/:id',
-                                    element: <AdminProductEdit />,
-                                    // loader: productDetailsLoader,
-                                    // action: undefined,
-                                },
-                                {
-                                    path: 'tuotteet/uusi',
-                                    element: <AdminProductCreate />,
-                                    // loader: undefined,
-                                    // action: undefined,
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <ProductsGrid />,
+                                            loader: productListLoader,
+                                        },
+                                        {
+                                            path: ':id',
+                                            element: <AdminProductEdit />,
+                                            // loader: productDetailsLoader,
+                                            // action: undefined,
+                                        },
+                                        {
+                                            path: 'uusi',
+                                            element: <AdminProductCreate />,
+                                            // loader: undefined,
+                                            // action: undefined,
+                                        },
+                                    ],
                                 },
                                 {
                                     path: 'kayttajat',
@@ -578,7 +586,7 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <UsersList />,
-                                            errorElement: <UserError />,
+                                            // errorElement: <UserError />,
                                             id: 'kayttajat',
                                             loader: usersListLoader,
                                         },
@@ -638,17 +646,17 @@ function Routes() {
                                             loader: productTransferLoader,
                                             action: productsTransferAction,
                                         },
+                                        {
+                                            path: 'luo',
+                                            element: <StorageCreate />,
+                                            action: storageCreateAction,
+                                        },
                                     ],
-                                },
-                                {
-                                    path: 'varastot/luo',
-                                    element: <StorageCreate />,
-                                    action: ({ request }) => storageCreateAction(request),
                                 },
                                 {
                                     path: 'tiedotteet',
                                     element: <BulletinPosts />,
-                                    action: async ({ request }) => adminBulletinsAction(request),
+                                    action: adminBulletinsAction,
                                 },
                                 {
                                     path: 'tiedotteet/:id/muokkaa',
@@ -662,8 +670,8 @@ function Routes() {
                                 {
                                     path: ':saapuneet',
                                     element: <AdminInbox />,
-                                    loader: async ({ request }) => adminInboxLoader(auth, setAuth, request),
-                                    action: async ({ request }) => adminInboxAction(auth, setAuth, request),
+                                    loader: adminInboxLoader,
+                                    action: adminInboxAction,
                                 },
                             ],
                         },

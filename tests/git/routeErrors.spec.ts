@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-const testText: string = 'ei valitettavasti löydy';
+// const testText: string = 'ei valitettavasti löydy';
+const testText: string = 'Jokin meni pieleen';
 // const adminErrorBoundaryText: string = 'Hetkinen, sanoi Putkinen';
 
 //

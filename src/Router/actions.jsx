@@ -13,7 +13,7 @@ import {
     usersApi,
 } from '../api';
 
-const adminLogOut = async (request) => {
+const adminLogOut = async ({ request }) => {
     if (request.method === 'POST') {
         await usersApi.usersLogoutCreate();
         return { type: 'logout', status: true };
@@ -129,11 +129,9 @@ const userSignupAction = async (request) => {
             return { type: 'create', status: true, message: response.data.message };
         }
         if (response.status === 400) {
-            // console.log(',0ooiuioh');
             return { type: 'create', status: false, message: response.data.message };
         }
     } catch (error) {
-        // console.log('cats', error);
         return { type: 'create', status: false, message: request.responseText };
     }
 
@@ -235,7 +233,7 @@ const orderEditAction = async (auth, setAuth, request, params) => {
 /*
  * Creates a new storage
  */
-const storageCreateAction = async (request) => {
+const storageCreateAction = async ({ request }) => {
     const formData = await request.formData();
 
     const newStorage = {
@@ -860,7 +858,7 @@ const createBikeModelAction = async (auth, setAuth, request) => {
  * @param {*} request
  * @returns
  */
-const adminBulletinsAction = async (request) => {
+const adminBulletinsAction = async ({ request }) => {
     const formData = await request.formData();
     if (request.method === 'DELETE') {
         const response = await bulletinsApi.bulletinsDestroy(formData.get('id'));
@@ -885,16 +883,10 @@ const adminBulletinsAction = async (request) => {
  * Changes read state of message
  */
 
-const adminInboxAction = async (auth, setAuth, request) => {
+const adminInboxAction = async ({ request }) => {
     const formData = await request.formData();
     const id = Number(formData.get('id'));
-    // const response = await apiCall(auth, setAuth, `/contact_forms/${id}/`, 'put', {
-    //     name: formData.get('name'),
-    //     email: formData.get('email'),
-    //     subject: formData.get('subject'),
-    //     message: formData.get('message'),
-    //     status: formData.get('status'),
-    // });
+
     const response = await contactFormsApi.contactFormsUpdate(id, {
         name: formData.get('name'),
         email: formData.get('email'),
@@ -902,9 +894,11 @@ const adminInboxAction = async (auth, setAuth, request) => {
         message: formData.get('message'),
         status: formData.get('status'),
     });
+
     if (response.status === 200) {
         return { type: 'markasread', status: true };
     }
+
     return { type: 'markasread', status: false };
 };
 

@@ -456,7 +456,7 @@ const adminLoader = async () => {
     return { user, messages };
 };
 
-const adminInboxLoader = async (auth, setAuth, request) => {
+const adminInboxLoader = async ({ request }) => {
     const searchParams = new URL(request.url).searchParams;
 
     const statusMap = {
