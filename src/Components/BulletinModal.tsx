@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
-import { Backdrop, Box, Button, Modal, Fade, Typography, Stack } from '@mui/material/';
+import { Backdrop, Box, Button, Modal, Fade, Link as MuiLink, Typography, Stack, Grid } from '@mui/material/';
 
 interface Props {
     title: string;
@@ -13,7 +14,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 600,
+    width: 800,
     bgcolor: 'background.paper',
     borderRadius: '1rem',
     boxShadow: 24,
@@ -25,12 +26,14 @@ const getRandomValueInRange = (min: number, max: number) => {
 };
 
 function BulletinModal({ title, date, content }: Props) {
+    const SuperLink = MuiLink as typeof MuiLink & typeof Link;
+
     const [bulletinModalOpened, setBulletinModalOpened] = React.useState(true);
     const handleClose = () => setBulletinModalOpened(false);
 
     const getRandomAnimationValues = () => {
-        const maxX = 300;
-        const maxY = 300;
+        const maxX = 200;
+        const maxY = 200;
 
         const randomX = getRandomValueInRange(-maxX, maxX);
         const randomY = getRandomValueInRange(-maxY, maxY);
@@ -40,10 +43,31 @@ function BulletinModal({ title, date, content }: Props) {
 
     const [buttonPosition, setButtonPosition] = React.useState({ x: 0, y: 0 });
 
+    const getRandomScale = () => {
+        const minScale = 0.4;
+        const maxScale = 3.2;
+        return getRandomValueInRange(minScale, maxScale);
+    };
+
+    const getRandomRotation = () => {
+        const minRotation = -180; // Minimum rotation angle in degrees
+        const maxRotation = 180; // Maximum rotation angle in degrees
+        return getRandomValueInRange(minRotation, maxRotation);
+    };
+
     const handleHover = () => {
         const { x, y } = getRandomAnimationValues();
         setButtonPosition({ x, y });
+        const randomScale = getRandomScale();
+        const randomRotation = getRandomRotation();
+
+        setButtonPosition({ x, y });
+        setButtonScale(randomScale);
+        setButtonRotation(randomRotation);
     };
+
+    const [buttonScale, setButtonScale] = React.useState(1);
+    const [buttonRotation, setButtonRotation] = React.useState(0);
 
     return (
         <div>
@@ -59,6 +83,7 @@ function BulletinModal({ title, date, content }: Props) {
                         timeout: 500,
                     },
                 }}
+                disableScrollLock
             >
                 <Fade in={bulletinModalOpened} easing={'10000'}>
                     <Box sx={style}>
@@ -72,28 +97,57 @@ function BulletinModal({ title, date, content }: Props) {
                             >
                                 {title}
                             </Typography>
-                            <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
+                            <Typography variant="caption" sx={{ fontStyle: 'italic', mt: '1rem' }}>
                                 {date}
                             </Typography>
-                            <Typography id="bulletin-modal-content" sx={{ mt: 2 }} textAlign="center">
+                            <Typography id="bulletin-modal-content" sx={{ mt: '1rem' }} textAlign="center">
                                 {content}
                             </Typography>
 
-                            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                                <Button
-                                    variant="outlined"
-                                    size="small"
-                                    onMouseEnter={handleHover}
+                            <Grid
+                                container
+                                sx={{
+                                    display: 'flex',
+                                    margin: '1rem 0 0 0',
+                                }}
+                            >
+                                <Grid
+                                    item
+                                    xs={6}
                                     sx={{
-                                        marginTop: '1rem',
-                                        transition: 'transform 0.1s ease-out',
-                                        transform: `translateX(${buttonPosition.x}px) translateY(${buttonPosition.y}px)`,
+                                        display: 'flex',
+                                        justifyContent: 'flex-start',
+                                        alignItems: 'center',
                                     }}
-                                    onClick={handleClose}
                                 >
-                                    Sulje
-                                </Button>
-                            </Box>
+                                    <SuperLink component={Link} to="/tiedotteet" onClick={handleClose}>
+                                        Lisää tiedotteita
+                                    </SuperLink>
+                                </Grid>
+
+                                <Grid
+                                    item
+                                    xs={6}
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'flex-end',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <Button
+                                        // variant="outlined"
+                                        size="small"
+                                        onMouseEnter={handleHover}
+                                        sx={{
+                                            transition: 'transform 0.1s ease-out',
+                                            transform: `translateX(${buttonPosition.x}px) translateY(${buttonPosition.y}px) scale(${buttonScale}) rotate(${buttonRotation}deg)`,
+                                        }}
+                                        onClick={handleClose}
+                                    >
+                                        Sulje
+                                    </Button>
+                                </Grid>
+                            </Grid>
                         </Stack>
                     </Box>
                 </Fade>
