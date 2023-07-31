@@ -21,6 +21,7 @@ interface CartState {
         lastName: string;
         zipcode: string;
         city: string;
+        fetchDate: string;
     };
 }
 
@@ -30,6 +31,7 @@ function Confirmation() {
     const navigate = useNavigate();
     const responseStatus = useActionData() as { type: string; status: boolean };
     const { state } = useStateMachine({ Update }) as unknown as CartState;
+    const fetchDate = new Date(state.fetchDate);
     const { products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const { id } = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
 
@@ -99,6 +101,13 @@ function Confirmation() {
                                 Toimitustapa: {state.deliveryRequired === 'true' ? 'Kuljetus' : 'Nouto'}
                             </Typography>
                         </Grid>
+                        {state.fetchDate && (
+                            <Grid item>
+                                <Typography variant="subtitle1">
+                                    Toimituspäivä: {fetchDate.toLocaleDateString('fi-FI')}
+                                </Typography>
+                            </Grid>
+                        )}
                     </Grid>
                     <Typography variant="overline" sx={{ fontSize: 20, fontWeight: 'bold' }}>
                         Tilaustiedot

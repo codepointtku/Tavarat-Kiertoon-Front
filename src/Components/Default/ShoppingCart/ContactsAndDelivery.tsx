@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { useStateMachine } from 'little-state-machine';
-import { Typography, TextField, Grid, MenuItem, Box, OutlinedInput, Button, Stack } from '@mui/material';
+import { Typography, TextField, Grid, MenuItem, Box, Button, Stack } from '@mui/material';
 
 import CartButtons from './CartButtons';
 import Update from './Update';
@@ -22,6 +22,7 @@ export interface CartFormData {
     zipcode: string;
     city: string;
     deliveryRequired: string;
+    fetchDate?: string;
     orderInfo?: string;
 }
 
@@ -29,13 +30,13 @@ function ContactsAndDelivery() {
     const user = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
     const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
     const [selectedMethod, setSelectedMethod] = useState('true');
+    const { actions, state } = useStateMachine({ Update });
     const {
         register,
         handleSubmit,
         formState: { errors },
         setValue,
     } = useForm({ mode: 'onTouched' });
-    const { actions } = useStateMachine({ Update });
 
     const navigate = useNavigate();
     const onSubmit = (data: CartFormData) => {
@@ -45,6 +46,8 @@ function ContactsAndDelivery() {
     const correctAddress = user.address_list?.filter(
         (address: { address: string }) => address.address === selectedAddress
     );
+
+    console.log(state);
 
     function handleClick() {
         setValue('firstName', user.first_name);

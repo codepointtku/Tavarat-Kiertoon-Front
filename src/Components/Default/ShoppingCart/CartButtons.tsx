@@ -1,6 +1,6 @@
-import { FC } from 'react';
-import { Link, LinkProps, To } from 'react-router-dom';
-import { Button, ButtonProps, Grid } from '@mui/material';
+import type { FC } from 'react';
+import { Link, type LinkProps, type To } from 'react-router-dom';
+import { Button, type ButtonProps, Grid } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
