@@ -161,8 +161,8 @@ function ContactsAndDelivery() {
                             {...register('email', {
                                 required: 'Tämä kenttä on täytettävä',
                                 pattern: {
-                                    value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/,
-                                    message: 'Sisällön täytyy ollan sähköpostin muodossa',
+                                    value: /.+@turku.fi$|.+@edu.turku.fi$/,
+                                    message: 'Sähköpostin täytyy loppua edu.turku.fi tai turku.fi',
                                 },
                                 maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
                             })}
