@@ -51,7 +51,7 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
         formState: { isDirty },
     } = useForm<SearchInputValue>({ defaultValues: { search: '' } });
     const [searchParams, setSearchParams] = useSearchParams();
-    var searchInput = '';
+    let searchInput = '';
     // Created constant with the value of categoryTree to bypass typescript errors :/
     const categoryTreeIndexes = categoryTree as unknown as CategoryTreeIndexes;
 
@@ -98,7 +98,7 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
             if (index === 0) {
                 return formData.search.toLowerCase().replace(currValue, '');
             } else {
-                var updatedSearch = accumulator.replace(currValue, '');
+                let updatedSearch = accumulator.replace(currValue, '');
                 return updatedSearch;
             }
         }, initialValue);
