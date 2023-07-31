@@ -8,6 +8,7 @@ import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutl
 import AddMoreToCart from '../AddMoreToCart';
 import type { shoppingCartLoader } from '../../Router/loaders';
 import AuthContext from '../../Context/AuthContext';
+import AlertBox from '../AlertBox';
 
 interface Props {
     size: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides> | undefined;
@@ -21,6 +22,7 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
     const { username } = auth;
     const { cart, products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const [, setAddedToCart] = useState(false);
+    const [isNotLoggedIn, setIsNotLoggedIn] = useState(false);
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
     const fetcher = useFetcher();
@@ -28,20 +30,26 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
     const product = products?.find((product_item: { product: { id: number } }) => product_item.product.id == id);
 
     const onSubmit = async () => {
-        fetcher.submit(
-            { id },
-            {
-                method: 'put',
-                action: '/?' + searchParams.toString(),
-            }
-        );
-        setAddedToCart(true);
+        if (username) {
+            fetcher.submit(
+                { id },
+                {
+                    method: 'put',
+                    action: '/?' + searchParams.toString(),
+                }
+            );
+            setAddedToCart(true);
+        }
+        setIsNotLoggedIn((isNotLoggedIn) => !isNotLoggedIn);
     };
+
+    // shoppingCartLoader pitää saada päivittymään kun drawerissa muuttaa tuotemääriä
 
     // product = undefined
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
+            {isNotLoggedIn && <AlertBox text="Kirjautuminen vaaditaan ostoskorin käyttöön" status="error" />}
             {cart?.product_items?.some((product_item) => product_item?.product.id === groupId) ? (
                 <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
             ) : (
@@ -50,7 +58,7 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
                         size={size}
                         aria-label="add to shopping cart"
                         startIcon={<AddShoppingCartOutlinedIcon />}
-                        type={username ? 'submit' : 'button'}
+                        type="submit"
                     >
                         Lisää koriin
                     </Button>
