@@ -147,8 +147,6 @@ function DefaultAppBar() {
     const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
     const [cartEmpty, setCartEmpty] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [isAmountUpdated, setIsAmountUpdated] = useState(false);
-    const [amountIsUpdated, setAmountIsUpdated] = useState(true);
     const open = Boolean(anchorEl);
     const location = useLocation();
 
@@ -176,12 +174,10 @@ function DefaultAppBar() {
         } else {
             if (cart?.product_items?.length === 0) {
                 setCartEmpty(true);
-            } else if (isAmountUpdated) {
-                setAmountIsUpdated(true);
             } else {
                 setCartEmpty(false);
                 setCurrentOpenDrawer('');
-                amountIsUpdated && navigate('/ostoskori');
+                navigate('/ostoskori');
             }
         }
     }
@@ -264,18 +260,14 @@ function DefaultAppBar() {
                                 count={cartProduct.count}
                                 id={cartProduct.product.id}
                                 maxCount={product.amount}
-                                isAmountUpdatedState={{ isAmountUpdated, setIsAmountUpdated }}
-                                setAmountIsUpdated={setAmountIsUpdated}
                             />
                         );
                     })}
-                    {amountIsUpdated && (
-                        <ListItem>
+                    {/* <ListItem>
                             <Typography variant="body2" sx={{ color: 'error.main', fontWeight: 'bold' }}>
                                 Vahvista muutokset ostoskorissa jatkaaksesi kassalle.
                             </Typography>
-                        </ListItem>
-                    )}
+                        </ListItem> */}
                 </List>
                 {/* <Divider /> */}
                 <Grid container sx={{ display: 'flex', justifyContent: 'center', marginBottom: '6rem' }}>

@@ -10,25 +10,13 @@ interface Props {
     id: number & string;
     count: number;
     maxCount: number;
-    isAmountUpdatedState: {
-        isAmountUpdated: boolean;
-        setIsAmountUpdated: React.Dispatch<React.SetStateAction<boolean>>;
-    };
-    setAmountIsUpdated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function ProductInCart({ name, id, count, maxCount, isAmountUpdatedState, setAmountIsUpdated }: Props) {
+function ProductInCart({ name, id, count, maxCount }: Props) {
     const fetcher = useFetcher();
     const [changeAmount, setChangeAmount] = useState(true);
     const [amountN, setAmountN] = useState(count);
     const [selectedAmount, setSelectedAmount] = useState(count);
-
-    useEffect(() => {
-        setAmountIsUpdated(false);
-        selectedAmount === amountN
-            ? isAmountUpdatedState.setIsAmountUpdated(true)
-            : isAmountUpdatedState.setIsAmountUpdated(false);
-    }, [amountN, selectedAmount]);
 
     function addAmount() {
         setAmountN(amountN + 1);
