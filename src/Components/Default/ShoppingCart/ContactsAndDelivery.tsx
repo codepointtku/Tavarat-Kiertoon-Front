@@ -76,30 +76,44 @@ function ContactsAndDelivery() {
             >
                 <Stack>
                     <TypographyTitle text="Tilaajan yhteystiedot" />
-                    <Stack direction="row" mt="1rem" gap={2}>
-                        <Box>
-                            <Typography variant="h6" sx={{ mr: '1rem' }}>
-                                Etunimi:
-                            </Typography>
-                            <Typography variant="h6" sx={{ mr: '1rem' }}>
-                                Sukunimi:
-                            </Typography>
-                        </Box>
-
-                        <Box>
-                            <Typography>{user.first_name}</Typography>
-                            <Typography> {user.last_name}</Typography>
-                        </Box>
-
-                        <Box>
-                            <Typography variant="h6">Sähköposti: </Typography>
-                            <Typography variant="h6">Puh. numero: </Typography>
-                        </Box>
-                        <Box>
-                            <Typography>{user.email}</Typography>
-                            <Typography>{user.phone_number}</Typography>
-                        </Box>
-                    </Stack>
+                    <Box sx={{ mt: '1rem' }}>
+                        <Grid container direction="row" gap={1}>
+                            <Grid item>
+                                <Typography variant="h6" sx={{ mr: '1rem' }}>
+                                    Etunimi:
+                                </Typography>
+                            </Grid>
+                            <Grid item alignSelf="center">
+                                <Typography>{user.first_name}</Typography>
+                            </Grid>
+                        </Grid>
+                        <Grid container direction="row" gap={1}>
+                            <Grid item>
+                                <Typography variant="h6" sx={{ mr: '1rem' }}>
+                                    Sukunimi:
+                                </Typography>
+                            </Grid>
+                            <Grid item alignSelf="center">
+                                <Typography> {user.last_name}</Typography>
+                            </Grid>
+                        </Grid>
+                        <Grid container direction="row" gap={1}>
+                            <Grid item>
+                                <Typography variant="h6">Sähköposti: </Typography>
+                            </Grid>
+                            <Grid item alignSelf="center">
+                                <Typography>{user.email}</Typography>
+                            </Grid>
+                        </Grid>
+                        <Grid container direction="row" gap={1}>
+                            <Grid item>
+                                <Typography variant="h6">Puh. numero: </Typography>
+                            </Grid>
+                            <Grid item alignSelf="center">
+                                <Typography>{user.phone_number}</Typography>
+                            </Grid>
+                        </Grid>
+                    </Box>
                 </Stack>
             </Box>
 
