@@ -81,7 +81,7 @@ function ProductInCart({ name, id, count, maxCount, isAmountUpdatedState, setAmo
                 </IconButton>
                 <Input
                     inputProps={{
-                        style: { width: 30, textAlign: 'center', border: '1px solid gray', borderRadius: '0.25rem' },
+                        style: { width: 30, textAlign: 'center', border: '0.5px solid gray', borderRadius: '0.25rem' },
                     }}
                     value={amountN}
                     onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}

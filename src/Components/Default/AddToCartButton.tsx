@@ -39,8 +39,9 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
                 }
             );
             setAddedToCart(true);
+        } else {
+            setIsNotLoggedIn((isNotLoggedIn) => !isNotLoggedIn);
         }
-        setIsNotLoggedIn((isNotLoggedIn) => !isNotLoggedIn);
     };
 
     // shoppingCartLoader pitää saada päivittymään kun drawerissa muuttaa tuotemääriä
