@@ -16,14 +16,20 @@ function BaseLayout() {
 
     const bulletins = data.bulletins;
     const latestBulletin = bulletins[0];
-    const latestBulletinDate = new Date(latestBulletin.date).toLocaleDateString();
-
+    const latestBulletinDate = new Date(latestBulletin.date).getTime();
+    const lastvisit = parseInt(localStorage.getItem('lastvisit') || '0');
     return (
         <Stack id="default-view-stack" sx={{ minHeight: ['100vh', '100svh'] }}>
             <Header />
             <DefaultAppBar />
             <NavigationBar />
-            <BulletinModal title={latestBulletin.title} content={latestBulletin.content} date={latestBulletinDate} />
+            {lastvisit < latestBulletinDate && (
+                <BulletinModal
+                    title={latestBulletin.title}
+                    content={latestBulletin.content}
+                    date={latestBulletinDate}
+                />
+            )}
             <main>
                 <Box
                     id="main-layout-column-box"

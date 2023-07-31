@@ -5,7 +5,7 @@ import { Backdrop, Box, Button, Modal, Fade, Link as MuiLink, Typography, Stack,
 
 interface Props {
     title: string;
-    date?: string;
+    date: number;
     content?: string;
 }
 
@@ -29,7 +29,10 @@ function BulletinModal({ title, date, content }: Props) {
     const SuperLink = MuiLink as typeof MuiLink & typeof Link;
 
     const [bulletinModalOpened, setBulletinModalOpened] = React.useState(true);
-    const handleClose = () => setBulletinModalOpened(false);
+    const handleClose = () => {
+        localStorage.setItem('lastvisit', new Date(date).getTime().toString());
+        setBulletinModalOpened(false);
+    };
 
     const getRandomAnimationValues = () => {
         const maxX = 200;
@@ -98,7 +101,7 @@ function BulletinModal({ title, date, content }: Props) {
                                 {title}
                             </Typography>
                             <Typography variant="caption" sx={{ fontStyle: 'italic', mt: '1rem' }}>
-                                {date}
+                                {new Date(date).toLocaleDateString()}
                             </Typography>
                             <Typography id="bulletin-modal-content" sx={{ mt: '1rem' }} textAlign="center">
                                 {content}
@@ -137,7 +140,7 @@ function BulletinModal({ title, date, content }: Props) {
                                     <Button
                                         // variant="outlined"
                                         size="small"
-                                        onMouseEnter={handleHover}
+                                        // onMouseEnter={handleHover}
                                         sx={{
                                             transition: 'transform 0.1s ease-out',
                                             transform: `translateX(${buttonPosition.x}px) translateY(${buttonPosition.y}px) scale(${buttonScale}) rotate(${buttonRotation}deg)`,
