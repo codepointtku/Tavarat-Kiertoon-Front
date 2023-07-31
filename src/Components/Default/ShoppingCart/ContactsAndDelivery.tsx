@@ -285,11 +285,12 @@ function ContactsAndDelivery() {
             {/* ////// */}
             <TypographyTitle text="Lisätietoja / Viesti" />
 
-            <OutlinedInput
+            <TextField
                 {...register('orderInfo')}
                 placeholder="Lisätietoa toimituksesta..."
                 fullWidth
                 multiline
+                helperText="Lisätietoon voi kirjoittaa esim. ovikoodin tai muut esteet tilauksen kuljetukselle."
                 rows={5}
                 sx={{ marginTop: '2rem' }}
             />
