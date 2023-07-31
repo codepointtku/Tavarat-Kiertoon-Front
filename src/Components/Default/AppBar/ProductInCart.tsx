@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFetcher } from 'react-router-dom';
 import { ListItem, ListItemButton, ListItemText, IconButton, Input, Button, Typography } from '@mui/material';
 
@@ -10,13 +10,25 @@ interface Props {
     id: number & string;
     count: number;
     maxCount: number;
+    isAmountUpdatedState: {
+        isAmountUpdated: boolean;
+        setIsAmountUpdated: React.Dispatch<React.SetStateAction<boolean>>;
+    };
+    setAmountIsUpdated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function ProductInCart({ name, id, count, maxCount }: Props) {
+function ProductInCart({ name, id, count, maxCount, isAmountUpdatedState, setAmountIsUpdated }: Props) {
     const fetcher = useFetcher();
     const [changeAmount, setChangeAmount] = useState(true);
     const [amountN, setAmountN] = useState(count);
     const [selectedAmount, setSelectedAmount] = useState(count);
+
+    useEffect(() => {
+        setAmountIsUpdated(false);
+        selectedAmount === amountN
+            ? isAmountUpdatedState.setIsAmountUpdated(true)
+            : isAmountUpdatedState.setIsAmountUpdated(false);
+    }, [amountN, selectedAmount]);
 
     function addAmount() {
         setAmountN(amountN + 1);
@@ -68,7 +80,9 @@ function ProductInCart({ name, id, count, maxCount }: Props) {
                     <RemoveIcon />
                 </IconButton>
                 <Input
-                    inputProps={{ style: { width: 30, textAlign: 'center' } }}
+                    inputProps={{
+                        style: { width: 30, textAlign: 'center', border: '1px solid gray', borderRadius: '0.25rem' },
+                    }}
                     value={amountN}
                     onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
                     disableUnderline

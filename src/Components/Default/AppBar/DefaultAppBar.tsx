@@ -11,7 +11,6 @@ import {
     Badge,
     Drawer as MuiDrawer,
     List,
-    Divider,
     ListItem,
     ListItemText,
     Typography,
@@ -23,8 +22,6 @@ import { styled } from '@mui/material/styles';
 
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 import AuthContext from '../../../Context/AuthContext';
 import Welcome from './Welcome';
@@ -62,7 +59,7 @@ interface DrawerProps {
     children: ReactNode;
 }
 
-interface StyledBadge {
+interface StyledBadgeIF {
     isanimated: number;
     theme?: Theme;
 }
@@ -97,7 +94,7 @@ function Drawer({ currentOpenDrawer, name, onClose, children }: DrawerProps) {
     );
 }
 
-const StyledBadge = styled(Badge)(({ theme, isanimated }: StyledBadge) => ({
+const StyledBadge = styled(Badge)(({ theme, isanimated }: StyledBadgeIF) => ({
     '& .MuiBadge-badge': {
         color: theme?.palette.primary.contrastText,
         right: -8,
@@ -131,9 +128,9 @@ const toolBarHover = {
     },
 };
 
-interface SubmitFunction {
-    (SubmitTarget: string, options: { method: string; action: string }): any;
-}
+// interface SubmitFunction {
+//     (SubmitTarget: string, options: { method: string; action: string }): any;
+// }
 
 interface CartProduct {
     count: number;
@@ -150,6 +147,8 @@ function DefaultAppBar() {
     const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
     const [cartEmpty, setCartEmpty] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [isAmountUpdated, setIsAmountUpdated] = useState(false);
+    const [amountIsUpdated, setAmountIsUpdated] = useState(true);
     const open = Boolean(anchorEl);
     const location = useLocation();
 
@@ -177,10 +176,12 @@ function DefaultAppBar() {
         } else {
             if (cart?.product_items?.length === 0) {
                 setCartEmpty(true);
+            } else if (isAmountUpdated) {
+                setAmountIsUpdated(true);
             } else {
                 setCartEmpty(false);
                 setCurrentOpenDrawer('');
-                navigate('/ostoskori');
+                amountIsUpdated && navigate('/ostoskori');
             }
         }
     }
@@ -263,9 +264,18 @@ function DefaultAppBar() {
                                 count={cartProduct.count}
                                 id={cartProduct.product.id}
                                 maxCount={product.amount}
+                                isAmountUpdatedState={{ isAmountUpdated, setIsAmountUpdated }}
+                                setAmountIsUpdated={setAmountIsUpdated}
                             />
                         );
                     })}
+                    {amountIsUpdated && (
+                        <ListItem>
+                            <Typography variant="body2" sx={{ color: 'error.main', fontWeight: 'bold' }}>
+                                Vahvista muutokset ostoskorissa jatkaaksesi kassalle.
+                            </Typography>
+                        </ListItem>
+                    )}
                 </List>
                 {/* <Divider /> */}
                 <Grid container sx={{ display: 'flex', justifyContent: 'center', marginBottom: '6rem' }}>
