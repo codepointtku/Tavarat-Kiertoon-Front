@@ -34,7 +34,7 @@ function ContactsAndDelivery() {
         handleSubmit,
         formState: { errors },
         setValue,
-    } = useForm();
+    } = useForm({ mode: 'onTouched' });
     const { actions } = useStateMachine({ Update });
 
     const navigate = useNavigate();
