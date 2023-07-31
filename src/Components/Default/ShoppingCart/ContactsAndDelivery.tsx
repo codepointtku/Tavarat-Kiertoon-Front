@@ -228,7 +228,9 @@ function ContactsAndDelivery() {
                                     label="Postinumero"
                                     variant="outlined"
                                     value={correctAddress[0]?.zip_code}
-                                    {...register('zipcode', { required: true })}
+                                    {...register('zipcode', { required: 'Tämä kenttä on täytettävä' })}
+                                    inputProps={{ required: false }}
+                                    required
                                 />
                             </Grid>
                             <Grid item mr="1rem">
@@ -236,7 +238,9 @@ function ContactsAndDelivery() {
                                     label="Kaupunki"
                                     variant="outlined"
                                     value={correctAddress[0]?.city}
-                                    {...register('city', { required: true })}
+                                    {...register('city', { required: 'Tämä kenttä on täytettävä' })}
+                                    inputProps={{ required: false }}
+                                    required
                                 />
                             </Grid>
                         </>
