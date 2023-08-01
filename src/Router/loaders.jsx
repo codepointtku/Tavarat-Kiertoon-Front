@@ -71,19 +71,6 @@ const shoppingCartLoader = async () => {
 const productListLoader = async ({ request }) => {
     const url = new URL(request.url);
 
-    if (url.searchParams.has('kategoria')) {
-        url.searchParams.forEach((value, key) => {
-            if (key === 'kategoria') {
-                url.searchParams.append('category', value);
-            }
-        });
-        url.searchParams.delete('kategoria');
-        // const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
-        // get all categories
-        const { data } = await productsApi.productsList(url.searchParams.getAll('category'));
-        return data.results;
-    }
-
     if (url.searchParams.has('haku') || url.searchParams.has('kategoria')) {
         const { data } = await productsApi.productsList(
             url.searchParams.getAll('kategoria'),
@@ -93,12 +80,12 @@ const productListLoader = async ({ request }) => {
             null,
             url.searchParams.get('haku')
         );
-        return data;
+        return data.results;
     }
 
     const { data } = await productsApi.productsList();
 
-    return data;
+    return data.results;
 };
 
 /**
