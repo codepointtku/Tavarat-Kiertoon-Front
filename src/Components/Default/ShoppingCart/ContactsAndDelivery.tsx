@@ -14,6 +14,7 @@ import TypographyTitle from '../../TypographyTitle';
 import TypographyHeading from '../../TypographyHeading';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { fi } from 'date-fns/locale';
 
 export interface CartFormData {
     firstName: string;
@@ -32,8 +33,8 @@ function ContactsAndDelivery() {
     const user = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
     const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
     const [selectedMethod, setSelectedMethod] = useState('true');
-    const currentDate = new Date().toLocaleDateString('fi-FI');
-    const [fetchDate, setFetchDate] = useState(currentDate as string | null);
+    const currentDate = new Date() as unknown as Date | null;
+    const [fetchDate, setFetchDate] = useState(currentDate);
     const { actions } = useStateMachine({ Update });
     const {
         register,
@@ -51,8 +52,6 @@ function ContactsAndDelivery() {
         (address: { address: string }) => address.address === selectedAddress
     );
 
-    console.log(currentDate);
-
     function handleClick() {
         setValue('firstName', user.first_name);
         setValue('lastName', user.last_name);
@@ -64,6 +63,10 @@ function ContactsAndDelivery() {
         setValue('zipcode', correctAddress[0]?.zip_code);
         setValue('city', correctAddress[0]?.city);
     }, [selectedAddress]);
+
+    function disableWeekends(date: Date) {
+        return date.getDay() === 0 || date.getDay() === 6;
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
@@ -268,10 +271,11 @@ function ContactsAndDelivery() {
                     </Grid>
                     {selectedMethod === 'false' && (
                         <Grid item>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <LocalizationProvider adapterLocale={fi} dateAdapter={AdapterDateFns}>
                                 <DatePicker
                                     label="Noutoaika"
                                     value={fetchDate}
+                                    inputFormat="dd/MM/yyyy"
                                     onChange={(value) => setFetchDate(value)}
                                     renderInput={(props) => (
                                         <TextField
@@ -280,6 +284,7 @@ function ContactsAndDelivery() {
                                             helperText="Noutoajat ma-pe 9-16"
                                         />
                                     )}
+                                    shouldDisableDate={disableWeekends}
                                     disablePast
                                 />
                             </LocalizationProvider>
