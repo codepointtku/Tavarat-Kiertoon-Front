@@ -33,7 +33,9 @@ function ContactsAndDelivery() {
     const user = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
     const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
     const [selectedMethod, setSelectedMethod] = useState('true');
-    const currentDate = new Date() as unknown as Date | null;
+    const currentDate = new Date();
+    const maxDate = new Date(currentDate.setDate(currentDate.getDate() + 61));
+    console.log(maxDate);
     const [fetchDate, setFetchDate] = useState(currentDate);
     const { actions } = useStateMachine({ Update });
     const {
@@ -276,7 +278,7 @@ function ContactsAndDelivery() {
                                     label="Noutoaika"
                                     value={fetchDate}
                                     inputFormat="dd/MM/yyyy"
-                                    onChange={(value) => setFetchDate(value)}
+                                    onChange={(value) => setFetchDate(value as any)}
                                     renderInput={(props) => (
                                         <TextField
                                             {...props}
@@ -285,6 +287,7 @@ function ContactsAndDelivery() {
                                         />
                                     )}
                                     shouldDisableDate={disableWeekends}
+                                    maxDate={maxDate}
                                     disablePast
                                 />
                             </LocalizationProvider>
