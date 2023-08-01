@@ -9,7 +9,8 @@ import ErrorBoundary from './ErrorBoundary';
 import BaseBoundary from './BaseBoundary';
 // import AdminViewBoundary from './AdminViewBoundary';
 // import UserError from './ErrorElements/UserError';
-// import HasRole from '../Utils/HasRole';
+
+import HasRole from '../Utils/HasRole';
 
 import DefaultView from '../Views/DefaultView';
 
@@ -139,6 +140,7 @@ import {
     emailRecipientsLoader,
     bikeNewModelLoader,
     createBikePacketLoader,
+    createBulletinLoader,
 } from './loaders';
 
 import {
@@ -203,7 +205,9 @@ function Routes() {
                     // Loads data only at first page load, not with every route
                     shouldRevalidate: ({ currentUrl }) => {
                         return (
-                            currentUrl.pathname === '/admin/tiedotteet' || currentUrl.pathname === '/admin/tiedotteet/'
+                            currentUrl.pathname === '/admin/tiedotteet' ||
+                            currentUrl.pathname === '/admin/tiedotteet/' ||
+                            currentUrl.pathname === '/admin/tiedotteet/luo'
                         );
                     },
                     children: [
@@ -433,9 +437,11 @@ function Routes() {
                         {
                             path: 'varasto',
                             element: (
-                                <ThemeProvider theme={storageTheme}>
-                                    <StorageLayout />
-                                </ThemeProvider>
+                                <HasRole role="storage_group" fallback={<Navigate to="/" />}>
+                                    <ThemeProvider theme={storageTheme}>
+                                        <StorageLayout />
+                                    </ThemeProvider>
+                                </HasRole>
                             ),
                             errorElement: (
                                 <ThemeProvider theme={storageTheme}>
@@ -509,11 +515,11 @@ function Routes() {
                         {
                             path: 'admin',
                             element: (
-                                // <HasRole role="admin_group" fallback={<Navigate to="/" />}>
-                                <ThemeProvider theme={adminTheme}>
-                                    <AdminLayout />
-                                </ThemeProvider>
-                                // </HasRole>
+                                <HasRole role="admin_group" fallback={<Navigate to="/" />}>
+                                    <ThemeProvider theme={adminTheme}>
+                                        <AdminLayout />
+                                    </ThemeProvider>
+                                </HasRole>
                             ),
                             id: 'admin',
                             // errorElement: (
@@ -666,6 +672,7 @@ function Routes() {
                                 {
                                     path: 'tiedotteet/luo',
                                     element: <CreateBulletinPost />,
+                                    loader: createBulletinLoader,
                                     action: createBulletinAction,
                                 },
                                 {
@@ -680,9 +687,11 @@ function Routes() {
                         {
                             path: 'pyorat',
                             element: (
-                                <ThemeProvider theme={bikeTheme}>
-                                    <BikesLayout />
-                                </ThemeProvider>
+                                <HasRole role="bicycle_group" fallback={<Navigate to="/" />}>
+                                    <ThemeProvider theme={bikeTheme}>
+                                        <BikesLayout />
+                                    </ThemeProvider>
+                                </HasRole>
                             ),
                             children: [
                                 {
