@@ -25,6 +25,7 @@
         "caniuse-lite": "^1.0.30001495",
         "chart.js": "^4.2.0",
         "date-fns": "^2.29.3",
+        "date-holidays": "^3.21.2",
         "html5-qrcode": "^2.3.4",
         "little-state-machine": "^4.8.0",
         "prop-types": "^15.8.1",

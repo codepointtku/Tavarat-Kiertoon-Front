@@ -15,6 +15,7 @@ import TypographyHeading from '../../TypographyHeading';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { fi } from 'date-fns/locale';
+import Holidays from 'date-holidays';
 
 export interface CartFormData {
     firstName: string;
@@ -34,10 +35,11 @@ function ContactsAndDelivery() {
     const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
     const [selectedMethod, setSelectedMethod] = useState('true');
     const currentDate = new Date();
-    const maxDate = new Date(currentDate.setDate(currentDate.getDate() + 61));
-    console.log(maxDate);
     const [fetchDate, setFetchDate] = useState(currentDate);
+    const maxDate = new Date().setDate(currentDate.getDate() + 64);
     const { actions } = useStateMachine({ Update });
+    const hd = new Holidays('FI');
+    const finnishHolidays = hd.getHolidays();
     const {
         register,
         handleSubmit,
@@ -66,8 +68,11 @@ function ContactsAndDelivery() {
         setValue('city', correctAddress[0]?.city);
     }, [selectedAddress]);
 
-    function disableWeekends(date: Date) {
-        return date.getDay() === 0 || date.getDay() === 6;
+    function disableDate(date: Date) {
+        date.setHours(0, 0, 0, 0);
+        const dateIsHoliday = finnishHolidays.some((holiday) => holiday.start === date);
+        console.log(date, finnishHolidays[15].start, date == finnishHolidays[15].start);
+        return date.getDay() === 0 || date.getDay() === 6 || dateIsHoliday;
     }
 
     return (
@@ -286,22 +291,11 @@ function ContactsAndDelivery() {
                                             helperText="Noutoajat ma-pe 9-16"
                                         />
                                     )}
-                                    shouldDisableDate={disableWeekends}
-                                    maxDate={maxDate}
+                                    shouldDisableDate={disableDate}
+                                    // maxDate={new Date(maxDate)}
                                     disablePast
                                 />
                             </LocalizationProvider>
-                            {/* <TextField
-                                            {...register('fetchDate')}
-                                            type="date"
-                                            label="Noutoaika"
-                                            variant="outlined"
-                                            placeholder="Noutoaika"
-                                            inputProps={{ required: false }}
-                                            InputLabelProps={{ shrink: true }}
-                                            helperText="Noutoajat ma-pe 9-16"
-                                            required
-                                        /> */}
                         </Grid>
                     )}
                 </Grid>
