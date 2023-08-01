@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Form, useSubmit, useRouteLoaderData } from 'react-router-dom';
+import { Form, useSubmit, useLoaderData } from 'react-router-dom';
 
 import { Container, TextField, Button, Box, Stack, Grid, IconButton } from '@mui/material';
 import FeedIcon from '@mui/icons-material/Feed';
@@ -10,10 +10,10 @@ import Tooltip from '../Tooltip';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
-import type { adminLoader } from '../../Router/loaders';
+import type { createBulletinLoader } from '../../Router/loaders';
 
 function CreateBulletinPost() {
-    const { user } = useRouteLoaderData('admin') as Awaited<ReturnType<typeof adminLoader>>;
+    const { user } = useLoaderData() as Awaited<ReturnType<typeof createBulletinLoader>>;
 
     const {
         register,
