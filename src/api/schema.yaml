@@ -2806,7 +2806,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserSearchWatchUser'
+                  $ref: '#/components/schemas/SearchWatch'
           description: ''
     post:
       operationId: user_searchwatch_create
@@ -2817,13 +2817,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserSearchWatchSchema'
+              $ref: '#/components/schemas/SearchWatchRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/UserSearchWatchSchema'
+              $ref: '#/components/schemas/SearchWatchRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/UserSearchWatchSchema'
+              $ref: '#/components/schemas/SearchWatchRequest'
         required: true
       security:
       - CustomJWTAuthentication: []
@@ -2832,7 +2832,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserSearchWatchAdmin'
+                $ref: '#/components/schemas/SearchWatch'
           description: ''
   /user/searchwatch/{id}/:
     get:
@@ -2854,7 +2854,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserSearchWatchUser'
+                $ref: '#/components/schemas/SearchWatch'
           description: ''
     put:
       operationId: user_searchwatch_update
@@ -2872,13 +2872,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserSearchWatchUser'
+              $ref: '#/components/schemas/SearchWatchRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/UserSearchWatchUser'
+              $ref: '#/components/schemas/SearchWatchRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/UserSearchWatchUser'
+              $ref: '#/components/schemas/SearchWatchRequest'
         required: true
       security:
       - CustomJWTAuthentication: []
@@ -2887,39 +2887,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserSearchWatchUser'
-          description: ''
-    patch:
-      operationId: user_searchwatch_partial_update
-      description: Delete the specific address given in kwargs. address needs to match
-        logged in user id as owner
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - user
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedUserSearchWatchUser'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedUserSearchWatchUser'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedUserSearchWatchUser'
-      security:
-      - CustomJWTAuthentication: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserSearchWatchUser'
+                $ref: '#/components/schemas/SearchWatch'
           description: ''
     delete:
       operationId: user_searchwatch_destroy
@@ -3537,128 +3505,6 @@ paths:
       - {}
       responses:
         '200':
-          description: No response body
-  /users/searchwatch/:
-    get:
-      operationId: users_searchwatch_list
-      description: |-
-        user search watches in list:
-        FOR ADMINS
-      tags:
-      - users
-      security:
-      - CustomJWTAuthentication: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserSearchWatchAdmin'
-          description: ''
-    post:
-      operationId: users_searchwatch_create
-      description: |-
-        user search watches in list:
-        FOR ADMINS
-      tags:
-      - users
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserSearchWatchAdmin'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/UserSearchWatchAdmin'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/UserSearchWatchAdmin'
-        required: true
-      security:
-      - CustomJWTAuthentication: []
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserSearchWatchAdmin'
-          description: ''
-  /users/searchwatch/{id}/:
-    get:
-      operationId: users_searchwatch_retrieve
-      description: |-
-        single user search watch:
-        FOR ADMINS
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - users
-      security:
-      - CustomJWTAuthentication: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserSearchWatchAdmin'
-          description: ''
-    put:
-      operationId: users_searchwatch_update
-      description: |-
-        single user search watch:
-        FOR ADMINS
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - users
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserSearchWatchAdmin'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/UserSearchWatchAdmin'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/UserSearchWatchAdmin'
-        required: true
-      security:
-      - CustomJWTAuthentication: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserSearchWatchAdmin'
-          description: ''
-    delete:
-      operationId: users_searchwatch_destroy
-      description: |-
-        single user search watch:
-        FOR ADMINS
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - users
-      security:
-      - CustomJWTAuthentication: []
-      responses:
-        '204':
           description: No response body
 components:
   schemas:
@@ -5039,16 +4885,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserLogResponseSchema'
-    PatchedUserSearchWatchUser:
-      type: object
-      description: Serializer for user search watchs for normal users
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        word:
-          type: string
-          maxLength: 255
     Picture:
       type: object
       properties:
@@ -5412,6 +5248,33 @@ components:
       - pictures
       - price
       - weight
+    SearchWatch:
+      type: object
+      description: Serializer for user search watchs for normal users
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        words:
+          type: array
+          items:
+            type: string
+        user:
+          type: integer
+      required:
+      - id
+      - user
+      - words
+    SearchWatchRequest:
+      type: object
+      description: Serializer for SearchWatchListView post
+      properties:
+        words:
+          type: array
+          items:
+            type: string
+      required:
+      - words
     ShoppingCart:
       type: object
       properties:
@@ -5829,49 +5692,6 @@ components:
           maxLength: 255
       required:
       - username
-    UserSearchWatchAdmin:
-      type: object
-      description: Serializer for user search watchs for admins
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        word:
-          type: string
-          maxLength: 255
-        user:
-          type: integer
-      required:
-      - id
-      - user
-      - word
-    UserSearchWatchSchema:
-      type: object
-      description: Serializer mainly for schema purpose, fields required for creating
-        user watch for user
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        word:
-          type: string
-          maxLength: 255
-      required:
-      - id
-      - word
-    UserSearchWatchUser:
-      type: object
-      description: Serializer for user search watchs for normal users
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        word:
-          type: string
-          maxLength: 255
-      required:
-      - id
-      - word
     UserTokenValidation:
       type: object
       description: Serializer for user activation validations.
