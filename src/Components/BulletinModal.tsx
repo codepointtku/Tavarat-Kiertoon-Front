@@ -21,56 +21,57 @@ const style = {
     p: 4,
 };
 
-const getRandomValueInRange = (min: number, max: number) => {
-    return Math.random() * (max - min) + min;
-};
+// const getRandomValueInRange = (min: number, max: number) => {
+//     return Math.random() * (max - min) + min;
+// };
 
 function BulletinModal({ title, date, content }: Props) {
     const SuperLink = MuiLink as typeof MuiLink & typeof Link;
 
     const [bulletinModalOpened, setBulletinModalOpened] = React.useState(true);
+
     const handleClose = () => {
         localStorage.setItem('lastvisit', new Date(date).getTime().toString());
         setBulletinModalOpened(false);
     };
 
-    const getRandomAnimationValues = () => {
-        const maxX = 200;
-        const maxY = 200;
+    // // important stuff, use with caution :)
+    // const getRandomAnimationValues = () => {
+    //     const maxX = 200;
+    //     const maxY = 200;
 
-        const randomX = getRandomValueInRange(-maxX, maxX);
-        const randomY = getRandomValueInRange(-maxY, maxY);
+    //     const randomX = getRandomValueInRange(-maxX, maxX);
+    //     const randomY = getRandomValueInRange(-maxY, maxY);
 
-        return { x: randomX, y: randomY };
-    };
+    //     return { x: randomX, y: randomY };
+    // };
 
-    const [buttonPosition, setButtonPosition] = React.useState({ x: 0, y: 0 });
+    // const [buttonPosition, setButtonPosition] = React.useState({ x: 0, y: 0 });
+    // const [buttonScale, setButtonScale] = React.useState(1);
+    // const [buttonRotation, setButtonRotation] = React.useState(0);
 
-    const getRandomScale = () => {
-        const minScale = 0.4;
-        const maxScale = 3.2;
-        return getRandomValueInRange(minScale, maxScale);
-    };
+    // const getRandomScale = () => {
+    //     const minScale = 0.4;
+    //     const maxScale = 3.2;
+    //     return getRandomValueInRange(minScale, maxScale);
+    // };
 
-    const getRandomRotation = () => {
-        const minRotation = -180; // Minimum rotation angle in degrees
-        const maxRotation = 180; // Maximum rotation angle in degrees
-        return getRandomValueInRange(minRotation, maxRotation);
-    };
+    // const getRandomRotation = () => {
+    //     const minRotation = -180;
+    //     const maxRotation = 180;
+    //     return getRandomValueInRange(minRotation, maxRotation);
+    // };
 
-    const handleHover = () => {
-        const { x, y } = getRandomAnimationValues();
-        setButtonPosition({ x, y });
-        const randomScale = getRandomScale();
-        const randomRotation = getRandomRotation();
+    // const handleHover = () => {
+    //     const { x, y } = getRandomAnimationValues();
+    //     setButtonPosition({ x, y });
+    //     const randomScale = getRandomScale();
+    //     const randomRotation = getRandomRotation();
 
-        setButtonPosition({ x, y });
-        setButtonScale(randomScale);
-        setButtonRotation(randomRotation);
-    };
-
-    const [buttonScale, setButtonScale] = React.useState(1);
-    const [buttonRotation, setButtonRotation] = React.useState(0);
+    //     setButtonPosition({ x, y });
+    //     setButtonScale(randomScale);
+    //     setButtonRotation(randomRotation);
+    // };
 
     return (
         <div>
@@ -150,10 +151,10 @@ function BulletinModal({ title, date, content }: Props) {
                                         variant="outlined"
                                         size="small"
                                         // onMouseEnter={handleHover}
-                                        sx={{
-                                            transition: 'transform 0.1s ease-out',
-                                            transform: `translateX(${buttonPosition.x}px) translateY(${buttonPosition.y}px) scale(${buttonScale}) rotate(${buttonRotation}deg)`,
-                                        }}
+                                        // sx={{
+                                        //     transition: 'transform 0.1s ease-out',
+                                        //     transform: `translateX(${buttonPosition.x}px) translateY(${buttonPosition.y}px) scale(${buttonScale}) rotate(${buttonRotation}deg)`,
+                                        // }}
                                         onClick={handleClose}
                                     >
                                         Sulje
