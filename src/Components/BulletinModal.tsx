@@ -94,13 +94,7 @@ function BulletinModal({ title, date, content }: Props) {
                 <Fade in={bulletinModalOpened} easing={'10000'}>
                     <Box sx={style}>
                         <Stack>
-                            <Typography
-                                id="bulletin-modal-title"
-                                variant="h6"
-                                component="h2"
-                                textAlign="center"
-                                // gutterBottom
-                            >
+                            <Typography id="bulletin-modal-title" variant="h6" component="h2" textAlign="center">
                                 {title}
                             </Typography>
                             <Typography variant="caption" sx={{ fontStyle: 'italic', mt: '1rem' }}>
