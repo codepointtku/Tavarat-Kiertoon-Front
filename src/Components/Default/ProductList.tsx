@@ -8,9 +8,8 @@ import ProductCard from './ProductCard';
 function SearchResultMessage() {
     const [searchParams] = useSearchParams();
     const searchQuery = searchParams.get('haku');
-    let singleSearchQuery = searchParams.get('haku');
 
-    if (searchParams.has('kategoria') || (searchParams.has('kategoria') && singleSearchQuery === '')) {
+    if (searchParams.has('kategoria') || (searchParams.has('kategoria') && searchQuery === '')) {
         return (
             <Box id="empty-category">
                 <TypographyHeading text="Tule myöhemmin uudelleen!" />
