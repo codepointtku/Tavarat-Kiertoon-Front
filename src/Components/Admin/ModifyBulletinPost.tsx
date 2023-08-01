@@ -2,9 +2,13 @@ import { useForm } from 'react-hook-form';
 import { Form, useSubmit, useLocation, Link } from 'react-router-dom';
 
 import { Box, Container, FormControl, Stack, TextField, Button } from '@mui/material';
-import TypographyTitle from '../TypographyTitle';
+import type { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
+
+import FeedIcon from '@mui/icons-material/Feed';
+
 import AlertBox from '../AlertBox';
-import { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
+import HeroHeader from '../HeroHeader';
+import HeroText from '../HeroText';
 
 interface FormData extends SubmitHandler<FieldValues> {
     title: string;
@@ -31,21 +35,31 @@ function ModifyBulletinPost() {
     };
 
     return (
-        <Stack sx={{ p: 5 }}>
-            <TypographyTitle text={`Muokkaa tiedotetta ${location.state.id}`} />
-            <Box
-                id="bulletin-modification-form-component"
-                component={Form}
-                onSubmit={handleSubmit(onSubmit as FormData)}
-                autoComplete="off"
-            >
-                <Container maxWidth="md">
+        <>
+            {isSubmitSuccessful && (
+                <AlertBox
+                    text="Tiedote lisätty onnistuneesti"
+                    status="success"
+                    redirectUrl="/admin/tiedotteet/"
+                    timer={2000}
+                />
+            )}
+
+            <Container maxWidth="md">
+                <HeroHeader Icon={<FeedIcon />} hideInAdmin />
+                <HeroText title={`Muokkaa tiedotetta ${location.state.id}`} />
+                <Box
+                    id="bulletin-modification-form-component"
+                    component={Form}
+                    onSubmit={handleSubmit(onSubmit as FormData)}
+                    autoComplete="off"
+                >
                     <Stack id="bulletin-modification-column-stacker">
                         <FormControl id="bulletin-modification-formcontrol">
                             <TextField
                                 {...register('title', {
                                     required: 'Tämä kenttä on täytettävä',
-                                    minLength: { value: 5, message: 'Sisältö on liian lyhyt' },
+                                    minLength: { value: 3, message: 'Sisältö on liian lyhyt' },
                                     maxLength: { value: 100, message: 'Otsikko on liian pitkä' },
                                 })}
                                 sx={{ mt: 2 }}
@@ -62,8 +76,8 @@ function ModifyBulletinPost() {
                             <TextField
                                 {...register('content', {
                                     required: 'Tämä kenttä on täytettävä',
-                                    minLength: { value: 5, message: 'Sisältö on liian lyhyt' },
-                                    maxLength: { value: 400, message: 'Sisältö on liian pitkä' },
+                                    minLength: { value: 3, message: 'Sisältö on liian lyhyt' },
+                                    maxLength: { value: 1000, message: 'Sisältö on liian pitkä' },
                                 })}
                                 sx={{ mt: 2 }}
                                 label="Uusi sisältö"
@@ -87,17 +101,9 @@ function ModifyBulletinPost() {
                             </Button>
                         </FormControl>
                     </Stack>
-                </Container>
-            </Box>
-            {isSubmitSuccessful && (
-                <AlertBox
-                    text="Tiedote lisätty onnistuneesti"
-                    status="success"
-                    redirectUrl="/admin/tiedotteet/"
-                    timer={2000}
-                />
-            )}
-        </Stack>
+                </Box>
+            </Container>
+        </>
     );
 }
 
