@@ -72,58 +72,58 @@ function ProductCard({
                         {pictures.map((picture) => (
                             <Box key={picture.picture_address} component={Link} to={`/tuotteet/${id}`} color="inherit">
                                 <CardMedia
-                                    component={Box}
-                                    sx={{ position: 'relative', alt: 'kuva' }}
+                                    component="img"
+                                    sx={{ alt: 'kuva', objectFit: 'contain' }}
                                     height={200}
                                     image={`${window.location.protocol}//${window.location.hostname}:8000/media/${picture.picture_address}`}
-                                >
-                                    {openInfo && (
-                                        <Grid
-                                            container
-                                            direction="column"
-                                            sx={{
-                                                position: 'absolute',
-                                                width: '100%',
-                                                height: '100%',
-                                                paddingLeft: 2,
-                                                backgroundColor: 'rgba(255, 255, 255, 0.4)',
-                                                backdropFilter: 'blur(6px)',
-                                            }}
-                                            justifyContent="space-evenly"
-                                        >
-                                            <Grid item>
-                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
-                                                    Kuvaus: {freeDescription}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
-                                                    Kategoria: {categoryName}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
-                                                    Varastosijainti: {storageName}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
-                                                    Väri: {colorName}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
-                                                    Mitat: {measurements}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
-                                                    Paino: {weight}
-                                                </Typography>
-                                            </Grid>
+                                ></CardMedia>
+                                {openInfo && (
+                                    <Grid
+                                        container
+                                        direction="column"
+                                        sx={{
+                                            position: 'absolute',
+                                            width: '100%',
+                                            height: '100%',
+                                            paddingLeft: 2,
+                                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                            backdropFilter: 'blur(6px)',
+                                            top: '0px',
+                                        }}
+                                        justifyContent="space-evenly"
+                                    >
+                                        <Grid item>
+                                            <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                Kuvaus: {freeDescription}
+                                            </Typography>
                                         </Grid>
-                                    )}
-                                </CardMedia>
+                                        <Grid item>
+                                            <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                Kategoria: {categoryName}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                Varastosijainti: {storageName}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                Väri: {colorName}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                Mitat: {measurements}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                Paino: {weight}
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                )}
                             </Box>
                         ))}
                     </Carousel>

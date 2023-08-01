@@ -35,10 +35,13 @@ function SimilarProductCard({ product }: SimilarProduct) {
         <Card sx={{ width: 200 }}>
             <CardActionArea component={Link} to={`/tuotteet/${product.id}`}>
                 <CardMedia
-                    component={Box}
-                    sx={{ alt: 'kuva' }}
                     height={100}
-                    image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product.pictures[0].picture_address}`}
+                    component="img"
+                    alt="tuote kuva"
+                    sx={{
+                        objectFit: 'contain',
+                    }}
+                    image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product?.pictures[0]?.picture_address}`}
                 />
                 <CardHeader
                     title={<Typography variant="h6">{product.name}</Typography>}

@@ -54,7 +54,7 @@ function OrderPage() {
                                 >
                                     <CardMedia
                                         sx={{ height: '100%' }}
-                                        image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product_item.product.pictures[0].picture_address}`}
+                                        image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product_item?.product?.pictures[0]?.picture_address}`}
                                     >
                                         <Box
                                             sx={{

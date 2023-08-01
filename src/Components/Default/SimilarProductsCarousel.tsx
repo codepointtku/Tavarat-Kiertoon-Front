@@ -13,9 +13,8 @@ function SimilarProductsCarousel({ similarProducts, currentId }: SimilarProductC
     const similarProductsWithoutSelectedProduct = similarProducts.results.filter(
         (product: any) => product.id != currentId
     );
-    const pageCount = similarProducts.results.length / 3;
-    var a = 0;
-
+    const pageCount = Math.floor(similarProducts.results.length / 3);
+    let a = 0;
     for (let i = 0; i < pageCount; i++) {
         a += 3;
         carouselPageContents.push(similarProductsWithoutSelectedProduct.slice(a - 3, a));
