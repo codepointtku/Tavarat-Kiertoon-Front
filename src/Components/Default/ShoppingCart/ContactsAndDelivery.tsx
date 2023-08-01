@@ -12,6 +12,7 @@ import type { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
 
 import TypographyTitle from '../../TypographyTitle';
 import TypographyHeading from '../../TypographyHeading';
+import { DatePicker } from '@mui/x-date-pickers';
 
 export interface CartFormData {
     firstName: string;
@@ -76,44 +77,24 @@ function ContactsAndDelivery() {
             >
                 <Stack>
                     <TypographyTitle text="Tilaajan yhteystiedot" />
-                    <Box sx={{ mt: '1rem' }}>
-                        <Grid container direction="row" gap={1}>
-                            <Grid item>
-                                <Typography variant="h6" sx={{ mr: '1rem' }}>
-                                    Etunimi:
-                                </Typography>
-                            </Grid>
-                            <Grid item alignSelf="center">
-                                <Typography>{user.first_name}</Typography>
-                            </Grid>
-                        </Grid>
-                        <Grid container direction="row" gap={1}>
-                            <Grid item>
-                                <Typography variant="h6" sx={{ mr: '1rem' }}>
-                                    Sukunimi:
-                                </Typography>
-                            </Grid>
-                            <Grid item alignSelf="center">
-                                <Typography> {user.last_name}</Typography>
-                            </Grid>
-                        </Grid>
-                        <Grid container direction="row" gap={1}>
-                            <Grid item>
-                                <Typography variant="h6">Sähköposti: </Typography>
-                            </Grid>
-                            <Grid item alignSelf="center">
-                                <Typography>{user.email}</Typography>
-                            </Grid>
-                        </Grid>
-                        <Grid container direction="row" gap={1}>
-                            <Grid item>
-                                <Typography variant="h6">Puh. numero: </Typography>
-                            </Grid>
-                            <Grid item alignSelf="center">
-                                <Typography>{user.phone_number}</Typography>
-                            </Grid>
-                        </Grid>
-                    </Box>
+                    <Grid container direction="row" gap={2} sx={{ mt: '1rem' }}>
+                        <Stack direction="row" gap={1}>
+                            <Typography variant="h6">Etunimi:</Typography>
+                            <Typography sx={{ display: 'flex', alignSelf: 'center' }}>{user.first_name}</Typography>
+                        </Stack>
+                        <Stack direction="row" gap={1}>
+                            <Typography variant="h6">Sukunimi:</Typography>
+                            <Typography sx={{ display: 'flex', alignSelf: 'center' }}> {user.last_name}</Typography>
+                        </Stack>
+                        <Stack direction="row" gap={1}>
+                            <Typography variant="h6">Sähköposti: </Typography>
+                            <Typography sx={{ display: 'flex', alignSelf: 'center' }}>{user.email}</Typography>
+                        </Stack>
+                        <Stack direction="row" gap={1}>
+                            <Typography variant="h6">Puh. numero: </Typography>
+                            <Typography sx={{ display: 'flex', alignSelf: 'center' }}>{user.phone_number}</Typography>
+                        </Stack>
+                    </Grid>
                 </Stack>
             </Box>
 
@@ -246,6 +227,7 @@ function ContactsAndDelivery() {
                                     variant="outlined"
                                     value={correctAddress[0]?.zip_code}
                                     {...register('zipcode')}
+                                    sx={{ opacity: 0.7 }}
                                     disabled
                                 />
                             </Grid>
@@ -255,6 +237,7 @@ function ContactsAndDelivery() {
                                     variant="outlined"
                                     value={correctAddress[0]?.city}
                                     {...register('city')}
+                                    sx={{ opacity: 0.7 }}
                                     disabled
                                 />
                             </Grid>
