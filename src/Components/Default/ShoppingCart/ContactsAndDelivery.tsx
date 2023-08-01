@@ -12,7 +12,8 @@ import type { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
 
 import TypographyTitle from '../../TypographyTitle';
 import TypographyHeading from '../../TypographyHeading';
-import { DatePicker } from '@mui/x-date-pickers';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 export interface CartFormData {
     firstName: string;
@@ -31,7 +32,9 @@ function ContactsAndDelivery() {
     const user = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
     const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
     const [selectedMethod, setSelectedMethod] = useState('true');
-    const { actions, state } = useStateMachine({ Update });
+    const currentDate = new Date().toLocaleDateString('fi-FI');
+    const [fetchDate, setFetchDate] = useState(currentDate as string | null);
+    const { actions } = useStateMachine({ Update });
     const {
         register,
         handleSubmit,
@@ -48,7 +51,7 @@ function ContactsAndDelivery() {
         (address: { address: string }) => address.address === selectedAddress
     );
 
-    console.log(state);
+    console.log(currentDate);
 
     function handleClick() {
         setValue('firstName', user.first_name);
@@ -265,17 +268,32 @@ function ContactsAndDelivery() {
                     </Grid>
                     {selectedMethod === 'false' && (
                         <Grid item>
-                            <TextField
-                                {...register('fetchDate')}
-                                type="date"
-                                label="Noutoaika"
-                                variant="outlined"
-                                placeholder="Noutoaika"
-                                inputProps={{ required: false }}
-                                InputLabelProps={{ shrink: true }}
-                                helperText="Noutoajat ma-pe 9-16"
-                                required
-                            />
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+                                    label="Noutoaika"
+                                    value={fetchDate}
+                                    onChange={(value) => setFetchDate(value)}
+                                    renderInput={(props) => (
+                                        <TextField
+                                            {...props}
+                                            {...register('fetchDate', { required: 'Tämä kenttä on täytettävä' })}
+                                            helperText="Noutoajat ma-pe 9-16"
+                                        />
+                                    )}
+                                    disablePast
+                                />
+                            </LocalizationProvider>
+                            {/* <TextField
+                                            {...register('fetchDate')}
+                                            type="date"
+                                            label="Noutoaika"
+                                            variant="outlined"
+                                            placeholder="Noutoaika"
+                                            inputProps={{ required: false }}
+                                            InputLabelProps={{ shrink: true }}
+                                            helperText="Noutoajat ma-pe 9-16"
+                                            required
+                                        /> */}
                         </Grid>
                     )}
                 </Grid>
