@@ -6,28 +6,19 @@ import {
     contactFormsApi,
     // contactsApi,
     ordersApi,
+    productsApi,
     shoppingCartApi,
     storagesApi,
     userApi,
     usersApi,
 } from '../api';
 
-const adminLogOut = async (auth, setAuth, request) => {
-    // const formData = await request.formData();
+const adminLogOut = async ({ request }) => {
     if (request.method === 'POST') {
-        if (auth.username) {
-            // const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
-            //     formData,
-            // });
-            const response = await usersApi.usersLogoutCreate();
-            // await usersApi.usersLogoutCreate();
-            if (response.status === 200) {
-                // return { type: 'logout', status: true };
-                return redirect('/');
-            }
-            // return { type: 'logout', status: false };
-        }
+        await usersApi.usersLogoutCreate();
+        return { type: 'logout', status: true };
     }
+    return { type: 'logout', status: false };
 };
 
 /**
@@ -138,11 +129,9 @@ const userSignupAction = async (request) => {
             return { type: 'create', status: true, message: response.data.message };
         }
         if (response.status === 400) {
-            // console.log(',0ooiuioh');
             return { type: 'create', status: false, message: response.data.message };
         }
     } catch (error) {
-        // console.log('cats', error);
         return { type: 'create', status: false, message: request.responseText };
     }
 
@@ -242,100 +231,156 @@ const orderEditAction = async (auth, setAuth, request, params) => {
 };
 
 /*
-creates new storage
-*/
-const storageCreateAction = async (auth, setAuth, request) => {
+ * Creates a new storage
+ */
+const storageCreateAction = async ({ request }) => {
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/storages/', 'post', {
-    //     address: formData.get('address'),
-    //     name: formData.get('name'),
-    //     in_use: formData.get('in_use') === 'käytössä' ? true : false,
-    // });
-    const response = await storagesApi.storagesCreate({
-        address: formData.get('address'),
+
+    const newStorage = {
         name: formData.get('name'),
-        in_use: formData.get('in_use') === 'käytössä' ? true : false,
-    });
+        address: formData.get('address'),
+        in_use: formData.get('in_use') === 'Käytössä' ? true : false,
+    };
+
+    const response = await storagesApi.storagesCreate(newStorage);
+
     if (response.status === 201) {
-        return { type: 'post', status: true };
+        return { type: 'createstorage', status: true };
     }
-    return { type: 'post', status: false };
+
+    return { type: 'createstorage', status: false };
 };
 
 /**
- * edits storage information
+ * Edits storage information
  */
-const storageEditAction = async (auth, setAuth, request, params) => {
+const storageEditAction = async ({ request, params }) => {
     const formData = await request.formData();
-    if (request.method === 'POST') {
-        if (formData.get('type') === 'put') {
-            // const response = await apiCall(auth, setAuth, `/storages/${params.id}/`, 'put', {
-            //     address: formData.get('address'),
-            //     name: formData.get('name'),
-            //     in_use: formData.get('in_use'),
-            // });
-            const response = await storagesApi.storagesUpdate(params.id, {
-                address: formData.get('address'),
-                name: formData.get('name'),
-                in_use: formData.get('in_use'),
-            });
-            if (response.status === 200) {
-                return { type: 'update', status: true };
-            }
-            return { type: 'update', status: false };
-        }
+
+    const response = await storagesApi.storagesUpdate(params.id, {
+        address: formData.get('address'),
+        name: formData.get('name'),
+        in_use: formData.get('in_use') === 'Käytössä' ? true : false,
+    });
+
+    if (response.status === 200) {
+        return { type: 'updatestorage', status: true };
     }
-    return null;
+
+    return { type: 'updatestorage', status: false };
 };
 
-const userEditAction = async (auth, setAuth, request, params) => {
-    // This action handles user data: info, addressinfo and users auth groups.
-    // User data has different BE endpoints for different user data sections.
+/**
+ * Deletes storage information
+ */
+const storageDeleteAction = async ({ params }) => {
+    await storagesApi.storagesDestroy(params.id);
+    return redirect('/admin/varastot');
+};
+
+/**
+ * Products transfer
+ */
+const productsTransferAction = async ({ request }) => {
+    const formData = await request.formData();
+
+    const selectedStorage = JSON.parse(formData.get('storage_to'));
+    const productIds = JSON.parse(formData.get('product_ids'));
+    // const productIds = formData.get('product_ids');
+
+    // console.log('%c selected storage a:', 'color: green; font-weight: bold', selectedStorage);
+    console.log('%c selected prodIds a:', 'color: red; font-weight: bold', productIds);
+
+    const transfer = {
+        storage: selectedStorage,
+        product_items: productIds,
+    };
+
+    console.log('transfer a:', transfer);
+
+    const response = await productsApi.productsTransferUpdate(transfer);
+
+    if (productIds.length === 0 && response.status === 200) {
+        return { type: 'productstransferempty', status: true };
+    }
+    if (response.status === 200) {
+        return { type: 'productstransfer', status: true };
+    }
+
+    return { type: 'productstransfer', status: false };
+};
+
+const userEditAction = async ({ request, params }) => {
+    // This action handles user data: info and users auth groups.
+    // User data has different BE endpoints for these different user data sections.
 
     // First apicall updates users editable info.
-    // Second apicall patches users addressinfo. (not finalized, working on it)
-
-    // Third apicall updates users auth groups: BE expects integers (representing different auth groups) in an array.
-    // It gets all the checked checkboxes values into an array's first index.
-    // The array is then splitted by comma into an array of strings. These indexes are then mapped into an array of integers,
-    // and then sent to the BE in a composition BE expects.
+    // Second apicall updates users auth groups: BE expects integers (representing different auth groups) in an array.
+    // - Get all the checked checkboxes values into an array's first index.
+    // - The array is then splitted by comma into an array of strings. These values are then mapped into an array of integers,
+    // - and then sent to the BE in a composition BE expects.
 
     const formData = await request.formData();
-    // let response = await apiCall(auth, setAuth, `/users/${params.id}/`, 'put', {
-    //     first_name: formData.get('first_name'),
-    //     last_name: formData.get('last_name'),
-    //     phone_number: formData.get('phone_number'),
-    // });
 
-    let response = await usersApi.usersUpdate(params.id, {
+    const userInfo = {
         first_name: formData.get('first_name'),
         last_name: formData.get('last_name'),
         phone_number: formData.get('phone_number'),
-    });
-
-    // works if used perfectly. needs more validation. not yet ready for production. disabled for this pr.
-    // const newAddress = {
-    //     address: formData.get('address'),
-    //     zipcode: formData.get('zip_code'),
-    //     city: formData.get('city'),
-    // };
-
-    // response = await apiCall(auth, setAuth, `/users/address/${params.id}/`, 'patch', newAddress);
+    };
 
     const selectedAuthGroups = formData
         .getAll('groups')[0]
         .split(',')
         .map((group) => Number(group));
-    // response = await apiCall(auth, setAuth, `/users/${params.id}/groups/permission/`, 'put', {
-    //     groups: selectedAuthGroups,
-    // });
 
-    response = await usersApi.usersGroupsPermissionUpdate(params.id, { groups: selectedAuthGroups });
+    const userInfoUpdateResponse = await usersApi.usersUpdate(params.userid, userInfo);
+    const userPermissionsUpdateResponse = await usersApi.usersGroupsPermissionUpdate(params.userid, {
+        groups: selectedAuthGroups,
+    });
 
-    if (response.status === 200) {
+    if (userInfoUpdateResponse.status === 200 && userPermissionsUpdateResponse.status === 200) {
         return { type: 'update', status: true };
     }
+
     return { type: 'update', status: false };
+};
+
+const adminUserAddressEditAction = async ({ request, params }) => {
+    const formData = await request.formData();
+
+    const modifiedAddress = {
+        address: formData.get('address'),
+        zip_code: formData.get('zip_code'),
+        city: formData.get('city'),
+        user: params.userid,
+    };
+
+    const userAddressUpdateResponse = await usersApi.usersAddressUpdate(params.aid, modifiedAddress);
+
+    if (userAddressUpdateResponse.status === 200) {
+        return { type: 'addressupdate', status: true };
+    }
+
+    return { type: 'addressupdate', status: false };
+};
+
+const adminUserAddressCreateAction = async ({ request, params }) => {
+    const formData = await request.formData();
+
+    const newAddress = {
+        address: formData.get('address'),
+        zip_code: formData.get('zip_code'),
+        city: formData.get('city'),
+        user: params.userid,
+    };
+
+    const userAddressCreateResponse = await usersApi.usersAddressCreate(newAddress);
+
+    if (userAddressCreateResponse.status === 201) {
+        return { type: 'addresscreate', status: true };
+    }
+
+    return { type: 'addresscreate', status: false };
 };
 
 /**
@@ -358,13 +403,14 @@ const itemCreateAction = async (auth, setAuth, request) => {
  * create new bulletin post
  */
 
-const createBulletinAction = async (auth, setAuth, request) => {
+const createBulletinAction = async ({ request }) => {
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/bulletins/', 'post', formData);
     const response = await bulletinsApi.bulletinsCreate(Object.fromEntries(formData.entries()));
+
     if (response.status === 200) {
         return { type: 'createnewannouncement', status: true };
     }
+
     return { type: 'createnewannouncement', status: false };
 };
 
@@ -812,21 +858,16 @@ const createBikeModelAction = async (auth, setAuth, request) => {
  * @param {*} request
  * @returns
  */
-const adminBulletinsAction = async (auth, setAuth, request) => {
+const adminBulletinsAction = async ({ request }) => {
+    const formData = await request.formData();
     if (request.method === 'DELETE') {
-        const formData = await request.formData();
-        // const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'delete');
-        const response = await bulletinsApi.bulletinsRetrieve(formData.get('id'));
+        const response = await bulletinsApi.bulletinsDestroy(formData.get('id'));
         if (response.status === 204) {
             return { type: 'deleted', status: true };
         }
         return { type: 'deleted', status: false };
     }
-    const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'put', {
-    //     title: formData.get('title'),
-    //     content: formData.get('content'),
-    // });
+
     const response = await bulletinsApi.bulletinsUpdate(formData.get('id'), {
         title: formData.get('title'),
         content: formData.get('content'),
@@ -842,16 +883,10 @@ const adminBulletinsAction = async (auth, setAuth, request) => {
  * Changes read state of message
  */
 
-const adminInboxAction = async (auth, setAuth, request) => {
+const adminInboxAction = async ({ request }) => {
     const formData = await request.formData();
     const id = Number(formData.get('id'));
-    // const response = await apiCall(auth, setAuth, `/contact_forms/${id}/`, 'put', {
-    //     name: formData.get('name'),
-    //     email: formData.get('email'),
-    //     subject: formData.get('subject'),
-    //     message: formData.get('message'),
-    //     status: formData.get('status'),
-    // });
+
     const response = await contactFormsApi.contactFormsUpdate(id, {
         name: formData.get('name'),
         email: formData.get('email'),
@@ -859,10 +894,32 @@ const adminInboxAction = async (auth, setAuth, request) => {
         message: formData.get('message'),
         status: formData.get('status'),
     });
+
     if (response.status === 200) {
         return { type: 'markasread', status: true };
     }
+
     return { type: 'markasread', status: false };
+};
+
+const adminEmailRecipientsAction = async ({ request }) => {
+    const formData = await request.formData();
+    const recipient = formData.get('email');
+    const id = formData.get('id');
+    console.log(id);
+
+    if (request.method === 'POST') {
+        await ordersApi.ordersEmailrecipientsCreate({ email: recipient });
+        return { type: 'emailrecipient', status: true };
+    }
+
+    if (request.method === 'DELETE') {
+        console.log('actionis', id);
+        await ordersApi.ordersEmailrecipientsDestroy(id);
+        return { type: 'emailrecipient-del', status: true };
+    }
+
+    return { type: 'emailrecipient', status: false };
 };
 
 const userProfilePageAction = async (request) => {
@@ -910,8 +967,12 @@ export {
     orderEditAction,
     storageCreateAction,
     storageEditAction,
+    storageDeleteAction,
+    productsTransferAction,
     createBulletinAction,
     userEditAction,
+    adminUserAddressEditAction,
+    adminUserAddressCreateAction,
     itemCreateAction,
     itemUpdateAction,
     cartViewAction,
@@ -928,6 +989,7 @@ export {
     adminLogOut,
     modifyBikePacketAction,
     adminInboxAction,
+    adminEmailRecipientsAction,
     createBikeModelAction,
     deleteBikeModelAction,
     emailChangeSuccessfulAction,
