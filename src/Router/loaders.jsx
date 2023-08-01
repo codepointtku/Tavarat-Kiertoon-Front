@@ -80,12 +80,12 @@ const productListLoader = async ({ request }) => {
             null,
             url.searchParams.get('haku')
         );
-        return data.results;
+        return data;
     }
 
     const { data } = await productsApi.productsList();
 
-    return data.results;
+    return data;
 };
 
 /**
