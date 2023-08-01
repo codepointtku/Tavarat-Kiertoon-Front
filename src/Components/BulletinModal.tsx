@@ -15,6 +15,8 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 800,
+    // minWidth: 800,
+    // maxWidth: 'max-content',
     bgcolor: 'background.paper',
     borderRadius: '1rem',
     boxShadow: 24,
@@ -106,12 +108,15 @@ function BulletinModal({ title, date, content }: Props) {
                             </Typography>
                             <Typography
                                 id="bulletin-modal-content"
-                                sx={{ mt: '1rem', whiteSpace: 'pre' }}
+                                sx={{
+                                    mt: '1rem',
+                                    wordBreak: 'break-all',
+                                    whiteSpace: 'pre-wrap',
+                                }}
                                 textAlign="center"
                             >
                                 {content}
                             </Typography>
-
                             <Grid
                                 container
                                 sx={{
