@@ -443,12 +443,8 @@ const shoppingProcessLoader = async () => {
 };
 
 const adminLoader = async () => {
-    const [{ data: user }, { data: messages }] = await Promise.all([
-        userApi.userRetrieve(),
-        contactFormsApi.contactFormsList(null, null, null, 'Not read'),
-    ]);
-
-    return { user, messages };
+    const { data: messages } = await contactFormsApi.contactFormsList(null, null, null, 'Not read');
+    return { messages };
 };
 
 const adminInboxLoader = async ({ request }) => {
@@ -465,6 +461,11 @@ const adminInboxLoader = async ({ request }) => {
     const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null, status);
 
     return messages;
+};
+
+const createBulletinLoader = async () => {
+    const { data: user } = await userApi.userRetrieve();
+    return { user };
 };
 
 /* get logged in users data and user orders*/
@@ -524,4 +525,5 @@ export {
     modifyBikePacketLoader,
     bikeNewModelLoader,
     createBikePacketLoader,
+    createBulletinLoader,
 };
