@@ -12,11 +12,10 @@ import type { rootLoader } from '../Router/loaders';
 // default Layout
 
 function BaseLayout() {
-    const data = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
+    const { bulletins } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
 
-    const bulletins = data.bulletins;
     const latestBulletin = bulletins[0];
-    const latestBulletinDate = new Date(latestBulletin?.date).getTime();
+    const latestBulletinDate = new Date(latestBulletin?.date ?? 0).getTime();
     const lastVisit = parseInt(localStorage.getItem('lastvisit') || '0');
 
     return (

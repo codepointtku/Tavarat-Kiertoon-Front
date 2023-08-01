@@ -101,9 +101,13 @@ function BulletinModal({ title, date, content }: Props) {
                                 {title}
                             </Typography>
                             <Typography variant="caption" sx={{ fontStyle: 'italic', mt: '1rem' }}>
-                                {new Date(date).toLocaleDateString()}
+                                {new Date(date).toLocaleDateString('fi-FI')}
                             </Typography>
-                            <Typography id="bulletin-modal-content" sx={{ mt: '1rem' }} textAlign="center">
+                            <Typography
+                                id="bulletin-modal-content"
+                                sx={{ mt: '1rem', whiteSpace: 'pre' }}
+                                textAlign="center"
+                            >
                                 {content}
                             </Typography>
 
@@ -111,7 +115,7 @@ function BulletinModal({ title, date, content }: Props) {
                                 container
                                 sx={{
                                     display: 'flex',
-                                    margin: '1rem 0 0 0',
+                                    margin: '2rem 0 0 0',
                                 }}
                             >
                                 <Grid
@@ -123,7 +127,12 @@ function BulletinModal({ title, date, content }: Props) {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    <SuperLink component={Link} to="/tiedotteet" onClick={handleClose}>
+                                    <SuperLink
+                                        component={Link}
+                                        to="/tiedotteet"
+                                        onClick={handleClose}
+                                        fontSize="0.9rem"
+                                    >
                                         Lisää tiedotteita
                                     </SuperLink>
                                 </Grid>
@@ -138,7 +147,7 @@ function BulletinModal({ title, date, content }: Props) {
                                     }}
                                 >
                                     <Button
-                                        // variant="outlined"
+                                        variant="outlined"
                                         size="small"
                                         // onMouseEnter={handleHover}
                                         sx={{
