@@ -47,7 +47,7 @@ import UserAddressCreate from '../Components/Admin/UserAddressCreate';
 
 import BulletinPosts from '../Components/Admin/BulletinPosts';
 import BulletinPostCreate from '../Components/Admin/BulletinPostCreate';
-import ModifyBulletinPost from '../Components/Admin/ModifyBulletinPost';
+import BulletinPostEdit from '../Components/Admin/BulletinPostEdit';
 
 import Stats from '../Components/Admin/Stats/Stats';
 
@@ -667,7 +667,7 @@ function Routes() {
                                 },
                                 {
                                     path: 'tiedotteet/:id/muokkaa',
-                                    element: <ModifyBulletinPost />,
+                                    element: <BulletinPostEdit />,
                                 },
                                 {
                                     path: 'tiedotteet/luo',

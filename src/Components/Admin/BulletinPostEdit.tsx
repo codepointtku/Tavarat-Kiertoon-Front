@@ -1,8 +1,7 @@
 import { useForm } from 'react-hook-form';
-import { Form, useSubmit, useLocation, Link } from 'react-router-dom';
+import { Form, useSubmit, useLocation, Link, useActionData } from 'react-router-dom';
 
 import { Box, Container, FormControl, Stack, TextField, Button } from '@mui/material';
-import type { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
 
 import FeedIcon from '@mui/icons-material/Feed';
 
@@ -10,20 +9,27 @@ import AlertBox from '../AlertBox';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
+import type { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
+import type { adminBulletinsAction } from '../../Router/actions';
+
 interface FormData extends SubmitHandler<FieldValues> {
     title: string;
     content: string;
     category: string;
 }
 
-function ModifyBulletinPost() {
-    const submit = useSubmit();
+function BulletinPostEdit() {
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof adminBulletinsAction>>;
+
     const location = useLocation();
+
     const {
         register,
         handleSubmit,
-        formState: { errors, isDirty, isSubmitSuccessful },
+        formState: { errors, isDirty, isValid, isSubmitSuccessful },
     } = useForm({ mode: 'onTouched', defaultValues: { title: location.state.title, content: location.state.content } });
+
+    const submit = useSubmit();
 
     const onSubmit = (data: { title: string; content: string }) => {
         const formData = { ...data, category: 'category', id: location.state.id };
@@ -36,13 +42,12 @@ function ModifyBulletinPost() {
 
     return (
         <>
-            {isSubmitSuccessful && (
-                <AlertBox
-                    text="Tiedote lisätty onnistuneesti"
-                    status="success"
-                    redirectUrl="/admin/tiedotteet/"
-                    timer={2000}
-                />
+            {responseStatus?.type === 'bulletincreate' && !responseStatus?.status && (
+                <AlertBox text="Tiedotteen muokkaus epäonnistui" status="error" />
+            )}
+
+            {responseStatus?.type === 'bulletincreate' && responseStatus?.status && (
+                <AlertBox text="Tiedote muokattu" status="success" />
             )}
 
             <Container maxWidth="md">
@@ -57,46 +62,56 @@ function ModifyBulletinPost() {
                     <Stack id="bulletin-modification-column-stacker">
                         <FormControl id="bulletin-modification-formcontrol">
                             <TextField
-                                {...register('title', {
-                                    required: 'Tämä kenttä on täytettävä',
-                                    minLength: { value: 3, message: 'Sisältö on liian lyhyt' },
-                                    maxLength: { value: 100, message: 'Otsikko on liian pitkä' },
-                                })}
-                                sx={{ mt: 2 }}
                                 label="Uusi otsikko"
                                 placeholder="Uusi otsikko"
-                                color={isDirty ? 'success' : 'primary'}
-                                fullWidth
+                                {...register('title', {
+                                    required: 'Täytä tiedotteen otsikko',
+                                    minLength: { value: 1, message: 'Otsikko on pakollinen' },
+                                    maxLength: { value: 50, message: 'Maksimipituus 50 merkkiä' },
+                                })}
+                                required
                                 inputProps={{ required: false }}
                                 error={!!errors.title}
                                 helperText={errors.title?.message?.toString() || ' '}
-                                required
+                                fullWidth
+                                color={isDirty ? 'success' : 'primary'}
+                                sx={{ mt: '1rem' }}
                             />
 
                             <TextField
-                                {...register('content', {
-                                    required: 'Tämä kenttä on täytettävä',
-                                    minLength: { value: 3, message: 'Sisältö on liian lyhyt' },
-                                    maxLength: { value: 1000, message: 'Sisältö on liian pitkä' },
-                                })}
-                                sx={{ mt: 2 }}
                                 label="Uusi sisältö"
                                 placeholder="Uusi sisältö"
-                                color={isDirty ? 'success' : 'primary'}
-                                // if content is on 6 rows https://stackoverflow.com/questions/64837884/material-ui-too-many-re-renders-the-layout-is-unstable-textareaautosize-limit error comes
+                                {...register('content', {
+                                    required: 'Täytä tiedotteen sisältö',
+                                    minLength: { value: 1, message: 'Sisältö on pakollinen' },
+                                })}
+                                // if content is on 6 rows
+                                // https://stackoverflow.com/questions/64837884/material-ui-too-many-re-renders-the-layout-is-unstable-textareaautosize-limit
                                 multiline
                                 rows={6}
-                                fullWidth
+                                required
                                 inputProps={{ required: false }}
                                 error={!!errors.content}
                                 helperText={errors.content?.message?.toString() || ' '}
-                                required
+                                fullWidth
+                                color={isDirty ? 'success' : 'primary'}
+                                sx={{ mt: '1rem' }}
                             />
 
-                            <Button disabled={!isDirty} type="submit" sx={{ mt: 2 }}>
+                            <Button
+                                type="submit"
+                                disabled={!isDirty || !isValid || isSubmitSuccessful}
+                                sx={{ mt: '1rem' }}
+                            >
                                 Muokkaa tiedotetta
                             </Button>
-                            <Button color="error" component={Link} to="/admin/tiedotteet/" sx={{ mt: 2 }}>
+                            <Button
+                                color="error"
+                                variant="outlined"
+                                component={Link}
+                                to="/admin/tiedotteet/"
+                                sx={{ mt: '1rem' }}
+                            >
                                 Poistu tallentamatta
                             </Button>
                         </FormControl>
@@ -107,4 +122,4 @@ function ModifyBulletinPost() {
     );
 }
 
-export default ModifyBulletinPost;
+export default BulletinPostEdit;
