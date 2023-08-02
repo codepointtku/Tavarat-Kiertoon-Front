@@ -70,8 +70,7 @@ function ContactsAndDelivery() {
 
     function disableDate(date: Date) {
         date.setHours(0, 0, 0, 0);
-        const dateIsHoliday = finnishHolidays.some((holiday) => holiday.start === date);
-        console.log(date, finnishHolidays[15].start, date == finnishHolidays[15].start);
+        const dateIsHoliday = finnishHolidays.some((holiday) => String(holiday.start) === String(date));
         return date.getDay() === 0 || date.getDay() === 6 || dateIsHoliday;
     }
 
@@ -292,7 +291,7 @@ function ContactsAndDelivery() {
                                         />
                                     )}
                                     shouldDisableDate={disableDate}
-                                    // maxDate={new Date(maxDate)}
+                                    maxDate={new Date(maxDate)}
                                     disablePast
                                 />
                             </LocalizationProvider>
