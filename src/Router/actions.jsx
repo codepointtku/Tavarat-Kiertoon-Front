@@ -407,11 +407,11 @@ const createBulletinAction = async ({ request }) => {
     const formData = await request.formData();
     const response = await bulletinsApi.bulletinsCreate(Object.fromEntries(formData.entries()));
 
-    if (response.status === 200) {
-        return { type: 'createnewannouncement', status: true };
+    if (response.status === 201) {
+        return { type: 'bulletincreate', status: true };
     }
 
-    return { type: 'createnewannouncement', status: false };
+    return { type: 'bulletincreate', status: false };
 };
 
 /**

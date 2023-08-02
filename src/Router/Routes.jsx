@@ -46,7 +46,7 @@ import UserAddressEdit from '../Components/Admin/UserAddressEdit';
 import UserAddressCreate from '../Components/Admin/UserAddressCreate';
 
 import BulletinPosts from '../Components/Admin/BulletinPosts';
-import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
+import BulletinPostCreate from '../Components/Admin/BulletinPostCreate';
 import ModifyBulletinPost from '../Components/Admin/ModifyBulletinPost';
 
 import Stats from '../Components/Admin/Stats/Stats';
@@ -671,7 +671,7 @@ function Routes() {
                                 },
                                 {
                                     path: 'tiedotteet/luo',
-                                    element: <CreateBulletinPost />,
+                                    element: <BulletinPostCreate />,
                                     loader: createBulletinLoader,
                                     action: createBulletinAction,
                                 },
