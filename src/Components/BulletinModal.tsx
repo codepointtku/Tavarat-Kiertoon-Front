@@ -21,6 +21,8 @@ const style = {
     p: 4,
     overflow: 'auto',
     maxHeight: '80vh',
+    scrollbarColor: '#009bd8 #bfe6f6',
+    scrollbarWidth: 'thin',
 };
 
 // const getRandomValueInRange = (min: number, max: number) => {
