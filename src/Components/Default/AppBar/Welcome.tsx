@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 import { Form, useSubmit, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
@@ -19,6 +19,7 @@ function Welcome({ auth, setCurrentOpenDrawer }: Props) {
             method: 'post',
             action: '/',
         });
+        sessionStorage.clear();
     };
 
     return (

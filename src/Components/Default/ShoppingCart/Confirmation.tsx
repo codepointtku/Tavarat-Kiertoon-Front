@@ -4,25 +4,24 @@ import { Typography, Grid, Box, List, ListItem, ListItemText } from '@mui/materi
 import { useStateMachine } from 'little-state-machine';
 import { useForm } from 'react-hook-form';
 
-import Update from './Update';
 import CartButtons from './CartButtons';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import type { shoppingProcessLoader } from '../../../Router/loaders';
 import TypographyTitle from '../../TypographyTitle';
+import type { AnyCallback, ActionsOutput, GlobalState } from 'little-state-machine/dist/types';
+import ClearInfo from './ClearInfo';
 
 interface CartState {
-    state: {
-        email: string;
-        deliveryAddress: string;
-        deliveryRequired: string;
-        phoneNumber: string;
-        orderInfo: string;
-        firstName: string;
-        lastName: string;
-        zipcode: string;
-        city: string;
-        fetchDate: string;
-    };
+    email: string;
+    deliveryAddress: string;
+    deliveryRequired: string;
+    phoneNumber: string;
+    orderInfo: string;
+    firstName: string;
+    lastName: string;
+    zipcode: string;
+    city: string;
+    fetchDate: string;
 }
 
 function Confirmation() {
@@ -30,7 +29,13 @@ function Confirmation() {
     const submit = useSubmit();
     const navigate = useNavigate();
     const responseStatus = useActionData() as { type: string; status: boolean };
-    const { state } = useStateMachine({ Update }) as unknown as CartState;
+    const { actions, state } = useStateMachine({ ClearInfo }) as unknown as {
+        actions: ActionsOutput<
+            AnyCallback,
+            { ClearInfo: (state: GlobalState, actions: CartState) => { data: CartState } }
+        >;
+        state: CartState;
+    };
     const fetchDate = new Date(state.fetchDate);
     const { products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const { id } = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
@@ -44,10 +49,13 @@ function Confirmation() {
     };
 
     useEffect(() => {
-        if (responseStatus?.status === true) {
+        if (responseStatus?.status) {
+            actions.ClearInfo();
             navigate('/', { state: { ...responseStatus } });
         }
     }, [responseStatus]);
+
+    console.log(state);
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '-2rem' }}>

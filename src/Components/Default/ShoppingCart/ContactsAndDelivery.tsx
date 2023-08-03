@@ -18,6 +18,7 @@ import { isWeekend } from 'date-fns';
 import { fi } from 'date-fns/locale';
 import Holidays from 'date-holidays';
 import type { AnyCallback, ActionsOutput, GlobalState } from 'little-state-machine/dist/types';
+import ClearInfo from './ClearInfo';
 
 export interface CartFormData {
     firstName: string;
@@ -87,6 +88,9 @@ function ContactsAndDelivery() {
     }
 
     useEffect(() => {
+        // if (state) {
+        //     actions.ClearInfo();
+        // }
         setValue('zipcode', correctAddress[0]?.zip_code);
         setValue('city', correctAddress[0]?.city);
     }, [selectedAddress]);
@@ -97,7 +101,7 @@ function ContactsAndDelivery() {
         return isWeekend(date) || dateIsHoliday;
     }
 
-    console.log(state.firstName);
+    console.log(state);
 
     return (
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
