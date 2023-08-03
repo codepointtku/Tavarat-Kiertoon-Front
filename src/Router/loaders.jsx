@@ -72,28 +72,21 @@ const shoppingCartLoader = async () => {
 const productListLoader = async ({ request }) => {
     const url = new URL(request.url);
 
-    if (url.searchParams.has('kategoria')) {
-        url.searchParams.forEach((value, key) => {
-            if (key === 'kategoria') {
-                url.searchParams.append('category', value);
-            }
-        });
-        url.searchParams.delete('kategoria');
-        // const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
-        // get all categories
-        const { data } = await productsApi.productsList(url.searchParams.getAll('category'));
-        return data.results;
-    }
-
-    if (url.searchParams.has('haku')) {
-        //const { data } = await apiCall(auth, setAuth, `/products/?${url.searchParams}`, 'get');
-        const { data } = await productsApi.productsList(null, null, null, null, null, url.searchParams.get('haku'));
-        return data.results;
+    if (url.searchParams.has('haku') || url.searchParams.has('kategoria')) {
+        const { data } = await productsApi.productsList(
+            url.searchParams.getAll('kategoria'),
+            url.searchParams.get('varit'),
+            null,
+            null,
+            null,
+            url.searchParams.get('haku')
+        );
+        return data;
     }
 
     const { data } = await productsApi.productsList();
 
-    return data.results;
+    return data;
 };
 
 /**
@@ -109,30 +102,30 @@ const productDetailsLoader = async ({ params }) => {
 /**
  * Get all orders.
  */
-const ordersListLoader = async ({ params }) => {
-    const { data } = await ordersApi.ordersList();
+const ordersListLoader = async () => {
+    const response = await ordersApi.ordersList();
     // num will tell back-end which entries to bring
     // view is order status, unless archived can bring all?
     // or will be replaced into the back-end later?
-    const statuses = {
-        waiting: 2,
-        delivery: 1,
-        finished: 0,
-    };
-    statuses[params.view] = 10;
-    data.results.sort((a, b) => {
-        if (statuses[a.status] > statuses[b.status]) {
-            return -1;
-        }
-        if (a.status === b.status) {
-            if (a.id > b.id) {
-                return -1;
-            }
-        }
-        return 1;
-    });
+    // const statuses = {
+    //     waiting: 2,
+    //     delivery: 1,
+    //     finished: 0,
+    // };
+    // statuses[params.view] = 10;
+    // data.results.sort((a, b) => {
+    //     if (statuses[a.status] > statuses[b.status]) {
+    //         return -1;
+    //     }
+    //     if (a.status === b.status) {
+    //         if (a.id > b.id) {
+    //             return -1;
+    //         }
+    //     }
+    //     return 1;
+    // });
 
-    return data.results;
+    return response.data;
 };
 
 /**
@@ -151,6 +144,11 @@ const orderViewLoader = async (auth, setAuth, params) => {
 const orderEditLoader = async (auth, setAuth, params) => {
     // const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
     const { data } = await ordersApi.ordersRetrieve(params.id);
+    return data;
+};
+
+const emailRecipientsLoader = async () => {
+    const { data } = await ordersApi.ordersEmailrecipientsList();
     return data;
 };
 
@@ -183,24 +181,48 @@ const pdfViewLoader = async (auth, setAuth, params) => {
 /**
  * Get all storages
  */
-const storagesListLoader = async (auth, setAuth) => {
-    // const { data } = await apiCall(auth, setAuth, '/storages', 'get');
+const storagesListLoader = async () => {
     const { data } = await storagesApi.storagesList();
     return data;
 };
 
-const storageEditLoader = async (auth, setAuth, params) => {
-    // const { data } = await apiCall(auth, setAuth, `/storages/${params.id}`, 'get');
-    const { data } = await storagesApi.storagesRetrieve(params.id);
-    return data;
+/**
+ * Get all storages data and (available) products relations
+ */
+const storageEditLoader = async ({ params }) => {
+    const [{ data: storageInfo }, { data: hasProducts }, { data: allStorages }] = await Promise.all([
+        storagesApi.storagesRetrieve(params.id),
+        productsApi.productsItemsList(true, null, null, null, null, null, params.id),
+        storagesApi.storagesList(),
+    ]);
+
+    return { storageInfo, hasProducts, allStorages };
+};
+
+/**
+ * Get all storages data and products relations
+ */
+const productTransferLoader = async ({ params }) => {
+    const { data } = await productsApi.productsItemsList(true, null, null, null, null, null, params.id);
+
+    const availableProductsCount = data.count;
+    // product count === page size.
+
+    // main call. This data is used at component level.
+    const [{ data: storageInfo }, { data: hasProducts }, { data: allStorages }] = await Promise.all([
+        storagesApi.storagesRetrieve(params.id),
+        productsApi.productsItemsList(true, null, null, availableProductsCount, null, null, params.id),
+        storagesApi.storagesList(),
+    ]);
+
+    return { storageInfo, hasProducts, allStorages };
 };
 
 /**
  * Get all users.
  * Used in src/Components/Admin/UserList.jsx
  */
-const usersListLoader = async (auth, setAuth) => {
-    // const { data: users } = await apiCall(auth, setAuth, '/users', 'get');
+const usersListLoader = async () => {
     const { data: users } = await usersApi.usersList();
     return users;
 };
@@ -210,19 +232,32 @@ const usersListLoader = async (auth, setAuth) => {
  * Array item 0 === user data, item 1 === auth groups.
  * Used in src/Components/Admin/UserEdit.jsx
  */
-const userEditLoader = async (auth, setAuth, params) => {
+const userEditLoader = async ({ params }) => {
     const dataList = [];
-    // let { data } = await apiCall(auth, setAuth, `/users/${params.id}`, 'get');
-    let { data } = await usersApi.usersRetrieve(params.id);
+    let { data } = await usersApi.usersRetrieve(params.userid);
     data.groups = data.groups.map((group) => group.id);
     dataList.push(data);
-    // data = await apiCall(auth, setAuth, '/users/groups', 'get');
     data = await usersApi.usersGroupsList();
     dataList.push(data.data);
     if (dataList) {
         return dataList;
     }
     return null;
+};
+
+const userAddressEditLoader = async ({ params }) => {
+    const [{ data: userData }, { data: addressData }] = await Promise.all([
+        await usersApi.usersRetrieve(params.userid),
+        await usersApi.usersAddressRetrieve(params.aid),
+    ]);
+    return { userData, addressData };
+};
+
+const userAddressCreateLoader = async ({ params }) => {
+    // aka get user loader
+    const { data: userData } = await usersApi.usersRetrieve(params.userid);
+
+    return { userData };
 };
 
 /**
@@ -408,36 +443,13 @@ const shoppingProcessLoader = async () => {
     return user;
 };
 
-const adminLoader = async (auth, setAuth) => {
-    // console.log('adminLoader auth', auth);
-    // tämä ei toiminut, auth.admin_group oli edelleen true
-    // if (auth.admin_group === false) {
-    //     return redirect('/');
-    // }
-
-    const [{ data: user }, { data: messages }] = await Promise.all([
-        userApi
-            .userRetrieve()
-            // this could be removed if logic is moved to errorBoundary
-            .catch((e) => {
-                console.log('adminLoader userApi.userRetrieve error', e);
-                // Todo redirect to admin/login or /login
-                return redirect('/kirjaudu');
-            }),
-        contactFormsApi.contactFormsList(null, null, null, { status: 'Not read' }),
-    ]);
-
-    return { user, messages };
+const adminLoader = async () => {
+    const { data: messages } = await contactFormsApi.contactFormsList(null, null, null, 'Not read');
+    return { messages };
 };
 
-const adminInboxLoader = async (auth, setAuth, request) => {
+const adminInboxLoader = async ({ request }) => {
     const searchParams = new URL(request.url).searchParams;
-    // const status =
-    //     searchParams.get('tila') === 'Luetut'
-    //         ? 'Read'
-    //         : searchParams.get('tila') === 'Lukemattomat'
-    //         ? 'Not read'
-    //         : (searchParams.get('tila') === 'Hoidetut' && 'Handled') || null;
 
     const statusMap = {
         Luetut: 'Read',
@@ -447,34 +459,14 @@ const adminInboxLoader = async (auth, setAuth, request) => {
 
     const status = statusMap[searchParams.get('tila')] || null;
 
-    // if (status) {
-    //     // const { data: messages } = await apiCall(
-    //     //     auth,
-    //     //     setAuth,
-    //     //     searchParams.has('sivu')
-    //     //         ? `/contact_forms/?page=${searchParams.get('sivu')}&status=${status}`
-    //     //         : `/contact_forms/?status=${status}`,
-    //     //     'get'
-    //     // );
-    //     const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null , searchParams.get('tila'));
-    //     return messages;
-
-    // } else if (searchParams.has('sivu') && searchParams.get('sivu') != 0) {
-    //     const { data: messages } = await apiCall(
-    //         auth,
-    //         setAuth,
-    //         `/contact_forms/?page=${searchParams.get('sivu')}`,
-    //         'get'
-    //     );
-    //     return messages;
-    // }
-
     const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null, status);
 
-    // // const { data: messages } = await apiCall(auth, setAuth, '/contact_forms/', 'get');
-    // const { data: messages } = await contactFormsApi.contactFormsList();
-
     return messages;
+};
+
+const createBulletinLoader = async () => {
+    const { data: user } = await userApi.userRetrieve();
+    return { user };
 };
 
 /* get logged in users data and user orders*/
@@ -507,6 +499,7 @@ export {
     rootLoader,
     productListLoader,
     productDetailsLoader,
+    productTransferLoader,
     ordersListLoader,
     orderViewLoader,
     orderEditLoader,
@@ -516,6 +509,8 @@ export {
     storageEditLoader,
     usersListLoader,
     userEditLoader,
+    userAddressEditLoader,
+    userAddressCreateLoader,
     userInfoLoader,
     bikesDefaultLoader,
     bikesListLoader,
@@ -527,7 +522,9 @@ export {
     shoppingProcessLoader,
     adminLoader,
     adminInboxLoader,
+    emailRecipientsLoader,
     modifyBikePacketLoader,
     bikeNewModelLoader,
     createBikePacketLoader,
+    createBulletinLoader,
 };

@@ -7,7 +7,18 @@ import ProductCard from './ProductCard';
 
 function SearchResultMessage() {
     const [searchParams] = useSearchParams();
-    const searchQuery = searchParams.getAll('haku' /*, 'kategoria'*/);
+    const searchQuery = searchParams.get('haku');
+
+    if (searchParams.has('kategoria') || (searchParams.has('kategoria') && searchQuery === '')) {
+        return (
+            <Box id="empty-category">
+                <TypographyHeading text="Tule myöhemmin uudelleen!" />
+                <Box sx={{ margin: '1rem' }}>
+                    <Typography component="span">Tämä kategoria näyttää olevan toistaiseksi tyhjä.</Typography>
+                </Box>
+            </Box>
+        );
+    }
 
     if (searchParams.has('haku')) {
         return (
@@ -28,16 +39,6 @@ function SearchResultMessage() {
             </Box>
         );
     }
-    if (searchParams.has('kategoria')) {
-        return (
-            <Box id="empty-category">
-                <TypographyHeading text="Tule myöhemmin uudelleen!" />
-                <Box sx={{ margin: '1rem' }}>
-                    <Typography component="span">Tämä kategoria näyttää olevan toistaiseksi tyhjä.</Typography>
-                </Box>
-            </Box>
-        );
-    }
 
     return null;
 }
@@ -54,11 +55,11 @@ function NoSearchResults() {
 }
 
 function ProductList() {
-    const products = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
+    const { results } = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
 
-    return products?.length ? (
+    return results?.length ? (
         <Grid container spacing={2}>
-            {products.map((product: any) => (
+            {results.map((product: any) => (
                 <Grid item key={product.id} xs={13} sm={7} md={5} lg={4} xl={3}>
                     <ProductCard
                         id={product.id}

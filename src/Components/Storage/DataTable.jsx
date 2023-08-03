@@ -7,7 +7,7 @@ import StyledTableCell from '../StyledTableCell';
 import SortByMenu from '../SortByMenu';
 
 function OrderListTable() {
-    const orders = useLoaderData();
+    const { results: orders } = useLoaderData();
     const navigate = useNavigate();
 
     const dateParse = (value) => {
@@ -32,7 +32,7 @@ function OrderListTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {orders.map((row) => (
+                    {orders?.map((row) => (
                         <TableRow
                             key={row.id}
                             style={{ cursor: 'pointer' }}
@@ -47,7 +47,7 @@ function OrderListTable() {
                             <TableCell align="right">{row.user}</TableCell>
                             <TableCell align="right">{row.contact}</TableCell>
                             <TableCell align="right">
-                                {row.delivery_date ? dateParse(row.delivery_date) : '-'}
+                                {row.creation_date ? dateParse(row.creation_date) : '-'}
                             </TableCell>
                         </TableRow>
                     ))}

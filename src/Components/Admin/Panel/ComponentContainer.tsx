@@ -6,7 +6,7 @@ import { Outlet } from 'react-router';
 
 function ComponentContainer() {
     return (
-        <Box id="admin-panel-component-render-area" sx={{ display: 'flex', flexGrow: '1', padding: '1rem' }}>
+        <Box id="admin-panel-component-render-area" sx={{ display: 'flex', flexGrow: '1', padding: '2rem' }}>
             <Outlet />
         </Box>
     );

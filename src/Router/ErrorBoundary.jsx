@@ -34,7 +34,7 @@ function ErrorBoundary() {
                         unauthorized: <Navigate to="/kirjaudu" />,
                         axios: (
                             <Typography variant="h6">
-                                Yhteysongelma sijainnissa {location.pathname}, yritä uudelleeeeeeen.
+                                Yhteysongelma sijainnissa {location.pathname} , (Axios error).
                             </Typography>
                         ),
 
