@@ -7,7 +7,18 @@ import ProductCard from './ProductCard';
 
 function SearchResultMessage() {
     const [searchParams] = useSearchParams();
-    const searchQuery = searchParams.getAll('haku' /*, 'kategoria'*/);
+    const searchQuery = searchParams.get('haku');
+
+    if (searchParams.has('kategoria') || (searchParams.has('kategoria') && searchQuery === '')) {
+        return (
+            <Box id="empty-category">
+                <TypographyHeading text="Tule myöhemmin uudelleen!" />
+                <Box sx={{ margin: '1rem' }}>
+                    <Typography component="span">Tämä kategoria näyttää olevan toistaiseksi tyhjä.</Typography>
+                </Box>
+            </Box>
+        );
+    }
 
     if (searchParams.has('haku')) {
         return (
@@ -25,16 +36,6 @@ function SearchResultMessage() {
                     Voit tarkistaa oikeinkirjoituksen, kokeilla muita hakusanoja, tai napauttaa tuotekategorioita
                     etsiäksesi tuotteita.
                 </Typography>
-            </Box>
-        );
-    }
-    if (searchParams.has('kategoria')) {
-        return (
-            <Box id="empty-category">
-                <TypographyHeading text="Tule myöhemmin uudelleen!" />
-                <Box sx={{ margin: '1rem' }}>
-                    <Typography component="span">Tämä kategoria näyttää olevan toistaiseksi tyhjä.</Typography>
-                </Box>
             </Box>
         );
     }

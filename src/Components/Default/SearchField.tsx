@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { Form, useSearchParams } from 'react-router-dom';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { Form, useSearchParams, useRouteLoaderData } from 'react-router-dom';
 
 import { Box, Button, IconButton, InputBase } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
+import type { rootLoader } from '../../Router/loaders';
 
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -26,31 +27,129 @@ type SearchInputValue = {
     search: string;
 };
 
-function SearchField() {
-    const { handleSubmit, register, watch, reset, setValue } = useForm<SearchInputValue>();
-    const [searchParams, setSearchParams] = useSearchParams();
+export interface CategoryTreeIndexes {
+    [key: number]: [];
+}
 
-    const onSubmit: SubmitHandler<SearchInputValue> = (formData) => {
-        setSearchParams({ haku: formData.search });
+export interface TreeSelectedProps {
+    treeSelectedState: {
+        categoryTreeSelected: boolean;
+        setCategoryTreeSelected: React.Dispatch<React.SetStateAction<boolean>>;
+    };
+}
+
+function SearchField({ treeSelectedState }: TreeSelectedProps) {
+    const { colors, categories, categoryTree } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
+    // Initializes object where categories and colors are stored as arrays each in their own properties
+    const categoriesAndColors = { categories: [''], colors: [''] };
+    const {
+        handleSubmit,
+        register,
+        watch,
+        reset,
+        setValue,
+        formState: { isDirty },
+    } = useForm<SearchInputValue>({ defaultValues: { search: '' } });
+    const [searchParams, setSearchParams] = useSearchParams();
+    let searchInput = '';
+    // Created constant with the value of categoryTree to bypass typescript errors :/
+    const categoryTreeIndexes = categoryTree as unknown as CategoryTreeIndexes;
+
+    const onSubmit: SubmitHandler<SearchInputValue> = async (formData) => {
+        searchInput = formData.search;
+
+        // Initializes array where both categories and colors get added to
+        // Used in reducer to filter all found color and category names to "kategoria" and "varit" params, leaving the rest of search to be added in "haku" param.
+        const searchCategoriesAndColorsNames = [] as string[];
+
+        // Maps through all colors and adds color name to array if search field includes color name.
+        colors.forEach((color) => {
+            const colorNameLowerCase = color.name.toLowerCase();
+            if (formData.search.toLowerCase().includes(colorNameLowerCase)) {
+                categoriesAndColors.colors[0] === ''
+                    ? categoriesAndColors.colors.splice(0, 1, String(color.id))
+                    : categoriesAndColors.colors.push(String(color.id));
+                // Pushes category name to array to be filtered out from "haku" search param and added to "varit" searchparam.
+                searchCategoriesAndColorsNames.push(colorNameLowerCase);
+            }
+        });
+
+        // Maps through all categories and adds category name to array if search field includes category name and if category name is surrounded by empty space.
+        categories.forEach((category) => {
+            const categoryNameLowerCase = category.name.toLowerCase();
+            if (
+                formData.search.toLowerCase().includes(categoryNameLowerCase) &&
+                RegExp(`\\b${categoryNameLowerCase}\\b`).test(formData.search.toLowerCase())
+            ) {
+                categoryTreeIndexes[category.id].forEach((categoryIdInTree: number) => {
+                    categoriesAndColors.categories[0] === ''
+                        ? categoriesAndColors.categories.splice(0, 1, String(categoryIdInTree))
+                        : categoriesAndColors.categories.push(String(categoryIdInTree));
+                });
+                // Pushes category name to array to be filtered out from "haku" search param to be added to "kategoria" searchparam.
+                searchCategoriesAndColorsNames.push(categoryNameLowerCase);
+            }
+        });
+
+        const initialValue = '';
+
+        // Filter all found color and category names to "kategoria" and "varit" params, leaving the rest of search to be added in "haku" param.
+        const filteredSearchWithSpace = searchCategoriesAndColorsNames.reduce((accumulator, currValue, index) => {
+            if (index === 0) {
+                return formData.search.toLowerCase().replace(currValue, '');
+            } else {
+                let updatedSearch = accumulator.replace(currValue, '');
+                return updatedSearch;
+            }
+        }, initialValue);
+        // Removes white space
+        const filteredSearch = filteredSearchWithSpace.replace(/\s/g, '');
+
+        // Decides which params to show based on if they have a value or not.
+        switch (true) {
+            case categoriesAndColors.categories[0] !== '' && categoriesAndColors.colors[0] !== '':
+                setSearchParams({
+                    haku: filteredSearch,
+                    varit: categoriesAndColors.colors,
+                    kategoria: categoriesAndColors.categories,
+                });
+                break;
+            case categoriesAndColors.categories[0] !== '':
+                setSearchParams({ haku: filteredSearch, kategoria: categoriesAndColors.categories });
+                break;
+            case categoriesAndColors.colors[0] !== '':
+                setSearchParams({ haku: filteredSearch, varit: categoriesAndColors.colors });
+                break;
+            case categoriesAndColors.categories[0] === '' && categoriesAndColors.colors[0] === '':
+                setSearchParams({ haku: formData.search });
+                break;
+        }
     };
 
-    const searchParamFromUrl = searchParams.get('haku');
+    // const searchParamFromUrl = searchParams.get('haku');
     const searchFieldHasInput = watch('search');
 
     // set search string from url to search field, if user is following a link with search string
     useEffect(() => {
+        if (treeSelectedState.categoryTreeSelected) {
+            clearInputField();
+        }
         if (searchFieldHasInput) {
             reset();
         }
-        if (searchParamFromUrl !== null) {
-            setValue('search', searchParamFromUrl);
+        if (searchInput !== null) {
+            setValue('search', searchInput);
         }
-    }, [searchParamFromUrl, setValue, reset]);
+    }, [searchInput, setValue, reset, treeSelectedState.categoryTreeSelected]);
 
     const clearInputField = () => {
         reset();
+        categoriesAndColors.categories = [''];
+        categoriesAndColors.colors = [''];
         if (searchParams.has('haku')) {
             searchParams.delete('haku');
+            searchParams.delete('varit');
+            searchParams.delete('kategoria');
             setSearchParams(searchParams);
         }
     };
@@ -67,6 +166,7 @@ function SearchField() {
                 <InputBase
                     id="search-text-input-field"
                     {...register('search')}
+                    onFocus={() => !isDirty && treeSelectedState.setCategoryTreeSelected(false)}
                     autoFocus
                     placeholder="Etsi tuotteita…"
                     inputProps={{ 'aria-label': 'searchfield' }}
