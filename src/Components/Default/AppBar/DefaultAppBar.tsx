@@ -351,7 +351,7 @@ function DefaultAppBar() {
                 {auth.username ? (
                     <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} />
                 ) : (
-                    <LoginDrawer setCurrentOpenDrawer />
+                    <LoginDrawer setCurrentOpenDrawer={setCurrentOpenDrawer} />
                 )}
                 <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>

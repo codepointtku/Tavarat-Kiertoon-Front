@@ -35,7 +35,7 @@ interface Props {
     redirectUrl?: string | number;
 }
 
-function LoginForm(redirectUrl: Props, setCurrentOpenDrawer) {
+function LoginForm({ redirectUrl, setCurrentOpenDrawer }) {
     const { register, handleSubmit } = useForm<FormValues>();
     const { auth } = useContext(AuthContext);
     const location = useLocation();
@@ -149,7 +149,7 @@ function LoginForm(redirectUrl: Props, setCurrentOpenDrawer) {
                                 to="salasananvaihto"
                                 sx={{ display: 'block', mt: 4 }}
                                 onClick={() => setCurrentOpenDrawer('')}
-                                reloadDocument={false}
+                                // reloadDocument={false}
                             >
                                 Unohtunut salasana?
                             </MuiLink>
@@ -160,7 +160,7 @@ function LoginForm(redirectUrl: Props, setCurrentOpenDrawer) {
                                 component={Link}
                                 to="rekisteroidy"
                                 onClick={() => setCurrentOpenDrawer('')}
-                                reloadDocument={false}
+                                // reloadDocument={false}
                             >
                                 Luo uusi tunnus
                             </Button>
