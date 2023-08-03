@@ -17,6 +17,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { isWeekend } from 'date-fns';
 import { fi } from 'date-fns/locale';
 import Holidays from 'date-holidays';
+import type { AnyCallback, ActionsOutput, GlobalState } from 'little-state-machine/dist/types';
 
 export interface CartFormData {
     firstName: string;
@@ -27,7 +28,7 @@ export interface CartFormData {
     zipcode: string;
     city: string;
     deliveryRequired: string;
-    fetchDate?: string;
+    fetchDate?: Date;
     orderInfo?: string;
 }
 
@@ -38,30 +39,51 @@ function ContactsAndDelivery() {
     const currentDate = new Date();
     const [fetchDate, setFetchDate] = useState(currentDate);
     const maxDate = new Date().setDate(currentDate.getDate() + 64);
-    const { actions } = useStateMachine({ Update });
+    const { actions, state } = useStateMachine({ Update }) as unknown as {
+        actions: ActionsOutput<
+            AnyCallback,
+            { Update: (state: GlobalState, actions: CartFormData) => { data: CartFormData } }
+        >;
+        state: CartFormData;
+    };
     const hd = new Holidays('FI');
     const finnishHolidays = hd.getHolidays();
+    const correctAddress = user.address_list?.filter(
+        (address: { address: string }) => address.address === selectedAddress
+    );
     const {
         register,
         handleSubmit,
         formState: { errors },
         setValue,
-    } = useForm({ mode: 'onTouched' });
+        getValues,
+    } = useForm({
+        mode: 'onTouched',
+        defaultValues: {
+            firstName: state.firstName ? state.firstName : '',
+            lastName: state.lastName ? state.lastName : '',
+            email: state.email ? state.email : '',
+            phoneNumber: state.phoneNumber ? state.phoneNumber : '',
+            deliveryAddress: state.deliveryAddress ? state.deliveryAddress : correctAddress[0].address,
+            zipcode: state.zipcode ? state.zipcode : correctAddress[0].zip_code,
+            city: state.city ? state.city : correctAddress[0].city,
+            deliveryRequired: state.deliveryRequired ? state.deliveryRequired : '',
+            fetchDate: state.fetchDate ? state.fetchDate : currentDate,
+            orderInfo: state.orderInfo ? state.orderInfo : '',
+        },
+    });
 
     const navigate = useNavigate();
     const onSubmit = (data: CartFormData) => {
         actions.Update(data);
         navigate('/ostoskori/vaihe3');
     };
-    const correctAddress = user.address_list?.filter(
-        (address: { address: string }) => address.address === selectedAddress
-    );
 
     function handleClick() {
         setValue('firstName', user.first_name);
         setValue('lastName', user.last_name);
         setValue('email', user.email);
-        setValue('phoneNumber', user.phone_number);
+        setValue('phoneNumber', user.phone_number as string);
     }
 
     useEffect(() => {
@@ -74,6 +96,8 @@ function ContactsAndDelivery() {
         const dateIsHoliday = finnishHolidays.some((holiday) => String(holiday.start) === String(date));
         return isWeekend(date) || dateIsHoliday;
     }
+
+    console.log(state.firstName);
 
     return (
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
@@ -326,7 +350,7 @@ function ContactsAndDelivery() {
                 Toimituksessa kestää keskimäärin 1-2 viikkoa.
             </Box>
 
-            <CartButtons backText="Takaisin" forwardText="Seuraava" />
+            <CartButtons backText="Takaisin" forwardText="Seuraava" actions={actions} formData={getValues()} />
         </form>
     );
 }
