@@ -34,6 +34,7 @@ import CloseDrawerButton from './CloseDrawerButton';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
 import { type ShoppingCartAvailableAmountList } from '../../../api';
+import LoginForm from '../../LoginForm';
 
 //
 
@@ -242,105 +243,115 @@ function DefaultAppBar() {
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart" onClose={drawerOpen('')}>
                 {/* tähän oma komponentti.. */}
-                <List>
-                    {cart?.product_items?.length === 0 && (
-                        <>
-                            {cartEmpty ? (
-                                <Typography variant="h6" align="center" sx={{ color: 'error.main' }}>
-                                    Et voi siirtyä kassalle tyhjällä ostoskorilla.
-                                </Typography>
-                            ) : (
-                                <Typography variant="h6" align="center">
-                                    Ostoskorisi on tyhjä.
-                                </Typography>
-                            )}
-                        </>
-                    )}
-                    {products?.map((cartProduct: CartProduct) => {
-                        const product = amountList.find(
-                            (p) => p.id == cartProduct.product.id
-                        ) as ShoppingCartAvailableAmountList;
-                        return (
-                            <ProductInCart
-                                key={cartProduct.product.id}
-                                name={cartProduct.product.name}
-                                count={cartProduct.count}
-                                id={cartProduct.product.id}
-                                maxCount={product.amount}
-                            />
-                        );
-                    })}
-                </List>
-                {/* <Divider /> */}
-                <Grid container sx={{ display: 'flex', justifyContent: 'center', marginBottom: '6rem' }}>
-                    <Grid item xs={2} />
-                    <Grid item xs={8}>
+                {auth.username ? (
+                    <>
                         <List>
-                            <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <Button
-                                    onClick={() => navigateToCart()}
-                                    variant="contained"
-                                    fullWidth
-                                    // endIcon={<ShoppingCartCheckoutIcon />}
-                                    sx={{
-                                        '&:hover': {
-                                            backgroundColor: 'success.dark',
-                                        },
-                                    }}
-                                >
-                                    <ListItemText primary="Kassalle" primaryTypographyProps={{ fontWeight: 'bold' }} />
-                                </Button>
-                            </ListItem>
-                        </List>
-
-                        {/* ///// */}
-                        {cart?.product_items?.length > 0 && (
-                            <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <Button
-                                    color="error"
-                                    fullWidth
-                                    // startIcon={<DeleteIcon />}
-                                    onClick={handlePopOverOpen}
-                                >
-                                    <ListItemText
-                                        primary="Tyhjennä ostoskori"
-                                        primaryTypographyProps={{ fontWeight: 'bold' }}
+                            {cart?.product_items?.length === 0 && (
+                                <>
+                                    {cartEmpty ? (
+                                        <Typography variant="h6" align="center" sx={{ color: 'error.main' }}>
+                                            Et voi siirtyä kassalle tyhjällä ostoskorilla.
+                                        </Typography>
+                                    ) : (
+                                        <Typography variant="h6" align="center">
+                                            Ostoskorisi on tyhjä.
+                                        </Typography>
+                                    )}
+                                </>
+                            )}
+                            {products?.map((cartProduct: CartProduct) => {
+                                const product = amountList.find(
+                                    (p) => p.id == cartProduct.product.id
+                                ) as ShoppingCartAvailableAmountList;
+                                return (
+                                    <ProductInCart
+                                        key={cartProduct.product.id}
+                                        name={cartProduct.product.name}
+                                        count={cartProduct.count}
+                                        id={cartProduct.product.id}
+                                        maxCount={product.amount}
                                     />
-                                </Button>
-                                <Popover
-                                    open={open}
-                                    anchorEl={anchorEl}
-                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-                                    onClose={() => setAnchorEl(null)}
-                                    sx={{ mt: 1 }}
-                                >
-                                    <Grid
-                                        container
-                                        direction="row"
-                                        justifyContent="space-evenly"
-                                        sx={{ p: 1, width: 200 }}
-                                    >
-                                        <Grid item sx={{ mt: '0.5rem' }}>
-                                            <Typography variant="body2">Oletko varma?</Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <Button onClick={handleEmptyCart}>Kyllä</Button>
-                                        </Grid>
-                                    </Grid>
-                                </Popover>
-                            </ListItem>
-                        )}
-                    </Grid>
-                    <Grid item xs={2} />
-                </Grid>
+                                );
+                            })}
+                        </List>
+                        <Grid container sx={{ display: 'flex', justifyContent: 'center', marginBottom: '6rem' }}>
+                            <Grid item xs={2} />
+                            <Grid item xs={8}>
+                                <List>
+                                    <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                        <Button
+                                            onClick={() => navigateToCart()}
+                                            variant="contained"
+                                            fullWidth
+                                            // endIcon={<ShoppingCartCheckoutIcon />}
+                                            sx={{
+                                                '&:hover': {
+                                                    backgroundColor: 'success.dark',
+                                                },
+                                            }}
+                                        >
+                                            <ListItemText
+                                                primary="Kassalle"
+                                                primaryTypographyProps={{ fontWeight: 'bold' }}
+                                            />
+                                        </Button>
+                                    </ListItem>
+                                </List>
+
+                                {/* ///// */}
+                                {cart?.product_items?.length > 0 && (
+                                    <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                        <Button
+                                            color="error"
+                                            fullWidth
+                                            // startIcon={<DeleteIcon />}
+                                            onClick={handlePopOverOpen}
+                                        >
+                                            <ListItemText
+                                                primary="Tyhjennä ostoskori"
+                                                primaryTypographyProps={{ fontWeight: 'bold' }}
+                                            />
+                                        </Button>
+                                        <Popover
+                                            open={open}
+                                            anchorEl={anchorEl}
+                                            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                                            onClose={() => setAnchorEl(null)}
+                                            sx={{ mt: 1 }}
+                                        >
+                                            <Grid
+                                                container
+                                                direction="row"
+                                                justifyContent="space-evenly"
+                                                sx={{ p: 1, width: 200 }}
+                                            >
+                                                <Grid item sx={{ mt: '0.5rem' }}>
+                                                    <Typography variant="body2">Oletko varma?</Typography>
+                                                </Grid>
+                                                <Grid item>
+                                                    <Button onClick={handleEmptyCart}>Kyllä</Button>
+                                                </Grid>
+                                            </Grid>
+                                        </Popover>
+                                    </ListItem>
+                                )}
+                            </Grid>
+                            <Grid item xs={2} />
+                        </Grid>
+                    </>
+                ) : (
+                    <Button sx={{ m: 5 }} onClick={() => setCurrentOpenDrawer('account')}>
+                        Kirjaudu sisään
+                    </Button>
+                )}
                 <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
                 {auth.username ? (
-                    <Welcome />
+                    <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} />
                 ) : (
-                    <LoginDrawer setCurrentOpenDrawer={setCurrentOpenDrawer} notLoggedIn={notLoggedIn} />
+                    <LoginDrawer setCurrentOpenDrawer />
                 )}
                 <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>

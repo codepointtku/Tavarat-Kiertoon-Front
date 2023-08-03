@@ -35,7 +35,7 @@ interface Props {
     redirectUrl?: string | number;
 }
 
-function LoginForm(redirectUrl: Props) {
+function LoginForm(redirectUrl: Props, setCurrentOpenDrawer) {
     const { register, handleSubmit } = useForm<FormValues>();
     const { auth } = useContext(AuthContext);
     const location = useLocation();
@@ -146,13 +146,22 @@ function LoginForm(redirectUrl: Props) {
                             <MuiLink
                                 variant="body2"
                                 component={Link}
-                                to="/doesnotexist/"
+                                to="salasananvaihto"
                                 sx={{ display: 'block', mt: 4 }}
+                                onClick={() => setCurrentOpenDrawer('')}
+                                reloadDocument={false}
                             >
                                 Unohtunut salasana?
                             </MuiLink>
 
-                            <Button sx={{ mt: 2 }} variant="outlined" component={Link} to="/rekisteroidy">
+                            <Button
+                                sx={{ mt: 2 }}
+                                variant="outlined"
+                                component={Link}
+                                to="rekisteroidy"
+                                onClick={() => setCurrentOpenDrawer('')}
+                                reloadDocument={false}
+                            >
                                 Luo uusi tunnus
                             </Button>
                         </Box>

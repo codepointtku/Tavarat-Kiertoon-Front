@@ -26,7 +26,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import AlertBox from '../../AlertBox';
 import LoginForm from '../../LoginForm';
 
-function LoginDrawer({ setCurrentOpenDrawer, notLoggedIn }) {
+function LoginDrawer({ setCurrentOpenDrawer }) {
     // const { register, handleSubmit } = useForm();
     // const submit = useSubmit();
     // const responseStatus = useActionData();
@@ -45,14 +45,15 @@ function LoginDrawer({ setCurrentOpenDrawer, notLoggedIn }) {
     //     });
     // };
 
-    const handleClickCloseDrawer = () => {
-        setCurrentOpenDrawer('');
-    };
+    // const handleClickCloseDrawer = () => {
+    //     setCurrentOpenDrawer('');
+    // };
 
     return (
         <>
             <LoginForm
-            // redirectUrl={'/'}
+                setCurrentOpenDrawer={setCurrentOpenDrawer}
+                // redirectUrl={'/'}
             />
 
             {/* {responseStatus?.type === 'login' && !responseStatus?.status && (
