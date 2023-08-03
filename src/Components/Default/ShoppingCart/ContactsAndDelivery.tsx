@@ -14,6 +14,7 @@ import TypographyTitle from '../../TypographyTitle';
 import TypographyHeading from '../../TypographyHeading';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { isWeekend } from 'date-fns';
 import { fi } from 'date-fns/locale';
 import Holidays from 'date-holidays';
 
@@ -71,7 +72,7 @@ function ContactsAndDelivery() {
     function disableDate(date: Date) {
         date.setHours(0, 0, 0, 0);
         const dateIsHoliday = finnishHolidays.some((holiday) => String(holiday.start) === String(date));
-        return date.getDay() === 0 || date.getDay() === 6 || dateIsHoliday;
+        return isWeekend(date) || dateIsHoliday;
     }
 
     return (
