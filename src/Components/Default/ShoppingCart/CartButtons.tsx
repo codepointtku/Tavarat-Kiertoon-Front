@@ -4,16 +4,13 @@ import { Button, type ButtonProps, Grid } from '@mui/material';
 import { type CartFormData } from './ContactsAndDelivery';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import type { AnyCallback, ActionsOutput, GlobalState } from 'little-state-machine/dist/types';
+import type { StateMachineActions } from './ContactsAndDelivery';
 
 interface Props {
     backText: string;
     forwardText: string;
     cartEmpty?: boolean;
-    actions?: ActionsOutput<
-        AnyCallback,
-        { Update: (state: GlobalState, actions: CartFormData) => { data: CartFormData } }
-    >;
+    actions?: StateMachineActions;
     formData?: CartFormData;
 }
 
@@ -21,10 +18,7 @@ interface CustomButtonProps extends ButtonProps {
     to: To & number;
     component: React.ForwardRefExoticComponent<LinkProps & React.RefAttributes<HTMLAnchorElement>>;
     backText: string;
-    actions?: ActionsOutput<
-        AnyCallback,
-        { Update: (state: GlobalState, actions: CartFormData) => { data: CartFormData } }
-    >;
+    actions?: StateMachineActions;
     formData?: CartFormData;
 }
 
@@ -43,7 +37,6 @@ const LinkButton: FC<CustomButtonProps> = ({ component, to, backText, actions, f
 };
 
 function CartButtons({ backText, forwardText, cartEmpty, actions, formData }: Props) {
-    console.log(formData);
     return (
         <Grid container justifyContent="space-between" sx={{ marginTop: '2rem' }}>
             {/* <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'center' }}> */}

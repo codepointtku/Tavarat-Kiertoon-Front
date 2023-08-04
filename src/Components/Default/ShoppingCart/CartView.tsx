@@ -1,24 +1,27 @@
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { Grid, Typography, ButtonPropsSizeOverrides, Divider } from '@mui/material';
+import { useStateMachine } from 'little-state-machine';
+import { Grid, Typography, type ButtonPropsSizeOverrides, Divider } from '@mui/material';
 
 import CartButtons from './CartButtons';
 import AddMoreToCart from '../../AddMoreToCart';
-import { OverridableStringUnion } from '@material-ui/types';
+import type { OverridableStringUnion } from '@material-ui/types';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import TypographyHeading from '../../TypographyHeading';
-import { ShoppingCartAvailableAmountList } from '../../../api';
-
-interface CartProduct {
-    product: { id: number };
-}
+import type { ShoppingCartAvailableAmountList } from '../../../api';
+import ClearInfo from './ClearInfo';
 
 function CartView() {
     const navigate = useNavigate();
+    const { actions } = useStateMachine({ ClearInfo });
     const { products: cartProducts, amountList } = useRouteLoaderData('frontPage') as Awaited<
         ReturnType<typeof shoppingCartLoader>
     >;
     const { handleSubmit } = useForm();
+
+    if (sessionStorage.getItem('__LSM__') === null) {
+        actions.ClearInfo();
+    }
 
     const onSubmit = () => {
         navigate('/ostoskori/vaihe2');

@@ -17,7 +17,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { isWeekend } from 'date-fns';
 import { fi } from 'date-fns/locale';
 import Holidays from 'date-holidays';
-import type { AnyCallback, ActionsOutput, GlobalState } from 'little-state-machine/dist/types';
 import ClearInfo from './ClearInfo';
 
 export interface CartFormData {
@@ -33,6 +32,11 @@ export interface CartFormData {
     orderInfo?: string;
 }
 
+export type StateMachineActions = {
+    Update: (state: CartFormData | undefined, actions?: CartFormData) => { data: CartFormData };
+    ClearInfo: () => {};
+};
+
 function ContactsAndDelivery() {
     const user = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
     const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
@@ -40,11 +44,8 @@ function ContactsAndDelivery() {
     const currentDate = new Date();
     const [fetchDate, setFetchDate] = useState(currentDate);
     const maxDate = new Date().setDate(currentDate.getDate() + 64);
-    const { actions, state } = useStateMachine({ Update }) as unknown as {
-        actions: ActionsOutput<
-            AnyCallback,
-            { Update: (state: GlobalState, actions: CartFormData) => { data: CartFormData } }
-        >;
+    const { actions, state } = useStateMachine({ Update, ClearInfo }) as unknown as {
+        actions: StateMachineActions;
         state: CartFormData;
     };
     const hd = new Holidays('FI');
@@ -87,21 +88,20 @@ function ContactsAndDelivery() {
         setValue('phoneNumber', user.phone_number as string);
     }
 
-    useEffect(() => {
-        // if (state) {
-        //     actions.ClearInfo();
-        // }
-        setValue('zipcode', correctAddress[0]?.zip_code);
-        setValue('city', correctAddress[0]?.city);
-    }, [selectedAddress]);
+    if (sessionStorage.getItem('__LSM__') === null) {
+        actions.ClearInfo();
+    }
+
+    // useEffect(() => {
+    //     setValue('zipcode', correctAddress[0]?.zip_code);
+    //     setValue('city', correctAddress[0]?.city);
+    // }, [selectedAddress]);
 
     function disableDate(date: Date) {
         date.setHours(0, 0, 0, 0);
         const dateIsHoliday = finnishHolidays.some((holiday) => String(holiday.start) === String(date));
         return isWeekend(date) || dateIsHoliday;
     }
-
-    console.log(state);
 
     return (
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
