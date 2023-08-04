@@ -116,6 +116,11 @@ function Confirmation() {
                                 </Typography>
                             </Grid>
                         )}
+                        {state.orderInfo && (
+                            <Grid item>
+                                <Typography variant="subtitle1">Lisätiedot: {state.orderInfo}</Typography>
+                            </Grid>
+                        )}
                     </Grid>
                     <Typography variant="overline" sx={{ fontSize: 20, fontWeight: 'bold' }}>
                         Tilaustiedot

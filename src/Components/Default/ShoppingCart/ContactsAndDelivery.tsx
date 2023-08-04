@@ -17,7 +17,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { isWeekend } from 'date-fns';
 import { fi } from 'date-fns/locale';
 import Holidays from 'date-holidays';
-import ClearInfo from './ClearInfo';
 
 export interface CartFormData {
     firstName: string;
@@ -44,7 +43,7 @@ function ContactsAndDelivery() {
     const currentDate = new Date();
     const [fetchDate, setFetchDate] = useState(currentDate);
     const maxDate = new Date().setDate(currentDate.getDate() + 64);
-    const { actions, state } = useStateMachine({ Update, ClearInfo }) as unknown as {
+    const { actions, state } = useStateMachine({ Update }) as unknown as {
         actions: StateMachineActions;
         state: CartFormData;
     };
@@ -88,14 +87,10 @@ function ContactsAndDelivery() {
         setValue('phoneNumber', user.phone_number as string);
     }
 
-    if (sessionStorage.getItem('__LSM__') === null) {
-        actions.ClearInfo();
-    }
-
-    // useEffect(() => {
-    //     setValue('zipcode', correctAddress[0]?.zip_code);
-    //     setValue('city', correctAddress[0]?.city);
-    // }, [selectedAddress]);
+    useEffect(() => {
+        setValue('zipcode', correctAddress[0]?.zip_code);
+        setValue('city', correctAddress[0]?.city);
+    }, [selectedAddress]);
 
     function disableDate(date: Date) {
         date.setHours(0, 0, 0, 0);
