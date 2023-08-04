@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useContext, useState } from 'react';
-import { Link, useSubmit, Form, useActionData, useFetcher, useLocation } from 'react-router-dom';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { Link, useFetcher, useLocation } from 'react-router-dom';
+import { type FieldValues, type SubmitHandler, useForm } from 'react-hook-form';
 
 import {
     Avatar,
@@ -42,7 +42,7 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
     const location = useLocation();
     const fetcher = useFetcher();
     const responseStatus = fetcher.data;
-    console.log('responseStatus', responseStatus);
+    // console.log('responseStatus', responseStatus);
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -55,8 +55,6 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
             method: 'post',
             action: '/',
         });
-        // fetcher.load('/');
-        // fetcher.load('/?index');
     };
 
     return (
@@ -178,7 +176,6 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
                                 component={Link}
                                 to="rekisteroidy"
                                 onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
-                                // reloadDocument={false}
                             >
                                 Luo uusi tunnus
                             </Button>

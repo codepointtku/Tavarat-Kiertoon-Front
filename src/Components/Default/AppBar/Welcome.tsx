@@ -31,7 +31,7 @@ function Welcome({ setCurrentOpenDrawer }: Props) {
                     sx={{ mt: 5, backgroundColor: 'primary.dark' }}
                     onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
                     component={Link}
-                    to="profiili"
+                    to="/profiili"
                     fullWidth
                 >
                     Siirry profiiliin

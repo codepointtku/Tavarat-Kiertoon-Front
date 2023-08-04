@@ -185,7 +185,7 @@ import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
 
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
-import LoginPage from '../Components/LoginPage';
+import LoginForm from '../Components/LoginForm';
 
 createStore({});
 
@@ -336,7 +336,7 @@ function Routes() {
                                 },
                                 {
                                     path: '/kirjaudu',
-                                    element: <LoginPage />,
+                                    element: <LoginForm />,
                                 },
                                 {
                                     path: 'rekisteroidy',
