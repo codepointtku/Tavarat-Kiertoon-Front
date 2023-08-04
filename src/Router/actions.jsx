@@ -34,7 +34,7 @@ const frontPageActions = async ({ request }) => {
                 username: formData.get('email'),
                 password: formData.get('password'),
             });
-            if (response.status === 200) {
+            if (response.status === 200 && response.data.token) {
                 return { type: 'login', status: true };
             }
             return { type: 'login', status: false };

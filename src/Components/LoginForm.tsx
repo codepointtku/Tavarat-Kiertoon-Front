@@ -75,7 +75,7 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }) {
             ) : (
                 <>
                     {responseStatus?.type === 'login' && !responseStatus?.status && (
-                        <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" timer={3000} />
+                        <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" />
                     )}
 
                     <Container maxWidth="xs" component={fetcher.Form} onSubmit={handleSubmit(onSubmit)}>
