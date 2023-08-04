@@ -33,9 +33,10 @@ interface FormValues {
 
 interface Props {
     redirectUrl?: string | number;
+    setCurrentOpenDrawer?: (value: string) => void;
 }
 
-function LoginForm({ redirectUrl, setCurrentOpenDrawer }) {
+function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
     const { register, handleSubmit } = useForm<FormValues>();
     const { auth } = useContext(AuthContext);
     const location = useLocation();
@@ -150,11 +151,9 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }) {
                                         mt: 2,
                                         backgroundColor: 'error.main',
                                     }}
-                                    // variant="outlined"
                                     component={Link}
                                     to="salasananvaihto"
-                                    onClick={() => setCurrentOpenDrawer('')}
-                                    // reloadDocument={false}
+                                    onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
                                 >
                                     Unohtunut salasana?
                                 </Button>
@@ -167,8 +166,7 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }) {
                                         display: 'block',
                                         mt: 4,
                                     }}
-                                    onClick={() => setCurrentOpenDrawer('')}
-                                    // reloadDocument={false}
+                                    onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
                                 >
                                     Unohtunut salasana?
                                 </MuiLink>
@@ -179,7 +177,7 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }) {
                                 variant="outlined"
                                 component={Link}
                                 to="rekisteroidy"
-                                onClick={() => setCurrentOpenDrawer('')}
+                                onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
                                 // reloadDocument={false}
                             >
                                 Luo uusi tunnus
