@@ -143,16 +143,36 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }) {
                                     Sisään
                                 </Button>
                             </Box>
-                            <MuiLink
-                                variant="body2"
-                                component={Link}
-                                to="salasananvaihto"
-                                sx={{ display: 'block', mt: 4 }}
-                                onClick={() => setCurrentOpenDrawer('')}
-                                // reloadDocument={false}
-                            >
-                                Unohtunut salasana?
-                            </MuiLink>
+                            {/* Make "forgot password" -link more visible after failed login */}
+                            {responseStatus?.type === 'login' && !responseStatus?.status ? (
+                                <Button
+                                    sx={{
+                                        mt: 2,
+                                        backgroundColor: 'error.main',
+                                    }}
+                                    // variant="outlined"
+                                    component={Link}
+                                    to="salasananvaihto"
+                                    onClick={() => setCurrentOpenDrawer('')}
+                                    // reloadDocument={false}
+                                >
+                                    Unohtunut salasana?
+                                </Button>
+                            ) : (
+                                <MuiLink
+                                    variant="body2"
+                                    component={Link}
+                                    to="salasananvaihto"
+                                    sx={{
+                                        display: 'block',
+                                        mt: 4,
+                                    }}
+                                    onClick={() => setCurrentOpenDrawer('')}
+                                    // reloadDocument={false}
+                                >
+                                    Unohtunut salasana?
+                                </MuiLink>
+                            )}
 
                             <Button
                                 sx={{ mt: 2 }}
