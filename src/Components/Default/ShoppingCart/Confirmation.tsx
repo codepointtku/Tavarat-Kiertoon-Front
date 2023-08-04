@@ -109,7 +109,7 @@ function Confirmation() {
                                 Toimitustapa: {state.deliveryRequired === 'true' ? 'Kuljetus' : 'Nouto'}
                             </Typography>
                         </Grid>
-                        {state.fetchDate && (
+                        {state.deliveryRequired === 'false' && (
                             <Grid item>
                                 <Typography variant="subtitle1">
                                     Toimituspäivä: {fetchDate.toLocaleDateString('fi-FI')}
