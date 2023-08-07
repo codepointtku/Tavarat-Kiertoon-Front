@@ -37,8 +37,8 @@ function SimilarProductCard({ product }: SimilarProduct) {
                 <CardMedia
                     component={Box}
                     sx={{ alt: 'kuva' }}
-                    height={100}
-                    image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product.pictures[0].picture_address}`}
+                    height={200}
+                    image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product?.pictures[0]?.picture_address}`}
                 />
                 <CardHeader
                     title={<Typography variant="h6">{product.name}</Typography>}
@@ -49,7 +49,7 @@ function SimilarProductCard({ product }: SimilarProduct) {
                     }
                 />
             </CardActionArea>
-            <CardActions>
+            {/* <CardActions>
                 <Grid container direction="row" justifyContent="space-evenly" alignItems="center">
                     <Grid item>
                         <AddToCartButton
@@ -76,7 +76,7 @@ function SimilarProductCard({ product }: SimilarProduct) {
                         </Tooltip>
                     </Grid>
                 </Grid>
-            </CardActions>
+            </CardActions> */}
         </Card>
     );
 }
