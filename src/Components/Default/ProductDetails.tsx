@@ -57,7 +57,6 @@ function ProductDetails() {
                                     <CardMedia
                                         component="img"
                                         alt="product image"
-                                        height="350"
                                         image={`${window.location.protocol}//${window.location.hostname}:8000/media/${image}`}
                                     />
                                 </CardActionArea>

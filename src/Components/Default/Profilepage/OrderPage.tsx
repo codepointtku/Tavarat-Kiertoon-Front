@@ -70,7 +70,7 @@ function OrderPage() {
                                         <Box
                                             sx={{
                                                 height: 'inherit',
-                                                backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
                                                 backdropFilter: 'blur(3px)',
                                             }}
                                         >
