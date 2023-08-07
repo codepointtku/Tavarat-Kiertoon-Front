@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Form, useSubmit, useLocation, Link, useActionData } from 'react-router-dom';
+import { Form, useSubmit, Link, useActionData, useLoaderData } from 'react-router-dom';
 
 import { Box, Container, FormControl, Stack, TextField, Button } from '@mui/material';
 
@@ -10,49 +10,47 @@ import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
 import type { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
+import type { adminBulletinLoader } from '../../Router/loaders';
 import type { adminBulletinsAction } from '../../Router/actions';
 
 interface FormData extends SubmitHandler<FieldValues> {
     title: string;
     content: string;
-    category: string;
 }
 
 function BulletinPostEdit() {
+    const { bulletin } = useLoaderData() as Awaited<ReturnType<typeof adminBulletinLoader>>;
     const responseStatus = useActionData() as Awaited<ReturnType<typeof adminBulletinsAction>>;
-
-    const location = useLocation();
 
     const {
         register,
         handleSubmit,
         formState: { errors, isDirty, isValid, isSubmitSuccessful },
-    } = useForm({ mode: 'onTouched', defaultValues: { title: location.state.title, content: location.state.content } });
+    } = useForm({ mode: 'onTouched', defaultValues: { ...bulletin } });
 
     const submit = useSubmit();
 
     const onSubmit = (data: { title: string; content: string }) => {
-        const formData = { ...data, category: 'category', id: location.state.id };
+        const formData = { ...data };
 
         submit(formData, {
             method: 'put',
-            action: '/admin/tiedotteet/',
         });
     };
 
     return (
         <>
-            {responseStatus?.type === 'bulletincreate' && !responseStatus?.status && (
+            {responseStatus?.type === 'bulletinedit' && !responseStatus?.status && (
                 <AlertBox text="Tiedotteen muokkaus epäonnistui" status="error" />
             )}
 
-            {responseStatus?.type === 'bulletincreate' && responseStatus?.status && (
+            {responseStatus?.type === 'bulletinedit' && responseStatus?.status && (
                 <AlertBox text="Tiedote muokattu" status="success" />
             )}
 
             <Container maxWidth="md">
                 <HeroHeader Icon={<FeedIcon />} hideInAdmin />
-                <HeroText title={`Muokkaa tiedotetta ${location.state.id}`} />
+                <HeroText title={`Muokkaa tiedotetta ${bulletin.id}`} />
                 <Box
                     id="bulletin-modification-form-component"
                     component={Form}
@@ -106,13 +104,13 @@ function BulletinPostEdit() {
                                 Muokkaa tiedotetta
                             </Button>
                             <Button
-                                color="error"
+                                // color="error"
                                 variant="outlined"
                                 component={Link}
                                 to="/admin/tiedotteet/"
                                 sx={{ mt: '1rem' }}
                             >
-                                Poistu tallentamatta
+                                Takaisin
                             </Button>
                         </FormControl>
                     </Stack>

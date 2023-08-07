@@ -400,21 +400,6 @@ const itemCreateAction = async (auth, setAuth, request) => {
 };
 
 /**
- * create new bulletin post
- */
-
-const createBulletinAction = async ({ request }) => {
-    const formData = await request.formData();
-    const response = await bulletinsApi.bulletinsCreate(Object.fromEntries(formData.entries()));
-
-    if (response.status === 201) {
-        return { type: 'bulletincreate', status: true };
-    }
-
-    return { type: 'bulletincreate', status: false };
-};
-
-/**
  * updates existing item
  */
 
@@ -853,30 +838,45 @@ const createBikeModelAction = async (auth, setAuth, request) => {
 
 /**
  * deletes or modifies a bulletin
- * @param {*} auth
- * @param {*} setAuth
- * @param {*} request
- * @returns
  */
-const adminBulletinsAction = async ({ request }) => {
+const adminBulletinsAction = async ({ request, params }) => {
     const formData = await request.formData();
+
     if (request.method === 'DELETE') {
         const response = await bulletinsApi.bulletinsDestroy(formData.get('id'));
         if (response.status === 204) {
-            return { type: 'deleted', status: true };
+            return { type: 'bulletindelete', status: true };
         }
-        return { type: 'deleted', status: false };
+        return { type: 'bulletindelete', status: false };
     }
 
-    const response = await bulletinsApi.bulletinsUpdate(formData.get('id'), {
-        title: formData.get('title'),
-        content: formData.get('content'),
-    });
+    if (request.method === 'PUT') {
+        const response = await bulletinsApi.bulletinsUpdate(params.id, {
+            title: formData.get('title'),
+            content: formData.get('content'),
+        });
 
-    if (response.status === 200) {
-        return { type: 'modified', status: true };
+        if (response.status === 200) {
+            return { type: 'bulletinedit', status: true };
+        }
+        return { type: 'bulletinedit', status: false };
     }
-    return { type: 'modified', status: false };
+
+    return null;
+};
+
+/**
+ * create a new bulletin post
+ */
+const createBulletinAction = async ({ request }) => {
+    const formData = await request.formData();
+    const response = await bulletinsApi.bulletinsCreate(Object.fromEntries(formData.entries()));
+
+    if (response.status === 201) {
+        return { type: 'bulletincreate', status: true };
+    }
+
+    return { type: 'bulletincreate', status: false };
 };
 
 /**
