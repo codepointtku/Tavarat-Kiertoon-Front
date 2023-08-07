@@ -90,7 +90,8 @@ function ContactsAndDelivery() {
     useEffect(() => {
         setValue('zipcode', correctAddress[0]?.zip_code);
         setValue('city', correctAddress[0]?.city);
-    }, [selectedAddress]);
+        setValue('fetchDate', new Date(currentDate));
+    }, [selectedAddress, selectedMethod]);
 
     function disableDate(date: Date) {
         date.setHours(0, 0, 0, 0);
@@ -99,9 +100,13 @@ function ContactsAndDelivery() {
     }
 
     function handleDateChange(value: Date) {
+        // console.log(String(value), String(value) !== 'Invalid Date');
+        // console.log(String(new Date(maxDate)));
         setValue('fetchDate', value);
         setFetchDate(value);
     }
+
+    console.log(selectedMethod);
 
     return (
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
@@ -315,8 +320,11 @@ function ContactsAndDelivery() {
                                     renderInput={(props) => (
                                         <TextField
                                             {...props}
-                                            {...register('fetchDate', { required: 'Tämä kenttä on täytettävä' })}
-                                            helperText="Noutoajat ma-pe 9-16"
+                                            {...register('fetchDate', {
+                                                required: 'Tämä kenttä on täytettävä',
+                                            })}
+                                            error={!!errors.fetchDate}
+                                            helperText={errors.fetchDate?.message?.toString() || 'Noutoajat ma-pe 9-16'}
                                         />
                                     )}
                                     shouldDisableDate={disableDate}

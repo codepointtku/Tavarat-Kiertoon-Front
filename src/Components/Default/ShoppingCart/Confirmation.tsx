@@ -55,8 +55,6 @@ function Confirmation() {
         }
     }, [responseStatus]);
 
-    console.log(state);
-
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '-2rem' }}>
             <form onSubmit={handleSubmit(onSubmit)}>
