@@ -464,6 +464,19 @@ const adminInboxLoader = async ({ request }) => {
     return messages;
 };
 
+/**
+ * bulletins
+ */
+const adminBulletinsLoader = async () => {
+    const { data: bulletins } = await bulletinsApi.bulletinsList();
+    return { bulletins };
+};
+
+const adminBulletinLoader = async ({ params }) => {
+    const { data: bulletin } = await bulletinsApi.bulletinsRetrieve(params.id);
+    return { bulletin };
+};
+
 const createBulletinLoader = async () => {
     const { data: user } = await userApi.userRetrieve();
     return { user };
@@ -526,5 +539,7 @@ export {
     modifyBikePacketLoader,
     bikeNewModelLoader,
     createBikePacketLoader,
+    adminBulletinsLoader,
+    adminBulletinLoader,
     createBulletinLoader,
 };

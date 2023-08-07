@@ -32,7 +32,7 @@ function ProductDetails() {
     const { id: productId } = useParams();
 
     const { name: productName, free_description: description, amount, measurements, weight, colors } = product;
-    const [image, setImage] = useState(product.pictures[0].picture_address);
+    const [image, setImage] = useState(product?.pictures[0]?.picture_address);
     const { auth } = useContext(AuthContext);
 
     const productCategory = categories.find((category) => category.id === product.category);
@@ -40,7 +40,7 @@ function ProductDetails() {
     const colorNames = productColors.map((color) => color.name);
 
     useEffect(() => {
-        setImage(product.pictures[0].picture_address);
+        setImage(product?.pictures[0]?.picture_address);
     }, [product.pictures]);
 
     return (
@@ -57,7 +57,6 @@ function ProductDetails() {
                                     <CardMedia
                                         component="img"
                                         alt="product image"
-                                        height="350"
                                         image={`${window.location.protocol}//${window.location.hostname}:8000/media/${image}`}
                                     />
                                 </CardActionArea>

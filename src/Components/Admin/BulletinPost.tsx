@@ -18,7 +18,7 @@ function BulletinPost({ title, date, content, id }: Props) {
     const navigate = useNavigate();
 
     const handleBulletinDel = () => {
-        submit({ id }, { method: 'delete', action: '/admin/tiedotteet/' });
+        submit({ id }, { method: 'delete' });
     };
 
     return (
@@ -29,11 +29,7 @@ function BulletinPost({ title, date, content, id }: Props) {
                 </Grid>
                 <Grid item>
                     <Stack id="bulletin-actions-btns-stack" direction="row">
-                        <Button
-                            id="bulletin-edit-btn"
-                            sx={{ mr: 1 }}
-                            onClick={() => navigate(`${id}/muokkaa`, { state: { id, title, content } })}
-                        >
+                        <Button id="bulletin-edit-btn" sx={{ mr: 1 }} onClick={() => navigate(`${id}/muokkaa`)}>
                             Muokkaa
                         </Button>
                         <Box component={Form} onSubmit={handleSubmit(handleBulletinDel)}>
@@ -45,7 +41,7 @@ function BulletinPost({ title, date, content, id }: Props) {
                 </Grid>
             </Grid>
             <Typography variant="caption" sx={{ color: 'text.hintContrast', mt: '0.5rem' }}>
-                {date[0]} {date[1]}
+                {date[0]} / {date[1]}
             </Typography>
             <Box id="bulletin-content-text-indent-container" sx={{ m: '1rem 2rem 1rem 2rem' }}>
                 <Typography id="bulletin-content-text-typography" variant="body1" sx={{ wordWrap: 'break-word' }}>
@@ -53,7 +49,7 @@ function BulletinPost({ title, date, content, id }: Props) {
                 </Typography>
             </Box>
             <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
-                ID: {id}
+                Tunnistenumero: {id}
             </Typography>
         </Paper>
     );
