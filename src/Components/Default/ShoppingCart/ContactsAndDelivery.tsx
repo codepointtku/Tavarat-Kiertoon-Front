@@ -38,10 +38,22 @@ export type StateMachineActions = {
 
 function ContactsAndDelivery() {
     const user = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
-    const [selectedAddress, setSelectedAddress] = useState(user.address_list[0]?.address || '');
-    const [selectedMethod, setSelectedMethod] = useState('true');
+    const [selectedAddress, setSelectedAddress] = useState(
+        sessionStorage.getItem('__LSM__') !== null
+            ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryAddress
+            : user.address_list[0]?.address || ''
+    );
+    const [selectedMethod, setSelectedMethod] = useState(
+        sessionStorage.getItem('__LSM__') !== null
+            ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryRequired
+            : 'true'
+    );
     const currentDate = new Date();
-    const [fetchDate, setFetchDate] = useState(currentDate);
+    const [fetchDate, setFetchDate] = useState(
+        sessionStorage.getItem('__LSM__') !== null
+            ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).fetchDate
+            : currentDate
+    );
     const maxDate = new Date().setDate(currentDate.getDate() + 64);
     const { actions, state } = useStateMachine({ Update }) as unknown as {
         actions: StateMachineActions;
@@ -90,7 +102,6 @@ function ContactsAndDelivery() {
     useEffect(() => {
         setValue('zipcode', correctAddress[0]?.zip_code);
         setValue('city', correctAddress[0]?.city);
-        setValue('fetchDate', new Date(currentDate));
     }, [selectedAddress, selectedMethod]);
 
     function disableDate(date: Date) {
@@ -106,7 +117,7 @@ function ContactsAndDelivery() {
         setFetchDate(value);
     }
 
-    console.log(selectedMethod);
+    console.log(state);
 
     return (
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
