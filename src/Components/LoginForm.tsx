@@ -81,6 +81,7 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
                         <Box
                             sx={{
                                 marginTop: 2,
+                                marginBottom: 4,
                                 display: 'flex',
                                 flexDirection: 'column',
                                 justifyContent: 'center',
