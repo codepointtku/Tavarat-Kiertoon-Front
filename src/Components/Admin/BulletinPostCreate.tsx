@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Form, useSubmit, useLoaderData } from 'react-router-dom';
+import { Form, useSubmit, useLoaderData, useActionData } from 'react-router-dom';
 
 import { Container, TextField, Button, Box, Stack, Grid, IconButton } from '@mui/material';
 import FeedIcon from '@mui/icons-material/Feed';
@@ -11,24 +11,27 @@ import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
 import type { createBulletinLoader } from '../../Router/loaders';
+import type { createBulletinAction } from '../../Router/actions';
 
-function CreateBulletinPost() {
+function BulletinPostCreate() {
     const { user } = useLoaderData() as Awaited<ReturnType<typeof createBulletinLoader>>;
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof createBulletinAction>>;
 
     const {
         register,
         reset,
         handleSubmit,
         formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors, isDirty, dirtyFields },
-    } = useForm();
+    } = useForm({
+        mode: 'all',
+    });
     const submit = useSubmit();
 
     const onSubmit = (data: any) => {
-        const formData = { ...data, category: 'category', author: user.id };
+        const formData = { ...data, author: user.id };
 
         submit(formData, {
             method: 'post',
-            action: '/admin/tiedotteet/luo',
         });
     };
 
@@ -38,7 +41,18 @@ function CreateBulletinPost() {
 
     return (
         <>
-            {isSubmitSuccessful && <AlertBox text="Tiedote lisätty onnistuneesti" status="success" />}
+            {responseStatus?.type === 'bulletincreate' && !responseStatus?.status && (
+                <AlertBox text="Tiedotteen lisääminen epäonnistui" status="error" />
+            )}
+
+            {responseStatus?.type === 'bulletincreate' && responseStatus?.status && (
+                <AlertBox
+                    text="Tiedote lisätty onnistuneesti. Uudelleenohjataan..."
+                    status="success"
+                    timer={3000}
+                    redirectUrl="/admin/tiedotteet"
+                />
+            )}
 
             <Container maxWidth="lg">
                 <HeroHeader Icon={<FeedIcon />} hideInAdmin />
@@ -76,7 +90,7 @@ function CreateBulletinPost() {
                                 required: { value: true, message: 'Tiedotteen sisältö on pakollinen' },
                                 minLength: {
                                     value: 1,
-                                    message: 'Kirjoita edes jotain',
+                                    message: 'Kirjoita tiedotteen sisältö',
                                 },
                             })}
                             inputProps={{ required: false }}
@@ -118,4 +132,4 @@ function CreateBulletinPost() {
     );
 }
 
-export default CreateBulletinPost;
+export default BulletinPostCreate;

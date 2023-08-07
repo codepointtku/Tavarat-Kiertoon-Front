@@ -46,8 +46,8 @@ import UserAddressEdit from '../Components/Admin/UserAddressEdit';
 import UserAddressCreate from '../Components/Admin/UserAddressCreate';
 
 import BulletinPosts from '../Components/Admin/BulletinPosts';
-import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
-import ModifyBulletinPost from '../Components/Admin/ModifyBulletinPost';
+import BulletinPostCreate from '../Components/Admin/BulletinPostCreate';
+import BulletinPostEdit from '../Components/Admin/BulletinPostEdit';
 
 import Stats from '../Components/Admin/Stats/Stats';
 
@@ -141,6 +141,8 @@ import {
     bikeNewModelLoader,
     createBikePacketLoader,
     createBulletinLoader,
+    adminBulletinLoader,
+    adminBulletinsLoader,
 } from './loaders';
 
 import {
@@ -202,14 +204,7 @@ function Routes() {
                     errorElement: <ErrorBoundary />,
                     id: 'root',
                     loader: rootLoader,
-                    // Loads data only at first page load, not with every route
-                    shouldRevalidate: ({ currentUrl }) => {
-                        return (
-                            currentUrl.pathname === '/admin/tiedotteet' ||
-                            currentUrl.pathname === '/admin/tiedotteet/' ||
-                            currentUrl.pathname === '/admin/tiedotteet/luo'
-                        );
-                    },
+                    shouldRevalidate: () => false,
                     children: [
                         // main routes
                         {
@@ -662,18 +657,27 @@ function Routes() {
                                 },
                                 {
                                     path: 'tiedotteet',
-                                    element: <BulletinPosts />,
-                                    action: adminBulletinsAction,
-                                },
-                                {
-                                    path: 'tiedotteet/:id/muokkaa',
-                                    element: <ModifyBulletinPost />,
-                                },
-                                {
-                                    path: 'tiedotteet/luo',
-                                    element: <CreateBulletinPost />,
-                                    loader: createBulletinLoader,
-                                    action: createBulletinAction,
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <BulletinPosts />,
+                                            loader: adminBulletinsLoader,
+                                            action: adminBulletinsAction,
+                                        },
+                                        {
+                                            path: ':id/muokkaa',
+                                            element: <BulletinPostEdit />,
+                                            loader: adminBulletinLoader,
+                                            action: adminBulletinsAction,
+                                        },
+                                        {
+                                            path: 'luo',
+                                            element: <BulletinPostCreate />,
+                                            loader: createBulletinLoader,
+                                            action: createBulletinAction,
+                                        },
+                                    ],
                                 },
                                 {
                                     path: ':saapuneet',
