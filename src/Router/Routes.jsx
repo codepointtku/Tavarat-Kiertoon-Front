@@ -450,7 +450,8 @@ function Routes() {
                         {
                             path: 'varasto',
                             element: (
-                                <HasRole role="storage_group" fallback={<Navigate to="/" />}>
+                                // Mihin navigoidaan jos oikeudet eivät riitä? ErrorBoundaryyn ohje pyytää oikeuksia esimieheltä?
+                                <HasRole role="storage_group" fallback={<Navigate to="/kirjaudu" />}>
                                     <ThemeProvider theme={storageTheme}>
                                         <StorageLayout />
                                     </ThemeProvider>
@@ -528,7 +529,8 @@ function Routes() {
                         {
                             path: 'admin',
                             element: (
-                                <HasRole role="admin_group" fallback={<Navigate to="/" />}>
+                                // TODO: Mihin navigoidaan jos oikeudet eivät riitä? ErrorBoundaryyn ohje pyytää oikeuksia esimieheltä?
+                                <HasRole role="admin_group" fallback={<Navigate to="/kirjaudu" />}>
                                     <ThemeProvider theme={adminTheme}>
                                         <AdminLayout />
                                     </ThemeProvider>
@@ -700,7 +702,8 @@ function Routes() {
                         {
                             path: 'pyorat',
                             element: (
-                                <HasRole role="bicycle_group" fallback={<Navigate to="/" />}>
+                                // TODO: Mihin navigoidaan jos oikeudet eivät riitä? ErrorBoundaryyn ohje pyytää oikeuksia esimieheltä?
+                                <HasRole role="bicycle_group" fallback={<Navigate to="/kirjaudu" />}>
                                     <ThemeProvider theme={bikeTheme}>
                                         <BikesLayout />
                                     </ThemeProvider>

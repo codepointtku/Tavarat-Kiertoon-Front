@@ -4,13 +4,12 @@ import { useForm } from 'react-hook-form';
 
 import { Typography, Button, Container, Box } from '@mui/material';
 import AuthContext from '../../../Context/AuthContext';
-
 interface Props {
     setCurrentOpenDrawer?: Dispatch<SetStateAction<string>> | (() => void);
 }
 
 function Welcome({ setCurrentOpenDrawer }: Props) {
-    const auth = useContext(AuthContext);
+    const { auth } = useContext(AuthContext);
     const { handleSubmit } = useForm();
     const submit = useSubmit();
 
@@ -28,7 +27,7 @@ function Welcome({ setCurrentOpenDrawer }: Props) {
                     Tervetuloa {auth.username}!
                 </Typography>
                 <Button
-                    sx={{ mt: 5, backgroundColor: 'primary.dark' }}
+                    sx={{ mt: 3, backgroundColor: 'primary.dark' }}
                     onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
                     component={Link}
                     to="/profiili"
@@ -36,7 +35,43 @@ function Welcome({ setCurrentOpenDrawer }: Props) {
                 >
                     Siirry profiiliin
                 </Button>
-                <Button sx={{ mt: 5, mb: 5 }} type="submit" fullWidth>
+                {auth.storage_group && (
+                    <Button
+                        sx={{ mt: 3 }}
+                        variant="outlined"
+                        onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
+                        component={Link}
+                        to="/varasto"
+                        fullWidth
+                    >
+                        Siirry tavaravaraston näkymään
+                    </Button>
+                )}
+                {auth.bicycle_group && (
+                    <Button
+                        sx={{ mt: 3 }}
+                        variant="outlined"
+                        onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
+                        component={Link}
+                        to="/pyorat/pyoravarasto"
+                        fullWidth
+                    >
+                        Siirry pyörävaraston näkymään
+                    </Button>
+                )}
+                {auth.admin_group && (
+                    <Button
+                        sx={{ mt: 3 }}
+                        variant="outlined"
+                        onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
+                        component={Link}
+                        to="/admin"
+                        fullWidth
+                    >
+                        Siirry ylläpitäjän näkymään
+                    </Button>
+                )}
+                <Button sx={{ mt: 3, mb: 5 }} type="submit" fullWidth>
                     Kirjaudu ulos
                 </Button>
             </Box>
