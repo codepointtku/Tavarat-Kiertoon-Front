@@ -102,7 +102,7 @@ function ContactsAndDelivery() {
     useEffect(() => {
         setValue('zipcode', correctAddress[0]?.zip_code);
         setValue('city', correctAddress[0]?.city);
-    }, [selectedAddress, selectedMethod]);
+    }, [selectedAddress]);
 
     function disableDate(date: Date) {
         date.setHours(0, 0, 0, 0);

@@ -21,7 +21,7 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
     const { auth } = useContext(AuthContext);
     const { username } = auth;
     const { cart, products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
-    const [, setAddedToCart] = useState(false);
+    const [addedToCart, setAddedToCart] = useState(false);
     const [isNotLoggedIn, setIsNotLoggedIn] = useState(false);
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
@@ -60,6 +60,7 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
                         aria-label="add to shopping cart"
                         startIcon={<AddShoppingCartOutlinedIcon />}
                         type="submit"
+                        disabled={addedToCart}
                     >
                         Lisää koriin
                     </Button>
