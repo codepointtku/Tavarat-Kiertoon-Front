@@ -409,7 +409,7 @@ function Routes() {
                                 {
                                     path: 'profiili',
                                     element: (
-                                        <HasRole role="user_group" fallback={<Navigate to="/" />}>
+                                        <HasRole role="user_group" fallback={<Navigate to="/kirjaudu" />}>
                                             <UserProfilePage />
                                         </HasRole>
                                     ),
@@ -438,7 +438,11 @@ function Routes() {
                                 },
                                 {
                                     path: 'profiili/:tilaustila/tilaus/:id',
-                                    element: <OrderPage />,
+                                    element: (
+                                        <HasRole role="user_group" fallback={<Navigate to="/kirjaudu" />}>
+                                            <OrderPage />
+                                        </HasRole>
+                                    ),
                                 },
                             ],
                         },
