@@ -38,7 +38,7 @@ function SimilarProductCard({ product }: SimilarProduct) {
                     component={Box}
                     sx={{ alt: 'kuva' }}
                     height={100}
-                    image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product.pictures[0].picture_address}`}
+                    image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product?.pictures[0]?.picture_address}`}
                 />
                 <CardHeader
                     title={<Typography variant="h6">{product.name}</Typography>}

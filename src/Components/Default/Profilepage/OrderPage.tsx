@@ -20,7 +20,18 @@ interface ProductItem {
 
 function OrderPage() {
     const { state } = useLocation();
-
+    const productRenderItems: ProductItem[][] = [];
+    state.orderInfo.product_items.forEach((productItem: ProductItem) => {
+        // check if array already contains an item.product.id array
+        const productIndex = productRenderItems.findIndex((index) => index[0]?.product.id === productItem.product.id);
+        if (productIndex < 0) {
+            // if not, push a new array with this item as its first object
+            productRenderItems.push([productItem]);
+        } else {
+            // if yes, push this item to that array
+            productRenderItems[productIndex].push(productItem);
+        }
+    });
     return (
         <Container disableGutters>
             <Box sx={{ my: 2 }}>
@@ -34,9 +45,9 @@ function OrderPage() {
                 <Grid item xs={6} component={Paper} square variant="outlined" sx={{ p: 5 }}>
                     <TypographyHeading text="Tilaamasi tuotteet" />
                     <Grid gap={2} sx={{ mt: 2 }} container>
-                        {state.orderInfo.product_items.map((product_item: ProductItem) => (
+                        {productRenderItems.map((product_item: ProductItem[]) => (
                             <Grid
-                                key={product_item.id}
+                                key={product_item[0].id}
                                 item
                                 component={Card}
                                 sx={{
@@ -50,11 +61,11 @@ function OrderPage() {
                                 <CardActionArea
                                     sx={{ height: '100%' }}
                                     component={Link}
-                                    to={`/tuotteet/${product_item.product.id}`}
+                                    to={`/tuotteet/${product_item[0].product.id}`}
                                 >
                                     <CardMedia
                                         sx={{ height: '100%' }}
-                                        image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product_item.product.pictures[0].picture_address}`}
+                                        image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product_item[0]?.product?.pictures[0]?.picture_address}`}
                                     >
                                         <Box
                                             sx={{
@@ -68,12 +79,12 @@ function OrderPage() {
                                                 color="primary.dark"
                                                 sx={{ p: 2, fontWeight: 'fontWeightMediumBold' }}
                                             >
-                                                {product_item.product.name}
+                                                {product_item[0].product.name}
                                             </Typography>
                                             <CardContent>
                                                 <Typography variant="body2" color="primary.dark" align="center">
                                                     <b>Määrä: </b>
-                                                    {product_item.product.amount}
+                                                    {product_item.length}
                                                 </Typography>
                                             </CardContent>
                                         </Box>
