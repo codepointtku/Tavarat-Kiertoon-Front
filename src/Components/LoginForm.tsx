@@ -42,7 +42,6 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
     const location = useLocation();
     const fetcher = useFetcher();
     const responseStatus = fetcher.data;
-    // console.log('responseStatus', responseStatus);
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);

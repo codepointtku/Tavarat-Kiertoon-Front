@@ -11,7 +11,6 @@ import {
     Badge,
     Drawer as MuiDrawer,
     List,
-    Divider,
     ListItem,
     ListItemText,
     Typography,
@@ -23,13 +22,10 @@ import { styled } from '@mui/material/styles';
 
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 import AuthContext from '../../../Context/AuthContext';
 import Welcome from './Welcome';
 import ProductInCart from './ProductInCart';
-import LoginDrawer from './LoginDrawer';
 import CloseDrawerButton from './CloseDrawerButton';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
@@ -131,10 +127,6 @@ const toolBarHover = {
         backgroundColor: 'primary.main',
     },
 };
-
-interface SubmitFunction {
-    (SubmitTarget: string, options: { method: string; action: string }): any;
-}
 
 interface CartProduct {
     count: number;
@@ -283,7 +275,6 @@ function DefaultAppBar() {
                                             onClick={() => navigateToCart()}
                                             variant="contained"
                                             fullWidth
-                                            // endIcon={<ShoppingCartCheckoutIcon />}
                                             sx={{
                                                 '&:hover': {
                                                     backgroundColor: 'success.dark',
@@ -351,7 +342,7 @@ function DefaultAppBar() {
                 {auth.username ? (
                     <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} />
                 ) : (
-                    <LoginDrawer setCurrentOpenDrawer={setCurrentOpenDrawer} />
+                    <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
                 )}
                 <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>
