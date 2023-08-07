@@ -28,7 +28,7 @@ function BulletinPostCreate() {
     const submit = useSubmit();
 
     const onSubmit = (data: any) => {
-        const formData = { ...data, category: 'category', author: user.id };
+        const formData = { ...data, author: user.id };
 
         submit(formData, {
             method: 'post',
@@ -46,7 +46,12 @@ function BulletinPostCreate() {
             )}
 
             {responseStatus?.type === 'bulletincreate' && responseStatus?.status && (
-                <AlertBox text="Tiedote lisätty onnistuneesti" status="success" />
+                <AlertBox
+                    text="Tiedote lisätty onnistuneesti. Uudelleenohjataan..."
+                    status="success"
+                    timer={3000}
+                    redirectUrl="/admin/tiedotteet"
+                />
             )}
 
             <Container maxWidth="lg">
