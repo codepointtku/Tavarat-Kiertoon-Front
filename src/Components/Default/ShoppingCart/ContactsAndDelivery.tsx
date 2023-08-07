@@ -98,6 +98,11 @@ function ContactsAndDelivery() {
         return isWeekend(date) || dateIsHoliday;
     }
 
+    function handleDateChange(value: Date) {
+        setValue('fetchDate', value);
+        setFetchDate(value);
+    }
+
     return (
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
             <Box
@@ -306,7 +311,7 @@ function ContactsAndDelivery() {
                                     label="Noutoaika"
                                     value={fetchDate}
                                     inputFormat="dd/MM/yyyy"
-                                    onChange={(value) => setFetchDate(value as any)}
+                                    onChange={(value) => handleDateChange(value as Date)}
                                     renderInput={(props) => (
                                         <TextField
                                             {...props}
