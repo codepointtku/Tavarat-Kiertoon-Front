@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams, useFetcher } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
@@ -22,6 +22,12 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) 
     const [addedToCart, setAddedToCart] = useState(true);
     const [searchParams] = useSearchParams();
     const { handleSubmit, register } = useForm();
+
+    useEffect(() => {
+        setAmountN(count ?? 1);
+        setSelectedAmount(count ?? 1);
+        amountN === count && setAddedToCart(true);
+    }, [count]);
 
     function addAmount() {
         setAmountN((amountN) => amountN + 1);

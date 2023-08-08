@@ -48,11 +48,7 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
         setAddedToCart(false);
     }, [product?.available]);
 
-    // console.log(product?.available);
-
     // shoppingCartLoader pitää saada päivittymään kun drawerissa muuttaa tuotemääriä
-
-    // product = undefined
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
