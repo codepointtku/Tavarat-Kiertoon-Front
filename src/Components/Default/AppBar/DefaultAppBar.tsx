@@ -157,7 +157,7 @@ function DefaultAppBar() {
                 setProductsLength(cart?.product_items?.length);
             }, 3000);
         }
-    }, [cart?.product_items?.length]);
+    }, [cart?.product_items?.length, productsLength]);
 
     function initializeCartProducts() {
         const productArr = [] as object[];

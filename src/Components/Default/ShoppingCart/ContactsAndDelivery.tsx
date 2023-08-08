@@ -39,18 +39,18 @@ export type StateMachineActions = {
 function ContactsAndDelivery() {
     const user = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
     const [selectedAddress, setSelectedAddress] = useState(
-        sessionStorage.getItem('__LSM__') !== null
+        Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
             ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryAddress
             : user.address_list[0]?.address || ''
     );
     const [selectedMethod, setSelectedMethod] = useState(
-        sessionStorage.getItem('__LSM__') !== null
+        Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
             ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryRequired
             : 'true'
     );
     const currentDate = new Date();
     const [fetchDate, setFetchDate] = useState(
-        sessionStorage.getItem('__LSM__') !== null
+        Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
             ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).fetchDate
             : currentDate
     );
@@ -64,6 +64,7 @@ function ContactsAndDelivery() {
     const correctAddress = user.address_list?.filter(
         (address: { address: string }) => address.address === selectedAddress
     );
+    console.log(correctAddress);
     const {
         register,
         handleSubmit,
