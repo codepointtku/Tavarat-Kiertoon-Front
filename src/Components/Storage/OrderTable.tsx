@@ -26,6 +26,7 @@ import { type orderViewLoader } from '../../Router/loaders';
 import TypographyHeading from '../TypographyHeading';
 import TypographyTitle from '../TypographyTitle';
 import BackButton from '../BackButton';
+import Tooltip from '../Tooltip';
 
 export type OrderViewLoaderType = Awaited<ReturnType<typeof orderViewLoader>>;
 
@@ -45,12 +46,11 @@ function NoOrders() {
 }
 
 function OrderTable() {
-    // data from backend
     const order = useLoaderData() as OrderViewLoaderType;
-    console.log(order);
+    // console.log(order);
 
     // state to control product info collapse field
-    const [isOpen, setIsOpen] = useState<boolean[]>([]);
+    const [isOpen, setIsOpen] = useState<number>();
 
     // array with an array for each unique product_item.product.id and all products with that id
     const productRenderItems: OrderViewLoaderType['product_items'][] = [];
@@ -65,13 +65,6 @@ function OrderTable() {
             productRenderItems[productIndex].push(productItem);
         }
     });
-
-    // fill states for collapse field for each product
-    useEffect(() => {
-        if (isOpen.length === 0) {
-            setIsOpen(new Array(productRenderItems.length).fill(false));
-        }
-    }, [isOpen.length, productRenderItems.length]);
 
     // Parse Date objects from backend data string
     const dateParse = (value: string) => {
@@ -101,7 +94,7 @@ function OrderTable() {
                 {order ? (
                     <>
                         <Box id="order-info-main-wrapper" sx={{ margin: '2rem 0 1rem 0' }}>
-                            <Table id="order-info-table" sx={{ margin: '0rem 0 0rem 0' }}>
+                            <Table id="order-info-table">
                                 <TableBody>
                                     <TableRow>
                                         <TableCell width="20%" sx={{ fontWeight: 'bold' }}>
@@ -187,14 +180,10 @@ function OrderTable() {
                                                         aria-label="expand row"
                                                         size="small"
                                                         onClick={() => {
-                                                            setIsOpen((prev) =>
-                                                                prev.map((currentState, idx) =>
-                                                                    idx === index ? !currentState : currentState
-                                                                )
-                                                            );
+                                                            isOpen === index ? setIsOpen(undefined) : setIsOpen(index);
                                                         }}
                                                     >
-                                                        {isOpen[index] ? (
+                                                        {isOpen === index ? (
                                                             <KeyboardArrowUpIcon />
                                                         ) : (
                                                             <KeyboardArrowDownIcon />
@@ -203,23 +192,31 @@ function OrderTable() {
                                                 </TableCell>
                                                 <TableCell>{itemArray[0].barcode}</TableCell>
                                                 <TableCell component="th" scope="row">
-                                                    <Box component={Link} to={`/tuotteet/${itemArray[0].product.id}`}>
-                                                        {itemArray[0].product.name}
-                                                    </Box>
+                                                    <Tooltip title={itemArray[0].product.free_description}>
+                                                        <Box
+                                                            component={Link}
+                                                            to={`/tuotteet/${itemArray[0].product.id}`}
+                                                        >
+                                                            {itemArray[0].product.name}
+                                                        </Box>
+                                                    </Tooltip>
                                                 </TableCell>
                                                 <TableCell>{itemArray.length}</TableCell>
                                                 <TableCell>{itemArray[0].storage.name}</TableCell>
                                             </StyledTableRow>
                                             <TableRow>
-                                                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
-                                                    <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
-                                                        <Box id="product-detail-indent-box" sx={{ margin: '1rem' }}>
+                                                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
+                                                    <Collapse in={isOpen === index} timeout="auto" unmountOnExit>
+                                                        <Box
+                                                            id="product-detail-indent-box"
+                                                            sx={{ margin: '0.4rem 1rem -0.1rem 1rem' }}
+                                                        >
                                                             <Table size="small">
                                                                 <TableHead>
                                                                     <TableRow>
                                                                         <TableCell align="right">Mitat</TableCell>
                                                                         <TableCell align="right">Paino</TableCell>
-                                                                        <TableCell align="right">Tuotekuvaus</TableCell>
+                                                                        {/* <TableCell align="right">Tuotekuvaus</TableCell> */}
                                                                         <TableCell align="right">Tuotenumero</TableCell>
                                                                         <TableCell align="right">Hyllynumero</TableCell>
                                                                     </TableRow>
@@ -233,9 +230,9 @@ function OrderTable() {
                                                                             <TableCell align="right">
                                                                                 {item.product.weight}
                                                                             </TableCell>
-                                                                            <TableCell align="right">
+                                                                            {/* <TableCell align="right">
                                                                                 {item.product.free_description}
-                                                                            </TableCell>
+                                                                            </TableCell> */}
                                                                             <TableCell align="right">
                                                                                 {item.product.id}
                                                                             </TableCell>
