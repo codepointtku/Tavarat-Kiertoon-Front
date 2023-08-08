@@ -303,12 +303,7 @@ function ContactsAndDelivery() {
                     )}
                     <Grid item xs={2} mr="1rem">
                         <TextField
-                            {...register('deliveryRequired', {
-                                required: {
-                                    value: selectedMethod ? false : true,
-                                    message: 'Tämä kenttä on täytettävä',
-                                },
-                            })}
+                            {...register('deliveryRequired')}
                             label="Toimitustapa"
                             variant="outlined"
                             value={selectedMethod}
