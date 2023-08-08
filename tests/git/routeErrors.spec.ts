@@ -230,26 +230,33 @@ test.describe('admin orderlist', () => {
     });
 });
 
+test.describe('admin order view', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tilaukset/13');
+        await expect(page.getByText('Tilausnumeroa ei löytynyt.')).not.toBeVisible();
+    });
+});
+
 test.describe('admin order edit', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/admin/tilaukset/1');
-        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+        await page.goto('/admin/tilaukset/13');
+        await expect(page.getByText('Tilausnumeroa ei löytynyt.')).not.toBeVisible();
     });
-}); // fails
+});
 
 test.describe('admin order create', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/admin/tilaukset/uusi');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
-}); // fails
+});
 
 test.describe('admin order email recipients', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/admin/tilaukset/sahkopostilista');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
-}); // fails
+});
 
 // products
 test.describe('admin products list', () => {

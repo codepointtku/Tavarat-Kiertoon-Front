@@ -4,6 +4,7 @@ import { StateMachineProvider, createStore } from 'little-state-machine';
 import { ThemeProvider } from '@mui/material';
 
 import AuthContext from '../Context/AuthContext';
+
 // import ErrorBoundary from './ErrorBoundary_NewStash';
 import ErrorBoundary from './ErrorBoundary';
 import BaseBoundary from './BaseBoundary';
@@ -32,7 +33,6 @@ import QrScanner from '../Components/Storage/QrScanner';
 
 import Overview from '../Components/Admin/Panel/Overview/Overview';
 import OrdersGrid from '../Components/Admin/OrdersGrid';
-import AdminOrderEdit from '../Components/Admin/AdminOrderEdit';
 import AdminOrderCreate from '../Components/Admin/AdminOrderCreate';
 import ProductsGrid from '../Components/Admin/ProductsGrid';
 import AdminProductEdit from '../Components/Admin/AdminProductEdit';
@@ -552,6 +552,7 @@ function Routes() {
                                                 {
                                                     path: 'muokkaa',
                                                     element: <OrderEdit />,
+                                                    errorElement: <OrderViewError />,
                                                     action: orderEditAction,
                                                     loader: orderEditLoader,
                                                 },
