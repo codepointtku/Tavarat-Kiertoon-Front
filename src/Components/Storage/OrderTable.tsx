@@ -13,6 +13,9 @@ import {
     Collapse,
     Button,
     Paper,
+    Stack,
+    Container,
+    Grid,
 } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -20,6 +23,9 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import StyledTableRow from '../StyledTableRow';
 import StyledTableCell from '../StyledTableCell';
 import { type orderViewLoader } from '../../Router/loaders';
+import TypographyHeading from '../TypographyHeading';
+import TypographyTitle from '../TypographyTitle';
+import BackButton from '../BackButton';
 
 export type OrderViewLoaderType = Awaited<ReturnType<typeof orderViewLoader>>;
 
@@ -32,20 +38,16 @@ function NoOrders() {
     return (
         <TableRow>
             <TableCell component="th" scope="row">
-                <h1>Tilausnumeroa ei löytynyt</h1>
+                <TypographyHeading text="Tilausnumeroa ei löytynyt" />
             </TableCell>
         </TableRow>
     );
 }
 
-/**
- * List of the products of an individual order
- *
- * @returns
- */
 function OrderTable() {
     // data from backend
     const order = useLoaderData() as OrderViewLoaderType;
+    console.log(order);
 
     // state to control product info collapse field
     const [isOpen, setIsOpen] = useState<boolean[]>([]);
@@ -80,16 +82,26 @@ function OrderTable() {
 
     // RENDER
     return (
-        <>
-            <Typography variant="h3" align="center" color="primary.main" my="2rem" width="100%">
-                {`Tilauksen ${order.id} tiedot`}
-            </Typography>
+        <Container maxWidth="xl">
+            <Stack id="order-info-container-main-stack" sx={{ padding: '1rem 0 1rem 0' }}>
+                <Grid
+                    id="header-grid-container"
+                    container
+                    sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                >
+                    <Grid item xs={4} justifyContent="flex-start">
+                        <BackButton />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <TypographyTitle text={`Tilausnumero #${order.id}`} />
+                    </Grid>
+                    <Grid item xs={4} />
+                </Grid>
 
-            {order ? (
-                <>
-                    <Box component={Paper}>
-                        <Box sx={{ textAlign: 'center', padding: '2rem' }}>
-                            <Table>
+                {order ? (
+                    <>
+                        <Box id="order-info-main-wrapper" sx={{ margin: '2rem 0 1rem 0' }}>
+                            <Table id="order-info-table" sx={{ margin: '0rem 0 0rem 0' }}>
                                 <TableBody>
                                     <TableRow>
                                         <TableCell width="20%" sx={{ fontWeight: 'bold' }}>
@@ -122,8 +134,27 @@ function OrderTable() {
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottajan puhelinnumero:</TableCell>
                                         <TableCell>{order.phone_number}</TableCell>
-                                        <TableCell></TableCell>
-                                        <TableCell></TableCell>
+
+                                        {/* // Conditionalize btn visibility for storage_group (?) */}
+                                        <TableCell>
+                                            <Button to={`/varasto/tilaus/${order.id}/muokkaa`} component={Link}>
+                                                Muokkaa tilausta
+                                            </Button>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Button
+                                                color="error"
+                                                to={`/varasto/pdf/${order.id}`}
+                                                component={Link}
+                                                sx={{
+                                                    '&:hover': {
+                                                        backgroundColor: 'success.dark',
+                                                    },
+                                                }}
+                                            >
+                                                Luo tulostettava PDF
+                                            </Button>
+                                        </TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Lisätiedot:</TableCell>
@@ -131,26 +162,23 @@ function OrderTable() {
                                     </TableRow>
                                 </TableBody>
                             </Table>
-                        </Box>
 
-                        <Typography variant="h4" align="center" color="primary.main" my="2rem" width="100%">
-                            Tilauksen tuotteet
-                        </Typography>
-
-                        <Box sx={{ textAlign: 'center', padding: '2rem' }}>
-                            <Table sx={{ minWidth: 650 }} aria-label="collapsible table">
+                            <Table
+                                id="orders-products-table"
+                                aria-label="collapsible table"
+                                sx={{ margin: '1rem 0 1rem 0' }}
+                            >
                                 <TableHead>
                                     <TableRow>
-                                        <StyledTableCell> </StyledTableCell>
+                                        <StyledTableCell>Tuotteet:</StyledTableCell>
                                         <StyledTableCell>Viivakoodi</StyledTableCell>
                                         <StyledTableCell>Tuotenimi</StyledTableCell>
-                                        <StyledTableCell align="right">Kappalemäärä</StyledTableCell>
-                                        <StyledTableCell align="right">Varasto</StyledTableCell>
+                                        <StyledTableCell>Kappalemäärä</StyledTableCell>
+                                        <StyledTableCell>Varasto</StyledTableCell>
                                     </TableRow>
                                 </TableHead>
-                                {/*
-                                 */}
-                                <TableBody>
+
+                                <TableBody id="orders-products-tablebody">
                                     {productRenderItems.map((itemArray, index) => (
                                         <Fragment key={itemArray[0].id}>
                                             <StyledTableRow>
@@ -179,40 +207,37 @@ function OrderTable() {
                                                         {itemArray[0].product.name}
                                                     </Box>
                                                 </TableCell>
-                                                <TableCell align="right">{itemArray.length}</TableCell>
-                                                <TableCell align="right">{itemArray[0].storage.name}</TableCell>
+                                                <TableCell>{itemArray.length}</TableCell>
+                                                <TableCell>{itemArray[0].storage.name}</TableCell>
                                             </StyledTableRow>
                                             <TableRow>
                                                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
                                                     <Collapse in={isOpen[index]} timeout="auto" unmountOnExit>
-                                                        <Box sx={{ margin: 1 }}>
-                                                            <Typography variant="h6" gutterBottom component="div">
-                                                                Tuotteet
-                                                            </Typography>
+                                                        <Box id="product-detail-indent-box" sx={{ margin: '1rem' }}>
                                                             <Table size="small">
                                                                 <TableHead>
                                                                     <TableRow>
-                                                                        <TableCell align="right">Viivakoodi</TableCell>
-                                                                        <TableCell align="right">Tuotenimi</TableCell>
                                                                         <TableCell align="right">Mitat</TableCell>
                                                                         <TableCell align="right">Paino</TableCell>
-                                                                        <TableCell align="right">Hylly id</TableCell>
+                                                                        <TableCell align="right">Tuotekuvaus</TableCell>
+                                                                        <TableCell align="right">Tuotenumero</TableCell>
+                                                                        <TableCell align="right">Hyllynumero</TableCell>
                                                                     </TableRow>
                                                                 </TableHead>
                                                                 <TableBody>
                                                                     {itemArray.map((item) => (
                                                                         <TableRow key={item.id}>
                                                                             <TableCell align="right">
-                                                                                {item.barcode}
-                                                                            </TableCell>
-                                                                            <TableCell align="right">
-                                                                                {item.product.name}
-                                                                            </TableCell>
-                                                                            <TableCell align="right">
                                                                                 {item.product.measurements}
                                                                             </TableCell>
                                                                             <TableCell align="right">
                                                                                 {item.product.weight}
+                                                                            </TableCell>
+                                                                            <TableCell align="right">
+                                                                                {item.product.free_description}
+                                                                            </TableCell>
+                                                                            <TableCell align="right">
+                                                                                {item.product.id}
                                                                             </TableCell>
                                                                             <TableCell align="right">
                                                                                 {item.shelf_id}
@@ -228,24 +253,14 @@ function OrderTable() {
                                         </Fragment>
                                     ))}
                                 </TableBody>
-                                {/*
-                                 */}
                             </Table>
                         </Box>
-                    </Box>
-                    <Box width="100%" display="flex" justifyContent="space-evenly" marginY="3rem">
-                        <Button to={`/varasto/tilaus/${order.id}/muokkaa`} component={Link}>
-                            Muokkaa tilausta
-                        </Button>
-                        <Button color="error" to={`/varasto/pdf/${order.id}`} component={Link}>
-                            Luo tulostettava PDF
-                        </Button>
-                    </Box>
-                </>
-            ) : (
-                <NoOrders />
-            )}
-        </>
+                    </>
+                ) : (
+                    <NoOrders />
+                )}
+            </Stack>
+        </Container>
     );
 }
 

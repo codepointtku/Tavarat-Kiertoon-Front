@@ -544,7 +544,23 @@ function Routes() {
                                         },
                                         {
                                             path: ':id',
-                                            element: <AdminOrderEdit />,
+                                            element: <Outlet />,
+                                            children: [
+                                                {
+                                                    index: true,
+                                                    element: <OrderView />,
+                                                    loader: async ({ params }) =>
+                                                        orderViewLoader(auth, setAuth, params),
+                                                },
+                                                {
+                                                    path: 'muokkaa',
+                                                    element: <OrderEdit />,
+                                                    action: async ({ request, params }) =>
+                                                        orderEditAction(auth, setAuth, request, params),
+                                                    loader: async ({ params }) =>
+                                                        orderEditLoader(auth, setAuth, params),
+                                                },
+                                            ],
                                         },
                                         {
                                             path: 'uusi',
