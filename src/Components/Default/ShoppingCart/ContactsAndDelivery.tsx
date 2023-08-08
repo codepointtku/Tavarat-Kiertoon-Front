@@ -50,7 +50,7 @@ function ContactsAndDelivery() {
     );
     const currentDate = new Date();
     const [fetchDate, setFetchDate] = useState(
-        Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
+        sessionStorage.getItem('__LSM__') !== null
             ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).fetchDate
             : currentDate
     );
@@ -64,7 +64,7 @@ function ContactsAndDelivery() {
     const correctAddress = user.address_list?.filter(
         (address: { address: string }) => address.address === selectedAddress
     );
-    console.log(correctAddress);
+    console.log(selectedMethod);
     const {
         register,
         handleSubmit,
@@ -118,7 +118,7 @@ function ContactsAndDelivery() {
         setFetchDate(value);
     }
 
-    console.log(state);
+    // console.log(state);
 
     return (
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
@@ -303,7 +303,12 @@ function ContactsAndDelivery() {
                     )}
                     <Grid item xs={2} mr="1rem">
                         <TextField
-                            {...register('deliveryRequired', { required: 'Tämä kenttä on täytettävä' })}
+                            {...register('deliveryRequired', {
+                                required: {
+                                    value: selectedMethod ? false : true,
+                                    message: 'Tämä kenttä on täytettävä',
+                                },
+                            })}
                             label="Toimitustapa"
                             variant="outlined"
                             value={selectedMethod}

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useStateMachine } from 'little-state-machine';
@@ -19,9 +20,11 @@ function CartView() {
     >;
     const { handleSubmit } = useForm();
 
-    if (sessionStorage.getItem('__LSM__') === null) {
-        actions.ClearInfo();
-    }
+    useEffect(() => {
+        if (sessionStorage.getItem('__LSM__') === null) {
+            actions.ClearInfo();
+        }
+    }, []);
 
     const onSubmit = () => {
         navigate('/ostoskori/vaihe2');
