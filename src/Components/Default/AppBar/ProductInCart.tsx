@@ -10,13 +10,32 @@ interface Props {
     id: number & string;
     count: number;
     maxCount: number;
+    amountChangeState: {
+        unconfirmedChangesCartProducts: object[];
+        setUnconfirmedChangesCartProducts: React.Dispatch<React.SetStateAction<object[]>>;
+    };
 }
 
-function ProductInCart({ name, id, count, maxCount }: Props) {
+function ProductInCart({ name, id, count, maxCount, amountChangeState }: Props) {
     const fetcher = useFetcher();
     const [changeAmount, setChangeAmount] = useState(true);
     const [amountN, setAmountN] = useState(count);
     const [selectedAmount, setSelectedAmount] = useState(count);
+    const { unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts } = amountChangeState;
+
+    // console.log(unconfirmedChangesCartProducts);
+
+    useEffect(() => {
+        if (changeAmount) {
+            unconfirmedChangesCartProducts.includes(id) &&
+                setUnconfirmedChangesCartProducts((changes) => changes.filter((item) => item !== id));
+        }
+        if (!changeAmount) {
+            !unconfirmedChangesCartProducts.includes(id) &&
+                setUnconfirmedChangesCartProducts((changes) => [...changes, id]);
+            console.log(unconfirmedChangesCartProducts);
+        }
+    }, [changeAmount]);
 
     function addAmount() {
         setAmountN(amountN + 1);

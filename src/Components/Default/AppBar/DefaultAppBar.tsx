@@ -149,6 +149,7 @@ function DefaultAppBar() {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const location = useLocation();
+    const [unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts] = useState(initializeCartProducts());
 
     useEffect(() => {
         if (cart?.product_items?.length !== productsLength) {
@@ -157,6 +158,12 @@ function DefaultAppBar() {
             }, 3000);
         }
     }, [cart?.product_items?.length]);
+
+    function initializeCartProducts() {
+        const productArr = [] as object[];
+        products?.forEach((product) => productArr.push(product.product.id));
+        return productArr;
+    }
 
     const drawerOpen = (drawer: string) => () => {
         notLoggedIn && setNotLoggedIn(false);
@@ -260,6 +267,10 @@ function DefaultAppBar() {
                                 count={cartProduct.count}
                                 id={cartProduct.product.id}
                                 maxCount={product.amount}
+                                amountChangeState={{
+                                    unconfirmedChangesCartProducts,
+                                    setUnconfirmedChangesCartProducts,
+                                }}
                             />
                         );
                     })}
@@ -285,6 +296,7 @@ function DefaultAppBar() {
                                             backgroundColor: 'success.dark',
                                         },
                                     }}
+                                    disabled={unconfirmedChangesCartProducts.length > 0}
                                 >
                                     <ListItemText primary="Kassalle" primaryTypographyProps={{ fontWeight: 'bold' }} />
                                 </Button>
