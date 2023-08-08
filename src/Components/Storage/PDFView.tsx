@@ -1,10 +1,10 @@
 import { PDFViewer } from '@react-pdf/renderer';
 import { useLoaderData } from 'react-router-dom';
 import PDFDocument from './PDFCreator';
-import { type pdfViewLoader } from '../../Router/loaders';
+import type { orderEditLoader } from '../../Router/loaders';
 
 // type (interface) for PDF Loader data
-export type PDFOrderType = Awaited<ReturnType<typeof pdfViewLoader>>;
+export type PDFOrderType = Awaited<ReturnType<typeof orderEditLoader>>;
 
 /**
  * View for creating PDF document

@@ -114,7 +114,6 @@ import {
     orderEditLoader,
     ordersListLoader,
     orderViewLoader,
-    pdfViewLoader,
     productDetailsLoader,
     productListLoader,
     productTransferLoader,
@@ -446,12 +445,11 @@ function Routes() {
                             children: [
                                 {
                                     index: true,
-                                    // path: ':num/:view',
                                     element: <OrdersList />,
                                     loader: ordersListLoader,
                                 },
                                 {
-                                    path: 'tilaus',
+                                    path: 'tilaukset',
                                     element: <Outlet />,
                                     children: [
                                         {
@@ -465,16 +463,14 @@ function Routes() {
                                                 {
                                                     index: true,
                                                     element: <OrderView />,
-                                                    loader: async ({ params }) =>
-                                                        orderViewLoader(auth, setAuth, params),
+                                                    errorElement: <div>jee</div>,
+                                                    loader: orderViewLoader,
                                                 },
                                                 {
                                                     path: 'muokkaa',
                                                     element: <OrderEdit />,
-                                                    action: async ({ request, params }) =>
-                                                        orderEditAction(auth, setAuth, request, params),
-                                                    loader: async ({ params }) =>
-                                                        orderEditLoader(auth, setAuth, params),
+                                                    action: orderEditAction,
+                                                    loader: orderEditLoader,
                                                 },
                                             ],
                                         },
@@ -500,7 +496,7 @@ function Routes() {
                                         {
                                             path: ':id',
                                             element: <PDFView />,
-                                            loader: ({ params }) => pdfViewLoader(auth, setAuth, params),
+                                            loader: orderEditLoader,
                                         },
                                     ],
                                 },
@@ -548,17 +544,14 @@ function Routes() {
                                             children: [
                                                 {
                                                     index: true,
-                                                    element: <OrderView />,
-                                                    loader: async ({ params }) =>
-                                                        orderViewLoader(auth, setAuth, params),
+                                                    element: <OrderView isAdmin />,
+                                                    loader: orderViewLoader,
                                                 },
                                                 {
                                                     path: 'muokkaa',
                                                     element: <OrderEdit />,
-                                                    action: async ({ request, params }) =>
-                                                        orderEditAction(auth, setAuth, request, params),
-                                                    loader: async ({ params }) =>
-                                                        orderEditLoader(auth, setAuth, params),
+                                                    action: orderEditAction,
+                                                    loader: orderEditLoader,
                                                 },
                                             ],
                                         },
