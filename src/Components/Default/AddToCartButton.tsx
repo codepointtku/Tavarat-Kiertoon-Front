@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouteLoaderData, useSearchParams, useFetcher } from 'react-router-dom';
 import { type OverridableStringUnion } from '@material-ui/types';
@@ -43,6 +43,12 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
             setIsNotLoggedIn((isNotLoggedIn) => !isNotLoggedIn);
         }
     };
+
+    useEffect(() => {
+        setAddedToCart(false);
+    }, [product?.available]);
+
+    // console.log(product?.available);
 
     // shoppingCartLoader pitää saada päivittymään kun drawerissa muuttaa tuotemääriä
 

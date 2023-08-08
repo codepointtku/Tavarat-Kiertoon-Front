@@ -23,8 +23,6 @@ function ProductInCart({ name, id, count, maxCount, amountChangeState }: Props) 
     const [selectedAmount, setSelectedAmount] = useState(count);
     const { unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts } = amountChangeState;
 
-    // console.log(unconfirmedChangesCartProducts);
-
     useEffect(() => {
         if (changeAmount) {
             unconfirmedChangesCartProducts.includes(id) &&
@@ -33,7 +31,6 @@ function ProductInCart({ name, id, count, maxCount, amountChangeState }: Props) 
         if (!changeAmount) {
             !unconfirmedChangesCartProducts.includes(id) &&
                 setUnconfirmedChangesCartProducts((changes) => [...changes, id]);
-            console.log(unconfirmedChangesCartProducts);
         }
     }, [changeAmount]);
 
