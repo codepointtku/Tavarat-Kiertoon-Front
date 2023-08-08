@@ -462,7 +462,7 @@ function Routes() {
                                             children: [
                                                 {
                                                     index: true,
-                                                    element: <OrderView />,
+                                                    element: <OrderView isAdmin={false} />,
                                                     errorElement: <div>jee</div>,
                                                     loader: orderViewLoader,
                                                 },

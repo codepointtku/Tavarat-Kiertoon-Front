@@ -46,7 +46,11 @@ function NoOrders() {
     );
 }
 
-function OrderTable() {
+interface Props {
+    isAdmin: boolean;
+}
+
+function OrderTable({ isAdmin }: Props) {
     const order = useLoaderData() as OrderViewLoaderType;
 
     // state to control product info collapse field
@@ -129,7 +133,14 @@ function OrderTable() {
                                         <TableCell>{order.phone_number}</TableCell>
                                         <TableCell>
                                             <HasRole role="admin_group">
-                                                <Button to={`/varasto/tilaukset/${order.id}/muokkaa`} component={Link}>
+                                                <Button
+                                                    component={Link}
+                                                    to={
+                                                        isAdmin
+                                                            ? `/admin/tilaukset/${order.id}/muokkaa`
+                                                            : `/varasto/tilaukset/${order.id}/muokkaa`
+                                                    }
+                                                >
                                                     Muokkaa tilausta
                                                 </Button>
                                             </HasRole>
