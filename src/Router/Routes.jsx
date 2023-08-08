@@ -9,6 +9,7 @@ import ErrorBoundary from './ErrorBoundary';
 import BaseBoundary from './BaseBoundary';
 // import AdminViewBoundary from './AdminViewBoundary';
 // import UserError from './ErrorElements/UserError';
+import OrderViewError from './ErrorElements/OrderViewError';
 
 import HasRole from '../Utils/HasRole';
 
@@ -545,6 +546,7 @@ function Routes() {
                                                 {
                                                     index: true,
                                                     element: <OrderView isAdmin />,
+                                                    errorElement: <OrderViewError />,
                                                     loader: orderViewLoader,
                                                 },
                                                 {
