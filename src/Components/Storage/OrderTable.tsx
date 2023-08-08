@@ -27,6 +27,7 @@ import TypographyHeading from '../TypographyHeading';
 import TypographyTitle from '../TypographyTitle';
 import BackButton from '../BackButton';
 import Tooltip from '../Tooltip';
+import HasRole from '../../Utils/HasRole';
 
 export type OrderViewLoaderType = Awaited<ReturnType<typeof orderViewLoader>>;
 
@@ -47,7 +48,6 @@ function NoOrders() {
 
 function OrderTable() {
     const order = useLoaderData() as OrderViewLoaderType;
-    // console.log(order);
 
     // state to control product info collapse field
     const [isOpen, setIsOpen] = useState<number>();
@@ -127,12 +127,12 @@ function OrderTable() {
                                     <TableRow>
                                         <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottajan puhelinnumero:</TableCell>
                                         <TableCell>{order.phone_number}</TableCell>
-
-                                        {/* // Conditionalize btn visibility for storage_group (?) */}
                                         <TableCell>
-                                            <Button to={`/varasto/tilaus/${order.id}/muokkaa`} component={Link}>
-                                                Muokkaa tilausta
-                                            </Button>
+                                            <HasRole role="admin_group">
+                                                <Button to={`/varasto/tilaukset/${order.id}/muokkaa`} component={Link}>
+                                                    Muokkaa tilausta
+                                                </Button>
+                                            </HasRole>
                                         </TableCell>
                                         <TableCell>
                                             <Button
@@ -195,6 +195,7 @@ function OrderTable() {
                                                     <Tooltip title={itemArray[0].product.free_description}>
                                                         <Box
                                                             component={Link}
+                                                            // to do: link to = adminview | storageview product editview, not defaults
                                                             to={`/tuotteet/${itemArray[0].product.id}`}
                                                         >
                                                             {itemArray[0].product.name}
@@ -216,7 +217,6 @@ function OrderTable() {
                                                                     <TableRow>
                                                                         <TableCell align="right">Mitat</TableCell>
                                                                         <TableCell align="right">Paino</TableCell>
-                                                                        {/* <TableCell align="right">Tuotekuvaus</TableCell> */}
                                                                         <TableCell align="right">Tuotenumero</TableCell>
                                                                         <TableCell align="right">Hyllynumero</TableCell>
                                                                     </TableRow>
@@ -230,9 +230,6 @@ function OrderTable() {
                                                                             <TableCell align="right">
                                                                                 {item.product.weight}
                                                                             </TableCell>
-                                                                            {/* <TableCell align="right">
-                                                                                {item.product.free_description}
-                                                                            </TableCell> */}
                                                                             <TableCell align="right">
                                                                                 {item.product.id}
                                                                             </TableCell>
