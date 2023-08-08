@@ -14,7 +14,7 @@ import TypographyTitle from '../../TypographyTitle';
 import TypographyHeading from '../../TypographyHeading';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { isWeekend } from 'date-fns';
+import { isWeekend, isPast, parse, isValid } from 'date-fns';
 import { fi } from 'date-fns/locale';
 import Holidays from 'date-holidays';
 
@@ -64,7 +64,7 @@ function ContactsAndDelivery() {
     const correctAddress = user.address_list?.filter(
         (address: { address: string }) => address.address === selectedAddress
     );
-    console.log(selectedMethod);
+    // console.log(selectedMethod);
     const {
         register,
         handleSubmit,
@@ -109,6 +109,11 @@ function ContactsAndDelivery() {
         date.setHours(0, 0, 0, 0);
         const dateIsHoliday = finnishHolidays.some((holiday) => String(holiday.start) === String(date));
         return isWeekend(date) || dateIsHoliday;
+    }
+
+    function isPastOrMaxDate(date: Date) {
+        console.log('test', date);
+        return isPast(date) || date >= new Date(maxDate);
     }
 
     function handleDateChange(value: Date) {
@@ -327,13 +332,29 @@ function ContactsAndDelivery() {
                                 <DatePicker
                                     label="Noutoaika"
                                     value={fetchDate}
-                                    inputFormat="dd/MM/yyyy"
                                     onChange={(value) => handleDateChange(value as Date)}
                                     renderInput={(props) => (
                                         <TextField
                                             {...props}
                                             {...register('fetchDate', {
                                                 required: 'Tämä kenttä on täytettävä',
+                                                validate: (dateString) => {
+                                                    const date = parse(
+                                                        dateString as unknown as string,
+                                                        'd.M.yyyy',
+                                                        new Date()
+                                                    );
+
+                                                    const validDate = isValid(date) && new Date(date);
+                                                    // console.log(
+                                                    //     validDate,
+                                                    //     new Date(maxDate),
+                                                    //     validDate >= new Date(maxDate)
+                                                    // );
+                                                    const dateParam = !validDate ? date : validDate;
+                                                    return disableDate(dateParam) || isPastOrMaxDate(dateParam);
+                                                },
+                                                //minLength: { value: 10, message: 'Syötä kokonainen päivämäärä' },
                                             })}
                                             error={!!errors.fetchDate}
                                             helperText={errors.fetchDate?.message?.toString() || 'Noutoajat ma-pe 9-16'}
@@ -342,6 +363,7 @@ function ContactsAndDelivery() {
                                     shouldDisableDate={disableDate}
                                     maxDate={new Date(maxDate)}
                                     disablePast
+                                    disableMaskedInput
                                 />
                             </LocalizationProvider>
                         </Grid>

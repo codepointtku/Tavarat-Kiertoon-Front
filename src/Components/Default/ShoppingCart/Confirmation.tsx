@@ -36,7 +36,7 @@ function Confirmation() {
         >;
         state: CartState;
     };
-    const fetchDate = new Date(state.fetchDate);
+    // const fetchDate = new Date(state.fetchDate);
     const { products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const { id } = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
 
@@ -109,9 +109,7 @@ function Confirmation() {
                         </Grid>
                         {state.deliveryRequired === 'false' && (
                             <Grid item>
-                                <Typography variant="subtitle1">
-                                    Toimituspäivä: {fetchDate.toLocaleDateString('fi-FI')}
-                                </Typography>
+                                <Typography variant="subtitle1">Toimituspäivä: {state.fetchDate}</Typography>
                             </Grid>
                         )}
                         {state.orderInfo && (
