@@ -13,9 +13,12 @@ function PDFView() {
     const loader = useLoaderData() as PDFOrderType;
 
     return (
-        <PDFViewer style={{ width: '100%', height: '1500px' }}>
-            <PDFDocument order={loader} />
-        </PDFViewer>
+        <>
+            <p>what's up</p>
+            <PDFViewer style={{ width: '100%', height: '1500px' }}>
+                <PDFDocument order={loader} />
+            </PDFViewer>
+        </>
     );
 }
 

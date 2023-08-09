@@ -137,7 +137,7 @@ function OrderTable({ isAdmin }: Props) {
                                             },
                                         }}
                                     >
-                                        Luo tulostettava PDF
+                                        {isAdmin ? 'Luo PDF' : 'Tulosta'}
                                     </Button>
                                 </TableCell>
                             </TableRow>
