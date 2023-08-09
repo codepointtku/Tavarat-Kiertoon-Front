@@ -1,3 +1,7 @@
+import { useState } from 'react';
+import { useLoaderData, useNavigate, generatePath, Form, useSubmit } from 'react-router-dom';
+import { useForm, useFieldArray, type FieldValues } from 'react-hook-form';
+
 import {
     Button,
     Box,
@@ -14,15 +18,14 @@ import {
     TableBody,
     Typography,
 } from '@mui/material';
-import { useLoaderData, useNavigate, generatePath } from 'react-router';
-import { Form, useSubmit } from 'react-router-dom';
-import StyledTableRow from '../StyledTableRow';
-import StyledTableCell from '../StyledTableCell';
-import { useForm, useFieldArray, type FieldValues } from 'react-hook-form';
-import { type orderEditLoader } from '../../Router/loaders';
-import { useState } from 'react';
+
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+
+import StyledTableRow from '../StyledTableRow';
+import StyledTableCell from '../StyledTableCell';
+
+import type { orderEditLoader } from '../../Router/loaders';
 import { type ProductItemResponse, productsApi } from '../../api';
 
 export type OrderEditLoaderType = Awaited<ReturnType<typeof orderEditLoader>>;
@@ -245,7 +248,7 @@ function OrderEdit() {
         const formData = { ...data, productItems: JSON.stringify(productItemIds) };
         await submit(formData, {
             method: 'put',
-            action: `/varasto/tilaus/${data.orderId}/muokkaa`,
+            // action: `/varasto/tilaukset/${data.orderId}/muokkaa`,
         });
     };
 
@@ -396,22 +399,24 @@ function OrderEdit() {
                                         navigate(generatePath('/varasto/koodinlukija'), {
                                             state: {
                                                 ...orderData,
-                                                returnpath: `/varasto/tilaus/${orderData.id}/muokkaa`,
+                                                returnpath: `/varasto/tilaukset/${orderData.id}/muokkaa`,
                                             },
                                         })
                                     }
                                 >
-                                    Lisää esine viivakoodin perusteella
+                                    Lisää tuote viivakoodin perusteella
                                 </Button>
                                 <Box>
                                     <TextField
-                                        label="Esine-ID"
+                                        label="Tuotenumero"
                                         size="small"
                                         value={newProduct === 0 ? '' : newProduct}
                                         onChange={newProductOnChangeHandler}
                                     />
 
-                                    <Button onClick={() => addNewProduct()}>Lisää esine ID:n perusteella</Button>
+                                    <Button onClick={() => addNewProduct()}>
+                                        Lisää tuote tuotenumeron perusteella
+                                    </Button>
                                 </Box>
                             </Box>
                             {/*

@@ -171,6 +171,7 @@ const bikeOrderAction = async (auth, setAuth, request) => {
  */
 const orderEditAction = async ({ request, params }) => {
     const formData = await request.formData();
+
     const submission = {
         id: formData.get('orderId'),
         contact: formData.get('contact'),
@@ -180,8 +181,10 @@ const orderEditAction = async ({ request, params }) => {
         order_info: formData.get('orderInfo'),
         product_items: JSON.parse(formData.get('productItems')),
     };
+
     await ordersApi.ordersUpdate(params.id, submission);
-    return redirect(`/varasto/tilaus/${params.id}`);
+
+    return redirect(`/admin/tilaukset/${params.id}`);
 
     /*
     // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
