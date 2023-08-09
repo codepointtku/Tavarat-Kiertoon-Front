@@ -459,21 +459,9 @@ function Routes() {
                                         },
                                         {
                                             path: ':id',
-                                            element: <Outlet />,
-                                            children: [
-                                                {
-                                                    index: true,
-                                                    element: <OrderView isAdmin={false} />,
-                                                    errorElement: <div>jee</div>,
-                                                    loader: orderViewLoader,
-                                                },
-                                                {
-                                                    path: 'muokkaa',
-                                                    element: <OrderEdit />,
-                                                    action: orderEditAction,
-                                                    loader: orderEditLoader,
-                                                },
-                                            ],
+                                            element: <OrderView isAdmin={false} />,
+                                            errorElement: <div>varasto orderview kössähdys</div>,
+                                            loader: orderViewLoader,
                                         },
                                     ],
                                 },
