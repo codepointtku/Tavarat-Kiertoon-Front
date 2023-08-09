@@ -182,11 +182,17 @@ const orderEditAction = async ({ request, params }) => {
         product_items: JSON.parse(formData.get('productItems')),
     };
 
-    await ordersApi.ordersUpdate(params.id, submission);
+    const response = await ordersApi.ordersUpdate(params.id, submission);
 
-    return redirect(`/admin/tilaukset/${params.id}`);
+    if (response.status === 202) {
+        return { type: 'orderupdate', status: true };
+    }
+    return { type: 'orderupdate', status: false };
+};
 
-    /*
+// return redirect(`/varasto/tilaukset/${params.id}`);
+
+/*
     // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     // const productName = formData.get('productName');
     if (request.method === 'POST') {
@@ -231,7 +237,6 @@ const orderEditAction = async ({ request, params }) => {
 
     return null;
 */
-};
 
 /*
  * Creates a new storage

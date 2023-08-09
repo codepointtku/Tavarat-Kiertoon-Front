@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { useLoaderData, useNavigate, generatePath, Form, useSubmit } from 'react-router-dom';
+import { useLoaderData, useNavigate, generatePath, Form, useSubmit, useActionData } from 'react-router-dom';
 import { useForm, useFieldArray, type FieldValues } from 'react-hook-form';
 
 import {
     Button,
     Box,
     IconButton,
-    Paper,
     MenuItem,
     Stack,
     TextField,
@@ -16,7 +15,8 @@ import {
     TableHead,
     TableRow,
     TableBody,
-    Typography,
+    Container,
+    Grid,
 } from '@mui/material';
 
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -24,8 +24,12 @@ import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox
 
 import StyledTableRow from '../StyledTableRow';
 import StyledTableCell from '../StyledTableCell';
+import AlertBox from '../AlertBox';
+import BackButton from '../BackButton';
+import TypographyTitle from '../TypographyTitle';
 
 import type { orderEditLoader } from '../../Router/loaders';
+import type { orderEditAction } from '../../Router/actions';
 import { type ProductItemResponse, productsApi } from '../../api';
 
 export type OrderEditLoaderType = Awaited<ReturnType<typeof orderEditLoader>>;
@@ -48,6 +52,8 @@ type FormValues = {
  */
 function OrderEdit() {
     const orderData = useLoaderData() as OrderEditLoaderType;
+    const actionData = useActionData() as Awaited<ReturnType<typeof orderEditAction>>;
+
     const currentStatus = ['Waiting', 'Processing', 'Finished'];
 
     // array with an array for each unique product_item.product.id and all products with that id
@@ -255,288 +261,323 @@ function OrderEdit() {
     // RENDER
     return (
         <>
-            <Typography variant="h3" align="center" color="primary.main" my="2rem" width="100%">
-                {`Muokkaa tilausta ${orderData.id}`}
-            </Typography>
-            {orderData && (
-                <>
-                    <Box component={Form} onSubmit={handleSubmit(onSubmit)}>
-                        <TableContainer
-                            component={Paper}
-                            sx={{
-                                display: 'flex',
-                                padding: '2rem',
-                                marginBottom: '2rem',
-                                textAlign: 'center',
-                                alignItems: 'center',
-                                flexDirection: 'column',
-                            }}
-                        >
-                            {/*
-                             * Contact area
-                             */}
-                            <Box width="75%">
-                                <Table>
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell sx={{ fontWeight: 'bold' }}>Yhteystieto:</TableCell>
-                                            <TableCell>
-                                                <TextField
-                                                    label="Muokkaa yhteystietoa"
-                                                    value={watch('contact')}
-                                                    {...register('contact', {
-                                                        required: { value: true, message: 'Pakollinen kenttä' },
-                                                        maxLength: {
-                                                            value: 255,
-                                                            message: 'Yhteystiedon maksimipituus 255 merkkiä',
-                                                        },
-                                                        pattern: {
-                                                            value: /.+@turku.fi$|.+@edu.turku.fi$/,
-                                                            message: '...@turku.fi tai ...@edu.turku.fi',
-                                                        },
-                                                    })}
-                                                    fullWidth
-                                                    color={errors.contact ? 'error' : 'primary'}
-                                                    error={!!errors.contact}
-                                                    helperText={errors.contact?.message?.toString() || ' '}
-                                                    required
-                                                    inputProps={{ required: false }}
-                                                    sx={{ marginBottom: '-1rem' }}
-                                                />
-                                            </TableCell>
-                                            <TableCell sx={{ fontWeight: 'bold' }}>Puhelinnumero:</TableCell>
-                                            <TableCell>
-                                                <TextField
-                                                    label="Muokkaa puhelinnumeroa"
-                                                    value={watch('phoneNumber')}
-                                                    {...register('phoneNumber', {
-                                                        required: 'Pakollinen kenttä',
-                                                    })}
-                                                    fullWidth
-                                                    color={errors.phoneNumber ? 'error' : 'primary'}
-                                                    error={!!errors.phoneNumber}
-                                                    helperText={errors.phoneNumber?.message?.toString() || ' '}
-                                                    required
-                                                    sx={{ marginBottom: '-1rem' }}
-                                                />
-                                            </TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell sx={{ fontWeight: 'bold' }}>Osoite:</TableCell>
-                                            <TableCell>
-                                                <TextField
-                                                    label="Muokkaa osoitetta"
-                                                    value={watch('deliveryAddress')}
-                                                    {...register('deliveryAddress', {
-                                                        required: 'Pakollinen kenttä',
-                                                    })}
-                                                    fullWidth
-                                                    color={errors.deliveryAddress ? 'error' : 'primary'}
-                                                    error={!!errors.deliveryAddress}
-                                                    helperText={errors.deliveryAddress?.message?.toString() || ' '}
-                                                    required
-                                                    sx={{ marginBottom: '-1rem' }}
-                                                />
-                                            </TableCell>
-                                            <TableCell sx={{ fontWeight: 'bold' }}>Tila:</TableCell>
-                                            <TableCell>
-                                                <TextField
-                                                    id="status-select"
-                                                    select
-                                                    label="Muokkaa tilaa"
-                                                    {...register('status', {
-                                                        required: 'Pakollinen Kenttä',
-                                                    })}
-                                                    value={watch('status')}
-                                                    fullWidth
-                                                    color={errors.status ? 'error' : 'primary'}
-                                                    error={!!errors.status}
-                                                    helperText={errors.status?.message?.toString() || ' '}
-                                                    sx={{ marginBottom: '-1rem' }}
-                                                    required
-                                                >
-                                                    {currentStatus?.map((status) => {
-                                                        return (
-                                                            <MenuItem key={status} value={status}>
-                                                                {status}
-                                                            </MenuItem>
-                                                        );
-                                                    })}
-                                                </TextField>
-                                            </TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell sx={{ fontWeight: 'bold', border: 'none' }}>
-                                                Lisätieto:
-                                            </TableCell>
-                                            <TableCell colSpan={3} sx={{ border: 'none' }}>
-                                                <TextField
-                                                    label="Muokkaa lisätietoa"
-                                                    value={watch('orderInfo')}
-                                                    {...register('orderInfo', {
-                                                        required: 'Pakollinen kenttä',
-                                                    })}
-                                                    fullWidth
-                                                    color={errors.orderInfo ? 'error' : 'primary'}
-                                                    error={!!errors.orderInfo}
-                                                    helperText={errors.orderInfo?.message?.toString() || ' '}
-                                                    required
-                                                    multiline
-                                                    sx={{ marginBottom: '-1rem' }}
-                                                />
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
-                            </Box>
-                            {/*
-                             * Add product area
-                             */}
-                            <Box width="100%" display="flex" justifyContent="space-evenly" marginY="3rem">
-                                {/* <Box paddingTop="2rem" borderTop="2px solid rgba(0,0,0,0.1)" width="100%"> */}
-                                <Button
-                                    onClick={() =>
-                                        navigate(generatePath('/varasto/koodinlukija'), {
-                                            state: {
-                                                ...orderData,
-                                                returnpath: `/varasto/tilaukset/${orderData.id}/muokkaa`,
-                                            },
-                                        })
-                                    }
-                                >
-                                    Lisää tuote viivakoodin perusteella
-                                </Button>
-                                <Box>
-                                    <TextField
-                                        label="Tuotenumero"
-                                        size="small"
-                                        value={newProduct === 0 ? '' : newProduct}
-                                        onChange={newProductOnChangeHandler}
-                                    />
+            {actionData?.type === 'orderupdate' && actionData?.status === false && (
+                <AlertBox text="Tilauksen muokkaus epäonnistui" status="error" />
+            )}
 
-                                    <Button onClick={() => addNewProduct()}>
-                                        Lisää tuote tuotenumeron perusteella
+            {actionData?.type === 'orderupdate' && actionData?.status && (
+                <AlertBox
+                    text="Tilausta muokattu onnistuneesti. Uudelleenohjataan..."
+                    status="success"
+                    timer={3000}
+                    redirectUrl={`/admin/tilaukset/${orderData.id}`}
+                />
+            )}
+
+            <Container maxWidth="xl">
+                <Stack>
+                    <Grid
+                        id="header-grid-container"
+                        container
+                        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                    >
+                        <Grid item xs={4} justifyContent="flex-start">
+                            <BackButton />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TypographyTitle text={`Tilauksen #${orderData.id} muokkaus`} />
+                        </Grid>
+                        <Grid item xs={4} />
+                    </Grid>
+
+                    {orderData && (
+                        <>
+                            <Box id="form-container" component={Form} onSubmit={handleSubmit(onSubmit)}>
+                                <TableContainer
+                                    sx={{
+                                        display: 'flex',
+                                        padding: '2rem',
+                                        marginBottom: '2rem',
+                                        textAlign: 'center',
+                                        alignItems: 'center',
+                                        flexDirection: 'column',
+                                    }}
+                                >
+                                    {/*
+                                     * Contact area
+                                     */}
+                                    <Box id="order-contacts-area">
+                                        <Table>
+                                            <TableBody>
+                                                <TableRow>
+                                                    <TableCell sx={{ fontWeight: 'bold' }}>Yhteystieto:</TableCell>
+                                                    <TableCell>
+                                                        <TextField
+                                                            label="Muokkaa yhteystietoa"
+                                                            value={watch('contact')}
+                                                            {...register('contact', {
+                                                                required: { value: true, message: 'Pakollinen kenttä' },
+                                                                maxLength: {
+                                                                    value: 255,
+                                                                    message: 'Yhteystiedon maksimipituus 255 merkkiä',
+                                                                },
+                                                                pattern: {
+                                                                    value: /.+@turku.fi$|.+@edu.turku.fi$/,
+                                                                    message: '...@turku.fi tai ...@edu.turku.fi',
+                                                                },
+                                                            })}
+                                                            fullWidth
+                                                            color={errors.contact ? 'error' : 'primary'}
+                                                            error={!!errors.contact}
+                                                            helperText={errors.contact?.message?.toString() || ' '}
+                                                            required
+                                                            inputProps={{ required: false }}
+                                                            sx={{ marginBottom: '-1rem' }}
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell sx={{ fontWeight: 'bold' }}>Puhelinnumero:</TableCell>
+                                                    <TableCell>
+                                                        <TextField
+                                                            label="Muokkaa puhelinnumeroa"
+                                                            value={watch('phoneNumber')}
+                                                            {...register('phoneNumber', {
+                                                                required: 'Pakollinen kenttä',
+                                                            })}
+                                                            fullWidth
+                                                            color={errors.phoneNumber ? 'error' : 'primary'}
+                                                            error={!!errors.phoneNumber}
+                                                            helperText={errors.phoneNumber?.message?.toString() || ' '}
+                                                            required
+                                                            sx={{ marginBottom: '-1rem' }}
+                                                        />
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell sx={{ fontWeight: 'bold' }}>Osoite:</TableCell>
+                                                    <TableCell>
+                                                        <TextField
+                                                            label="Muokkaa osoitetta"
+                                                            value={watch('deliveryAddress')}
+                                                            {...register('deliveryAddress', {
+                                                                required: 'Pakollinen kenttä',
+                                                            })}
+                                                            fullWidth
+                                                            color={errors.deliveryAddress ? 'error' : 'primary'}
+                                                            error={!!errors.deliveryAddress}
+                                                            helperText={
+                                                                errors.deliveryAddress?.message?.toString() || ' '
+                                                            }
+                                                            required
+                                                            sx={{ marginBottom: '-1rem' }}
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell sx={{ fontWeight: 'bold' }}>Tila:</TableCell>
+                                                    <TableCell>
+                                                        <TextField
+                                                            id="status-select"
+                                                            select
+                                                            label="Muokkaa tilaa"
+                                                            {...register('status', {
+                                                                required: 'Pakollinen Kenttä',
+                                                            })}
+                                                            value={watch('status')}
+                                                            fullWidth
+                                                            color={errors.status ? 'error' : 'primary'}
+                                                            error={!!errors.status}
+                                                            helperText={errors.status?.message?.toString() || ' '}
+                                                            sx={{ marginBottom: '-1rem' }}
+                                                            required
+                                                        >
+                                                            {currentStatus?.map((status) => {
+                                                                return (
+                                                                    <MenuItem key={status} value={status}>
+                                                                        {status}
+                                                                    </MenuItem>
+                                                                );
+                                                            })}
+                                                        </TextField>
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell sx={{ fontWeight: 'bold', border: 'none' }}>
+                                                        Lisätieto:
+                                                    </TableCell>
+                                                    <TableCell colSpan={3} sx={{ border: 'none' }}>
+                                                        <TextField
+                                                            label="Muokkaa lisätietoa"
+                                                            value={watch('orderInfo')}
+                                                            {...register('orderInfo', {
+                                                                required: 'Pakollinen kenttä',
+                                                            })}
+                                                            fullWidth
+                                                            color={errors.orderInfo ? 'error' : 'primary'}
+                                                            error={!!errors.orderInfo}
+                                                            helperText={errors.orderInfo?.message?.toString() || ' '}
+                                                            required
+                                                            multiline
+                                                            sx={{ marginBottom: '-1rem' }}
+                                                        />
+                                                    </TableCell>
+                                                </TableRow>
+                                            </TableBody>
+                                        </Table>
+                                    </Box>
+                                    {/*
+                                     * Add product area
+                                     */}
+                                    <Box id="add-product-to-order-actions">
+                                        <Button
+                                            onClick={() =>
+                                                navigate(generatePath('/varasto/koodinlukija'), {
+                                                    state: {
+                                                        ...orderData,
+                                                        returnpath: `/varasto/tilaukset/${orderData.id}/muokkaa`,
+                                                    },
+                                                })
+                                            }
+                                        >
+                                            Lisää tuote viivakoodin perusteella
+                                        </Button>
+                                        <Box>
+                                            <TextField
+                                                label="Tuotenumero"
+                                                size="small"
+                                                value={newProduct === 0 ? '' : newProduct}
+                                                onChange={newProductOnChangeHandler}
+                                            />
+
+                                            <Button onClick={() => addNewProduct()}>
+                                                Lisää tuote tuotenumeron perusteella
+                                            </Button>
+                                        </Box>
+                                    </Box>
+                                    {/*
+                                     * List products area
+                                     */}
+                                    <Box id="products-table" width="100%">
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow>
+                                                    <StyledTableCell>Tuotenimi</StyledTableCell>
+                                                    <StyledTableCell>Tuotenumero</StyledTableCell>
+                                                    <StyledTableCell>Viivakoodi</StyledTableCell>
+                                                    <StyledTableCell>Saldo</StyledTableCell>
+                                                    <StyledTableCell>max</StyledTableCell>
+                                                    <StyledTableCell align="center">Tuotteet</StyledTableCell>
+                                                    <StyledTableCell> </StyledTableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {/* ProductItemGroup map */}
+                                                {fields.map((productItemGroup, index) => (
+                                                    <StyledTableRow key={productItemGroup[0].id}>
+                                                        <TableCell>{productItemGroup[0].product.name}</TableCell>
+                                                        <TableCell>{productItemGroup[0].id}</TableCell>
+                                                        <TableCell>{productItemGroup[0].barcode}</TableCell>
+                                                        <TableCell>
+                                                            {Object.keys(productItemGroup).length - 1}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {Object.keys(productItemGroup).length -
+                                                                1 +
+                                                                productItemGroup[0].product.amount -
+                                                                (productItemGroup[0].available ? 1 : 0)}
+                                                        </TableCell>
+                                                        <TableCell align="right">
+                                                            <Stack
+                                                                justifyContent="center"
+                                                                alignItems="center"
+                                                                direction="row"
+                                                            >
+                                                                <IconButton
+                                                                    size="large"
+                                                                    color="primary"
+                                                                    onClick={() => {
+                                                                        const newAmounts = [...amounts];
+                                                                        if (newAmounts[index] > 0) {
+                                                                            newAmounts[index]--;
+                                                                            setAmounts(newAmounts);
+                                                                        }
+                                                                    }}
+                                                                    sx={{ m: 0, p: 0 }}
+                                                                >
+                                                                    <IndeterminateCheckBoxIcon
+                                                                        sx={{ fontSize: '2.5rem', m: 0, p: 0 }}
+                                                                    />
+                                                                </IconButton>
+                                                                <TextField
+                                                                    size="small"
+                                                                    value={amounts[index]}
+                                                                    InputProps={{
+                                                                        inputProps: {
+                                                                            style: { textAlign: 'center' },
+                                                                        },
+                                                                    }}
+                                                                    onChange={(event) => {
+                                                                        modifyProductItemAmounts(
+                                                                            event,
+                                                                            index,
+                                                                            0,
+                                                                            Object.keys(productItemGroup).length -
+                                                                                1 +
+                                                                                productItemGroup[0].product.amount -
+                                                                                (productItemGroup[0].available ? 1 : 0)
+                                                                        );
+                                                                    }}
+                                                                    sx={{ width: '4rem', m: 0, p: 0 }}
+                                                                />
+                                                                <IconButton
+                                                                    color="primary"
+                                                                    onClick={() => {
+                                                                        const newAmounts = [...amounts];
+                                                                        if (
+                                                                            newAmounts[index] <
+                                                                            Object.keys(productItemGroup).length -
+                                                                                1 +
+                                                                                productItemGroup[0].product.amount -
+                                                                                (productItemGroup[0].available ? 1 : 0)
+                                                                        ) {
+                                                                            newAmounts[index]++;
+                                                                            setAmounts(newAmounts);
+                                                                        }
+                                                                    }}
+                                                                    sx={{ m: 0, p: 0 }}
+                                                                >
+                                                                    <AddBoxIcon
+                                                                        sx={{ fontSize: '2.5rem', m: 0, p: 0 }}
+                                                                    />
+                                                                </IconButton>
+                                                            </Stack>
+                                                        </TableCell>
+                                                        <TableCell align="right">
+                                                            <Button
+                                                                disabled={amounts[index] === 0 ? true : false}
+                                                                onClick={() => {
+                                                                    removeProduct(index);
+                                                                }}
+                                                                variant="outlined"
+                                                                sx={{ width: '120px' }}
+                                                            >
+                                                                {amounts[index] === 0 ? 'Poistettu' : 'Poista tuote'}
+                                                            </Button>
+                                                        </TableCell>
+                                                    </StyledTableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </Box>
+                                </TableContainer>
+                                <Box display="flex" justifyContent="space-evenly">
+                                    <Button onClick={() => navigate(-1)}>Palaa tallentamatta</Button>
+                                    <Button color="error" type="submit">
+                                        Tallenna muutokset
                                     </Button>
                                 </Box>
                             </Box>
-                            {/*
-                             * List products area
-                             */}
-                            <Box width="100%">
-                                <Table>
-                                    <TableHead>
-                                        <TableRow>
-                                            <StyledTableCell>Tuotenimi</StyledTableCell>
-                                            <StyledTableCell>Tuotenumero</StyledTableCell>
-                                            <StyledTableCell>Viivakoodi</StyledTableCell>
-                                            <StyledTableCell>Saldo</StyledTableCell>
-                                            <StyledTableCell>max</StyledTableCell>
-                                            <StyledTableCell align="center">Tuotteet</StyledTableCell>
-                                            <StyledTableCell> </StyledTableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {/* ProductItemGroup map */}
-                                        {fields.map((productItemGroup, index) => (
-                                            <StyledTableRow key={productItemGroup[0].id}>
-                                                <TableCell>{productItemGroup[0].product.name}</TableCell>
-                                                <TableCell>{productItemGroup[0].id}</TableCell>
-                                                <TableCell>{productItemGroup[0].barcode}</TableCell>
-                                                <TableCell>{Object.keys(productItemGroup).length - 1}</TableCell>
-                                                <TableCell>
-                                                    {Object.keys(productItemGroup).length -
-                                                        1 +
-                                                        productItemGroup[0].product.amount -
-                                                        (productItemGroup[0].available ? 1 : 0)}
-                                                </TableCell>
-                                                <TableCell align="right">
-                                                    <Stack justifyContent="center" alignItems="center" direction="row">
-                                                        <IconButton
-                                                            size="large"
-                                                            color="primary"
-                                                            onClick={() => {
-                                                                const newAmounts = [...amounts];
-                                                                if (newAmounts[index] > 0) {
-                                                                    newAmounts[index]--;
-                                                                    setAmounts(newAmounts);
-                                                                }
-                                                            }}
-                                                            sx={{ m: 0, p: 0 }}
-                                                        >
-                                                            <IndeterminateCheckBoxIcon
-                                                                sx={{ fontSize: '2.5rem', m: 0, p: 0 }}
-                                                            />
-                                                        </IconButton>
-                                                        <TextField
-                                                            // type="number"
-                                                            size="small"
-                                                            value={amounts[index]}
-                                                            InputProps={{
-                                                                inputProps: {
-                                                                    style: { textAlign: 'center' },
-                                                                },
-                                                            }}
-                                                            onChange={(event) => {
-                                                                modifyProductItemAmounts(
-                                                                    event,
-                                                                    index,
-                                                                    0,
-                                                                    Object.keys(productItemGroup).length -
-                                                                        1 +
-                                                                        productItemGroup[0].product.amount -
-                                                                        (productItemGroup[0].available ? 1 : 0)
-                                                                );
-                                                            }}
-                                                            sx={{ width: '4rem', m: 0, p: 0 }}
-                                                        />
-                                                        <IconButton
-                                                            color="primary"
-                                                            onClick={() => {
-                                                                const newAmounts = [...amounts];
-                                                                if (
-                                                                    newAmounts[index] <
-                                                                    Object.keys(productItemGroup).length -
-                                                                        1 +
-                                                                        productItemGroup[0].product.amount -
-                                                                        (productItemGroup[0].available ? 1 : 0)
-                                                                ) {
-                                                                    newAmounts[index]++;
-                                                                    setAmounts(newAmounts);
-                                                                }
-                                                            }}
-                                                            sx={{ m: 0, p: 0 }}
-                                                        >
-                                                            <AddBoxIcon sx={{ fontSize: '2.5rem', m: 0, p: 0 }} />
-                                                        </IconButton>
-                                                    </Stack>
-                                                </TableCell>
-                                                <TableCell align="right">
-                                                    <Button
-                                                        disabled={amounts[index] === 0 ? true : false}
-                                                        onClick={() => {
-                                                            removeProduct(index);
-                                                        }}
-                                                        variant="outlined"
-                                                        sx={{ width: '120px' }}
-                                                    >
-                                                        {amounts[index] === 0 ? 'Poistettu' : 'Poista tuote.'}
-                                                    </Button>
-                                                </TableCell>
-                                            </StyledTableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </Box>
-                        </TableContainer>
-                        <Box width="100%" display="flex" justifyContent="space-evenly" marginY="3rem">
-                            <Button onClick={() => navigate(-1)}>Palaa tallentamatta</Button>
-                            <Button color="error" type="submit">
-                                Tallenna muutokset
-                            </Button>
-                        </Box>
-                    </Box>
-                </>
-            )}
+                        </>
+                    )}
+                </Stack>
+            </Container>
         </>
     );
 }
