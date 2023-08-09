@@ -152,7 +152,7 @@ function OrderEdit() {
         register,
         watch,
         reset,
-        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors, isDirty },
+        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors, isDirty, isValid },
     } = useForm<FormValues>({
         mode: 'onTouched',
         defaultValues: {
@@ -323,7 +323,7 @@ function OrderEdit() {
                                                     <TableCell sx={{ fontWeight: 'bold' }}>Yhteystieto:</TableCell>
                                                     <TableCell>
                                                         <TextField
-                                                            label="Muokkaa yhteystietoa"
+                                                            // label="Yhteystieto"
                                                             value={watch('contact')}
                                                             {...register('contact', {
                                                                 required: { value: true, message: 'Pakollinen kenttä' },
@@ -331,51 +331,59 @@ function OrderEdit() {
                                                                     value: 255,
                                                                     message: 'Yhteystiedon maksimipituus 255 merkkiä',
                                                                 },
-                                                                pattern: {
-                                                                    value: /.+@turku.fi$|.+@edu.turku.fi$/,
-                                                                    message: '...@turku.fi tai ...@edu.turku.fi',
-                                                                },
+                                                                // pattern: {
+                                                                //     value: /.+@turku.fi$|.+@edu.turku.fi$/,
+                                                                //     message: '...@turku.fi tai ...@edu.turku.fi',
+                                                                // },
                                                             })}
+                                                            required
+                                                            inputProps={{ required: false }}
                                                             fullWidth
                                                             color={formStateErrors.contact ? 'error' : 'primary'}
                                                             error={!!formStateErrors.contact}
                                                             helperText={
                                                                 formStateErrors.contact?.message?.toString() || ' '
                                                             }
-                                                            required
-                                                            inputProps={{ required: false }}
                                                             sx={{ marginBottom: '-1rem' }}
                                                         />
                                                     </TableCell>
                                                     <TableCell sx={{ fontWeight: 'bold' }}>Puhelinnumero:</TableCell>
                                                     <TableCell>
                                                         <TextField
-                                                            label="Muokkaa puhelinnumeroa"
+                                                            // label="Muokkaa puhelinnumeroa"
                                                             value={watch('phoneNumber')}
                                                             {...register('phoneNumber', {
-                                                                required: 'Pakollinen kenttä',
+                                                                required: {
+                                                                    value: true,
+                                                                    message: 'Puhelinnumero on pakollinen',
+                                                                },
                                                             })}
-                                                            fullWidth
+                                                            required
+                                                            inputProps={{ required: false }}
                                                             color={formStateErrors.phoneNumber ? 'error' : 'primary'}
                                                             error={!!formStateErrors.phoneNumber}
                                                             helperText={
                                                                 formStateErrors.phoneNumber?.message?.toString() || ' '
                                                             }
-                                                            required
                                                             sx={{ marginBottom: '-1rem' }}
+                                                            fullWidth
                                                         />
                                                     </TableCell>
                                                 </TableRow>
                                                 <TableRow>
-                                                    <TableCell sx={{ fontWeight: 'bold' }}>Osoite:</TableCell>
+                                                    <TableCell sx={{ fontWeight: 'bold' }}>Toimitusosoite:</TableCell>
                                                     <TableCell>
                                                         <TextField
-                                                            label="Muokkaa osoitetta"
+                                                            // label="Muokkaa osoitetta"
                                                             value={watch('deliveryAddress')}
                                                             {...register('deliveryAddress', {
-                                                                required: 'Pakollinen kenttä',
+                                                                required: {
+                                                                    value: true,
+                                                                    message: 'Tilauksen toimitusosoite on pakollinen',
+                                                                },
                                                             })}
-                                                            fullWidth
+                                                            required
+                                                            inputProps={{ required: false }}
                                                             color={
                                                                 formStateErrors.deliveryAddress ? 'error' : 'primary'
                                                             }
@@ -384,8 +392,8 @@ function OrderEdit() {
                                                                 formStateErrors.deliveryAddress?.message?.toString() ||
                                                                 ' '
                                                             }
-                                                            required
                                                             sx={{ marginBottom: '-1rem' }}
+                                                            fullWidth
                                                         />
                                                     </TableCell>
                                                     <TableCell sx={{ fontWeight: 'bold' }}>Tila:</TableCell>
@@ -393,19 +401,23 @@ function OrderEdit() {
                                                         <TextField
                                                             id="status-select"
                                                             select
-                                                            label="Muokkaa tilaa"
+                                                            // label="Muokkaa tilaa"
                                                             {...register('status', {
-                                                                required: 'Pakollinen Kenttä',
+                                                                required: {
+                                                                    value: true,
+                                                                    message: 'Valitse tila',
+                                                                },
                                                             })}
                                                             value={watch('status')}
-                                                            fullWidth
+                                                            required
+                                                            inputProps={{ required: false }}
                                                             color={formStateErrors.status ? 'error' : 'primary'}
                                                             error={!!formStateErrors.status}
                                                             helperText={
                                                                 formStateErrors.status?.message?.toString() || ' '
                                                             }
                                                             sx={{ marginBottom: '-1rem' }}
-                                                            required
+                                                            fullWidth
                                                         >
                                                             {currentStatus?.map((status) => {
                                                                 return (
@@ -423,20 +435,21 @@ function OrderEdit() {
                                                     </TableCell>
                                                     <TableCell colSpan={3} sx={{ border: 'none' }}>
                                                         <TextField
-                                                            label="Muokkaa lisätietoa"
+                                                            // label="Muokkaa lisätietoa"
                                                             value={watch('orderInfo')}
                                                             {...register('orderInfo', {
                                                                 required: 'Pakollinen kenttä',
                                                             })}
-                                                            fullWidth
+                                                            required
+                                                            inputProps={{ required: false }}
                                                             color={formStateErrors.orderInfo ? 'error' : 'primary'}
                                                             error={!!formStateErrors.orderInfo}
                                                             helperText={
                                                                 formStateErrors.orderInfo?.message?.toString() || ' '
                                                             }
-                                                            required
-                                                            multiline
                                                             sx={{ marginBottom: '-1rem' }}
+                                                            multiline
+                                                            fullWidth
                                                         />
                                                     </TableCell>
                                                 </TableRow>
@@ -590,64 +603,63 @@ function OrderEdit() {
                                 </TableContainer>
 
                                 {/* /// */}
-                            </Box>
-
-                            {/* &&& */}
-                            <Box id="isolated-dev-box">
-                                <Stack id="submit-reset-btns" direction="row" gap={2}>
-                                    <Button
-                                        id="submit-btn"
-                                        type="submit"
-                                        disabled={!isDirty || isSubmitting || isSubmitSuccessful}
-                                        fullWidth
-                                        sx={{
-                                            '&:hover': {
-                                                backgroundColor: 'success.dark',
-                                            },
-                                        }}
-                                    >
-                                        Tallenna muutokset
-                                    </Button>
-                                    <Tooltip title="Palauta alkutilaan">
-                                        <IconButton id="reset-form-btn" onClick={() => reset()}>
-                                            <RefreshIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                </Stack>
-
-                                <Grid container>
-                                    <Grid item xs={4}>
-                                        <Tooltip title="Takaisin tilaukset-listaukseen">
-                                            <Button
-                                                id="cancel-btn"
-                                                size="small"
-                                                component={Link}
-                                                to="/admin/tilaukset/"
-                                                startIcon={<ArrowBackIcon />}
-                                                sx={{ margin: '4rem 0 1rem 0' }}
-                                            >
-                                                Poistu tallentamatta
-                                            </Button>
+                                {/* &&& */}
+                                <Box id="isolated-dev-box">
+                                    <Stack id="submit-reset-btns" direction="row" gap={2}>
+                                        <Button
+                                            id="submit-btn"
+                                            type="submit"
+                                            disabled={!isDirty || isSubmitting || isSubmitSuccessful || !isValid}
+                                            fullWidth
+                                            sx={{
+                                                '&:hover': {
+                                                    backgroundColor: 'success.dark',
+                                                },
+                                            }}
+                                        >
+                                            Tallenna muutokset
+                                        </Button>
+                                        <Tooltip title="Palauta alkutilaan">
+                                            <IconButton id="reset-form-btn" onClick={() => reset()}>
+                                                <RefreshIcon />
+                                            </IconButton>
                                         </Tooltip>
-                                    </Grid>
-                                    <Grid item xs={4} />
+                                    </Stack>
 
-                                    <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                        <Tooltip title="Siirry poistamaan tilaus järjestelmästä">
-                                            <Button
-                                                id="initialize-deletion-process-btn"
-                                                size="small"
-                                                color="error"
-                                                component={Link}
-                                                to={`/admin/tilaukset/${orderData.id}/poista`}
-                                                endIcon={<DeleteForeverIcon />}
-                                                sx={{ margin: '4rem 0 1rem 0' }}
-                                            >
-                                                Tilauksen poistonäkymä
-                                            </Button>
-                                        </Tooltip>
+                                    <Grid container>
+                                        <Grid item xs={4}>
+                                            <Tooltip title="Takaisin tilaukset-listaukseen">
+                                                <Button
+                                                    id="cancel-btn"
+                                                    size="small"
+                                                    component={Link}
+                                                    to="/admin/tilaukset/"
+                                                    startIcon={<ArrowBackIcon />}
+                                                    sx={{ margin: '4rem 0 1rem 0' }}
+                                                >
+                                                    Poistu tallentamatta
+                                                </Button>
+                                            </Tooltip>
+                                        </Grid>
+                                        <Grid item xs={4} />
+
+                                        <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                            <Tooltip title="Siirry poistamaan tilaus järjestelmästä">
+                                                <Button
+                                                    id="initialize-deletion-process-btn"
+                                                    size="small"
+                                                    color="error"
+                                                    component={Link}
+                                                    to={`/admin/tilaukset/${orderData.id}/poista`}
+                                                    endIcon={<DeleteForeverIcon />}
+                                                    sx={{ margin: '4rem 0 1rem 0' }}
+                                                >
+                                                    Tilauksen poistonäkymä
+                                                </Button>
+                                            </Tooltip>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
+                                </Box>
                             </Box>
                         </>
                     )}
