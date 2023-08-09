@@ -50,9 +50,10 @@ function OrdersGrid() {
     //   ]
 
     const columns: GridColDef[] = [
+        // { field: 'id', headerName: 'Tilausnumero' },
         { field: 'status', headerName: 'Tila' },
         { field: 'delivery_address', headerName: 'Toimitusosoite', flex: 1 },
-        { field: 'delivery_required', headerName: 'Toimitus?' },
+        { field: 'delivery_required', headerName: 'Toimitus' },
         { field: 'contact', headerName: 'Yhteystieto', flex: 1 },
         { field: 'phone_number', headerName: 'Puhelinnumero', flex: 1 },
         { field: 'order_info', headerName: 'Lisätiedot', flex: 1 },
@@ -60,10 +61,8 @@ function OrdersGrid() {
             field: 'id',
             headerName: 'Toiminnot',
             renderCell: (params) => (
-                <Button variant="outlined">
-                    <MuiLink component={Link} to={`/admin/tilaukset/${params.value}`}>
-                        Avaa
-                    </MuiLink>
+                <Button variant="outlined" component={Link} to={`/admin/tilaukset/${params.value}`}>
+                    Avaa
                 </Button>
             ),
         },
