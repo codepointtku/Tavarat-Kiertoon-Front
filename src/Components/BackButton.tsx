@@ -16,7 +16,12 @@ function BackButton() {
 
     return (
         <Tooltip title="Takaisin">
-            <IconButtonLink component={Link} to={-1 as unknown as string} sx={[iconHover, { p: '0' }]}>
+            <IconButtonLink
+                id="back-btn-iconbtn-link"
+                component={Link}
+                to={-1 as unknown as string}
+                sx={[iconHover, { p: '0' }]}
+            >
                 <Avatar
                     sx={{
                         bgcolor: 'primary.main',
