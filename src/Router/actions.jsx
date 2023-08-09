@@ -167,7 +167,7 @@ const bikeOrderAction = async (auth, setAuth, request) => {
 };
 
 /**
- * removes items from the order and edits order data
+ * edits order data
  */
 const orderEditAction = async ({ request, params }) => {
     const formData = await request.formData();

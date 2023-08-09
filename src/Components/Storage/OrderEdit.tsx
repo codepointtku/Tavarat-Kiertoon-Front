@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLoaderData, useNavigate, generatePath, Form, useSubmit, useActionData } from 'react-router-dom';
+import { useLoaderData, useNavigate, generatePath, Form, useSubmit, useActionData, Link } from 'react-router-dom';
 import { useForm, useFieldArray, type FieldValues } from 'react-hook-form';
 
 import {
@@ -21,6 +21,9 @@ import {
 
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 import StyledTableRow from '../StyledTableRow';
 import StyledTableCell from '../StyledTableCell';
@@ -31,6 +34,7 @@ import TypographyTitle from '../TypographyTitle';
 import type { orderEditLoader } from '../../Router/loaders';
 import type { orderEditAction } from '../../Router/actions';
 import { type ProductItemResponse, productsApi } from '../../api';
+import Tooltip from '../Tooltip';
 
 export type OrderEditLoaderType = Awaited<ReturnType<typeof orderEditLoader>>;
 
@@ -142,7 +146,14 @@ function OrderEdit() {
     };
 
     // hook form functions and default values
-    const { control, formState, handleSubmit, register, watch } = useForm<FormValues>({
+    const {
+        control,
+        handleSubmit,
+        register,
+        watch,
+        reset,
+        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors, isDirty },
+    } = useForm<FormValues>({
         mode: 'onTouched',
         defaultValues: {
             orderId: orderData.id,
@@ -167,7 +178,6 @@ function OrderEdit() {
         control,
     });
 
-    const { errors } = formState;
     const navigate = useNavigate();
 
     // Remove product handler
@@ -327,9 +337,11 @@ function OrderEdit() {
                                                                 },
                                                             })}
                                                             fullWidth
-                                                            color={errors.contact ? 'error' : 'primary'}
-                                                            error={!!errors.contact}
-                                                            helperText={errors.contact?.message?.toString() || ' '}
+                                                            color={formStateErrors.contact ? 'error' : 'primary'}
+                                                            error={!!formStateErrors.contact}
+                                                            helperText={
+                                                                formStateErrors.contact?.message?.toString() || ' '
+                                                            }
                                                             required
                                                             inputProps={{ required: false }}
                                                             sx={{ marginBottom: '-1rem' }}
@@ -344,9 +356,11 @@ function OrderEdit() {
                                                                 required: 'Pakollinen kenttä',
                                                             })}
                                                             fullWidth
-                                                            color={errors.phoneNumber ? 'error' : 'primary'}
-                                                            error={!!errors.phoneNumber}
-                                                            helperText={errors.phoneNumber?.message?.toString() || ' '}
+                                                            color={formStateErrors.phoneNumber ? 'error' : 'primary'}
+                                                            error={!!formStateErrors.phoneNumber}
+                                                            helperText={
+                                                                formStateErrors.phoneNumber?.message?.toString() || ' '
+                                                            }
                                                             required
                                                             sx={{ marginBottom: '-1rem' }}
                                                         />
@@ -362,10 +376,13 @@ function OrderEdit() {
                                                                 required: 'Pakollinen kenttä',
                                                             })}
                                                             fullWidth
-                                                            color={errors.deliveryAddress ? 'error' : 'primary'}
-                                                            error={!!errors.deliveryAddress}
+                                                            color={
+                                                                formStateErrors.deliveryAddress ? 'error' : 'primary'
+                                                            }
+                                                            error={!!formStateErrors.deliveryAddress}
                                                             helperText={
-                                                                errors.deliveryAddress?.message?.toString() || ' '
+                                                                formStateErrors.deliveryAddress?.message?.toString() ||
+                                                                ' '
                                                             }
                                                             required
                                                             sx={{ marginBottom: '-1rem' }}
@@ -382,9 +399,11 @@ function OrderEdit() {
                                                             })}
                                                             value={watch('status')}
                                                             fullWidth
-                                                            color={errors.status ? 'error' : 'primary'}
-                                                            error={!!errors.status}
-                                                            helperText={errors.status?.message?.toString() || ' '}
+                                                            color={formStateErrors.status ? 'error' : 'primary'}
+                                                            error={!!formStateErrors.status}
+                                                            helperText={
+                                                                formStateErrors.status?.message?.toString() || ' '
+                                                            }
                                                             sx={{ marginBottom: '-1rem' }}
                                                             required
                                                         >
@@ -410,9 +429,11 @@ function OrderEdit() {
                                                                 required: 'Pakollinen kenttä',
                                                             })}
                                                             fullWidth
-                                                            color={errors.orderInfo ? 'error' : 'primary'}
-                                                            error={!!errors.orderInfo}
-                                                            helperText={errors.orderInfo?.message?.toString() || ' '}
+                                                            color={formStateErrors.orderInfo ? 'error' : 'primary'}
+                                                            error={!!formStateErrors.orderInfo}
+                                                            helperText={
+                                                                formStateErrors.orderInfo?.message?.toString() || ' '
+                                                            }
                                                             required
                                                             multiline
                                                             sx={{ marginBottom: '-1rem' }}
@@ -567,12 +588,66 @@ function OrderEdit() {
                                         </Table>
                                     </Box>
                                 </TableContainer>
-                                <Box display="flex" justifyContent="space-evenly">
-                                    <Button onClick={() => navigate(-1)}>Palaa tallentamatta</Button>
-                                    <Button color="error" type="submit">
+
+                                {/* /// */}
+                            </Box>
+
+                            {/* &&& */}
+                            <Box id="isolated-dev-box">
+                                <Stack id="submit-reset-btns" direction="row" gap={2}>
+                                    <Button
+                                        id="submit-btn"
+                                        type="submit"
+                                        disabled={!isDirty || isSubmitting || isSubmitSuccessful}
+                                        fullWidth
+                                        sx={{
+                                            '&:hover': {
+                                                backgroundColor: 'success.dark',
+                                            },
+                                        }}
+                                    >
                                         Tallenna muutokset
                                     </Button>
-                                </Box>
+                                    <Tooltip title="Palauta alkutilaan">
+                                        <IconButton id="reset-form-btn" onClick={() => reset()}>
+                                            <RefreshIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Stack>
+
+                                <Grid container>
+                                    <Grid item xs={4}>
+                                        <Tooltip title="Takaisin tilaukset-listaukseen">
+                                            <Button
+                                                id="cancel-btn"
+                                                size="small"
+                                                component={Link}
+                                                to="/admin/tilaukset/"
+                                                startIcon={<ArrowBackIcon />}
+                                                sx={{ margin: '4rem 0 1rem 0' }}
+                                            >
+                                                Poistu tallentamatta
+                                            </Button>
+                                        </Tooltip>
+                                    </Grid>
+                                    <Grid item xs={4} />
+
+                                    <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                        <Tooltip title="Siirry poistamaan tilaus järjestelmästä">
+                                            <Button
+                                                id="initialize-deletion-process-btn"
+                                                size="small"
+                                                color="error"
+                                                component={Link}
+                                                to={`/admin/tilaukset/${orderData.id}/poista`}
+                                                endIcon={<DeleteForeverIcon />}
+                                                sx={{ margin: '4rem 0 1rem 0' }}
+                                            >
+                                                Tilauksen poistonäkymä
+                                            </Button>
+                                        </Tooltip>
+                                    </Grid>
+                                </Grid>
                             </Box>
                         </>
                     )}
