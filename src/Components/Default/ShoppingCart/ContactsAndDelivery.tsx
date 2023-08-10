@@ -14,7 +14,7 @@ import TypographyTitle from '../../TypographyTitle';
 import TypographyHeading from '../../TypographyHeading';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { isWeekend, isPast, parse, isValid } from 'date-fns';
+import { isWeekend, isPast, parse, format, isValid } from 'date-fns';
 import { fi } from 'date-fns/locale';
 import Holidays from 'date-holidays';
 
@@ -27,7 +27,7 @@ export interface CartFormData {
     zipcode: string;
     city: string;
     deliveryRequired: string;
-    fetchDate?: Date;
+    fetchDate?: string | Date;
     orderInfo?: string;
 }
 
@@ -50,8 +50,8 @@ function ContactsAndDelivery() {
     );
     const currentDate = new Date();
     const [fetchDate, setFetchDate] = useState(
-        sessionStorage.getItem('__LSM__') !== null
-            ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).fetchDate
+        Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
+            ? parse(JSON.parse(String(sessionStorage.getItem('__LSM__'))).fetchDate, 'd.M.yyyy', new Date())
             : currentDate
     );
     const maxDate = new Date().setDate(currentDate.getDate() + 64);
@@ -64,7 +64,6 @@ function ContactsAndDelivery() {
     const correctAddress = user.address_list?.filter(
         (address: { address: string }) => address.address === selectedAddress
     );
-    // console.log(selectedMethod);
     const {
         register,
         handleSubmit,
@@ -106,24 +105,21 @@ function ContactsAndDelivery() {
     }, [selectedAddress]);
 
     function disableDate(date: Date) {
-        date.setHours(0, 0, 0, 0);
+        // console.log(date, 'in function', typeof date);
         const dateIsHoliday = finnishHolidays.some((holiday) => String(holiday.start) === String(date));
-        return isWeekend(date) || dateIsHoliday;
-    }
-
-    function isPastOrMaxDate(date: Date) {
-        console.log('test', date);
-        return isPast(date) || date >= new Date(maxDate);
+        // console.log(date >= new Date(maxDate), dateIsHoliday, isPast(date), isWeekend(date));
+        // console.log(new Date(Date.now()));
+        // console.log(date, new Date(maxDate), date >= new Date(maxDate));
+        return dateIsHoliday || isPast(date) || isWeekend(date);
     }
 
     function handleDateChange(value: Date) {
-        // console.log(String(value), String(value) !== 'Invalid Date');
-        // console.log(String(new Date(maxDate)));
-        setValue('fetchDate', value);
+        const date = isValid(value) && format(value, 'd.M.yyyy');
+        date && setValue('fetchDate', date);
         setFetchDate(value);
     }
 
-    // console.log(state);
+    console.log(fetchDate);
 
     return (
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
@@ -332,28 +328,30 @@ function ContactsAndDelivery() {
                                 <DatePicker
                                     label="Noutoaika"
                                     value={fetchDate}
+                                    inputFormat="d.M.yyyy"
                                     onChange={(value) => handleDateChange(value as Date)}
                                     renderInput={(props) => (
                                         <TextField
+                                            value={fetchDate}
                                             {...props}
                                             {...register('fetchDate', {
                                                 required: 'Tämä kenttä on täytettävä',
                                                 validate: (dateString) => {
-                                                    const date = parse(
-                                                        dateString as unknown as string,
-                                                        'd.M.yyyy',
-                                                        new Date()
-                                                    );
-
-                                                    const validDate = isValid(date) && new Date(date);
-                                                    // console.log(
-                                                    //     validDate,
-                                                    //     new Date(maxDate),
-                                                    //     validDate >= new Date(maxDate)
-                                                    // );
-                                                    const dateParam = !validDate ? date : validDate;
-                                                    return disableDate(dateParam) || isPastOrMaxDate(dateParam);
+                                                    console.log(dateString, typeof dateString);
+                                                    const date = parse(String(dateString), 'd.M.yyyy', new Date());
+                                                    console.log('!test', date, typeof date);
+                                                    // const validDate = isValid(date) === false && new Date(date);
+                                                    // const dateParam =
+                                                    //     typeof dateString === 'string' && new Date(dateString);
+                                                    // const dateParam = !validDate ? date : validDate;
+                                                    // const dateCorrectType = !dateParam ? dateString : dateParam;
+                                                    // console.log(dateCorrectType, 'in validate', typeof dateCorrectType);
+                                                    return !disableDate(date);
                                                 },
+                                                // pattern: {
+                                                //     value: /^[0-9.]+$/,
+                                                //     message: 'Sisällön täytyy koostua vain numeroista',
+                                                // },
                                                 //minLength: { value: 10, message: 'Syötä kokonainen päivämäärä' },
                                             })}
                                             error={!!errors.fetchDate}
