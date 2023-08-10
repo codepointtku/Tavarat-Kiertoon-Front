@@ -152,7 +152,7 @@ function OrderEdit() {
         register,
         watch,
         reset,
-        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors, isDirty, isValid },
+        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors },
     } = useForm<FormValues>({
         mode: 'onTouched',
         defaultValues: {
@@ -166,6 +166,11 @@ function OrderEdit() {
             productRenderItems: productRenderItems,
         },
     });
+
+    const formReset = () => {
+        reset();
+        setAmounts(productRenderItemAmounts);
+    };
 
     // field array functions
     // NOTE! fields should be the same as productRenderItems i.e. array of arrays of objects [ [{},{}],[{},{}] ].
@@ -305,14 +310,14 @@ function OrderEdit() {
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                margin: '2rem 0 1rem 0',
+                                margin: '2rem 0 2rem 0',
                             }}
                         >
                             {/*
                              * Contact area
                              */}
-                            <Box id="order-contacts-area-container">
-                                <Table id="order-contacts-textfields-table">
+                            <Box id="order-contact-info-area-container" sx={{ margin: '0 0 1rem 0' }}>
+                                <Table id="order-contact-info-textfields-table">
                                     <TableBody>
                                         <TableRow>
                                             <TableCell sx={{ fontWeight: 'bold' }}>Yhteystieto:</TableCell>
@@ -333,11 +338,11 @@ function OrderEdit() {
                                                     })}
                                                     required
                                                     inputProps={{ required: false }}
-                                                    fullWidth
                                                     color={formStateErrors.contact ? 'error' : 'primary'}
                                                     error={!!formStateErrors.contact}
                                                     helperText={formStateErrors.contact?.message?.toString() || ' '}
                                                     sx={{ marginBottom: '-1rem' }}
+                                                    fullWidth
                                                 />
                                             </TableCell>
                                             <TableCell sx={{ fontWeight: 'bold' }}>Puhelinnumero:</TableCell>
@@ -384,7 +389,7 @@ function OrderEdit() {
                                                     fullWidth
                                                 />
                                             </TableCell>
-                                            <TableCell sx={{ fontWeight: 'bold' }}>Tila:</TableCell>
+                                            <TableCell sx={{ fontWeight: 'bold' }}>Tilauksen tila:</TableCell>
                                             <TableCell>
                                                 <TextField
                                                     id="order-status-select"
@@ -446,7 +451,12 @@ function OrderEdit() {
                             {/*
                              * Add product area
                              */}
-                            <Stack id="add-product-to-order-actions" direction="row">
+                            <Stack
+                                id="add-product-to-order-actions"
+                                direction="row"
+                                justifyContent="space-evenly"
+                                sx={{ margin: '0 0 2rem 0' }}
+                            >
                                 <Button
                                     size="small"
                                     onClick={() =>
@@ -460,16 +470,18 @@ function OrderEdit() {
                                 >
                                     Lisää tuote viivakoodin perusteella
                                 </Button>
-                                <TextField
-                                    label="Tuotenumero"
-                                    size="small"
-                                    value={newProduct === 0 ? '' : newProduct}
-                                    onChange={newProductOnChangeHandler}
-                                />
 
-                                <Button size="small" onClick={() => addNewProduct()}>
-                                    Lisää tuote tuotenumeron perusteella
-                                </Button>
+                                <Stack direction="row" gap={'1rem'} sx={{ margin: '0 0 0 1rem' }}>
+                                    <Button size="small" onClick={() => addNewProduct()}>
+                                        Lisää tuote tuotenumeron perusteella
+                                    </Button>
+                                    <TextField
+                                        label="Kirjoita tuotenumero"
+                                        size="small"
+                                        value={newProduct === 0 ? '' : newProduct}
+                                        onChange={newProductOnChangeHandler}
+                                    />
+                                </Stack>
                             </Stack>
                             {/*
                              * List products area
@@ -478,11 +490,10 @@ function OrderEdit() {
                                 <TableHead>
                                     <TableRow>
                                         <StyledTableCell>Tuotenimi</StyledTableCell>
-                                        <StyledTableCell>Tuotenumero</StyledTableCell>
+                                        {/* <StyledTableCell>Tuotenumero</StyledTableCell> */}
                                         <StyledTableCell>Viivakoodi</StyledTableCell>
-                                        <StyledTableCell>Saldo</StyledTableCell>
-                                        <StyledTableCell>max</StyledTableCell>
-                                        <StyledTableCell align="center">Tuotteet</StyledTableCell>
+                                        <StyledTableCell align="center">Kappalemäärä</StyledTableCell>
+                                        <StyledTableCell>Määrä varastossa</StyledTableCell>
                                         <StyledTableCell> </StyledTableCell>
                                     </TableRow>
                                 </TableHead>
@@ -491,16 +502,11 @@ function OrderEdit() {
                                     {fields.map((productItemGroup, index) => (
                                         <StyledTableRow key={productItemGroup[0].id}>
                                             <TableCell>{productItemGroup[0].product.name}</TableCell>
-                                            <TableCell>{productItemGroup[0].id}</TableCell>
+                                            {/* <TableCell>{productItemGroup[0].id}</TableCell> */}
                                             <TableCell>{productItemGroup[0].barcode}</TableCell>
-                                            <TableCell>{Object.keys(productItemGroup).length - 1}</TableCell>
-                                            <TableCell>
-                                                {Object.keys(productItemGroup).length -
-                                                    1 +
-                                                    productItemGroup[0].product.amount -
-                                                    (productItemGroup[0].available ? 1 : 0)}
-                                            </TableCell>
+                                            {/* <TableCell>{Object.keys(productItemGroup).length - 1}</TableCell> */}
                                             <TableCell align="right">
+                                                {/* /// "Products in this order" amount action btns cell */}
                                                 <Stack justifyContent="center" alignItems="center" direction="row">
                                                     <IconButton
                                                         size="large"
@@ -560,6 +566,12 @@ function OrderEdit() {
                                                     </IconButton>
                                                 </Stack>
                                             </TableCell>
+                                            <TableCell>
+                                                {Object.keys(productItemGroup).length -
+                                                    1 +
+                                                    productItemGroup[0].product.amount -
+                                                    (productItemGroup[0].available ? 1 : 0)}
+                                            </TableCell>
                                             <TableCell align="right">
                                                 <Button
                                                     disabled={amounts[index] === 0 ? true : false}
@@ -567,9 +579,9 @@ function OrderEdit() {
                                                         removeProduct(index);
                                                     }}
                                                     variant="outlined"
-                                                    sx={{ width: '120px' }}
+                                                    sx={{ width: '220px' }}
                                                 >
-                                                    {amounts[index] === 0 ? 'Poistettu' : 'Poista tuote'}
+                                                    {amounts[index] === 0 ? 'Poistettu' : 'Poista tuote tilaukselta'}
                                                 </Button>
                                             </TableCell>
                                         </StyledTableRow>
@@ -581,12 +593,13 @@ function OrderEdit() {
                         {/* /// */}
                         {/* &&& */}
                         <Box id="isolated-dev-box">
-                            <Stack id="submit-reset-btns" direction="row" gap={2}>
+                            <Stack id="submit-reset-btns" direction="row" gap={2} justifyContent="center">
                                 <Button
                                     id="submit-btn"
                                     type="submit"
-                                    disabled={!isDirty || isSubmitting || isSubmitSuccessful || !isValid}
-                                    fullWidth
+                                    // disabled={isSubmitting || isSubmitSuccessful}
+                                    disabled={isSubmitting || isSubmitSuccessful}
+                                    // fullWidth
                                     sx={{
                                         '&:hover': {
                                             backgroundColor: 'success.dark',
@@ -596,7 +609,7 @@ function OrderEdit() {
                                     Tallenna muutokset
                                 </Button>
                                 <Tooltip title="Palauta alkutilaan">
-                                    <IconButton id="reset-form-btn" onClick={() => reset()}>
+                                    <IconButton id="reset-form-btn" onClick={() => formReset()}>
                                         <RefreshIcon />
                                     </IconButton>
                                 </Tooltip>

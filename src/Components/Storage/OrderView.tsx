@@ -36,7 +36,6 @@ interface Props {
 
 function OrderTable({ isAdmin }: Props) {
     const order = useLoaderData() as OrderViewLoaderType;
-
     // state to control product info collapse field
     const [isOpen, setIsOpen] = useState<number>();
 
@@ -53,6 +52,8 @@ function OrderTable({ isAdmin }: Props) {
             productRenderItems[productIndex].push(productItem);
         }
     });
+
+    console.log('jee', productRenderItems);
 
     // Parse Date objects from backend data string
     const dateParse = (value: string) => {
@@ -155,6 +156,7 @@ function OrderTable({ isAdmin }: Props) {
                                 <StyledTableCell>Viivakoodi</StyledTableCell>
                                 <StyledTableCell>Tuotenimi</StyledTableCell>
                                 <StyledTableCell>Kappalemäärä</StyledTableCell>
+                                <StyledTableCell>Tuotetunniste</StyledTableCell>
                                 <StyledTableCell>Varasto</StyledTableCell>
                             </TableRow>
                         </TableHead>
@@ -187,10 +189,11 @@ function OrderTable({ isAdmin }: Props) {
                                             </Tooltip>
                                         </TableCell>
                                         <TableCell>{itemArray.length}</TableCell>
+                                        <TableCell>{itemArray[0].product.id}</TableCell>
                                         <TableCell>{itemArray[0].storage.name}</TableCell>
                                     </StyledTableRow>
                                     <TableRow>
-                                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
+                                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                                             <Collapse in={isOpen === index} timeout="auto" unmountOnExit>
                                                 <Box
                                                     id="product-detail-indent-box"
@@ -201,7 +204,9 @@ function OrderTable({ isAdmin }: Props) {
                                                             <TableRow>
                                                                 <TableCell align="right">Mitat</TableCell>
                                                                 <TableCell align="right">Paino</TableCell>
-                                                                <TableCell align="right">Tuotenumero</TableCell>
+                                                                <TableCell align="right">
+                                                                    Yksittäisen tuotteen tunnistenumero
+                                                                </TableCell>
                                                                 <TableCell align="right">Hyllynumero</TableCell>
                                                             </TableRow>
                                                         </TableHead>
@@ -214,9 +219,7 @@ function OrderTable({ isAdmin }: Props) {
                                                                     <TableCell align="right">
                                                                         {item.product.weight}
                                                                     </TableCell>
-                                                                    <TableCell align="right">
-                                                                        {item.product.id}
-                                                                    </TableCell>
+                                                                    <TableCell align="right">{item.id}</TableCell>
                                                                     <TableCell align="right">{item.shelf_id}</TableCell>
                                                                 </TableRow>
                                                             ))}
