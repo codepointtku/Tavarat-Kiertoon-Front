@@ -253,7 +253,7 @@ function OrderEdit() {
                     const newItems = await addNewItems(item[0].product.id, amounts[index] - item.length);
                     productItems.push(...newItems);
                 }
-                // keep the numbeer of productItems the same
+                // keep the number of productItems the same
                 else {
                     productItems.push(...item);
                 }
@@ -454,33 +454,37 @@ function OrderEdit() {
                             <Stack
                                 id="add-product-to-order-actions"
                                 direction="row"
-                                justifyContent="space-evenly"
+                                justifyContent="space-between"
                                 sx={{ margin: '0 0 2rem 0' }}
                             >
-                                <Button
-                                    size="small"
-                                    onClick={() =>
-                                        navigate(generatePath('/varasto/koodinlukija'), {
-                                            state: {
-                                                ...orderData,
-                                                returnpath: `/varasto/tilaukset/${orderData.id}/muokkaa`,
-                                            },
-                                        })
-                                    }
-                                >
-                                    Lisää tuote viivakoodin perusteella
-                                </Button>
-
-                                <Stack direction="row" gap={'1rem'} sx={{ margin: '0 0 0 1rem' }}>
-                                    <Button size="small" onClick={() => addNewProduct()}>
-                                        Lisää tuote tuotenumeron perusteella
+                                <Stack id="add-new-product-by-barcode-action-container" direction="row" gap={'1rem'}>
+                                    <TextField label="Kirjoita viivakoodi" size="small" />
+                                    <Button
+                                        size="small"
+                                        // open barcode scanner view:
+                                        // onClick={() =>
+                                        //     navigate(generatePath('/varasto/koodinlukija'), {
+                                        //         state: {
+                                        //             ...orderData,
+                                        //             returnpath: `/varasto/tilaukset/${orderData.id}/muokkaa`,
+                                        //         },
+                                        //     })
+                                        // }
+                                    >
+                                        Lisää tuote viivakoodin perusteella
                                     </Button>
+                                </Stack>
+
+                                <Stack id="add-new-product-by-id-action-container" direction="row" gap={'1rem'}>
                                     <TextField
                                         label="Kirjoita tuotenumero"
                                         size="small"
                                         value={newProduct === 0 ? '' : newProduct}
                                         onChange={newProductOnChangeHandler}
                                     />
+                                    <Button size="small" onClick={() => addNewProduct()}>
+                                        Lisää tuote tuotenumeron perusteella
+                                    </Button>
                                 </Stack>
                             </Stack>
                             {/*
@@ -490,7 +494,6 @@ function OrderEdit() {
                                 <TableHead>
                                     <TableRow>
                                         <StyledTableCell>Tuotenimi</StyledTableCell>
-                                        {/* <StyledTableCell>Tuotenumero</StyledTableCell> */}
                                         <StyledTableCell>Viivakoodi</StyledTableCell>
                                         <StyledTableCell align="center">Kappalemäärä</StyledTableCell>
                                         <StyledTableCell>Määrä varastossa</StyledTableCell>
@@ -502,7 +505,6 @@ function OrderEdit() {
                                     {fields.map((productItemGroup, index) => (
                                         <StyledTableRow key={productItemGroup[0].id}>
                                             <TableCell>{productItemGroup[0].product.name}</TableCell>
-                                            {/* <TableCell>{productItemGroup[0].id}</TableCell> */}
                                             <TableCell>{productItemGroup[0].barcode}</TableCell>
                                             {/* <TableCell>{Object.keys(productItemGroup).length - 1}</TableCell> */}
                                             <TableCell align="right">
