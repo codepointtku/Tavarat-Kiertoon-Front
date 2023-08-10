@@ -169,9 +169,9 @@ test.describe('varasto', () => {
     });
 });
 
-test.describe('varasto tilaus', () => {
+test.describe('varasto tilaukset', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/varasto/tilaus/4127');
+        await page.goto('/varasto/tilaukset/16');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
 });
