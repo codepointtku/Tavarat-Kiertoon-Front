@@ -34,7 +34,7 @@ interface Props {
     isAdmin: boolean;
 }
 
-function OrderTable({ isAdmin }: Props) {
+function OrderView({ isAdmin }: Props) {
     const order = useLoaderData() as OrderViewLoaderType;
     // state to control product info collapse field
     const [isOpen, setIsOpen] = useState<number>();
@@ -52,8 +52,6 @@ function OrderTable({ isAdmin }: Props) {
             productRenderItems[productIndex].push(productItem);
         }
     });
-
-    console.log('jee', productRenderItems);
 
     // Parse Date objects from backend data string
     const dateParse = (value: string) => {
@@ -239,4 +237,4 @@ function OrderTable({ isAdmin }: Props) {
     );
 }
 
-export default OrderTable;
+export default OrderView;
