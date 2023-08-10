@@ -29,6 +29,8 @@ import BikesLayout from '../Layouts/BikesLayout';
 import OrdersList from '../Components/Storage/OrdersList';
 import OrderView from '../Components/Storage/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
+import AdminOrderDelete from '../Components/Admin/AdminOrderDelete';
+
 import QrScanner from '../Components/Storage/QrScanner';
 
 import Overview from '../Components/Admin/Panel/Overview/Overview';
@@ -181,6 +183,7 @@ import {
     deletePacketAction,
     userProfilePageAction,
     modifyUserAddressesAction,
+    orderDeleteAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
@@ -541,8 +544,15 @@ function Routes() {
                                                     path: 'muokkaa',
                                                     element: <OrderEdit />,
                                                     errorElement: <OrderViewError />,
-                                                    action: orderEditAction,
                                                     loader: orderEditLoader,
+                                                    action: orderEditAction,
+                                                },
+                                                {
+                                                    path: 'poista',
+                                                    element: <AdminOrderDelete randomInt={getRandomInt()} />,
+                                                    errorElement: <OrderViewError />,
+                                                    loader: orderEditLoader,
+                                                    action: orderDeleteAction,
                                                 },
                                             ],
                                         },

@@ -236,7 +236,13 @@ const orderEditAction = async ({ request, params }) => {
     }
 
     return null;
+}
 */
+
+const orderDeleteAction = async ({ params }) => {
+    await ordersApi.ordersDestroy(params.id);
+    return redirect('/admin/tilaukset');
+};
 
 /*
  * Creates a new storage
@@ -973,6 +979,7 @@ export {
     frontPageActions,
     contactAction,
     orderEditAction,
+    orderDeleteAction,
     storageCreateAction,
     storageEditAction,
     storageDeleteAction,
