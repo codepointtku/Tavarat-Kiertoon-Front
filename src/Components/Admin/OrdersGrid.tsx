@@ -51,15 +51,6 @@ function OrdersGrid() {
 
     const columns: GridColDef[] = [
         {
-            field: 'id',
-            headerName: 'Toiminnot',
-            renderCell: (params) => (
-                <Button variant="outlined" component={Link} to={`/admin/tilaukset/${params.value}`}>
-                    Avaa
-                </Button>
-            ),
-        },
-        {
             field: 'ordernumber',
             headerName: 'Tilausnumero',
             valueGetter: (params: GridValueGetterParams) => `${params.row.id || ''}`,
@@ -70,6 +61,15 @@ function OrdersGrid() {
         { field: 'phone_number', headerName: 'Puhelinnumero', flex: 1 },
         { field: 'delivery_required', headerName: 'Toimitus' },
         { field: 'order_info', headerName: 'Lisätiedot', flex: 1 },
+        {
+            field: 'id',
+            headerName: 'Toiminnot',
+            renderCell: (params) => (
+                <Button variant="outlined" component={Link} to={`/admin/tilaukset/${params.value}`}>
+                    Avaa
+                </Button>
+            ),
+        },
     ];
 
     const localizedTextsMap = {
