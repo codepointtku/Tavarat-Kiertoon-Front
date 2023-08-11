@@ -109,16 +109,19 @@ function AddNewItem() {
         setValue('colors', event.target.value as number[]);
     };
 
+    const reader = new FileReader();
     const handlePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files;
-        console.log('files:', files);
+        // const files = event.target.files;
+        // console.log('files:', files);
+        const pictureFileList = getValues('pictures');
+        // console.log('pictures handlepicturechangessa', pictures);
+        console.log('pictureFileList:', pictureFileList);
 
         // // Image preview with base 64 encoding
-        const reader = new FileReader();
 
-        if (files) {
-            Array.from(files).map((file) => {
-                reader.readAsDataURL(file);
+        if (pictureFileList) {
+            Array.from(pictureFileList).map((pic: any) => {
+                reader.readAsDataURL(pic);
                 reader.onload = () => {
                     if (typeof reader.result === 'string') {
                         const url = reader.result;
@@ -418,6 +421,14 @@ function AddNewItem() {
                                 onChange={handlePictureChange}
                             />
                         </Button>
+                        {imgUrls?.length > 0 && (
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                {imgUrls.map((url) => (
+                                    <img key={url} src={url} alt="preview" width="200" height="200" />
+                                    // TODO kuvien poisto
+                                ))}
+                            </Box>
+                        )}
                     </CardActions>
                     <CardActions>
                         <Button
@@ -429,14 +440,6 @@ function AddNewItem() {
                         </Button>
                     </CardActions>
                 </CardContent>
-                {imgUrls?.length > 0 && (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                        {imgUrls.map((url) => (
-                            <img key={url} src={url} alt="preview" width="200" height="200" />
-                            // TODO kuvien poisto
-                        ))}
-                    </Box>
-                )}
             </Box>
         </Card>
     );
