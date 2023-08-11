@@ -141,7 +141,7 @@ function AdminOrderDelete({ randomInt }: any) {
                                     fullWidth
                                     color="error"
                                 >
-                                    {`Poista tilaus numero: " ${orderData.id} " pysyvästi`}
+                                    {`Poista tilausnumero ${orderData.id} pysyvästi`}
                                 </Button>
                             </Stack>
                         </Grid>
