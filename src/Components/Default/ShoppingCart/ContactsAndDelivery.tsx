@@ -12,11 +12,12 @@ import type { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
 
 import TypographyTitle from '../../TypographyTitle';
 import TypographyHeading from '../../TypographyHeading';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { DatePicker, LocalizationProvider, PickersDay } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { isWeekend, isPast, parse, format, isValid } from 'date-fns';
 import { fi } from 'date-fns/locale';
 import Holidays from 'date-holidays';
+import { type PickersDayProps } from '@mui/lab';
 
 export interface CartFormData {
     firstName: string;
@@ -150,8 +151,6 @@ function ContactsAndDelivery() {
     }
 
     const dateErrorObj = JSON.parse(sessionStorage.getItem('dateErrorObj') as string);
-
-    console.log(dateErrorObj.message, typeof dateErrorObj.message);
 
     return (
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
@@ -388,7 +387,15 @@ function ContactsAndDelivery() {
                                     )}
                                     shouldDisableDate={disableDate}
                                     maxDate={new Date(maxDate)}
-                                    // sx={{"& .Mui-disabled: {opacity: 0.5}"}}
+                                    PaperProps={{
+                                        sx: {
+                                            '& .MuiPickersDay-root': {
+                                                '&.Mui-disabled': {
+                                                    opacity: 0.5,
+                                                },
+                                            },
+                                        },
+                                    }}
                                     disablePast
                                     disableMaskedInput
                                 />
