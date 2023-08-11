@@ -473,6 +473,11 @@ function Routes() {
                                     action: async ({ request }) => addProductAction(auth, setAuth, request),
                                 },
                                 {
+                                    path: 'tuotteet/:id',
+                                    element: <ProductDetails />,
+                                    loader: productDetailsLoader,
+                                },
+                                {
                                     path: 'tuotteet/:id/muokkaa',
                                     element: <EditProduct />,
                                     loader: productDetailsLoader,
