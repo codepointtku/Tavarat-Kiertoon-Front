@@ -70,6 +70,7 @@ function ContactsAndDelivery() {
         formState: { errors },
         setValue,
         getValues,
+        trigger,
         clearErrors,
     } = useForm({
         mode: 'onTouched',
@@ -89,6 +90,9 @@ function ContactsAndDelivery() {
 
     const navigate = useNavigate();
     const onSubmit = (data: CartFormData) => {
+        if (fetchDate.setHours(0, 0, 0, 0) === currentDate.setHours(0, 0, 0, 0)) {
+            return null;
+        }
         actions.Update(data);
         navigate('/ostoskori/vaihe3');
     };
@@ -148,8 +152,6 @@ function ContactsAndDelivery() {
     }
 
     const dateErrorObj = JSON.parse(sessionStorage.getItem('dateErrorObj') as string);
-
-    console.log(errors.fetchDate?.type);
 
     return (
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
@@ -373,8 +375,9 @@ function ContactsAndDelivery() {
                                                     message: 'Sisällön täytyy olla muotoa p.k.vvvv',
                                                 },
                                             })}
+                                            autoFocus
                                             error={
-                                                (dateErrorObj.message !== 'Noutoajat ma-pe 9-16' ||
+                                                (dateErrorObj?.message !== 'Noutoajat ma-pe 9-16' ||
                                                     errors.fetchDate?.type === 'required' ||
                                                     errors.fetchDate?.type === 'pattern') &&
                                                 !!errors.fetchDate
