@@ -37,6 +37,7 @@ export type StateMachineActions = {
 };
 
 function ContactsAndDelivery() {
+    const [errorMessages, setErrorMessages] = useState({ value: false, message: '' });
     const user = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
     const [selectedAddress, setSelectedAddress] = useState(
         Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
@@ -48,7 +49,8 @@ function ContactsAndDelivery() {
             ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryRequired
             : 'true'
     );
-    const currentDate = new Date();
+    const currentDate = new Date(Date.now());
+    console.log(currentDate);
     const [fetchDate, setFetchDate] = useState(
         Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
             ? parse(JSON.parse(String(sessionStorage.getItem('__LSM__'))).fetchDate, 'd.M.yyyy', new Date())
@@ -110,7 +112,33 @@ function ContactsAndDelivery() {
         // console.log(date >= new Date(maxDate), dateIsHoliday, isPast(date), isWeekend(date));
         // console.log(new Date(Date.now()));
         // console.log(date, new Date(maxDate), date >= new Date(maxDate));
-        return dateIsHoliday || isPast(date) || isWeekend(date);
+        const disabledDatesMessages = [
+            {
+                value: date >= new Date(maxDate),
+                message: 'Päivämäärä on yli maksimin.',
+            },
+            { value: dateIsHoliday, message: 'Juhlatpäiviä ei sallita noutopäiviksi.' },
+            {
+                value: isPast(date),
+                message: 'Menneitä päiviä ei sallita noutopäiviksi.',
+            },
+            { value: isWeekend(date), message: 'Viikonloppuja ei sallita noutopäiviksi.' },
+            { value: isValid(date), message: 'Noutoajat ma-pe 9-16' },
+        ];
+
+        const errorFound = disabledDatesMessages.find((dateErrObj) => dateErrObj.value) as {
+            value: boolean;
+            message: string;
+        };
+
+        errorFound && sessionStorage.setItem('dateErrorObj', JSON.stringify(errorFound));
+
+        return (
+            disabledDatesMessages[0].value ||
+            disabledDatesMessages[1].value ||
+            disabledDatesMessages[2].value ||
+            disabledDatesMessages[3].value
+        );
     }
 
     function handleDateChange(value: Date) {
@@ -119,7 +147,9 @@ function ContactsAndDelivery() {
         setFetchDate(value);
     }
 
-    console.log(fetchDate);
+    const dateErrorObj = JSON.parse(sessionStorage.getItem('dateErrorObj') as string);
+
+    console.log(dateErrorObj);
 
     return (
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
@@ -328,7 +358,6 @@ function ContactsAndDelivery() {
                                 <DatePicker
                                     label="Noutoaika"
                                     value={fetchDate}
-                                    inputFormat="d.M.yyyy"
                                     onChange={(value) => handleDateChange(value as Date)}
                                     renderInput={(props) => (
                                         <TextField
@@ -337,29 +366,25 @@ function ContactsAndDelivery() {
                                             {...register('fetchDate', {
                                                 required: 'Tämä kenttä on täytettävä',
                                                 validate: (dateString) => {
-                                                    console.log(dateString, typeof dateString);
                                                     const date = parse(String(dateString), 'd.M.yyyy', new Date());
-                                                    console.log('!test', date, typeof date);
-                                                    // const validDate = isValid(date) === false && new Date(date);
-                                                    // const dateParam =
-                                                    //     typeof dateString === 'string' && new Date(dateString);
-                                                    // const dateParam = !validDate ? date : validDate;
-                                                    // const dateCorrectType = !dateParam ? dateString : dateParam;
-                                                    // console.log(dateCorrectType, 'in validate', typeof dateCorrectType);
                                                     return !disableDate(date);
                                                 },
-                                                // pattern: {
-                                                //     value: /^[0-9.]+$/,
-                                                //     message: 'Sisällön täytyy koostua vain numeroista',
-                                                // },
-                                                //minLength: { value: 10, message: 'Syötä kokonainen päivämäärä' },
+                                                pattern: {
+                                                    value: /^([1-9]|0[1-9]|[12][0-9]|3[01])[-.]([1-9]|0[1-9]|1[012])[-.](19|20)\d\d$/,
+                                                    message: 'Sisällön täytyy olla muotoa p.k.vvvv',
+                                                },
                                             })}
                                             error={!!errors.fetchDate}
-                                            helperText={errors.fetchDate?.message?.toString() || 'Noutoajat ma-pe 9-16'}
+                                            helperText={
+                                                dateErrorObj?.message ||
+                                                errors.fetchDate?.message?.toString() ||
+                                                'Noutoajat ma-pe 9-16'
+                                            }
                                         />
                                     )}
                                     shouldDisableDate={disableDate}
                                     maxDate={new Date(maxDate)}
+                                    // sx={{"& .Mui-disabled: {opacity: 0.5}"}}
                                     disablePast
                                     disableMaskedInput
                                 />
