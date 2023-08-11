@@ -48,8 +48,6 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
         setAddedToCart(false);
     }, [product?.available]);
 
-    // shoppingCartLoader pitää saada päivittymään kun drawerissa muuttaa tuotemääriä
-
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
             {isNotLoggedIn && <AlertBox text="Kirjautuminen vaaditaan ostoskorin käyttöön" status="error" />}

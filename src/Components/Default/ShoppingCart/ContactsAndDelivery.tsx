@@ -12,12 +12,11 @@ import type { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
 
 import TypographyTitle from '../../TypographyTitle';
 import TypographyHeading from '../../TypographyHeading';
-import { DatePicker, LocalizationProvider, PickersDay } from '@mui/x-date-pickers';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { isWeekend, isPast, parse, format, isValid } from 'date-fns';
 import { fi } from 'date-fns/locale';
 import Holidays from 'date-holidays';
-import { type PickersDayProps } from '@mui/lab';
 
 export interface CartFormData {
     firstName: string;
@@ -71,6 +70,7 @@ function ContactsAndDelivery() {
         formState: { errors },
         setValue,
         getValues,
+        clearErrors,
     } = useForm({
         mode: 'onTouched',
         defaultValues: {
@@ -106,11 +106,7 @@ function ContactsAndDelivery() {
     }, [selectedAddress]);
 
     function disableDate(date: Date) {
-        // console.log(date, 'in function', typeof date);
         const dateIsHoliday = finnishHolidays.some((holiday) => String(holiday.start) === String(date));
-        // console.log(date >= new Date(maxDate), dateIsHoliday, isPast(date), isWeekend(date));
-        // console.log(new Date(Date.now()));
-        // console.log(date, new Date(maxDate), date >= new Date(maxDate));
         const disabledDatesMessages = [
             {
                 value: date >= new Date(maxDate),
@@ -145,12 +141,15 @@ function ContactsAndDelivery() {
             'dateErrorObj',
             JSON.stringify({ value: isValid(value), message: 'Noutoajat ma-pe 9-16' })
         );
+        clearErrors('fetchDate');
         const date = isValid(value) && format(value, 'd.M.yyyy');
         date && setValue('fetchDate', date);
         setFetchDate(value);
     }
 
     const dateErrorObj = JSON.parse(sessionStorage.getItem('dateErrorObj') as string);
+
+    console.log(errors.fetchDate?.type);
 
     return (
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
@@ -362,7 +361,6 @@ function ContactsAndDelivery() {
                                     onChange={(value) => handleDateChange(value as Date)}
                                     renderInput={(props) => (
                                         <TextField
-                                            value={fetchDate}
                                             {...props}
                                             {...register('fetchDate', {
                                                 required: 'Tämä kenttä on täytettävä',
@@ -376,11 +374,14 @@ function ContactsAndDelivery() {
                                                 },
                                             })}
                                             error={
-                                                dateErrorObj.message !== 'Noutoajat ma-pe 9-16' && !!errors.fetchDate
+                                                (dateErrorObj.message !== 'Noutoajat ma-pe 9-16' ||
+                                                    errors.fetchDate?.type === 'required' ||
+                                                    errors.fetchDate?.type === 'pattern') &&
+                                                !!errors.fetchDate
                                             }
                                             helperText={
-                                                dateErrorObj?.message ||
                                                 errors.fetchDate?.message?.toString() ||
+                                                dateErrorObj?.message ||
                                                 'Noutoajat ma-pe 9-16'
                                             }
                                         />
