@@ -37,7 +37,6 @@ export type StateMachineActions = {
 };
 
 function ContactsAndDelivery() {
-    const [errorMessages, setErrorMessages] = useState({ value: false, message: '' });
     const user = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
     const [selectedAddress, setSelectedAddress] = useState(
         Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
@@ -50,7 +49,6 @@ function ContactsAndDelivery() {
             : 'true'
     );
     const currentDate = new Date(Date.now());
-    console.log(currentDate);
     const [fetchDate, setFetchDate] = useState(
         Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
             ? parse(JSON.parse(String(sessionStorage.getItem('__LSM__'))).fetchDate, 'd.M.yyyy', new Date())
@@ -142,6 +140,10 @@ function ContactsAndDelivery() {
     }
 
     function handleDateChange(value: Date) {
+        sessionStorage.setItem(
+            'dateErrorObj',
+            JSON.stringify({ value: isValid(value), message: 'Noutoajat ma-pe 9-16' })
+        );
         const date = isValid(value) && format(value, 'd.M.yyyy');
         date && setValue('fetchDate', date);
         setFetchDate(value);
@@ -149,7 +151,7 @@ function ContactsAndDelivery() {
 
     const dateErrorObj = JSON.parse(sessionStorage.getItem('dateErrorObj') as string);
 
-    console.log(dateErrorObj);
+    console.log(dateErrorObj.message, typeof dateErrorObj.message);
 
     return (
         <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
@@ -374,7 +376,9 @@ function ContactsAndDelivery() {
                                                     message: 'Sisällön täytyy olla muotoa p.k.vvvv',
                                                 },
                                             })}
-                                            error={!!errors.fetchDate}
+                                            error={
+                                                dateErrorObj.message !== 'Noutoajat ma-pe 9-16' && !!errors.fetchDate
+                                            }
                                             helperText={
                                                 dateErrorObj?.message ||
                                                 errors.fetchDate?.message?.toString() ||
