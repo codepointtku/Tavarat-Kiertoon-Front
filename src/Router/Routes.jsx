@@ -43,7 +43,7 @@ import AdminOrderEmailList from '../Components/Admin/AdminOrderEmailList';
 
 import AdminInbox from '../Components/Admin/AdminInbox';
 
-import UsersList from '../Components/Admin/UsersList';
+import UsersGrid from '../Components/Admin/UsersGrid';
 import UserEdit from '../Components/Admin/UserEdit';
 import UserAddressEdit from '../Components/Admin/UserAddressEdit';
 import UserAddressCreate from '../Components/Admin/UserAddressCreate';
@@ -597,7 +597,7 @@ function Routes() {
                                     children: [
                                         {
                                             index: true,
-                                            element: <UsersList />,
+                                            element: <UsersGrid />,
                                             // errorElement: <UserError />,
                                             id: 'kayttajat',
                                             loader: usersListLoader,
