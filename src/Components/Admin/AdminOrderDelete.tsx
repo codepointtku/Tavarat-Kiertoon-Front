@@ -12,6 +12,7 @@ import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
 import type { orderEditLoader } from '../../Router/loaders';
+import Tooltip from '../Tooltip';
 
 //
 
@@ -150,16 +151,18 @@ function AdminOrderDelete({ randomInt }: any) {
 
                     <Grid container>
                         <Grid item xs={4}>
-                            <Button
-                                id="cancel-btn"
-                                size="small"
-                                component={Link}
-                                to="/admin/tilaukset/"
-                                startIcon={<ArrowBackIcon />}
-                                sx={{ margin: '4rem 0 1rem 0' }}
-                            >
-                                Palaa takaisin tallentamatta
-                            </Button>
+                            <Tooltip title="Takaisin tilaukset-listaukseen">
+                                <Button
+                                    id="cancel-btn"
+                                    size="small"
+                                    component={Link}
+                                    to="/admin/tilaukset/"
+                                    startIcon={<ArrowBackIcon />}
+                                    sx={{ margin: '4rem 0 1rem 0' }}
+                                >
+                                    Palaa takaisin tallentamatta
+                                </Button>
+                            </Tooltip>
                         </Grid>
                         <Grid item xs={8} />
                     </Grid>
