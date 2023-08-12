@@ -63,7 +63,6 @@ function ProductCard({
             <Card sx={{ width: 300, height: 365 }}>
                 <CardActionArea component={Box}>
                     <Carousel
-                        animation="slide"
                         duration={850}
                         interval={2000}
                         autoPlay={false}
@@ -87,7 +86,7 @@ function ProductCard({
                                                 width: '100%',
                                                 height: '100%',
                                                 paddingLeft: 2,
-                                                backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
                                                 backdropFilter: 'blur(6px)',
                                             }}
                                             justifyContent="space-evenly"

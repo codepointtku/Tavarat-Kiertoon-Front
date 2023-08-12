@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect, type ReactNode } from 'react';
-import { useLoaderData, useNavigate, useSubmit, useLocation } from 'react-router-dom';
+import { useLoaderData, useNavigate, useLocation, useFetcher } from 'react-router-dom';
 
 import {
     AppBar,
@@ -142,10 +142,10 @@ interface CartProduct {
 
 function DefaultAppBar() {
     const { auth } = useContext(AuthContext);
+    const fetcher = useFetcher();
     const [notLoggedIn, setNotLoggedIn] = useState(false);
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
-    const submit = useSubmit() as unknown as SubmitFunction;
     const { cart, products, amountList } = useLoaderData() as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
     const [cartEmpty, setCartEmpty] = useState(false);
@@ -190,7 +190,7 @@ function DefaultAppBar() {
     }
 
     function handleEmptyCart() {
-        submit('a', { method: 'put', action: '/' });
+        fetcher.submit('a' as unknown as HTMLFormElement, { method: 'put', action: '/' });
         setAnchorEl(null);
     }
 

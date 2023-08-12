@@ -41,8 +41,9 @@ function ProfileInfo() {
         register,
         reset,
         handleSubmit,
-        formState: { isDirty },
+        formState: { isDirty, errors },
     } = useForm({
+        mode: 'onTouched',
         defaultValues: {
             username: userInfo.username,
             first_name: userInfo.first_name,
@@ -78,24 +79,61 @@ function ProfileInfo() {
             <Grid container id="user-info-container" direction="row" justifyContent="space-evenly" sx={{ mb: 5 }}>
                 <Grid container sx={{ width: '50%' }} direction="column" alignItems="center" gap={2}>
                     <Grid item>
-                        <TextField {...register('first_name')} label="Etunimi" placeholder="Etunimi" />
+                        <TextField
+                            {...register('first_name', {
+                                required: 'Tämä kenttä on täytettävä',
+                                maxLength: { value: 100, message: 'Sisältö on liian pitkä' },
+                            })}
+                            label="Etunimi"
+                            placeholder="Etunimi"
+                            inputProps={{ required: false }}
+                            error={!!errors.first_name}
+                            helperText={errors.first_name?.message?.toString() || ' '}
+                            required
+                        />
                     </Grid>
                     <Grid item>
-                        <TextField {...register('last_name')} label="Sukunimi" placeholder="Sukunimi" />
+                        <TextField
+                            {...register('last_name', {
+                                required: 'Tämä kenttä on täytettävä',
+                                maxLength: { value: 100, message: 'Sisältö on liian pitkä' },
+                            })}
+                            label="Sukunimi"
+                            placeholder="Sukunimi"
+                            inputProps={{ required: false }}
+                            error={!!errors.last_name}
+                            helperText={errors.last_name?.message?.toString() || ' '}
+                            required
+                        />
                     </Grid>
                     <Grid item>
-                        <TextField {...register('phone_number')} label="Puhelin numero" placeholder="Puhelin numero" />
+                        <TextField
+                            {...register('phone_number', {
+                                required: 'Tämä kenttä on täytettävä',
+                                minLength: { value: 2, message: 'Sisältö on liian lyhyt' },
+                                maxLength: { value: 100, message: 'Sisältö on liian pitkä' },
+                                pattern: { value: /^\d+$/, message: 'Sisällön täytyy koostua vain numeroista' },
+                            })}
+                            label="Puhelin numero"
+                            placeholder="Puhelin numero"
+                            inputProps={{ required: false }}
+                            error={!!errors.phone_number}
+                            helperText={errors.phone_number?.message?.toString() || ' '}
+                            sx={{ width: 211 }}
+                            required
+                        />
                     </Grid>
                 </Grid>
                 <Grid container sx={{ width: '50%' }} direction="column" gap={2}>
                     <Grid container direction="row" gap={1} sx={{ pl: '11rem' }}>
                         <Grid item>
                             <TextField
-                                {...register('userAddress')}
+                                {...register('userAddress', { required: 'Tämä kenttä on täytettävä' })}
                                 value={selectedAddress}
                                 label="Osoitteet"
                                 placeholder="Osoitteet"
                                 onChange={(event) => setSelectedAddress(event.target.value)}
+                                helperText={' '}
                                 sx={{ width: '13.25rem' }}
                                 select
                             >
@@ -129,7 +167,13 @@ function ProfileInfo() {
                     </Grid>
                     <Grid container direction="row" gap={1} sx={{ pl: '11rem' }}>
                         <Grid item>
-                            <TextField {...register('email')} label="Sähköposti" placeholder="Sähköposti" disabled />
+                            <TextField
+                                defaultValue={userInfo.email}
+                                helperText={' '}
+                                label="Sähköposti"
+                                placeholder="Sähköposti"
+                                disabled
+                            />
                         </Grid>
                         <Grid item>
                             <Button component={Link} to="/sahkopostinvaihto" sx={{ p: 2 }}>

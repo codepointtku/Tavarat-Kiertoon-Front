@@ -14,26 +14,34 @@ function HeroText({ title, subtitle, text, subtext, subtext2, footer }: Props) {
     return (
         <Box id="hero-texts-wrapper" m="1rem 0 1rem 0">
             <TypographyTitle text={title} />
-            {subtitle ||
-                text ||
-                subtext ||
-                (subtext2 && (
-                    <Stack id="hero-texts-stack" alignItems="center" mt="1rem">
-                        <Typography textAlign="center" variant="subtitle2">
-                            {subtitle}
-                        </Typography>
-                        <Typography textAlign="center" sx={{ mt: '1rem' }}>
-                            {text}
-                        </Typography>
-                        <Typography textAlign="center" variant="body2" paragraph>
-                            {subtext}
-                        </Typography>
-                        <Typography textAlign="center" variant="body2" paragraph>
-                            {subtext2}
-                        </Typography>
-                        {footer}
-                    </Stack>
-                ))}
+
+            <Stack id="hero-texts-stack" alignItems="center" mt="1rem">
+                {subtitle && (
+                    <Typography textAlign="center" variant="subtitle2">
+                        {subtitle}
+                    </Typography>
+                )}
+
+                {text && (
+                    <Typography textAlign="center" sx={{ mt: '1rem' }}>
+                        {text}
+                    </Typography>
+                )}
+
+                {subtext && (
+                    <Typography textAlign="center" variant="body2" paragraph sx={{ mt: '1rem' }}>
+                        {subtext}
+                    </Typography>
+                )}
+
+                {subtext2 && (
+                    <Typography textAlign="center" variant="body2" paragraph>
+                        {subtext2}
+                    </Typography>
+                )}
+
+                {footer}
+            </Stack>
         </Box>
     );
 }
