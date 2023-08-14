@@ -13,7 +13,7 @@ interface Props {
     actions?: StateMachineActions;
     formData?: CartFormData;
     unconfirmedChangesCartProducts?: object[];
-    status?: boolean;
+    isSubmitted?: boolean;
 }
 
 interface CustomButtonProps extends ButtonProps {
@@ -45,7 +45,7 @@ function CartButtons({
     actions,
     formData,
     unconfirmedChangesCartProducts,
-    status,
+    isSubmitted,
 }: Props) {
     return (
         <Grid container justifyContent="space-between" sx={{ marginTop: '2rem' }}>
@@ -57,7 +57,9 @@ function CartButtons({
                 type="submit"
                 variant="contained"
                 disabled={
-                    cartEmpty || (unconfirmedChangesCartProducts && unconfirmedChangesCartProducts.length > 0) || status
+                    cartEmpty ||
+                    (unconfirmedChangesCartProducts && unconfirmedChangesCartProducts.length > 0) ||
+                    isSubmitted
                 }
                 endIcon={<ArrowForwardIcon />}
             >

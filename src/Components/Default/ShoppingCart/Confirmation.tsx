@@ -25,7 +25,11 @@ interface CartState {
 }
 
 function Confirmation() {
-    const { handleSubmit, register } = useForm();
+    const {
+        handleSubmit,
+        register,
+        formState: { isSubmitted },
+    } = useForm();
     const submit = useSubmit();
     const navigate = useNavigate();
     const responseStatus = useActionData() as { type: string; status: boolean };
@@ -132,7 +136,7 @@ function Confirmation() {
                 <Typography variant="subtitle2" align="center">
                     Tilausvahvistus lähetetään sähköpostiin.
                 </Typography>
-                <CartButtons backText="Takaisin" forwardText="Vahvista" status={responseStatus?.status} />
+                <CartButtons backText="Takaisin" forwardText="Vahvista" isSubmitted={isSubmitted} />
             </form>
         </Box>
     );
