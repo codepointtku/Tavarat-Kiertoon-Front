@@ -70,7 +70,6 @@ function ContactsAndDelivery() {
         formState: { errors },
         setValue,
         getValues,
-        trigger,
         clearErrors,
     } = useForm({
         mode: 'onTouched',

@@ -132,7 +132,7 @@ function Confirmation() {
                 <Typography variant="subtitle2" align="center">
                     Tilausvahvistus lähetetään sähköpostiin.
                 </Typography>
-                <CartButtons backText="Takaisin" forwardText="Vahvista" />
+                <CartButtons backText="Takaisin" forwardText="Vahvista" status={responseStatus?.status} />
             </form>
         </Box>
     );

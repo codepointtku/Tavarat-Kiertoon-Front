@@ -198,7 +198,7 @@ function DefaultAppBar() {
         setUnconfirmedChangesCartProducts([]);
         setAnchorEl(null);
     }
-
+    console.log(unconfirmedChangesCartProducts);
     return (
         <Box id="appbar-containing-div" sx={toolBarHover}>
             <AppBar

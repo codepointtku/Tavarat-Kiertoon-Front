@@ -13,6 +13,7 @@ interface Props {
     actions?: StateMachineActions;
     formData?: CartFormData;
     unconfirmedChangesCartProducts?: object[];
+    status?: boolean;
 }
 
 interface CustomButtonProps extends ButtonProps {
@@ -37,8 +38,15 @@ const LinkButton: FC<CustomButtonProps> = ({ component, to, backText, actions, f
     );
 };
 
-function CartButtons({ backText, forwardText, cartEmpty, actions, formData, unconfirmedChangesCartProducts }: Props) {
-    console.log(unconfirmedChangesCartProducts);
+function CartButtons({
+    backText,
+    forwardText,
+    cartEmpty,
+    actions,
+    formData,
+    unconfirmedChangesCartProducts,
+    status,
+}: Props) {
     return (
         <Grid container justifyContent="space-between" sx={{ marginTop: '2rem' }}>
             {/* <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'center' }}> */}
@@ -48,7 +56,9 @@ function CartButtons({ backText, forwardText, cartEmpty, actions, formData, unco
             <Button
                 type="submit"
                 variant="contained"
-                disabled={cartEmpty || (unconfirmedChangesCartProducts && unconfirmedChangesCartProducts.length > 0)}
+                disabled={
+                    cartEmpty || (unconfirmedChangesCartProducts && unconfirmedChangesCartProducts.length > 0) || status
+                }
                 endIcon={<ArrowForwardIcon />}
             >
                 {forwardText}
