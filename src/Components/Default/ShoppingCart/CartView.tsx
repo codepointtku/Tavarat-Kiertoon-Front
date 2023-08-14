@@ -27,15 +27,14 @@ function CartView() {
         }
     }, []);
 
+    const onSubmit = () => {
+        navigate('/ostoskori/vaihe2');
+    };
     function initializeCartProducts() {
         const productArr = [] as object[];
         cartProducts?.forEach((product) => productArr.push(product.product.id));
         return productArr;
     }
-
-    const onSubmit = () => {
-        navigate('/ostoskori/vaihe2');
-    };
 
     return (
         <>
