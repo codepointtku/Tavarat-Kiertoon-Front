@@ -90,7 +90,7 @@ function ContactsAndDelivery() {
 
     const navigate = useNavigate();
     const onSubmit = (data: CartFormData) => {
-        if (fetchDate.setHours(0, 0, 0, 0) === currentDate.setHours(0, 0, 0, 0)) {
+        if (fetchDate.setHours(0, 0, 0, 0) === currentDate.setHours(0, 0, 0, 0) && selectedMethod === 'false') {
             return null;
         }
         actions.Update(data);
