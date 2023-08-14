@@ -81,7 +81,7 @@ function ContactsAndDelivery() {
             deliveryAddress: state.deliveryAddress ? state.deliveryAddress : correctAddress[0].address,
             zipcode: state.zipcode ? state.zipcode : correctAddress[0].zip_code,
             city: state.city ? state.city : correctAddress[0].city,
-            deliveryRequired: state.deliveryRequired ? state.deliveryRequired : '',
+            deliveryRequired: state.deliveryRequired ? state.deliveryRequired : 'true',
             fetchDate: state.fetchDate ? state.fetchDate : currentDate,
             orderInfo: state.orderInfo ? state.orderInfo : '',
         },
@@ -106,7 +106,7 @@ function ContactsAndDelivery() {
     useEffect(() => {
         setValue('zipcode', correctAddress[0]?.zip_code);
         setValue('city', correctAddress[0]?.city);
-    }, [selectedAddress]);
+    }, [selectedAddress, correctAddress, setValue]);
 
     function disableDate(date: Date) {
         const dateIsHoliday = finnishHolidays.some((holiday) => String(holiday.start) === String(date));

@@ -25,7 +25,7 @@ function CartView() {
         if (sessionStorage.getItem('__LSM__') === null) {
             actions.ClearInfo();
         }
-    }, []);
+    }, [actions]);
 
     const onSubmit = () => {
         navigate('/ostoskori/vaihe2');
