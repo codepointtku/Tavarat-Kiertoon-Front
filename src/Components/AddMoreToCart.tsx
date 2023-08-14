@@ -13,15 +13,36 @@ interface Props {
     maxCount: number;
     count?: number;
     inOrderingProcess?: boolean | undefined;
+    amountChangeState?: {
+        unconfirmedChangesCartProducts: object[];
+        setUnconfirmedChangesCartProducts: React.Dispatch<React.SetStateAction<object[]>>;
+    };
 }
 
-function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) {
+function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess, amountChangeState }: Props) {
     const fetcher = useFetcher();
     const [amountN, setAmountN] = useState(count ?? 1);
     const [selectedAmount, setSelectedAmount] = useState(count ?? 1);
     const [addedToCart, setAddedToCart] = useState(true);
     const [searchParams] = useSearchParams();
     const { handleSubmit, register } = useForm();
+
+    useEffect(() => {
+        if (amountChangeState) {
+            if (addedToCart) {
+                amountChangeState.unconfirmedChangesCartProducts.includes(id) &&
+                    amountChangeState.setUnconfirmedChangesCartProducts((changes) =>
+                        changes.filter((item) => item !== id)
+                    );
+            }
+            if (!addedToCart) {
+                !amountChangeState.unconfirmedChangesCartProducts.includes(id) &&
+                    amountChangeState.setUnconfirmedChangesCartProducts((changes) => [...changes, id]);
+            }
+        }
+    }, [addedToCart]);
+
+    console.log(amountChangeState?.unconfirmedChangesCartProducts);
 
     useEffect(() => {
         setAmountN(count ?? 1);

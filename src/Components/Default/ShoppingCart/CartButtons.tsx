@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { type FC } from 'react';
 import { Link, type LinkProps, type To } from 'react-router-dom';
 import { Button, type ButtonProps, Grid } from '@mui/material';
 import { type CartFormData } from './ContactsAndDelivery';
@@ -12,6 +12,7 @@ interface Props {
     cartEmpty?: boolean;
     actions?: StateMachineActions;
     formData?: CartFormData;
+    unconfirmedChangesCartProducts: object[];
 }
 
 interface CustomButtonProps extends ButtonProps {
@@ -36,14 +37,19 @@ const LinkButton: FC<CustomButtonProps> = ({ component, to, backText, actions, f
     );
 };
 
-function CartButtons({ backText, forwardText, cartEmpty, actions, formData }: Props) {
+function CartButtons({ backText, forwardText, cartEmpty, actions, formData, unconfirmedChangesCartProducts }: Props) {
     return (
         <Grid container justifyContent="space-between" sx={{ marginTop: '2rem' }}>
             {/* <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'center' }}> */}
             <LinkButton component={Link} to={-1} backText={backText} actions={actions} formData={formData} />
             {/* </Grid> */}
             {/* <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'center' }}> */}
-            <Button type="submit" variant="contained" disabled={cartEmpty} endIcon={<ArrowForwardIcon />}>
+            <Button
+                type="submit"
+                variant="contained"
+                disabled={cartEmpty || unconfirmedChangesCartProducts.length > 0}
+                endIcon={<ArrowForwardIcon />}
+            >
                 {forwardText}
             </Button>
             {/* </Grid> */}

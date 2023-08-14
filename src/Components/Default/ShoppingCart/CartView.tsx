@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useStateMachine } from 'little-state-machine';
@@ -19,12 +19,19 @@ function CartView() {
         ReturnType<typeof shoppingCartLoader>
     >;
     const { handleSubmit } = useForm();
+    const [unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts] = useState(initializeCartProducts());
 
     useEffect(() => {
         if (sessionStorage.getItem('__LSM__') === null) {
             actions.ClearInfo();
         }
     }, []);
+
+    function initializeCartProducts() {
+        const productArr = [] as object[];
+        cartProducts?.forEach((product) => productArr.push(product.product.id));
+        return productArr;
+    }
 
     const onSubmit = () => {
         navigate('/ostoskori/vaihe2');
@@ -64,6 +71,10 @@ function CartView() {
                                             >
                                         }
                                         inOrderingProcess={true}
+                                        amountChangeState={{
+                                            unconfirmedChangesCartProducts,
+                                            setUnconfirmedChangesCartProducts,
+                                        }}
                                     />
                                 );
                             })}
@@ -73,7 +84,12 @@ function CartView() {
             </Grid>
             <Divider sx={{ margin: '1rem 0 1rem 0' }} />
             <form onSubmit={handleSubmit(onSubmit)}>
-                <CartButtons backText="Jatka ostoksia" forwardText="Seuraava" cartEmpty={cartProducts?.length === 0} />
+                <CartButtons
+                    backText="Jatka ostoksia"
+                    forwardText="Seuraava"
+                    cartEmpty={cartProducts?.length === 0}
+                    unconfirmedChangesCartProducts={unconfirmedChangesCartProducts}
+                />
             </form>
         </>
     );

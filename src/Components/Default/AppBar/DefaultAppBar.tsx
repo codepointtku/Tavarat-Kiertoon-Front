@@ -196,7 +196,6 @@ function DefaultAppBar() {
     function handleEmptyCart() {
         fetcher.submit('a' as unknown as HTMLFormElement, { method: 'put', action: '/' });
         setUnconfirmedChangesCartProducts([]);
-        console.log(unconfirmedChangesCartProducts);
         setAnchorEl(null);
     }
 
