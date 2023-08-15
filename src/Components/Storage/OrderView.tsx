@@ -115,11 +115,13 @@ function OrderView({ isAdmin }: Props) {
                                     <HasRole role="admin_group">
                                         <Button
                                             component={Link}
-                                            to={
-                                                isAdmin
-                                                    ? `/admin/tilaukset/${order.id}/muokkaa`
-                                                    : `/varasto/tilaukset/${order.id}/muokkaa`
-                                            }
+                                            to={`/admin/tilaukset/${order.id}/muokkaa`}
+                                            // leaving this here incase storage needs to have the ability to edit orders
+                                            // to={
+                                            //     isAdmin
+                                            //         ? `/admin/tilaukset/${order.id}/muokkaa`
+                                            //         : `/varasto/tilaukset/${order.id}/muokkaa`
+                                            // }
                                         >
                                             Muokkaa tilausta
                                         </Button>
