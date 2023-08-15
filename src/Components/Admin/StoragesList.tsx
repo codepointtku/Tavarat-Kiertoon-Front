@@ -3,11 +3,10 @@ import { useLoaderData } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
 
-import { Stack, Button, Link as MuiLink } from '@mui/material';
+import { Stack, Button } from '@mui/material';
 
 import {
     DataGrid,
-    GridColDef,
     GridToolbarContainer,
     GridToolbarColumnsButton,
     GridToolbarDensitySelector,
@@ -18,6 +17,7 @@ import {
 
 import TypographyTitle from '../TypographyTitle';
 
+import type { GridColDef } from '@mui/x-data-grid';
 import type { storagesListLoader } from '../../Router/loaders';
 
 function StoragesList() {
@@ -44,15 +44,15 @@ function StoragesList() {
     const columns: GridColDef[] = [
         { field: 'name', headerName: 'Varasto', flex: 1 },
         { field: 'address', headerName: 'Osoite', flex: 1 },
+        { field: 'zip_code', headerName: 'Postinumero', flex: 1 },
+        { field: 'city', headerName: 'Kaupunki', flex: 1 },
         { field: 'in_use', headerName: 'Tila' },
         {
             field: 'id',
             headerName: 'Toiminnot',
             renderCell: (params) => (
-                <Button variant="outlined">
-                    <MuiLink component={Link} to={`/admin/varastot/${params.value}`}>
-                        Avaa
-                    </MuiLink>
+                <Button component={Link} to={`/admin/varastot/${params.value}`} variant="outlined">
+                    Avaa
                 </Button>
             ),
         },
@@ -273,7 +273,7 @@ function StoragesList() {
                 id="datagrid-parent"
                 style={{ display: 'flex', height: '100%', width: '100%', margin: '1rem 0 1rem 0' }}
             >
-                <div id="datagrid-child" style={{ flexGrow: 1 }}>
+                <div id="datagrid-child" style={{ flex: 1 }}>
                     <GridX />
                 </div>
             </div>

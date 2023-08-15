@@ -260,6 +260,8 @@ const storageEditAction = async ({ request, params }) => {
     const response = await storagesApi.storagesUpdate(params.id, {
         address: formData.get('address'),
         name: formData.get('name'),
+        zip_code: formData.get('zip_code'),
+        city: formData.get('city'),
         in_use: formData.get('in_use') === 'Käytössä' ? true : false,
     });
 
@@ -296,7 +298,7 @@ const productsTransferAction = async ({ request }) => {
         product_items: productIds,
     };
 
-    console.log('transfer a:', transfer);
+    // console.log('transfer a:', transfer);
 
     const response = await productsApi.productsTransferUpdate(transfer);
 
