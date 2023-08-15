@@ -28,6 +28,9 @@ import TypographyHeading from '../TypographyHeading';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
+import type { userSignupAction } from '../../Router/actions';
+import type { userEditLoader } from '../../Router/loaders';
+
 const groupNames = {
     user_group: 'Käyttäjä',
     admin_group: 'Ylläpitäjä',
@@ -36,9 +39,8 @@ const groupNames = {
 };
 
 function UserEdit() {
-    const { userInfo, allGroups } = useLoaderData();
-
-    const actionData = useActionData();
+    const { userInfo, allGroups } = useLoaderData() as Awaited<ReturnType<typeof userEditLoader>>;
+    const actionData = useActionData() as Awaited<ReturnType<typeof userSignupAction>>;
 
     const creationDateInfo = [];
     const creationDate = new Date(userInfo.creation_date);
@@ -46,7 +48,7 @@ function UserEdit() {
     creationDateInfo.push(creationDate.toLocaleTimeString());
 
     const lastLoginDateInfo = [];
-    const lastLoginDate = new Date(userInfo.last_login);
+    const lastLoginDate = new Date(userInfo.last_login!);
     lastLoginDateInfo.push(lastLoginDate.toLocaleDateString());
     lastLoginDateInfo.push(lastLoginDate.toLocaleTimeString());
 
@@ -63,14 +65,23 @@ function UserEdit() {
         },
     });
 
+    // console.log(userInfo.groups.map((group) => String(group.id)));
+
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data) => {
         // console.log('%c Submitissa menevä tieto', 'color: blue', data);
-        submit(data, {
-            method: 'put',
-        });
-        reset();
+        submit(
+            {
+                first_name: data.first_name,
+                last_name: data.last_name,
+                phone_number: data.phone_number!,
+                groups: data.groups.toString(),
+            },
+            {
+                method: 'put',
+            }
+        );
     });
 
     return (
@@ -148,8 +159,8 @@ function UserEdit() {
                                             inputProps={{ required: false }}
                                             required
                                             error={!!formStateErrors.first_name}
-                                            helperText={formStateErrors.first_name?.message || ' '}
-                                            color={dirtyFields.first_name && 'warning'}
+                                            helperText={formStateErrors.first_name?.message?.toString() || ' '}
+                                            // color={dirtyFields.first_name && 'warning'}
                                             fullWidth
                                         />
 
@@ -171,8 +182,8 @@ function UserEdit() {
                                             inputProps={{ required: false }}
                                             required
                                             error={!!formStateErrors.last_name}
-                                            helperText={formStateErrors.last_name?.message || ' '}
-                                            color={dirtyFields.last_name && 'warning'}
+                                            helperText={formStateErrors.last_name?.message?.toString() || ' '}
+                                            // color={dirtyFields.last_name && 'warning'}
                                             fullWidth
                                         />
                                     </Stack>
@@ -196,8 +207,8 @@ function UserEdit() {
                                         inputProps={{ required: false }}
                                         required
                                         error={!!formStateErrors.phone_number}
-                                        helperText={formStateErrors.phone_number?.message || ' '}
-                                        color={dirtyFields.phone_number && 'warning'}
+                                        helperText={formStateErrors.phone_number?.message?.toString() || ' '}
+                                        // color={dirtyFields.phone_number && 'warning'}
                                     />
                                 </Stack>
                             </Grid>
@@ -264,11 +275,14 @@ function UserEdit() {
                                                             },
                                                             paddingLeft: 0,
                                                         }}
-                                                        {...register('groups', { type: 'checkbox' })}
-                                                        value={group.id}
+                                                        {...register('groups')}
+                                                        defaultChecked={userInfo.groups.some(
+                                                            ({ id }) => group.id === id
+                                                        )}
+                                                        value={String(group.id)}
                                                     />
                                                 }
-                                                label={groupNames[group.name]}
+                                                label={groupNames[group.name as keyof typeof groupNames]}
                                                 // onClick={() => console.log(`clicked checkboxs value: ${group.id}`)}
                                                 sx={{ margin: 0, borderBottom: '1px solid #e0e0e0' }}
                                             />
