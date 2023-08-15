@@ -218,16 +218,10 @@ const usersListLoader = async () => {
  * Used in src/Components/Admin/UserEdit.jsx
  */
 const userEditLoader = async ({ params }) => {
-    const dataList = [];
-    let { data } = await usersApi.usersRetrieve(params.userid);
-    data.groups = data.groups.map((group) => group.id);
-    dataList.push(data);
-    data = await usersApi.usersGroupsList();
-    dataList.push(data.data);
-    if (dataList) {
-        return dataList;
-    }
-    return null;
+    const { data: userInfo } = await usersApi.usersRetrieve(params.userid);
+    const { data: allGroups } = await usersApi.usersGroupsList();
+
+    return { userInfo, allGroups };
 };
 
 const userAddressEditLoader = async ({ params }) => {

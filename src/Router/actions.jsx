@@ -343,7 +343,7 @@ const userEditAction = async ({ request, params }) => {
     };
 
     const selectedAuthGroups = formData
-        .getAll('groups')[0]
+        .get('groups')
         .split(',')
         .map((group) => Number(group));
 

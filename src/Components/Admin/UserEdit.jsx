@@ -36,10 +36,7 @@ const groupNames = {
 };
 
 function UserEdit() {
-    const loaderData = useLoaderData();
-    // loaderData === [{}, []]
-    const userInfo = loaderData[0];
-    const allGroups = loaderData[1];
+    const { userInfo, allGroups } = useLoaderData();
 
     const actionData = useActionData();
 
@@ -62,6 +59,7 @@ function UserEdit() {
         mode: 'all',
         defaultValues: {
             ...userInfo,
+            groups: userInfo.groups.map((group) => String(group.id)),
         },
     });
 
@@ -266,7 +264,6 @@ function UserEdit() {
                                                             },
                                                             paddingLeft: 0,
                                                         }}
-                                                        defaultChecked={userInfo.groups.includes(group.id)}
                                                         {...register('groups', { type: 'checkbox' })}
                                                         value={group.id}
                                                     />
