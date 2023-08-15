@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useLoaderData } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { Stack, Button, Link as MuiLink } from '@mui/material';
+import { Stack, Button } from '@mui/material';
 
 import {
     DataGrid,
@@ -41,10 +41,8 @@ function UsersGrid() {
             field: 'id',
             headerName: 'Toiminnot',
             renderCell: (params) => (
-                <Button variant="outlined">
-                    <MuiLink component={Link} to={`/admin/kayttajat/${params.value}`}>
-                        Avaa
-                    </MuiLink>
+                <Button component={Link} to={`/admin/kayttajat/${params.value}`} variant="outlined">
+                    Avaa
                 </Button>
             ),
         },

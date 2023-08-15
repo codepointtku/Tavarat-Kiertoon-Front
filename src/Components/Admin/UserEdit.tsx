@@ -65,8 +65,6 @@ function UserEdit() {
         },
     });
 
-    // console.log(userInfo.groups.map((group) => String(group.id)));
-
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data) => {
@@ -90,7 +88,12 @@ function UserEdit() {
                 <AlertBox text="Käyttäjätietojen tallennus epäonnistui. Lataa sivu uudestaan." status="error" />
             )}
             {actionData?.type === 'update' && actionData?.status && (
-                <AlertBox text="Käyttäjätiedot tallennettu onnistuneesti" status="success" />
+                <AlertBox
+                    text="Käyttäjätiedot tallennettu onnistuneesti. Uudelleenohjataan..."
+                    status="success"
+                    timer={1}
+                    redirectUrl="/admin/kayttajat"
+                />
             )}
 
             <Container maxWidth="xl">
@@ -109,8 +112,17 @@ function UserEdit() {
                                     }}
                                 >
                                     <Box id="user-common-info" sx={{ margin: '1rem 0 1rem 0' }}>
+                                        <Typography>Käyttäjänimi: {userInfo.username}</Typography>
+                                        <Typography>Käyttäjän tunnistenumero: {userInfo.id}</Typography>
+
                                         <Typography>
                                             Rekisteröitymisaika: {creationDateInfo[0]} / {creationDateInfo[1]}
+                                        </Typography>
+                                        <Typography>
+                                            Viimeisin sisäänkirjautuminen:{' '}
+                                            {userInfo.last_login
+                                                ? `${lastLoginDateInfo[0]} / ${lastLoginDateInfo[1]}`
+                                                : 'Ei koskaan'}
                                         </Typography>
                                         <Stack direction="row" sx={{ display: 'flex', alignItems: 'center' }}>
                                             <Typography>Tili aktivoitu: </Typography>
@@ -128,13 +140,6 @@ function UserEdit() {
                                                 />
                                             )}
                                         </Stack>
-                                        <Typography>
-                                            Viimeisin sisäänkirjautuminen:{' '}
-                                            {userInfo.last_login
-                                                ? `${lastLoginDateInfo[0]} / ${lastLoginDateInfo[1]}`
-                                                : 'Ei koskaan'}
-                                        </Typography>
-                                        <Typography>Käyttäjän tunnistenumero: {userInfo.id}</Typography>
                                     </Box>
                                 </Box>
                             </Grid>
@@ -273,7 +278,6 @@ function UserEdit() {
                                                             '&.Mui-checked': {
                                                                 color: 'success.dark',
                                                             },
-                                                            paddingLeft: 0,
                                                         }}
                                                         {...register('groups')}
                                                         defaultChecked={userInfo.groups.some(
