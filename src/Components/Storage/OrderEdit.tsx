@@ -431,11 +431,7 @@ function OrderEdit() {
                                                 <TextField
                                                     id="textfield-multiline-order-additional-info"
                                                     value={watch('orderInfo')}
-                                                    {...register('orderInfo', {
-                                                        required: 'Pakollinen kenttä',
-                                                    })}
-                                                    required
-                                                    inputProps={{ required: false }}
+                                                    {...register('orderInfo')}
                                                     color={formStateErrors.orderInfo ? 'error' : 'primary'}
                                                     error={!!formStateErrors.orderInfo}
                                                     helperText={formStateErrors.orderInfo?.message?.toString() || ' '}
