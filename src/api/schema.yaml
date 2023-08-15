@@ -5373,12 +5373,20 @@ components:
         address:
           type: string
           maxLength: 255
+        zip_code:
+          type: string
+          maxLength: 255
+        city:
+          type: string
+          maxLength: 255
         in_use:
           type: boolean
       required:
       - address
+      - city
       - id
       - name
+      - zip_code
     StorageResponse:
       type: object
       properties:
@@ -5391,13 +5399,21 @@ components:
         address:
           type: string
           maxLength: 255
+        zip_code:
+          type: string
+          maxLength: 255
+        city:
+          type: string
+          maxLength: 255
         in_use:
           type: boolean
       required:
       - address
+      - city
       - id
       - in_use
       - name
+      - zip_code
     SubSerializerForGroupsSchema:
       type: object
       description: Serializer for getting group names from users
