@@ -7,7 +7,6 @@ import { Stack, Button, Link as MuiLink } from '@mui/material';
 
 import {
     DataGrid,
-    GridColDef,
     GridToolbarContainer,
     GridToolbarColumnsButton,
     GridToolbarDensitySelector,
@@ -18,6 +17,7 @@ import {
 
 import TypographyTitle from '../TypographyTitle';
 
+import type { GridColDef } from '@mui/x-data-grid';
 import type { productListLoader } from '../../Router/loaders';
 
 function ProductsGrid() {
@@ -278,7 +278,7 @@ function ProductsGrid() {
                             );
                         },
                     }}
-                    checkboxSelection
+                    // checkboxSelection
                     localeText={localizedTextsMap}
                     // showColumnVerticalBorder
                     // showCellVerticalBorder

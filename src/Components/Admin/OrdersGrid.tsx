@@ -3,11 +3,10 @@ import * as React from 'react';
 import { useLoaderData } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { Stack, Button, Link as MuiLink } from '@mui/material';
+import { Stack, Button } from '@mui/material';
 
 import {
     DataGrid,
-    GridColDef,
     GridToolbarContainer,
     GridToolbarColumnsButton,
     GridToolbarDensitySelector,
@@ -18,6 +17,7 @@ import {
 
 import TypographyTitle from '../TypographyTitle';
 
+import type { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import type { ordersListLoader } from '../../Router/loaders';
 
 function OrdersGrid() {
@@ -50,20 +50,23 @@ function OrdersGrid() {
     //   ]
 
     const columns: GridColDef[] = [
+        {
+            field: 'ordernumber',
+            headerName: 'Tilausnumero',
+            valueGetter: (params: GridValueGetterParams) => `${params.row.id || ''}`,
+        },
         { field: 'status', headerName: 'Tila' },
         { field: 'delivery_address', headerName: 'Toimitusosoite', flex: 1 },
-        { field: 'delivery_required', headerName: 'Toimitus?' },
         { field: 'contact', headerName: 'Yhteystieto', flex: 1 },
         { field: 'phone_number', headerName: 'Puhelinnumero', flex: 1 },
+        { field: 'delivery_required', headerName: 'Toimitus' },
         { field: 'order_info', headerName: 'Lisätiedot', flex: 1 },
         {
             field: 'id',
             headerName: 'Toiminnot',
             renderCell: (params) => (
-                <Button variant="outlined">
-                    <MuiLink component={Link} to={`/admin/tilaukset/${params.value}`}>
-                        Avaa
-                    </MuiLink>
+                <Button variant="outlined" component={Link} to={`/admin/tilaukset/${params.value}`}>
+                    Avaa
                 </Button>
             ),
         },
@@ -269,8 +272,8 @@ function OrdersGrid() {
                             );
                         },
                     }}
-                    checkboxSelection
                     localeText={localizedTextsMap}
+                    // checkboxSelection
                     // showColumnVerticalBorder
                     // showCellVerticalBorder
                     // loading
@@ -286,7 +289,7 @@ function OrdersGrid() {
                 id="datagrid-parent"
                 style={{ display: 'flex', height: '100%', width: '100%', margin: '1rem 0 1rem 0' }}
             >
-                <div id="datagrid-child" style={{ flexGrow: 1 }}>
+                <div id="datagrid-child" style={{ flex: 1 }}>
                     <GridX />
                 </div>
             </div>

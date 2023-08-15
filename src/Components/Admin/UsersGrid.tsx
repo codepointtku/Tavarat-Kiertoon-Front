@@ -7,7 +7,6 @@ import { Stack, Button, Link as MuiLink } from '@mui/material';
 
 import {
     DataGrid,
-    GridColDef,
     GridToolbarContainer,
     GridToolbarColumnsButton,
     GridToolbarDensitySelector,
@@ -18,9 +17,10 @@ import {
 
 import TypographyTitle from '../TypographyTitle';
 
+import type { GridColDef } from '@mui/x-data-grid';
 import type { usersListLoader } from '../../Router/loaders';
 
-function UsersList() {
+function UsersGrid() {
     const { count, next, previous, results } = useLoaderData() as Awaited<ReturnType<typeof usersListLoader>>;
 
     const pageSize = 10; // page_size @ BE: 10
@@ -250,7 +250,7 @@ function UsersList() {
                             );
                         },
                     }}
-                    checkboxSelection
+                    // checkboxSelection
                     localeText={localizedTextsMap}
                     // showColumnVerticalBorder
                     // showCellVerticalBorder
@@ -275,4 +275,4 @@ function UsersList() {
     );
 }
 
-export default UsersList;
+export default UsersGrid;
