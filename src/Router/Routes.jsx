@@ -4,11 +4,13 @@ import { StateMachineProvider, createStore } from 'little-state-machine';
 import { ThemeProvider } from '@mui/material';
 
 import AuthContext from '../Context/AuthContext';
+
 // import ErrorBoundary from './ErrorBoundary_NewStash';
 import ErrorBoundary from './ErrorBoundary';
 import BaseBoundary from './BaseBoundary';
 // import AdminViewBoundary from './AdminViewBoundary';
 // import UserError from './ErrorElements/UserError';
+import OrderViewError from './ErrorElements/OrderViewError';
 
 import HasRole from '../Utils/HasRole';
 
@@ -27,6 +29,8 @@ import BikesLayout from '../Layouts/BikesLayout';
 import OrdersList from '../Components/Storage/OrdersList';
 import OrderView from '../Components/Storage/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
+import AdminOrderDelete from '../Components/Admin/AdminOrderDelete';
+
 import QrScanner from '../Components/Storage/QrScanner';
 import StorageProducts from '../Components/Storage/StorageProducts';
 import AddNewItem from '../Components/Storage/AddNewItem';
@@ -34,7 +38,6 @@ import EditProduct from '../Components/Storage/EditProduct';
 
 import Overview from '../Components/Admin/Panel/Overview/Overview';
 import OrdersGrid from '../Components/Admin/OrdersGrid';
-import AdminOrderEdit from '../Components/Admin/AdminOrderEdit';
 import AdminOrderCreate from '../Components/Admin/AdminOrderCreate';
 import ProductsGrid from '../Components/Admin/ProductsGrid';
 import AdminProductEdit from '../Components/Admin/AdminProductEdit';
@@ -43,7 +46,7 @@ import AdminOrderEmailList from '../Components/Admin/AdminOrderEmailList';
 
 import AdminInbox from '../Components/Admin/AdminInbox';
 
-import UsersList from '../Components/Admin/UsersList';
+import UsersGrid from '../Components/Admin/UsersGrid';
 import UserEdit from '../Components/Admin/UserEdit';
 import UserAddressEdit from '../Components/Admin/UserAddressEdit';
 import UserAddressCreate from '../Components/Admin/UserAddressCreate';
@@ -115,7 +118,6 @@ import {
     orderEditLoader,
     ordersListLoader,
     orderViewLoader,
-    pdfViewLoader,
     productDetailsLoader,
     productListLoader,
     productTransferLoader,
@@ -184,6 +186,7 @@ import {
     deletePacketAction,
     userProfilePageAction,
     modifyUserAddressesAction,
+    orderDeleteAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
@@ -453,12 +456,11 @@ function Routes() {
                             children: [
                                 {
                                     index: true,
-                                    // path: ':num/:view',
                                     element: <OrdersList />,
                                     loader: ordersListLoader,
                                 },
                                 {
-                                    path: 'tilaus',
+                                    path: 'tilaukset',
                                     element: <Outlet />,
                                     children: [
                                         {
@@ -467,23 +469,9 @@ function Routes() {
                                         },
                                         {
                                             path: ':id',
-                                            element: <Outlet />,
-                                            children: [
-                                                {
-                                                    index: true,
-                                                    element: <OrderView />,
-                                                    loader: async ({ params }) =>
-                                                        orderViewLoader(auth, setAuth, params),
-                                                },
-                                                {
-                                                    path: 'muokkaa',
-                                                    element: <OrderEdit />,
-                                                    action: async ({ request, params }) =>
-                                                        orderEditAction(auth, setAuth, request, params),
-                                                    loader: async ({ params }) =>
-                                                        orderEditLoader(auth, setAuth, params),
-                                                },
-                                            ],
+                                            element: <OrderView isAdmin={false} />,
+                                            errorElement: <div>varasto orderview kössähdys</div>,
+                                            loader: orderViewLoader,
                                         },
                                     ],
                                 },
@@ -525,7 +513,7 @@ function Routes() {
                                         {
                                             path: ':id',
                                             element: <PDFView />,
-                                            loader: ({ params }) => pdfViewLoader(auth, setAuth, params),
+                                            loader: orderEditLoader,
                                         },
                                     ],
                                 },
@@ -570,7 +558,29 @@ function Routes() {
                                         },
                                         {
                                             path: ':id',
-                                            element: <AdminOrderEdit />,
+                                            element: <Outlet />,
+                                            children: [
+                                                {
+                                                    index: true,
+                                                    element: <OrderView isAdmin />,
+                                                    errorElement: <OrderViewError />,
+                                                    loader: orderViewLoader,
+                                                },
+                                                {
+                                                    path: 'muokkaa',
+                                                    element: <OrderEdit />,
+                                                    errorElement: <OrderViewError />,
+                                                    loader: orderEditLoader,
+                                                    action: orderEditAction,
+                                                },
+                                                {
+                                                    path: 'poista',
+                                                    element: <AdminOrderDelete randomInt={getRandomInt()} />,
+                                                    errorElement: <OrderViewError />,
+                                                    loader: orderEditLoader,
+                                                    action: orderDeleteAction,
+                                                },
+                                            ],
                                         },
                                         {
                                             path: 'uusi',
@@ -613,7 +623,7 @@ function Routes() {
                                     children: [
                                         {
                                             index: true,
-                                            element: <UsersList />,
+                                            element: <UsersGrid />,
                                             // errorElement: <UserError />,
                                             id: 'kayttajat',
                                             loader: usersListLoader,
