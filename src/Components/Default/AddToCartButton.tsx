@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouteLoaderData, useSearchParams, useFetcher } from 'react-router-dom';
 import { type OverridableStringUnion } from '@material-ui/types';
@@ -20,7 +20,6 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
     const { auth } = useContext(AuthContext);
     const { username } = auth;
     const { cart, products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
-    const [, setAddedToCart] = useState(false);
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
     const fetcher = useFetcher();
@@ -35,7 +34,6 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
                 action: '/?' + searchParams.toString(),
             }
         );
-        setAddedToCart(true);
     };
 
     // product = undefined

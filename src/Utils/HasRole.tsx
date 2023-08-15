@@ -13,7 +13,7 @@ function HasRole({ children = null, role, fallback = null }: Props) {
     const { auth } = useContext(AuthContext);
 
     // console.log('käytiin hasrole');
-    // console.log(auth);
+    // console.log('auth hasRolessa:', auth);
     return auth[role] ? children : fallback;
 }
 

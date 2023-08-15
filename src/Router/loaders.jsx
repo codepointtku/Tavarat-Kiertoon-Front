@@ -1,4 +1,6 @@
-import axios from 'axios';
+import { redirect } from 'react-router-dom';
+
+// import axios from 'axios';
 // import apiCall from '../Utils/apiCall';
 import {
     bikesApi,
@@ -151,16 +153,16 @@ const emailRecipientsLoader = async () => {
 /**
  * Get all categories and storages
  */
-const addItemLoader = async () => {
-    const dataList = [];
-    let { data } = await axios.get('http://localhost:8000/categories/');
-    dataList.push(data);
-    data = await axios.get('http://localhost:8000/storages/');
-    dataList.push(data.data);
-    if (dataList) {
-        return dataList;
-    }
-    return null;
+const storageProductsLoader = async (auth, setAuth, request) => {
+    const url = new URL(request.url);
+
+    const [{ data: storages }, { data: colors }, { data: products }] = await Promise.all([
+        storagesApi.storagesList(),
+        colorsApi.colorsList(),
+        productsApi.productsList(null, null, null, null, null, url.searchParams.get('search')),
+    ]);
+
+    return { storages, colors, products };
 };
 
 /**
@@ -429,8 +431,25 @@ const shoppingProcessLoader = async () => {
 };
 
 const adminLoader = async () => {
-    const { data: messages } = await contactFormsApi.contactFormsList(null, null, null, 'Not read');
-    return { messages };
+    // console.log('adminLoader auth', auth);
+    // tämä ei toiminut, auth.admin_group oli edelleen true
+    // if (auth.admin_group === false) {
+    //     return redirect('/');
+    // }
+
+    const [{ data: user }, { data: messages }] = await Promise.all([
+        userApi
+            .userRetrieve()
+            // this could be removed if logic is moved to errorBoundary
+            .catch((e) => {
+                console.log('adminLoader userApi.userRetrieve error', e);
+                // Todo redirect to admin/login or /login
+                return redirect('/kirjaudu');
+            }),
+        contactFormsApi.contactFormsList(null, null, null, { status: 'Not read' }),
+    ]);
+
+    return { user, messages };
 };
 
 const adminInboxLoader = async ({ request }) => {
@@ -501,7 +520,7 @@ export {
     ordersListLoader,
     orderViewLoader,
     orderEditLoader,
-    addItemLoader,
+    storageProductsLoader,
     storagesListLoader,
     storageEditLoader,
     usersListLoader,

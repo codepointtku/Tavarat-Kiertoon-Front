@@ -32,6 +32,9 @@ import OrderEdit from '../Components/Storage/OrderEdit';
 import AdminOrderDelete from '../Components/Admin/AdminOrderDelete';
 
 import QrScanner from '../Components/Storage/QrScanner';
+import StorageProducts from '../Components/Storage/StorageProducts';
+import AddNewItem from '../Components/Storage/AddNewItem';
+import EditProduct from '../Components/Storage/EditProduct';
 
 import Overview from '../Components/Admin/Panel/Overview/Overview';
 import OrdersGrid from '../Components/Admin/OrdersGrid';
@@ -61,7 +64,6 @@ import StorageCreate from '../Components/Admin/StorageCreate';
 import StorageProductsTransfer from '../Components/Admin/StorageProductsTransfer';
 import StorageProductsHandleItemsTransfer from '../Components/Admin/StorageProductsHandleItemsTransfer';
 
-import AddItem from '../Components/Storage/AddItem';
 import PDFView from '../Components/Storage/PDFView';
 
 import ProductDetails from '../Components/Default/ProductDetails';
@@ -113,7 +115,6 @@ import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
 
 import {
     bikesPacketLoader,
-    addItemLoader,
     orderEditLoader,
     ordersListLoader,
     orderViewLoader,
@@ -127,6 +128,7 @@ import {
     userAddressEditLoader,
     userAddressCreateLoader,
     usersListLoader,
+    storageProductsLoader,
     userInfoLoader,
     shoppingCartLoader,
     bikesDefaultLoader,
@@ -151,8 +153,9 @@ import {
     userSignupAction,
     contactAction,
     orderEditAction,
-    storageEditAction,
+    addProductAction,
     storageCreateAction,
+    storageEditAction,
     storageDeleteAction,
     productsTransferAction,
     frontPageActions,
@@ -401,7 +404,11 @@ function Routes() {
                                 },
                                 {
                                     path: 'profiili',
-                                    element: <UserProfilePage />,
+                                    element: (
+                                        <HasRole role="user_group" fallback={<Navigate to="/" />}>
+                                            <UserProfilePage />
+                                        </HasRole>
+                                    ),
                                     id: 'profile',
                                     loader: async ({ request }) => userInfoLoader(request),
                                     action: async ({ request }) => userProfilePageAction(request),
@@ -469,9 +476,27 @@ function Routes() {
                                     ],
                                 },
                                 {
-                                    path: 'luo',
-                                    element: <AddItem />,
-                                    loader: addItemLoader,
+                                    path: 'tuotteet',
+                                    id: 'storageProducts',
+                                    element: <StorageProducts />,
+                                    loader: async ({ request }) => storageProductsLoader(auth, setAuth, request),
+                                },
+                                {
+                                    path: 'tuotteet/luo',
+                                    element: <AddNewItem />,
+                                    loader: async ({ request }) => storageProductsLoader(auth, setAuth, request),
+                                    action: async ({ request }) => addProductAction(auth, setAuth, request),
+                                },
+                                {
+                                    path: 'tuotteet/:id',
+                                    element: <ProductDetails />,
+                                    loader: productDetailsLoader,
+                                },
+                                {
+                                    path: 'tuotteet/:id/muokkaa',
+                                    element: <EditProduct />,
+                                    loader: productDetailsLoader,
+                                    // action: async ({ request, params }) => editProductAction(auth, setAuth, request, params),
                                 },
                                 {
                                     path: 'koodinlukija',
@@ -500,6 +525,7 @@ function Routes() {
                             element: (
                                 <HasRole role="admin_group" fallback={<Navigate to="/" />}>
                                     <ThemeProvider theme={adminTheme}>
+                                        {/* TODO ohjaa kirjaudu sivulle */}
                                         <AdminLayout />
                                     </ThemeProvider>
                                 </HasRole>
