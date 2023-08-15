@@ -136,7 +136,7 @@ function StorageEdit() {
                                 inputProps={{ required: false }}
                                 required
                                 error={!!formStateErrors.address}
-                                helperText={formStateErrors.address?.message?.toString() || ' '}
+                                helperText={formStateErrors.zip_code?.message?.toString() || ' '}
                                 color={dirtyFields.address ? 'warning' : 'primary'}
                                 fullWidth
                             />
@@ -154,7 +154,7 @@ function StorageEdit() {
                                 inputProps={{ required: false }}
                                 required
                                 error={!!formStateErrors.address}
-                                helperText={formStateErrors.address?.message?.toString() || ' '}
+                                helperText={formStateErrors.city?.message?.toString() || ' '}
                                 color={dirtyFields.address ? 'warning' : 'primary'}
                                 fullWidth
                             />
