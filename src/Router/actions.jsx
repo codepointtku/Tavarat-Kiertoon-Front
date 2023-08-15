@@ -167,10 +167,11 @@ const bikeOrderAction = async (auth, setAuth, request) => {
 };
 
 /**
- * removes items from the order and edits order data
+ * edits order data
  */
-const orderEditAction = async (auth, setAuth, request, params) => {
+const orderEditAction = async ({ request, params }) => {
     const formData = await request.formData();
+
     const submission = {
         id: formData.get('orderId'),
         contact: formData.get('contact'),
@@ -180,10 +181,18 @@ const orderEditAction = async (auth, setAuth, request, params) => {
         order_info: formData.get('orderInfo'),
         product_items: JSON.parse(formData.get('productItems')),
     };
-    await ordersApi.ordersUpdate(params.id, submission);
-    return redirect(`/varasto/tilaus/${params.id}`);
 
-    /*
+    const response = await ordersApi.ordersUpdate(params.id, submission);
+
+    if (response.status === 202) {
+        return { type: 'orderupdate', status: true };
+    }
+    return { type: 'orderupdate', status: false };
+};
+
+// return redirect(`/varasto/tilaukset/${params.id}`);
+
+/*
     // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     // const productName = formData.get('productName');
     if (request.method === 'POST') {
@@ -227,7 +236,12 @@ const orderEditAction = async (auth, setAuth, request, params) => {
     }
 
     return null;
+}
 */
+
+const orderDeleteAction = async ({ params }) => {
+    await ordersApi.ordersDestroy(params.id);
+    return redirect('/admin/tilaukset');
 };
 
 /*
@@ -967,6 +981,7 @@ export {
     frontPageActions,
     contactAction,
     orderEditAction,
+    orderDeleteAction,
     storageCreateAction,
     storageEditAction,
     storageDeleteAction,
