@@ -284,6 +284,7 @@ function AddNewItem() {
                         id="storage-select"
                         select
                         label="Sijainti"
+                        // TODO productin edittiin: miten toteutetaan tuotteen lisääminen eri varastoon kuin olemassaolevat tuotteet? Halutaanko tätä välttää?
                         defaultValue={getValues('storages') || ''}
                         {...register('storages', {
                             required: { value: true, message: 'Varasto on valittava' },

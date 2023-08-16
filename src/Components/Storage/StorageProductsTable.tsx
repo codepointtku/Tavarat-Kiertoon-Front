@@ -49,16 +49,18 @@ interface Search {
 
 function StorageProductsTable() {
     const [searchParams, setSearchParams] = useSearchParams();
-    const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
-    const { storages, products } = useLoaderData() as Awaited<ReturnType<typeof storageProductsLoader>>;
+    // const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
+    const { storages, categories, products, productItems } = useLoaderData() as Awaited<
+        ReturnType<typeof storageProductsLoader>
+    >;
     const { register, handleSubmit, watch } = useForm({ defaultValues: { searchString: searchParams.get('search') } });
     // todo: fill search field with search param if scanned with qrcodescanner or entered with link
 
-    // console.log('categories:', categories);
+    console.log('categories:', categories);
     // console.log('storages:', storages);
     // console.log('products:', products);
     // console.log('products.results:', products?.results);
-
+    console.log('productItems.results:', productItems?.results);
     // const search = watch('searchString');
 
     const handleBarcodeSearch = (formData: Search) => {
@@ -102,29 +104,29 @@ function StorageProductsTable() {
                         <StyledTableCell align="right">Määrä</StyledTableCell>
                         <StyledTableCell align="right">Varasto</StyledTableCell>
                         <StyledTableCell align="right">Kategoria</StyledTableCell>
-                        <StyledTableCell align="right">Luotu / Muokattu</StyledTableCell>
+                        <StyledTableCell align="right">Viimeksi muokattu</StyledTableCell>
                         {/* <StyledTableCell align="right">Varastopaikka</StyledTableCell> */}
                     </TableRow>
                 </TableHead>
                 {/* todo: näytä nollasaldoiset tuotteet -ruksi */}
                 {/* todo: näytä tilauksille varatut tuotteet ja kplmäärä? */}
-                {products?.results?.length === 0 ? (
+                {productItems?.results?.length === 0 ? (
                     // todo: tyylittely
                     <Typography padding={3} fontSize={24}>
                         Ei hakutuloksia...
                     </Typography>
                 ) : (
                     <TableBody>
-                        {products?.results?.map((product) => (
-                            <StyledTableRow key={product.id}>
+                        {productItems?.results?.map((productItem) => (
+                            <StyledTableRow key={productItem.id}>
                                 <StyledTableCell component="th" scope="row">
                                     {/* TODO: varastopuolen tuotesivu, ProductDetails komponenttia hyödyntäen */}
-                                    <Link to={`/varasto/tuotteet/${product.id}/muokkaa`}>tässä oli viivakoodi</Link>
+                                    <Link to={`/varasto/tuotteet/${productItem.id}`}>{productItem.barcode}</Link>
                                 </StyledTableCell>
                                 <StyledTableCell>
                                     <Button
                                         component={Link}
-                                        to={`/varasto/tuotteet/${product.id}/muokkaa`}
+                                        to={`/varasto/tuotteet/${productItem.id}/muokkaa`}
                                         variant="outlined"
                                         color="primary"
                                         sx={{ paddingRight: 6, paddingLeft: 6 }}
@@ -133,22 +135,29 @@ function StorageProductsTable() {
                                     </Button>
                                 </StyledTableCell>
                                 <StyledTableCell align="right">
-                                    {/* todo: link to working product page with storage related info and edit functionality */}
-                                    <Link to={`/varasto/tuotteet/${product.id}/muokkaa`}>{product.name}</Link>
+                                    {/* todo: link to working product details page with storage related info and edit functionality */}
+                                    <Link to={`/varasto/tuotteet/${productItem.id}/muokkaa`}>
+                                        {productItem.product.name}
+                                    </Link>
                                 </StyledTableCell>
-                                <StyledTableCell align="right">{product.amount}</StyledTableCell>
-                                <StyledTableCell align="right">tässä storage_name</StyledTableCell>
-                                {/* <StyledTableCell align="right">{categories[product.category].name}</StyledTableCell> */}
-                                <StyledTableCell align="right">tässä category_name</StyledTableCell>
-                                {/* <StyledTableCell align="right">
-                                    {new Date(product.modified_date).toLocaleTimeString('fi-FI', {
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                    }) +
-                                        '   ' +
-                                        new Date(product.modified_date).toLocaleDateString('fi-FI')}
-                                </StyledTableCell> */}
-                                <StyledTableCell align="right">tässä created / modified</StyledTableCell>
+                                <StyledTableCell align="right">{productItem.product.amount}</StyledTableCell>
+                                <StyledTableCell align="right">{productItem.storage.name}</StyledTableCell>
+                                <StyledTableCell align="right">
+                                    {productItem.product.category
+                                        ? categories[productItem.product.category]?.name
+                                        : 'ei kategoriaa'}
+                                </StyledTableCell>
+                                {/* <StyledTableCell align="right">{categories[productItem.category].name}</StyledTableCell> */}
+                                {/* <StyledTableCell align="right">tässä category_name</StyledTableCell> */}
+                                <StyledTableCell align="right">
+                                    {new Date(productItem.modified_date).toLocaleDateString('fi-FI') +
+                                        ', klo ' +
+                                        new Date(productItem.modified_date).toLocaleTimeString('fi-FI', {
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                        })}
+                                </StyledTableCell>
+                                {/* <StyledTableCell align="right">tässä created / modified</StyledTableCell> */}
                             </StyledTableRow>
                         ))}
                     </TableBody>
