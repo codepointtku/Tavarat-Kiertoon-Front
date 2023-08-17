@@ -42,8 +42,6 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess, amountCha
         }
     }, [addedToCart]);
 
-    console.log(amountChangeState?.unconfirmedChangesCartProducts);
-
     useEffect(() => {
         setAmountN(count ?? 1);
         setSelectedAmount(count ?? 1);

@@ -364,7 +364,7 @@ function ContactsAndDelivery() {
                                         <TextField
                                             {...props}
                                             {...register('fetchDate', {
-                                                required: 'Tämä kenttä on täytettävä',
+                                                required: 'Noutoa ei voi valita tilauspäiväksi.',
                                                 validate: (dateString) => {
                                                     const date = parse(String(dateString), 'd.M.yyyy', new Date());
                                                     return !disableDate(date);
