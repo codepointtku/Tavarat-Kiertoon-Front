@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFetcher } from 'react-router-dom';
 import { ListItem, ListItemButton, ListItemText, IconButton, Input, Button, Typography } from '@mui/material';
 
@@ -10,13 +10,29 @@ interface Props {
     id: number & string;
     count: number;
     maxCount: number;
+    amountChangeState: {
+        unconfirmedChangesCartProducts: object[];
+        setUnconfirmedChangesCartProducts: React.Dispatch<React.SetStateAction<object[]>>;
+    };
 }
 
-function ProductInCart({ name, id, count, maxCount }: Props) {
+function ProductInCart({ name, id, count, maxCount, amountChangeState }: Props) {
     const fetcher = useFetcher();
     const [changeAmount, setChangeAmount] = useState(true);
     const [amountN, setAmountN] = useState(count);
     const [selectedAmount, setSelectedAmount] = useState(count);
+    const { unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts } = amountChangeState;
+
+    useEffect(() => {
+        if (changeAmount) {
+            unconfirmedChangesCartProducts.includes(id) &&
+                setUnconfirmedChangesCartProducts((changes) => changes.filter((item) => item !== id));
+        }
+        if (!changeAmount) {
+            !unconfirmedChangesCartProducts.includes(id) &&
+                setUnconfirmedChangesCartProducts((changes) => [...changes, id]);
+        }
+    }, [changeAmount]);
 
     function addAmount() {
         setAmountN(amountN + 1);
@@ -68,7 +84,9 @@ function ProductInCart({ name, id, count, maxCount }: Props) {
                     <RemoveIcon />
                 </IconButton>
                 <Input
-                    inputProps={{ style: { width: 30, textAlign: 'center' } }}
+                    inputProps={{
+                        style: { width: 30, textAlign: 'center', border: '0.5px solid gray', borderRadius: '0.25rem' },
+                    }}
                     value={amountN}
                     onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
                     disableUnderline
