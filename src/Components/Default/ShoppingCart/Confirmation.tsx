@@ -92,16 +92,24 @@ function Confirmation() {
                             <Typography variant="subtitle1">{state.deliveryAddress}</Typography>
                             <Typography variant="subtitle1">{state.zipcode}</Typography>
                             <Typography variant="subtitle1">{state.city}</Typography>
-                            <Typography variant="subtitle1">
-                                {state.deliveryRequired === 'true' ? 'Kuljetus' : 'Nouto'}
-                            </Typography>
                         </Stack>
-                        <Stack padding={'1rem'}>
-                            {state.deliveryRequired === 'false' && (
-                                <Typography variant="subtitle1">Toimituspäivä: {state.fetchDate}</Typography>
-                            )}
+                        <Stack padding={'0rem 1rem 1rem 1rem'}>
+                            <Typography variant="subtitle1">
+                                {state.deliveryRequired === 'true' ? 'Kuljetus' : `Nouto: ${state.fetchDate}`}
+                            </Typography>
+
                             {state.orderInfo && (
-                                <Typography variant="subtitle1">Lisätiedot: {state.orderInfo}</Typography>
+                                <Typography
+                                    id="order-additional-info-textfield"
+                                    variant="subtitle1"
+                                    sx={{
+                                        wordBreak: 'break-all',
+                                        whiteSpace: 'pre-wrap',
+                                        margin: '1rem 0 0 0',
+                                    }}
+                                >
+                                    Lisätiedot: {state.orderInfo}
+                                </Typography>
                             )}
                         </Stack>
 
