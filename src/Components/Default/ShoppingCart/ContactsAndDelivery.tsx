@@ -115,7 +115,7 @@ function ContactsAndDelivery() {
                 value: date >= new Date(maxDate),
                 message: 'Päivämäärä on yli maksimin.',
             },
-            { value: dateIsHoliday, message: 'Juhlatpäiviä ei sallita noutopäiviksi.' },
+            { value: dateIsHoliday, message: 'Juhlapäiviä ei sallita noutopäiviksi.' },
             {
                 value: isPast(date),
                 message: 'Menneitä päiviä ei sallita noutopäiviksi.',
@@ -250,7 +250,7 @@ function ContactsAndDelivery() {
                                 required: 'Tämä kenttä on täytettävä',
                                 pattern: {
                                     value: /.+@turku.fi$|.+@edu.turku.fi$/,
-                                    message: 'Sähköpostin täytyy loppua edu.turku.fi tai turku.fi',
+                                    message: 'Sähköpostin on oltava muotoa @edu.turku.fi tai @turku.fi',
                                 },
                                 maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
                             })}
