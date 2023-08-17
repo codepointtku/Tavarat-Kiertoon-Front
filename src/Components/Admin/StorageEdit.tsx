@@ -23,7 +23,6 @@ function StorageEdit() {
 
     const storageInfo = storageData.storageInfo;
     const storageAvailableProductsCount = storageData.hasProducts.count;
-    // console.log('product count in this storage:', storageAvailableProductsCount);
 
     const storageStates = ['Käytössä', 'Ei käytössä'];
 
@@ -59,7 +58,12 @@ function StorageEdit() {
             )}
 
             {responseStatus?.type === 'updatestorage' && responseStatus?.status && (
-                <AlertBox text="Varaston tiedot päivitetty" status="success" />
+                <AlertBox
+                    text="Varaston tiedot päivitetty. Uudelleenohjataan..."
+                    status="success"
+                    timer={3000}
+                    redirectUrl="/admin/varastot"
+                />
             )}
 
             <Container maxWidth="md">
@@ -100,13 +104,13 @@ function StorageEdit() {
 
                         <TextField
                             id="textfield-storage-address"
-                            label="Osoite"
-                            placeholder="Varaston sijainti"
+                            label="Katuosoite"
+                            placeholder="Varaston katuosoite"
                             {...register('address', {
                                 required: { value: true, message: 'Varaston katuosoite on pakollinen' },
                                 minLength: {
                                     value: 1,
-                                    message: 'Kirjoita edes jotain',
+                                    message: 'Osoite on pakollinen',
                                 },
                             })}
                             inputProps={{ required: false }}
@@ -117,10 +121,49 @@ function StorageEdit() {
                             fullWidth
                         />
 
+                        <Stack direction="row" gap={'1rem'}>
+                            <TextField
+                                id="textfield-storage-address"
+                                label="Postinumero"
+                                placeholder="Postinumero"
+                                {...register('zip_code', {
+                                    required: { value: true, message: 'Postinumero on pakollinen' },
+                                    minLength: {
+                                        value: 1,
+                                        message: 'Syötä postinumero',
+                                    },
+                                })}
+                                inputProps={{ required: false }}
+                                required
+                                error={!!formStateErrors.address}
+                                helperText={formStateErrors.zip_code?.message?.toString() || ' '}
+                                color={dirtyFields.address ? 'warning' : 'primary'}
+                                fullWidth
+                            />
+                            <TextField
+                                id="textfield-storage-address"
+                                label="Kaupunki"
+                                placeholder="Varaston sijainti"
+                                {...register('city', {
+                                    required: { value: true, message: 'Kaupunki on pakollinen' },
+                                    minLength: {
+                                        value: 1,
+                                        message: 'Syötä kaupunki',
+                                    },
+                                })}
+                                inputProps={{ required: false }}
+                                required
+                                error={!!formStateErrors.address}
+                                helperText={formStateErrors.city?.message?.toString() || ' '}
+                                color={dirtyFields.address ? 'warning' : 'primary'}
+                                fullWidth
+                            />
+                        </Stack>
+
                         <TextField
                             select
                             label="Käyttötila"
-                            defaultValue="Ei käytössä"
+                            // defaultValue="Ei käytössä"
                             {...register('in_use', {
                                 required: { value: true, message: 'Valitse varaston tila' },
                             })}
