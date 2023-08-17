@@ -131,18 +131,15 @@ const ordersListLoader = async () => {
 /**
  * Get one order
  */
-const orderViewLoader = async (auth, setAuth, params) => {
-    // const response = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
+const orderViewLoader = async ({ params }) => {
     const response = await ordersApi.ordersRetrieve(params.id);
-    // TODO: check this later, with pdfViewLoader
     return response.data;
 };
 
 /**
  * Get one order
  */
-const orderEditLoader = async (auth, setAuth, params) => {
-    // const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
+const orderEditLoader = async ({ params }) => {
     const { data } = await ordersApi.ordersRetrieve(params.id);
     return data;
 };
@@ -165,17 +162,6 @@ const addItemLoader = async () => {
         return dataList;
     }
     return null;
-};
-
-/**
- * Get one order
- */
-
-// TODO: is this a duplicate of orderEditLoader?
-const pdfViewLoader = async (auth, setAuth, params) => {
-    // const { data } = await apiCall(auth, setAuth, `/orders/${params.id}`, 'get');
-    const { data } = await ordersApi.ordersRetrieve(params.id);
-    return data;
 };
 
 /**
@@ -517,7 +503,6 @@ export {
     orderViewLoader,
     orderEditLoader,
     addItemLoader,
-    pdfViewLoader,
     storagesListLoader,
     storageEditLoader,
     usersListLoader,

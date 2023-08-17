@@ -176,9 +176,9 @@ test.describe('varasto', () => {
     });
 });
 
-test.describe('varasto tilaus', () => {
+test.describe('varasto tilaukset', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/varasto/tilaus/4127');
+        await page.goto('/varasto/tilaukset/16');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
 });
@@ -237,26 +237,40 @@ test.describe('admin orderlist', () => {
     });
 });
 
+test.describe('admin order view', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tilaukset/16');
+        await expect(page.getByText('Tilausnumeroa ei löytynyt.')).not.toBeVisible();
+    });
+});
+
 test.describe('admin order edit', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/admin/tilaukset/1');
-        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+        await page.goto('/admin/tilaukset/16');
+        await expect(page.getByText('Tilausnumeroa ei löytynyt.')).not.toBeVisible();
     });
-}); // fails
+});
+
+test.describe('admin order delete', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tilaukset/16/poista');
+        await expect(page.getByText('Tilausnumeroa ei löytynyt.')).not.toBeVisible();
+    });
+});
 
 test.describe('admin order create', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/admin/tilaukset/uusi');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
-}); // fails
+});
 
 test.describe('admin order email recipients', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/admin/tilaukset/sahkopostilista');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
-}); // fails
+});
 
 // products
 test.describe('admin products list', () => {

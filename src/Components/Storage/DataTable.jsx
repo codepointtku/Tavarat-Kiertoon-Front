@@ -1,5 +1,4 @@
 import { useLoaderData, useNavigate } from 'react-router-dom';
-// import PropTypes from 'prop-types';
 
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
@@ -37,7 +36,7 @@ function OrderListTable() {
                             key={row.id}
                             style={{ cursor: 'pointer' }}
                             hover
-                            onClick={() => navigate(`/varasto/tilaus/${row.id}`)}
+                            onClick={() => navigate(`/varasto/tilaukset/${row.id}`)}
                         >
                             <TableCell component="th" scope="row">
                                 {row.id}
@@ -56,11 +55,5 @@ function OrderListTable() {
         </TableContainer>
     );
 }
-
-// OrderListTable.propTypes = {
-//     page: PropTypes.number.isRequired,
-//     setUsedParams: PropTypes.func.isRequired,
-//     rowsPerPage: PropTypes.number.isRequired,
-// };
 
 export default OrderListTable;

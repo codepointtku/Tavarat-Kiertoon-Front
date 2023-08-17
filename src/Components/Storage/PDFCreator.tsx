@@ -192,7 +192,7 @@ function PDFDocument({ order }: { order: PDFOrderType }) {
         return (
             <View style={styles.productCard} key={product[0].id}>
                 <Image
-                    src={`${baseUrl}/media/${product[0].product.pictures[0].picture_address}`}
+                    src={`${baseUrl}/media/${product[0]?.product?.pictures[0]?.picture_address}`}
                     style={styles.productImg}
                 />
 

@@ -18,6 +18,7 @@ function Welcome({ setCurrentOpenDrawer }: Props) {
             method: 'post',
             action: '/',
         });
+        sessionStorage.clear();
     };
 
     return (
