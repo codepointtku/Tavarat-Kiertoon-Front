@@ -21,10 +21,12 @@ function CartView() {
     const { handleSubmit } = useForm();
     const [unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts] = useState(initializeCartProducts());
 
+    // This resets the LSM
     useEffect(() => {
-        if (sessionStorage.getItem('__LSM__') === null) {
-            actions.ClearInfo();
-        }
+        actions.ClearInfo();
+        // if (sessionStorage.getItem('__LSM__') === null) {
+        //     actions.ClearInfo();
+        // }
     }, [actions]);
 
     const onSubmit = () => {
