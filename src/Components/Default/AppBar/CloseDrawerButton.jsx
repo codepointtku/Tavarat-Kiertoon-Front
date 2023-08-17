@@ -1,4 +1,4 @@
-import { IconButton, Avatar } from '@mui/material';
+import { IconButton, Avatar, Box } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import Tooltip from '../../Tooltip';
@@ -16,26 +16,28 @@ function CloseDrawerButton({ setCurrentOpenDrawer }) {
 
     return (
         <Tooltip title="Sulje">
-            <IconButton
-                onClick={handleClick}
-                sx={[
-                    buttonHover,
-                    {
-                        p: '0',
-                        marginTop: '1rem',
-                    },
-                ]}
-            >
-                <Avatar
-                    sx={{
-                        bgcolor: 'primary.main',
-                        width: 48,
-                        height: 48,
-                    }}
+            <Box id="close-drawer-btn-wrapper" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <IconButton
+                    onClick={handleClick}
+                    sx={[
+                        buttonHover,
+                        {
+                            p: '0',
+                            marginTop: '1rem',
+                        },
+                    ]}
                 >
-                    <CloseIcon />
-                </Avatar>
-            </IconButton>
+                    <Avatar
+                        sx={{
+                            bgcolor: 'primary.main',
+                            width: 48,
+                            height: 48,
+                        }}
+                    >
+                        <CloseIcon />
+                    </Avatar>
+                </IconButton>
+            </Box>
         </Tooltip>
     );
 }

@@ -147,7 +147,7 @@ function DefaultAppBar() {
     const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
     const [cartEmpty, setCartEmpty] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
+    const openPopover = Boolean(anchorEl);
     const location = useLocation();
     const [unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts] = useState(initializeCartProducts());
 
@@ -247,12 +247,20 @@ function DefaultAppBar() {
                     {cart?.product_items?.length === 0 && (
                         <>
                             {cartEmpty ? (
-                                <Typography variant="h6" align="center" sx={{ color: 'error.main' }}>
-                                    Et voi siirtyä kassalle tyhjällä ostoskorilla.
+                                <Typography
+                                    variant="h6"
+                                    align="center"
+                                    sx={{ color: 'info.main', margin: '1rem 0 0 0' }}
+                                >
+                                    Lisää tuotteita koriin jatkaaksesi tilaamaan
                                 </Typography>
                             ) : (
-                                <Typography variant="h6" align="center">
-                                    Ostoskorisi on tyhjä.
+                                <Typography
+                                    variant="h6"
+                                    align="center"
+                                    sx={{ color: 'info.main', margin: '1rem 0 0 0' }}
+                                >
+                                    Ostoskorisi on tyhjä
                                 </Typography>
                             )}
                         </>
@@ -299,7 +307,7 @@ function DefaultAppBar() {
                                     }}
                                     disabled={unconfirmedChangesCartProducts.length > 0}
                                 >
-                                    <ListItemText primary="Kassalle" primaryTypographyProps={{ fontWeight: 'bold' }} />
+                                    <ListItemText primary="Tilaamaan" primaryTypographyProps={{ fontWeight: 'bold' }} />
                                 </Button>
                             </ListItem>
                         </List>
@@ -308,36 +316,41 @@ function DefaultAppBar() {
                         {cart?.product_items?.length > 0 && (
                             <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <Button
+                                    size="small"
+                                    variant="outlined"
                                     color="error"
                                     fullWidth
                                     // startIcon={<DeleteIcon />}
                                     onClick={handlePopOverOpen}
                                 >
-                                    <ListItemText
+                                    Tyhjennä kori
+                                    {/* <ListItemText
                                         primary="Tyhjennä ostoskori"
                                         primaryTypographyProps={{ fontWeight: 'bold' }}
-                                    />
+                                    /> */}
                                 </Button>
                                 <Popover
-                                    open={open}
+                                    open={openPopover}
                                     anchorEl={anchorEl}
                                     anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                                     onClose={() => setAnchorEl(null)}
                                     sx={{ mt: 1 }}
                                 >
-                                    <Grid
-                                        container
+                                    <Stack
                                         direction="row"
-                                        justifyContent="space-evenly"
-                                        sx={{ p: 1, width: 200 }}
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                        sx={{ p: '1rem' }}
+                                        spacing="1rem"
                                     >
-                                        <Grid item sx={{ mt: '0.5rem' }}>
-                                            <Typography variant="body2">Oletko varma?</Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <Button onClick={handleEmptyCart}>Kyllä</Button>
-                                        </Grid>
-                                    </Grid>
+                                        <Typography variant="body2">Oletko varma?</Typography>
+                                        <Button size="small" variant="outlined" onClick={handleEmptyCart}>
+                                            Kyllä
+                                        </Button>
+                                        <Button size="small" variant="outlined" onClick={() => setAnchorEl(null)}>
+                                            Peruuta
+                                        </Button>
+                                    </Stack>
                                 </Popover>
                             </ListItem>
                         )}
