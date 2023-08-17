@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useSubmit, Form, useActionData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
@@ -43,6 +43,10 @@ function LoginForm({ setCurrentOpenDrawer, notLoggedIn }) {
             method: 'post',
             action: '/',
         });
+        !notLoggedIn &&
+            setTimeout(() => {
+                setCurrentOpenDrawer('');
+            }, 3000);
     };
 
     const handleClickCloseDrawer = () => {

@@ -10,9 +10,9 @@ import {
     Typography,
     Tooltip,
     Grid,
-    ButtonPropsSizeOverrides,
+    type ButtonPropsSizeOverrides,
 } from '@mui/material';
-import { OverridableStringUnion } from '@material-ui/types';
+import { type OverridableStringUnion } from '@material-ui/types';
 import Carousel from 'react-material-ui-carousel';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
