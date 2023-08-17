@@ -59,7 +59,12 @@ function OrdersGrid() {
         { field: 'delivery_address', headerName: 'Toimitusosoite', flex: 1 },
         { field: 'contact', headerName: 'Yhteystieto', flex: 1 },
         { field: 'phone_number', headerName: 'Puhelinnumero', flex: 1 },
-        { field: 'delivery_required', headerName: 'Toimitus' },
+        {
+            field: 'delivery_required',
+            headerName: 'Toimitus',
+            valueGetter: (params: GridValueGetterParams) =>
+                params.row.delivery_required === true ? 'Kuljetus' : 'Nouto',
+        },
         { field: 'order_info', headerName: 'Lisätiedot', flex: 1 },
         {
             field: 'id',
