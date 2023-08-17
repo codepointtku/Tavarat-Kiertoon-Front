@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams, useFetcher } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-import { OverridableStringUnion } from '@material-ui/types';
-import { IconButton, Box, Input, Button, ButtonPropsSizeOverrides, Typography } from '@mui/material';
+import { type OverridableStringUnion } from '@material-ui/types';
+import { IconButton, Box, Input, Button, type ButtonPropsSizeOverrides, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
@@ -13,15 +13,40 @@ interface Props {
     maxCount: number;
     count?: number;
     inOrderingProcess?: boolean | undefined;
+    amountChangeState?: {
+        unconfirmedChangesCartProducts: object[];
+        setUnconfirmedChangesCartProducts: React.Dispatch<React.SetStateAction<object[]>>;
+    };
 }
 
-function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess }: Props) {
+function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess, amountChangeState }: Props) {
     const fetcher = useFetcher();
     const [amountN, setAmountN] = useState(count ?? 1);
     const [selectedAmount, setSelectedAmount] = useState(count ?? 1);
     const [addedToCart, setAddedToCart] = useState(true);
     const [searchParams] = useSearchParams();
     const { handleSubmit, register } = useForm();
+
+    useEffect(() => {
+        if (amountChangeState) {
+            if (addedToCart) {
+                amountChangeState.unconfirmedChangesCartProducts.includes(id) &&
+                    amountChangeState.setUnconfirmedChangesCartProducts((changes) =>
+                        changes.filter((item) => item !== id)
+                    );
+            }
+            if (!addedToCart) {
+                !amountChangeState.unconfirmedChangesCartProducts.includes(id) &&
+                    amountChangeState.setUnconfirmedChangesCartProducts((changes) => [...changes, id]);
+            }
+        }
+    }, [addedToCart]);
+
+    useEffect(() => {
+        setAmountN(count ?? 1);
+        setSelectedAmount(count ?? 1);
+        amountN === count && setAddedToCart(true);
+    }, [count]);
 
     function addAmount() {
         setAmountN((amountN) => amountN + 1);

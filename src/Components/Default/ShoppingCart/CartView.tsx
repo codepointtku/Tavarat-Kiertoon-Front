@@ -1,28 +1,42 @@
+import { useEffect, useState } from 'react';
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { Grid, Typography, ButtonPropsSizeOverrides, Divider } from '@mui/material';
+import { useStateMachine } from 'little-state-machine';
+import { Grid, Typography, type ButtonPropsSizeOverrides, Divider } from '@mui/material';
 
 import CartButtons from './CartButtons';
 import AddMoreToCart from '../../AddMoreToCart';
-import { OverridableStringUnion } from '@material-ui/types';
+import type { OverridableStringUnion } from '@material-ui/types';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import TypographyHeading from '../../TypographyHeading';
-import { ShoppingCartAvailableAmountList } from '../../../api';
-
-interface CartProduct {
-    product: { id: number };
-}
+import type { ShoppingCartAvailableAmountList } from '../../../api';
+import ClearInfo from './ClearInfo';
 
 function CartView() {
     const navigate = useNavigate();
+    const { actions } = useStateMachine({ ClearInfo });
     const { products: cartProducts, amountList } = useRouteLoaderData('frontPage') as Awaited<
         ReturnType<typeof shoppingCartLoader>
     >;
     const { handleSubmit } = useForm();
+    const [unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts] = useState(initializeCartProducts());
+
+    // This resets the LSM
+    useEffect(() => {
+        actions.ClearInfo();
+        // if (sessionStorage.getItem('__LSM__') === null) {
+        //     actions.ClearInfo();
+        // }
+    }, [actions]);
 
     const onSubmit = () => {
         navigate('/ostoskori/vaihe2');
     };
+    function initializeCartProducts() {
+        const productArr = [] as object[];
+        cartProducts?.forEach((product) => productArr.push(product.product.id));
+        return productArr;
+    }
 
     return (
         <>
@@ -58,6 +72,10 @@ function CartView() {
                                             >
                                         }
                                         inOrderingProcess={true}
+                                        amountChangeState={{
+                                            unconfirmedChangesCartProducts,
+                                            setUnconfirmedChangesCartProducts,
+                                        }}
                                     />
                                 );
                             })}
@@ -67,7 +85,12 @@ function CartView() {
             </Grid>
             <Divider sx={{ margin: '1rem 0 1rem 0' }} />
             <form onSubmit={handleSubmit(onSubmit)}>
-                <CartButtons backText="Jatka ostoksia" forwardText="Seuraava" cartEmpty={cartProducts?.length === 0} />
+                <CartButtons
+                    backText="Jatka ostoksia"
+                    forwardText="Seuraava"
+                    cartEmpty={cartProducts?.length === 0}
+                    unconfirmedChangesCartProducts={unconfirmedChangesCartProducts}
+                />
             </form>
         </>
     );
