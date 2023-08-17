@@ -62,7 +62,7 @@ function UserAddressEdit() {
             )}
             {actionData?.type === 'addressupdate' && actionData?.status && (
                 <AlertBox
-                    text="Osoitetiedot tallennettu onnistuneesti"
+                    text="Osoitetiedot tallennettu onnistuneesti. Uudelleenohjataan..."
                     status="success"
                     timer={3000}
                     redirectUrl={`/admin/kayttajat/${loaderData.userData.id}`}

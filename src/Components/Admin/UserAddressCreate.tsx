@@ -43,7 +43,7 @@ function UserAddressCreate() {
 
             {actionData?.type === 'addresscreate' && actionData?.status && (
                 <AlertBox
-                    text="Uusi osoite lisätty onnistuneesti"
+                    text="Uusi osoite lisätty onnistuneesti. Uudelleenohjataan..."
                     status="success"
                     timer={3000}
                     redirectUrl={`/admin/kayttajat/${loaderData.userData.id}`}

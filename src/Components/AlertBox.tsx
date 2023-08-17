@@ -63,7 +63,7 @@ function AlertBox({ text, status, timer, redirectUrl }: Props) {
                         sx={{ minWidth: '20rem' }}
                     >
                         {text}
-                        {redirectUrl && timer && '  Uudelleenohjataan...'}
+                        {/* {redirectUrl && timer && '  Uudelleenohjataan...'} */}
                     </Alert>
                 </Snackbar>
             )}

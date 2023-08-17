@@ -193,7 +193,7 @@ function AddNewItem() {
             {actionData?.status === true && (
                 <AlertBox
                     status="success"
-                    text="Tuotteen luonti onnistui"
+                    text="Tuotteen luonti onnistui. Uudelleenohjataan..."
                     redirectUrl="/varasto/tuotteet/"
                     timer={1000}
                 />
