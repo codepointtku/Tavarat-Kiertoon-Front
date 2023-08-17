@@ -163,7 +163,7 @@ function StorageEdit() {
                         <TextField
                             select
                             label="Käyttötila"
-                            defaultValue="Ei käytössä"
+                            // defaultValue="Ei käytössä"
                             {...register('in_use', {
                                 required: { value: true, message: 'Valitse varaston tila' },
                             })}
