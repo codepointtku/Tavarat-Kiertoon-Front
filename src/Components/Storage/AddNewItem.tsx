@@ -412,14 +412,13 @@ function AddNewItem() {
                                 {...register('pictures', {
                                     // TODO tarkistettava että kuvatiedostot ovat oikeaa muotoa, ja niitä on 1-6
                                     required: { value: true, message: 'Tuotteella on oltava vähintään yksi kuva' },
+                                    onChange: handlePictureChange,
                                 })}
                                 // setValue in uploadFile
                                 // onChange={(event) => {
                                 //     uploadFile(event.target.files);
                                 // }}
                                 // inputProps={{ required: false }}
-                                required
-                                onChange={handlePictureChange}
                             />
                         </Button>
                         {imgUrls?.length > 0 && (
