@@ -80,10 +80,13 @@ function StorageProductsTable() {
     };
 
     // array with an array for each unique product_item.product.id and all products with that id
-    const productRenderItems: OrderViewLoaderType['product_items'][] = [];
+    // const productRenderItems: OrderViewLoaderType['product_items'][] = [];
+    const productRenderItems: any = [];
     productItems?.results?.map((productItem) => {
         // check if array already contains an item.product.id array
-        const productIndex = productRenderItems.findIndex((index) => index[0]?.product.id === productItem.product.id);
+        const productIndex = productRenderItems.findIndex(
+            (index: any) => index[0]?.product.id === productItem.product.id
+        );
         if (productIndex < 0) {
             // if not, push a new array with this item as its first object
             productRenderItems.push([productItem]);
@@ -91,6 +94,7 @@ function StorageProductsTable() {
             // if yes, push this item to that array
             productRenderItems[productIndex].push(productItem);
         }
+        return null;
     });
 
     // todo: count rows of productRenderItems and use that fo page size?
@@ -146,7 +150,7 @@ function StorageProductsTable() {
                     </Typography>
                 ) : (
                     <TableBody>
-                        {productRenderItems.map((itemArray, index) => (
+                        {productRenderItems.map((itemArray: any, index: any) => (
                             <Fragment key={itemArray[0].id}>
                                 <StyledTableRow>
                                     {/* <StyledTableCell>
@@ -168,6 +172,7 @@ function StorageProductsTable() {
                                             variant="outlined"
                                             color="primary"
                                             sx={{ paddingRight: 6, paddingLeft: 6 }}
+                                            disabled
                                         >
                                             Muokkaa
                                         </Button>
