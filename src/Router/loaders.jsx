@@ -38,6 +38,7 @@ const rootLoader = async () => {
  * Get shoppingCart for logged in user
  */
 const shoppingCartLoader = async () => {
+    // TODO: why not combine these into one call?
     const { data: cart } = await shoppingCartApi.shoppingCartRetrieve();
     const { data: amountList } = await shoppingCartApi.shoppingCartAvailableAmountList();
     // console.log('@shoppingCartLoader, cart.product_items:', cart?.product_items);
@@ -153,16 +154,20 @@ const emailRecipientsLoader = async () => {
 /**
  * Get all categories and storages
  */
-const storageProductsLoader = async (auth, setAuth, request) => {
+const storageProductsLoader = async ({ request }) => {
     const url = new URL(request.url);
 
-    const [{ data: storages }, { data: colors }, { data: products }] = await Promise.all([
-        storagesApi.storagesList(),
-        colorsApi.colorsList(),
-        productsApi.productsList(null, null, null, null, null, url.searchParams.get('search')),
-    ]);
+    const [{ data: storages }, { data: colors }, { data: categories }, { data: products }, { data: productItems }] =
+        await Promise.all([
+            storagesApi.storagesList(),
+            colorsApi.colorsList(),
+            categoriesApi.categoriesList(),
+            productsApi.productsList(null, null, null, null, null, url.searchParams.get('search')),
+            // pagesize hardcoded to 200, should be enough for now
+            productsApi.productsItemsList(null, null, null, 200, null, url.searchParams.get('search')),
+        ]);
 
-    return { storages, colors, products };
+    return { storages, colors, categories, products, productItems };
 };
 
 /**

@@ -2159,6 +2159,11 @@ paths:
         explode: true
         style: form
       - in: query
+        name: search
+        schema:
+          type: string
+        description: Barcode search
+      - in: query
         name: shelf_id
         schema:
           type: string

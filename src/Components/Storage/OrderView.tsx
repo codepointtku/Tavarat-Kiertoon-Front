@@ -190,6 +190,7 @@ function OrderView({ isAdmin }: Props) {
                                         </TableCell>
                                         <TableCell>{itemArray.length}</TableCell>
                                         <TableCell>{itemArray[0].product.id}</TableCell>
+                                        {/* todo: show some symbol[!] if there are multiple storages for these products? */}
                                         <TableCell>{itemArray[0].storage.name}</TableCell>
                                     </StyledTableRow>
                                     <TableRow>
@@ -207,6 +208,8 @@ function OrderView({ isAdmin }: Props) {
                                                                 <TableCell align="right">
                                                                     Yksittäisen tuotteen tunnistenumero
                                                                 </TableCell>
+                                                                {/* Todo: add storage, to show product_items in multiple storages? */}
+                                                                {/* <TableCell align="right">Varasto</TableCell> */}
                                                                 <TableCell align="right">Hyllynumero</TableCell>
                                                             </TableRow>
                                                         </TableHead>

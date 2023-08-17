@@ -479,12 +479,12 @@ function Routes() {
                                     path: 'tuotteet',
                                     id: 'storageProducts',
                                     element: <StorageProducts />,
-                                    loader: async ({ request }) => storageProductsLoader(auth, setAuth, request),
+                                    loader: storageProductsLoader,
                                 },
                                 {
                                     path: 'tuotteet/luo',
                                     element: <AddNewItem />,
-                                    loader: async ({ request }) => storageProductsLoader(auth, setAuth, request),
+                                    loader: storageProductsLoader,
                                     action: async ({ request }) => addProductAction(auth, setAuth, request),
                                 },
                                 {

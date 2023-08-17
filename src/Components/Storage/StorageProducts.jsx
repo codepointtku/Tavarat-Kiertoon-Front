@@ -18,17 +18,18 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 
 function StorageProducts() {
     const [searchParams, setSearchParams] = useSearchParams();
-    const { categories } = useRouteLoaderData('root');
-    const { storages, products } = useLoaderData();
+    // const { categories } = useRouteLoaderData('root');
+    // const { storages, categories, products  } = useLoaderData();
     const [qrSearchOpen, setQrSearchOpen] = useState(false);
     // todo: lisää tulosten sivutus
     // const params = searchParams.getAll('search', 'rows', 'page', 'all');
     // console.log('params:', params);
 
-    console.log('categories:', categories);
-    console.log('storages:', storages);
-    console.log('products:', products);
-    console.log('products.results:', products.results);
+    // console.log('categories:', categories);
+    // console.log('storages:', storages);
+    // console.log('products:', products);
+    // console.log('products.results:', products.results);
+    // console.log('productItems:', productItems);
 
     const onNewScanResult = (decodedText, decodedResult) => {
         setQrSearchOpen(false);
