@@ -163,8 +163,8 @@ const storageProductsLoader = async ({ request }) => {
             colorsApi.colorsList(),
             categoriesApi.categoriesList(),
             productsApi.productsList(null, null, null, null, null, url.searchParams.get('search')),
-            // pagesize hardcoded to 200, should be enough for now
-            productsApi.productsItemsList(null, null, null, 200, null, url.searchParams.get('search')),
+            // pagesize hardcoded to 50, should be enough for now
+            productsApi.productsItemsList(null, null, null, 50, null, url.searchParams.get('search')),
         ]);
 
     return { storages, colors, categories, products, productItems };
