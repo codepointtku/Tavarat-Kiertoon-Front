@@ -17,7 +17,7 @@ import {
 
 import TypographyTitle from '../TypographyTitle';
 
-import type { GridColDef } from '@mui/x-data-grid';
+import type { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import type { storagesListLoader } from '../../Router/loaders';
 
 function StoragesList() {
@@ -46,7 +46,11 @@ function StoragesList() {
         { field: 'address', headerName: 'Osoite', flex: 1 },
         { field: 'zip_code', headerName: 'Postinumero', flex: 1 },
         { field: 'city', headerName: 'Kaupunki', flex: 1 },
-        { field: 'in_use', headerName: 'Tila' },
+        {
+            field: 'in_use',
+            headerName: 'Tila',
+            valueGetter: (params: GridValueGetterParams) => (params.row.in_use === true ? 'Käytössä' : 'Ei käytössä'),
+        },
         {
             field: 'id',
             headerName: 'Toiminnot',
