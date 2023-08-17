@@ -411,11 +411,14 @@ function ContactsAndDelivery() {
             <TypographyTitle text="Lisätietoja / Viesti" />
 
             <TextField
-                {...register('orderInfo')}
+                {...register('orderInfo', {
+                    maxLength: { value: 500, message: 'Maksimi merkkimäärä on rajattu 500 merkkiin' },
+                })}
+                error={!!errors.orderInfo}
+                helperText={errors.orderInfo?.message?.toString() || ' '}
                 placeholder="Lisätietoa toimituksesta..."
                 fullWidth
                 multiline
-                helperText="Lisätietoon voi kirjoittaa esim. ovikoodin tai muut esteet tilauksen kuljetukselle."
                 rows={5}
                 sx={{ marginTop: '2rem' }}
             />
