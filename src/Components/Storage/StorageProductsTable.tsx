@@ -248,49 +248,6 @@ function StorageProductsTable() {
                                 </StyledTableRow>
                             </Fragment>
                         ))}
-                        {productItems?.results?.map((productItem) => (
-                            <StyledTableRow key={productItem.id}>
-                                <StyledTableCell component="th" scope="row">
-                                    {/* TODO: varastopuolen tuotesivu, ProductDetails komponenttia hyödyntäen */}
-                                    <Link to={`/varasto/tuotteet/${productItem.id}`}>{productItem.barcode}</Link>
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <Button
-                                        component={Link}
-                                        to={`/varasto/tuotteet/${productItem.id}/muokkaa`}
-                                        variant="outlined"
-                                        color="primary"
-                                        sx={{ paddingRight: 6, paddingLeft: 6 }}
-                                    >
-                                        Muokkaa
-                                    </Button>
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    {/* todo: link to working product details page with storage related info and edit functionality */}
-                                    <Link to={`/varasto/tuotteet/${productItem.id}/muokkaa`}>
-                                        {productItem.product.name}
-                                    </Link>
-                                </StyledTableCell>
-                                <StyledTableCell align="right">{productItem.product.amount}</StyledTableCell>
-                                <StyledTableCell align="right">{productItem.storage.name}</StyledTableCell>
-                                <StyledTableCell align="right">
-                                    {productItem.product.category
-                                        ? categories[productItem.product.category]?.name
-                                        : 'ei kategoriaa'}
-                                </StyledTableCell>
-                                {/* <StyledTableCell align="right">{categories[productItem.category].name}</StyledTableCell> */}
-                                {/* <StyledTableCell align="right">tässä category_name</StyledTableCell> */}
-                                <StyledTableCell align="right">
-                                    {new Date(productItem.modified_date).toLocaleDateString('fi-FI') +
-                                        ', klo ' +
-                                        new Date(productItem.modified_date).toLocaleTimeString('fi-FI', {
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                        })}
-                                </StyledTableCell>
-                                {/* <StyledTableCell align="right">tässä created / modified</StyledTableCell> */}
-                            </StyledTableRow>
-                        ))}
                     </TableBody>
                 )}
                 {/* <TableFooter>
