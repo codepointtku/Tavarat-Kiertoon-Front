@@ -347,7 +347,7 @@ const userEditAction = async ({ request, params }) => {
     };
 
     const selectedAuthGroups = formData
-        .getAll('groups')[0]
+        .get('groups')
         .split(',')
         .map((group) => Number(group));
 
@@ -357,10 +357,10 @@ const userEditAction = async ({ request, params }) => {
     });
 
     if (userInfoUpdateResponse.status === 200 && userPermissionsUpdateResponse.status === 200) {
-        return { type: 'update', status: true };
+        return { type: 'userdataupdate', status: true };
     }
 
-    return { type: 'update', status: false };
+    return { type: 'userdataupdate', status: false };
 };
 
 const adminUserAddressEditAction = async ({ request, params }) => {

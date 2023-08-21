@@ -213,21 +213,16 @@ const usersListLoader = async () => {
 };
 
 /**
- * Get one user and all auth groups in separate apicalls, combine these responses into an array.
- * Array item 0 === user data, item 1 === auth groups.
- * Used in src/Components/Admin/UserEdit.jsx
+ * Get one user and all auth groups
+ * Used in src/Components/Admin/UserEdit.tsx
  */
 const userEditLoader = async ({ params }) => {
-    const dataList = [];
-    let { data } = await usersApi.usersRetrieve(params.userid);
-    data.groups = data.groups.map((group) => group.id);
-    dataList.push(data);
-    data = await usersApi.usersGroupsList();
-    dataList.push(data.data);
-    if (dataList) {
-        return dataList;
-    }
-    return null;
+    const [{ data: userInfo }, { data: userAuthGroups }] = await Promise.all([
+        usersApi.usersRetrieve(params.userid),
+        usersApi.usersGroupsList(),
+    ]);
+
+    return { userInfo, userAuthGroups };
 };
 
 const userAddressEditLoader = async ({ params }) => {
