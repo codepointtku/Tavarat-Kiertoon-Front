@@ -253,6 +253,8 @@ const storageCreateAction = async ({ request }) => {
     const newStorage = {
         name: formData.get('name'),
         address: formData.get('address'),
+        zip_code: formData.get('zip_code'),
+        city: formData.get('city'),
         in_use: formData.get('in_use') === 'Käytössä' ? true : false,
     };
 

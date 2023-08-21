@@ -110,7 +110,11 @@ function StorageEdit() {
                                 required: { value: true, message: 'Varaston katuosoite on pakollinen' },
                                 minLength: {
                                     value: 1,
-                                    message: 'Osoite on pakollinen',
+                                    message: 'Syötä katuosoite',
+                                },
+                                maxLength: {
+                                    value: 50,
+                                    message: 'Maksimipituus 50 merkkiä',
                                 },
                             })}
                             inputProps={{ required: false }}
@@ -132,12 +136,16 @@ function StorageEdit() {
                                         value: 1,
                                         message: 'Syötä postinumero',
                                     },
+                                    maxLength: {
+                                        value: 5,
+                                        message: 'Postinumero on 5 merkkiä',
+                                    },
                                 })}
                                 inputProps={{ required: false }}
                                 required
-                                error={!!formStateErrors.address}
+                                error={!!formStateErrors.zip_code}
                                 helperText={formStateErrors.zip_code?.message?.toString() || ' '}
-                                color={dirtyFields.address ? 'warning' : 'primary'}
+                                color={dirtyFields.zip_code ? 'warning' : 'primary'}
                                 fullWidth
                             />
                             <TextField
@@ -150,12 +158,16 @@ function StorageEdit() {
                                         value: 1,
                                         message: 'Syötä kaupunki',
                                     },
+                                    maxLength: {
+                                        value: 50,
+                                        message: 'Maksimipituus 50 merkkiä',
+                                    },
                                 })}
                                 inputProps={{ required: false }}
                                 required
-                                error={!!formStateErrors.address}
+                                error={!!formStateErrors.city}
                                 helperText={formStateErrors.city?.message?.toString() || ' '}
-                                color={dirtyFields.address ? 'warning' : 'primary'}
+                                color={dirtyFields.city ? 'warning' : 'primary'}
                                 fullWidth
                             />
                         </Stack>
@@ -163,7 +175,6 @@ function StorageEdit() {
                         <TextField
                             select
                             label="Käyttötila"
-                            // defaultValue="Ei käytössä"
                             {...register('in_use', {
                                 required: { value: true, message: 'Valitse varaston tila' },
                             })}
@@ -174,6 +185,7 @@ function StorageEdit() {
                             color={dirtyFields.in_use ? 'warning' : 'primary'}
                             fullWidth
                         >
+                            {/* // throws warning on mount */}
                             {storageStates.map((state) => (
                                 <MenuItem key={state} value={state}>
                                     {state}

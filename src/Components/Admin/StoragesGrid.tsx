@@ -23,15 +23,6 @@ import type { storagesListLoader } from '../../Router/loaders';
 function StoragesGrid() {
     const storages = useLoaderData() as Awaited<ReturnType<typeof storagesListLoader>>;
 
-    // [
-    //     {
-    //         id: 0,
-    //         name: 'string',
-    //         address: 'string',
-    //         in_use: true,
-    //     },
-    // ];
-
     // const pageSize = 10;
     // const pageCount = Math.ceil(count! / pageSize);
     const pageCount = 50;
@@ -260,8 +251,8 @@ function StoragesGrid() {
                             );
                         },
                     }}
-                    checkboxSelection
                     localeText={localizedTextsMap}
+                    // checkboxSelection
                     // showColumnVerticalBorder
                     // showCellVerticalBorder
                     // loading
