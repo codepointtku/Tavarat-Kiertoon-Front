@@ -56,14 +56,14 @@ interface Search {
 //     modified_date: string;
 // }
 
+export type StorageProductsLoaderType = Awaited<ReturnType<typeof storageProductsLoader>>;
+
 function StorageProductsTable() {
     // state to control product info collapse field
     const [isOpen, setIsOpen] = useState<number>();
     const [searchParams, setSearchParams] = useSearchParams();
     // const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
-    const { storages, categories, products, productItems } = useLoaderData() as Awaited<
-        ReturnType<typeof storageProductsLoader>
-    >;
+    const { categories, productItems } = useLoaderData() as StorageProductsLoaderType;
     const { register, handleSubmit, watch } = useForm({ defaultValues: { searchString: searchParams.get('search') } });
     // todo: fill search field with search param if scanned with qrcodescanner or entered with link
 
@@ -80,10 +80,10 @@ function StorageProductsTable() {
     };
 
     // array with an array for each unique product_item.product.id and all products with that id
-    const productRenderItems: OrderViewLoaderType['product_items'][] = [];
+    const productRenderItems: StorageProductsLoaderType['productItems'][] = [];
     productItems?.results?.map((productItem) => {
-        // check if array already contains an item.product.id array
-        const productIndex = productRenderItems.findIndex((index) => index[0]?.product.id === productItem.product.id);
+        // check if array already contains an item.barcode array
+        const productIndex = productRenderItems.findIndex((index) => index[0]?.barcode === productItem.barcode);
         if (productIndex < 0) {
             // if not, push a new array with this item as its first object
             productRenderItems.push([productItem]);
@@ -91,6 +91,7 @@ function StorageProductsTable() {
             // if yes, push this item to that array
             productRenderItems[productIndex].push(productItem);
         }
+        return null;
     });
 
     // todo: count rows of productRenderItems and use that fo page size?
@@ -242,49 +243,6 @@ function StorageProductsTable() {
                                     </TableCell>
                                 </StyledTableRow>
                             </Fragment>
-                        ))}
-                        {productItems?.results?.map((productItem) => (
-                            <StyledTableRow key={productItem.id}>
-                                <StyledTableCell component="th" scope="row">
-                                    {/* TODO: varastopuolen tuotesivu, ProductDetails komponenttia hyödyntäen */}
-                                    <Link to={`/varasto/tuotteet/${productItem.id}`}>{productItem.barcode}</Link>
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <Button
-                                        component={Link}
-                                        to={`/varasto/tuotteet/${productItem.id}/muokkaa`}
-                                        variant="outlined"
-                                        color="primary"
-                                        sx={{ paddingRight: 6, paddingLeft: 6 }}
-                                    >
-                                        Muokkaa
-                                    </Button>
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                    {/* todo: link to working product details page with storage related info and edit functionality */}
-                                    <Link to={`/varasto/tuotteet/${productItem.id}/muokkaa`}>
-                                        {productItem.product.name}
-                                    </Link>
-                                </StyledTableCell>
-                                <StyledTableCell align="right">{productItem.product.amount}</StyledTableCell>
-                                <StyledTableCell align="right">{productItem.storage.name}</StyledTableCell>
-                                <StyledTableCell align="right">
-                                    {productItem.product.category
-                                        ? categories[productItem.product.category]?.name
-                                        : 'ei kategoriaa'}
-                                </StyledTableCell>
-                                {/* <StyledTableCell align="right">{categories[productItem.category].name}</StyledTableCell> */}
-                                {/* <StyledTableCell align="right">tässä category_name</StyledTableCell> */}
-                                <StyledTableCell align="right">
-                                    {new Date(productItem.modified_date).toLocaleDateString('fi-FI') +
-                                        ', klo ' +
-                                        new Date(productItem.modified_date).toLocaleTimeString('fi-FI', {
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                        })}
-                                </StyledTableCell>
-                                {/* <StyledTableCell align="right">tässä created / modified</StyledTableCell> */}
-                            </StyledTableRow>
                         ))}
                     </TableBody>
                 )}
