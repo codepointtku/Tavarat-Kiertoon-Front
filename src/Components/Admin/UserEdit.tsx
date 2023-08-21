@@ -55,7 +55,6 @@ function UserEdit() {
     const {
         register,
         handleSubmit: createHandleSubmit,
-        reset,
         formState: { errors: formStateErrors, isDirty, dirtyFields, isValid },
     } = useForm({
         mode: 'all',
