@@ -24,8 +24,6 @@ function StorageEdit() {
     const storageInfo = storageData.storageInfo;
     const storageAvailableProductsCount = storageData.hasProducts.count;
 
-    const storageStates = ['Käytössä', 'Ei käytössä'];
-
     const {
         register,
         handleSubmit: createHandleSubmit,
@@ -184,13 +182,10 @@ function StorageEdit() {
                             helperText={formStateErrors.in_use?.message?.toString() || ' '}
                             color={dirtyFields.in_use ? 'warning' : 'primary'}
                             fullWidth
+                            defaultValue={storageInfo.in_use ? 1 : 0}
                         >
-                            {/* // throws warning on mount */}
-                            {storageStates.map((state) => (
-                                <MenuItem key={state} value={state}>
-                                    {state}
-                                </MenuItem>
-                            ))}
+                            <MenuItem value="1">Käytössä</MenuItem>
+                            <MenuItem value="0">Ei Käytössä</MenuItem>
                         </TextField>
 
                         <Stack id="submit-reset-btns" direction="row" gap={2}>
