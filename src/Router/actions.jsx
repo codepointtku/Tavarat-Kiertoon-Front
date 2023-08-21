@@ -329,15 +329,6 @@ const productsTransferAction = async ({ request }) => {
 };
 
 const userEditAction = async ({ request, params }) => {
-    // This action handles user data: info and users auth groups.
-    // User data has different BE endpoints for these different user data sections.
-
-    // First apicall updates users editable info.
-    // Second apicall updates users auth groups: BE expects integers (representing different auth groups) in an array.
-    // - Get all the checked checkboxes values into an array's first index.
-    // - The array is then splitted by comma into an array of strings. These values are then mapped into an array of integers,
-    // - and then sent to the BE in a composition BE expects.
-
     const formData = await request.formData();
 
     const userInfo = {
@@ -346,21 +337,29 @@ const userEditAction = async ({ request, params }) => {
         phone_number: formData.get('phone_number'),
     };
 
-    const selectedAuthGroups = formData
-        .get('groups')
-        .split(',')
-        .map((group) => Number(group));
+    // if formdata.get('groups') comes in as an empty array, keep it as an empty array.
+    // else get the values, split by comma (this creates an array), map the values and typecast them as numbers.
+    let selectedAuthGroups =
+        formData.get('groups') === ''
+            ? []
+            : formData
+                  .get('groups')
+                  .split(',')
+                  .map((group) => Number(group));
 
-    const userInfoUpdateResponse = await usersApi.usersUpdate(params.userid, userInfo);
-    const userPermissionsUpdateResponse = await usersApi.usersGroupsPermissionUpdate(params.userid, {
-        groups: selectedAuthGroups,
-    });
+    try {
+        const userPermissionsUpdateResponse = await usersApi.usersGroupsPermissionUpdate(params.userid, {
+            groups: selectedAuthGroups,
+        });
 
-    if (userInfoUpdateResponse.status === 200 && userPermissionsUpdateResponse.status === 200) {
-        return { type: 'userdataupdate', status: true };
+        const userInfoUpdateResponse = await usersApi.usersUpdate(params.userid, userInfo);
+
+        if (userInfoUpdateResponse.status === 200 && userPermissionsUpdateResponse.status === 200) {
+            return { type: 'userdataupdate', status: true };
+        }
+    } catch (err) {
+        return { type: 'userdataupdate', status: false, responseMsg: err.response.data };
     }
-
-    return { type: 'userdataupdate', status: false };
 };
 
 const adminUserAddressEditAction = async ({ request, params }) => {

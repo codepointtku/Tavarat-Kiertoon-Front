@@ -28,7 +28,7 @@ import TypographyHeading from '../TypographyHeading';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
-import type { userSignupAction } from '../../Router/actions';
+import type { userEditAction } from '../../Router/actions';
 import type { userEditLoader } from '../../Router/loaders';
 
 const groupNames = {
@@ -40,7 +40,7 @@ const groupNames = {
 
 function UserEdit() {
     const { userInfo, userAuthGroups } = useLoaderData() as Awaited<ReturnType<typeof userEditLoader>>;
-    const actionData = useActionData() as Awaited<ReturnType<typeof userSignupAction>>;
+    const actionData = useActionData() as Awaited<ReturnType<typeof userEditAction>>;
 
     const creationDateInfo = [];
     const creationDate = new Date(userInfo.creation_date);
@@ -60,7 +60,7 @@ function UserEdit() {
         mode: 'all',
         defaultValues: {
             ...userInfo,
-            groups: userInfo.groups.map((group) => String(group.id)),
+            // groups: userInfo.groups.map((group) => group.id),
         },
     });
 
@@ -84,8 +84,15 @@ function UserEdit() {
     return (
         <>
             {actionData?.type === 'userdataupdate' && actionData?.status === false && (
-                <AlertBox text="Käyttäjätietojen tallennus epäonnistui. Lataa sivu uudestaan." status="error" />
+                <AlertBox text="Käyttäjätietojen tallennus epäonnistui" status="error" />
             )}
+
+            {actionData?.type === 'userdataupdate' &&
+                actionData?.status === false &&
+                actionData.responseMsg === 'admins cannot edit their own permissions' && (
+                    <AlertBox text="Ylläpitäjä ei voi muokata omia käyttöoikeuksiaan" status="warning" />
+                )}
+
             {actionData?.type === 'userdataupdate' && actionData?.status && (
                 <AlertBox
                     text="Käyttäjätiedot tallennettu onnistuneesti. Uudelleenohjataan..."
@@ -158,7 +165,7 @@ function UserEdit() {
                                                     message: 'Maksimipituus 50 merkkiä',
                                                 },
                                             })}
-                                            // Needs to be 'required: false' to disable browser error message
+                                            // 'required: false' to disable browser error message
                                             inputProps={{ required: false }}
                                             required
                                             error={!!formStateErrors.first_name}
