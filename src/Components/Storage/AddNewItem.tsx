@@ -33,7 +33,6 @@ import type { addProductAction } from '../../Router/actions';
 
 function AddNewItem() {
     const [qrScanOpen, setQrScanOpen] = useState(false);
-    const [imgUrls, setImgUrls] = useState<string[]>([]);
     const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const { storages, colors } = useLoaderData() as Awaited<ReturnType<typeof storageProductsLoader>>;
     // console.log('categories:', categories, 'storages:', storages, 'colors:', colors);
@@ -109,10 +108,12 @@ function AddNewItem() {
         setValue('colors', event.target.value as number[]);
     };
 
-    const reader = new FileReader();
     const handlePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         // const files = event.target.files;
         // console.log('files:', files);
+
+        const img_preview = document.getElementById('images_preview');
+        img_preview?.replaceChildren();
         const pictureFileList = getValues('pictures');
         // console.log('pictures handlepicturechangessa', pictures);
         console.log('pictureFileList:', pictureFileList);
@@ -121,18 +122,23 @@ function AddNewItem() {
 
         if (pictureFileList) {
             Array.from(pictureFileList).map((pic: any) => {
-                reader.readAsDataURL(pic);
-                reader.onload = () => {
-                    if (typeof reader.result === 'string') {
-                        const url = reader.result;
-                        setImgUrls([...imgUrls, url]);
-                    }
-                };
-                return null;
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        if (typeof reader.result === 'string') {
+                            const url = reader.result;
+                            const img = document.createElement('img');
+                            img.height = 150;
+                            img.src = url;
+                            img_preview?.appendChild(img);
+                        }
+                    };
+                    reader.onerror = (error) => {
+                        reject(error);
+                    };
+                    reader.readAsDataURL(pic);
+                });
             });
-            console.log('imgUrls:', imgUrls);
-        } else {
-            setImgUrls([]);
         }
 
         // // Simple image add alternative
@@ -421,14 +427,10 @@ function AddNewItem() {
                                 // inputProps={{ required: false }}
                             />
                         </Button>
-                        {imgUrls?.length > 0 && (
-                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                {imgUrls.map((url) => (
-                                    <img key={url} src={url} alt="preview" width="200" height="200" />
-                                    // TODO kuvien poisto
-                                ))}
-                            </Box>
-                        )}
+                        <Box
+                            id="images_preview"
+                            sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, minHeight: '300px' }}
+                        />
                     </CardActions>
                     <CardActions>
                         <Button
