@@ -54,7 +54,7 @@ import BulletinPostEdit from '../Components/Admin/BulletinPostEdit';
 
 import Stats from '../Components/Admin/Stats/Stats';
 
-import StoragesList from '../Components/Admin/StoragesList';
+import StoragesGrid from '../Components/Admin/StoragesGrid';
 import StorageEdit from '../Components/Admin/StorageEdit';
 import StorageDelete from '../Components/Admin/StorageDelete';
 import StorageCreate from '../Components/Admin/StorageCreate';
@@ -631,7 +631,7 @@ function Routes() {
                                     children: [
                                         {
                                             index: true,
-                                            element: <StoragesList />,
+                                            element: <StoragesGrid />,
                                             loader: storagesListLoader,
                                         },
                                         {

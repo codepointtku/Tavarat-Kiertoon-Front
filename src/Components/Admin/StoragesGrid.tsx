@@ -20,7 +20,7 @@ import TypographyTitle from '../TypographyTitle';
 import type { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import type { storagesListLoader } from '../../Router/loaders';
 
-function StoragesList() {
+function StoragesGrid() {
     const storages = useLoaderData() as Awaited<ReturnType<typeof storagesListLoader>>;
 
     // [
@@ -285,4 +285,4 @@ function StoragesList() {
     );
 }
 
-export default StoragesList;
+export default StoragesGrid;
