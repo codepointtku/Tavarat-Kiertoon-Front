@@ -144,7 +144,9 @@ function OrderView({ isAdmin }: Props) {
                             </TableRow>
                             <TableRow>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Lisätiedot:</TableCell>
-                                <TableCell colSpan={3}>{order.order_info}</TableCell>
+                                <TableCell colSpan={3} sx={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
+                                    {order.order_info}
+                                </TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
