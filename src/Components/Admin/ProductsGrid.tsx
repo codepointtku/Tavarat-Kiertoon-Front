@@ -69,10 +69,8 @@ function ProductsGrid() {
             field: 'id',
             headerName: 'Toiminnot',
             renderCell: (params) => (
-                <Button variant="outlined">
-                    <MuiLink component={Link} to={`/admin/tuotteet/${params.value}`}>
-                        Avaa
-                    </MuiLink>
+                <Button component={Link} to={`/admin/tuotteet/${params.value}`} variant="outlined">
+                    Avaa
                 </Button>
             ),
         },
