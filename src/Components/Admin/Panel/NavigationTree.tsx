@@ -23,13 +23,13 @@ import Settings from '@mui/icons-material/Settings';
 import ExpandIcon from '@mui/icons-material/Expand';
 import VerticalAlignCenterIcon from '@mui/icons-material/VerticalAlignCenter';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
-import MarkChatReadIcon from '@mui/icons-material/MarkChatRead';
+// import MarkChatReadIcon from '@mui/icons-material/MarkChatRead';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import People from '@mui/icons-material/People';
 // import Public from '@mui/icons-material/Public'; // a globe
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import PostAddIcon from '@mui/icons-material/PostAdd';
+// import PostAddIcon from '@mui/icons-material/PostAdd';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 // import EditIcon from '@mui/icons-material/Edit'; // a pen
 // import NotesIcon from '@mui/icons-material/Notes'; // three vertical lines
@@ -51,7 +51,6 @@ import { ListItemButtonLink } from '../../MUILinkComponents';
 // list item links data (mapped out variables)
 const tilaukset = [
     { icon: <AutoStoriesIcon />, label: 'Tarkastele', to: '/admin/tilaukset' },
-    { icon: <PostAddIcon />, label: 'Lisää uusi', to: '/admin/tilaukset/uusi' },
     { icon: <ImportExportIcon />, label: 'Lähetyslista', to: '/admin/tilaukset/sahkopostilista' },
 ];
 
@@ -606,17 +605,7 @@ function NavigationTree() {
                                             <ExpandIcon sx={{ marginLeft: '1rem' }} />
                                         </ListItemIcon>
                                     </MenuItem>
-                                    <Tooltip
-                                        position="right"
-                                        title="Nollaa kaikki ilmoitukset, viestit ja uutiset nähdyiksi"
-                                    >
-                                        <MenuItem onClick={handleClose} divider>
-                                            <ListItemText>Merkitse kaikki luetuksi</ListItemText>
-                                            <ListItemIcon>
-                                                <MarkChatReadIcon sx={{ marginLeft: '1rem' }} />
-                                            </ListItemIcon>
-                                        </MenuItem>
-                                    </Tooltip>
+
                                     <Tooltip position="right" title="Siirtyy varastohenkilökunnan käyttöliittymään">
                                         <MenuItem onClick={handleClose} component={Link} to="/varasto">
                                             <ListItemText>Siirry varastonäkymään</ListItemText>
