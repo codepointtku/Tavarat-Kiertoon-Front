@@ -16,15 +16,8 @@ import type { storageEditLoader } from '../../Router/loaders';
 //
 
 function StorageDelete({ randomInt }: any) {
-    // console.log('rInt:', randomInt, typeof randomInt);
     const storageData = useLoaderData() as Awaited<ReturnType<typeof storageEditLoader>>;
-
     const storageInfo = storageData.storageInfo;
-
-    // todo: If the selected storage has productitems related to it the selected storage cannot be deleted.
-
-    // const storageHasAvailableProducts = storageData.hasProducts.count;
-    // console.log('product count in this storage:', storageHasAvailableProducts);
 
     const {
         register,

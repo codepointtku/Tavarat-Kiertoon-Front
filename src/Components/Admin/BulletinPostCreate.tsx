@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Form, useSubmit, useLoaderData, useActionData } from 'react-router-dom';
+import { Form, useSubmit, useLoaderData, useActionData, Link } from 'react-router-dom';
 
 import { Container, TextField, Button, Box, Stack, Grid, IconButton } from '@mui/material';
 import FeedIcon from '@mui/icons-material/Feed';
@@ -125,6 +125,15 @@ function BulletinPostCreate() {
                                 </Tooltip>
                             </Grid>
                         </Grid>
+                        <Button
+                            // color="error"
+                            variant="outlined"
+                            component={Link}
+                            to="/admin/tiedotteet/"
+                            sx={{ mt: '1rem' }}
+                        >
+                            Takaisin
+                        </Button>
                     </Stack>
                 </Box>
             </Container>
