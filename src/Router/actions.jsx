@@ -362,6 +362,11 @@ const userEditAction = async ({ request, params }) => {
     }
 };
 
+const userDeleteAction = async ({ params }) => {
+    await usersApi.usersDestroy(params.id);
+    return redirect('/admin/kayttajat');
+};
+
 const adminUserAddressEditAction = async ({ request, params }) => {
     const formData = await request.formData();
 
@@ -989,6 +994,7 @@ export {
     productsTransferAction,
     createBulletinAction,
     userEditAction,
+    userDeleteAction,
     adminUserAddressEditAction,
     adminUserAddressCreateAction,
     itemCreateAction,

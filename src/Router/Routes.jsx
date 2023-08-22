@@ -150,12 +150,14 @@ import {
     userSignupAction,
     contactAction,
     orderEditAction,
+    orderDeleteAction,
     storageEditAction,
     storageCreateAction,
     storageDeleteAction,
     productsTransferAction,
     frontPageActions,
     userEditAction,
+    userDeleteAction,
     adminUserAddressEditAction,
     adminUserAddressCreateAction,
     cartViewAction,
@@ -182,13 +184,13 @@ import {
     deletePacketAction,
     userProfilePageAction,
     modifyUserAddressesAction,
-    orderDeleteAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
 
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
+import UserDelete from '../Components/Admin/UserDelete';
 
 createStore({});
 
@@ -591,6 +593,13 @@ function Routes() {
                                             // errorElement: <UserError />,
                                             loader: userEditLoader,
                                             action: userEditAction,
+                                        },
+                                        {
+                                            path: ':userid/poista',
+                                            element: <UserDelete randomInt={getRandomInt()} />,
+                                            // errorElement: <UserError />,
+                                            loader: userEditLoader,
+                                            action: userDeleteAction,
                                         },
                                         {
                                             path: ':userid/osoitteet/:aid',
