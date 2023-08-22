@@ -78,7 +78,6 @@ function BulletinPostEdit() {
                                 helperText={errors.title?.message?.toString() || ' '}
                                 fullWidth
                                 color={isDirty ? 'success' : 'primary'}
-                                sx={{ mt: '1rem' }}
                             />
 
                             <TextField
@@ -98,14 +97,9 @@ function BulletinPostEdit() {
                                 helperText={errors.content?.message?.toString() || ' '}
                                 fullWidth
                                 color={isDirty ? 'success' : 'primary'}
-                                // sx={{ mt: '1rem' }}
                             />
 
-                            <Button
-                                type="submit"
-                                disabled={!isDirty || !isValid || isSubmitSuccessful}
-                                // sx={{ mt: '1rem' }}
-                            >
+                            <Button type="submit" disabled={!isDirty || !isValid || isSubmitSuccessful}>
                                 Muokkaa tiedotetta
                             </Button>
                             <Button
