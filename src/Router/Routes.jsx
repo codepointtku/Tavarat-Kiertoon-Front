@@ -682,7 +682,7 @@ function Routes() {
                                     ],
                                 },
                                 {
-                                    path: ':saapuneet',
+                                    path: 'viestit',
                                     element: <AdminInbox />,
                                     loader: adminInboxLoader,
                                     action: adminInboxAction,

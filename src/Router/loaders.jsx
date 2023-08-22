@@ -429,17 +429,18 @@ const adminLoader = async () => {
 };
 
 const adminInboxLoader = async ({ request }) => {
-    const searchParams = new URL(request.url).searchParams;
+    // const searchParams = new URL(request.url).searchParams;
 
-    const statusMap = {
-        Luetut: 'Read',
-        Lukemattomat: 'Not read',
-        Hoidetut: 'Handled',
-    };
+    // const statusMap = {
+    //     Luetut: 'Read',
+    //     Lukemattomat: 'Not read',
+    //     Hoidetut: 'Handled',
+    // };
 
-    const status = statusMap[searchParams.get('tila')] || null;
+    // const status = statusMap[searchParams.get('tila')] || null;
 
-    const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null, status);
+    // const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null, status);
+    const { data: messages } = await contactFormsApi.contactFormsList(null, null, null, 'Not read');
 
     return messages;
 };

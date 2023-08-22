@@ -72,8 +72,8 @@ const tiedotteet = [
 ];
 
 const viestit = [
-    { icon: <MailIcon />, label: 'Saapuneet', to: '/admin/saapuneet' },
-    { icon: <MarkEmailUnreadIcon />, label: 'Lukemattomat', to: '/admin/saapuneet?tila=Lukemattomat' },
+    { icon: <MailIcon />, label: 'Tarkastele', to: '/admin/viestit' },
+    // { icon: <MarkEmailUnreadIcon />, label: 'Lukemattomat', to: '/admin/viestit?tila=Lukemattomat' },
 ];
 
 const NavStyles = styled(List)<{ component?: React.ElementType }>({

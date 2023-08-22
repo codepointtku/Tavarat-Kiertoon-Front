@@ -1,6 +1,7 @@
-import { useLoaderData, useSearchParams } from 'react-router-dom';
+import * as React from 'react';
+import { useLoaderData /* useSearchParams */ } from 'react-router-dom';
 
-import { Stack, Container, ButtonGroup, Button, Box, Pagination } from '@mui/material';
+import { Stack, Container, /* ButtonGroup, Button, */ Box, Pagination } from '@mui/material';
 
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
@@ -13,7 +14,7 @@ import type { adminInboxLoader } from '../../Router/loaders';
 function AdminInbox() {
     const messages = useLoaderData() as Awaited<ReturnType<typeof adminInboxLoader>>;
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    // const [searchParams, setSearchParams] = useSearchParams();
     // const url = window.location.href;
 
     const pageCount = messages?.count && Math.ceil(messages.count / 5);
@@ -38,24 +39,24 @@ function AdminInbox() {
         );
     });
 
-    function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
-        // let assignedParams;
-        // if (searchParams.has('tila')) {
-        //     assignedParams = {
-        //         tila: searchParams.get('tila') as string,
-        //         sivu: String(newPage),
-        //     };
-        // } else {
-        // assignedParams = { sivu: String(newPage) };
-        // }
-        let assignedParams = { sivu: String(newPage) };
-        setSearchParams(assignedParams);
-    }
+    // function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
+    //     // let assignedParams;
+    //     // if (searchParams.has('tila')) {
+    //     //     assignedParams = {
+    //     //         tila: searchParams.get('tila') as string,
+    //     //         sivu: String(newPage),
+    //     //     };
+    //     // } else {
+    //     // assignedParams = { sivu: String(newPage) };
+    //     // }
+    //     // let assignedParams = { sivu: String(newPage) };
+    //     // setSearchParams(assignedParams);
+    // }
 
     return (
         <Container maxWidth="lg">
             <HeroHeader Icon={<MailIcon />} hideInAdmin />
-            <HeroText title="Saapuneet viestit" />
+            <HeroText title="Saapuneet viestit" subtext="Ota yhteyttä-lomakkeen kautta lähetetyt viestit" />
 
             {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <ButtonGroup
@@ -103,7 +104,7 @@ function AdminInbox() {
                 {messageCards}
             </Stack>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Pagination
                     size="large"
                     color="primary"
@@ -112,7 +113,7 @@ function AdminInbox() {
                     showFirstButton
                     showLastButton
                 />
-            </Box>
+            </Box> */}
         </Container>
     );
 }

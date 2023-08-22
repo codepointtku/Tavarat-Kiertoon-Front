@@ -903,8 +903,8 @@ const createBulletinAction = async ({ request }) => {
 
 /**
  * Changes read state of message
+ * UPD: currently not used.
  */
-
 const adminInboxAction = async ({ request }) => {
     const formData = await request.formData();
     const id = Number(formData.get('id'));
