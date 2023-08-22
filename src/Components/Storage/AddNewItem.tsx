@@ -1,5 +1,5 @@
 // /* eslint-disable react/jsx-props-no-spreading */
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouteLoaderData, useLoaderData, useSubmit, Form, useActionData } from 'react-router-dom';
 
@@ -32,7 +32,13 @@ import type { rootLoader, storageProductsLoader } from '../../Router/loaders';
 import type { addProductAction } from '../../Router/actions';
 
 function AddNewItem() {
+    type PicUpload = {
+        file: File;
+        url: string;
+    };
+
     const [qrScanOpen, setQrScanOpen] = useState(false);
+    const [fileList, setFilelist] = useState<PicUpload[]>([]);
     const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const { storages, colors } = useLoaderData() as Awaited<ReturnType<typeof storageProductsLoader>>;
     // console.log('categories:', categories, 'storages:', storages, 'colors:', colors);
@@ -95,6 +101,7 @@ function AddNewItem() {
     const description = watch('free_description');
     const barcode = watch('barcode');
     const colorsSelected = watch('colors');
+
     // const pictures = watch('pictures');
     // console.log('pictures:', pictures);
 
@@ -107,8 +114,11 @@ function AddNewItem() {
     const handleColorSelectChange = (event: SelectChangeEvent<number[]>) => {
         setValue('colors', event.target.value as number[]);
     };
-
-    const handlePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const RemoveImage = (id: number) => {
+        fileList.splice(id, 1);
+        console.log(fileList);
+    };
+    const handlePictureChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         // const files = event.target.files;
         // console.log('files:', files);
 
@@ -121,24 +131,20 @@ function AddNewItem() {
         // // Image preview with base 64 encoding
 
         if (pictureFileList) {
+            const TempfileList = fileList;
             Array.from(pictureFileList).map((pic: any) => {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                        if (typeof reader.result === 'string') {
-                            const url = reader.result;
-                            const img = document.createElement('img');
-                            img.height = 150;
-                            img.src = url;
-                            img_preview?.appendChild(img);
-                        }
-                    };
-                    reader.onerror = (error) => {
-                        reject(error);
-                    };
-                    reader.readAsDataURL(pic);
-                });
+                const reader = new FileReader();
+                reader.onload = () => {
+                    if (typeof reader.result === 'string') {
+                        const url = reader.result;
+
+                        TempfileList.push({ file: pic, url: url });
+                    }
+                };
+                reader.readAsDataURL(pic);
             });
+            setFilelist(TempfileList);
+            console.log(fileList);
         }
 
         // // Simple image add alternative
@@ -427,10 +433,22 @@ function AddNewItem() {
                                 // inputProps={{ required: false }}
                             />
                         </Button>
-                        <Box
-                            id="images_preview"
-                            sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, minHeight: '300px' }}
-                        />
+                        {fileList.map((pic, index) => (
+                            <Box sx={{ display: 'flex', flexDirection: 'column', width: '150px' }} key={index}>
+                                <img src={pic.url} alt="preview_image" height="150px" width="150px" />
+                                <Button
+                                    id="image_del_btn"
+                                    color="error"
+                                    type="button"
+                                    sx={{ height: 30, width: 30, alignSelf: 'center' }}
+                                    onClick={() => {
+                                        RemoveImage(index);
+                                    }}
+                                >
+                                    Poista
+                                </Button>
+                            </Box>
+                        ))}
                     </CardActions>
                     <CardActions>
                         <Button
