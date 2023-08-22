@@ -9,7 +9,7 @@ import AuthContext from '../Context/AuthContext';
 import ErrorBoundary from './ErrorBoundary';
 import BaseBoundary from './BaseBoundary';
 // import AdminViewBoundary from './AdminViewBoundary';
-// import UserError from './ErrorElements/UserError';
+import UserError from './ErrorElements/UserError';
 import OrderViewError from './ErrorElements/OrderViewError';
 
 import HasRole from '../Utils/HasRole';
@@ -26,32 +26,31 @@ import StorageLayout from '../Layouts/StorageLayout';
 import AdminLayout from '../Layouts/AdminLayout';
 import BikesLayout from '../Layouts/BikesLayout';
 
+// storage
+import QrScanner from '../Components/Storage/QrScanner';
+import PDFView from '../Components/Storage/PDFView';
+
+import AddItem from '../Components/Storage/AddItem';
+
 import OrdersList from '../Components/Storage/OrdersList';
 import OrderView from '../Components/Storage/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
 import AdminOrderDelete from '../Components/Admin/AdminOrderDelete';
 
-import QrScanner from '../Components/Storage/QrScanner';
-
+// admin
 import Overview from '../Components/Admin/Panel/Overview/Overview';
+import Stats from '../Components/Admin/Stats/Stats';
 
 import OrdersGrid from '../Components/Admin/OrdersGrid';
 import AdminOrderEmailList from '../Components/Admin/AdminOrderEmailList';
 
 import ProductsGrid from '../Components/Admin/ProductsGrid';
 
-import AdminInbox from '../Components/Admin/AdminInbox';
-
 import UsersGrid from '../Components/Admin/UsersGrid';
 import UserEdit from '../Components/Admin/UserEdit';
+import UserDelete from '../Components/Admin/UserDelete';
 import UserAddressEdit from '../Components/Admin/UserAddressEdit';
 import UserAddressCreate from '../Components/Admin/UserAddressCreate';
-
-import BulletinPosts from '../Components/Admin/BulletinPosts';
-import BulletinPostCreate from '../Components/Admin/BulletinPostCreate';
-import BulletinPostEdit from '../Components/Admin/BulletinPostEdit';
-
-import Stats from '../Components/Admin/Stats/Stats';
 
 import StoragesGrid from '../Components/Admin/StoragesGrid';
 import StorageEdit from '../Components/Admin/StorageEdit';
@@ -60,9 +59,13 @@ import StorageCreate from '../Components/Admin/StorageCreate';
 import StorageProductsTransfer from '../Components/Admin/StorageProductsTransfer';
 import StorageProductsHandleItemsTransfer from '../Components/Admin/StorageProductsHandleItemsTransfer';
 
-import AddItem from '../Components/Storage/AddItem';
-import PDFView from '../Components/Storage/PDFView';
+import BulletinPosts from '../Components/Admin/BulletinPosts';
+import BulletinPostCreate from '../Components/Admin/BulletinPostCreate';
+import BulletinPostEdit from '../Components/Admin/BulletinPostEdit';
 
+import AdminInbox from '../Components/Admin/AdminInbox';
+
+// default
 import ProductDetails from '../Components/Default/ProductDetails';
 import ShoppingCart from '../Components/Default/ShoppingCart/ShoppingCart';
 import ContactsAndDelivery from '../Components/Default/ShoppingCart/ContactsAndDelivery';
@@ -100,6 +103,7 @@ import GuideOrdering from '../Components/Default/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Default/Instructions/GuideShipping';
 import GuideBikes from '../Components/Default/Instructions/GuideBikes';
 
+// bikes
 import ModifyBikePacket from '../Components/Bikes/ModifyBikePacket';
 import BikesPage from '../Components/Bikes/BikesPage';
 import Bikes from '../Components/Bikes/Bikes';
@@ -109,6 +113,7 @@ import BikeRentals from '../Components/Bikes/BikeRentals';
 import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 import BikeModels from '../Components/Bikes/BikeModels';
 import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
+import BikesHomePage from '../Components/Bikes/BikesHomePage';
 
 import {
     bikesPacketLoader,
@@ -188,9 +193,6 @@ import {
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
-
-import BikesHomePage from '../Components/Bikes/BikesHomePage';
-import UserDelete from '../Components/Admin/UserDelete';
 
 createStore({});
 
@@ -583,35 +585,35 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <UsersGrid />,
-                                            // errorElement: <UserError />,
+                                            errorElement: <UserError />,
                                             id: 'kayttajat',
                                             loader: usersListLoader,
                                         },
                                         {
                                             path: ':userid',
                                             element: <UserEdit />,
-                                            // errorElement: <UserError />,
+                                            errorElement: <UserError />,
                                             loader: userEditLoader,
                                             action: userEditAction,
                                         },
                                         {
                                             path: ':userid/poista',
                                             element: <UserDelete randomInt={getRandomInt()} />,
-                                            // errorElement: <UserError />,
+                                            errorElement: <UserError />,
                                             loader: userEditLoader,
                                             action: userDeleteAction,
                                         },
                                         {
                                             path: ':userid/osoitteet/:aid',
                                             element: <UserAddressEdit />,
-                                            // errorElement: <UserError />,
+                                            errorElement: <UserError />,
                                             loader: userAddressEditLoader,
                                             action: adminUserAddressEditAction,
                                         },
                                         {
                                             path: ':userid/osoitteet/luo',
                                             element: <UserAddressCreate />,
-                                            // errorElement: <UserError />,
+                                            errorElement: <UserError />,
                                             loader: userAddressCreateLoader,
                                             action: adminUserAddressCreateAction,
                                         },
