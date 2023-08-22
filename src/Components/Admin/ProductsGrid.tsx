@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useLoaderData } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { Stack, Button, Link as MuiLink } from '@mui/material';
+import { Stack, Button } from '@mui/material';
 
 import {
     DataGrid,
