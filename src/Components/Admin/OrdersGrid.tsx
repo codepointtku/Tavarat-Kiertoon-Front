@@ -21,7 +21,7 @@ import type { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import type { ordersListLoader } from '../../Router/loaders';
 
 function OrdersGrid() {
-    const { count, next, previous, results } = useLoaderData() as Awaited<ReturnType<typeof ordersListLoader>>;
+    const { count, /* next, previous, */ results } = useLoaderData() as Awaited<ReturnType<typeof ordersListLoader>>;
 
     const pageSize = 10; // page_size @ BE: 10
     const pageCount = Math.ceil(count! / pageSize);
@@ -55,7 +55,21 @@ function OrdersGrid() {
             headerName: 'Tilausnumero',
             valueGetter: (params: GridValueGetterParams) => `${params.row.id || ''}`,
         },
-        { field: 'status', headerName: 'Tila' },
+        {
+            field: 'status',
+            headerName: 'Tila',
+            valueGetter: (params: GridValueGetterParams) => {
+                if (params.row.status === 'Waiting') {
+                    return 'Odottaa';
+                }
+                if (params.row.status === 'Processing') {
+                    return 'Käsittelyssä';
+                }
+                if (params.row.status === 'Finished') {
+                    return 'Toimitettu';
+                }
+            },
+        },
         { field: 'delivery_address', headerName: 'Toimitusosoite', flex: 1 },
         { field: 'contact', headerName: 'Yhteystieto', flex: 1 },
         { field: 'phone_number', headerName: 'Puhelinnumero', flex: 1 },

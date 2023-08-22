@@ -164,7 +164,7 @@ function OrderView({ isAdmin }: Props) {
                         </TableHead>
 
                         <TableBody id="orders-products-tablebody">
-                            {productRenderItems.map((itemArray, index) => (
+                            {productRenderItems?.map((itemArray, index) => (
                                 <Fragment key={itemArray[0].id}>
                                     <StyledTableRow>
                                         <TableCell>
