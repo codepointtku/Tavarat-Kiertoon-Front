@@ -115,7 +115,10 @@ function AddNewItem() {
         setValue('colors', event.target.value as number[]);
     };
     const RemoveImage = (id: number) => {
-        fileList.splice(id, 1);
+        // fileList.splice(id, 1);
+        // setFileList without mutating state
+        setFilelist((prevFileList) => prevFileList.filter((file, index) => index !== id));
+
         console.log(fileList);
     };
     const handlePictureChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -131,19 +134,20 @@ function AddNewItem() {
         // // Image preview with base 64 encoding
 
         if (pictureFileList) {
-            const TempfileList = fileList;
+            // const TempfileList = fileList;
             Array.from(pictureFileList).map((pic: any) => {
                 const reader = new FileReader();
                 reader.onload = () => {
                     if (typeof reader.result === 'string') {
                         const url = reader.result;
 
-                        TempfileList.push({ file: pic, url: url });
+                        // TempfileList.push({ file: pic, url: url });
+                        setFilelist((prevFileList) => [...prevFileList, { file: pic, url: url }]);
                     }
                 };
                 reader.readAsDataURL(pic);
             });
-            setFilelist(TempfileList);
+            // setFilelist(TempfileList);
             console.log(fileList);
         }
 
