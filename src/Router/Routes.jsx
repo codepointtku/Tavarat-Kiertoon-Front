@@ -34,12 +34,11 @@ import AdminOrderDelete from '../Components/Admin/AdminOrderDelete';
 import QrScanner from '../Components/Storage/QrScanner';
 
 import Overview from '../Components/Admin/Panel/Overview/Overview';
+
 import OrdersGrid from '../Components/Admin/OrdersGrid';
-import AdminOrderCreate from '../Components/Admin/AdminOrderCreate';
-import ProductsGrid from '../Components/Admin/ProductsGrid';
-import AdminProductEdit from '../Components/Admin/AdminProductEdit';
-import AdminProductCreate from '../Components/Admin/AdminProductCreate';
 import AdminOrderEmailList from '../Components/Admin/AdminOrderEmailList';
+
+import ProductsGrid from '../Components/Admin/ProductsGrid';
 
 import AdminInbox from '../Components/Admin/AdminInbox';
 
@@ -557,10 +556,6 @@ function Routes() {
                                             ],
                                         },
                                         {
-                                            path: 'uusi',
-                                            element: <AdminOrderCreate />,
-                                        },
-                                        {
                                             path: 'sahkopostilista',
                                             element: <AdminOrderEmailList />,
                                             loader: emailRecipientsLoader,
@@ -576,18 +571,6 @@ function Routes() {
                                             index: true,
                                             element: <ProductsGrid />,
                                             loader: productListLoader,
-                                        },
-                                        {
-                                            path: ':id',
-                                            element: <AdminProductEdit />,
-                                            // loader: productDetailsLoader,
-                                            // action: undefined,
-                                        },
-                                        {
-                                            path: 'uusi',
-                                            element: <AdminProductCreate />,
-                                            // loader: undefined,
-                                            // action: undefined,
                                         },
                                     ],
                                 },
