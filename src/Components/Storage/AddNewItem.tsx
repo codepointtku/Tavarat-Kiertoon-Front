@@ -350,12 +350,14 @@ function AddNewItem() {
                             label="Väri"
                             sx={{ minWidth: 300 }}
                             multiple
-                            {...register('colors', { required: { value: true, message: 'Tuotteella on oltava väri' } })}
+                            {...register('colors', {
+                                required: { value: true, message: 'Tuotteella on oltava väri' },
+                                onChange: handleColorSelectChange,
+                            })}
                             required
                             inputProps={{ required: false }}
                             error={!!errors.colors}
                             value={colorsSelected}
-                            onChange={handleColorSelectChange}
                             renderValue={(selected) => (
                                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                     {selected.map((value) => (
