@@ -118,36 +118,26 @@ function AddNewItem() {
         // fileList.splice(id, 1);
         // setFileList without mutating state
         setFilelist((prevFileList) => prevFileList.filter((file, index) => index !== id));
-
-        console.log(fileList);
     };
     const handlePictureChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        // const files = event.target.files;
-        // console.log('files:', files);
-
-        const img_preview = document.getElementById('images_preview');
-        img_preview?.replaceChildren();
         const pictureFileList = getValues('pictures');
-        // console.log('pictures handlepicturechangessa', pictures);
+
         console.log('pictureFileList:', pictureFileList);
 
         // // Image preview with base 64 encoding
 
         if (pictureFileList) {
-            // const TempfileList = fileList;
             Array.from(pictureFileList).map((pic: any) => {
                 const reader = new FileReader();
                 reader.onload = () => {
                     if (typeof reader.result === 'string') {
                         const url = reader.result;
-
-                        // TempfileList.push({ file: pic, url: url });
                         setFilelist((prevFileList) => [...prevFileList, { file: pic, url: url }]);
                     }
                 };
                 reader.readAsDataURL(pic);
+                return null;
             });
-            // setFilelist(TempfileList);
             console.log(fileList);
         }
 
@@ -168,8 +158,7 @@ function AddNewItem() {
         });
 
         Object.values(data?.colors).forEach((color: any) => formData.append('colors[]', color));
-        Object.values(data?.pictures).forEach((pic: any) => formData.append('pictures[]', pic));
-
+        Object.values(fileList).forEach((pic: PicUpload) => formData.append('pictures[]', pic.file));
         submit(formData, {
             method: 'post',
             action: '/varasto/tuotteet/luo/',
