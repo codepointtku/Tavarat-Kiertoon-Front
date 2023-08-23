@@ -31,12 +31,12 @@ import AlertBox from '../AlertBox';
 import type { rootLoader, storageProductsLoader } from '../../Router/loaders';
 import type { addProductAction } from '../../Router/actions';
 
-function AddNewItem() {
-    type PicUpload = {
-        file: File;
-        url: string;
-    };
+type PicUpload = {
+    file: File;
+    url: string;
+};
 
+function AddNewItem() {
     const [qrScanOpen, setQrScanOpen] = useState(false);
     const [fileList, setFilelist] = useState<PicUpload[]>([]);
     const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
@@ -102,9 +102,6 @@ function AddNewItem() {
     const barcode = watch('barcode');
     const colorsSelected = watch('colors');
 
-    // const pictures = watch('pictures');
-    // console.log('pictures:', pictures);
-
     // QR code scanner
     const onNewScanResult = (decodedText: string, decodedResult: any) => {
         setQrScanOpen(false);
@@ -115,14 +112,12 @@ function AddNewItem() {
         setValue('colors', event.target.value as number[]);
     };
     const RemoveImage = (id: number) => {
-        // fileList.splice(id, 1);
-        // setFileList without mutating state
         setFilelist((prevFileList) => prevFileList.filter((file, index) => index !== id));
     };
     const handlePictureChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const pictureFileList = getValues('pictures');
 
-        console.log('pictureFileList:', pictureFileList);
+        // console.log('pictureFileList:', pictureFileList);
 
         // // Image preview with base 64 encoding
 
@@ -138,7 +133,6 @@ function AddNewItem() {
                 reader.readAsDataURL(pic);
                 return null;
             });
-            console.log(fileList);
         }
 
         // // Simple image add alternative
@@ -153,7 +147,7 @@ function AddNewItem() {
 
         console.log(data);
         Object.entries(data).forEach(([key, value]) => {
-            console.log(key, value);
+            // console.log(key, value);
             if (key !== 'pictures' && key !== 'colors') formData.append(key, data[key]);
         });
 
