@@ -5,7 +5,7 @@ FROM node:16.18.0-alpine3.16
 # @ openapitools.json : "useDocker": false
 # Add your machines IP to BE .env ALLOWED_HOSTS && CORS_ALLOWED_ORIGINS
 
-# RUN apk add openjdk17
+RUN apk add openjdk17
 
 WORKDIR /usr/src/app
 
