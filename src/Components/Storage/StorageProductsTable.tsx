@@ -39,6 +39,7 @@ import StyledTableRow from '../StyledTableRow';
 import { type storageProductsLoader, type rootLoader } from '../../Router/loaders';
 import { Fragment } from 'react';
 import Tooltip from '../Tooltip';
+import { AddCircle } from '@mui/icons-material';
 
 interface Search {
     searchString: string | null;
@@ -76,6 +77,7 @@ function StorageProductsTable() {
 
     const handleBarcodeSearch = (formData: Search) => {
         console.log('handleBarcodeSearch', formData);
+        // TODO: search from all products, not just available products
         setSearchParams({ search: formData.searchString as string });
     };
 
@@ -133,6 +135,7 @@ function StorageProductsTable() {
                         <StyledTableCell align="right">Tuotenimi</StyledTableCell>
                         <StyledTableCell align="right">Määrä</StyledTableCell>
                         <StyledTableCell align="right">Varasto</StyledTableCell>
+                        {/* TODO: add storage filter option */}
                         <StyledTableCell align="right">Kategoria</StyledTableCell>
                         <StyledTableCell align="right">Viimeksi muokattu</StyledTableCell>
                         {/* <StyledTableCell align="right">Varastopaikka</StyledTableCell> */}
@@ -184,7 +187,12 @@ function StorageProductsTable() {
                                             </Box>
                                         </Tooltip>
                                     </StyledTableCell>
-                                    <StyledTableCell align="right">{itemArray.length}</StyledTableCell>
+                                    <StyledTableCell align="right">
+                                        <IconButton color="primary">
+                                            {itemArray.length} {/* TODO: Add/return products (to same storage) logic */}
+                                            <AddCircle />
+                                        </IconButton>
+                                    </StyledTableCell>
                                     {/* todo: show some symbol[!] if there are multiple storages for these products? */}
                                     <StyledTableCell align="right">{itemArray[0].storage.name}</StyledTableCell>
                                     {/* <StyledTableCell>{itemArray[0].product.id}</StyledTableCell> */}
