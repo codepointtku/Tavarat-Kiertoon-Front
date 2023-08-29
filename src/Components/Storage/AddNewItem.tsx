@@ -8,9 +8,6 @@ import {
     Box,
     MenuItem,
     Button,
-    Card,
-    CardActions,
-    CardContent,
     Modal,
     Select,
     Checkbox,
@@ -20,6 +17,10 @@ import {
     FormControl,
     InputLabel,
     type SelectChangeEvent,
+    Grid,
+    Paper,
+    IconButton,
+    Typography,
 } from '@mui/material';
 
 // import imageCompression from 'browser-image-compression';
@@ -30,6 +31,8 @@ import TypographyTitle from '../TypographyTitle';
 import AlertBox from '../AlertBox';
 import type { rootLoader, storageProductsLoader } from '../../Router/loaders';
 import type { addProductAction } from '../../Router/actions';
+import { GridDeleteIcon } from '@mui/x-data-grid';
+import { CropFree, Delete, DeleteForever } from '@mui/icons-material';
 
 type PicUpload = {
     file: File;
@@ -116,8 +119,9 @@ function AddNewItem() {
     };
     const handlePictureChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const pictureFileList = getValues('pictures');
-
-        // console.log('pictureFileList:', pictureFileList);
+        // TODO: check if there is already 6 pictures, if so, don't add more
+        console.log('pictureFileList:', pictureFileList);
+        console.log(fileList);
 
         // // Image preview with base 64 encoding
 
@@ -188,7 +192,7 @@ function AddNewItem() {
     // console.log('errors', errors);
 
     return (
-        <Card>
+        <>
             {actionData?.status === true && (
                 <AlertBox
                     status="success"
@@ -208,7 +212,15 @@ function AddNewItem() {
                 }}
                 // justifyContent="center"
             >
-                <Box width={700}>
+                <Box
+                    width={700}
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                >
                     <Html5QrcodePlugin
                         fps={10}
                         qrbox={250}
@@ -217,20 +229,24 @@ function AddNewItem() {
                     />
                 </Box>
             </Modal>
-            <Box padding={2}>
-                <TypographyTitle text="Uusi tuote" />
-            </Box>
-
-            <Box
+            <Grid
                 component={Form}
                 onSubmit={handleSubmit(onSubmit)}
-                sx={{
-                    '& .MuiTextField-root': { m: 1, width: '40ch' },
-                }}
+                container
+                spacing={2}
+                padding={3}
+                // sx={{
+                //     '& .MuiTextField-root': { m: 1, width: '40ch' },
+                // }}
                 autoComplete="off"
             >
-                <CardContent>
+                <Grid item xs={12}>
+                    <TypographyTitle text="Luo uusi tuote" />
+                </Grid>
+                <Grid item xs={12} md={6}>
                     <TextField
+                        // sx={{ minWidth: 400 }}
+                        fullWidth
                         id="name"
                         type="text"
                         label="Nimi"
@@ -248,7 +264,34 @@ function AddNewItem() {
                         helperText={errors.name?.message || ' '}
                     />
                     <TextField
-                        // TODO: Mitä tapahtuu jos viivakoodi löytyy jo järjestelmästä? Ohjataanko vanhan tuotteen editointiin?  Mikä response backista
+                        // fullWidth
+                        id="amount"
+                        type="number"
+                        label="Määrä"
+                        placeholder="Määrä"
+                        {...register('amount', {
+                            required: { value: true, message: 'Määrä on pakollinen tieto' },
+                            max: { value: 100, message: '100 on maksimimäärä' },
+                            min: { value: 1, message: '1 on minimimäärä' },
+                            pattern: { value: RegExp('[0-9]*'), message: 'Määrän on oltava numero' },
+                        })}
+                        inputProps={{
+                            // inputMode: 'numeric',
+                            // pattern: '[0-9]*',
+                            title: 'Määrä',
+                            // min: '1',
+                            // max: '1000',
+                            required: false,
+                        }}
+                        required
+                        error={!!errors.amount}
+                        helperText={errors.amount?.message || ' '}
+                    />
+                    {/* <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}> */}
+                    <TextField
+                        // TODO: Mitä tapahtuu jos viivakoodi löytyy jo järjestelmästä (userin virhe)? Ohjataanko vanhan tuotteen editointiin?  Mikä response backista?
+                        fullWidth
                         id="barcode"
                         type="text"
                         label="Viivakoodi"
@@ -273,13 +316,35 @@ function AddNewItem() {
                     >
                         Viivakoodi
                     </TextField>
-                    <CardActions>
-                        <Button size="large" onClick={() => setQrScanOpen(true)}>
-                            Viivakoodinlukija
-                        </Button>
-                        {barcode?.length > 0 && <Barcode value={barcode} format="CODE39" height={32} fontSize={14} />}
-                    </CardActions>
+                    {/* TODO: mahdollisuus printata viivakoodeja kappalemäärän verran? */}
+                    <Paper
+                        elevation={3}
+                        sx={{
+                            border: '1px solid black',
+                            borderRadius: 1,
+                            minHeight: '7rem',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                        onClick={() => setQrScanOpen(true)}
+                    >
+                        {barcode?.length > 0 && !errors.barcode ? (
+                            <Barcode value={barcode} format="CODE39" height={64} fontSize={14} />
+                        ) : (
+                            <IconButton
+                                // remove hover effect
+                                sx={{ '&:hover': { backgroundColor: 'transparent' } }}
+                            >
+                                <Typography fontSize={20}> Lue viivakoodi </Typography> <CropFree />
+                            </IconButton>
+                        )}
+                    </Paper>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
                     <TextField
+                        fullWidth
                         id="storage-select"
                         select
                         label="Sijainti"
@@ -302,6 +367,7 @@ function AddNewItem() {
                     </TextField>
                     {/* TODO: shelf id -hyllypaikka, joko vapaa kenttä, tai tietyn varaston hyllypaikat valikko */}
                     <TextField
+                        fullWidth
                         id="category-select"
                         select
                         label="Kategoria"
@@ -318,6 +384,8 @@ function AddNewItem() {
                         {/* TODO kategorian valikkoon valittavaksi vain alimmat kategoriat. ylemmät väliotsikoiksi?  */}
                         {categories?.map((category: any) => (
                             <MenuItem
+                                // TODO: better select - disabled if category has subcategories
+                                // disabled={category.subcategories?.length > 0}
                                 onClick={() => setValue('category', category.id)}
                                 key={category.id}
                                 value={category.id}
@@ -326,19 +394,18 @@ function AddNewItem() {
                             </MenuItem>
                         ))}
                     </TextField>
-                    <FormControl error={!!errors.colors} sx={{ margin: '1rem' }}>
+                    <FormControl error={!!errors.colors} fullWidth>
                         <InputLabel htmlFor="component-outlined">Väri</InputLabel>
                         <Select
                             id="color-select"
                             label="Väri"
-                            sx={{ minWidth: 300 }}
                             multiple
                             {...register('colors', {
                                 required: { value: true, message: 'Tuotteella on oltava väri' },
                                 onChange: handleColorSelectChange,
                             })}
-                            required
                             inputProps={{ required: false }}
+                            required
                             error={!!errors.colors}
                             value={colorsSelected}
                             renderValue={(selected) => (
@@ -362,35 +429,13 @@ function AddNewItem() {
                         </Select>
                         <FormHelperText>{errors.colors ? errors.colors.message : ' '}</FormHelperText>
                     </FormControl>
+
                     <TextField
-                        id="amount"
-                        type="number"
-                        label="Määrä"
-                        placeholder="Määrä"
-                        {...register('amount', {
-                            required: { value: true, message: 'Määrä on pakollinen tieto' },
-                            max: { value: 1000, message: '1000 on maksimimäärä' },
-                            min: { value: 1, message: '1 on minimimäärä' },
-                            // tämä ei toimi, näyttää vain required virheviestin "Määrä on pakollinen"
-                            pattern: { value: RegExp('[0-9]*'), message: 'Määrän on oltava numero' },
-                        })}
-                        inputProps={{
-                            // inputMode: 'numeric',
-                            // pattern: '[0-9]*',
-                            title: 'Määrä',
-                            // min: '1',
-                            // max: '1000',
-                            required: false,
-                        }}
-                        required
-                        error={!!errors.amount}
-                        helperText={errors.amount?.message || ' '}
-                    ></TextField>
-                    <TextField
+                        fullWidth
                         id="description"
                         label="Kuvaus"
                         multiline
-                        minRows={4}
+                        minRows={3}
                         {...register('free_description', {
                             required: { value: true, message: 'Tuotteella on oltava kuvaus' },
                             minLength: { value: 6, message: 'Vähintään 6 merkkiä' },
@@ -401,56 +446,113 @@ function AddNewItem() {
                         error={!!errors.free_description}
                         helperText={errors.free_description?.message || `${description?.length || 0}/1000`}
                     />
-                    <CardActions>
-                        <Button variant="contained" component="label" size="large">
-                            Lisää kuvat
-                            {/* TODO mui input? */}
-                            <input
-                                type="file"
-                                accept="image/*"
-                                multiple
-                                hidden
-                                {...register('pictures', {
-                                    // TODO tarkistettava että kuvatiedostot ovat oikeaa muotoa, ja niitä on 1-6
-                                    required: { value: true, message: 'Tuotteella on oltava vähintään yksi kuva' },
-                                    onChange: handlePictureChange,
-                                })}
-                                // setValue in uploadFile
-                                // onChange={(event) => {
-                                //     uploadFile(event.target.files);
-                                // }}
-                                // inputProps={{ required: false }}
-                            />
-                        </Button>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button variant="contained" component="label" size="large" sx={{ marginTop: 2, marginBottom: 2 }}>
+                        Lisää kuvat
+                        {/* TODO mui input? */}
+                        <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            hidden
+                            {...register('pictures', {
+                                // TODO tarkistettava että kuvatiedostot ovat oikeaa muotoa, ja niitä on 1-6
+                                required: { value: true, message: 'Tuotteella on oltava vähintään yksi kuva' },
+                                // minLength: { value: 1, message: 'Tuotteella on oltava vähintään yksi kuva' },
+                                // maxLength: { value: 6, message: 'Kuvia voi olla enintään 6' },
+                                onChange: handlePictureChange,
+                                validate: (value) => {
+                                    if (value.length > 6) {
+                                        return 'Kuvia voi olla enintään 6';
+                                    }
+                                    if (value.length < 1) {
+                                        return 'Tuotteella on oltava vähintään yksi kuva';
+                                    }
+
+                                    return true;
+                                },
+                            })}
+
+                            // setValue in uploadFile
+                            // onChange={(event) => {
+                            //     uploadFile(event.target.files);
+                            // }}
+                            // inputProps={{ required: false }}
+                        />
+                    </Button>
+                    <FormHelperText>{errors.pictures ? errors.pictures.message : ' '}</FormHelperText>
+                    {/* {fileList.map((pic, index) => (
+                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '150px' }} key={index}>
+                            <img src={pic.url} alt="preview_image" height="150px" width="150px" />
+                            <Button
+                                id="image_del_btn"
+                                color="error"
+                                type="button"
+                                sx={{ height: 30, width: 30, alignSelf: 'center' }}
+                                onClick={() => {
+                                    RemoveImage(index);
+                                }}
+                            >
+                                Poista
+                            </Button>
+                        </Box>
+                    ))} */}
+                    <Grid container spacing={2}>
                         {fileList.map((pic, index) => (
-                            <Box sx={{ display: 'flex', flexDirection: 'column', width: '150px' }} key={index}>
-                                <img src={pic.url} alt="preview_image" height="150px" width="150px" />
-                                <Button
-                                    id="image_del_btn"
-                                    color="error"
-                                    type="button"
-                                    sx={{ height: 30, width: 30, alignSelf: 'center' }}
-                                    onClick={() => {
-                                        RemoveImage(index);
-                                    }}
-                                >
-                                    Poista
-                                </Button>
-                            </Box>
+                            <Grid item xs={12} sm={6} md={4} key={index}>
+                                {/* <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}> */}
+                                <Paper elevation={3} sx={{ position: 'relative', width: '100%', paddingTop: '100%' }}>
+                                    <img
+                                        src={pic.url}
+                                        alt="preview_image"
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'cover',
+                                        }}
+                                    />
+                                    {/* <Button
+                                        id="image_del_btn"
+                                        color="error"
+                                        type="button"
+                                        sx={{ height: 30, width: 30, alignSelf: 'center' }}
+                                        onClick={() => {
+                                            RemoveImage(index);
+                                        }}
+                                    >
+                                        Poista
+                                    </Button> */}
+                                    <IconButton
+                                        id="image_del_btn"
+                                        color="error"
+                                        sx={{ position: 'absolute', top: 0, right: 0 }}
+                                        onClick={() => {
+                                            RemoveImage(index);
+                                        }}
+                                    >
+                                        <Delete />
+                                    </IconButton>
+                                </Paper>
+                            </Grid>
                         ))}
-                    </CardActions>
-                    <CardActions>
-                        <Button
-                            size="large"
-                            type="submit"
-                            // disabled={!isValid}
-                        >
-                            Lisää tuote
-                        </Button>
-                    </CardActions>
-                </CardContent>
-            </Box>
-        </Card>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                        fullWidth
+                        size="large"
+                        type="submit"
+                        // disabled={!isValid}
+                    >
+                        Lisää tuote
+                    </Button>
+                </Grid>
+            </Grid>
+        </>
     );
 }
 
