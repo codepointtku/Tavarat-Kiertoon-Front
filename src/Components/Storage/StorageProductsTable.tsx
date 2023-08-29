@@ -72,7 +72,7 @@ function StorageProductsTable() {
     // console.log('storages:', storages);
     // console.log('products:', products);
     // console.log('products.results:', products?.results);
-    console.log('productItems.results:', productItems?.results);
+    // console.log('productItems.results:', productItems?.results);
     // const search = watch('searchString');
 
     const handleBarcodeSearch = (formData: Search) => {
@@ -98,10 +98,10 @@ function StorageProductsTable() {
 
     // todo: count rows of productRenderItems and use that fo page size?
 
-    console.log('productRenderItems:', productRenderItems);
+    // console.log('productRenderItems:', productRenderItems);
 
     return (
-        <TableContainer component={Paper} sx={{ padding: '2rem' }}>
+        <TableContainer component={Box} sx={{ mt: '3rem' }}>
             {/* todo: näytä varastokohtaisesti, tai kaikki tuotteet kaikissa varastoissa */}
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
