@@ -31,8 +31,7 @@ import TypographyTitle from '../TypographyTitle';
 import AlertBox from '../AlertBox';
 import type { rootLoader, storageProductsLoader } from '../../Router/loaders';
 import type { addProductAction } from '../../Router/actions';
-import { GridDeleteIcon } from '@mui/x-data-grid';
-import { CropFree, Delete, DeleteForever } from '@mui/icons-material';
+import { CropFree, Delete } from '@mui/icons-material';
 
 type PicUpload = {
     file: File;
@@ -89,7 +88,6 @@ function AddNewItem() {
             // shelf_id: '',
             // measurements: 'wrdrqwf',
             // weight: 0.0,
-            // storages: 1,
             // name: 'testi',
             // barcode: '1234',
             // free_description: 'testi',
@@ -210,20 +208,17 @@ function AddNewItem() {
                 onClose={() => {
                     setQrScanOpen(false);
                 }}
-                // justifyContent="center"
             >
                 <Box
-                    width={700}
+                    width="75%"
                     sx={{
                         position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
+                        left: '12.5%',
                     }}
                 >
                     <Html5QrcodePlugin
                         fps={10}
-                        qrbox={250}
+                        qrbox={300}
                         disableFlip={false}
                         qrCodeSuccessCallback={onNewScanResult}
                     />
@@ -235,9 +230,6 @@ function AddNewItem() {
                 container
                 spacing={2}
                 padding={3}
-                // sx={{
-                //     '& .MuiTextField-root': { m: 1, width: '40ch' },
-                // }}
                 autoComplete="off"
             >
                 <Grid item xs={12}>
@@ -245,7 +237,6 @@ function AddNewItem() {
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <TextField
-                        // sx={{ minWidth: 400 }}
                         fullWidth
                         id="name"
                         type="text"
@@ -276,7 +267,8 @@ function AddNewItem() {
                             pattern: { value: RegExp('[0-9]*'), message: 'Määrän on oltava numero' },
                         })}
                         inputProps={{
-                            // inputMode: 'numeric',
+                            // test if numeric works on tablet
+                            inputMode: 'numeric',
                             // pattern: '[0-9]*',
                             title: 'Määrä',
                             // min: '1',
@@ -347,13 +339,18 @@ function AddNewItem() {
                         fullWidth
                         id="storage-select"
                         select
-                        label="Sijainti"
+                        label="Varastosijainti"
                         // TODO productin edittiin: miten toteutetaan tuotteen lisääminen eri varastoon kuin olemassaolevat tuotteet? Halutaanko tätä välttää?
-                        defaultValue={getValues('storages') || ''}
+                        // defaultvalue set to fix this MUI warning:
+                        // MUI: You have provided an out-of-range value `undefined` for the select (name="storages") component. Consider providing a value that matches one of the available options or ''.
+                        defaultValue={
+                            // getValues('storages') ||
+                            ''
+                        }
                         {...register('storages', {
                             required: { value: true, message: 'Varasto on valittava' },
                         })}
-                        //  TODO default varastosijainti sama kuin varastokäyttäjätilin sijainti?
+                        //  TODO default varastosijainti sama kuin varastokäyttäjätilin sijainti? - Ei tarvetta aluksi
                         inputProps={{ required: false }}
                         required
                         error={!!errors.storages}
@@ -382,11 +379,11 @@ function AddNewItem() {
                     >
                         {/* TODO Uusia kategorioita voi luoda vain admin, huomautus varastokäyttäjälle? */}
                         {/* TODO kategorian valikkoon valittavaksi vain alimmat kategoriat. ylemmät väliotsikoiksi?  */}
-                        {categories?.map((category: any) => (
+                        {categories?.map((category) => (
                             <MenuItem
                                 // TODO: better select - disabled if category has subcategories
                                 // disabled={category.subcategories?.length > 0}
-                                onClick={() => setValue('category', category.id)}
+                                // onClick={() => setValue('category', category.id)} // not needed if using MenuItem value
                                 key={category.id}
                                 value={category.id}
                             >
@@ -397,6 +394,7 @@ function AddNewItem() {
                     <FormControl error={!!errors.colors} fullWidth>
                         <InputLabel htmlFor="component-outlined">Väri</InputLabel>
                         <Select
+                            sx={{ height: '3.5rem' }}
                             id="color-select"
                             label="Väri"
                             multiple
@@ -448,7 +446,13 @@ function AddNewItem() {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <Button variant="contained" component="label" size="large" sx={{ marginTop: 2, marginBottom: 2 }}>
+                    <Button
+                        id="add-pictures"
+                        variant="contained"
+                        component="label"
+                        size="large"
+                        sx={{ marginTop: 2, marginBottom: 2 }}
+                    >
                         Lisää kuvat
                         {/* TODO mui input? */}
                         <input
@@ -462,15 +466,17 @@ function AddNewItem() {
                                 // minLength: { value: 1, message: 'Tuotteella on oltava vähintään yksi kuva' },
                                 // maxLength: { value: 6, message: 'Kuvia voi olla enintään 6' },
                                 onChange: handlePictureChange,
-                                validate: (value) => {
-                                    if (value.length > 6) {
-                                        return 'Kuvia voi olla enintään 6';
-                                    }
-                                    if (value.length < 1) {
-                                        return 'Tuotteella on oltava vähintään yksi kuva';
-                                    }
+                                validate: {
+                                    amount: (value) => {
+                                        if (value.length > 6) {
+                                            return 'Kuvia voi olla enintään 6';
+                                        }
+                                        if (value.length < 1) {
+                                            return 'Tuotteella on oltava vähintään yksi kuva';
+                                        }
 
-                                    return true;
+                                        return true;
+                                    },
                                 },
                             })}
 
@@ -481,23 +487,8 @@ function AddNewItem() {
                             // inputProps={{ required: false }}
                         />
                     </Button>
+                    <FormHelperText>{fileList.length} / 6</FormHelperText>
                     <FormHelperText>{errors.pictures ? errors.pictures.message : ' '}</FormHelperText>
-                    {/* {fileList.map((pic, index) => (
-                        <Box sx={{ display: 'flex', flexDirection: 'column', width: '150px' }} key={index}>
-                            <img src={pic.url} alt="preview_image" height="150px" width="150px" />
-                            <Button
-                                id="image_del_btn"
-                                color="error"
-                                type="button"
-                                sx={{ height: 30, width: 30, alignSelf: 'center' }}
-                                onClick={() => {
-                                    RemoveImage(index);
-                                }}
-                            >
-                                Poista
-                            </Button>
-                        </Box>
-                    ))} */}
                     <Grid container spacing={2}>
                         {fileList.map((pic, index) => (
                             <Grid item xs={12} sm={6} md={4} key={index}>
