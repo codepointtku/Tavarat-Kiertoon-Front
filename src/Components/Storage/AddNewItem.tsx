@@ -1,7 +1,7 @@
 // /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useRouteLoaderData, useLoaderData, useSubmit, Form, useActionData } from 'react-router-dom';
+import { useRouteLoaderData, useLoaderData, useSubmit, Form, useActionData, useNavigation } from 'react-router-dom';
 
 import {
     TextField,
@@ -41,11 +41,14 @@ type PicUpload = {
 function AddNewItem() {
     const [qrScanOpen, setQrScanOpen] = useState(false);
     const [fileList, setFilelist] = useState<PicUpload[]>([]);
-    const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
+    const { categories, categoryTree } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const { storages, colors } = useLoaderData() as Awaited<ReturnType<typeof storageProductsLoader>>;
     // console.log('categories:', categories, 'storages:', storages, 'colors:', colors);
     const submit = useSubmit();
     const actionData = useActionData() as Awaited<ReturnType<typeof addProductAction>>;
+    const navigation = useNavigation();
+    const isSubmitting = navigation.state === 'submitting';
+    const isLoading = navigation.state === 'loading';
 
     const {
         register,
@@ -55,8 +58,8 @@ function AddNewItem() {
         getValues,
         formState: {
             errors,
-            // isValid can be used in disabling submit button
-            // isValid,
+            // isSubmitting,
+            isSubmitSuccessful,
         },
     } = useForm<{
         available: boolean;
@@ -103,6 +106,8 @@ function AddNewItem() {
     const barcode = watch('barcode');
     const colorsSelected = watch('colors');
 
+    // console.log('errors', errors);
+
     // QR code scanner
     const onNewScanResult = (decodedText: string, decodedResult: any) => {
         setQrScanOpen(false);
@@ -114,6 +119,7 @@ function AddNewItem() {
     };
     const RemoveImage = (id: number) => {
         setFilelist((prevFileList) => prevFileList.filter((file, index) => index !== id));
+        setValue('pictures', getValues('pictures') ? getValues('pictures').filter((file, index) => index !== id) : []);
     };
     const handlePictureChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const pictureFileList = getValues('pictures');
@@ -334,6 +340,7 @@ function AddNewItem() {
                     </Paper>
                 </Grid>
 
+                {/* TODO: change all select fields to use Controller to fix issues with MUI: https://react-hook-form.com/docs/usecontroller/controller  */}
                 <Grid item xs={12} md={6}>
                     <TextField
                         fullWidth
@@ -379,14 +386,18 @@ function AddNewItem() {
                     >
                         {/* TODO Uusia kategorioita voi luoda vain admin, huomautus varastokäyttäjälle? */}
                         {/* TODO kategorian valikkoon valittavaksi vain alimmat kategoriat. ylemmät väliotsikoiksi?  */}
-                        {categories?.map((category) => (
+                        {/* {categories?.map((category) => (
                             <MenuItem
                                 // TODO: better select - disabled if category has subcategories
-                                // disabled={category.subcategories?.length > 0}
-                                // onClick={() => setValue('category', category.id)} // not needed if using MenuItem value
                                 key={category.id}
                                 value={category.id}
                             >
+                                {category.name}
+                            </MenuItem>
+                        ))} */}
+                        {/* // TODO: map categories, as expandable tree, with only the level 2 categories selectable? use current catTree from front page, in modal? */}
+                        {categories?.map((category) => (
+                            <MenuItem key={category.id} value={category.id} disabled={category.level !== 2}>
                                 {category.name}
                             </MenuItem>
                         ))}
@@ -462,6 +473,7 @@ function AddNewItem() {
                             hidden
                             {...register('pictures', {
                                 // TODO tarkistettava että kuvatiedostot ovat oikeaa muotoa, ja niitä on 1-6
+                                // TODO: validaatio ei toimi jos kuvia on jo lisätty(ja poistettu), vaikka kuvia olisi 0
                                 required: { value: true, message: 'Tuotteella on oltava vähintään yksi kuva' },
                                 // minLength: { value: 1, message: 'Tuotteella on oltava vähintään yksi kuva' },
                                 // maxLength: { value: 6, message: 'Kuvia voi olla enintään 6' },
@@ -537,7 +549,7 @@ function AddNewItem() {
                         fullWidth
                         size="large"
                         type="submit"
-                        // disabled={!isValid}
+                        disabled={isLoading || isSubmitting || isSubmitSuccessful}
                     >
                         Lisää tuote
                     </Button>
