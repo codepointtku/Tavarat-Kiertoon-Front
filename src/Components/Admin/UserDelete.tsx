@@ -68,9 +68,15 @@ function UserDelete({ randomInt }: any) {
                                 </Typography>
                             </Stack>
                             <Stack direction="row" gap={1} alignItems="center">
+                                <DeleteForeverIcon color="error" />
+                                <Typography variant="subtitle2" textAlign="center">
+                                    Käyttäjätieto poistuu loki-tiedoista.
+                                </Typography>
+                            </Stack>
+                            <Stack direction="row" gap={1} alignItems="center">
                                 <CheckCircleOutlineIcon color="success" />
                                 <Typography variant="subtitle2" textAlign="center" gutterBottom>
-                                    Tilaukset säilyvät ennallaan. Tieto tilauksen tekijästä poistuu.
+                                    Tilaukset säilyvät muutoin ennallaan, vain tieto tilauksen tekijästä poistuu.
                                 </Typography>
                             </Stack>
                         </Stack>

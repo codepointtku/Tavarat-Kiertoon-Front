@@ -22,6 +22,8 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 import AlertBox from '../AlertBox';
 import TypographyHeading from '../TypographyHeading';
@@ -30,6 +32,7 @@ import HeroText from '../HeroText';
 
 import type { userEditAction } from '../../Router/actions';
 import type { userEditLoader } from '../../Router/loaders';
+import Tooltip from '../Tooltip';
 
 const groupNames = {
     user_group: 'Käyttäjä',
@@ -321,15 +324,33 @@ function UserEdit() {
                             >
                                 Hyväksy ja tallenna muutokset
                             </Button>
-                            <Button
-                                id="cancel-btn"
-                                variant="outlined"
-                                component={Link}
-                                to="/admin/kayttajat/"
-                                color="error"
-                            >
-                                Poistu tallentamatta
-                            </Button>
+                            <Stack direction="row" justifyContent="space-between">
+                                <Tooltip title="Takaisin käyttäjät-listaukseen">
+                                    <Button
+                                        id="cancel-btn"
+                                        size="small"
+                                        component={Link}
+                                        to="/admin/kayttajat/"
+                                        startIcon={<ArrowBackIcon />}
+                                        sx={{ margin: '2rem 0 1rem 0' }}
+                                    >
+                                        Poistu tallentamatta
+                                    </Button>
+                                </Tooltip>
+                                <Tooltip title="Siirry poistamaan käyttäjä järjestelmästä">
+                                    <Button
+                                        id="cancel-btn"
+                                        size="small"
+                                        color="error"
+                                        component={Link}
+                                        to={`/admin/kayttajat/${userInfo.id}/poista/`}
+                                        endIcon={<DeleteForeverIcon />}
+                                        sx={{ margin: '2rem 0 1rem 0' }}
+                                    >
+                                        Käyttäjän poistonäkymä
+                                    </Button>
+                                </Tooltip>
+                            </Stack>
                         </Stack>
                     </Stack>
                 </Box>
