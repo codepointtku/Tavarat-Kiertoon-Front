@@ -240,7 +240,7 @@ function StorageEdit() {
                                 </Tooltip>
                             </Grid>
                             <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                <Tooltip title="Siirry poistonäkymään">
+                                <Tooltip title="Siirry poistamaan varasto järjestelmästä">
                                     <Button
                                         id="initialize-deletion-process-btn"
                                         size="small"
