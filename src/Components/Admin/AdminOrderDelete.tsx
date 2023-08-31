@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { Form, useLoaderData, useSubmit, Link } from 'react-router-dom';
 
-import { Box, Button, Container, Grid, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, Stack, TextField, Typography, Link as MuiLink } from '@mui/material';
 import DomainDisabledIcon from '@mui/icons-material/DomainDisabled';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -15,6 +15,27 @@ import type { orderEditLoader } from '../../Router/loaders';
 import Tooltip from '../Tooltip';
 
 //
+
+function OrderDeleteNotAvailable() {
+    const SuperLink = MuiLink as typeof MuiLink | typeof Link;
+
+    return (
+        <Container maxWidth="lg">
+            <Stack alignItems="center">
+                <HeroHeader Icon={<DomainDisabledIcon />} hideInAdmin />
+                <HeroText
+                    title="Tilauksen poisto ei ole mahdollinen"
+                    subtitle="Toimitettujen tilausten poisto järjestelmästä on estetty"
+                />
+                <Typography>
+                    <SuperLink component={Link} to={-1 as unknown as string}>
+                        Palaa takaisin
+                    </SuperLink>
+                </Typography>
+            </Stack>
+        </Container>
+    );
+}
 
 function AdminOrderDelete({ randomInt }: any) {
     // console.log('rInt:', randomInt, typeof randomInt);
@@ -36,6 +57,10 @@ function AdminOrderDelete({ randomInt }: any) {
             method: 'delete',
         });
     });
+
+    if (orderData.status === 'Finished') {
+        return <OrderDeleteNotAvailable />;
+    }
 
     return (
         <>
