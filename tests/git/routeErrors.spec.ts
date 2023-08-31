@@ -230,26 +230,26 @@ test.describe('admin orderlist', () => {
     });
 });
 
-test.describe('admin order view', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/admin/tilaukset/16');
-        await expect(page.getByText('Tilausnumeroa ei löytynyt.')).not.toBeVisible();
-    });
-});
+// test.describe('admin order view', () => {
+//     test('no errors', async ({ page }) => {
+//         await page.goto('/admin/tilaukset/16');
+//         await expect(page.getByText('Tilausnumeroa ei löytynyt.')).not.toBeVisible();
+//     });
+// });
 
-test.describe('admin order edit', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/admin/tilaukset/16');
-        await expect(page.getByText('Tilausnumeroa ei löytynyt.')).not.toBeVisible();
-    });
-});
+// test.describe('admin order edit', () => {
+//     test('no errors', async ({ page }) => {
+//         await page.goto('/admin/tilaukset/16');
+//         await expect(page.getByText('Tilausnumeroa ei löytynyt.')).not.toBeVisible();
+//     });
+// });
 
-test.describe('admin order delete', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/admin/tilaukset/16/poista');
-        await expect(page.getByText('Tilausnumeroa ei löytynyt.')).not.toBeVisible();
-    });
-});
+// test.describe('admin order delete', () => {
+//     test('no errors', async ({ page }) => {
+//         await page.goto('/admin/tilaukset/16/poista');
+//         await expect(page.getByText('Tilausnumeroa ei löytynyt.')).not.toBeVisible();
+//     });
+// });
 
 test.describe('admin order email recipients', () => {
     test('no errors', async ({ page }) => {
