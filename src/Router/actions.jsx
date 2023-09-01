@@ -363,7 +363,7 @@ const userEditAction = async ({ request, params }) => {
 };
 
 const userDeleteAction = async ({ params }) => {
-    await usersApi.usersDestroy(params.id);
+    await usersApi.usersDestroy(params.userid);
     return redirect('/admin/kayttajat');
 };
 
