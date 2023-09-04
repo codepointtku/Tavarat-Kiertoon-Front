@@ -640,6 +640,7 @@ function Routes() {
                                             loader: storageEditLoader,
                                             action: storageDeleteAction,
                                         },
+                                        // todo: move these two into a singular path, StorageProductsTransferBase
                                         {
                                             path: ':id/siirto',
                                             element: <StorageProductsTransfer />,
