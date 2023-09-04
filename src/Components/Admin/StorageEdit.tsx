@@ -185,7 +185,7 @@ function StorageEdit() {
                             defaultValue={storageInfo.in_use ? 1 : 0}
                         >
                             <MenuItem value="1">Käytössä</MenuItem>
-                            <MenuItem value="0">Ei Käytössä</MenuItem>
+                            <MenuItem value="0">Ei käytössä</MenuItem>
                         </TextField>
 
                         <Stack id="submit-reset-btns" direction="row" gap={2}>

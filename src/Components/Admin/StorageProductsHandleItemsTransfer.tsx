@@ -14,7 +14,6 @@ import {
     FormControl,
     FormHelperText,
     Grid,
-    IconButton,
     List,
     ListItem,
     ListItemIcon,
@@ -28,7 +27,6 @@ import {
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import RefreshIcon from '@mui/icons-material/Refresh';
 
 import AlertBox from '../AlertBox';
 import Tooltip from '../Tooltip';
@@ -104,10 +102,8 @@ function StorageProductsHandleItemsTransfer() {
     const [checked, setChecked] = React.useState<ListItemType[]>([]);
     const [left, setLeft] = React.useState<ListItemType[]>(storageAvailableProductItems);
     const [right, setRight] = React.useState<ListItemType[]>([]);
-    console.log('right:', right);
 
     const rightCopy = [...right];
-    console.log('rightCopy:', rightCopy);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -207,36 +203,30 @@ function StorageProductsHandleItemsTransfer() {
     // form
     const {
         register,
-        setValue,
-        reset,
         handleSubmit: createHandleSubmit,
-        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors },
+        formState: { isSubmitting, errors: formStateErrors },
     } = useForm({
         mode: 'all',
-        // defaultValues: {
-        //     storage_to: null,
-        //     product_ids: [],
-        // },
     });
 
     // submit
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data: any) => {
-        setValue('product_ids', JSON.stringify(rightCopy.map((item) => item.itemId)));
+        const itemIds = JSON.stringify(rightCopy.map((item) => item.itemId));
 
-        console.log('%c Submitissa menevä tieto', 'color: cyan; font-weight: bold', data);
+        submit(
+            {
+                storage_to: data.storage_to,
+                product_ids: itemIds,
+            },
+            {
+                method: 'put',
+            }
+        );
 
-        // reset();
-
-        submit(data, {
-            method: 'put',
-        });
+        // console.log('%c Submitissa menevä tieto', 'color: cyan; font-weight: bold', data);
     });
-
-    const formReset = () => {
-        reset();
-    };
 
     // main component return
     return (
@@ -247,14 +237,14 @@ function StorageProductsHandleItemsTransfer() {
 
             {responseStatus?.type === 'productstransferempty' && responseStatus?.status && (
                 <AlertBox
-                    text="Varaston tuotteiden siirto epäonnistui, mutta mikään ei mennyt rikki O_o"
+                    text="Varaston tuotteiden siirtoa ei suoritettu, koska lista siirrettävistä tuotteista oli tyhjä"
                     status="warning"
                 />
             )}
 
             {responseStatus?.type === 'productstransfer' && responseStatus?.status && (
                 <AlertBox
-                    text="Varaston tuotteet siirretty onnistuneesti"
+                    text="Varaston tuotteet siirretty onnistuneesti. Uudelleenohjataan..."
                     status="success"
                     timer={3000}
                     redirectUrl={`/admin/varastot/${storageInfo.id}`}
@@ -266,14 +256,6 @@ function StorageProductsHandleItemsTransfer() {
                 <HeroText title="Tuotteiden siirto" subtitle="Siirrä tuotteita varastosta toiseen" />
 
                 <Box component={Form} onSubmit={handleSubmit}>
-                    {/* /// */}
-                    <input
-                        // type="hidden"
-                        {...register('product_ids')}
-                        // readOnly
-                        value={JSON.stringify(right.map((item) => item.itemId))}
-                        // value={right.map((item) => item.itemId).toString()}
-                    />
                     <Grid container margin="1rem 0 0rem 0">
                         <Grid
                             item
@@ -395,7 +377,7 @@ function StorageProductsHandleItemsTransfer() {
                         <Button
                             id="submit-btn"
                             type="submit"
-                            disabled={isSubmitting || isSubmitSuccessful}
+                            disabled={isSubmitting}
                             sx={{
                                 '&:hover': {
                                     backgroundColor: 'success.dark',
@@ -404,14 +386,7 @@ function StorageProductsHandleItemsTransfer() {
                         >
                             Suorita siirto
                         </Button>
-                        <Box sx={{ display: 'flex', justifyContent: 'center', margin: '2rem 0 0 0' }}>
-                            <Tooltip title="Tyhjennä lomake">
-                                <IconButton id="reset-form-btn" onClick={() => formReset()}>
-                                    <RefreshIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
                             <Tooltip title="Palaa takaisin">
                                 <Button
                                     id="cancel-btn"

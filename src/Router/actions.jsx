@@ -304,16 +304,15 @@ const productsTransferAction = async ({ request }) => {
 
     const selectedStorage = JSON.parse(formData.get('storage_to'));
     const productIds = JSON.parse(formData.get('product_ids'));
-    // const productIds = formData.get('product_ids');
 
-    console.log('%c @action function - selected prodIds:', 'color: red; font-weight: bold', productIds);
+    // console.log('%c @action function - selected prodIds:', 'color: red; font-weight: bold', productIds);
 
     const transfer = {
         storage: selectedStorage,
         product_items: productIds,
     };
 
-    console.log('transfer a:', transfer);
+    // console.log(' @action function, transfer object:', transfer);
 
     const response = await productsApi.productsTransferUpdate(transfer);
 
