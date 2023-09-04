@@ -380,11 +380,11 @@ function DefaultAppBar() {
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
-                {auth.username ? (
-                    <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} />
-                ) : (
-                    <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
-                )}
+                {/* {auth.username ? ( */}
+                {/* <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} /> */}
+                {/* ) : ( */}
+                <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
+                {/* )} */}
                 <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>
         </Box>

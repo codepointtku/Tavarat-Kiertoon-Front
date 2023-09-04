@@ -45,7 +45,7 @@ function Welcome({ setCurrentOpenDrawer }: Props) {
                         to="/varasto"
                         fullWidth
                     >
-                        Siirry tavaravaraston näkymään
+                        Siirry varastonäkymään
                     </Button>
                 )}
                 {auth.bicycle_group && (
@@ -57,7 +57,7 @@ function Welcome({ setCurrentOpenDrawer }: Props) {
                         to="/pyorat/pyoravarasto"
                         fullWidth
                     >
-                        Siirry pyörävaraston näkymään
+                        Siirry pyörävarastonäkymään
                     </Button>
                 )}
                 {auth.admin_group && (

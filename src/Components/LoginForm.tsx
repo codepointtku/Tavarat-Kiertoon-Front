@@ -41,7 +41,9 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
     const { auth } = useContext(AuthContext);
     const location = useLocation();
     const fetcher = useFetcher();
+    // fetcher.data works like useActionData, can be used instead when fetcher is used
     const responseStatus = fetcher.data;
+    console.log(responseStatus);
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -49,11 +51,14 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
         event.preventDefault();
     };
 
+    // onSubmit with action would always redirect to the action url, so we need to use fetcher in components where redirection is not wanted.
+    // fetcher.submit will not redirect, but uses the action in the url route
     const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
         fetcher.submit(formData, {
             method: 'post',
             action: '/',
         });
+        console.log(formData);
     };
 
     return (
@@ -68,11 +73,12 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
                             redirectUrl={redirectUrl as string}
                         />
                     )}
-                    <Welcome />
+                    <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} />
                 </>
             ) : (
                 <>
                     {responseStatus?.type === 'login' && !responseStatus?.status && (
+                        // tämä laukoo kun kirjautuu ulos /kirjaudu sivulta
                         <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" />
                     )}
 
@@ -107,7 +113,6 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
                                         id="user-email-field"
                                         type="text"
                                         label="Sähköpostiosoite"
-                                        placeholder="sinä@turku.fi"
                                     />
                                 </FormControl>
 
@@ -118,7 +123,6 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
                                         id="user-password-field"
                                         type={showPassword ? 'text' : 'password'}
                                         label="Salasana"
-                                        placeholder="****"
                                         endAdornment={
                                             <InputAdornment position="end">
                                                 <IconButton
