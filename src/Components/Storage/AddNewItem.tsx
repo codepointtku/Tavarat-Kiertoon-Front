@@ -119,7 +119,8 @@ function AddNewItem() {
     };
     const RemoveImage = (id: number) => {
         setFilelist((prevFileList) => prevFileList.filter((file, index) => index !== id));
-        setValue('pictures', getValues('pictures') ? getValues('pictures').filter((file, index) => index !== id) : []);
+        setValue('pictures', []);
+        // setValue('pictures', getValues('pictures') ? getValues('pictures').filter((file, index) => index !== id) : []);
     };
     const handlePictureChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const pictureFileList = getValues('pictures');
@@ -481,10 +482,11 @@ function AddNewItem() {
                                 onChange: handlePictureChange,
                                 validate: {
                                     amount: (value) => {
-                                        if (value.length > 6) {
+                                        console.log(value.length, fileList.length);
+                                        if (value.length + fileList.length > 6) {
                                             return 'Kuvia voi olla enintään 6';
                                         }
-                                        if (value.length < 1) {
+                                        if (value.length + fileList.length < 1) {
                                             return 'Tuotteella on oltava vähintään yksi kuva';
                                         }
 
