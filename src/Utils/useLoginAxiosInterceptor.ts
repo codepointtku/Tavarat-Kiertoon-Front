@@ -6,13 +6,13 @@ import { usersApi } from '../api';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:8000`;
 
 const axiosWithoutInterceptor = axios.create();
 axiosWithoutInterceptor.defaults.xsrfCookieName = 'csrftoken';
 axiosWithoutInterceptor.defaults.xsrfHeaderName = 'X-CSRFToken';
 axiosWithoutInterceptor.defaults.withCredentials = true;
-axiosWithoutInterceptor.defaults.baseURL = 'http://localhost:8000';
+axiosWithoutInterceptor.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:8000`;
 
 export default function useLoginAxiosInterceptor() {
     useRefreshInterval();

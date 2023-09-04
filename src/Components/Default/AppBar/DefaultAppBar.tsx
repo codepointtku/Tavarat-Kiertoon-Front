@@ -11,7 +11,6 @@ import {
     Badge,
     Drawer as MuiDrawer,
     List,
-    Divider,
     ListItem,
     ListItemText,
     Typography,
@@ -23,8 +22,6 @@ import { styled } from '@mui/material/styles';
 
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 import AuthContext from '../../../Context/AuthContext';
 import Welcome from './Welcome';
@@ -62,7 +59,7 @@ interface DrawerProps {
     children: ReactNode;
 }
 
-interface StyledBadge {
+interface StyledBadgeIF {
     isanimated: number;
     theme?: Theme;
 }
@@ -97,7 +94,7 @@ function Drawer({ currentOpenDrawer, name, onClose, children }: DrawerProps) {
     );
 }
 
-const StyledBadge = styled(Badge)(({ theme, isanimated }: StyledBadge) => ({
+const StyledBadge = styled(Badge)(({ theme, isanimated }: StyledBadgeIF) => ({
     '& .MuiBadge-badge': {
         color: theme?.palette.primary.contrastText,
         right: -8,
@@ -131,9 +128,9 @@ const toolBarHover = {
     },
 };
 
-interface SubmitFunction {
-    (SubmitTarget: string, options: { method: string; action: string }): any;
-}
+// interface SubmitFunction {
+//     (SubmitTarget: string, options: { method: string; action: string }): any;
+// }
 
 interface CartProduct {
     count: number;
@@ -150,8 +147,9 @@ function DefaultAppBar() {
     const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
     const [cartEmpty, setCartEmpty] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
+    const openPopover = Boolean(anchorEl);
     const location = useLocation();
+    const [unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts] = useState(initializeCartProducts());
 
     useEffect(() => {
         if (cart?.product_items?.length !== productsLength) {
@@ -159,7 +157,13 @@ function DefaultAppBar() {
                 setProductsLength(cart?.product_items?.length);
             }, 3000);
         }
-    }, [cart?.product_items?.length]);
+    }, [cart?.product_items?.length, productsLength]);
+
+    function initializeCartProducts() {
+        const productArr = [] as object[];
+        products?.forEach((product) => productArr.push(product.product.id));
+        return productArr;
+    }
 
     const drawerOpen = (drawer: string) => () => {
         notLoggedIn && setNotLoggedIn(false);
@@ -191,6 +195,7 @@ function DefaultAppBar() {
 
     function handleEmptyCart() {
         fetcher.submit('a' as unknown as HTMLFormElement, { method: 'put', action: '/' });
+        setUnconfirmedChangesCartProducts([]);
         setAnchorEl(null);
     }
 
@@ -248,12 +253,20 @@ function DefaultAppBar() {
                             {cart?.product_items?.length === 0 && (
                                 <>
                                     {cartEmpty ? (
-                                        <Typography variant="h6" align="center" sx={{ color: 'error.main' }}>
-                                            Et voi siirtyä kassalle tyhjällä ostoskorilla.
+                                        <Typography
+                                            variant="h6"
+                                            align="center"
+                                            sx={{ color: 'info.main', margin: '1rem 0 0 0' }}
+                                        >
+                                            Lisää tuotteita koriin jatkaaksesi tilaamaan
                                         </Typography>
                                     ) : (
-                                        <Typography variant="h6" align="center">
-                                            Ostoskorisi on tyhjä.
+                                        <Typography
+                                            variant="h6"
+                                            align="center"
+                                            sx={{ color: 'info.main', margin: '1rem 0 0 0' }}
+                                        >
+                                            Ostoskorisi on tyhjä
                                         </Typography>
                                     )}
                                 </>
@@ -269,10 +282,20 @@ function DefaultAppBar() {
                                         count={cartProduct.count}
                                         id={cartProduct.product.id}
                                         maxCount={product.amount}
+                                        amountChangeState={{
+                                            unconfirmedChangesCartProducts,
+                                            setUnconfirmedChangesCartProducts,
+                                        }}
                                     />
                                 );
                             })}
+                            {/* <ListItem>
+                            <Typography variant="body2" sx={{ color: 'error.main', fontWeight: 'bold' }}>
+                                Vahvista muutokset ostoskorissa jatkaaksesi kassalle.
+                            </Typography>
+                        </ListItem> */}
                         </List>
+                        {/* <Divider /> */}
                         <Grid container sx={{ display: 'flex', justifyContent: 'center', marginBottom: '6rem' }}>
                             <Grid item xs={2} />
                             <Grid item xs={8}>
@@ -288,9 +311,10 @@ function DefaultAppBar() {
                                                     backgroundColor: 'success.dark',
                                                 },
                                             }}
+                                            disabled={unconfirmedChangesCartProducts.length > 0}
                                         >
                                             <ListItemText
-                                                primary="Kassalle"
+                                                primary="Tilaamaan"
                                                 primaryTypographyProps={{ fontWeight: 'bold' }}
                                             />
                                         </Button>
@@ -301,36 +325,45 @@ function DefaultAppBar() {
                                 {cart?.product_items?.length > 0 && (
                                     <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                         <Button
+                                            size="small"
+                                            variant="outlined"
                                             color="error"
                                             fullWidth
                                             // startIcon={<DeleteIcon />}
                                             onClick={handlePopOverOpen}
                                         >
-                                            <ListItemText
-                                                primary="Tyhjennä ostoskori"
-                                                primaryTypographyProps={{ fontWeight: 'bold' }}
-                                            />
+                                            Tyhjennä kori
+                                            {/* <ListItemText
+                                        primary="Tyhjennä ostoskori"
+                                        primaryTypographyProps={{ fontWeight: 'bold' }}
+                                    /> */}
                                         </Button>
                                         <Popover
-                                            open={open}
+                                            open={openPopover}
                                             anchorEl={anchorEl}
                                             anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                                             onClose={() => setAnchorEl(null)}
                                             sx={{ mt: 1 }}
                                         >
-                                            <Grid
-                                                container
+                                            <Stack
                                                 direction="row"
-                                                justifyContent="space-evenly"
-                                                sx={{ p: 1, width: 200 }}
+                                                justifyContent="space-between"
+                                                alignItems="center"
+                                                sx={{ p: '1rem' }}
+                                                spacing="1rem"
                                             >
-                                                <Grid item sx={{ mt: '0.5rem' }}>
-                                                    <Typography variant="body2">Oletko varma?</Typography>
-                                                </Grid>
-                                                <Grid item>
-                                                    <Button onClick={handleEmptyCart}>Kyllä</Button>
-                                                </Grid>
-                                            </Grid>
+                                                <Typography variant="body2">Oletko varma?</Typography>
+                                                <Button size="small" variant="outlined" onClick={handleEmptyCart}>
+                                                    Kyllä
+                                                </Button>
+                                                <Button
+                                                    size="small"
+                                                    variant="outlined"
+                                                    onClick={() => setAnchorEl(null)}
+                                                >
+                                                    Peruuta
+                                                </Button>
+                                            </Stack>
                                         </Popover>
                                     </ListItem>
                                 )}

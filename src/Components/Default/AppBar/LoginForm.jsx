@@ -45,6 +45,10 @@ function LoginForm({ setCurrentOpenDrawer, notLoggedIn }) {
             method: 'post',
             action: '/',
         });
+        !notLoggedIn &&
+            setTimeout(() => {
+                setCurrentOpenDrawer('');
+            }, 3000);
     };
 
     const handleClickCloseDrawer = () => {
