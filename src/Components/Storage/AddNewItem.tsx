@@ -123,7 +123,7 @@ function AddNewItem() {
     };
     const handlePictureChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const pictureFileList = getValues('pictures');
-        // TODO: check if there is already 6 pictures, if so, don't add more
+        // TODO: check if there are already 6 pictures, if so, don't add more
         console.log('pictureFileList:', pictureFileList);
         console.log(fileList);
 
@@ -384,8 +384,8 @@ function AddNewItem() {
                         error={!!errors.category}
                         helperText={errors.category?.message || ' '}
                     >
-                        {/* TODO Uusia kategorioita voi luoda vain admin, huomautus varastokäyttäjälle? */}
-                        {/* TODO kategorian valikkoon valittavaksi vain alimmat kategoriat. ylemmät väliotsikoiksi?  */}
+                        {/* TODO Uusia kategorioita voi luoda vain admin, huomautus varastokäyttäjälle? "ota yhteyttä adminiin kun tarvitaan uusi kategoria" */}
+                        {/* TODO kategorian valikkoon valittavaksi vain alimmat kategoriat. ylemmät väliotsikoiksi? "valitse alakategoria tai "muut tuolit" "  */}
                         {/* {categories?.map((category) => (
                             <MenuItem
                                 // TODO: better select - disabled if category has subcategories
@@ -402,6 +402,7 @@ function AddNewItem() {
                             </MenuItem>
                         ))}
                     </TextField>
+                    {/* TODO Värin luonti modaali tms */}
                     <FormControl error={!!errors.colors} fullWidth>
                         <InputLabel htmlFor="component-outlined">Väri</InputLabel>
                         <Select

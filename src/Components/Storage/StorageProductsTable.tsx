@@ -188,6 +188,7 @@ function StorageProductsTable() {
                                         </Tooltip>
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
+                                        {/* TODO: only show add button if there is a search or barcode search in searchParams? */}
                                         <IconButton color="primary">
                                             {itemArray.length} {/* TODO: Add/return products (to same storage) logic */}
                                             <AddCircle />

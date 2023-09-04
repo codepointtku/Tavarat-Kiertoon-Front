@@ -1,4 +1,4 @@
-import { useLoaderData, useParams, useRouteLoaderData } from 'react-router-dom';
+import { useLoaderData, useParams, useRouteLoaderData, Link } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { type SimilarProductCarouselProps } from './SimilarProductsCarousel';
 
@@ -16,6 +16,7 @@ import {
     Paper,
     Box,
     type ButtonPropsSizeOverrides,
+    Button,
 } from '@mui/material';
 
 import AuthContext from '../../Context/AuthContext';
@@ -25,9 +26,12 @@ import SimilarProductsCarousel from './SimilarProductsCarousel';
 import type { productDetailsLoader } from '../../Router/loaders';
 import type { rootLoader } from '../../Router/loaders';
 import { type OverridableStringUnion } from '@material-ui/types';
+import Barcode from 'react-barcode';
 
 function ProductDetails() {
-    const { product, products } = useLoaderData() as Awaited<ReturnType<typeof productDetailsLoader>>;
+    const { product, products: productsInSameCategory } = useLoaderData() as Awaited<
+        ReturnType<typeof productDetailsLoader>
+    >;
     const { colors: allColors, categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const { id: productId } = useParams();
 
@@ -161,24 +165,79 @@ function ProductDetails() {
                         </Grid>
 
                         <Box sx={{ mx: 2 }}>
-                            {(auth.storage || auth.admin) && (
+                            {(auth.storage_group || auth.admin_group) && (
                                 <>
-                                    <Typography gutterBottom variant="h5" component="div">
+                                    <Typography gutterBottom variant="h5" component="div" color="primary">
                                         Yksityiskohtaisemmat tiedot
                                     </Typography>
-                                    <Paper variant="outlined" sx={{ p: 5 }}>
-                                        {/* show id if component used in storageview or admin */}
-                                        <Typography variant="body2" color="text.secondary">
+                                    <Paper variant="outlined" sx={{ p: 5 }} color="primary">
+                                        <Button
+                                            component={Link}
+                                            to={`/varasto/tuotteet/${productId}/muokkaa`}
+                                            size="large"
+                                            // variant="outlined"
+                                            color="primary"
+                                            sx={{ marginY: 2 }}
+                                        >
+                                            Muokkaa tuotetta
+                                            {/* show id if component used in storageview or admin? or don't, if there is no value in showing it */}
+                                            {/* <Typography variant="body2" color="text.secondary">
                                             Tuotteen tunnus: {productId}
-                                        </Typography>
-                                        {/* generate barcode if component used in storageview or admin */}
-                                        {/* <Typography variant="body2" color="text.secondary">
-                                            Barcode: {barcode}
                                         </Typography> */}
+                                        </Button>
+                                        {/* <Typography variant="body2" color="text.secondary">
+                                            Viivakoodi: {product.product_items[0].barcode || 'Ei viivakoodia'}
+                                        </Typography> */}
+                                        <Typography variant="body2" color="text.secondary">
+                                            Varasto:{' '}
+                                            {
+                                                // show different storage.names of all product_items, separated by comma. don't show one name multiple times, and show times it appears in the list
+                                                product.product_items
+                                                    .map((item) => item.storage.name)
+                                                    .filter((name, index, self) => self.indexOf(name) === index)
+                                                    .map((name) => (
+                                                        <span key={name}>
+                                                            {name}{' '}
+                                                            {
+                                                                product.product_items.filter(
+                                                                    (item) => item.storage.name === name
+                                                                ).length
+                                                            }
+                                                            {/* x */}
+                                                        </span>
+                                                    ))
+                                            }
+                                        </Typography>
+                                        <Paper
+                                            elevation={3}
+                                            sx={{
+                                                border: '1px solid black',
+                                                borderRadius: 1,
+                                                minHeight: '7rem',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                width: 'fit-content',
+                                                paddingX: '1rem',
+                                            }}
+                                            // TODO : add onClick to open a page to print barcodes
+                                            // onClick={() => setQrScanOpen(true)}
+                                        >
+                                            {/* // TODO: support multiple barcodes */}
+                                            {product?.product_items[0].barcode?.length > 0 && (
+                                                <Barcode
+                                                    value={product.product_items[0].barcode}
+                                                    format="CODE39"
+                                                    height={64}
+                                                    fontSize={14}
+                                                />
+                                            )}
+                                        </Paper>
                                     </Paper>
                                 </>
                             )}
-                            {products.results && products.results.length > 1 && (
+                            {/* TODO: don't show if path is just /tuotteet/:id , storage or admin does not need this component*/}
+                            {productsInSameCategory.results && productsInSameCategory.results.length > 1 && (
                                 <>
                                     <Typography
                                         gutterBottom
@@ -192,7 +251,7 @@ function ProductDetails() {
                                     <SimilarProductsCarousel
                                         currentId={Number(productId)}
                                         similarProducts={
-                                            products as unknown as SimilarProductCarouselProps['similarProducts']
+                                            productsInSameCategory as unknown as SimilarProductCarouselProps['similarProducts']
                                         }
                                     />
                                 </>
