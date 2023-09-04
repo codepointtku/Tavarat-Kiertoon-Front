@@ -81,9 +81,7 @@ function StorageProductsHandleItemsTransfer() {
     const responseStatus = useActionData() as Awaited<ReturnType<typeof productsTransferAction>>;
 
     const storagesList = storageData.allStorages;
-    // console.log('%c all storages:', 'color: blue', storagesList);
     const storageInfo = storageData.storageInfo;
-    // console.log('%c product item count:', 'color: green', storageAvailableProductItems.count);
 
     //// main ingredient:
     const storageAvailableProductItems =
@@ -100,40 +98,16 @@ function StorageProductsHandleItemsTransfer() {
         setSelectedStorage(event.target.value as string);
     };
 
-    // form
-    const {
-        register,
-        setValue,
-        reset,
-        handleSubmit: createHandleSubmit,
-        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors },
-    } = useForm({
-        mode: 'all',
-    });
-
-    // submit
-    const submit = useSubmit();
-
-    const handleSubmit = createHandleSubmit((data: any) => {
-        setValue('product_ids', JSON.stringify(right.map((item) => item.itemId)));
-
-        submit(data, {
-            method: 'put',
-        });
-        console.log('%c Submitissa menevä tieto', 'color: blue; font-weight: bold', data);
-    });
-
-    const formReset = () => {
-        reset();
-    };
-
     //
     ///
     ////  transfer list
     const [checked, setChecked] = React.useState<ListItemType[]>([]);
     const [left, setLeft] = React.useState<ListItemType[]>(storageAvailableProductItems);
     const [right, setRight] = React.useState<ListItemType[]>([]);
-    // console.log('right:', right);
+    console.log('right:', right);
+
+    const rightCopy = [...right];
+    console.log('rightCopy:', rightCopy);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -202,6 +176,7 @@ function StorageProductsHandleItemsTransfer() {
                 dense
                 component="div"
                 role="list"
+                disablePadding
             >
                 {items.map((item: ListItemType) => {
                     const labelId = `transfer-list-item-${item}-label`;
@@ -218,6 +193,7 @@ function StorageProductsHandleItemsTransfer() {
                                     inputProps={{
                                         'aria-labelledby': labelId,
                                     }}
+                                    size="small"
                                 />
                             </ListItemIcon>
                             <ListItemText id={labelId} primary={`${item.itemName} (${item.itemId})`} />
@@ -227,6 +203,40 @@ function StorageProductsHandleItemsTransfer() {
             </List>
         </Card>
     );
+
+    // form
+    const {
+        register,
+        setValue,
+        reset,
+        handleSubmit: createHandleSubmit,
+        formState: { isSubmitting, isSubmitSuccessful, errors: formStateErrors },
+    } = useForm({
+        mode: 'all',
+        // defaultValues: {
+        //     storage_to: null,
+        //     product_ids: [],
+        // },
+    });
+
+    // submit
+    const submit = useSubmit();
+
+    const handleSubmit = createHandleSubmit((data: any) => {
+        setValue('product_ids', JSON.stringify(rightCopy.map((item) => item.itemId)));
+
+        console.log('%c Submitissa menevä tieto', 'color: cyan; font-weight: bold', data);
+
+        // reset();
+
+        submit(data, {
+            method: 'put',
+        });
+    });
+
+    const formReset = () => {
+        reset();
+    };
 
     // main component return
     return (
@@ -258,10 +268,11 @@ function StorageProductsHandleItemsTransfer() {
                 <Box component={Form} onSubmit={handleSubmit}>
                     {/* /// */}
                     <input
-                        type="hidden"
+                        // type="hidden"
                         {...register('product_ids')}
-                        // value={JSON.stringify(right.map((item) => item.itemId))}
-                        defaultValue={JSON.stringify(right.map((item) => item.itemId))}
+                        // readOnly
+                        value={JSON.stringify(right.map((item) => item.itemId))}
+                        // value={right.map((item) => item.itemId).toString()}
                     />
                     <Grid container margin="1rem 0 0rem 0">
                         <Grid
@@ -374,7 +385,7 @@ function StorageProductsHandleItemsTransfer() {
                             </Grid>
 
                             <Grid id="product-items-list-selected-container" item xs={4} justifyContent="flex-end">
-                                {customList('Valitut', right)}
+                                {customList('Siirrettävät tuotteet', right)}
                             </Grid>
                         </Grid>
                     </Box>
