@@ -373,6 +373,23 @@ function AddNewItem() {
                     {/* TODO: shelf id -hyllypaikka, joko vapaa kenttä, tai tietyn varaston hyllypaikat valikko */}
                     <TextField
                         fullWidth
+                        id="shelf_id"
+                        type="text"
+                        label="Hyllypaikka"
+                        placeholder="Tuolikasa 1"
+                        multiline
+                        {...register('shelf_id', {
+                            // required: { value: true, message: 'Tuotteen nimi on pakollinen' },
+                            maxLength: { value: 255, message: 'Nimi on liian pitkä, maksimi 255 merkkiä' },
+                            // minLength: { value: 3, message: 'Nimi on liian lyhyt, minimi 3 merkkiä' },
+                        })}
+                        // Needs to be required: false to disable browser error message
+                        inputProps={{ required: false }}
+                        error={!!errors.shelf_id}
+                        helperText={errors.shelf_id?.message || ' '}
+                    />
+                    <TextField
+                        fullWidth
                         id="category-select"
                         select
                         label="Kategoria"
@@ -441,6 +458,42 @@ function AddNewItem() {
                         </Select>
                         <FormHelperText>{errors.colors ? errors.colors.message : ' '}</FormHelperText>
                     </FormControl>
+                    <TextField
+                        fullWidth
+                        id="measurements"
+                        type="text"
+                        label="Mitat"
+                        placeholder="Korkeus cm, Leveys cm, Syvyys cm"
+                        multiline
+                        {...register('measurements', {
+                            // required: { value: true, message: 'Tuotteen nimi on pakollinen' },
+                            maxLength: { value: 255, message: 'Nimi on liian pitkä, maksimi 255 merkkiä' },
+                            // minLength: { value: 3, message: 'Nimi on liian lyhyt, minimi 3 merkkiä' },
+                        })}
+                        // Needs to be required: false to disable browser error message
+                        inputProps={{ required: false }}
+                        // required
+                        error={!!errors.measurements}
+                        helperText={errors.measurements?.message || ' '}
+                    />
+                    <TextField
+                        fullWidth
+                        id="weight"
+                        type="text"
+                        label="Paino"
+                        placeholder="Paino, kg"
+                        multiline
+                        {...register('weight', {
+                            // required: { value: true, message: 'Tuotteen nimi on pakollinen' },
+                            maxLength: { value: 255, message: 'Nimi on liian pitkä, maksimi 255 merkkiä' },
+                            // minLength: { value: 3, message: 'Nimi on liian lyhyt, minimi 3 merkkiä' },
+                        })}
+                        // Needs to be required: false to disable browser error message
+                        inputProps={{ required: false }}
+                        // required
+                        error={!!errors.weight}
+                        helperText={errors.weight?.message || ' '}
+                    />
 
                     <TextField
                         fullWidth
