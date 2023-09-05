@@ -78,9 +78,9 @@ import Activation from '../Components/Default/Signup/Activation';
 import EmailChangeSuccessful from '../Components/EmailChangeSuccessful';
 import ChangeEmail from '../Components/ChangeEmail';
 
-import UserProfilePage from '../Components/Default/Profilepage/UserProfilePage';
+import UserAccountPage from '../Components/Default/Profilepage/UserAccountPage';
 import OrderPage from '../Components/Default/Profilepage/OrderPage';
-import ProfileInfo from '../Components/Default/Profilepage/ProfileInfo';
+import UserAccountInfo from '../Components/Default/Profilepage/UserAccountInfo';
 import AddressEdit from '../Components/Default/Profilepage/AddressEdit';
 import OrdersHistory from '../Components/Default/Profilepage/OrdersHistory';
 import OrdersActive from '../Components/Default/Profilepage/OrdersActive';
@@ -407,14 +407,14 @@ function Routes() {
                                 },
                                 {
                                     path: 'tili',
-                                    element: <UserProfilePage />,
+                                    element: <UserAccountPage />,
                                     id: 'account',
                                     loader: userInfoLoader,
                                     action: userProfilePageAction,
                                     children: [
                                         {
                                             index: true,
-                                            element: <ProfileInfo />,
+                                            element: <UserAccountInfo />,
                                         },
                                         {
                                             path: 'osoitteet/:aid',
@@ -423,9 +423,8 @@ function Routes() {
                                             action: userAddressEditAction,
                                         },
                                         {
-                                            path: 'osoitteet/uusi/',
+                                            path: 'osoitteet/uusi',
                                             element: <AddressCreate />,
-                                            // loader: userInfoLoader,
                                             action: userAddressCreateAction,
                                         },
                                         {

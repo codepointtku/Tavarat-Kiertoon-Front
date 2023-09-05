@@ -1,12 +1,9 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, Link, useSubmit, useRouteLoaderData, useActionData } from 'react-router-dom';
 
 import {
-    Grid,
     TextField,
     Typography,
-    MenuItem,
     Button,
     Container,
     Stack,
@@ -14,7 +11,6 @@ import {
     Card,
     CardContent,
     CardActions,
-    Link as MuiLink,
     Divider,
 } from '@mui/material';
 
@@ -24,7 +20,7 @@ import AlertBox from '../../AlertBox';
 
 import type { userInfoLoader } from '../../../Router/loaders';
 import { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
-import TypographyTitle from '../../TypographyTitle';
+
 import TypographyHeading from '../../TypographyHeading';
 import HeroText from '../../HeroText';
 
@@ -50,7 +46,7 @@ type SubmitTarget =
       }
     | null;
 
-function ProfileInfo() {
+function UserAccountInfo() {
     const { userInfo } = useRouteLoaderData('account') as Awaited<ReturnType<typeof userInfoLoader>>;
     // console.log(userInfo);
 
@@ -68,9 +64,6 @@ function ProfileInfo() {
 
     const responseStatus = useActionData() as ResponseStatus;
 
-    // const address = userInfo.address_list.map((item) => item.address);
-    // const [selectedAddress, setSelectedAddress] = useState(address[0]);
-
     const {
         register,
         reset,
@@ -83,7 +76,6 @@ function ProfileInfo() {
             first_name: userInfo.first_name,
             last_name: userInfo.last_name,
             phone_number: userInfo.phone_number,
-            // userAddress: address[0],
             email: userInfo.email,
         },
     });
@@ -96,10 +88,6 @@ function ProfileInfo() {
         submit(formData as SubmitTarget, { method: 'put', action: '/profiili' });
         reset(formData);
     };
-
-    // const selectedAddressInfo = userInfo.address_list.filter(
-    //     (addressInfo: { address: string }) => addressInfo.address === selectedAddress
-    // );
 
     return (
         <>
@@ -192,45 +180,21 @@ function ProfileInfo() {
                             fullWidth
                         />
 
-                        <Button type="submit" disabled={!isDirty || !isValid}>
+                        <Button
+                            type="submit"
+                            disabled={!isDirty || !isValid}
+                            sx={{
+                                '&:hover': {
+                                    backgroundColor: 'success.dark',
+                                },
+                            }}
+                        >
                             Vahvista muutokset
                         </Button>
                     </Stack>
                 </Box>
 
                 {/* Address stuff */}
-                {/* <Stack direction="row" spacing={1}>
-                        <TextField
-                            {...register('userAddress', { required: 'Tämä kenttä on täytettävä' })}
-                            value={selectedAddress}
-                            label="Osoitteet"
-                            onChange={(event) => setSelectedAddress(event.target.value)}
-                            select
-                        >
-                            {userInfo.address_list?.map((a) => (
-                                <MenuItem key={a.id} value={a.address}>
-                                    {a.address}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-
-                        <Button
-                            component={Link}
-                            to={`osoitetiedot/${selectedAddressInfo[0].id}`}
-                            state={{ ...selectedAddressInfo[0], action: 'modify' }}
-                        >
-                            Muokkaa
-                        </Button>
-
-                        <Button
-                            component={Link}
-                            to={`osoitetiedot/${selectedAddressInfo[0].id}`}
-                            state={{ ...selectedAddressInfo[0], action: 'create' }}
-                        >
-                            Luo uusi
-                        </Button>
-                    </Stack> */}
-
                 <Box id="user-address-boxes-wrapper" marginBottom="2rem">
                     <TypographyHeading text="Tavaran vastaanotto-osoitteet" />
                     <Stack
@@ -295,4 +259,4 @@ function ProfileInfo() {
     );
 }
 
-export default ProfileInfo;
+export default UserAccountInfo;

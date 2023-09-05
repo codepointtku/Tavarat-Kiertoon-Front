@@ -33,14 +33,14 @@ function Welcome({ auth, setCurrentOpenDrawer }: Props) {
                 </Typography>
                 <Tooltip title="Katsele tilauksiasi, tarkastele ja muokkaa tietojasi">
                     <Button
-                        id="profilepage-link-btn"
+                        id="accountpage-link-btn"
                         sx={{ mt: 5, backgroundColor: 'primary.dark' }}
                         onClick={() => setCurrentOpenDrawer('')}
                         component={Link}
-                        to="profiili"
+                        to="tili"
                         fullWidth
                     >
-                        Profiilisivu
+                        Tili
                     </Button>
                 </Tooltip>
                 <Button id="logout-btn" sx={{ mt: 5, mb: 5 }} type="submit" fullWidth>
