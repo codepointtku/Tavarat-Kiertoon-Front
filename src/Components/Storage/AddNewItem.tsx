@@ -397,6 +397,7 @@ function AddNewItem() {
                             </MenuItem>
                         ))} */}
                         {/* // TODO: map categories, as expandable tree, with only the level 2 categories selectable? use current catTree from front page, in modal? */}
+                        {/* TODO: check if ListSubheader would be suitable for this. https://mui.com/material-ui/react-select/#grouping */}
                         {categories?.map((category) => (
                             <MenuItem key={category.id} value={category.id} disabled={category.level !== 2}>
                                 {category.name}
