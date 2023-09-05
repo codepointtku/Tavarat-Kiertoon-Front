@@ -942,42 +942,54 @@ const adminEmailRecipientsAction = async ({ request }) => {
     return { type: 'emailrecipient', status: false };
 };
 
-const userProfilePageAction = async (request) => {
+const userProfilePageAction = async ({ request }) => {
     const formData = await request.formData();
+
     const response = await userApi.userUpdate({
         first_name: formData.get('first_name'),
         last_name: formData.get('last_name'),
         phone_number: formData.get('phone_number'),
     });
+
     if (response.status === 200) {
         return { type: 'userinfoupdated', status: true };
     }
     return { type: 'userinfoupdated', status: false };
 };
 
-const modifyUserAddressesAction = async (request) => {
+const userAddressEditAction = async ({ request, params }) => {
     const formData = await request.formData();
-    if (request.method === 'PUT') {
-        const response = await userApi.userAddressEditUpdate({
-            id: formData.get('id'),
-            address: formData.get('address'),
-            city: formData.get('city'),
-            zip_code: formData.get('zip_code'),
-        });
-        if (response.status === 200) {
-            return { type: 'addressmodified', status: true };
-        }
-        return { type: 'addressmodified', status: false };
-    }
-    const response = await userApi.userAddressEditCreate({
+
+    const response = await userApi.userAddressEditUpdate({
         address: formData.get('address'),
         city: formData.get('city'),
         zip_code: formData.get('zip_code'),
+        id: params.aid,
     });
+
     if (response.status === 200) {
-        return { type: 'addresscreated', status: true };
+        return { type: 'addressmodified', status: true };
     }
-    return { type: 'addresscreated', status: false };
+
+    return { type: 'addressmodified', status: false };
+};
+
+const userAddressCreateAction = async ({ request }) => {
+    const formData = await request.formData();
+
+    const newAddress = {
+        address: formData.get('address'),
+        city: formData.get('city'),
+        zip_code: formData.get('zip_code'),
+    };
+
+    const response = await userApi.userAddressEditCreate(newAddress);
+
+    if (response.status === 200) {
+        return { type: 'addresscreate', status: true };
+    }
+
+    return { type: 'addresscreate', status: false };
 };
 
 export {
@@ -1019,5 +1031,6 @@ export {
     userProfilePageAction,
     createNewPacketAction,
     deletePacketAction,
-    modifyUserAddressesAction,
+    userAddressEditAction,
+    userAddressCreateAction,
 };

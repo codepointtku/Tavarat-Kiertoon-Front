@@ -1,9 +1,12 @@
-import type { Dispatch, SetStateAction } from 'react';
 import { Form, useSubmit, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-import { Typography, Button, Container, Box } from '@mui/material';
+import { Typography, Button, Container, Stack } from '@mui/material';
+
 import CloseDrawerButton from './CloseDrawerButton';
+import Tooltip from '../../Tooltip';
+
+import type { Dispatch, SetStateAction } from 'react';
 
 interface Props {
     auth: { username: string };
@@ -24,24 +27,27 @@ function Welcome({ auth, setCurrentOpenDrawer }: Props) {
 
     return (
         <Container maxWidth="xs" component={Form} onSubmit={handleSubmit(onSubmit)}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            <Stack>
                 <Typography variant="h4" align="center" color="primary.main" sx={{ mt: 5 }}>
                     Tervetuloa {auth.username}!
                 </Typography>
-                <Button
-                    sx={{ mt: 5, backgroundColor: 'primary.dark' }}
-                    onClick={() => setCurrentOpenDrawer('')}
-                    component={Link}
-                    to="profiili"
-                    fullWidth
-                >
-                    Siirry profiiliin
-                </Button>
-                <Button sx={{ mt: 5, mb: 5 }} type="submit" fullWidth>
+                <Tooltip title="Katsele tilauksiasi, tarkastele ja muokkaa tietojasi">
+                    <Button
+                        id="profilepage-link-btn"
+                        sx={{ mt: 5, backgroundColor: 'primary.dark' }}
+                        onClick={() => setCurrentOpenDrawer('')}
+                        component={Link}
+                        to="profiili"
+                        fullWidth
+                    >
+                        Profiilisivu
+                    </Button>
+                </Tooltip>
+                <Button id="logout-btn" sx={{ mt: 5, mb: 5 }} type="submit" fullWidth>
                     Kirjaudu ulos
                 </Button>
                 <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
-            </Box>
+            </Stack>
         </Container>
     );
 }

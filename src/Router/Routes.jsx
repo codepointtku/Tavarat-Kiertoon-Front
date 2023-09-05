@@ -81,7 +81,7 @@ import ChangeEmail from '../Components/ChangeEmail';
 import UserProfilePage from '../Components/Default/Profilepage/UserProfilePage';
 import OrderPage from '../Components/Default/Profilepage/OrderPage';
 import ProfileInfo from '../Components/Default/Profilepage/ProfileInfo';
-import ModifyAddressInfo from '../Components/Default/Profilepage/ModifyAddressInfo';
+import AddressEdit from '../Components/Default/Profilepage/AddressEdit';
 import OrdersHistory from '../Components/Default/Profilepage/OrdersHistory';
 import OrdersActive from '../Components/Default/Profilepage/OrdersActive';
 
@@ -149,6 +149,7 @@ import {
     createBulletinLoader,
     adminBulletinLoader,
     adminBulletinsLoader,
+    addressEditLoader,
 } from './loaders';
 
 import {
@@ -188,11 +189,13 @@ import {
     createNewPacketAction,
     deletePacketAction,
     userProfilePageAction,
-    modifyUserAddressesAction,
+    userAddressCreateAction,
+    userAddressEditAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
+import AddressCreate from '../Components/Default/Profilepage/AddressCreate';
 
 createStore({});
 
@@ -403,20 +406,27 @@ function Routes() {
                                     action: async ({ request }) => activationAction(auth, setAuth, request),
                                 },
                                 {
-                                    path: 'profiili',
+                                    path: 'tili',
                                     element: <UserProfilePage />,
-                                    id: 'profile',
-                                    loader: async ({ request }) => userInfoLoader(request),
-                                    action: async ({ request }) => userProfilePageAction(request),
+                                    id: 'account',
+                                    loader: userInfoLoader,
+                                    action: userProfilePageAction,
                                     children: [
                                         {
                                             index: true,
                                             element: <ProfileInfo />,
                                         },
                                         {
-                                            path: 'osoitetiedot/:id',
-                                            element: <ModifyAddressInfo />,
-                                            action: async ({ request }) => modifyUserAddressesAction(request),
+                                            path: 'osoitteet/:aid',
+                                            element: <AddressEdit />,
+                                            loader: addressEditLoader,
+                                            action: userAddressEditAction,
+                                        },
+                                        {
+                                            path: 'osoitteet/uusi/',
+                                            element: <AddressCreate />,
+                                            // loader: userInfoLoader,
+                                            action: userAddressCreateAction,
                                         },
                                         {
                                             path: 'aktiivisettilaukset',
@@ -429,7 +439,7 @@ function Routes() {
                                     ],
                                 },
                                 {
-                                    path: 'profiili/:tilaustila/tilaus/:id',
+                                    path: 'tili/:tilaustila/tilaus/:id',
                                     element: <OrderPage />,
                                 },
                             ],

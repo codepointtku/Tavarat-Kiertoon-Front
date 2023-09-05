@@ -219,6 +219,14 @@ const userAddressCreateLoader = async ({ params }) => {
     return { userData };
 };
 
+const addressEditLoader = async () => {
+    const [{ data: userData }, { data: addressData }] = await Promise.all([
+        await userApi.userRetrieve,
+        await userApi.userAddressEditList,
+    ]);
+    return { userData, addressData };
+};
+
 /**
  * Get lists of bikes and packets for front page
  *
@@ -443,22 +451,27 @@ const createBulletinLoader = async () => {
 };
 
 /* get logged in users data and user orders*/
-const userInfoLoader = async (request) => {
+const userInfoLoader = async ({ request }) => {
     const searchParams = new URL(request.url).searchParams;
+
     const statusMap = {
         Aktiivinen: ['Waiting', 'Processing'],
         Odottaa: 'Waiting',
         Käsitellään: 'Processing',
         Toimitettu: 'Finished',
     };
+
     const orderingMap = {
         Uusinensin: '-creation_date',
         Vanhinensin: 'creation_date',
         Normaalitilanmukaan: 'status',
         Käänteinentilanmukaan: '-status',
     };
+
     const status = statusMap[searchParams.get('tila')] || null;
+
     const ordering = orderingMap[searchParams.get('järjestys') || null];
+
     const [{ data: userInfo }, { data: userOrders }] = await Promise.all([
         userApi.userRetrieve(),
         ordersApi.ordersUserList(ordering, searchParams.get('sivu'), null, status),
@@ -501,4 +514,5 @@ export {
     adminBulletinsLoader,
     adminBulletinLoader,
     createBulletinLoader,
+    addressEditLoader,
 };

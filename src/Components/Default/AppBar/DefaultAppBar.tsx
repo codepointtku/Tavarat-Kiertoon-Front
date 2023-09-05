@@ -232,7 +232,7 @@ function DefaultAppBar() {
                                 </IconButton>
                             </Tooltip>
                         )}
-                        <Tooltip title="Kirjautuminen">
+                        <Tooltip title="Käyttäjätili ja kirjautuminen">
                             <IconButton onClick={drawerOpen('account')} sx={iconHover}>
                                 <AccountCircleOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
                             </IconButton>
