@@ -49,6 +49,7 @@ function ProductDetails() {
 
     return (
         <Container id="product-detail-card">
+            {/* TODO: Mobile usability */}
             <Grid container mt={2} mb={2}>
                 <Grid item xs={1}>
                     <BackButton />
@@ -148,94 +149,113 @@ function ProductDetails() {
                                     </Paper>
                                     <Grid container justifyContent="center" sx={{ mt: 5 }}>
                                         <CardActions>
-                                            <AddToCartButton
-                                                size={
-                                                    'large' as OverridableStringUnion<
-                                                        'small' | 'medium' | 'large',
-                                                        ButtonPropsSizeOverrides
-                                                    >
-                                                }
-                                                id={productId as number & string}
-                                                groupId={Number(productId)}
-                                            />
+                                            <Grid container direction="row" gap={2}>
+                                                <AddToCartButton
+                                                    size={
+                                                        'large' as OverridableStringUnion<
+                                                            'small' | 'medium' | 'large',
+                                                            ButtonPropsSizeOverrides
+                                                        >
+                                                    }
+                                                    id={productId as number & string}
+                                                    groupId={Number(productId)}
+                                                />
+                                                <Button
+                                                    component={Link}
+                                                    to={`/varasto/tuotteet/${productId}/muokkaa`}
+                                                    size="large"
+                                                    color="primary"
+                                                    sx={{ marginY: 2 }}
+                                                >
+                                                    Muokkaa tuotetta
+                                                </Button>
+                                            </Grid>
                                         </CardActions>
                                     </Grid>
+                                    {(auth.storage_group || auth.admin_group) && (
+                                        <Grid container justifyContent="center">
+                                            <Typography gutterBottom variant="h5" component="div" color="primary">
+                                                Yksityiskohtaiset tiedot
+                                            </Typography>
+                                            <Paper variant="outlined" sx={{ p: 5 }} color="primary">
+                                                {/* <Button
+                                                    component={Link}
+                                                    to={`/varasto/tuotteet/${productId}/muokkaa`}
+                                                    size="large"
+                                                    // variant="outlined"
+                                                    color="primary"
+                                                    sx={{ marginY: 2 }}
+                                                >
+                                                    Muokkaa tuotetta
+                                                </Button> */}
+                                                {/* show id if component used in storageview or admin? or don't, if there is no value in showing it */}
+                                                {/* <Typography variant="body2" color="text.secondary">
+                                                    Tuotteen tunnus: {productId}
+                                            </Typography> */}
+                                                <Typography variant="body2" color="text.secondary">
+                                                    Kokonaismäärä järjestelmässä: {product.total_amount}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    Tilattavissa: {product.amount}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    Hinta: {product.price} €
+                                                </Typography>
+
+                                                <Typography variant="body2" color="text.secondary">
+                                                    Varasto:{' '}
+                                                    {
+                                                        // show different storage.names of all product_items, separated by comma. don't show one name multiple times, and show times it appears in the list
+                                                        product.product_items
+                                                            .map((item) => item.storage.name)
+                                                            .filter((name, index, self) => self.indexOf(name) === index)
+                                                            .map((name) => (
+                                                                <span key={name}>
+                                                                    {name}
+                                                                    {': '}
+                                                                    {
+                                                                        product.product_items.filter(
+                                                                            (item) => item.storage.name === name
+                                                                        ).length
+                                                                    }
+                                                                    {' kpl'}
+                                                                </span>
+                                                            ))
+                                                    }
+                                                </Typography>
+                                                <Paper
+                                                    elevation={3}
+                                                    sx={{
+                                                        border: '1px solid black',
+                                                        borderRadius: 1,
+                                                        minHeight: '7rem',
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                        width: 'fit-content',
+                                                        paddingX: '1rem',
+                                                    }}
+                                                    // TODO : add onClick to open a page to print barcodes
+                                                    // onClick={() => setQrScanOpen(true)}
+                                                >
+                                                    {/* // TODO: support multiple barcodes */}
+                                                    {product?.product_items[0].barcode?.length > 0 && (
+                                                        <Barcode
+                                                            value={product.product_items[0].barcode}
+                                                            format="CODE39"
+                                                            height={64}
+                                                            fontSize={14}
+                                                        />
+                                                    )}
+                                                </Paper>
+                                            </Paper>
+                                        </Grid>
+                                    )}
                                 </CardContent>
                             </Grid>
                         </Grid>
 
                         <Box sx={{ mx: 2 }}>
-                            {(auth.storage_group || auth.admin_group) && (
-                                <>
-                                    <Typography gutterBottom variant="h5" component="div" color="primary">
-                                        Yksityiskohtaisemmat tiedot
-                                    </Typography>
-                                    <Paper variant="outlined" sx={{ p: 5 }} color="primary">
-                                        <Button
-                                            component={Link}
-                                            to={`/varasto/tuotteet/${productId}/muokkaa`}
-                                            size="large"
-                                            // variant="outlined"
-                                            color="primary"
-                                            sx={{ marginY: 2 }}
-                                        >
-                                            Muokkaa tuotetta
-                                            {/* show id if component used in storageview or admin? or don't, if there is no value in showing it */}
-                                            {/* <Typography variant="body2" color="text.secondary">
-                                            Tuotteen tunnus: {productId}
-                                        </Typography> */}
-                                        </Button>
-                                        {/* <Typography variant="body2" color="text.secondary">
-                                            Viivakoodi: {product.product_items[0].barcode || 'Ei viivakoodia'}
-                                        </Typography> */}
-                                        <Typography variant="body2" color="text.secondary">
-                                            Varasto:{' '}
-                                            {
-                                                // show different storage.names of all product_items, separated by comma. don't show one name multiple times, and show times it appears in the list
-                                                product.product_items
-                                                    .map((item) => item.storage.name)
-                                                    .filter((name, index, self) => self.indexOf(name) === index)
-                                                    .map((name) => (
-                                                        <span key={name}>
-                                                            {name}{' '}
-                                                            {
-                                                                product.product_items.filter(
-                                                                    (item) => item.storage.name === name
-                                                                ).length
-                                                            }
-                                                            {/* x */}
-                                                        </span>
-                                                    ))
-                                            }
-                                        </Typography>
-                                        <Paper
-                                            elevation={3}
-                                            sx={{
-                                                border: '1px solid black',
-                                                borderRadius: 1,
-                                                minHeight: '7rem',
-                                                display: 'flex',
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                width: 'fit-content',
-                                                paddingX: '1rem',
-                                            }}
-                                            // TODO : add onClick to open a page to print barcodes
-                                            // onClick={() => setQrScanOpen(true)}
-                                        >
-                                            {/* // TODO: support multiple barcodes */}
-                                            {product?.product_items[0].barcode?.length > 0 && (
-                                                <Barcode
-                                                    value={product.product_items[0].barcode}
-                                                    format="CODE39"
-                                                    height={64}
-                                                    fontSize={14}
-                                                />
-                                            )}
-                                        </Paper>
-                                    </Paper>
-                                </>
-                            )}
                             {/* TODO: don't show if path is just /tuotteet/:id , storage or admin does not need this component*/}
                             {productsInSameCategory.results && productsInSameCategory.results.length > 1 && (
                                 <>
