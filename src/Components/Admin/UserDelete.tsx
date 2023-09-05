@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { Form, useLoaderData, useSubmit, Link } from 'react-router-dom';
 
-import { Box, Button, Container, Grid, Stack, TextField, Typography, Link as MuiLink } from '@mui/material';
+import { Box, Button, Container, Grid, Stack, TextField, Typography } from '@mui/material';
 import DomainDisabledIcon from '@mui/icons-material/DomainDisabled';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -11,35 +11,14 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
-import type { orderEditLoader } from '../../Router/loaders';
+import type { userEditLoader } from '../../Router/loaders';
 import Tooltip from '../Tooltip';
 
 //
 
-function OrderDeleteNotAvailable() {
-    const SuperLink = MuiLink as typeof MuiLink | typeof Link;
-
-    return (
-        <Container maxWidth="lg">
-            <Stack alignItems="center">
-                <HeroHeader Icon={<DomainDisabledIcon />} hideInAdmin />
-                <HeroText
-                    title="Tilauksen poisto ei ole mahdollinen"
-                    subtitle="Toimitettujen tilausten poisto järjestelmästä on estetty"
-                />
-                <Typography>
-                    <SuperLink component={Link} to={-1 as unknown as string}>
-                        Palaa takaisin
-                    </SuperLink>
-                </Typography>
-            </Stack>
-        </Container>
-    );
-}
-
-function AdminOrderDelete({ randomInt }: any) {
+function UserDelete({ randomInt }: any) {
     // console.log('rInt:', randomInt, typeof randomInt);
-    const orderData = useLoaderData() as Awaited<ReturnType<typeof orderEditLoader>>;
+    const { userInfo } = useLoaderData() as Awaited<ReturnType<typeof userEditLoader>>;
 
     const {
         register,
@@ -58,14 +37,13 @@ function AdminOrderDelete({ randomInt }: any) {
         });
     });
 
-    if (orderData.status === 'Finished') {
-        return <OrderDeleteNotAvailable />;
-    }
-
     return (
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
             <HeroHeader Icon={<DomainDisabledIcon />} hideInAdmin />
-            <HeroText title={`Poistettava tilaus: #${orderData.id}`} />
+            <HeroText
+                title={`Poistettava käyttäjä: ${userInfo.email} / #${userInfo.id}`}
+                subtitle={`Käyttäjänimi: ${userInfo.username}`}
+            />
 
             <Box
                 id="warning-text-box"
@@ -83,31 +61,38 @@ function AdminOrderDelete({ randomInt }: any) {
                         <Stack direction="row" gap={1} alignItems="center">
                             <DeleteForeverIcon color="error" />
                             <Typography variant="subtitle2" textAlign="center">
-                                Poistaa tilauksen omat tiedot
+                                Poistaa käyttäjän omat tiedot, kuten osoitetiedot, sekä tilaushistorian.
+                            </Typography>
+                        </Stack>
+                        <Stack direction="row" gap={1} alignItems="center">
+                            <DeleteForeverIcon color="error" />
+                            <Typography variant="subtitle2" textAlign="center">
+                                Käyttäjätieto poistuu loki-tiedoista.
                             </Typography>
                         </Stack>
                         <Stack direction="row" gap={1} alignItems="center">
                             <CheckCircleOutlineIcon color="success" />
                             <Typography variant="subtitle2" textAlign="center" gutterBottom>
-                                Tuotteet ja tuotteiden omat tiedot säilyvät ennallaan.
+                                Tilaukset säilyvät muutoin ennallaan, vain tieto tilauksen tekijästä poistuu.
                             </Typography>
                         </Stack>
                     </Stack>
-                    <Stack id="infograph-return-btn stack" gap={1}>
+                    <Stack gap={1}>
                         <Stack direction="row" gap={1} alignItems="center">
                             <InfoOutlinedIcon color="info" />
                             <Typography variant="body2" textAlign="center">
-                                Tilauksen voi asettaa "Odottaa"-tilaan. Tällöin tieto tilaukseen liitetyistä tuotteista
-                                säilyy tietokannassa ennallaan.
+                                Käyttäjän voi asettaa inaktiiviseksi ottamalla kaikki käyttöoikeudet pois. Tällöin
+                                käyttäjään sidotut tiedot säilyvät tietokannassa ennallaan.
                             </Typography>
                         </Stack>
+
                         <Button
                             id="return-editview-btn"
                             component={Link}
-                            to={`/admin/tilaukset/${orderData.id}`}
+                            to={`/admin/kayttajat/${userInfo.id}`}
                             sx={{ margin: '1rem 0 0 0' }}
                         >
-                            Palaa tästä takaisin tilauksen tietojen ja tilan muokkaus-näkymään
+                            Palaa tästä takaisin käyttäjän tietojen ja käyttöoikeuksien muokkaus-näkymään
                         </Button>
                     </Stack>
                 </Stack>
@@ -166,7 +151,7 @@ function AdminOrderDelete({ randomInt }: any) {
                                 fullWidth
                                 color="error"
                             >
-                                {`Poista tilausnumero ${orderData.id} pysyvästi`}
+                                {`Poista käyttäjä ${userInfo.email} pysyvästi`}
                             </Button>
                         </Stack>
                     </Grid>
@@ -175,12 +160,12 @@ function AdminOrderDelete({ randomInt }: any) {
 
                 <Grid container>
                     <Grid item xs={4}>
-                        <Tooltip title="Takaisin tilaukset-listaukseen">
+                        <Tooltip title="Takaisin käyttäjät-listaukseen">
                             <Button
                                 id="cancel-btn"
                                 size="small"
                                 component={Link}
-                                to="/admin/tilaukset/"
+                                to="/admin/kayttajat/"
                                 startIcon={<ArrowBackIcon />}
                                 sx={{ margin: '4rem 0 1rem 0' }}
                             >
@@ -195,4 +180,4 @@ function AdminOrderDelete({ randomInt }: any) {
     );
 }
 
-export default AdminOrderDelete;
+export default UserDelete;

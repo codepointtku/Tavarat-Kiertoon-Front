@@ -37,10 +37,15 @@ function StorageCreate() {
             )}
 
             {responseStatus?.type === 'createstorage' && responseStatus?.status && (
-                <AlertBox text="Varasto luotu" status="success" timer={3000} redirectUrl="/admin/varastot" />
+                <AlertBox
+                    text="Varasto luotu tietokantaan. Uudelleenohjataan..."
+                    status="success"
+                    timer={3000}
+                    redirectUrl="/admin/varastot"
+                />
             )}
 
-            <Container maxWidth="lg">
+            <Container maxWidth="md">
                 <HeroHeader Icon={<DomainAddIcon />} hideInAdmin />
                 <HeroText title="Uusi varasto" subtitle="Uuden varaston luominen tietokantaan" />
                 <Box
@@ -63,7 +68,7 @@ function StorageCreate() {
                                     message: 'Maksimipituus 50 merkkiä',
                                 },
                             })}
-                            // Needs to be 'required: false' to disable browser error message
+                            // 'required: false' to disable browser error message
                             inputProps={{ required: false }}
                             required
                             error={!!formStateErrors.name}
@@ -74,13 +79,17 @@ function StorageCreate() {
 
                         <TextField
                             id="textfield-storage-address"
-                            label="Osoite"
+                            label="Katuosoite"
                             placeholder="Varaston sijainti"
                             {...register('address', {
                                 required: { value: true, message: 'Varaston katuosoite on pakollinen' },
                                 minLength: {
                                     value: 1,
-                                    message: 'Kirjoita edes jotain',
+                                    message: 'Syötä katuosoite',
+                                },
+                                maxLength: {
+                                    value: 50,
+                                    message: 'Maksimipituus 50 merkkiä',
                                 },
                             })}
                             inputProps={{ required: false }}
@@ -91,6 +100,53 @@ function StorageCreate() {
                             fullWidth
                         />
 
+                        <Stack direction="row" gap={'1rem'}>
+                            <TextField
+                                id="textfield-storage-address"
+                                label="Postinumero"
+                                placeholder="Postinumero"
+                                {...register('zip_code', {
+                                    required: { value: true, message: 'Postinumero on pakollinen' },
+                                    minLength: {
+                                        value: 1,
+                                        message: 'Syötä postinumero',
+                                    },
+                                    maxLength: {
+                                        value: 5,
+                                        message: 'Postinumero on 5 merkkiä',
+                                    },
+                                })}
+                                inputProps={{ required: false }}
+                                required
+                                error={!!formStateErrors.zip_code}
+                                helperText={formStateErrors.zip_code?.message?.toString() || ' '}
+                                color={dirtyFields.zip_code ? 'warning' : 'primary'}
+                                fullWidth
+                            />
+                            <TextField
+                                id="textfield-storage-address"
+                                label="Kaupunki"
+                                placeholder="Varaston sijainti"
+                                {...register('city', {
+                                    required: { value: true, message: 'Kaupunki on pakollinen' },
+                                    minLength: {
+                                        value: 1,
+                                        message: 'Syötä kaupunki',
+                                    },
+                                    maxLength: {
+                                        value: 50,
+                                        message: 'Maksimipituus 50 merkkiä',
+                                    },
+                                })}
+                                inputProps={{ required: false }}
+                                required
+                                error={!!formStateErrors.city}
+                                helperText={formStateErrors.city?.message?.toString() || ' '}
+                                color={dirtyFields.city ? 'warning' : 'primary'}
+                                fullWidth
+                            />
+                        </Stack>
+
                         <TextField
                             select
                             label="Käyttötila"
@@ -100,9 +156,9 @@ function StorageCreate() {
                             })}
                             inputProps={{ required: false }}
                             required
-                            error={!!formStateErrors.state}
-                            helperText={formStateErrors.state?.message?.toString() || ' '}
-                            color={dirtyFields.state && 'warning'}
+                            error={!!formStateErrors.in_use}
+                            helperText={formStateErrors.in_use?.message?.toString() || ' '}
+                            color={dirtyFields.in_use && 'warning'}
                             fullWidth
                         >
                             {storageStates.map((state) => (

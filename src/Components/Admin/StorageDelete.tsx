@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { Form, useLoaderData, useSubmit, Link } from 'react-router-dom';
 
-import { Box, Button, Container, Grid, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, Stack, TextField, Typography, Link as MuiLink } from '@mui/material';
 import DomainDisabledIcon from '@mui/icons-material/DomainDisabled';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -15,16 +15,31 @@ import type { storageEditLoader } from '../../Router/loaders';
 
 //
 
+function StorageDeleteNotAvailable() {
+    const SuperLink = MuiLink as typeof MuiLink | typeof Link;
+
+    return (
+        <Container maxWidth="lg">
+            <HeroHeader Icon={<DomainDisabledIcon />} hideInAdmin />
+            <HeroText
+                title="Varaston poisto ei ole mahdollinen"
+                subtitle="Toiminto on estetty, koska varastoon on liitetty tuotteita."
+                subtext="Turvallisuussyistä varaston tuotemäärän on oltava 0 poiston suorittamista varten."
+                footer={
+                    <Typography>
+                        <SuperLink component={Link} to={-1 as unknown as string}>
+                            Palaa takaisin
+                        </SuperLink>
+                    </Typography>
+                }
+            />
+        </Container>
+    );
+}
+
 function StorageDelete({ randomInt }: any) {
-    // console.log('rInt:', randomInt, typeof randomInt);
     const storageData = useLoaderData() as Awaited<ReturnType<typeof storageEditLoader>>;
-
     const storageInfo = storageData.storageInfo;
-
-    // todo: If the selected storage has productitems related to it the selected storage cannot be deleted.
-
-    // const storageHasAvailableProducts = storageData.hasProducts.count;
-    // console.log('product count in this storage:', storageHasAvailableProducts);
 
     const {
         register,
@@ -42,6 +57,10 @@ function StorageDelete({ randomInt }: any) {
             method: 'delete',
         });
     });
+
+    if (storageData.hasProducts?.count != 0 || storageInfo.in_use != false) {
+        return <StorageDeleteNotAvailable />;
+    }
 
     return (
         <>

@@ -1,9 +1,9 @@
 import * as React from 'react';
-
 import { useLoaderData } from 'react-router';
+
 import { Link } from 'react-router-dom';
 
-import { Stack, Button, Link as MuiLink } from '@mui/material';
+import { Stack, Button } from '@mui/material';
 
 import {
     DataGrid,
@@ -17,7 +17,7 @@ import {
 
 import TypographyTitle from '../TypographyTitle';
 
-import type { GridColDef } from '@mui/x-data-grid';
+import type { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import type { usersListLoader } from '../../Router/loaders';
 
 function UsersGrid() {
@@ -32,19 +32,23 @@ function UsersGrid() {
     }, [pageCount, setRowCountState]);
 
     const columns: GridColDef[] = [
-        { field: 'email', headerName: 'Sähköposti', flex: 2 },
+        { field: 'email', headerName: 'Sähköposti', flex: 1 },
         { field: 'username', headerName: 'Käyttäjänimi', flex: 1 },
         { field: 'first_name', headerName: 'Etunimi' },
         { field: 'last_name', headerName: 'Sukunimi' },
         { field: 'phone_number', headerName: 'Puhelinnumero', flex: 1 },
         {
+            field: 'is_active',
+            headerName: 'Tila',
+            valueGetter: (params: GridValueGetterParams) =>
+                params.row.is_active === true ? 'Käytössä' : 'Ei käytössä',
+        },
+        {
             field: 'id',
             headerName: 'Toiminnot',
             renderCell: (params) => (
-                <Button variant="outlined">
-                    <MuiLink component={Link} to={`/admin/kayttajat/${params.value}`}>
-                        Avaa
-                    </MuiLink>
+                <Button component={Link} to={`/admin/kayttajat/${params.value}`} variant="outlined">
+                    Avaa
                 </Button>
             ),
         },
@@ -267,7 +271,7 @@ function UsersGrid() {
                 id="datagrid-parent"
                 style={{ display: 'flex', height: '100%', width: '100%', margin: '1rem 0 1rem 0' }}
             >
-                <div id="datagrid-child" style={{ flexGrow: 1 }}>
+                <div id="datagrid-child" style={{ flex: 1 }}>
                     <GridX />
                 </div>
             </div>

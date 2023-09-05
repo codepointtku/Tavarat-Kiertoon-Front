@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useLoaderData } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { Stack, Button, Link as MuiLink } from '@mui/material';
+import { Stack, Button } from '@mui/material';
 
 import {
     DataGrid,
@@ -21,9 +21,11 @@ import type { GridColDef } from '@mui/x-data-grid';
 import type { productListLoader } from '../../Router/loaders';
 
 function ProductsGrid() {
-    const { count, next, previous, results } = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
+    const { count, /* next, previous, */ results } = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
 
-    // swagger GET/products:
+    // UPD: BE has new endpoint @ storagesApi (/storages/products). It contains more information than this productApi (/products).
+
+    // productsApi contains:
 
     // {
     //   "count": 123,
@@ -46,7 +48,9 @@ function ProductsGrid() {
     //       "measurements": "string",
     //       "weight": 0,
     //       "category": 0,
-    //       "color": 0
+    //       "colors": [
+    //         0
+    //       ]
     //     }
     //   ]
     // }
@@ -61,18 +65,16 @@ function ProductsGrid() {
 
     const columns: GridColDef[] = [
         { field: 'name', headerName: 'Tuotenimi', flex: 1 },
-        { field: 'amount', headerName: 'Määrä' },
-        { field: 'total_amount', headerName: 'Kokonaismäärä' },
-        { field: 'category', headerName: 'Kategoriatunnus' },
+        { field: 'amount', headerName: 'Vapaana', flex: 1 },
+        { field: 'total_amount', headerName: 'Järjestelmässä', flex: 1 },
+        { field: 'category', headerName: 'Kategoriatunnus', flex: 1 },
         { field: 'free_description', headerName: 'Kuvaus', flex: 1 },
         {
             field: 'id',
             headerName: 'Toiminnot',
             renderCell: (params) => (
-                <Button variant="outlined">
-                    <MuiLink component={Link} to={`/admin/tuotteet/${params.value}`}>
-                        Avaa
-                    </MuiLink>
+                <Button component={Link} to={`/admin/tuotteet/${params.value}`} variant="outlined">
+                    Avaa
                 </Button>
             ),
         },
