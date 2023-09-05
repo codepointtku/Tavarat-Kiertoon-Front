@@ -101,6 +101,19 @@ const productDetailsLoader = async ({ params }) => {
     return { product, products };
 };
 
+const productEditLoader = async ({ request, params }) => {
+    const url = new URL(request.url);
+
+    const [{ data: storages }, { data: colors }, { data: categories }, { data: product }] = await Promise.all([
+        storagesApi.storagesList(),
+        colorsApi.colorsList(),
+        categoriesApi.categoriesList(),
+        productsApi.productsRetrieve(params.id),
+    ]);
+
+    return { product, storages, colors, categories };
+};
+
 /**
  * Get all orders.
  */
@@ -521,6 +534,7 @@ export {
     rootLoader,
     productListLoader,
     productDetailsLoader,
+    productEditLoader,
     productTransferLoader,
     ordersListLoader,
     orderViewLoader,

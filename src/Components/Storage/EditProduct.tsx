@@ -1,109 +1,45 @@
-import { useLoaderData, useParams } from 'react-router-dom';
-import { useContext, useState } from 'react';
+import { useLoaderData, useParams, useActionData } from 'react-router-dom';
+import { useState } from 'react';
 
-import {
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    CardMedia,
-    Typography,
-    ImageList,
-    ImageListItem,
-    Container,
-    Grid,
-} from '@mui/material';
+import AlertBox from '../AlertBox';
+import type { editProductAction } from '../../Router/actions';
+import ProductForm from './ProductForm';
+import { productEditLoader } from '../../Router/loaders';
 
-import AuthContext from '../../Context/AuthContext';
-import BackButton from '../BackButton';
+type PicUpload = {
+    file: File;
+    url: string;
+};
 
 function EditProduct() {
-    const data = useLoaderData();
+    const { product, storages, categories, colors } = useLoaderData() as Awaited<ReturnType<typeof productEditLoader>>;
     const { id: productId } = useParams();
 
-    const {
-        name: productName,
-        free_description: description,
-        date,
-        category,
-        barcode,
-        amount,
-        group_id: groupId,
-    } = data;
-    const [image, setImage] = useState(data?.pictures[0]?.picture_address);
-    const { auth } = useContext(AuthContext);
-
+    const [fileList, setFilelist] = useState<PicUpload[]>([]);
+    const actionData = useActionData() as Awaited<ReturnType<typeof editProductAction>>;
     return (
-        <Container id="product-detail-card" maxWidth="md">
-            <Grid container mt={2} mb={2}>
-                <Grid item xs={1}>
-                    <BackButton />
-                </Grid>
-                <Grid item xs={11}>
-                    <Card>
-                        <CardMedia
-                            component="img"
-                            alt="product image"
-                            height="460"
-                            image={`${window.location.protocol}//${window.location.hostname}:8000/media/${image}`}
-                        />
-                        <CardContent>
-                            <>
-                                <ImageList cols={6} rowHeight={164}>
-                                    {data?.pictures?.map((pic) => (
-                                        <ImageListItem
-                                            key={pic.picture_address}
-                                            onClick={() => setImage(pic.picture_address)}
-                                        >
-                                            <img
-                                                src={`${window.location.protocol}//${window.location.hostname}:8000/media/${pic.picture_address}`}
-                                                srcSet={`${window.location.protocol}//${window.location.hostname}:8000/media/${pic.picture_address}`}
-                                                alt="kuva"
-                                                loading="lazy"
-                                            />
-                                        </ImageListItem>
-                                    ))}
-                                </ImageList>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    {productName}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    {amount > 0 ? `Saatavilla: ${amount} kpl` : 'Ei saatavilla'}
-                                </Typography>
-                                {/* show id if component used in storageview or admin */}
-                                {auth.storage || auth.admin ? (
-                                    <Typography variant="body6" color="text.secondary">
-                                        Product id: {productId}
-                                    </Typography>
-                                ) : null}
+        <>
+            {actionData?.status === true && (
+                <AlertBox
+                    status="success"
+                    text="Tuotteen luonti onnistui"
+                    redirectUrl="/varasto/tuotteet/"
+                    timer={1000}
+                />
+            )}
+            {actionData?.status === false && (
+                <AlertBox status="error" text="Tuotteen luonti epäonnistui" timer={3000} />
+            )}
 
-                                <Typography variant="body1" color="text.secondary" gutterBottom>
-                                    Tuotekuvaus: {description}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    Added on: {new Date(date).toLocaleDateString('fi-FI')}
-                                </Typography>
-                                {/* generate barcode if component used in storageview or admin */}
-                                {auth.storage || auth.admin ? (
-                                    <Typography variant="body2" color="text.secondary">
-                                        Barcode: {barcode}
-                                    </Typography>
-                                ) : null}
-                                {/* miten näyttää kategoriat, buttoneina? */}
-                                <Typography variant="body2" color="text.secondary">
-                                    Kategoriat:
-                                </Typography>
-                                <Button variant="contained" size="small" disabled>
-                                    {/* to be implemented when backend is ready */}
-                                    {category}
-                                </Button>
-                            </>
-                        </CardContent>
-                        <CardActions>{/* save button? */}</CardActions>
-                    </Card>
-                </Grid>
-            </Grid>
-        </Container>
+            <ProductForm
+                fileList={fileList}
+                setFilelist={setFilelist}
+                productData={product}
+                storages={storages}
+                categories={categories}
+                colorList={colors}
+            />
+        </>
     );
 }
 

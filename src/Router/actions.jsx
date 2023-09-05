@@ -272,7 +272,6 @@ const addProductAction = async (auth, setAuth, request) => {
         free_description: formData.get('free_description'),
         price: formData.get('price'),
         category: formData.get('category'),
-        // storage: formData.get('storages'),
         colors: formData.getAll('colors[]'),
         // kuvan lisäys ei toimi bäkissä
         pictures: formData.getAll('pictures[]'),
@@ -305,6 +304,42 @@ const addProductAction = async (auth, setAuth, request) => {
     //     }
     //     return 'Virhe lisättäessä tuotetta';
     // }
+};
+
+const editProductAction = async (auth, setAuth, request, params) => {
+    const formData = await request.formData();
+    // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+    console.log('formData actionissa :', formData);
+    console.log(formData.get('old_pictures'));
+    console.log('get colors', formData.get('colors[]'));
+    console.log('getAll colors', formData.getAll('colors[]'));
+
+    const formDataWithProductItem = {
+        barcode: formData.get('barcode'),
+        available: formData.get('available'),
+        storage: formData.get('storages'),
+        shelf_id: formData.get('shelf_id'),
+
+        amount: formData.get('amount'),
+        name: formData.get('name'),
+        free_description: formData.get('free_description'),
+        price: formData.get('price'),
+        category: formData.get('category'),
+        colors: formData.getAll('colors[]'),
+        // kuvan lisäys ei toimi bäkissä
+        old_pictures: formData.get('old_pictures'),
+        //pictures: JSON.parse(formData.get('pictures')),
+    };
+    console.log(formDataWithProductItem);
+
+    const response = await productsApi.productsUpdate(params.id, formDataWithProductItem, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    console.log('response actionissa :', response);
+    if (response.status === 200) {
+        return { type: 'editProduct', status: true };
+    }
+    return { type: 'editProduct', status: false };
 };
 
 /*
@@ -1048,6 +1083,7 @@ export {
     storageCreateAction,
     storageEditAction,
     addProductAction,
+    editProductAction,
     storageDeleteAction,
     productsTransferAction,
     createBulletinAction,

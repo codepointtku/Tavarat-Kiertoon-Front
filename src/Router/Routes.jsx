@@ -119,6 +119,7 @@ import {
     ordersListLoader,
     orderViewLoader,
     productDetailsLoader,
+    productEditLoader,
     productListLoader,
     productTransferLoader,
     rootLoader,
@@ -154,6 +155,7 @@ import {
     contactAction,
     orderEditAction,
     addProductAction,
+    editProductAction,
     storageCreateAction,
     storageEditAction,
     storageDeleteAction,
@@ -495,8 +497,9 @@ function Routes() {
                                 {
                                     path: 'tuotteet/:id/muokkaa',
                                     element: <EditProduct />,
-                                    loader: productDetailsLoader,
-                                    // action: async ({ request, params }) => editProductAction(auth, setAuth, request, params),
+                                    loader: productEditLoader,
+                                    action: async ({ request, params }) =>
+                                        editProductAction(auth, setAuth, request, params),
                                 },
                                 {
                                     path: 'koodinlukija',
