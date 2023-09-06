@@ -21,6 +21,7 @@ import {
     Paper,
     IconButton,
     Typography,
+    InputAdornment,
 } from '@mui/material';
 
 // import imageCompression from 'browser-image-compression';
@@ -238,6 +239,7 @@ function AddNewItem() {
                 spacing={2}
                 padding={3}
                 autoComplete="off"
+                spellCheck="false"
             >
                 <Grid item xs={12}>
                     <TypographyTitle text="Luo uusi tuote" />
@@ -273,6 +275,7 @@ function AddNewItem() {
                             min: { value: 1, message: '1 on minimimäärä' },
                             pattern: { value: RegExp('[0-9]*'), message: 'Määrän on oltava numero' },
                         })}
+                        // inputProps for underlying html input
                         inputProps={{
                             // test if numeric works on tablet
                             inputMode: 'numeric',
@@ -282,7 +285,38 @@ function AddNewItem() {
                             // max: '1000',
                             required: false,
                         }}
+                        // InputProps for MUI input
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">kpl</InputAdornment>,
+                        }}
                         required
+                        error={!!errors.amount}
+                        helperText={errors.amount?.message || ' '}
+                    />
+                    <TextField
+                        // fullWidth
+                        id="hinta"
+                        type="number"
+                        label="Hinta-arvio"
+                        // placeholder="€"
+                        {...register('price', {
+                            pattern: { value: RegExp('[0-9]*'), message: 'Hinnan on oltava numero' },
+                        })}
+                        // inputprops for underlying html input
+                        inputProps={{
+                            // test if numeric works on tablet
+                            inputMode: 'numeric',
+                            // pattern: '[0-9]*',
+                            title: 'Hinta',
+                            // min: '1',
+                            // max: '1000',
+                            required: false,
+                        }}
+                        // InputProps for MUI input
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">€</InputAdornment>,
+                        }}
+                        // required
                         error={!!errors.amount}
                         helperText={errors.amount?.message || ' '}
                     />
@@ -370,7 +404,6 @@ function AddNewItem() {
                             </MenuItem>
                         ))}
                     </TextField>
-                    {/* TODO: shelf id -hyllypaikka, joko vapaa kenttä, tai tietyn varaston hyllypaikat valikko */}
                     <TextField
                         fullWidth
                         id="shelf_id"
@@ -379,9 +412,7 @@ function AddNewItem() {
                         placeholder="Tuolikasa 1"
                         multiline
                         {...register('shelf_id', {
-                            // required: { value: true, message: 'Tuotteen nimi on pakollinen' },
                             maxLength: { value: 255, message: 'Nimi on liian pitkä, maksimi 255 merkkiä' },
-                            // minLength: { value: 3, message: 'Nimi on liian lyhyt, minimi 3 merkkiä' },
                         })}
                         // Needs to be required: false to disable browser error message
                         inputProps={{ required: false }}
@@ -466,9 +497,7 @@ function AddNewItem() {
                         placeholder="Korkeus cm, Leveys cm, Syvyys cm"
                         multiline
                         {...register('measurements', {
-                            // required: { value: true, message: 'Tuotteen nimi on pakollinen' },
                             maxLength: { value: 255, message: 'Nimi on liian pitkä, maksimi 255 merkkiä' },
-                            // minLength: { value: 3, message: 'Nimi on liian lyhyt, minimi 3 merkkiä' },
                         })}
                         // Needs to be required: false to disable browser error message
                         inputProps={{ required: false }}
@@ -479,20 +508,30 @@ function AddNewItem() {
                     <TextField
                         fullWidth
                         id="weight"
-                        type="text"
+                        type="number"
                         label="Paino"
-                        placeholder="Paino, kg"
+                        // placeholder="kg"
                         multiline
                         {...register('weight', {
-                            // required: { value: true, message: 'Tuotteen nimi on pakollinen' },
-                            maxLength: { value: 255, message: 'Nimi on liian pitkä, maksimi 255 merkkiä' },
-                            // minLength: { value: 3, message: 'Nimi on liian lyhyt, minimi 3 merkkiä' },
+                            // maxLength: { value: 255, message: 'Nimi on liian pitkä, maksimi 255 merkkiä' },
+                            pattern: { value: RegExp('[0-9]*'), message: 'Painon on oltava numero' },
                         })}
-                        // Needs to be required: false to disable browser error message
-                        inputProps={{ required: false }}
+                        inputProps={{
+                            // test if numeric works on tablet
+                            inputMode: 'numeric',
+                            // pattern: '[0-9]*',
+                            title: 'Paino',
+                            // min: '1',
+                            // max: '1000',
+                            required: false,
+                        }}
+                        // InputProps for MUI input
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">kg</InputAdornment>,
+                        }}
                         // required
-                        error={!!errors.weight}
-                        helperText={errors.weight?.message || ' '}
+                        error={!!errors.amount}
+                        helperText={errors.amount?.message || ' '}
                     />
 
                     <TextField

@@ -123,7 +123,7 @@ function ProductDetails() {
                                             </Grid>
                                             <Grid item>
                                                 <Typography variant="body2" color="text.secondary">
-                                                    Paino: {weight}
+                                                    Paino: {weight} kg
                                                 </Typography>
                                             </Grid>
                                             <Grid item>
@@ -173,25 +173,12 @@ function ProductDetails() {
                                         </CardActions>
                                     </Grid>
                                     {(auth.storage_group || auth.admin_group) && (
+                                        // TODO: layout
                                         <Grid container justifyContent="center">
                                             <Typography gutterBottom variant="h5" component="div" color="primary">
                                                 Yksityiskohtaiset tiedot
                                             </Typography>
                                             <Paper variant="outlined" sx={{ p: 5 }} color="primary">
-                                                {/* <Button
-                                                    component={Link}
-                                                    to={`/varasto/tuotteet/${productId}/muokkaa`}
-                                                    size="large"
-                                                    // variant="outlined"
-                                                    color="primary"
-                                                    sx={{ marginY: 2 }}
-                                                >
-                                                    Muokkaa tuotetta
-                                                </Button> */}
-                                                {/* show id if component used in storageview or admin? or don't, if there is no value in showing it */}
-                                                {/* <Typography variant="body2" color="text.secondary">
-                                                    Tuotteen tunnus: {productId}
-                                            </Typography> */}
                                                 <Typography variant="body2" color="text.secondary">
                                                     Kokonaismäärä järjestelmässä: {product.total_amount}
                                                 </Typography>
