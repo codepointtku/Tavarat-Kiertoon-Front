@@ -37,7 +37,7 @@ import Barcode from 'react-barcode';
 
 import TypographyTitle from '../TypographyTitle';
 import AlertBox from '../AlertBox';
-import type { productDetailsLoader, rootLoader, storageProductsLoader } from '../../Router/loaders';
+import type { productEditLoader, rootLoader } from '../../Router/loaders';
 import type { addProductAction } from '../../Router/actions';
 import { CropFree, Delete } from '@mui/icons-material';
 
@@ -48,19 +48,20 @@ type PicUpload = {
 
 function EditProduct() {
     const { id } = useParams();
-    const { product } = useLoaderData() as Awaited<ReturnType<typeof productDetailsLoader>>;
+    const { storages, colors, categories, product } = useLoaderData() as Awaited<ReturnType<typeof productEditLoader>>;
     console.log(id);
     console.log(product);
     const [qrScanOpen, setQrScanOpen] = useState(false);
-    const [fileList, setFilelist] = useState<PicUpload[]>([]);
-    const { categories, categoryTree } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
-    const { storages, colors } = useLoaderData() as Awaited<ReturnType<typeof storageProductsLoader>>;
-    // console.log('categories:', categories, 'storages:', storages, 'colors:', colors);
+    const [fileList, setFilelist] = useState<PicUpload[]>(
+        product.pictures.map((pic) => ({ file: pic.picture_address, url: pic.url }))
+    );
+    const { categoryTree } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const submit = useSubmit();
     const actionData = useActionData() as Awaited<ReturnType<typeof addProductAction>>;
     const navigation = useNavigation();
     const isSubmitting = navigation.state === 'submitting';
     const isLoading = navigation.state === 'loading';
+    console.log('categories:', categories, 'storages:', storages, 'colors:', colors);
 
     const {
         register,
@@ -87,6 +88,7 @@ function EditProduct() {
         category: number;
         colors: number[];
         pictures: number[];
+        oldPictures: number[];
     }>({
         // validates and shows errors when fields have been touched and lost focus
         // after first error, shows errors on every change
@@ -105,7 +107,8 @@ function EditProduct() {
             free_description: product?.free_description,
             category: product.category || undefined,
             colors: product.colors || [],
-            pictures: product?.pictures.map((pic) => pic.id) || [],
+            pictures: [],
+            oldPictures: product?.pictures.map((pic) => pic.id) || [],
         },
     });
 
@@ -173,7 +176,7 @@ function EditProduct() {
         Object.values(fileList).forEach((pic: PicUpload) => formData.append('pictures[]', pic.file));
         submit(formData, {
             method: 'post',
-            action: '/varasto/tuotteet/id/luo/',
+            action: '/varasto/tuotteet/id/muokkaa/',
             encType: 'multipart/form-data',
         });
     };
@@ -352,7 +355,7 @@ function EditProduct() {
 
                 {/* TODO: change all select fields to use Controller to fix issues with MUI: https://react-hook-form.com/docs/usecontroller/controller  */}
                 <Grid item xs={12} md={6}>
-                    <TextField
+                    {/* <TextField
                         fullWidth
                         id="storage-select"
                         select
@@ -378,7 +381,7 @@ function EditProduct() {
                                 {location.name}
                             </MenuItem>
                         ))}
-                    </TextField>
+                    </TextField> */}
                     {/* TODO: shelf id -hyllypaikka, joko vapaa kenttä, tai tietyn varaston hyllypaikat valikko */}
                     <TextField
                         fullWidth

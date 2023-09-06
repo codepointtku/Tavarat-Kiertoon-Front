@@ -147,6 +147,7 @@ import {
     createBulletinLoader,
     adminBulletinLoader,
     adminBulletinsLoader,
+    productEditLoader,
 } from './loaders';
 
 import {
@@ -495,7 +496,7 @@ function Routes() {
                                 {
                                     path: 'tuotteet/:id/muokkaa',
                                     element: <EditProduct />,
-                                    loader: productDetailsLoader,
+                                    loader: productEditLoader,
                                     // action: async ({ request, params }) => editProductAction(auth, setAuth, request, params),
                                 },
                                 {

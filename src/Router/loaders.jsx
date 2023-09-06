@@ -92,13 +92,25 @@ const productListLoader = async ({ request }) => {
 };
 
 /**
- * Get one product
+ * Get one product (with product_items)
  */
 const productDetailsLoader = async ({ params }) => {
-    // const { data } = await apiCall(auth, setAuth, `/products/${params.id}`, 'get');
     const { data: product } = await productsApi.productsRetrieve(params.id);
     const { data: products } = await productsApi.productsList(product.category);
     return { product, products };
+};
+
+/**
+ * Get one product (with product_items), categories and colors, for editing
+ */
+const productEditLoader = async ({ params }) => {
+    const [{ data: storages }, { data: colors }, { data: categories }, { data: product }] = await Promise.all([
+        storagesApi.storagesList(),
+        colorsApi.colorsList(),
+        categoriesApi.categoriesList(),
+        productsApi.productsRetrieve(params.id),
+    ]);
+    return { storages, colors, categories, product };
 };
 
 /**
@@ -521,6 +533,7 @@ export {
     rootLoader,
     productListLoader,
     productDetailsLoader,
+    productEditLoader,
     productTransferLoader,
     ordersListLoader,
     orderViewLoader,
