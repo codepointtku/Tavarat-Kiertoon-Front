@@ -253,7 +253,7 @@ function AddNewItem() {
                         placeholder="Tuotteen nimi"
                         multiline
                         {...register('name', {
-                            required: { value: true, message: 'Tuotteen nimi on pakollinen' },
+                            required: { value: true, message: 'Tuotteen nimi on pakollinen tieto' },
                             maxLength: { value: 255, message: 'Nimi on liian pitkä, maksimi 255 merkkiä' },
                             minLength: { value: 3, message: 'Nimi on liian lyhyt, minimi 3 merkkiä' },
                         })}
@@ -294,34 +294,48 @@ function AddNewItem() {
                         helperText={errors.amount?.message || ' '}
                     />
                     <TextField
-                        // fullWidth
-                        id="hinta"
-                        type="number"
-                        label="Hinta-arvio"
-                        // placeholder="€"
-                        {...register('price', {
-                            pattern: { value: RegExp('[0-9]*'), message: 'Hinnan on oltava numero' },
+                        fullWidth
+                        id="storage-select"
+                        select
+                        label="Varasto"
+                        // TODO productin edittiin: miten toteutetaan tuotteen lisääminen eri varastoon kuin olemassaolevat tuotteet? Halutaanko tätä välttää?
+                        // defaultvalue set to fix this MUI warning:
+                        // MUI: You have provided an out-of-range value `undefined` for the select (name="storages") component. Consider providing a value that matches one of the available options or ''.
+                        defaultValue={
+                            // getValues('storages') ||
+                            ''
+                        }
+                        {...register('storages', {
+                            required: { value: true, message: 'Varasto on valittava' },
                         })}
-                        // inputprops for underlying html input
-                        inputProps={{
-                            // test if numeric works on tablet
-                            inputMode: 'numeric',
-                            // pattern: '[0-9]*',
-                            title: 'Hinta',
-                            // min: '1',
-                            // max: '1000',
-                            required: false,
-                        }}
-                        // InputProps for MUI input
-                        InputProps={{
-                            endAdornment: <InputAdornment position="end">€</InputAdornment>,
-                        }}
-                        // required
-                        error={!!errors.amount}
-                        helperText={errors.amount?.message || ' '}
+                        //  TODO default varastosijainti sama kuin varastokäyttäjätilin sijainti? - Ei tarvetta aluksi
+                        inputProps={{ required: false }}
+                        required
+                        error={!!errors.storages}
+                        helperText={errors.storages?.message || ' '}
+                    >
+                        {storages?.map((location: any) => (
+                            <MenuItem key={location.id} value={location.id.toString()}>
+                                {location.name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        fullWidth
+                        id="shelf_id"
+                        type="text"
+                        label="Hyllypaikka"
+                        placeholder="Esim. Tuolikulma 1"
+                        multiline
+                        {...register('shelf_id', {
+                            maxLength: { value: 255, message: 'Nimi on liian pitkä, maksimi 255 merkkiä' },
+                        })}
+                        // Needs to be required: false to disable browser error message
+                        inputProps={{ required: false }}
+                        error={!!errors.shelf_id}
+                        helperText={errors.shelf_id?.message || ' '}
                     />
-                    {/* <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}> */}
+
                     <TextField
                         // TODO: Mitä tapahtuu jos viivakoodi löytyy jo järjestelmästä (userin virhe)? Ohjataanko vanhan tuotteen editointiin?  Mikä response backista?
                         fullWidth
@@ -332,7 +346,7 @@ function AddNewItem() {
                         {...register('barcode', {
                             required: {
                                 value: true,
-                                message: 'Viivakoodi on pakollinen',
+                                message: 'Viivakoodi on pakollinen tieto',
                             },
                             minLength: 1,
                             maxLength: { value: 12, message: 'Viivakoodi on liian pitkä, maksimi 12 merkkiä' },
@@ -349,6 +363,7 @@ function AddNewItem() {
                     >
                         Viivakoodi
                     </TextField>
+
                     {/* TODO: mahdollisuus printata viivakoodeja kappalemäärän verran? */}
                     <Paper
                         elevation={3}
@@ -377,48 +392,6 @@ function AddNewItem() {
 
                 {/* TODO: change all select fields to use Controller to fix issues with MUI: https://react-hook-form.com/docs/usecontroller/controller  */}
                 <Grid item xs={12} md={6}>
-                    <TextField
-                        fullWidth
-                        id="storage-select"
-                        select
-                        label="Varastosijainti"
-                        // TODO productin edittiin: miten toteutetaan tuotteen lisääminen eri varastoon kuin olemassaolevat tuotteet? Halutaanko tätä välttää?
-                        // defaultvalue set to fix this MUI warning:
-                        // MUI: You have provided an out-of-range value `undefined` for the select (name="storages") component. Consider providing a value that matches one of the available options or ''.
-                        defaultValue={
-                            // getValues('storages') ||
-                            ''
-                        }
-                        {...register('storages', {
-                            required: { value: true, message: 'Varasto on valittava' },
-                        })}
-                        //  TODO default varastosijainti sama kuin varastokäyttäjätilin sijainti? - Ei tarvetta aluksi
-                        inputProps={{ required: false }}
-                        required
-                        error={!!errors.storages}
-                        helperText={errors.storages?.message || ' '}
-                    >
-                        {storages?.map((location: any) => (
-                            <MenuItem key={location.id} value={location.id.toString()}>
-                                {location.name}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                    <TextField
-                        fullWidth
-                        id="shelf_id"
-                        type="text"
-                        label="Hyllypaikka"
-                        placeholder="Tuolikasa 1"
-                        multiline
-                        {...register('shelf_id', {
-                            maxLength: { value: 255, message: 'Nimi on liian pitkä, maksimi 255 merkkiä' },
-                        })}
-                        // Needs to be required: false to disable browser error message
-                        inputProps={{ required: false }}
-                        error={!!errors.shelf_id}
-                        helperText={errors.shelf_id?.message || ' '}
-                    />
                     <TextField
                         fullWidth
                         id="category-select"
@@ -501,7 +474,6 @@ function AddNewItem() {
                         })}
                         // Needs to be required: false to disable browser error message
                         inputProps={{ required: false }}
-                        // required
                         error={!!errors.measurements}
                         helperText={errors.measurements?.message || ' '}
                     />
@@ -513,7 +485,6 @@ function AddNewItem() {
                         // placeholder="kg"
                         multiline
                         {...register('weight', {
-                            // maxLength: { value: 255, message: 'Nimi on liian pitkä, maksimi 255 merkkiä' },
                             pattern: { value: RegExp('[0-9]*'), message: 'Painon on oltava numero' },
                         })}
                         inputProps={{
@@ -533,11 +504,37 @@ function AddNewItem() {
                         error={!!errors.amount}
                         helperText={errors.amount?.message || ' '}
                     />
-
+                    <TextField
+                        // fullWidth
+                        id="hinta"
+                        type="number"
+                        label="Hinta-arvio"
+                        // placeholder="€"
+                        {...register('price', {
+                            pattern: { value: RegExp('[0-9]*'), message: 'Hinnan on oltava numero' },
+                        })}
+                        // inputprops for underlying html input
+                        inputProps={{
+                            // test if numeric works on tablet
+                            inputMode: 'numeric',
+                            // pattern: '[0-9]*',
+                            title: 'Hinta',
+                            // min: '1',
+                            // max: '1000',
+                            required: false,
+                        }}
+                        // InputProps for MUI input
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">€</InputAdornment>,
+                        }}
+                        // required
+                        error={!!errors.amount}
+                        helperText={errors.amount?.message || ' '}
+                    />
                     <TextField
                         fullWidth
                         id="description"
-                        label="Kuvaus"
+                        label="Tuotekuvaus"
                         multiline
                         minRows={3}
                         {...register('free_description', {
