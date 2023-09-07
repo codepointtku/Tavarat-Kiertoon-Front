@@ -76,14 +76,21 @@ const productListLoader = async ({ request }) => {
             url.searchParams.getAll('kategoria'),
             url.searchParams.get('varit'),
             null,
-            null,
-            null,
+            url.searchParams.get('sivu'),
+            url.searchParams.get('sivukoko') || 25,
             url.searchParams.get('haku')
         );
         return data;
     }
 
-    const { data } = await productsApi.productsList();
+    const { data } = await productsApi.productsList(
+        null,
+        null,
+        null,
+        url.searchParams.get('sivu'),
+        url.searchParams.get('sivukoko') || 25,
+        null
+    );
 
     return data;
 };
