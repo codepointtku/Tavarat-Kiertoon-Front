@@ -117,7 +117,7 @@ const productEditLoader = async ({ params }) => {
  * Get all orders.
  */
 const ordersListLoader = async () => {
-    const response = await ordersApi.ordersList();
+    const { data } = await ordersApi.ordersList();
     // num will tell back-end which entries to bring
     // view is order status, unless archived can bring all?
     // or will be replaced into the back-end later?
@@ -139,7 +139,7 @@ const ordersListLoader = async () => {
     //     return 1;
     // });
 
-    return response.data;
+    return data;
 };
 
 /**

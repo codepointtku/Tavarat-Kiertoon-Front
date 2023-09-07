@@ -1,6 +1,6 @@
 import { useLoaderData, useNavigate } from 'react-router-dom';
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 import StyledTableCell from '../StyledTableCell';
 import SortByMenu from '../SortByMenu';
@@ -9,14 +9,8 @@ function OrderListTable() {
     const { results: orders } = useLoaderData();
     const navigate = useNavigate();
 
-    const dateParse = (value) => {
-        const date = new Date(value);
-        const dateString = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
-        return dateString;
-    };
-
     return (
-        <TableContainer component={Paper} sx={{ padding: '2rem' }}>
+        <TableContainer sx={{ paddingY: '2rem' }}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
                     <TableRow>
@@ -46,7 +40,7 @@ function OrderListTable() {
                             <TableCell align="right">{row.user}</TableCell>
                             <TableCell align="right">{row.contact}</TableCell>
                             <TableCell align="right">
-                                {row.creation_date ? dateParse(row.creation_date) : '-'}
+                                {row.creation_date ? new Date(row.creation_date).toLocaleDateString('fi-FI') : '-'}
                             </TableCell>
                         </TableRow>
                     ))}
