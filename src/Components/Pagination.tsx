@@ -11,6 +11,8 @@ function Pagination({ count, itemsText }: { count?: number; itemsText?: string }
 
     const handleChangePage = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
         setPage(newPage);
+        // return back to top of page
+        // window.scrollTo(0, 0);
         navigate(`?sivu=${newPage + 1}&sivukoko=${rowsPerPage}`);
     };
 
@@ -31,6 +33,7 @@ function Pagination({ count, itemsText }: { count?: number; itemsText?: string }
             onRowsPerPageChange={handleChangeRowsPerPage}
             rowsPerPageOptions={[10, 25, 50, 100]}
             labelRowsPerPage={itemsText ? `${itemsText} per sivu` : 'per sivu'}
+            labelDisplayedRows={({ from, to, count }) => `${from}-${to} / ${count}`}
         />
     );
 }
