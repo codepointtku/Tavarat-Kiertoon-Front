@@ -46,9 +46,9 @@ function Confirmation() {
     const { id } = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
 
     const onSubmit = async () => {
-        const { email, deliveryAddress, phoneNumber, orderInfo, deliveryRequired } = state;
+        const { email, deliveryAddress, phoneNumber, orderInfo, deliveryRequired, fetchDate } = state;
         submit(
-            { email, deliveryAddress, phoneNumber, id: id.toString(), orderInfo, deliveryRequired },
+            { email, deliveryAddress, phoneNumber, id: id.toString(), orderInfo, deliveryRequired, fetchDate },
             { method: 'post', action: '/ostoskori/vaihe3' }
         );
     };
@@ -77,7 +77,7 @@ function Confirmation() {
                         }}
                     >
                         <TypographyHeading text="Vastaanottajan yhteystiedot" />
-                        <Stack direction="row" spacing={2} padding={'1rem'}>
+                        <Stack spacing={2} padding={'1rem'}>
                             <Typography variant="subtitle1">
                                 {state.firstName} {state.lastName}
                             </Typography>
@@ -90,7 +90,9 @@ function Confirmation() {
                         <TypographyHeading text="Toimitustiedot" />
                         <Stack direction="row" spacing={'1rem'} padding={'1rem'}>
                             <Typography variant="subtitle1">{state.deliveryAddress}</Typography>
+                            <span>/</span>
                             <Typography variant="subtitle1">{state.zipcode}</Typography>
+                            <span>/</span>
                             <Typography variant="subtitle1">{state.city}</Typography>
                         </Stack>
                         <Stack padding={'0rem 1rem 1rem 1rem'}>

@@ -242,26 +242,6 @@ function ContactsAndDelivery() {
                     </Grid>
                     <Grid item>
                         <TextField
-                            label="Sähköposti"
-                            placeholder="Sähköposti"
-                            variant="outlined"
-                            InputLabelProps={{ shrink: true }}
-                            {...register('email', {
-                                required: 'Tämä kenttä on täytettävä',
-                                pattern: {
-                                    value: /.+@turku.fi$|.+@edu.turku.fi$/,
-                                    message: 'Sähköpostin on oltava muotoa @edu.turku.fi tai @turku.fi',
-                                },
-                                maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
-                            })}
-                            error={!!errors.email}
-                            helperText={errors.email?.message?.toString() || ' '}
-                            inputProps={{ required: false }}
-                            required
-                        />
-                    </Grid>
-                    <Grid item>
-                        <TextField
                             label="Puhelinnumero"
                             placeholder="Puh. numero"
                             variant="outlined"
@@ -269,12 +249,25 @@ function ContactsAndDelivery() {
                             {...register('phoneNumber', {
                                 required: 'Tämä kenttä on täytettävä',
                                 pattern: { value: /^[0-9]+$/, message: 'Sisällön täytyy koostua vain numeroista' },
-                                maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
+                                maxLength: { value: 11, message: 'Numerosarja on liian pitkä' },
                             })}
                             error={!!errors.phoneNumber}
                             helperText={errors.phoneNumber?.message?.toString() || ' '}
                             inputProps={{ required: false }}
                             required
+                        />
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            label="Sähköposti"
+                            placeholder="Sähköposti"
+                            variant="outlined"
+                            InputLabelProps={{ shrink: true }}
+                            {...register('email', {
+                                maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
+                            })}
+                            error={!!errors.email}
+                            helperText={errors.email?.message?.toString() || ' '}
                         />
                     </Grid>
                 </Grid>

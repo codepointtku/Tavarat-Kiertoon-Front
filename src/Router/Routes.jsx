@@ -188,7 +188,7 @@ import {
     adminEmailRecipientsAction,
     createNewPacketAction,
     deletePacketAction,
-    userProfilePageAction,
+    userAccountPageAction,
     userAddressCreateAction,
     userAddressEditAction,
 } from './actions';
@@ -410,7 +410,7 @@ function Routes() {
                                     element: <UserAccountPage />,
                                     id: 'account',
                                     loader: userInfoLoader,
-                                    action: userProfilePageAction,
+                                    action: userAccountPageAction,
                                     children: [
                                         {
                                             index: true,
@@ -428,7 +428,7 @@ function Routes() {
                                             action: userAddressCreateAction,
                                         },
                                         {
-                                            path: 'aktiivisettilaukset',
+                                            path: 'tilaukset',
                                             element: <OrdersActive />,
                                         },
                                         {
@@ -438,7 +438,7 @@ function Routes() {
                                     ],
                                 },
                                 {
-                                    path: 'tili/:tilaustila/tilaus/:id',
+                                    path: 'tili/tilaukset/:id',
                                     element: <OrderPage />,
                                 },
                             ],

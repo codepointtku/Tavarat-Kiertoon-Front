@@ -489,6 +489,8 @@ const confirmationAction = async ({ request }) => {
         user: Number(formData.get('id')),
         order_info: formData.get('orderInfo'),
         delivery_required: formData.get('deliveryRequired'),
+        // delivery_date: formData.get('fetchDate'),
+        // ^ uncomment when date works
         status: 'Waiting',
     });
 
@@ -942,7 +944,7 @@ const adminEmailRecipientsAction = async ({ request }) => {
     return { type: 'emailrecipient', status: false };
 };
 
-const userProfilePageAction = async ({ request }) => {
+const userAccountPageAction = async ({ request }) => {
     const formData = await request.formData();
 
     const response = await userApi.userUpdate({
@@ -1028,7 +1030,7 @@ export {
     deleteBikeModelAction,
     emailChangeSuccessfulAction,
     changeEmailAction,
-    userProfilePageAction,
+    userAccountPageAction,
     createNewPacketAction,
     deletePacketAction,
     userAddressEditAction,

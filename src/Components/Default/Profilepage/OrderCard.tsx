@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Card, CardContent, CardActionArea, CardHeader, Typography, Grid, Grow } from '@mui/material';
-import { OrderDetailResponse } from '../../../api';
+import { Card, CardContent, CardActionArea, CardHeader, Typography, Grid, Grow, Stack } from '@mui/material';
+import type { OrderDetailResponse } from '../../../api';
 
 export type OrderCardProps = {
     key: number;
@@ -8,15 +8,17 @@ export type OrderCardProps = {
 };
 
 function OrderCard({ orderInfo }: OrderCardProps) {
-    const date = new Date(orderInfo.delivery_date as string);
-    const readableDeliveryDate = date.toLocaleDateString('fi-FI');
-    const orderDate = new Date(orderInfo.creation_date);
-    const readableOrderDate = orderDate.toLocaleDateString('fi-FI');
+    console.log(orderInfo);
+
+    const deliveryDate = new Date(orderInfo.delivery_date as string).toLocaleDateString('fi-FI');
+    const orderDate = new Date(orderInfo.creation_date).toLocaleDateString('fi-FI');
+
     const statusMap = {
         Waiting: 'Odottaa',
         Processing: 'Käsittelyssä',
         Finished: 'Toimitettu',
     };
+
     return (
         <Grow in timeout={1000}>
             <Card
@@ -27,12 +29,7 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                 }}
                 raised
             >
-                <CardActionArea
-                    component={Link}
-                    to={`tilaus/${orderInfo.id}`}
-                    state={{ orderInfo }}
-                    sx={{ height: '100%' }}
-                >
+                <CardActionArea component={Link} to={`${orderInfo.id}`} state={{ orderInfo }} sx={{ height: '100%' }}>
                     <CardHeader
                         component={Typography}
                         sx={{ backgroundColor: 'primary.light' }}
@@ -49,85 +46,58 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                             gap={0.5}
                             sx={{ width: 'auto' }}
                         >
-                            <Grid direction="row" spacing={1} container>
-                                <Grid item>
+                            <Stack direction="row" spacing={1}>
+                                <Typography variant="body2" color="primary.dark">
+                                    Tilauksen tila:
+                                </Typography>
+                                <Typography variant="body2">{statusMap[orderInfo.status]}</Typography>
+                            </Stack>
+                            <Stack direction="row" spacing={1}>
+                                <Typography variant="body2" color="primary.dark">
+                                    Tilauspäivä:
+                                </Typography>
+                                <Typography variant="body2">{orderDate}</Typography>
+                            </Stack>
+                            <Stack direction="row" spacing={1}>
+                                <Typography variant="body2" color="primary.dark">
+                                    Toimitusosoite:
+                                </Typography>
+                                <Typography variant="body2">{orderInfo.delivery_address}</Typography>
+                            </Stack>
+                            <Stack direction="row" spacing={1}>
+                                <Typography variant="body2" color="primary.dark">
+                                    Vastaanottajan puhelinnumero:
+                                </Typography>
+                                <Typography variant="body2">{orderInfo.phone_number}</Typography>
+                            </Stack>
+                            <Stack direction="row" spacing={1}>
+                                <Typography variant="body2" color="primary.dark">
+                                    Vastaanottajan yhteystieto:
+                                </Typography>
+                                <Typography variant="body2">{orderInfo?.contact}</Typography>
+                            </Stack>
+                            <Stack direction="row" spacing={1}>
+                                <Typography variant="body2" color="primary.dark">
+                                    Lisätiedot:
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    sx={{
+                                        whiteSpace: 'pre-wrap',
+                                        wordWrap: 'break-word',
+                                    }}
+                                >
+                                    {orderInfo.order_info}
+                                </Typography>
+                            </Stack>
+                            {deliveryDate != '1.1.1970' ? (
+                                <Stack direction="row" spacing={1}>
                                     <Typography variant="body2" color="primary.dark">
-                                        Tilauksen tila:
+                                        Noutopäivä:
                                     </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Typography variant="body2">{statusMap[orderInfo.status]}</Typography>
-                                </Grid>
-                            </Grid>
-                            <Grid direction="row" spacing={1} container>
-                                <Grid item>
-                                    <Typography variant="body2" color="primary.dark">
-                                        Tilauspäivä:
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Typography variant="body2">{readableOrderDate}</Typography>
-                                </Grid>
-                            </Grid>
-                            <Grid direction="row" spacing={1} container>
-                                <Grid item>
-                                    <Typography variant="body2" color="primary.dark">
-                                        Toimitusosoite:
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Typography variant="body2">{orderInfo.delivery_address}</Typography>
-                                </Grid>
-                            </Grid>
-                            <Grid direction="row" spacing={1} container>
-                                <Grid item>
-                                    <Typography variant="body2" color="primary.dark">
-                                        Tilaajan sähköposti:
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Typography variant="body2">{orderInfo.contact}</Typography>
-                                </Grid>
-                            </Grid>
-                            <Grid direction="row" spacing={1} container>
-                                <Grid item>
-                                    <Typography variant="body2" color="primary.dark">
-                                        Tilauksen tiedot:
-                                    </Typography>
-                                </Grid>
-                                <Grid item sx={{ width: 'inherit' }}>
-                                    <Typography
-                                        variant="body2"
-                                        sx={{
-                                            wordWrap: 'break-word',
-                                        }}
-                                    >
-                                        {orderInfo.order_info}
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                            <Grid direction="row" spacing={1} container>
-                                <Grid item>
-                                    <Typography variant="body2" color="primary.dark">
-                                        Toimituspäivä:
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Typography variant="body2">
-                                        {readableDeliveryDate.includes('1970') ? '' : readableDeliveryDate}
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                            <Grid direction="row" spacing={1} container>
-                                <Grid item>
-                                    <Typography variant="body2" color="primary.dark">
-                                        Tilaajan puhelinnumero:
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Typography variant="body2">{orderInfo.phone_number}</Typography>
-                                </Grid>
-                            </Grid>
+                                    <Typography variant="body2">{deliveryDate}</Typography>
+                                </Stack>
+                            ) : null}
                         </Grid>
                     </CardContent>
                 </CardActionArea>

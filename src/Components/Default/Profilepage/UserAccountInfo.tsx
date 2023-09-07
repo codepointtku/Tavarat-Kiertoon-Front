@@ -19,7 +19,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AlertBox from '../../AlertBox';
 
 import type { userInfoLoader } from '../../../Router/loaders';
-import { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
+import type { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
 
 import TypographyHeading from '../../TypographyHeading';
 import HeroText from '../../HeroText';
@@ -85,7 +85,7 @@ function UserAccountInfo() {
     const onSubmit = (data: FormData) => {
         const formData = { ...data };
         Object.assign(formData, { id: userInfo.id });
-        submit(formData as SubmitTarget, { method: 'put', action: '/profiili' });
+        submit(formData as SubmitTarget, { method: 'put', action: '/tili' });
         reset(formData);
     };
 
@@ -93,7 +93,7 @@ function UserAccountInfo() {
         <>
             {responseStatus?.status && <AlertBox text="Käyttäjätiedot päivitetty onnistuneesti." status="success" />}
 
-            <Container maxWidth="md">
+            <Container id="acc-info-container" maxWidth="md">
                 <HeroText title={`Hei, ${userInfo.username}`} />
                 <Box id="user-common-info" sx={{ margin: '1rem 0 1rem 0' }}>
                     <Typography>Käyttäjänimi: {userInfo.username}</Typography>
