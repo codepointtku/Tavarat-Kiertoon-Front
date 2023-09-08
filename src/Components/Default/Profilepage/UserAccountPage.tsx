@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useSubmit } from 'react-router-dom';
 
 import { Grid, Tabs, Tab, Button, Container } from '@mui/material';
 
@@ -26,6 +26,13 @@ function UserAccountPage() {
         setValue(newSection);
     }
 
+    const submit = useSubmit();
+    const onClickLogOut = () => {
+        submit(null, {
+            method: 'post',
+        });
+    };
+
     return (
         <Container
             id="acc-page-main-wrapper"
@@ -44,7 +51,7 @@ function UserAccountPage() {
                     </Tabs>
                 </Grid>
                 <Grid item xs={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                    <Button id="logout-btn" variant="outlined">
+                    <Button id="logout-btn" variant="outlined" onClick={onClickLogOut}>
                         Kirjaudu ulos
                     </Button>
                 </Grid>

@@ -37,7 +37,7 @@ function LoginForm({ setCurrentOpenDrawer, notLoggedIn }) {
         event.preventDefault();
     };
 
-    const onSubmit = async (data) => {
+    const onSubmit = (data) => {
         const formData = { ...data };
         submit(formData, {
             method: 'post',
@@ -46,7 +46,7 @@ function LoginForm({ setCurrentOpenDrawer, notLoggedIn }) {
         !notLoggedIn &&
             setTimeout(() => {
                 setCurrentOpenDrawer('');
-            }, 3000);
+            }, 10000);
     };
 
     const handleClickCloseDrawer = () => {
