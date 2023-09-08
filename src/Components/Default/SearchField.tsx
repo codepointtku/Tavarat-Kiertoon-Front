@@ -167,6 +167,7 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
             searchParams.delete('haku');
             searchParams.delete('varit');
             searchParams.delete('kategoria');
+            searchParams.delete('sivu');
             setSearchParams(searchParams);
         }
     };
