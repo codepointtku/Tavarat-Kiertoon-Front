@@ -1,32 +1,42 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { createSearchParams, useLocation, useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import { TablePagination } from '@mui/material';
 
 function Pagination({ count, itemsText }: { count?: number; itemsText?: string }) {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const query = new URLSearchParams(location.search);
-    const [page, setPage] = useState(parseInt(query.get('sivu') || '0'));
-    const [rowsPerPage, setRowsPerPage] = useState(parseInt(query.get('sivukoko') || '25'));
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [page, setPage] = useState(parseInt(searchParams.get('sivu') || '0'));
+    const [rowsPerPage, setRowsPerPage] = useState(parseInt(searchParams.get('sivukoko') || '25'));
 
     const handleChangePage = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
         setPage(newPage);
         // return back to top of page
         // window.scrollTo(0, 0);
-        navigate(`?sivu=${newPage + 1}&sivukoko=${rowsPerPage}`);
+        setSearchParams((prevParams) => {
+            return createSearchParams({
+                ...Object.fromEntries(prevParams.entries()),
+                sivu: (newPage + 1).toString(),
+                sivukoko: rowsPerPage.toString(),
+            });
+        });
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newRowsPerPage = parseInt(event.target.value);
         setRowsPerPage(newRowsPerPage);
         setPage(0);
-        navigate(`?sivu=${1}&sivukoko=${newRowsPerPage}`);
+        setSearchParams((prevParams) => {
+            return createSearchParams({
+                ...Object.fromEntries(prevParams.entries()),
+                sivu: '1',
+                sivukoko: rowsPerPage.toString(),
+            });
+        });
     };
 
     return (
         <TablePagination
             component="div"
-            count={count || 1}
+            count={count || 0}
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
