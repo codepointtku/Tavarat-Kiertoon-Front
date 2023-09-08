@@ -28,7 +28,7 @@ function Pagination({ count, itemsText }: { count?: number; itemsText?: string }
             return createSearchParams({
                 ...Object.fromEntries(prevParams.entries()),
                 sivu: '1',
-                sivukoko: rowsPerPage.toString(),
+                sivukoko: newRowsPerPage.toString(),
             });
         });
     };
