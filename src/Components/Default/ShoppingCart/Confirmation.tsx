@@ -13,10 +13,10 @@ import ClearInfo from './ClearInfo';
 import TypographyHeading from '../../TypographyHeading';
 
 interface CartState {
-    email: string;
+    recipient: string;
     deliveryAddress: string;
     deliveryRequired: string;
-    phoneNumber: string;
+    recipient_phone_number: string;
     orderInfo: string;
     firstName: string;
     lastName: string;
@@ -46,9 +46,17 @@ function Confirmation() {
     const { id } = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
 
     const onSubmit = async () => {
-        const { email, deliveryAddress, phoneNumber, orderInfo, deliveryRequired, fetchDate } = state;
+        const { recipient, deliveryAddress, recipient_phone_number, orderInfo, deliveryRequired, fetchDate } = state;
         submit(
-            { email, deliveryAddress, phoneNumber, id: id.toString(), orderInfo, deliveryRequired, fetchDate },
+            {
+                recipient,
+                deliveryAddress,
+                recipient_phone_number,
+                id: id.toString(),
+                orderInfo,
+                deliveryRequired,
+                fetchDate,
+            },
             { method: 'post', action: '/ostoskori/vaihe3' }
         );
     };
@@ -78,22 +86,24 @@ function Confirmation() {
                     >
                         <TypographyHeading text="Vastaanottajan yhteystiedot" />
                         <Stack spacing={2} padding={'1rem'}>
-                            <Typography variant="subtitle1">
-                                {state.firstName} {state.lastName}
+                            {/* <Typography variant="subtitle1">
+                                {state.firstName} {state.lastName} halloo
+                            </Typography> */}
+                            <Typography variant="subtitle1" {...register('recipient')}>
+                                {state.recipient}
                             </Typography>
-                            <Typography variant="subtitle1" {...register('contact')}>
-                                {state.email}
+                            <Typography variant="subtitle1" {...register('recipient_phone_number')}>
+                                {state.recipient_phone_number}
                             </Typography>
-                            <Typography variant="subtitle1">{state.phoneNumber}</Typography>
                         </Stack>
 
                         <TypographyHeading text="Toimitustiedot" />
                         <Stack direction="row" spacing={'1rem'} padding={'1rem'}>
                             <Typography variant="subtitle1">{state.deliveryAddress}</Typography>
-                            <span>/</span>
-                            <Typography variant="subtitle1">{state.zipcode}</Typography>
-                            <span>/</span>
-                            <Typography variant="subtitle1">{state.city}</Typography>
+                            {/* <span>/</span> */}
+                            {/* <Typography variant="subtitle1">{state.zipcode}</Typography> */}
+                            {/* <span>/</span> */}
+                            {/* <Typography variant="subtitle1">{state.city}</Typography> */}
                         </Stack>
                         <Stack padding={'0rem 1rem 1rem 1rem'}>
                             <Typography variant="subtitle1">

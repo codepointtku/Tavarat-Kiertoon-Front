@@ -21,11 +21,11 @@ import Holidays from 'date-holidays';
 export interface CartFormData {
     firstName: string;
     lastName: string;
-    email: string;
-    phoneNumber: string;
+    recipient: string;
+    recipient_phone_number: string;
     deliveryAddress: string;
-    zipcode: string;
-    city: string;
+    // zipcode: string;
+    // city: string;
     deliveryRequired: string;
     fetchDate?: string | Date;
     orderInfo?: string;
@@ -76,14 +76,16 @@ function ContactsAndDelivery() {
         defaultValues: {
             firstName: state.firstName ? state.firstName : '',
             lastName: state.lastName ? state.lastName : '',
-            email: state.email ? state.email : '',
-            phoneNumber: state.phoneNumber ? state.phoneNumber : '',
+            // email: state.email ? state.email : '',
+            recipient: 'homo',
+            // phoneNumber: state.phoneNumber ? state.phoneNumber : '',
+            recipient_phone_number: '123',
             // deliveryAddress: state.deliveryAddress ? state.deliveryAddress : correctAddress[0].address,
             deliveryAddress: 'votti',
             // zipcode: state.zipcode ? state.zipcode : correctAddress[0].zip_code,
-            zipcode: '12312',
+            // zipcode: '12312',
             // city: state.city ? state.city : correctAddress[0].city,
-            city: 'pasq',
+            // city: 'pasq',
             // deliveryRequired: state.deliveryRequired ? state.deliveryRequired : 'true',
             deliveryRequired: 'true',
             fetchDate: state.fetchDate ? state.fetchDate : currentDate,
@@ -101,10 +103,10 @@ function ContactsAndDelivery() {
     };
 
     function handleClick() {
-        setValue('firstName', user.first_name);
-        setValue('lastName', user.last_name);
-        setValue('email', user.email);
-        setValue('phoneNumber', user.phone_number as string);
+        // setValue('firstName', user.first_name);
+        // setValue('lastName', user.last_name);
+        setValue('recipient', user.first_name + ' ' + user.last_name);
+        setValue('recipient_phone_number', user.phone_number as string);
     }
 
     // useEffect(() => {
@@ -146,7 +148,7 @@ function ContactsAndDelivery() {
     function handleDateChange(value: Date) {
         sessionStorage.setItem(
             'dateErrorObj',
-            JSON.stringify({ value: isValid(value), message: 'Noutoajat ma-pe 9-16' })
+            JSON.stringify({ value: isValid(value), message: 'Noutoajat ma-pe 9-15' })
         );
         clearErrors('fetchDate');
         const date = isValid(value) && format(value, 'd.M.yyyy');
@@ -250,11 +252,11 @@ function ContactsAndDelivery() {
                             placeholder="Vastaanottajan nimi"
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}
-                            {...register('email', {
+                            {...register('recipient', {
                                 maxLength: { value: 50, message: 'Sisältö on liian pitkä' },
                             })}
-                            error={!!errors.email}
-                            helperText={errors.email?.message?.toString() || ' '}
+                            error={!!errors.recipient}
+                            helperText={errors.recipient?.message?.toString() || ' '}
                             required
                         />
                     </Grid>
@@ -264,13 +266,13 @@ function ContactsAndDelivery() {
                             placeholder="Puhelinnumero"
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}
-                            {...register('phoneNumber', {
+                            {...register('recipient_phone_number', {
                                 required: 'Tämä kenttä on täytettävä',
                                 pattern: { value: /^[0-9]+$/, message: 'Sisällön täytyy koostua vain numeroista' },
                                 maxLength: { value: 11, message: 'Numerosarja on liian pitkä' },
                             })}
-                            error={!!errors.phoneNumber}
-                            helperText={errors.phoneNumber?.message?.toString() || ' '}
+                            error={!!errors.recipient_phone_number}
+                            helperText={errors.recipient_phone_number?.message?.toString() || ' '}
                             inputProps={{ required: false }}
                             required
                         />
@@ -295,7 +297,10 @@ function ContactsAndDelivery() {
                             // }}
                             inputProps={{ required: false }}
                             error={!!errors.deliveryAddress}
-                            helperText={errors.deliveryAddress?.message?.toString() || ' '}
+                            helperText={
+                                errors.deliveryAddress?.message?.toString() ||
+                                'Voit syöttää tähän katuosoitteen postinumeroineen päivineen'
+                            }
                             fullWidth
                             // select
                             required
@@ -309,7 +314,7 @@ function ContactsAndDelivery() {
                     </Grid>
                     {/* {selectedAddress && ( */}
                     {/* // <> */}
-                    <Grid item mr="1rem">
+                    {/* <Grid item mr="1rem">
                         <TextField
                             label="Postinumero"
                             variant="outlined"
@@ -318,8 +323,8 @@ function ContactsAndDelivery() {
                             // sx={{ opacity: 0.7 }}
                             // disabled
                         />
-                    </Grid>
-                    <Grid item mr="1rem">
+                    </Grid> */}
+                    {/* <Grid item mr="1rem">
                         <TextField
                             label="Kaupunki"
                             variant="outlined"
@@ -328,7 +333,7 @@ function ContactsAndDelivery() {
                             // sx={{ opacity: 0.7 }}
                             // disabled
                         />
-                    </Grid>
+                    </Grid> */}
                     {/* </> */}
                     {/* // )} */}
                     <Grid item xs={2} mr="1rem">

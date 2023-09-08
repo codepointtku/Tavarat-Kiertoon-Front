@@ -555,9 +555,9 @@ const confirmationAction = async ({ request }) => {
     const formData = await request.formData();
 
     const response = await ordersApi.ordersCreate({
-        contact: formData.get('email'),
+        recipient: formData.get('recipient'),
         delivery_address: formData.get('deliveryAddress'),
-        phone_number: formData.get('phoneNumber'),
+        recipient_phone_number: formData.get('recipient_phone_number'),
         user: Number(formData.get('id')),
         order_info: formData.get('orderInfo'),
         delivery_required: formData.get('deliveryRequired'),
