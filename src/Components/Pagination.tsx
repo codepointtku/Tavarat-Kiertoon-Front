@@ -1,14 +1,15 @@
-import { createSearchParams, useLocation, useSearchParams } from 'react-router-dom';
+import { createSearchParams, useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import { TablePagination } from '@mui/material';
 
 function Pagination({ count, itemsText }: { count?: number; itemsText?: string }) {
     const [searchParams, setSearchParams] = useSearchParams();
-    const [page, setPage] = useState(parseInt(searchParams.get('sivu') || '0'));
+    const [page, setPage] = useState(parseInt(searchParams.get('sivu') || '1'));
     const [rowsPerPage, setRowsPerPage] = useState(parseInt(searchParams.get('sivukoko') || '25'));
 
     const handleChangePage = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
-        setPage(newPage);
+        console.log('newPage', newPage);
+        setPage(newPage + 1);
         // return back to top of page
         // window.scrollTo(0, 0);
         setSearchParams((prevParams) => {
@@ -23,7 +24,7 @@ function Pagination({ count, itemsText }: { count?: number; itemsText?: string }
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newRowsPerPage = parseInt(event.target.value);
         setRowsPerPage(newRowsPerPage);
-        setPage(0);
+        setPage(1);
         setSearchParams((prevParams) => {
             return createSearchParams({
                 ...Object.fromEntries(prevParams.entries()),
@@ -37,7 +38,7 @@ function Pagination({ count, itemsText }: { count?: number; itemsText?: string }
         <TablePagination
             component="div"
             count={count || 0}
-            page={page}
+            page={page - 1}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
