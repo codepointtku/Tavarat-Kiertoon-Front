@@ -1,8 +1,9 @@
-import { createSearchParams, useSearchParams } from 'react-router-dom';
-import { useState } from 'react';
+import { createSearchParams, useLocation, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { TablePagination } from '@mui/material';
 
 function Pagination({ count, itemsText }: { count?: number; itemsText?: string }) {
+    const location = useLocation();
     const [searchParams, setSearchParams] = useSearchParams();
     const [page, setPage] = useState(parseInt(searchParams.get('sivu') || '1'));
     const [rowsPerPage, setRowsPerPage] = useState(parseInt(searchParams.get('sivukoko') || '25'));
@@ -33,6 +34,15 @@ function Pagination({ count, itemsText }: { count?: number; itemsText?: string }
             });
         });
     };
+
+    useEffect(() => {
+        if (searchParams.has('sivu')) {
+            setPage(parseInt(searchParams.get('sivu') || '1'));
+        }
+        if (searchParams.has('sivukoko')) {
+            setRowsPerPage(parseInt(searchParams.get('sivukoko') || '25'));
+        }
+    }, [location, searchParams]);
 
     return (
         <TablePagination
