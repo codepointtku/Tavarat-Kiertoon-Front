@@ -48,7 +48,9 @@ function CategoryTree({ treeSelectedState }: TreeSelectedProps) {
     const categoryTreeIndexes = categoryTree as unknown as CategoryTreeIndexes;
 
     const handleClick = (categoryId: string) => {
-        const iniParams = new URLSearchParams();
+        const iniParams = new URLSearchParams(searchParams);
+        iniParams.delete('kategoria');
+        iniParams.delete('sivu');
         if (categoryId === 'root') {
             iniParams.delete('kategoria');
         } else {
@@ -57,6 +59,7 @@ function CategoryTree({ treeSelectedState }: TreeSelectedProps) {
             });
         }
         setSearchParams(iniParams);
+
         treeSelectedState.setCategoryTreeSelected(true);
     };
 
