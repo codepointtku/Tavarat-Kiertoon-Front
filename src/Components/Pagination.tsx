@@ -38,9 +38,13 @@ function Pagination({ count, itemsText }: { count?: number; itemsText?: string }
     useEffect(() => {
         if (searchParams.has('sivu')) {
             setPage(parseInt(searchParams.get('sivu') || '1'));
+        } else {
+            setPage(1);
         }
         if (searchParams.has('sivukoko')) {
             setRowsPerPage(parseInt(searchParams.get('sivukoko') || '25'));
+        } else {
+            setRowsPerPage(25);
         }
     }, [location, searchParams]);
 
