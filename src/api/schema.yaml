@@ -2189,7 +2189,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductResponse'
+                $ref: '#/components/schemas/ProductDetailResponse'
           description: ''
     put:
       operationId: products_update
@@ -3700,30 +3700,6 @@ paths:
           description: No response body
 components:
   schemas:
-    Action06cEnum:
-      enum:
-      - Created
-      - Added to shopping cart
-      - Removed from shopping cart
-      - Timed out from shopping cart
-      - Ordered
-      - Added to order
-      - Removed from order
-      - Came back to circulation
-      - Modified at storage
-      - Gifted away
-      type: string
-      description: |-
-        * `Created` - Create
-        * `Added to shopping cart` - Cart Add
-        * `Removed from shopping cart` - Cart Remove
-        * `Timed out from shopping cart` - Cart Timeout
-        * `Ordered` - Order
-        * `Added to order` - Order Add
-        * `Removed from order` - Order Remove
-        * `Came back to circulation` - Circulation
-        * `Modified at storage` - Modify
-        * `Gifted away` - Gift
     BikeAmount:
       type: object
       properties:
@@ -4758,7 +4734,7 @@ components:
           maxLength: 255
         delivery_required:
           type: boolean
-        contact:
+        recipient:
           type: string
           maxLength: 255
         order_info:
@@ -4767,7 +4743,7 @@ components:
           type: string
           format: date-time
           nullable: true
-        phone_number:
+        recipient_phone_number:
           type: string
           maxLength: 255
         creation_date:
@@ -4782,12 +4758,12 @@ components:
           items:
             type: integer
       required:
-      - contact
       - creation_date
       - delivery_address
       - id
-      - phone_number
       - product_items
+      - recipient
+      - recipient_phone_number
     OrderDetailResponse:
       type: object
       properties:
@@ -4810,7 +4786,7 @@ components:
           maxLength: 255
         delivery_required:
           type: boolean
-        contact:
+        recipient:
           type: string
           maxLength: 255
         order_info:
@@ -4819,7 +4795,7 @@ components:
           type: string
           format: date-time
           nullable: true
-        phone_number:
+        recipient_phone_number:
           type: string
           maxLength: 255
         creation_date:
@@ -4827,14 +4803,14 @@ components:
           format: date-time
           readOnly: true
       required:
-      - contact
       - creation_date
       - delivery_address
       - delivery_date
       - id
       - order_info
-      - phone_number
       - product_items
+      - recipient
+      - recipient_phone_number
       - status
       - user
     OrderEmailRecipient:
@@ -4862,7 +4838,7 @@ components:
           maxLength: 255
         delivery_required:
           type: boolean
-        contact:
+        recipient:
           type: string
           maxLength: 255
         order_info:
@@ -4871,7 +4847,7 @@ components:
           type: string
           format: date-time
           nullable: true
-        phone_number:
+        recipient_phone_number:
           type: string
           maxLength: 255
         creation_date:
@@ -4879,11 +4855,11 @@ components:
           format: date-time
           readOnly: true
       required:
-      - contact
       - creation_date
       - delivery_address
       - id
-      - phone_number
+      - recipient
+      - recipient_phone_number
     OrderResponse:
       type: object
       properties:
@@ -4897,7 +4873,7 @@ components:
           maxLength: 255
         delivery_required:
           type: boolean
-        contact:
+        recipient:
           type: string
           maxLength: 255
         order_info:
@@ -4906,7 +4882,7 @@ components:
           type: string
           format: date-time
           nullable: true
-        phone_number:
+        recipient_phone_number:
           type: string
           maxLength: 255
         creation_date:
@@ -4921,14 +4897,14 @@ components:
           items:
             type: integer
       required:
-      - contact
       - creation_date
       - delivery_address
       - delivery_date
       - id
       - order_info
-      - phone_number
       - product_items
+      - recipient
+      - recipient_phone_number
       - status
       - user
     OrderStatusEnum:
@@ -4954,7 +4930,7 @@ components:
           maxLength: 255
         delivery_required:
           type: boolean
-        contact:
+        recipient:
           type: string
           maxLength: 255
         order_info:
@@ -4963,7 +4939,7 @@ components:
           type: string
           format: date-time
           nullable: true
-        phone_number:
+        recipient_phone_number:
           type: string
           maxLength: 255
         creation_date:
@@ -4975,14 +4951,14 @@ components:
           items:
             type: integer
       required:
-      - contact
       - creation_date
       - delivery_address
       - delivery_date
       - id
       - order_info
-      - phone_number
       - product_items
+      - recipient
+      - recipient_phone_number
       - status
     PaginatedBikeRentalSchemaResponseList:
       type: object
@@ -5229,6 +5205,62 @@ components:
       - id
       - name
       - storage
+    ProductDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        pictures:
+          type: array
+          items:
+            $ref: '#/components/schemas/Picture'
+          readOnly: true
+        amount:
+          type: integer
+          readOnly: true
+        total_amount:
+          type: integer
+          readOnly: true
+        product_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductItemStorage'
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        price:
+          type: number
+          format: double
+        free_description:
+          type: string
+        measurements:
+          type: string
+          maxLength: 50
+        weight:
+          type: number
+          format: double
+        category:
+          type: integer
+          nullable: true
+        colors:
+          type: array
+          items:
+            type: integer
+      required:
+      - amount
+      - category
+      - colors
+      - free_description
+      - id
+      - measurements
+      - name
+      - pictures
+      - price
+      - product_items
+      - total_amount
+      - weight
     ProductItemDetailResponse:
       type: object
       properties:
@@ -5265,24 +5297,6 @@ components:
       - product
       - shelf_id
       - storage
-    ProductItemLogEntry:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        date:
-          type: string
-          format: date-time
-          readOnly: true
-        action:
-          $ref: '#/components/schemas/Action06cEnum'
-        user:
-          type: integer
-          nullable: true
-      required:
-      - date
-      - id
     ProductItemLogEntryResponse:
       type: object
       properties:
@@ -5294,7 +5308,7 @@ components:
           format: date-time
           readOnly: true
         action:
-          $ref: '#/components/schemas/Action06cEnum'
+          $ref: '#/components/schemas/ProductItemLogEntryResponseActionEnum'
         user:
           type: integer
           nullable: true
@@ -5303,6 +5317,30 @@ components:
       - date
       - id
       - user
+    ProductItemLogEntryResponseActionEnum:
+      enum:
+      - Created
+      - Added to shopping cart
+      - Removed from shopping cart
+      - Timed out from shopping cart
+      - Ordered
+      - Added to order
+      - Removed from order
+      - Came back to circulation
+      - Modified at storage
+      - Gifted away
+      type: string
+      description: |-
+        * `Created` - Create
+        * `Added to shopping cart` - Cart Add
+        * `Removed from shopping cart` - Cart Remove
+        * `Timed out from shopping cart` - Cart Timeout
+        * `Ordered` - Order
+        * `Added to order` - Order Add
+        * `Removed from order` - Order Remove
+        * `Came back to circulation` - Circulation
+        * `Modified at storage` - Modify
+        * `Gifted away` - Gift
     ProductItemResponse:
       type: object
       properties:
@@ -5356,7 +5394,7 @@ components:
         log_entries:
           type: array
           items:
-            $ref: '#/components/schemas/ProductItemLogEntry'
+            $ref: '#/components/schemas/ProductItemLogEntryResponse'
           readOnly: true
         available:
           type: boolean

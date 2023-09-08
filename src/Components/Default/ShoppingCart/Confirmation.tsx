@@ -85,7 +85,7 @@ function Confirmation() {
                         }}
                     >
                         <TypographyHeading text="Vastaanottajan yhteystiedot" />
-                        <Stack spacing={2} padding={'1rem'}>
+                        <Stack spacing={2} padding={'1rem 1rem 1rem 1rem'}>
                             {/* <Typography variant="subtitle1">
                                 {state.firstName} {state.lastName} halloo
                             </Typography> */}
@@ -126,7 +126,7 @@ function Confirmation() {
                         </Stack>
 
                         <TypographyHeading text="Tuotteet" />
-                        <List>
+                        <List sx={{ padding: '1rem 1rem 0 1rem' }}>
                             {products?.map((product_item: { count: number; product: { id: number; name: string } }) => (
                                 <ListItem key={product_item.product.id} disableGutters disablePadding>
                                     <ListItemText primary={`${product_item.count}x ${product_item.product.name}`} />

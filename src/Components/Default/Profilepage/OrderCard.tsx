@@ -8,7 +8,7 @@ export type OrderCardProps = {
 };
 
 function OrderCard({ orderInfo }: OrderCardProps) {
-    console.log(orderInfo);
+    // console.log(orderInfo);
 
     const deliveryDate = new Date(orderInfo.delivery_date as string).toLocaleDateString('fi-FI');
     const orderDate = new Date(orderInfo.creation_date).toLocaleDateString('fi-FI');
@@ -22,12 +22,12 @@ function OrderCard({ orderInfo }: OrderCardProps) {
     return (
         <Grow in timeout={1000}>
             <Card
-                sx={
-                    {
-                        // minWidth: 400,
-                        // minHeight: 300,
-                    }
-                }
+                // sx={
+                //     {
+                //         // minWidth: 400,
+                //         // minHeight: 300,
+                //     }
+                // }
                 raised
             >
                 <CardActionArea component={Link} to={`${orderInfo.id}`} state={{ orderInfo }} sx={{ height: '100%' }}>
@@ -66,15 +66,15 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                             </Stack>
                             <Stack direction="row" spacing={1}>
                                 <Typography variant="body2" color="primary.dark">
-                                    Vastaanottajan puhelinnumero:
+                                    Vastaanottaja:
                                 </Typography>
-                                <Typography variant="body2">{orderInfo.phone_number}</Typography>
+                                <Typography variant="body2">{orderInfo?.recipient}</Typography>
                             </Stack>
                             <Stack direction="row" spacing={1}>
                                 <Typography variant="body2" color="primary.dark">
-                                    Vastaanottajan yhteystieto:
+                                    Vastaanottajan puhelinnumero:
                                 </Typography>
-                                <Typography variant="body2">{orderInfo?.contact}</Typography>
+                                <Typography variant="body2">{orderInfo.recipient_phone_number}</Typography>
                             </Stack>
                             <Stack direction="row" spacing={1}>
                                 <Typography variant="body2" color="primary.dark">
