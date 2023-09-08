@@ -22,11 +22,12 @@ function OrderCard({ orderInfo }: OrderCardProps) {
     return (
         <Grow in timeout={1000}>
             <Card
-                sx={{
-                    width: 400,
-                    minHeight: 300,
-                    border: orderInfo.status === 'Finished' ? '1px solid #81C784' : '1px solid #0062ae',
-                }}
+                sx={
+                    {
+                        // minWidth: 400,
+                        // minHeight: 300,
+                    }
+                }
                 raised
             >
                 <CardActionArea component={Link} to={`${orderInfo.id}`} state={{ orderInfo }} sx={{ height: '100%' }}>
@@ -35,15 +36,14 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                         sx={{ backgroundColor: 'primary.light' }}
                         align="center"
                         color="primary.dark"
-                        variant="overline"
                         title={`Tilaus #${orderInfo.id}`}
                     />
                     <CardContent>
-                        <Grid
-                            container
-                            direction="column"
+                        <Stack
+                            // container
+                            // direction="column"
                             justifyContent="space-around"
-                            gap={0.5}
+                            // gap={0.5}
                             sx={{ width: 'auto' }}
                         >
                             <Stack direction="row" spacing={1}>
@@ -98,7 +98,7 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                                     <Typography variant="body2">{deliveryDate}</Typography>
                                 </Stack>
                             ) : null}
-                        </Grid>
+                        </Stack>
                     </CardContent>
                 </CardActionArea>
             </Card>

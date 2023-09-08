@@ -111,6 +111,7 @@ const ordersListLoader = async () => {
  */
 const orderViewLoader = async ({ params }) => {
     const response = await ordersApi.ordersRetrieve(params.id);
+    console.log('stressponze', response.data);
     return response.data;
 };
 
@@ -473,7 +474,7 @@ const userInfoLoader = async ({ request }) => {
     const [{ data: userInfo }, { data: userOrders }] = await Promise.all([
         userApi.userRetrieve(),
         // ordersApi.ordersUserList(ordering, searchParams.get('sivu'), null, status),
-        ordersApi.ordersUserList(),
+        ordersApi.ordersUserList(null, null, 99999, null),
     ]);
 
     return { userInfo, userOrders };

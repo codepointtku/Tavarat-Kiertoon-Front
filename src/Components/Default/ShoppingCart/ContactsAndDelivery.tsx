@@ -38,11 +38,11 @@ export type StateMachineActions = {
 
 function ContactsAndDelivery() {
     const user = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
-    const [selectedAddress, setSelectedAddress] = useState(
-        Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
-            ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryAddress
-            : user.address_list[0]?.address || ''
-    );
+    // const [selectedAddress, setSelectedAddress] = useState(
+    //     Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
+    //         ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryAddress
+    //         : user.address_list[0]?.address || ''
+    // );
     const [selectedMethod, setSelectedMethod] = useState(
         Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
             ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryRequired
@@ -61,9 +61,9 @@ function ContactsAndDelivery() {
     };
     const hd = new Holidays('FI');
     const finnishHolidays = hd.getHolidays();
-    const correctAddress = user.address_list?.filter(
-        (address: { address: string }) => address.address === selectedAddress
-    );
+    // const correctAddress = user.address_list?.filter(
+    //     (address: { address: string }) => address.address === selectedAddress
+    // );
     const {
         register,
         handleSubmit,
@@ -78,10 +78,14 @@ function ContactsAndDelivery() {
             lastName: state.lastName ? state.lastName : '',
             email: state.email ? state.email : '',
             phoneNumber: state.phoneNumber ? state.phoneNumber : '',
-            deliveryAddress: state.deliveryAddress ? state.deliveryAddress : correctAddress[0].address,
-            zipcode: state.zipcode ? state.zipcode : correctAddress[0].zip_code,
-            city: state.city ? state.city : correctAddress[0].city,
-            deliveryRequired: state.deliveryRequired ? state.deliveryRequired : 'true',
+            // deliveryAddress: state.deliveryAddress ? state.deliveryAddress : correctAddress[0].address,
+            deliveryAddress: 'votti',
+            // zipcode: state.zipcode ? state.zipcode : correctAddress[0].zip_code,
+            zipcode: '12312',
+            // city: state.city ? state.city : correctAddress[0].city,
+            city: 'pasq',
+            // deliveryRequired: state.deliveryRequired ? state.deliveryRequired : 'true',
+            deliveryRequired: 'true',
             fetchDate: state.fetchDate ? state.fetchDate : currentDate,
             orderInfo: state.orderInfo ? state.orderInfo : '',
         },
@@ -103,10 +107,10 @@ function ContactsAndDelivery() {
         setValue('phoneNumber', user.phone_number as string);
     }
 
-    useEffect(() => {
-        setValue('zipcode', correctAddress[0]?.zip_code);
-        setValue('city', correctAddress[0]?.city);
-    }, [selectedAddress, correctAddress, setValue]);
+    // useEffect(() => {
+    //     setValue('zipcode', correctAddress[0]?.zip_code);
+    //     setValue('city', correctAddress[0]?.city);
+    // }, [selectedAddress, correctAddress, setValue]);
 
     function disableDate(date: Date) {
         const dateIsHoliday = finnishHolidays.some((holiday) => String(holiday.start) === String(date));
@@ -208,7 +212,7 @@ function ContactsAndDelivery() {
                 </Grid>
 
                 <Grid id="receiver-input-fields-grid-container" container spacing={2} mb="2rem">
-                    <Grid item>
+                    {/* <Grid item>
                         <TextField
                             label="Etunimi"
                             placeholder="Etunimi"
@@ -239,11 +243,25 @@ function ContactsAndDelivery() {
                             inputProps={{ required: false }}
                             required
                         />
+                    </Grid> */}
+                    <Grid item>
+                        <TextField
+                            label="Vastaanottaja"
+                            placeholder="Vastaanottajan nimi"
+                            variant="outlined"
+                            InputLabelProps={{ shrink: true }}
+                            {...register('email', {
+                                maxLength: { value: 50, message: 'Sisältö on liian pitkä' },
+                            })}
+                            error={!!errors.email}
+                            helperText={errors.email?.message?.toString() || ' '}
+                            required
+                        />
                     </Grid>
                     <Grid item>
                         <TextField
-                            label="Puhelinnumero"
-                            placeholder="Puh. numero"
+                            label="Vastaanottajan puhelinnumero"
+                            placeholder="Puhelinnumero"
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}
                             {...register('phoneNumber', {
@@ -257,19 +275,6 @@ function ContactsAndDelivery() {
                             required
                         />
                     </Grid>
-                    <Grid item>
-                        <TextField
-                            label="Sähköposti"
-                            placeholder="Sähköposti"
-                            variant="outlined"
-                            InputLabelProps={{ shrink: true }}
-                            {...register('email', {
-                                maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
-                            })}
-                            error={!!errors.email}
-                            helperText={errors.email?.message?.toString() || ' '}
-                        />
-                    </Grid>
                 </Grid>
 
                 {/* //// */}
@@ -280,52 +285,52 @@ function ContactsAndDelivery() {
                         <TextField
                             label="Toimitusosoite"
                             variant="outlined"
-                            value={selectedAddress}
+                            // value={selectedAddress}
                             {...register('deliveryAddress', {
                                 required: 'Tämä kenttä on täytettävä',
-                                maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
+                                maxLength: { value: 50, message: 'Sisältö on liian pitkä' },
                             })}
-                            onChange={(SelectChangeEvent) => {
-                                setSelectedAddress(SelectChangeEvent.target.value);
-                            }}
+                            // onChange={(SelectChangeEvent) => {
+                            //     setSelectedAddress(SelectChangeEvent.target.value);
+                            // }}
                             inputProps={{ required: false }}
                             error={!!errors.deliveryAddress}
                             helperText={errors.deliveryAddress?.message?.toString() || ' '}
                             fullWidth
-                            select
+                            // select
                             required
-                        >
-                            {user.address_list?.map((a: { address: string; id: number }) => (
+                        />
+                        {/* {user.address_list?.map((a: { address: string; id: number }) => (
                                 <MenuItem value={a.address} key={a.id}>
                                     {a.address}
                                 </MenuItem>
-                            ))}
-                        </TextField>
+                            ))} */}
+                        {/* </TextField> */}
                     </Grid>
-                    {selectedAddress && (
-                        <>
-                            <Grid item mr="1rem">
-                                <TextField
-                                    label="Postinumero"
-                                    variant="outlined"
-                                    value={correctAddress[0]?.zip_code}
-                                    {...register('zipcode')}
-                                    sx={{ opacity: 0.7 }}
-                                    disabled
-                                />
-                            </Grid>
-                            <Grid item mr="1rem">
-                                <TextField
-                                    label="Kaupunki"
-                                    variant="outlined"
-                                    value={correctAddress[0]?.city}
-                                    {...register('city')}
-                                    sx={{ opacity: 0.7 }}
-                                    disabled
-                                />
-                            </Grid>
-                        </>
-                    )}
+                    {/* {selectedAddress && ( */}
+                    {/* // <> */}
+                    <Grid item mr="1rem">
+                        <TextField
+                            label="Postinumero"
+                            variant="outlined"
+                            // value={correctAddress[0]?.zip_code}
+                            {...register('zipcode')}
+                            // sx={{ opacity: 0.7 }}
+                            // disabled
+                        />
+                    </Grid>
+                    <Grid item mr="1rem">
+                        <TextField
+                            label="Kaupunki"
+                            variant="outlined"
+                            // value={correctAddress[0]?.city}
+                            {...register('city')}
+                            // sx={{ opacity: 0.7 }}
+                            // disabled
+                        />
+                    </Grid>
+                    {/* </> */}
+                    {/* // )} */}
                     <Grid item xs={2} mr="1rem">
                         <TextField
                             {...register('deliveryRequired')}
