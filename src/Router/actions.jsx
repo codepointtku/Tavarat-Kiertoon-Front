@@ -26,19 +26,24 @@ const adminLogOut = async ({ request }) => {
  */
 const frontPageActions = async ({ request }) => {
     const formData = await request.formData();
+
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+
     const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : 0;
+
     if (request.method === 'POST') {
         if (formData.get('password')) {
             const response = await usersApi.usersLoginCreate({
                 username: formData.get('email'),
                 password: formData.get('password'),
             });
+
             if (response.status === 200) {
                 return { type: 'login', status: true };
             }
             return { type: 'login', status: false };
         } else {
+            // drawer log out btn -->
             const response = await usersApi.usersLogoutCreate();
 
             if (response.status === 200) {
@@ -46,11 +51,8 @@ const frontPageActions = async ({ request }) => {
             }
             return { type: 'logout', status: false };
         }
-        // const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
-        //     username: formData.get('email'),
-        //     password: formData.get('password'),
-        // });
     }
+
     if (request.method === 'PUT') {
         if (!id) {
             // clear cart if no id is being sent or clear cart and return "type: orderCreated" when a new order is created.
@@ -149,24 +151,6 @@ const contactAction = async (auth, setAuth, request) => {
 };
 
 /**
- * sends bike order form to back-end
- */
-const bikeOrderAction = async (auth, setAuth, request) => {
-    const formData = await request.formData();
-    const response = await bikesApi.bikesRentalCreate({
-        contact_name: formData.get('contactPersonName'),
-        contact_phone_number: formData.get('contactPersonPhoneNumber'),
-        delivery_address: formData.get('deliveryAddress'),
-        start_date: formData.get('startDateTime'),
-        end_date: formData.get('endDateTime'),
-        bike_stock: JSON.parse(formData.get('selectedBikes')),
-        extra_info: formData.get('extraInfo'),
-        pickup: formData.get('pickup'),
-    });
-    return response.data || null;
-};
-
-/**
  * edits order data
  */
 const orderEditAction = async ({ request, params }) => {
@@ -238,6 +222,10 @@ const orderEditAction = async ({ request, params }) => {
     return null;
 }
 */
+
+//
+//
+// admin bing bings
 
 const orderDeleteAction = async ({ params }) => {
     await ordersApi.ordersDestroy(params.id);
@@ -404,6 +392,90 @@ const adminUserAddressCreateAction = async ({ request, params }) => {
 };
 
 /**
+ * deletes or modifies a bulletin
+ */
+const adminBulletinsAction = async ({ request, params }) => {
+    const formData = await request.formData();
+
+    if (request.method === 'DELETE') {
+        const response = await bulletinsApi.bulletinsDestroy(formData.get('id'));
+        if (response.status === 204) {
+            return { type: 'bulletindelete', status: true };
+        }
+        return { type: 'bulletindelete', status: false };
+    }
+
+    if (request.method === 'PUT') {
+        const response = await bulletinsApi.bulletinsUpdate(params.id, {
+            title: formData.get('title'),
+            content: formData.get('content'),
+        });
+
+        if (response.status === 200) {
+            return { type: 'bulletinedit', status: true };
+        }
+        return { type: 'bulletinedit', status: false };
+    }
+
+    return null;
+};
+
+/**
+ * create a new bulletin post
+ */
+const createBulletinAction = async ({ request }) => {
+    const formData = await request.formData();
+    const response = await bulletinsApi.bulletinsCreate(Object.fromEntries(formData.entries()));
+
+    if (response.status === 201) {
+        return { type: 'bulletincreate', status: true };
+    }
+
+    return { type: 'bulletincreate', status: false };
+};
+
+/**
+ * Changes read state of message
+ * UPD: currently not used.
+ */
+const adminInboxAction = async ({ request }) => {
+    const formData = await request.formData();
+    const id = Number(formData.get('id'));
+
+    const response = await contactFormsApi.contactFormsUpdate(id, {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        subject: formData.get('subject'),
+        message: formData.get('message'),
+        status: formData.get('status'),
+    });
+
+    if (response.status === 200) {
+        return { type: 'markasread', status: true };
+    }
+
+    return { type: 'markasread', status: false };
+};
+
+const adminEmailRecipientsAction = async ({ request }) => {
+    const formData = await request.formData();
+    const recipient = formData.get('email');
+    const id = formData.get('id');
+
+    if (request.method === 'POST') {
+        await ordersApi.ordersEmailrecipientsCreate({ email: recipient });
+        return { type: 'emailrecipient', status: true };
+    }
+
+    if (request.method === 'DELETE') {
+        await ordersApi.ordersEmailrecipientsDestroy(id);
+        return { type: 'emailrecipient-del', status: true };
+    }
+
+    return { type: 'emailrecipient', status: false };
+};
+
+/**
  * creates a new item
  */
 
@@ -501,44 +573,26 @@ const confirmationAction = async ({ request }) => {
     return { type: 'orderCreated', status: false };
 };
 
+//
+//
+// bikes bling blings
+
 /**
- * sends email for resetting user password
+ * sends bike order form to back-end
  */
-
-const resetEmailAction = async (auth, setAuth, request) => {
+const bikeOrderAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/users/password/resetemail/', 'post', {
-    //     username: formData.get('username'),
-    // });
-    const response = await usersApi.usersPasswordResetemailCreate({
-        username: formData.get('username'),
+    const response = await bikesApi.bikesRentalCreate({
+        contact_name: formData.get('contactPersonName'),
+        contact_phone_number: formData.get('contactPersonPhoneNumber'),
+        delivery_address: formData.get('deliveryAddress'),
+        start_date: formData.get('startDateTime'),
+        end_date: formData.get('endDateTime'),
+        bike_stock: JSON.parse(formData.get('selectedBikes')),
+        extra_info: formData.get('extraInfo'),
+        pickup: formData.get('pickup'),
     });
-    if (response.status === 200) {
-        return { type: 'emailsent', status: true };
-    }
-    return { type: 'emailsent', status: false };
-};
-
-const resetPasswordAction = async (auth, setAuth, request) => {
-    const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, 'users/password/reset/', 'post', {
-    //     new_password: formData.get('new_password'),
-    //     new_password_again: formData.get('new_password_again'),
-    //     uid: formData.get('uid'),
-    //     token: formData.get('token'),
-    // });
-    const response = await usersApi.usersPasswordResetCreate({
-        new_password: formData.get('new_password'),
-        new_password_again: formData.get('new_password_again'),
-        uid: formData.get('uid'),
-        token: formData.get('token'),
-    });
-    if (response.status === 200) {
-        return { type: 'passwordreset', status: true };
-    } else if (response.status === 204) {
-        return { type: 'outdatedtoken', status: true };
-    }
-    return { type: 'passwordreset', status: false };
+    return response.data || null;
 };
 
 /**
@@ -662,6 +716,18 @@ const modifyBikePacketAction = async (request, params) => {
 };
 
 /**
+ * Delete a single bike
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} params
+ * @returns
+ */
+const deleteBikeAction = async (auth, setAuth, params) => {
+    await bikesApi.bikesStockDestroy(params.id);
+    return redirect('/pyorat/pyoravarasto/pyoralista');
+};
+
+/**
  * Create a new bike packet
  *
  * @param {*} request
@@ -693,68 +759,6 @@ const deletePacketAction = async (params) => {
     await updateBikesStockPacketOnlyFlag();
 
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
-};
-
-const activationAction = async (auth, setAuth, request) => {
-    const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/users/activate/', 'post', {
-    //     uid: formData.get('uid'),
-    //     token: formData.get('token'),
-    // });
-    const response = await usersApi.usersActivateCreate({
-        uid: formData.get('uid'),
-        token: formData.get('token'),
-    });
-    if (response.status === 200) {
-        return { type: 'userActivation', status: true };
-    }
-    return { type: 'userActivation', status: false };
-};
-
-const changeEmailAction = async (auth, setAuth, request) => {
-    const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/users/emailchange/', 'post', {
-    //     new_email: formData.get('newEmail'),
-    // });
-    const response = await usersApi.usersEmailchangeCreate({
-        new_email: formData.get('newEmail'),
-    });
-
-    if (response.status === 200) {
-        return { type: 'changeEmail', status: true };
-    }
-    return { type: 'changeEmail', status: false };
-};
-
-const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
-    const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/users/emailchange/finish/', 'post', {
-    //     uid: formData.get('uid'),
-    //     token: formData.get('token'),
-    //     new_email: formData.get('newEmail'),
-    // });
-    const response = await usersApi.usersEmailchangeFinishCreate({
-        uid: formData.get('uid'),
-        token: formData.get('token'),
-        new_email: formData.get('newEmail'),
-    });
-
-    if (response.status === 200) {
-        return { type: 'emailchangesuccessful', status: true };
-    }
-    return { type: 'emailchangesuccessful', status: false };
-};
-
-/**
- * Delete a single bike
- * @param {*} auth
- * @param {*} setAuth
- * @param {*} params
- * @returns
- */
-const deleteBikeAction = async (auth, setAuth, params) => {
-    await bikesApi.bikesStockDestroy(params.id);
-    return redirect('/pyorat/pyoravarasto/pyoralista');
 };
 
 /**
@@ -858,105 +862,32 @@ const createBikeModelAction = async (auth, setAuth, request) => {
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
 
-/**
- * deletes or modifies a bulletin
- */
-const adminBulletinsAction = async ({ request, params }) => {
-    const formData = await request.formData();
-
-    if (request.method === 'DELETE') {
-        const response = await bulletinsApi.bulletinsDestroy(formData.get('id'));
-        if (response.status === 204) {
-            return { type: 'bulletindelete', status: true };
-        }
-        return { type: 'bulletindelete', status: false };
-    }
-
-    if (request.method === 'PUT') {
-        const response = await bulletinsApi.bulletinsUpdate(params.id, {
-            title: formData.get('title'),
-            content: formData.get('content'),
-        });
-
-        if (response.status === 200) {
-            return { type: 'bulletinedit', status: true };
-        }
-        return { type: 'bulletinedit', status: false };
-    }
-
-    return null;
-};
-
-/**
- * create a new bulletin post
- */
-const createBulletinAction = async ({ request }) => {
-    const formData = await request.formData();
-    const response = await bulletinsApi.bulletinsCreate(Object.fromEntries(formData.entries()));
-
-    if (response.status === 201) {
-        return { type: 'bulletincreate', status: true };
-    }
-
-    return { type: 'bulletincreate', status: false };
-};
-
-/**
- * Changes read state of message
- * UPD: currently not used.
- */
-const adminInboxAction = async ({ request }) => {
-    const formData = await request.formData();
-    const id = Number(formData.get('id'));
-
-    const response = await contactFormsApi.contactFormsUpdate(id, {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        subject: formData.get('subject'),
-        message: formData.get('message'),
-        status: formData.get('status'),
-    });
-
-    if (response.status === 200) {
-        return { type: 'markasread', status: true };
-    }
-
-    return { type: 'markasread', status: false };
-};
-
-const adminEmailRecipientsAction = async ({ request }) => {
-    const formData = await request.formData();
-    const recipient = formData.get('email');
-    const id = formData.get('id');
-    console.log(id);
-
-    if (request.method === 'POST') {
-        await ordersApi.ordersEmailrecipientsCreate({ email: recipient });
-        return { type: 'emailrecipient', status: true };
-    }
-
-    if (request.method === 'DELETE') {
-        console.log('actionis', id);
-        await ordersApi.ordersEmailrecipientsDestroy(id);
-        return { type: 'emailrecipient-del', status: true };
-    }
-
-    return { type: 'emailrecipient', status: false };
-};
+//
+//
+// user ting tings
 
 const userAccountPageAction = async ({ request }) => {
     const formData = await request.formData();
 
-    const response = await userApi.userUpdate({
-        first_name: formData.get('first_name'),
-        last_name: formData.get('last_name'),
-        phone_number: formData.get('phone_number'),
-    });
-
-    if (response.status === 200) {
-        return { type: 'userinfoupdated', status: true };
+    if (request.method === 'POST') {
+        await usersApi.usersLogoutCreate();
+        return redirect('/');
     }
-    return { type: 'userinfoupdated', status: false };
+
+    if (request.method === 'PUT') {
+        const response = await userApi.userUpdate({
+            first_name: formData.get('first_name'),
+            last_name: formData.get('last_name'),
+            phone_number: formData.get('phone_number'),
+        });
+
+        if (response.status === 200) {
+            return { type: 'userinfoupdated', status: true };
+        }
+        return { type: 'userinfoupdated', status: false };
+    }
+
+    return null;
 };
 
 const userAddressEditAction = async ({ request, params }) => {
@@ -992,6 +923,79 @@ const userAddressCreateAction = async ({ request }) => {
     }
 
     return { type: 'addresscreate', status: false };
+};
+
+const activationAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+
+    const response = await usersApi.usersActivateCreate({
+        uid: formData.get('uid'),
+        token: formData.get('token'),
+    });
+    if (response.status === 200) {
+        return { type: 'userActivation', status: true };
+    }
+    return { type: 'userActivation', status: false };
+};
+
+const changeEmailAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+
+    const response = await usersApi.usersEmailchangeCreate({
+        new_email: formData.get('newEmail'),
+    });
+
+    if (response.status === 200) {
+        return { type: 'changeEmail', status: true };
+    }
+    return { type: 'changeEmail', status: false };
+};
+
+const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+
+    const response = await usersApi.usersEmailchangeFinishCreate({
+        uid: formData.get('uid'),
+        token: formData.get('token'),
+        new_email: formData.get('newEmail'),
+    });
+
+    if (response.status === 200) {
+        return { type: 'emailchangesuccessful', status: true };
+    }
+    return { type: 'emailchangesuccessful', status: false };
+};
+
+/**
+ * sends email for resetting user password
+ */
+const resetEmailAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+
+    const response = await usersApi.usersPasswordResetemailCreate({
+        username: formData.get('username'),
+    });
+    if (response.status === 200) {
+        return { type: 'emailsent', status: true };
+    }
+    return { type: 'emailsent', status: false };
+};
+
+const resetPasswordAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+
+    const response = await usersApi.usersPasswordResetCreate({
+        new_password: formData.get('new_password'),
+        new_password_again: formData.get('new_password_again'),
+        uid: formData.get('uid'),
+        token: formData.get('token'),
+    });
+    if (response.status === 200) {
+        return { type: 'passwordreset', status: true };
+    } else if (response.status === 204) {
+        return { type: 'outdatedtoken', status: true };
+    }
+    return { type: 'passwordreset', status: false };
 };
 
 export {
