@@ -17,12 +17,12 @@ import {
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 import AlertBox from '../../AlertBox';
+import HeroText from '../../HeroText';
+import TypographyHeading from '../../TypographyHeading';
 
 import type { userInfoLoader } from '../../../Router/loaders';
+import type { userAccountPageAction } from '../../../Router/actions';
 import type { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
-
-import TypographyHeading from '../../TypographyHeading';
-import HeroText from '../../HeroText';
 
 interface FormData extends SubmitHandler<FieldValues> {
     [key: string]: string | null;
@@ -34,11 +34,6 @@ interface FormData extends SubmitHandler<FieldValues> {
     userAddress: string;
 }
 
-interface ResponseStatus {
-    type: string;
-    status: number;
-}
-
 type SubmitTarget =
     | HTMLFormElement
     | {
@@ -46,23 +41,25 @@ type SubmitTarget =
       }
     | null;
 
+const groupNames = {
+    user_group: 'oikeus tilata tuotteita',
+    admin_group: 'ylläpitäjän oikeudet',
+    storage_group: 'varastotyöntekijän oikeudet',
+    bicycle_group: 'oikeus tilata pyöriä',
+};
+
 function UserAccountInfo() {
     const { userInfo } = useRouteLoaderData('account') as Awaited<ReturnType<typeof userInfoLoader>>;
-    // console.log(userInfo);
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof userAccountPageAction>>;
 
-    const creationDateInfo = [];
-    const creationDate = new Date(userInfo.creation_date);
-    creationDateInfo.push(creationDate.toLocaleDateString('fi-FI'));
-    creationDateInfo.push(creationDate.toLocaleTimeString('fi-FI'));
+    const creationDate = new Date(userInfo.creation_date).toLocaleDateString('fi-FI');
 
     const lastLoginDateInfo = [];
     const lastLoginDate = new Date(userInfo.last_login!);
     lastLoginDateInfo.push(lastLoginDate.toLocaleDateString('fi-FI'));
     lastLoginDateInfo.push(lastLoginDate.toLocaleTimeString('fi-FI'));
 
-    const userGroups = userInfo.groups.map((group) => group.name);
-
-    const responseStatus = useActionData() as ResponseStatus;
+    const userGroups = userInfo.groups.map((group) => groupNames[group.name as keyof typeof groupNames]).join(', ');
 
     const {
         register,
@@ -89,33 +86,34 @@ function UserAccountInfo() {
         reset(formData);
     };
 
+    const onClickLogOut = () => {
+        submit(null, {
+            method: 'post',
+            action: '/',
+        });
+    };
+
     return (
         <>
-            {responseStatus?.status && <AlertBox text="Käyttäjätiedot päivitetty onnistuneesti." status="success" />}
+            {responseStatus?.status && responseStatus.type === 'userinfoupdated' && (
+                <AlertBox text="Käyttäjätiedot päivitetty onnistuneesti." status="success" />
+            )}
 
             <Container id="acc-info-container" maxWidth="md">
-                <HeroText title={`Hei, ${userInfo.username}`} />
-                <Box id="user-common-info" sx={{ margin: '1rem 0 1rem 0' }}>
-                    <Typography>Käyttäjänimi: {userInfo.username}</Typography>
-                    <Typography>Tilin sähköposti: {userInfo.email}</Typography>
+                <HeroText
+                    title={`Hei, ${userInfo.username}`}
+                    subtext2={
+                        userInfo.last_login
+                            ? `Kirjauduit viimeksi ${lastLoginDateInfo[0]} kello ${lastLoginDateInfo[1]}`
+                            : 'Tervetuloa tilin hallinnointi-sivulle.'
+                    }
+                />
+                <Box id="user-common-info">
+                    <Typography variant="body2">Käyttäjänimi: {userInfo.username}</Typography>
+                    <Typography variant="body2">Tilin sähköposti: {userInfo.email}</Typography>
+                    <Typography variant="body2">Rekisteröitymispäivämäärä: {creationDate}</Typography>
                     <Divider sx={{ margin: '1rem 0 1rem 0' }} />
-                    <Typography>Tilillä on seuraavat käyttöoikeudet. {userGroups}</Typography>
-                    <Divider sx={{ margin: '1rem 0 1rem 0' }} />
-                    <Typography>
-                        Viimeisin sisäänkirjautuminen:{' '}
-                        {userInfo.last_login ? `${lastLoginDateInfo[0]} / ${lastLoginDateInfo[1]}` : 'Ei koskaan'}
-                    </Typography>
-                    <Typography>
-                        Rekisteröitymisaika: {creationDateInfo[0]} / {creationDateInfo[1]}
-                    </Typography>
-                    {/* <Stack direction="row" sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography>Tili aktivoitu: </Typography>
-                        {userInfo.is_active ? (
-                            <CheckCircleOutlineIcon color="success" fontSize="small" sx={{ marginLeft: '0.4rem' }} />
-                        ) : (
-                            <DoNotDisturbIcon color="error" fontSize="small" sx={{ marginLeft: '0.4rem' }} />
-                        )}
-                    </Stack> */}
+                    <Typography variant="body2">Tilillä on {userGroups}</Typography>
                 </Box>
 
                 <Box id="user-edit-form-component" component={Form} onSubmit={handleSubmit(onSubmit as FormData)}>
@@ -246,14 +244,11 @@ function UserAccountInfo() {
                             Salasanan vaihto
                         </Button>
 
-                        <Button variant="text" component={Link} to="/salasananvaihto">
-                            Salasana unohtunut?
+                        <Button id="logout-btn" variant="outlined" onClick={onClickLogOut}>
+                            Kirjaudu ulos
                         </Button>
                     </Stack>
                 </Stack>
-                {/* <Button size="small" sx={{ margin: '1rem 0 1rem 0' }}>
-                    Kirjaudu ulos järjestelmästä
-                </Button> */}
             </Container>
         </>
     );

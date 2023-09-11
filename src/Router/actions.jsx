@@ -158,8 +158,8 @@ const orderEditAction = async ({ request, params }) => {
 
     const submission = {
         id: formData.get('orderId'),
-        contact: formData.get('contact'),
-        phone_number: formData.get('phoneNumber'),
+        recipient: formData.get('recipient'),
+        recipient_phone_number: formData.get('recipient_phone_number'),
         delivery_address: formData.get('deliveryAddress'),
         status: formData.get('status'),
         order_info: formData.get('orderInfo'),

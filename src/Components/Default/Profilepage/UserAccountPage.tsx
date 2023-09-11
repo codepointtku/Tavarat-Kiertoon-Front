@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Link, Outlet, useSubmit } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
-import { Grid, Tabs, Tab, Button, Container } from '@mui/material';
+import { Grid, Tabs, Tab, Container } from '@mui/material';
 
 import PersonPinIcon from '@mui/icons-material/PersonPin';
+// import AutoStoriesIcon from '@mui/icons-material/AutoStories'; // book
+// import ManageSearchIcon from '@mui/icons-material/ManageSearch'; // spying glass
 
 function UserAccountPage() {
     const url = window.location.href;
@@ -26,13 +28,6 @@ function UserAccountPage() {
         setValue(newSection);
     }
 
-    const submit = useSubmit();
-    const onClickLogOut = () => {
-        submit(null, {
-            method: 'post',
-        });
-    };
-
     return (
         <Container
             id="acc-page-main-wrapper"
@@ -40,21 +35,27 @@ function UserAccountPage() {
             sx={{ border: '0.1rem solid #bfe6f6', borderRadius: '0.5rem', padding: '1rem 0 1rem 0', mb: '2rem' }}
         >
             <Grid id="acc-page-header" container alignItems="center">
-                <Grid item xs={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+                <Grid
+                    id="icon-container"
+                    item
+                    xs={1}
+                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}
+                >
                     <PersonPinIcon sx={{ fontSize: 48, color: 'primary.main' }} />
                 </Grid>
-                <Grid item xs={8} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Grid
+                    id="tabs-container"
+                    item
+                    xs={10}
+                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >
                     <Tabs value={value} onChange={handleSectionChange} centered>
                         <Tab component={Link} to="" value="userInfo" label="Käyttäjätiedot" />
                         <Tab component={Link} to="tilaukset" value="activeOrders" label="Aktiiviset tilaukset" />
                         <Tab component={Link} to="tilaushistoria" value="orderHistory" label="Tilaushistoria" />
                     </Tabs>
                 </Grid>
-                <Grid item xs={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                    <Button id="logout-btn" variant="outlined" onClick={onClickLogOut}>
-                        Kirjaudu ulos
-                    </Button>
-                </Grid>
+                <Grid id="spacer" item xs={1} />
             </Grid>
             <div id="router-outlet-container">
                 <Outlet />
