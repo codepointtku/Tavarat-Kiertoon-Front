@@ -2,16 +2,22 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { useStateMachine } from 'little-state-machine';
+
 import { Typography, TextField, Grid, MenuItem, Box, Button, Stack } from '@mui/material';
+
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import PhoneIcon from '@mui/icons-material/Phone';
 
 import CartButtons from './CartButtons';
 import Update from './Update';
 
+import TypographyTitle from '../../TypographyTitle';
+import TypographyHeading from '../../TypographyHeading';
+
 import type { shoppingProcessLoader } from '../../../Router/loaders';
 import type { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
 
-import TypographyTitle from '../../TypographyTitle';
-import TypographyHeading from '../../TypographyHeading';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { isWeekend, isPast, parse, format, isValid } from 'date-fns';
@@ -38,11 +44,23 @@ export type StateMachineActions = {
 
 function ContactsAndDelivery() {
     const user = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
-    // const [selectedAddress, setSelectedAddress] = useState(
-    //     Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
-    //         ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryAddress
-    //         : user.address_list[0]?.address || ''
-    // );
+
+    const [selectedAddress, setSelectedAddress] = useState(
+        Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
+            ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryAddress
+            : user.address_list[0]?.address || ''
+    );
+
+    const correctAddress = user.address_list?.filter(
+        (address: { address: string }) => address.address === selectedAddress
+    );
+
+    const [optAddressList, setOptAddressList] = useState(false);
+
+    const handleAddressSelection = () => {
+        setOptAddressList(!optAddressList);
+    };
+
     const [selectedMethod, setSelectedMethod] = useState(
         Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
             ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryRequired
@@ -61,9 +79,7 @@ function ContactsAndDelivery() {
     };
     const hd = new Holidays('FI');
     const finnishHolidays = hd.getHolidays();
-    // const correctAddress = user.address_list?.filter(
-    //     (address: { address: string }) => address.address === selectedAddress
-    // );
+
     const {
         register,
         handleSubmit,
@@ -77,17 +93,17 @@ function ContactsAndDelivery() {
             firstName: state.firstName ? state.firstName : '',
             lastName: state.lastName ? state.lastName : '',
             // email: state.email ? state.email : '',
-            recipient: 'homo',
+            recipient: '',
             // phoneNumber: state.phoneNumber ? state.phoneNumber : '',
-            recipient_phone_number: '123',
+            recipient_phone_number: '',
             // deliveryAddress: state.deliveryAddress ? state.deliveryAddress : correctAddress[0].address,
-            deliveryAddress: 'votti',
+            deliveryAddress: '',
             // zipcode: state.zipcode ? state.zipcode : correctAddress[0].zip_code,
             // zipcode: '12312',
             // city: state.city ? state.city : correctAddress[0].city,
             // city: 'pasq',
             // deliveryRequired: state.deliveryRequired ? state.deliveryRequired : 'true',
-            deliveryRequired: 'true',
+            deliveryRequired: 'false',
             fetchDate: state.fetchDate ? state.fetchDate : currentDate,
             orderInfo: state.orderInfo ? state.orderInfo : '',
         },
@@ -173,24 +189,22 @@ function ContactsAndDelivery() {
             >
                 <Stack>
                     <TypographyTitle text="Tilaajan yhteystiedot" />
-                    <Grid container direction="row" gap={2} sx={{ mt: '1rem' }}>
+                    <Stack direction="row" gap={4} sx={{ mt: '1rem' }}>
                         <Stack direction="row" gap={1}>
-                            <Typography variant="h6">Etunimi:</Typography>
-                            <Typography sx={{ display: 'flex', alignSelf: 'center' }}>{user.first_name}</Typography>
+                            <AccountCircleOutlinedIcon color="primary" />
+                            <Typography aria-label="orderer username">
+                                {user.first_name} {user.last_name}
+                            </Typography>
                         </Stack>
                         <Stack direction="row" gap={1}>
-                            <Typography variant="h6">Sukunimi:</Typography>
-                            <Typography sx={{ display: 'flex', alignSelf: 'center' }}> {user.last_name}</Typography>
+                            <MailOutlineIcon color="primary" />
+                            <Typography aria-label="orderer user email">{user.email}</Typography>
                         </Stack>
                         <Stack direction="row" gap={1}>
-                            <Typography variant="h6">Sähköposti: </Typography>
-                            <Typography sx={{ display: 'flex', alignSelf: 'center' }}>{user.email}</Typography>
+                            <PhoneIcon color="primary" />
+                            <Typography aria-label="orderer users phonenumber">{user.phone_number}</Typography>
                         </Stack>
-                        <Stack direction="row" gap={1}>
-                            <Typography variant="h6">Puh. numero: </Typography>
-                            <Typography sx={{ display: 'flex', alignSelf: 'center' }}>{user.phone_number}</Typography>
-                        </Stack>
-                    </Grid>
+                    </Stack>
                 </Stack>
             </Box>
 
@@ -213,202 +227,182 @@ function ContactsAndDelivery() {
                     <Grid item xs={4} />
                 </Grid>
 
-                <Grid id="receiver-input-fields-grid-container" container spacing={2} mb="2rem">
-                    {/* <Grid item>
-                        <TextField
-                            label="Etunimi"
-                            placeholder="Etunimi"
-                            variant="outlined"
-                            InputLabelProps={{ shrink: true }}
-                            {...register('firstName', {
-                                required: 'Tämä kenttä on täytettävä',
-                                maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
-                            })}
-                            error={!!errors.firstName}
-                            helperText={errors.firstName?.message?.toString() || ' '}
-                            inputProps={{ required: false }}
-                            required
-                        />
-                    </Grid>
-                    <Grid item>
-                        <TextField
-                            label="Sukunimi"
-                            placeholder="Sukunimi"
-                            variant="outlined"
-                            InputLabelProps={{ shrink: true }}
-                            {...register('lastName', {
-                                required: 'Tämä kenttä on täytettävä',
-                                maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
-                            })}
-                            error={!!errors.lastName}
-                            helperText={errors.lastName?.message?.toString() || ' '}
-                            inputProps={{ required: false }}
-                            required
-                        />
-                    </Grid> */}
-                    <Grid item>
-                        <TextField
-                            label="Vastaanottaja"
-                            placeholder="Vastaanottajan nimi"
-                            variant="outlined"
-                            InputLabelProps={{ shrink: true }}
-                            {...register('recipient', {
-                                maxLength: { value: 50, message: 'Sisältö on liian pitkä' },
-                            })}
-                            error={!!errors.recipient}
-                            helperText={errors.recipient?.message?.toString() || ' '}
-                            required
-                        />
-                    </Grid>
-                    <Grid item>
-                        <TextField
-                            label="Vastaanottajan puhelinnumero"
-                            placeholder="Puhelinnumero"
-                            variant="outlined"
-                            InputLabelProps={{ shrink: true }}
-                            {...register('recipient_phone_number', {
-                                required: 'Tämä kenttä on täytettävä',
-                                pattern: { value: /^[0-9]+$/, message: 'Sisällön täytyy koostua vain numeroista' },
-                                maxLength: { value: 11, message: 'Numerosarja on liian pitkä' },
-                            })}
-                            error={!!errors.recipient_phone_number}
-                            helperText={errors.recipient_phone_number?.message?.toString() || ' '}
-                            inputProps={{ required: false }}
-                            required
-                        />
-                    </Grid>
-                </Grid>
+                <Stack id="receiver-input-fields-container" direction="row" gap={2} mb="2rem">
+                    <TextField
+                        label="Vastaanottaja"
+                        placeholder="Vastaanottajan nimi"
+                        variant="outlined"
+                        InputLabelProps={{ shrink: true }}
+                        {...register('recipient', {
+                            maxLength: { value: 50, message: 'Sisältö on liian pitkä' },
+                        })}
+                        error={!!errors.recipient}
+                        helperText={errors.recipient?.message?.toString() || ' '}
+                        required
+                    />
+
+                    <TextField
+                        label="Vastaanottajan puhelinnumero"
+                        placeholder="Puhelinnumero"
+                        variant="outlined"
+                        InputLabelProps={{ shrink: true }}
+                        {...register('recipient_phone_number', {
+                            required: 'Tämä kenttä on täytettävä',
+                            pattern: { value: /^[0-9]+$/, message: 'Sisällön täytyy koostua vain numeroista' },
+                            maxLength: { value: 11, message: 'Numerosarja on liian pitkä' },
+                        })}
+                        error={!!errors.recipient_phone_number}
+                        helperText={errors.recipient_phone_number?.message?.toString() || ' '}
+                        inputProps={{ required: false }}
+                        required
+                    />
+                </Stack>
 
                 {/* //// */}
 
                 <TypographyHeading text="Toimitusosoitetiedot" />
-                <Grid id="delivery-fields-grid-container" container margin="2rem 0 1rem 0">
-                    <Grid item mr="1rem">
+                <Stack id="delivery-fields-grid-container" direction="row" gap={2} margin="2rem 0 1rem 0">
+                    <TextField
+                        {...register('deliveryRequired')}
+                        label="Toimitustapa"
+                        variant="outlined"
+                        value={selectedMethod}
+                        onChange={(SelectChangeEvent) => {
+                            setSelectedMethod(SelectChangeEvent.target.value);
+                        }}
+                        select
+                        error={!!errors.deliveryRequired}
+                        helperText={errors.deliveryRequired?.message?.toString()}
+                        inputProps={{ required: false }}
+                        required
+                    >
+                        <MenuItem value="true">Kuljetus</MenuItem>
+                        <MenuItem value="false">Nouto</MenuItem>
+                    </TextField>
+
+                    {selectedMethod === 'true' && !optAddressList && (
+                        <>
+                            <TextField
+                                label="Toimitusosoite"
+                                variant="outlined"
+                                {...register('deliveryAddress', {
+                                    required: 'Tämä kenttä on täytettävä',
+                                    maxLength: { value: 80, message: 'Sisältö on liian pitkä' },
+                                })}
+                                inputProps={{ required: false }}
+                                error={!!errors.deliveryAddress}
+                                helperText={
+                                    errors.deliveryAddress?.message?.toString() ||
+                                    'Voit syöttää tähän katuosoitteen postinumeroineen päivineen'
+                                }
+                                required
+                            />
+                            <Button onClick={handleAddressSelection}>tai valitse osoitelistasta</Button>
+                        </>
+                    )}
+
+                    {selectedMethod === 'true' && optAddressList && (
                         <TextField
                             label="Toimitusosoite"
                             variant="outlined"
-                            // value={selectedAddress}
+                            value={selectedAddress}
                             {...register('deliveryAddress', {
                                 required: 'Tämä kenttä on täytettävä',
-                                maxLength: { value: 50, message: 'Sisältö on liian pitkä' },
+                                maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
                             })}
-                            // onChange={(SelectChangeEvent) => {
-                            //     setSelectedAddress(SelectChangeEvent.target.value);
-                            // }}
+                            onChange={(SelectChangeEvent) => {
+                                setSelectedAddress(SelectChangeEvent.target.value);
+                            }}
                             inputProps={{ required: false }}
                             error={!!errors.deliveryAddress}
-                            helperText={
-                                errors.deliveryAddress?.message?.toString() ||
-                                'Voit syöttää tähän katuosoitteen postinumeroineen päivineen'
-                            }
-                            fullWidth
-                            // select
+                            helperText={errors.deliveryAddress?.message?.toString()}
+                            select
                             required
-                        />
-                        {/* {user.address_list?.map((a: { address: string; id: number }) => (
+                        >
+                            {user.address_list?.map((a: { address: string; id: number }) => (
                                 <MenuItem value={a.address} key={a.id}>
                                     {a.address}
                                 </MenuItem>
-                            ))} */}
-                        {/* </TextField> */}
-                    </Grid>
-                    {/* {selectedAddress && ( */}
-                    {/* // <> */}
-                    {/* <Grid item mr="1rem">
-                        <TextField
-                            label="Postinumero"
-                            variant="outlined"
-                            // value={correctAddress[0]?.zip_code}
-                            {...register('zipcode')}
-                            // sx={{ opacity: 0.7 }}
-                            // disabled
-                        />
-                    </Grid> */}
-                    {/* <Grid item mr="1rem">
-                        <TextField
-                            label="Kaupunki"
-                            variant="outlined"
-                            // value={correctAddress[0]?.city}
-                            {...register('city')}
-                            // sx={{ opacity: 0.7 }}
-                            // disabled
-                        />
-                    </Grid> */}
-                    {/* </> */}
-                    {/* // )} */}
-                    <Grid item xs={2} mr="1rem">
-                        <TextField
-                            {...register('deliveryRequired')}
-                            label="Toimitustapa"
-                            variant="outlined"
-                            value={selectedMethod}
-                            onChange={(SelectChangeEvent) => {
-                                setSelectedMethod(SelectChangeEvent.target.value);
-                            }}
-                            fullWidth
-                            select
-                            error={!!errors.deliveryRequired}
-                            helperText={errors.deliveryRequired?.message?.toString() || ' '}
-                            inputProps={{ required: false }}
-                            required
-                        >
-                            <MenuItem value="true">Kuljetus</MenuItem>
-                            <MenuItem value="false">Nouto</MenuItem>
+                            ))}
                         </TextField>
-                    </Grid>
+                    )}
+
+                    {optAddressList && selectedAddress && (
+                        <Stack direction="row" gap={2}>
+                            <TextField
+                                label="Postinumero"
+                                variant="outlined"
+                                value={correctAddress[0]?.zip_code}
+                                // {...register('zipcode')}
+                                sx={{ opacity: 0.7 }}
+                                disabled
+                            />
+
+                            <TextField
+                                label="Kaupunki"
+                                variant="outlined"
+                                value={correctAddress[0]?.city}
+                                // {...register('city')}
+                                sx={{ opacity: 0.7 }}
+                                disabled
+                            />
+                            <Button variant="outlined" onClick={handleAddressSelection}>
+                                Kirjoita osoite manuaalisesti
+                            </Button>
+                        </Stack>
+                    )}
+                    {/* huomenta, hommat jatkuu */}
                     {selectedMethod === 'false' && (
-                        <Grid item>
-                            <LocalizationProvider adapterLocale={fi} dateAdapter={AdapterDateFns}>
-                                <DatePicker
-                                    label="Noutoaika"
-                                    value={fetchDate}
-                                    onChange={(value) => handleDateChange(value as Date)}
-                                    renderInput={(props) => (
-                                        <TextField
-                                            {...props}
-                                            {...register('fetchDate', {
-                                                required: 'Noutoa ei voi valita tilauspäiväksi.',
-                                                validate: (dateString) => {
-                                                    const date = parse(String(dateString), 'd.M.yyyy', new Date());
-                                                    return !disableDate(date);
-                                                },
-                                                pattern: {
-                                                    value: /^([1-9]|0[1-9]|[12][0-9]|3[01])[-.]([1-9]|0[1-9]|1[012])[-.](19|20)\d\d$/,
-                                                    message: 'Sisällön täytyy olla muotoa p.k.vvvv',
-                                                },
-                                            })}
-                                            autoFocus
-                                            error={
-                                                (dateErrorObj?.message !== 'Noutoajat ma-pe 9-16' ||
-                                                    errors.fetchDate?.type === 'required' ||
-                                                    errors.fetchDate?.type === 'pattern') &&
-                                                !!errors.fetchDate
-                                            }
-                                            helperText={
-                                                errors.fetchDate?.message?.toString() ||
-                                                dateErrorObj?.message ||
-                                                'Noutoajat ma-pe 9-16'
-                                            }
-                                        />
-                                    )}
-                                    shouldDisableDate={disableDate}
-                                    maxDate={new Date(maxDate)}
-                                    PaperProps={{
-                                        sx: {
-                                            '& .MuiPickersDay-root': {
-                                                '&.Mui-disabled': {
-                                                    opacity: 0.5,
-                                                },
+                        <LocalizationProvider adapterLocale={fi} dateAdapter={AdapterDateFns}>
+                            <DatePicker
+                                label="Noutoaika"
+                                value={fetchDate}
+                                onChange={(value) => handleDateChange(value as Date)}
+                                renderInput={(props) => (
+                                    <TextField
+                                        {...props}
+                                        {...register('fetchDate', {
+                                            required: 'Noutoa ei voi valita tilauspäiväksi.',
+                                            validate: (dateString) => {
+                                                const date = parse(String(dateString), 'd.M.yyyy', new Date());
+                                                return !disableDate(date);
+                                            },
+                                            pattern: {
+                                                value: /^([1-9]|0[1-9]|[12][0-9]|3[01])[-.]([1-9]|0[1-9]|1[012])[-.](19|20)\d\d$/,
+                                                message: 'Sisällön täytyy olla muotoa p.k.vvvv',
+                                            },
+                                        })}
+                                        autoFocus
+                                        error={
+                                            (dateErrorObj?.message !== 'Noutoajat ma-pe 9-16' ||
+                                                errors.fetchDate?.type === 'required' ||
+                                                errors.fetchDate?.type === 'pattern') &&
+                                            !!errors.fetchDate
+                                        }
+                                        helperText={
+                                            errors.fetchDate?.message?.toString() ||
+                                            dateErrorObj?.message ||
+                                            'Noutoajat ma-pe 9-16'
+                                        }
+                                    />
+                                )}
+                                shouldDisableDate={disableDate}
+                                maxDate={new Date(maxDate)}
+                                PaperProps={{
+                                    sx: {
+                                        '& .MuiPickersDay-root': {
+                                            '&.Mui-disabled': {
+                                                opacity: 0.5,
                                             },
                                         },
-                                    }}
-                                    disablePast
-                                    disableMaskedInput
-                                />
-                            </LocalizationProvider>
-                        </Grid>
+                                    },
+                                }}
+                                disablePast
+                                disableMaskedInput
+                            />
+                        </LocalizationProvider>
                     )}
-                </Grid>
+                </Stack>
             </Box>
             {/* ////// */}
             <TypographyTitle text="Lisätietoja / Viesti" />
