@@ -78,12 +78,12 @@ import Activation from '../Components/Default/Signup/Activation';
 import EmailChangeSuccessful from '../Components/EmailChangeSuccessful';
 import ChangeEmail from '../Components/ChangeEmail';
 
-import UserAccountPage from '../Components/Default/Profilepage/UserAccountPage';
-import OrderPage from '../Components/Default/Profilepage/OrderPage';
-import UserAccountInfo from '../Components/Default/Profilepage/UserAccountInfo';
-import AddressEdit from '../Components/Default/Profilepage/AddressEdit';
-import OrdersHistory from '../Components/Default/Profilepage/OrdersHistory';
-import OrdersActive from '../Components/Default/Profilepage/OrdersActive';
+import UserAccountPage from '../Components/Default/Accountpage/UserAccountPage';
+import OrderPage from '../Components/Default/Accountpage/OrderPage';
+import UserAccountInfo from '../Components/Default/Accountpage/UserAccountInfo';
+import AddressEdit from '../Components/Default/Accountpage/AddressEdit';
+import OrdersHistory from '../Components/Default/Accountpage/OrdersHistory';
+import OrdersActive from '../Components/Default/Accountpage/OrdersActive';
 
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
@@ -195,7 +195,7 @@ import {
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
-import AddressCreate from '../Components/Default/Profilepage/AddressCreate';
+import AddressCreate from '../Components/Default/Accountpage/AddressCreate';
 
 createStore({});
 
