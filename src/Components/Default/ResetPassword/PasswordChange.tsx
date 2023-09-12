@@ -3,22 +3,23 @@ import { useSubmit, useActionData } from 'react-router-dom';
 
 import { Typography, Box, Container, TextField, Button, Alert, Avatar, AlertTitle, Grid } from '@mui/material';
 import KeyIcon from '@mui/icons-material/Key';
-import BackButton from '../../BackButton';
-import TypographyTitle from '../../TypographyTitle';
 
-interface ResponseStatus {
-    type: string;
-    status: boolean;
-}
+import HeroHeader from '../../HeroHeader';
+import HeroText from '../../HeroText';
+
+import type { resetEmailAction } from '../../../Router/actions';
+import TypographyHeading from '../../TypographyHeading';
 
 function PasswordChange() {
-    const submit = useSubmit();
-    const responseStatus = useActionData() as ResponseStatus;
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof resetEmailAction>>;
+
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
+
+    const submit = useSubmit();
 
     const onSubmit = (data: any) => {
         const { username } = data;
@@ -26,37 +27,12 @@ function PasswordChange() {
     };
 
     return (
-        <Container sx={{ border: '0.1rem solid #bfe6f6', borderRadius: '1rem', p: 5, mb: 5 }}>
-            <>
-                <Grid container>
-                    <Grid item xs={4}>
-                        <BackButton />
-                    </Grid>
-                    <Grid
-                        item
-                        xs={4}
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Avatar
-                            sx={{
-                                bgcolor: 'secondary.dark',
-                                width: 48,
-                                height: 48,
-                            }}
-                        >
-                            <KeyIcon fontSize="large" />
-                        </Avatar>
-                    </Grid>
-                    <Grid item xs={4} />
-                </Grid>
-                <Box sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
-                    <TypographyTitle text="Salasanan vaihto" />
-                </Box>
-            </>
+        <Container sx={{ border: '0.1rem solid #bfe6f6', borderRadius: '1rem', py: 3, my: 2 }}>
+            <HeroHeader Icon={<KeyIcon />} />
+            <HeroText
+                title="Salasanan vaihto"
+                text="Moro moro. Lähetämme syöttämääsi sähkäriin linkin, josta voit suorittaa tiliin liitetyn sähköpostin vaihdon."
+            />
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
                 {responseStatus?.status ? (
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -65,26 +41,22 @@ function PasswordChange() {
                         </Typography>
                     </Box>
                 ) : (
-                    <Box sx={{ width: 600 }}>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <Typography variant="h6" mb={2}>
-                                Syötä käyttäjänimi
-                            </Typography>
-                            <TextField
-                                label="Käyttäjänimi"
-                                {...register('username', { required: true, minLength: 4, maxLength: 40 })}
-                                fullWidth
-                            />
-                            {errors.username && (
-                                <Alert severity="error" sx={{ mt: 1, maxWidth: 300 }}>
-                                    <AlertTitle>Virheellinen syöte</AlertTitle>
-                                </Alert>
-                            )}
-                            <Button type="submit" sx={{ mt: 2, fontWeight: 'fontWeightMediumBold' }}>
-                                Lähetä salasanan palautuslinkki
-                            </Button>
-                        </form>
-                    </Box>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <TextField
+                            label="Käyttäjänimi"
+                            placeholder="Syötä uusi sähköpostiosoite"
+                            {...register('username', { required: true, minLength: 4, maxLength: 40 })}
+                            fullWidth
+                        />
+                        {errors.username && (
+                            <Alert severity="error" sx={{ mt: 1, maxWidth: 300 }}>
+                                <AlertTitle>Virheellinen syöte</AlertTitle>
+                            </Alert>
+                        )}
+                        <Button type="submit" sx={{ mt: 2, fontWeight: 'fontWeightMediumBold' }}>
+                            Lähetä salasanan palautuslinkki
+                        </Button>
+                    </form>
                 )}
             </Box>
         </Container>
