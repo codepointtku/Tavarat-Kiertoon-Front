@@ -46,7 +46,25 @@ function Confirmation() {
     const { id } = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
 
     const onSubmit = async () => {
-        const { recipient, deliveryAddress, recipient_phone_number, orderInfo, deliveryRequired, fetchDate } = state;
+        const { recipient, deliveryAddress, recipient_phone_number, orderInfo, deliveryRequired /* fetchDate */ } =
+            state;
+
+        if (deliveryAddress === '') {
+            submit(
+                {
+                    recipient,
+                    deliveryAddress: 'nouto', // creates a placeholder for backend
+                    recipient_phone_number,
+                    id: id.toString(),
+                    orderInfo,
+                    deliveryRequired,
+                    // fetchDate,
+                },
+                { method: 'post', action: '/ostoskori/vaihe3' }
+            );
+            return;
+        }
+
         submit(
             {
                 recipient,
@@ -55,7 +73,7 @@ function Confirmation() {
                 id: id.toString(),
                 orderInfo,
                 deliveryRequired,
-                fetchDate,
+                // fetchDate,
             },
             { method: 'post', action: '/ostoskori/vaihe3' }
         );
@@ -86,9 +104,6 @@ function Confirmation() {
                     >
                         <TypographyHeading text="Vastaanottajan yhteystiedot" />
                         <Stack spacing={2} padding={'1rem 1rem 1rem 1rem'}>
-                            {/* <Typography variant="subtitle1">
-                                {state.firstName} {state.lastName} halloo
-                            </Typography> */}
                             <Typography variant="subtitle1" {...register('recipient')}>
                                 {state.recipient}
                             </Typography>
@@ -98,14 +113,14 @@ function Confirmation() {
                         </Stack>
 
                         <TypographyHeading text="Toimitustiedot" />
-                        <Stack direction="row" spacing={'1rem'} padding={'1rem'}>
-                            <Typography variant="subtitle1">{state.deliveryAddress}</Typography>
-                            {/* <span>/</span> */}
-                            {/* <Typography variant="subtitle1">{state.zipcode}</Typography> */}
-                            {/* <span>/</span> */}
-                            {/* <Typography variant="subtitle1">{state.city}</Typography> */}
-                        </Stack>
-                        <Stack padding={'0rem 1rem 1rem 1rem'}>
+                        {state.deliveryRequired === 'true' ? (
+                            <Stack direction="row" spacing={'1rem'} padding={'1rem'}>
+                                <Typography variant="subtitle1">
+                                    {state.deliveryAddress} {state.zipcode} {state.city}
+                                </Typography>
+                            </Stack>
+                        ) : null}
+                        <Stack padding={'1rem 1rem 1rem 1rem'}>
                             <Typography variant="subtitle1">
                                 {state.deliveryRequired === 'true' ? 'Kuljetus' : `Nouto: ${state.fetchDate}`}
                             </Typography>

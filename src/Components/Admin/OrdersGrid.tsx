@@ -70,7 +70,18 @@ function OrdersGrid() {
                 }
             },
         },
-        { field: 'delivery_address', headerName: 'Toimitusosoite', flex: 2 },
+        {
+            field: 'delivery_address',
+            headerName: 'Toimitusosoite',
+            valueGetter: (params: GridValueGetterParams) => {
+                if (params.row.delivery_address === 'nouto') {
+                    return '-';
+                } else {
+                    return params.row.delivery_address;
+                }
+            },
+            flex: 2,
+        },
         { field: 'recipient', headerName: 'Vastaanottaja', flex: 1 },
         { field: 'recipient_phone_number', headerName: 'Puhelinnumero', flex: 1 },
         {

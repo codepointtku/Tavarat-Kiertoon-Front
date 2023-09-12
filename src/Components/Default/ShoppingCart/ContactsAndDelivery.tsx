@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { useStateMachine } from 'little-state-machine';
@@ -70,6 +70,7 @@ function ContactsAndDelivery() {
             ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryRequired
             : 'true'
     );
+
     const currentDate = new Date(Date.now());
     const [fetchDate, setFetchDate] = useState(
         Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
@@ -92,37 +93,32 @@ function ContactsAndDelivery() {
         getValues,
         clearErrors,
     } = useForm({
-        mode: 'onTouched',
+        mode: 'all',
         defaultValues: {
             firstName: state.firstName ? state.firstName : '',
             lastName: state.lastName ? state.lastName : '',
-            // email: state.email ? state.email : '',
             recipient: '',
-            // phoneNumber: state.phoneNumber ? state.phoneNumber : '',
             recipient_phone_number: '',
-            // deliveryAddress: state.deliveryAddress ? state.deliveryAddress : correctAddress[0].address,
             deliveryAddress: '',
-            // zipcode: state.zipcode ? state.zipcode : correctAddress[0].zip_code,
-            // zipcode: '12312',
-            // city: state.city ? state.city : correctAddress[0].city,
-            // city: 'pasq',
-            // deliveryRequired: state.deliveryRequired ? state.deliveryRequired : 'true',
-            deliveryRequired: 'false',
+            deliveryRequired: 'true',
             fetchDate: state.fetchDate ? state.fetchDate : currentDate,
             orderInfo: state.orderInfo ? state.orderInfo : '',
         },
     });
 
     const navigate = useNavigate();
+
     const onSubmit = (data: CartFormData) => {
         if (fetchDate.setHours(0, 0, 0, 0) === currentDate.setHours(0, 0, 0, 0) && selectedDeliveryMethod === 'false') {
+            console.log('mikäs tää on O_o');
             return null;
         }
+
         actions.Update(data);
         navigate('/ostoskori/vaihe3');
     };
 
-    function handleClick() {
+    function handleAutoFillInformation() {
         setValue('recipient', user.first_name + ' ' + user.last_name);
         setValue('recipient_phone_number', user.phone_number as string);
     }
@@ -219,7 +215,7 @@ function ContactsAndDelivery() {
                         <TypographyHeading text="Vastaanottaja sama kuin tilaaja?" />
                     </Grid>
                     <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button onClick={() => handleClick()}>Täytä tiedot samoina</Button>
+                        <Button onClick={() => handleAutoFillInformation()}>Täytä tiedot samoina</Button>
                     </Grid>
                     <Grid item xs={4} />
                 </Grid>
