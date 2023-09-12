@@ -51,6 +51,10 @@ function ContactsAndDelivery() {
             : user.address_list[0]?.address || ''
     );
 
+    const onDeliveryMethodFalse = () => {
+        setSelectedAddress('');
+    };
+
     const correctAddress = user.address_list?.filter(
         (address: { address: string }) => address.address === selectedAddress
     );
@@ -61,7 +65,7 @@ function ContactsAndDelivery() {
         setOptAddressList(!optAddressList);
     };
 
-    const [selectedMethod, setSelectedMethod] = useState(
+    const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
         Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
             ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryRequired
             : 'true'
@@ -111,7 +115,7 @@ function ContactsAndDelivery() {
 
     const navigate = useNavigate();
     const onSubmit = (data: CartFormData) => {
-        if (fetchDate.setHours(0, 0, 0, 0) === currentDate.setHours(0, 0, 0, 0) && selectedMethod === 'false') {
+        if (fetchDate.setHours(0, 0, 0, 0) === currentDate.setHours(0, 0, 0, 0) && selectedDeliveryMethod === 'false') {
             return null;
         }
         actions.Update(data);
@@ -119,16 +123,9 @@ function ContactsAndDelivery() {
     };
 
     function handleClick() {
-        // setValue('firstName', user.first_name);
-        // setValue('lastName', user.last_name);
         setValue('recipient', user.first_name + ' ' + user.last_name);
         setValue('recipient_phone_number', user.phone_number as string);
     }
-
-    // useEffect(() => {
-    //     setValue('zipcode', correctAddress[0]?.zip_code);
-    //     setValue('city', correctAddress[0]?.city);
-    // }, [selectedAddress, correctAddress, setValue]);
 
     function disableDate(date: Date) {
         const dateIsHoliday = finnishHolidays.some((holiday) => String(holiday.start) === String(date));
@@ -266,9 +263,9 @@ function ContactsAndDelivery() {
                         {...register('deliveryRequired')}
                         label="Toimitustapa"
                         variant="outlined"
-                        value={selectedMethod}
+                        value={selectedDeliveryMethod}
                         onChange={(SelectChangeEvent) => {
-                            setSelectedMethod(SelectChangeEvent.target.value);
+                            setSelectedDeliveryMethod(SelectChangeEvent.target.value);
                         }}
                         select
                         error={!!errors.deliveryRequired}
@@ -277,10 +274,13 @@ function ContactsAndDelivery() {
                         required
                     >
                         <MenuItem value="true">Kuljetus</MenuItem>
-                        <MenuItem value="false">Nouto</MenuItem>
+                        <MenuItem value="false" onClick={onDeliveryMethodFalse}>
+                            Nouto
+                        </MenuItem>
                     </TextField>
 
-                    {selectedMethod === 'true' && !optAddressList && (
+                    {selectedDeliveryMethod === 'true' && !optAddressList && (
+                        // free input text field
                         <>
                             <TextField
                                 label="Toimitusosoite"
@@ -291,17 +291,17 @@ function ContactsAndDelivery() {
                                 })}
                                 inputProps={{ required: false }}
                                 error={!!errors.deliveryAddress}
-                                helperText={
-                                    errors.deliveryAddress?.message?.toString() ||
-                                    'Voit syöttää tähän katuosoitteen postinumeroineen päivineen'
-                                }
+                                helperText={errors.deliveryAddress?.message?.toString() || ''}
                                 required
                             />
-                            <Button onClick={handleAddressSelection}>tai valitse osoitelistasta</Button>
+                            <Button variant="outlined" onClick={handleAddressSelection}>
+                                Valitse osoitelistasta
+                            </Button>
                         </>
                     )}
 
-                    {selectedMethod === 'true' && optAddressList && (
+                    {selectedDeliveryMethod === 'true' && optAddressList && (
+                        // address list selection
                         <TextField
                             label="Toimitusosoite"
                             variant="outlined"
@@ -351,8 +351,9 @@ function ContactsAndDelivery() {
                             </Button>
                         </Stack>
                     )}
+
                     {/* huomenta, hommat jatkuu */}
-                    {selectedMethod === 'false' && (
+                    {selectedDeliveryMethod === 'false' && (
                         <LocalizationProvider adapterLocale={fi} dateAdapter={AdapterDateFns}>
                             <DatePicker
                                 label="Noutoaika"
