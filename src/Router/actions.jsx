@@ -979,7 +979,7 @@ const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
 /**
  * sends email for resetting user password
  */
-const resetEmailAction = async (auth, setAuth, request) => {
+const resetEmailAction = async ({ request }) => {
     const formData = await request.formData();
 
     const response = await usersApi.usersPasswordResetemailCreate({

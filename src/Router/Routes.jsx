@@ -375,7 +375,7 @@ function Routes() {
                                 {
                                     path: 'salasananvaihto',
                                     element: <PasswordChange />,
-                                    action: async ({ request }) => resetEmailAction(auth, setAuth, request),
+                                    action: resetEmailAction,
                                 },
                                 {
                                     path: 'salasananpalautus',
