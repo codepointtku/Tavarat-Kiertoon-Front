@@ -365,7 +365,7 @@ function Routes() {
                                 {
                                     path: 'sahkopostinvaihto',
                                     element: <ChangeEmail />,
-                                    action: async ({ request }) => changeEmailAction(auth, setAuth, request),
+                                    action: changeEmailAction,
                                 },
                                 {
                                     path: 'emailvaihto/:uid/:token/:newEmail',

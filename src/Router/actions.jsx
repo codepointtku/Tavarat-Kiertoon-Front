@@ -948,7 +948,7 @@ const activationAction = async (auth, setAuth, request) => {
     return { type: 'userActivation', status: false };
 };
 
-const changeEmailAction = async (auth, setAuth, request) => {
+const changeEmailAction = async ({ request }) => {
     const formData = await request.formData();
 
     const response = await usersApi.usersEmailchangeCreate({
