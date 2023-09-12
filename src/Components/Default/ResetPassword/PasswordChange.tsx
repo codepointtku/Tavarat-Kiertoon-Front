@@ -11,7 +11,7 @@ interface ResponseStatus {
     status: boolean;
 }
 
-function ForgotPassword() {
+function PasswordChange() {
     const submit = useSubmit();
     const responseStatus = useActionData() as ResponseStatus;
     const {
@@ -91,4 +91,4 @@ function ForgotPassword() {
     );
 }
 
-export default ForgotPassword;
+export default PasswordChange;

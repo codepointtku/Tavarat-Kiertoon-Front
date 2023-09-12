@@ -90,7 +90,7 @@ import Bulletins from '../Components/Default/BulletinsPage';
 import DeliveryView from '../Components/DeliveryView';
 import BgInfo from '../Components/Default/BgInfo';
 
-import ForgotPassword from '../Components/Default/ResetPassword/ForgotPassword';
+import PasswordChange from '../Components/Default/ResetPassword/PasswordChange';
 import ResetPassword from '../Components/Default/ResetPassword/ResetPassword';
 import ResetSuccessful from '../Components/Default/ResetPassword/ResetSuccessful';
 import LinkExpired from '../Components/Default/ResetPassword/LinkExpired';
@@ -374,7 +374,7 @@ function Routes() {
                                 },
                                 {
                                     path: 'salasananvaihto',
-                                    element: <ForgotPassword />,
+                                    element: <PasswordChange />,
                                     action: async ({ request }) => resetEmailAction(auth, setAuth, request),
                                 },
                                 {
