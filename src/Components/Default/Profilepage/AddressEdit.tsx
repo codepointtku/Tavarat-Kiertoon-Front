@@ -53,6 +53,10 @@ function AddressEdit() {
         setAnchorEl(event.currentTarget);
     }
 
+    const handleAddressDelete = () => {
+        submit(null, { method: 'delete' });
+    };
+
     return (
         <>
             {responseStatus?.type === 'addressmodified' && responseStatus?.status && (
@@ -172,7 +176,7 @@ function AddressEdit() {
                             </Button>
                             <Button
                                 id="del-btn"
-                                /* type="submit" */ size="small"
+                                size="small"
                                 color="error"
                                 endIcon={<DeleteForeverIcon />}
                                 onClick={handlePopOverOpen}
@@ -195,7 +199,7 @@ function AddressEdit() {
                                     spacing="1rem"
                                 >
                                     <Typography variant="body2">Oletko varma?</Typography>
-                                    <Button size="small" variant="outlined" onClick={() => console.log('kaboom')}>
+                                    <Button size="small" variant="outlined" onClick={handleAddressDelete}>
                                         Kyllä
                                     </Button>
                                     <Button size="small" variant="outlined" onClick={() => setAnchorEl(null)}>
