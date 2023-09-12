@@ -926,7 +926,7 @@ const userAddressCreateAction = async ({ request }) => {
         zip_code: formData.get('zip_code'),
     };
 
-    const response = await userApi.userAddressEditCreate(newAddress);
+    const response = await userApi.userAddressCreate(newAddress);
 
     if (response.status === 200) {
         return { type: 'addresscreate', status: true };
