@@ -893,18 +893,28 @@ const userAccountPageAction = async ({ request }) => {
 const userAddressEditAction = async ({ request, params }) => {
     const formData = await request.formData();
 
-    const response = await userApi.userAddressEditUpdate({
-        address: formData.get('address'),
-        city: formData.get('city'),
-        zip_code: formData.get('zip_code'),
-        id: params.aid,
-    });
+    if (request.method === 'PUT') {
+        const newAddress = {
+            address: formData.get('address'),
+            city: formData.get('city'),
+            zip_code: formData.get('zip_code'),
+        };
 
-    if (response.status === 200) {
-        return { type: 'addressmodified', status: true };
+        const response = await userApi.userAddressUpdate(params.aid, newAddress);
+
+        if (response.status === 200) {
+            return { type: 'addressmodified', status: true };
+        }
+
+        return { type: 'addressmodified', status: false };
     }
 
-    return { type: 'addressmodified', status: false };
+    if (request.method === 'DELETE') {
+        userApi.userAddressDestroy(params.aid);
+        return redirect('/tili');
+    }
+
+    return { type: 'addressneutral', status: true };
 };
 
 const userAddressCreateAction = async ({ request }) => {

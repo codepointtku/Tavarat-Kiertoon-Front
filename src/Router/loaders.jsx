@@ -215,17 +215,16 @@ const userAddressEditLoader = async ({ params }) => {
 
 const userAddressCreateLoader = async ({ params }) => {
     // aka get user loader
+    // admin use
     const { data: userData } = await usersApi.usersRetrieve(params.userid);
 
     return { userData };
 };
 
-const addressEditLoader = async () => {
-    const [{ data: userData }, { data: addressData }] = await Promise.all([
-        await userApi.userRetrieve,
-        await userApi.userAddressEditList,
-    ]);
-    return { userData, addressData };
+const addressEditLoader = async ({ params }) => {
+    const { data: addressData } = await userApi.userAddressRetrieve(params.aid);
+
+    return { addressData };
 };
 
 /**
