@@ -200,8 +200,9 @@ function DefaultAppBar() {
     }
 
     return (
-        <Box id="appbar-containing-div" sx={toolBarHover}>
+        <Box id="appbar-container" sx={toolBarHover}>
             <AppBar
+                id="appbar"
                 sx={{
                     backgroundColor: 'rgba(0, 155, 216, 0.55)',
                     zIndex: 1250,
@@ -213,7 +214,7 @@ function DefaultAppBar() {
                     borderTopLeftRadius: '0.4rem',
                 }}
             >
-                <Toolbar>
+                <Toolbar id="action-iconbtns">
                     <Stack direction="row" spacing={4}>
                         {!location.pathname.includes('/ostoskori') && (
                             <Tooltip title="Ostoskori">
@@ -243,7 +244,7 @@ function DefaultAppBar() {
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart" onClose={drawerOpen('')}>
                 {/* tähän oma komponentti.. */}
-                <List>
+                <List id="cart-product-items-list">
                     {cart?.product_items?.length === 0 && (
                         <>
                             {cartEmpty ? (
@@ -283,77 +284,56 @@ function DefaultAppBar() {
                             />
                         );
                     })}
-                    {/* <ListItem>
-                            <Typography variant="body2" sx={{ color: 'error.main', fontWeight: 'bold' }}>
-                                Vahvista muutokset ostoskorissa jatkaaksesi kassalle.
-                            </Typography>
-                        </ListItem> */}
                 </List>
-                {/* <Divider /> */}
-                <Grid container sx={{ display: 'flex', justifyContent: 'center', marginBottom: '6rem' }}>
+
+                <Grid container sx={{ display: 'flex', justifyContent: 'center', margin: '1rem 0 6rem 0' }}>
                     <Grid item xs={2} />
                     <Grid item xs={8}>
-                        <List>
-                            <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <Button
-                                    onClick={() => navigateToCart()}
-                                    variant="contained"
-                                    fullWidth
-                                    // endIcon={<ShoppingCartCheckoutIcon />}
-                                    sx={{
-                                        '&:hover': {
-                                            backgroundColor: 'success.dark',
-                                        },
-                                    }}
-                                    disabled={unconfirmedChangesCartProducts.length > 0}
-                                >
-                                    <ListItemText primary="Tilaamaan" primaryTypographyProps={{ fontWeight: 'bold' }} />
-                                </Button>
-                            </ListItem>
-                        </List>
-
-                        {/* ///// */}
-                        {cart?.product_items?.length > 0 && (
-                            <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <Button
-                                    size="small"
-                                    variant="outlined"
-                                    color="error"
-                                    fullWidth
-                                    // startIcon={<DeleteIcon />}
-                                    onClick={handlePopOverOpen}
-                                >
-                                    Tyhjennä kori
-                                    {/* <ListItemText
-                                        primary="Tyhjennä ostoskori"
-                                        primaryTypographyProps={{ fontWeight: 'bold' }}
-                                    /> */}
-                                </Button>
-                                <Popover
-                                    open={openPopover}
-                                    anchorEl={anchorEl}
-                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-                                    onClose={() => setAnchorEl(null)}
-                                    sx={{ mt: 1 }}
-                                >
-                                    <Stack
-                                        direction="row"
-                                        justifyContent="space-between"
-                                        alignItems="center"
-                                        sx={{ p: '1rem' }}
-                                        spacing="1rem"
+                        <Stack gap={4}>
+                            <Button
+                                onClick={() => navigateToCart()}
+                                variant="contained"
+                                fullWidth
+                                sx={{
+                                    '&:hover': {
+                                        backgroundColor: 'success.dark',
+                                    },
+                                }}
+                                disabled={unconfirmedChangesCartProducts.length > 0}
+                            >
+                                <Typography fontWeight="bold">Tilaamaan</Typography>
+                            </Button>
+                            {cart?.product_items?.length > 0 && (
+                                <>
+                                    <Button size="small" variant="outlined" color="error" onClick={handlePopOverOpen}>
+                                        Tyhjennä kori
+                                    </Button>
+                                    <Popover
+                                        open={openPopover}
+                                        anchorEl={anchorEl}
+                                        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                                        onClose={() => setAnchorEl(null)}
+                                        sx={{ mt: 1 }}
                                     >
-                                        <Typography variant="body2">Oletko varma?</Typography>
-                                        <Button size="small" variant="outlined" onClick={handleEmptyCart}>
-                                            Kyllä
-                                        </Button>
-                                        <Button size="small" variant="outlined" onClick={() => setAnchorEl(null)}>
-                                            Peruuta
-                                        </Button>
-                                    </Stack>
-                                </Popover>
-                            </ListItem>
-                        )}
+                                        <Stack
+                                            direction="row"
+                                            justifyContent="space-between"
+                                            alignItems="center"
+                                            sx={{ p: '1rem' }}
+                                            spacing="1rem"
+                                        >
+                                            <Typography variant="body2">Oletko varma?</Typography>
+                                            <Button size="small" variant="outlined" onClick={handleEmptyCart}>
+                                                Kyllä
+                                            </Button>
+                                            <Button size="small" variant="outlined" onClick={() => setAnchorEl(null)}>
+                                                Peruuta
+                                            </Button>
+                                        </Stack>
+                                    </Popover>
+                                </>
+                            )}
+                        </Stack>
                     </Grid>
                     <Grid item xs={2} />
                 </Grid>
