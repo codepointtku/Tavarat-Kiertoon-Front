@@ -111,15 +111,9 @@ function ProductForm({ fileList, setFilelist, productData = {}, storages, catego
         )
     );
 
-    useEffect(() => {
-        fileList.map((pic, index) => {
-            setImageList((prevImageList) => [...prevImageList, pic.url]);
-        });
-    }, [fileList]);
-
     const navigation = useNavigation();
     const [qrScanOpen, setQrScanOpen] = useState(false);
-
+    const [oldPictures, setOldPictures] = useState(pictures);
     const description = watch('free_description');
     const barcode = watch('barcode');
     const colorsSelected = watch('colors');
@@ -140,7 +134,10 @@ function ProductForm({ fileList, setFilelist, productData = {}, storages, catego
     };
     const RemoveImage = (id: number) => {
         setFilelist((prevFileList) => prevFileList.filter((file, index) => index !== id));
-        setValue('pictures', []);
+        setImageList((prevImageList) => prevImageList.filter((file, index) => index !== id));
+        console.log(oldPictures);
+        setOldPictures((prevOldPictures) => prevOldPictures.filter((value, index) => index !== id));
+        //setValue('pictures', []);
         // setValue('pictures', getValues('pictures') ? getValues('pictures').filter((file, index) => index !== id) : []);
     };
     const handlePictureChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -158,6 +155,7 @@ function ProductForm({ fileList, setFilelist, productData = {}, storages, catego
                     if (typeof reader.result === 'string') {
                         const url = reader.result;
                         setFilelist((prevFileList) => [...prevFileList, { file: pic, url: url }]);
+                        setImageList((prevImageList) => [...prevImageList, url]);
                     }
                 };
                 reader.readAsDataURL(pic);
@@ -182,11 +180,11 @@ function ProductForm({ fileList, setFilelist, productData = {}, storages, catego
         });
 
         Object.values(data?.colors).forEach((color: any) => formData.append('colors[]', color));
-        formData.append(
-            'old_pictures',
-            pictures.map((pic: { id: number; picture_address: string }) => pic.id)
-        );
+
+        Object.values(oldPictures).forEach((pic) => formData.append('old_pictures[]', pic.id));
+
         Object.values(fileList).forEach((pic: PicUpload) => formData.append('pictures[]', pic.file));
+
         submit(formData, {
             method: name !== '' ? 'post' : 'PUT',
             encType: 'multipart/form-data',
@@ -459,11 +457,11 @@ function ProductForm({ fileList, setFilelist, productData = {}, storages, catego
                                 onChange: handlePictureChange,
                                 validate: {
                                     amount: (value) => {
-                                        console.log(value.length + imageList.length);
-                                        if (value.length + imageList.length > 6) {
+                                        console.log(value.length + oldPictures.length);
+                                        if (value.length + oldPictures.length > 6) {
                                             return 'Kuvia voi olla enintään 6';
                                         }
-                                        if (value.length + imageList.length < 1) {
+                                        if (value.length + oldPictures.length < 1) {
                                             return 'Tuotteella on oltava vähintään yksi kuva';
                                         }
 

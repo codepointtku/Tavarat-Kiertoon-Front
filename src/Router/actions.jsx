@@ -313,6 +313,7 @@ const editProductAction = async (auth, setAuth, request, params) => {
     console.log(formData.get('old_pictures'));
     console.log('get colors', formData.get('colors[]'));
     console.log('getAll colors', formData.getAll('colors[]'));
+    console.log('getAll oldimages', formData.getAll('old_pictures[]'));
 
     const formDataWithProductItem = {
         barcode: formData.get('barcode'),
@@ -327,7 +328,7 @@ const editProductAction = async (auth, setAuth, request, params) => {
         category: formData.get('category'),
         colors: formData.getAll('colors[]'),
         // kuvan lisäys ei toimi bäkissä
-        old_pictures: formData.get('old_pictures'),
+        old_pictures: JSON.parse(formData.get('old_pictures')),
         //pictures: JSON.parse(formData.get('pictures')),
     };
     console.log(formDataWithProductItem);
