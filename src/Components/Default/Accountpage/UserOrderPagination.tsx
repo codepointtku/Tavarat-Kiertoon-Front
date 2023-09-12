@@ -1,45 +1,46 @@
-import { useSearchParams } from 'react-router-dom';
-import { UserOrders } from './OrdersHistory';
+// import { useSearchParams } from 'react-router-dom';
 
-import { Grid, Pagination } from '@mui/material';
+// import { UserOrders } from './OrdersHistory';
 
-function UserOrderPagination({ userOrders }: UserOrders) {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const pageCount = Math.ceil(userOrders.count / 5);
+// import { Grid, Pagination } from '@mui/material';
 
-    function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
-        let assignedParams;
-        if (searchParams.has('järjestys') && searchParams.has('tila')) {
-            assignedParams = {
-                tila: searchParams.get('tila') as string,
-                järjestys: searchParams.get('järjestys') as string,
-                sivu: String(newPage),
-            };
-        } else if (searchParams.has('tila')) {
-            assignedParams = {
-                tila: searchParams.get('tila') as string,
-                sivu: String(newPage),
-            };
-        } else {
-            assignedParams = { sivu: String(newPage) };
-        }
-        setSearchParams(assignedParams);
-    }
+// function UserOrderPagination({ userOrders }: UserOrders) {
+//     const [searchParams, setSearchParams] = useSearchParams();
+//     const pageCount = Math.ceil(userOrders.count / 5);
 
-    return (
-        <Grid justifyContent="center" sx={{ mt: 5 }} container>
-            {pageCount > 1 && (
-                <Pagination
-                    size="large"
-                    color="primary"
-                    count={pageCount}
-                    onChange={handlePageChange}
-                    showFirstButton
-                    showLastButton
-                />
-            )}
-        </Grid>
-    );
-}
+//     function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
+//         let assignedParams;
+//         if (searchParams.has('järjestys') && searchParams.has('tila')) {
+//             assignedParams = {
+//                 tila: searchParams.get('tila') as string,
+//                 järjestys: searchParams.get('järjestys') as string,
+//                 sivu: String(newPage),
+//             };
+//         } else if (searchParams.has('tila')) {
+//             assignedParams = {
+//                 tila: searchParams.get('tila') as string,
+//                 sivu: String(newPage),
+//             };
+//         } else {
+//             assignedParams = { sivu: String(newPage) };
+//         }
+//         setSearchParams(assignedParams);
+//     }
 
-export default UserOrderPagination;
+//     return (
+//         <Grid justifyContent="center" sx={{ mt: 5 }} container>
+//             {pageCount > 1 && (
+//                 <Pagination
+//                     size="large"
+//                     color="primary"
+//                     count={pageCount}
+//                     onChange={handlePageChange}
+//                     showFirstButton
+//                     showLastButton
+//                 />
+//             )}
+//         </Grid>
+//     );
+// }
+
+// export default UserOrderPagination;
