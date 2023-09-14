@@ -149,7 +149,7 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
     // set search string from url to search field, if user is following a link with search string
     useEffect(() => {
         if (treeSelectedState.categoryTreeSelected) {
-            clearInputField();
+            reset();
         }
         if (searchFieldHasInput) {
             reset();

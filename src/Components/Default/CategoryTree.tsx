@@ -51,6 +51,8 @@ function CategoryTree({ treeSelectedState }: TreeSelectedProps) {
         const iniParams = new URLSearchParams(searchParams);
         iniParams.delete('kategoria');
         iniParams.delete('sivu');
+        iniParams.delete('haku');
+        iniParams.delete('varit');
         if (categoryId === 'root') {
             iniParams.delete('kategoria');
         } else {
