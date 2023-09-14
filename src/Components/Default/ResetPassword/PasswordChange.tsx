@@ -1,14 +1,14 @@
 import { useForm } from 'react-hook-form';
-import { useSubmit, useActionData } from 'react-router-dom';
+import { useSubmit, useActionData, Form } from 'react-router-dom';
 
-import { Typography, Box, Container, TextField, Button, Alert, Avatar, AlertTitle, Grid } from '@mui/material';
+import { Typography, Box, Container, TextField, Button, Alert, AlertTitle, Stack } from '@mui/material';
 import KeyIcon from '@mui/icons-material/Key';
 
 import HeroHeader from '../../HeroHeader';
 import HeroText from '../../HeroText';
 
 import type { resetEmailAction } from '../../../Router/actions';
-import TypographyHeading from '../../TypographyHeading';
+import { Link } from 'react-router-dom';
 
 function PasswordChange() {
     const responseStatus = useActionData() as Awaited<ReturnType<typeof resetEmailAction>>;
@@ -27,39 +27,42 @@ function PasswordChange() {
     };
 
     return (
-        <Container sx={{ border: '0.1rem solid #bfe6f6', borderRadius: '1rem', py: 3, my: 2 }}>
-            <HeroHeader Icon={<KeyIcon />} />
-            <HeroText
-                title="Salasanan vaihto"
-                text="Moro moro. Lähetämme syöttämääsi sähkäriin linkin, josta voit suorittaa tiliin liitetyn sähköpostin vaihdon."
-            />
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
-                {responseStatus?.status ? (
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography variant="h5" fontWeight="fontWeightMediumBold" gutterBottom>
-                            Salasanan palautuslinkki lähetetty sähköpostiin onnistuneesti!
+        <>
+            <Container maxWidth="md" sx={{ border: '0.1rem solid #bfe6f6', borderRadius: '1rem', pt: 3, mb: 2 }}>
+                <HeroHeader Icon={<KeyIcon />} hideInAdmin />
+                <HeroText
+                    title="Salasanan vaihto"
+                    subtext2="Lähetämme syöttämääsi sähköpostiosoitteeseen linkin, josta voit suorittaa tiliin liitetyn sähköpostin vaihdon."
+                />
+                <Container maxWidth="md" sx={{ my: 3 }}>
+                    {responseStatus?.status ? (
+                        <Typography variant="h6" textAlign="center" gutterBottom>
+                            Salasanan palautuslinkki on nyt lähetetty.
                         </Typography>
-                    </Box>
-                ) : (
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <TextField
-                            label="Käyttäjänimi"
-                            placeholder="Syötä uusi sähköpostiosoite"
-                            {...register('username', { required: true, minLength: 4, maxLength: 40 })}
-                            fullWidth
-                        />
-                        {errors.username && (
-                            <Alert severity="error" sx={{ mt: 1, maxWidth: 300 }}>
-                                <AlertTitle>Virheellinen syöte</AlertTitle>
-                            </Alert>
-                        )}
-                        <Button type="submit" sx={{ mt: 2, fontWeight: 'fontWeightMediumBold' }}>
-                            Lähetä salasanan palautuslinkki
-                        </Button>
-                    </form>
-                )}
-            </Box>
-        </Container>
+                    ) : (
+                        <Stack component={Form} onSubmit={handleSubmit(onSubmit)} alignItems="center" spacing={3}>
+                            <TextField
+                                label="Sähköpostiosoite"
+                                {...register('username', { required: true, minLength: 4, maxLength: 60 })}
+                                fullWidth
+                            />
+                            {errors.username && (
+                                <Alert severity="error" sx={{ mt: 1, maxWidth: 300 }}>
+                                    <AlertTitle>Virheellinen syöte</AlertTitle>
+                                </Alert>
+                            )}
+
+                            <Button id="submit-btn" type="submit" sx={{ mt: 2, fontWeight: 'fontWeightMediumBold' }}>
+                                Lähetä salasanan palautuslinkki
+                            </Button>
+                        </Stack>
+                    )}
+                    <Button id="back-btn" variant="outlined" size="small" component={Link} to="/tili" sx={{ mt: 2 }}>
+                        Takaisin
+                    </Button>
+                </Container>
+            </Container>
+        </>
     );
 }
 
