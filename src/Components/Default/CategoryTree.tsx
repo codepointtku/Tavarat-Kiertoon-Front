@@ -53,9 +53,7 @@ function CategoryTree({ treeSelectedState }: TreeSelectedProps) {
         iniParams.delete('sivu');
         iniParams.delete('haku');
         iniParams.delete('varit');
-        if (categoryId === 'root') {
-            iniParams.delete('kategoria');
-        } else {
+        if (categoryId !== 'root') {
             categoryTreeIndexes[categoryId as unknown as number].forEach((each: string) => {
                 iniParams.append('kategoria', each);
             });
