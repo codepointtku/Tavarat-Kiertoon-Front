@@ -183,7 +183,7 @@ function ProductForm({ fileList, setFilelist, productData = {}, storages, catego
 
         Object.values(oldPictures).forEach((pic) => formData.append('old_pictures[]', pic.id));
 
-        Object.values(fileList).forEach((pic: PicUpload) => formData.append('pictures[]', pic.file));
+        Object.values(fileList).forEach((pic: PicUpload) => formData.append('new_pictures[]', pic.file));
 
         submit(formData, {
             method: name !== '' ? 'post' : 'PUT',
