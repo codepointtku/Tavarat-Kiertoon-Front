@@ -4,6 +4,7 @@ import { Box, Divider, Grid, Typography } from '@mui/material';
 import type { productListLoader } from '../../Router/loaders';
 import TypographyHeading from '../TypographyHeading';
 import ProductCard from './ProductCard';
+import Pagination from '../Pagination';
 
 function SearchResultMessage() {
     const [searchParams] = useSearchParams();
@@ -55,30 +56,37 @@ function NoSearchResults() {
 }
 
 function ProductList() {
-    const { results } = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
+    const { results, count } = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
 
-    return results?.length ? (
-        <Grid container spacing={2}>
-            {results.map((product: any) => (
-                <Grid item key={product.id} xs={13} sm={7} md={5} lg={4} xl={3}>
-                    <ProductCard
-                        id={product.id}
-                        groupId={product.id}
-                        productName={product.name}
-                        pictures={product.pictures}
-                        freeDescription={product.free_description}
-                        categoryName={product.category_name}
-                        storageName={product.storage_name}
-                        colorName={product.color_name}
-                        measurements={product.measurements}
-                        weight={product.weight}
-                        count={product.amount}
-                    />
+    return (
+        <>
+            {results?.length ? (
+                <Grid container spacing={2}>
+                    {results.map((product: any) => (
+                        <Grid item key={product.id} xs={13} sm={7} md={5} lg={4} xl={3}>
+                            <ProductCard
+                                id={product.id}
+                                groupId={product.id}
+                                productName={product.name}
+                                pictures={product.pictures}
+                                freeDescription={product.free_description}
+                                categoryName={product.category_name}
+                                storageName={product.storage_name}
+                                colorName={product.color_name}
+                                measurements={product.measurements}
+                                weight={product.weight}
+                                count={product.amount}
+                            />
+                        </Grid>
+                    ))}
                 </Grid>
-            ))}
-        </Grid>
-    ) : (
-        <NoSearchResults />
+            ) : (
+                <NoSearchResults />
+            )}
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Pagination count={count} itemsText="Tuotteita" />
+            </Box>
+        </>
     );
 }
 
