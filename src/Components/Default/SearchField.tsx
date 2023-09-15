@@ -119,10 +119,21 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
                 });
                 break;
             case categoriesAndColors.categories[0] !== '':
-                setSearchParams({ haku: filteredSearch, kategoria: categoriesAndColors.categories });
+                setSearchParams((prevParams) => {
+                    prevParams.delete('varit');
+
+                    return createSearchParams({
+                        ...Object.fromEntries(prevParams.entries()),
+                        sivu: '1',
+                        haku: filteredSearch,
+                        kategoria: categoriesAndColors.categories,
+                    });
+                });
                 break;
             case categoriesAndColors.colors[0] !== '':
                 setSearchParams((prevParams) => {
+                    prevParams.delete('kategoria');
+
                     return createSearchParams({
                         ...Object.fromEntries(prevParams.entries()),
                         sivu: '1',
@@ -133,6 +144,9 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
                 break;
             case categoriesAndColors.categories[0] === '' && categoriesAndColors.colors[0] === '':
                 setSearchParams((prevParams) => {
+                    prevParams.delete('varit');
+                    prevParams.delete('kategoria');
+
                     return createSearchParams({
                         ...Object.fromEntries(prevParams.entries()),
                         sivu: '1',
