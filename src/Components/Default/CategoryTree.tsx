@@ -48,15 +48,18 @@ function CategoryTree({ treeSelectedState }: TreeSelectedProps) {
     const categoryTreeIndexes = categoryTree as unknown as CategoryTreeIndexes;
 
     const handleClick = (categoryId: string) => {
-        const iniParams = new URLSearchParams();
-        if (categoryId === 'root') {
-            iniParams.delete('kategoria');
-        } else {
+        const iniParams = new URLSearchParams(searchParams);
+        iniParams.delete('kategoria');
+        iniParams.delete('sivu');
+        iniParams.delete('haku');
+        iniParams.delete('varit');
+        if (categoryId !== 'root') {
             categoryTreeIndexes[categoryId as unknown as number].forEach((each: string) => {
                 iniParams.append('kategoria', each);
             });
         }
         setSearchParams(iniParams);
+
         treeSelectedState.setCategoryTreeSelected(true);
     };
 
