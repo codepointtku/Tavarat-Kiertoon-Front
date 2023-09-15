@@ -74,7 +74,7 @@ const productListLoader = async ({ request }) => {
     if (url.searchParams.has('haku') || url.searchParams.has('kategoria')) {
         const { data } = await productsApi.productsList(
             url.searchParams.getAll('kategoria'),
-            url.searchParams.get('varit'),
+            url.searchParams.getAll('varit'),
             null,
             url.searchParams.get('sivu'),
             url.searchParams.get('sivukoko') || 25,
