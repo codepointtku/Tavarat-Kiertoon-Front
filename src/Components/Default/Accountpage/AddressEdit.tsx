@@ -33,7 +33,7 @@ function AddressEdit() {
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data) => {
-        console.log('%c Submitissa menevä tieto', 'color: blue', data);
+        // console.log('%c Submitissa menevä tieto', 'color: blue', data);
         submit(
             {
                 address: data.address,
