@@ -2,7 +2,7 @@ import { Link, useRouteLoaderData } from 'react-router-dom';
 
 import { Box, Grid, Link as MuiLink, Stack, Typography } from '@mui/material';
 import { type rootLoader } from '../../Router/loaders';
-import logo from '../../assets/logo2.png';
+import logo2 from '../../Assets/logo2.png';
 
 function Footer() {
     const { contacts } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
@@ -26,7 +26,11 @@ function Footer() {
                 </Grid>
                 <Grid item xs={12} md={4} color="primary.contrastText" flexDirection="column" textAlign="center">
                     <Link to="/">
-                        <img src={logo} alt="Turku logo" style={{ width: 'auto', maxWidth: '12rem', height: 'auto' }} />
+                        <img
+                            src={logo2}
+                            alt="Turku logo"
+                            style={{ width: 'auto', maxWidth: '12rem', height: 'auto' }}
+                        />
                     </Link>
                     <Typography gutterBottom>© 2023 Turun Kaupunki</Typography>
                 </Grid>
