@@ -22,9 +22,11 @@ import TypographyTitle from '../../TypographyTitle';
 
 function ResetPassword() {
     const [showPassword, setShowPassword] = useState(false);
+
     const {
         state: { uid, token },
     } = useLocation();
+
     const submit = useSubmit();
 
     const {
