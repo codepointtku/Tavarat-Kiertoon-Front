@@ -4,12 +4,14 @@ import { Link, Outlet } from 'react-router-dom';
 import { Grid, Tabs, Tab, Container } from '@mui/material';
 
 import PersonPinIcon from '@mui/icons-material/PersonPin';
-// import AutoStoriesIcon from '@mui/icons-material/AutoStories'; // book
-// import ManageSearchIcon from '@mui/icons-material/ManageSearch'; // spying glass
+import AutoStoriesIcon from '@mui/icons-material/AutoStories'; // book
+import ManageSearchIcon from '@mui/icons-material/ManageSearch'; // spying glass
 
 function UserAccountPage() {
     const url = window.location.href;
     const [value, setValue] = useState(initializeValue);
+
+    console.log(value);
 
     function initializeValue() {
         switch (true) {
@@ -25,7 +27,7 @@ function UserAccountPage() {
     }
 
     function handleSectionChange(event: React.SyntheticEvent<Element, Event>, newSection: string) {
-        setValue(newSection);
+        setValue(newSection); // this throws "Warning: validateDOMNesting(...): <div> cannot appear as a descendant of <p>."
     }
 
     return (
@@ -41,7 +43,10 @@ function UserAccountPage() {
                     xs={1}
                     sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}
                 >
-                    <PersonPinIcon sx={{ fontSize: 48, color: 'primary.main' }} />
+                    {/* a terrible if, i'm sorry, it is what it is. i'll maybe refactor this in the future if someone gives me > 200 euros */}
+                    {value === 'userInfo' && <PersonPinIcon sx={{ fontSize: 48, color: 'primary.main' }} />}
+                    {value === 'activeOrders' && <AutoStoriesIcon sx={{ fontSize: 48, color: 'primary.main' }} />}
+                    {value === 'orderHistory' && <ManageSearchIcon sx={{ fontSize: 48, color: 'primary.main' }} />}
                 </Grid>
                 <Grid
                     id="tabs-container"
