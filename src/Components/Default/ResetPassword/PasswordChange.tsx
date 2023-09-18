@@ -65,13 +65,7 @@ function PasswordChange() {
                             footer={<MsgFooter />}
                         />
                     ) : (
-                        <Stack
-                            component={Form}
-                            onSubmit={handleSubmit(onSubmit)}
-                            // replace
-                            alignItems="center"
-                            spacing={1}
-                        >
+                        <Stack component={Form} onSubmit={handleSubmit(onSubmit)} alignItems="center" spacing={1}>
                             <TextField
                                 label="Sähköpostiosoite"
                                 {...register('username', {
@@ -79,7 +73,7 @@ function PasswordChange() {
                                     //this pattern will match a string containing at least:
                                     // `@` symbol with any character before and after it,
                                     // + a dot `.` and any character after it
-                                    // pattern: { value: /.+@.+\..+/, message: 'Syötteen on oltava sähköpostiosoite' },
+                                    pattern: { value: /.+@.+\..+/, message: 'Syötteen on oltava sähköpostiosoite' },
                                 })}
                                 inputProps={{ required: false }}
                                 required
@@ -89,7 +83,7 @@ function PasswordChange() {
                                 fullWidth
                             />
                             <Button id="submit-btn" type="submit" sx={{ mt: 2 }}>
-                                Lähetä salasanan palautuslinkki
+                                Lähetä linkki
                             </Button>
                         </Stack>
                     )}
