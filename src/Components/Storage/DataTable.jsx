@@ -7,6 +7,7 @@ import SortByMenu from '../SortByMenu';
 
 function OrderListTable() {
     const { results: orders } = useLoaderData();
+    console.log(orders);
     const navigate = useNavigate();
 
     const dateParse = (value) => {
@@ -26,7 +27,7 @@ function OrderListTable() {
                         <StyledTableCell align="right">Status</StyledTableCell>
                         <StyledTableCell align="right">Toimitusosoite</StyledTableCell>
                         <StyledTableCell align="right">Tilaaja</StyledTableCell>
-                        <StyledTableCell align="right">Yhteystiedot</StyledTableCell>
+                        <StyledTableCell align="right">Vastaanottaja</StyledTableCell>
                         <StyledTableCell align="right">Päivämäärä</StyledTableCell>
                     </TableRow>
                 </TableHead>
@@ -44,7 +45,7 @@ function OrderListTable() {
                             <TableCell align="right">{row.status}</TableCell>
                             <TableCell align="right">{row.delivery_address}</TableCell>
                             <TableCell align="right">{row.user}</TableCell>
-                            <TableCell align="right">{row.contact}</TableCell>
+                            <TableCell align="right">{row.recipient}</TableCell>
                             <TableCell align="right">
                                 {row.creation_date ? dateParse(row.creation_date) : '-'}
                             </TableCell>
