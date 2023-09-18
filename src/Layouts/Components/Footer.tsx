@@ -9,7 +9,7 @@ function Footer() {
 
     return (
         <Box id="footer-container" sx={{ backgroundColor: 'primary.main' }}>
-            <Grid container justifyContent="space-around" alignItems="center" flexGrow="1" padding="1rem">
+            <Grid container justifyContent="space-around" alignItems="center" flexGrow="1">
                 <Grid item xs={12} md={4} color="primary.contrastText" flexDirection="column" textAlign="center">
                     <Stack direction="column" spacing={0.5}>
                         <Typography variant="subtitle1">Yhteystiedot:</Typography>
