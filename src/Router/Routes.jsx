@@ -408,7 +408,11 @@ function Routes() {
                                 },
                                 {
                                     path: 'tili',
-                                    element: <UserAccountPage />,
+                                    element: (
+                                        <HasRole role="user_group" fallback={<Navigate to="/kirjaudu" />}>
+                                            <UserAccountPage />
+                                        </HasRole>
+                                    ),
                                     id: 'account',
                                     loader: userInfoLoader,
                                     action: userAccountPageAction,
