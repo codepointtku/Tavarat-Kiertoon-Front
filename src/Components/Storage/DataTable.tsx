@@ -5,9 +5,10 @@ import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow }
 import StyledTableCell from '../StyledTableCell';
 import SortByMenu from '../SortByMenu';
 import Pagination from '../Pagination';
+import { type ordersListLoader } from '../../Router/loaders';
 
 function OrderListTable() {
-    const { results: orders, count } = useLoaderData();
+    const { results: orders, count } = useLoaderData() as Awaited<ReturnType<typeof ordersListLoader>>;
     const navigate = useNavigate();
 
     return (
@@ -19,7 +20,7 @@ function OrderListTable() {
                             <StyledTableCell>
                                 Tilaus (ID) <SortByMenu />
                             </StyledTableCell>
-                            <StyledTableCell align="right">Status</StyledTableCell>
+                            <StyledTableCell align="right">Tila</StyledTableCell>
                             <StyledTableCell align="right">Toimitusosoite</StyledTableCell>
                             <StyledTableCell align="right">Tilaaja</StyledTableCell>
                             <StyledTableCell align="right">Yhteystiedot</StyledTableCell>
