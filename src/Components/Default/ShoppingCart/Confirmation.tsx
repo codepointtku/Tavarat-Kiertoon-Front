@@ -119,26 +119,26 @@ function Confirmation() {
                                     {state.deliveryAddress} {state.zipcode} {state.city}
                                 </Typography>
                             </Stack>
-                        ) : null}
-                        <Stack padding={'1rem 1rem 1rem 1rem'}>
-                            <Typography variant="subtitle1">
-                                {state.deliveryRequired === 'true' ? 'Kuljetus' : `Nouto: ${state.fetchDate}`}
+                        ) : (
+                            <Typography variant="subtitle1" sx={{ padding: '1rem' }}>
+                                Nouto: {state.fetchDate}
                             </Typography>
+                        )}
 
-                            {state.orderInfo && (
-                                <Typography
-                                    id="order-additional-info-textfield"
-                                    variant="subtitle1"
-                                    sx={{
-                                        wordBreak: 'break-all',
-                                        whiteSpace: 'pre-wrap',
-                                        margin: '1rem 0 0 0',
-                                    }}
-                                >
-                                    Lisätiedot: {state.orderInfo}
-                                </Typography>
-                            )}
-                        </Stack>
+                        {state.orderInfo && (
+                            <Typography
+                                id="order-additional-info-textfield"
+                                variant="subtitle1"
+                                sx={{
+                                    wordBreak: 'break-all',
+                                    whiteSpace: 'pre-wrap',
+                                    margin: '0rem 0 1rem 0',
+                                    padding: '0 0 0 1rem',
+                                }}
+                            >
+                                Lisätiedot: {state.orderInfo}
+                            </Typography>
+                        )}
 
                         <TypographyHeading text="Tuotteet" />
                         <List sx={{ padding: '1rem 1rem 0 1rem' }}>
