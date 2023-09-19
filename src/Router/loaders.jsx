@@ -118,7 +118,6 @@ const ordersListLoader = async () => {
  */
 const orderViewLoader = async ({ params }) => {
     const response = await ordersApi.ordersRetrieve(params.id);
-    console.log('stressponze', response.data);
     return response.data;
 };
 

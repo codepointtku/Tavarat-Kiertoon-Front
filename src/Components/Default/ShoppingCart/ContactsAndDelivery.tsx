@@ -348,7 +348,6 @@ function ContactsAndDelivery() {
                         </Stack>
                     )}
 
-                    {/* huomenta, hommat jatkuu */}
                     {selectedDeliveryMethod === 'false' && (
                         <LocalizationProvider adapterLocale={fi} dateAdapter={AdapterDateFns}>
                             <DatePicker
