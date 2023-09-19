@@ -22,11 +22,17 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 import AlertBox from '../AlertBox';
 import TypographyHeading from '../TypographyHeading';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
+
+import type { userEditAction } from '../../Router/actions';
+import type { userEditLoader } from '../../Router/loaders';
+import Tooltip from '../Tooltip';
 
 const groupNames = {
     user_group: 'Käyttäjä',
@@ -36,12 +42,8 @@ const groupNames = {
 };
 
 function UserEdit() {
-    const loaderData = useLoaderData();
-    // loaderData === [{}, []]
-    const userInfo = loaderData[0];
-    const allGroups = loaderData[1];
-
-    const actionData = useActionData();
+    const { userInfo, userAuthGroups } = useLoaderData() as Awaited<ReturnType<typeof userEditLoader>>;
+    const actionData = useActionData() as Awaited<ReturnType<typeof userEditAction>>;
 
     const creationDateInfo = [];
     const creationDate = new Date(userInfo.creation_date);
@@ -49,19 +51,19 @@ function UserEdit() {
     creationDateInfo.push(creationDate.toLocaleTimeString());
 
     const lastLoginDateInfo = [];
-    const lastLoginDate = new Date(userInfo.last_login);
+    const lastLoginDate = new Date(userInfo.last_login!);
     lastLoginDateInfo.push(lastLoginDate.toLocaleDateString());
     lastLoginDateInfo.push(lastLoginDate.toLocaleTimeString());
 
     const {
         register,
         handleSubmit: createHandleSubmit,
-        reset,
         formState: { errors: formStateErrors, isDirty, dirtyFields, isValid },
     } = useForm({
         mode: 'all',
         defaultValues: {
             ...userInfo,
+            // groups: userInfo.groups.map((group) => group.id),
         },
     });
 
@@ -69,19 +71,38 @@ function UserEdit() {
 
     const handleSubmit = createHandleSubmit((data) => {
         // console.log('%c Submitissa menevä tieto', 'color: blue', data);
-        submit(data, {
-            method: 'put',
-        });
-        reset();
+        submit(
+            {
+                first_name: data.first_name,
+                last_name: data.last_name,
+                phone_number: data.phone_number!,
+                groups: data.groups.toString(),
+            },
+            {
+                method: 'put',
+            }
+        );
     });
 
     return (
         <>
-            {actionData?.type === 'update' && actionData?.status === false && (
-                <AlertBox text="Käyttäjätietojen tallennus epäonnistui. Lataa sivu uudestaan." status="error" />
+            {actionData?.type === 'userdataupdate' && actionData?.status === false && (
+                <AlertBox text="Käyttäjätietojen tallennus epäonnistui" status="error" />
             )}
-            {actionData?.type === 'update' && actionData?.status && (
-                <AlertBox text="Käyttäjätiedot tallennettu onnistuneesti" status="success" />
+
+            {actionData?.type === 'userdataupdate' &&
+                actionData?.status === false &&
+                actionData.responseMsg === 'admins cannot edit their own permissions' && (
+                    <AlertBox text="Ylläpitäjä ei voi muokata omia käyttöoikeuksiaan" status="warning" />
+                )}
+
+            {actionData?.type === 'userdataupdate' && actionData?.status && (
+                <AlertBox
+                    text="Käyttäjätiedot tallennettu onnistuneesti. Uudelleenohjataan..."
+                    status="success"
+                    timer={3000}
+                    redirectUrl="/admin/kayttajat"
+                />
             )}
 
             <Container maxWidth="xl">
@@ -100,6 +121,14 @@ function UserEdit() {
                                     }}
                                 >
                                     <Box id="user-common-info" sx={{ margin: '1rem 0 1rem 0' }}>
+                                        <Typography>Käyttäjänimi: {userInfo.username}</Typography>
+                                        <Typography>Käyttäjän tunnistenumero: {userInfo.id}</Typography>
+                                        <Typography>
+                                            Viimeisin sisäänkirjautuminen:{' '}
+                                            {userInfo.last_login
+                                                ? `${lastLoginDateInfo[0]} / ${lastLoginDateInfo[1]}`
+                                                : 'Ei koskaan'}
+                                        </Typography>
                                         <Typography>
                                             Rekisteröitymisaika: {creationDateInfo[0]} / {creationDateInfo[1]}
                                         </Typography>
@@ -119,13 +148,6 @@ function UserEdit() {
                                                 />
                                             )}
                                         </Stack>
-                                        <Typography>
-                                            Viimeisin sisäänkirjautuminen:{' '}
-                                            {userInfo.last_login
-                                                ? `${lastLoginDateInfo[0]} / ${lastLoginDateInfo[1]}`
-                                                : 'Ei koskaan'}
-                                        </Typography>
-                                        <Typography>Käyttäjän tunnistenumero: {userInfo.id}</Typography>
                                     </Box>
                                 </Box>
                             </Grid>
@@ -146,12 +168,12 @@ function UserEdit() {
                                                     message: 'Maksimipituus 50 merkkiä',
                                                 },
                                             })}
-                                            // Needs to be 'required: false' to disable browser error message
+                                            // 'required: false' to disable browser error message
                                             inputProps={{ required: false }}
                                             required
                                             error={!!formStateErrors.first_name}
-                                            helperText={formStateErrors.first_name?.message || ' '}
-                                            color={dirtyFields.first_name && 'warning'}
+                                            helperText={formStateErrors.first_name?.message?.toString() || ' '}
+                                            color={dirtyFields.first_name ? 'warning' : 'primary'}
                                             fullWidth
                                         />
 
@@ -173,8 +195,8 @@ function UserEdit() {
                                             inputProps={{ required: false }}
                                             required
                                             error={!!formStateErrors.last_name}
-                                            helperText={formStateErrors.last_name?.message || ' '}
-                                            color={dirtyFields.last_name && 'warning'}
+                                            helperText={formStateErrors.last_name?.message?.toString() || ' '}
+                                            color={dirtyFields.last_name ? 'warning' : 'primary'}
                                             fullWidth
                                         />
                                     </Stack>
@@ -198,8 +220,8 @@ function UserEdit() {
                                         inputProps={{ required: false }}
                                         required
                                         error={!!formStateErrors.phone_number}
-                                        helperText={formStateErrors.phone_number?.message || ' '}
-                                        color={dirtyFields.phone_number && 'warning'}
+                                        helperText={formStateErrors.phone_number?.message?.toString() || ' '}
+                                        color={dirtyFields.phone_number ? 'warning' : 'primary'}
                                     />
                                 </Stack>
                             </Grid>
@@ -253,27 +275,33 @@ function UserEdit() {
                             <Grid item xs={6}>
                                 <Box id="user-edition-checkboxes-wrapper">
                                     <TypographyHeading text="Käyttäjän käyttöoikeudet" />
-                                    <Stack id="usergroups-checkboxes-stack-column">
+                                    <Stack id="usergroups-checkboxes-stack-column" margin={'1rem 0 0 0'}>
                                         {/* Checkboxes, mapped: */}
-                                        {allGroups.map((group) => (
+                                        {userAuthGroups.map((group) => (
                                             <FormControlLabel
                                                 key={group.id}
                                                 control={
                                                     <Checkbox
+                                                        {...register('groups')}
+                                                        value={String(group.id)}
+                                                        defaultChecked={userInfo.groups.some(
+                                                            ({ id }) => group.id === id
+                                                        )}
                                                         sx={{
                                                             '&.Mui-checked': {
                                                                 color: 'success.dark',
                                                             },
-                                                            paddingLeft: 0,
                                                         }}
-                                                        defaultChecked={userInfo.groups.includes(group.id)}
-                                                        {...register('groups', { type: 'checkbox' })}
-                                                        value={group.id}
                                                     />
                                                 }
-                                                label={groupNames[group.name]}
-                                                // onClick={() => console.log(`clicked checkboxs value: ${group.id}`)}
-                                                sx={{ margin: 0, borderBottom: '1px solid #e0e0e0' }}
+                                                label={groupNames[group.name as keyof typeof groupNames]}
+                                                sx={{
+                                                    margin: 0,
+                                                    borderBottom: '1px solid #e0e0e0',
+                                                    '&:hover': {
+                                                        color: 'success.dark',
+                                                    },
+                                                }}
                                             />
                                         ))}
                                     </Stack>
@@ -296,15 +324,33 @@ function UserEdit() {
                             >
                                 Hyväksy ja tallenna muutokset
                             </Button>
-                            <Button
-                                variant="outlined"
-                                id="cancel-btn"
-                                component={Link}
-                                to="/admin/kayttajat/"
-                                color="error"
-                            >
-                                Poistu tallentamatta
-                            </Button>
+                            <Stack direction="row" justifyContent="space-between">
+                                <Tooltip title="Takaisin käyttäjät-listaukseen">
+                                    <Button
+                                        id="cancel-btn"
+                                        size="small"
+                                        component={Link}
+                                        to="/admin/kayttajat/"
+                                        startIcon={<ArrowBackIcon />}
+                                        sx={{ margin: '2rem 0 1rem 0' }}
+                                    >
+                                        Poistu tallentamatta
+                                    </Button>
+                                </Tooltip>
+                                <Tooltip title="Siirry poistamaan käyttäjä järjestelmästä">
+                                    <Button
+                                        id="cancel-btn"
+                                        size="small"
+                                        color="error"
+                                        component={Link}
+                                        to={`/admin/kayttajat/${userInfo.id}/poista/`}
+                                        endIcon={<DeleteForeverIcon />}
+                                        sx={{ margin: '2rem 0 1rem 0' }}
+                                    >
+                                        Käyttäjän poistonäkymä
+                                    </Button>
+                                </Tooltip>
+                            </Stack>
                         </Stack>
                     </Stack>
                 </Box>

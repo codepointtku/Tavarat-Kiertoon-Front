@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import { Form, useSearchParams, useRouteLoaderData } from 'react-router-dom';
+import { Form, useSearchParams, useRouteLoaderData, createSearchParams } from 'react-router-dom';
 
 import { Box, Button, IconButton, InputBase } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
@@ -108,20 +108,51 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
         // Decides which params to show based on if they have a value or not.
         switch (true) {
             case categoriesAndColors.categories[0] !== '' && categoriesAndColors.colors[0] !== '':
-                setSearchParams({
-                    haku: filteredSearch,
-                    varit: categoriesAndColors.colors,
-                    kategoria: categoriesAndColors.categories,
+                setSearchParams((prevParams) => {
+                    return createSearchParams({
+                        ...Object.fromEntries(prevParams.entries()),
+                        sivu: '1',
+                        haku: filteredSearch,
+                        varit: categoriesAndColors.colors,
+                        kategoria: categoriesAndColors.categories,
+                    });
                 });
                 break;
             case categoriesAndColors.categories[0] !== '':
-                setSearchParams({ haku: filteredSearch, kategoria: categoriesAndColors.categories });
+                setSearchParams((prevParams) => {
+                    prevParams.delete('varit');
+
+                    return createSearchParams({
+                        ...Object.fromEntries(prevParams.entries()),
+                        sivu: '1',
+                        haku: filteredSearch,
+                        kategoria: categoriesAndColors.categories,
+                    });
+                });
                 break;
             case categoriesAndColors.colors[0] !== '':
-                setSearchParams({ haku: filteredSearch, varit: categoriesAndColors.colors });
+                setSearchParams((prevParams) => {
+                    prevParams.delete('kategoria');
+
+                    return createSearchParams({
+                        ...Object.fromEntries(prevParams.entries()),
+                        sivu: '1',
+                        haku: filteredSearch,
+                        varit: categoriesAndColors.colors,
+                    });
+                });
                 break;
             case categoriesAndColors.categories[0] === '' && categoriesAndColors.colors[0] === '':
-                setSearchParams({ haku: formData.search });
+                setSearchParams((prevParams) => {
+                    prevParams.delete('varit');
+                    prevParams.delete('kategoria');
+
+                    return createSearchParams({
+                        ...Object.fromEntries(prevParams.entries()),
+                        sivu: '1',
+                        haku: formData.search,
+                    });
+                });
                 break;
         }
     };
@@ -132,7 +163,7 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
     // set search string from url to search field, if user is following a link with search string
     useEffect(() => {
         if (treeSelectedState.categoryTreeSelected) {
-            clearInputField();
+            reset();
         }
         if (searchFieldHasInput) {
             reset();
@@ -150,6 +181,7 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
             searchParams.delete('haku');
             searchParams.delete('varit');
             searchParams.delete('kategoria');
+            searchParams.delete('sivu');
             setSearchParams(searchParams);
         }
     };

@@ -10,6 +10,7 @@ import {
     FormHelperText,
     Grid,
     ListItemText,
+    Link as MuiLink,
     MenuItem,
     FormControl,
     Select,
@@ -68,6 +69,8 @@ function StorageProductsTransfer() {
         });
     });
 
+    const SuperLink = MuiLink as typeof MuiLink | typeof Link;
+
     return (
         <>
             {responseStatus?.type === 'productstransfer' && !responseStatus?.status && (
@@ -81,7 +84,7 @@ function StorageProductsTransfer() {
 
             {responseStatus?.type === 'productstransfer' && responseStatus?.status && (
                 <AlertBox
-                    text="Varaston tuotteet siirretty onnistuneesti"
+                    text="Varaston tuotteet siirretty onnistuneesti. Uudelleenohjataan..."
                     status="success"
                     timer={3000}
                     redirectUrl={`/admin/varastot/${storageInfo.id}`}
@@ -90,7 +93,20 @@ function StorageProductsTransfer() {
 
             <Container maxWidth="md">
                 <HeroHeader Icon={<ImportExportIcon />} hideInAdmin />
-                <HeroText title="Tuotteiden siirto" subtitle="Siirrä kaikki tuotteet varastosta toiseen" />
+                <HeroText
+                    title="Tuotteiden siirto"
+                    subtitle="Siirrä kaikki tuotteet varastosta toiseen"
+                    footer={
+                        <SuperLink
+                            component={Link}
+                            to={`/admin/varastot/${storageInfo.id}/siirtotemp`}
+                            variant="body2"
+                            sx={{ margin: '1rem 0 0 0' }}
+                        >
+                            Yksittäisten tuotteiden siirto
+                        </SuperLink>
+                    }
+                />
 
                 <Box component={Form} onSubmit={handleSubmit}>
                     <input

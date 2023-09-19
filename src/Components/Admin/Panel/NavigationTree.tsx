@@ -23,13 +23,13 @@ import Settings from '@mui/icons-material/Settings';
 import ExpandIcon from '@mui/icons-material/Expand';
 import VerticalAlignCenterIcon from '@mui/icons-material/VerticalAlignCenter';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
-import MarkChatReadIcon from '@mui/icons-material/MarkChatRead';
+// import MarkChatReadIcon from '@mui/icons-material/MarkChatRead';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import People from '@mui/icons-material/People';
 // import Public from '@mui/icons-material/Public'; // a globe
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import PostAddIcon from '@mui/icons-material/PostAdd';
+// import PostAddIcon from '@mui/icons-material/PostAdd';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 // import EditIcon from '@mui/icons-material/Edit'; // a pen
 // import NotesIcon from '@mui/icons-material/Notes'; // three vertical lines
@@ -41,7 +41,7 @@ import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import DomainIcon from '@mui/icons-material/Domain';
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import MailIcon from '@mui/icons-material/Mail';
-import MarkEmailUnreadIcon from '@mui/icons-material/MarkEmailUnread';
+// import MarkEmailUnreadIcon from '@mui/icons-material/MarkEmailUnread';
 
 import Tooltip from '../../Tooltip';
 import { ListItemButtonLink } from '../../MUILinkComponents';
@@ -51,14 +51,10 @@ import { ListItemButtonLink } from '../../MUILinkComponents';
 // list item links data (mapped out variables)
 const tilaukset = [
     { icon: <AutoStoriesIcon />, label: 'Tarkastele', to: '/admin/tilaukset' },
-    { icon: <PostAddIcon />, label: 'Lisää uusi', to: '/admin/tilaukset/uusi' },
     { icon: <ImportExportIcon />, label: 'Lähetyslista', to: '/admin/tilaukset/sahkopostilista' },
 ];
 
-const tuotteet = [
-    { icon: <ManageSearchIcon />, label: 'Tarkastele', to: '/admin/tuotteet' },
-    { icon: <PlaylistAddIcon />, label: 'Lisää uusi', to: '/admin/tuotteet/uusi' },
-];
+const tuotteet = [{ icon: <ManageSearchIcon />, label: 'Tarkastele', to: '/admin/tuotteet' }];
 
 const kayttajat = [{ icon: <People />, label: 'Tarkastele', to: '/admin/kayttajat' }];
 
@@ -73,8 +69,8 @@ const tiedotteet = [
 ];
 
 const viestit = [
-    { icon: <MailIcon />, label: 'Saapuneet', to: '/admin/saapuneet' },
-    { icon: <MarkEmailUnreadIcon />, label: 'Lukemattomat', to: '/admin/saapuneet?tila=Lukemattomat' },
+    { icon: <MailIcon />, label: 'Tarkastele', to: '/admin/viestit' },
+    // { icon: <MarkEmailUnreadIcon />, label: 'Lukemattomat', to: '/admin/viestit?tila=Lukemattomat' },
 ];
 
 const NavStyles = styled(List)<{ component?: React.ElementType }>({
@@ -606,17 +602,7 @@ function NavigationTree() {
                                             <ExpandIcon sx={{ marginLeft: '1rem' }} />
                                         </ListItemIcon>
                                     </MenuItem>
-                                    <Tooltip
-                                        position="right"
-                                        title="Nollaa kaikki ilmoitukset, viestit ja uutiset nähdyiksi"
-                                    >
-                                        <MenuItem onClick={handleClose} divider>
-                                            <ListItemText>Merkitse kaikki luetuksi</ListItemText>
-                                            <ListItemIcon>
-                                                <MarkChatReadIcon sx={{ marginLeft: '1rem' }} />
-                                            </ListItemIcon>
-                                        </MenuItem>
-                                    </Tooltip>
+
                                     <Tooltip position="right" title="Siirtyy varastohenkilökunnan käyttöliittymään">
                                         <MenuItem onClick={handleClose} component={Link} to="/varasto">
                                             <ListItemText>Siirry varastonäkymään</ListItemText>

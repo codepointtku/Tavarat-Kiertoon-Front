@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Form, useSubmit, Link, useActionData, useRouteLoaderData } from 'react-router-dom';
+import { Form, useSubmit, Link, useActionData /* useRouteLoaderData */ } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import {
     AppBar,
     Avatar,
-    Badge,
+    // Badge,
     Box,
     Button,
     Grid,
@@ -19,20 +19,20 @@ import {
 
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 // import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import MailIcon from '@mui/icons-material/Mail';
+// import MailIcon from '@mui/icons-material/Mail';
 
 import Tooltip from '../../Tooltip';
 import AlertBox from '../../AlertBox';
 
 import type { adminLogOut } from '../../../Router/actions';
-import type { adminLoader } from '../../../Router/loaders';
+// import type { adminLoader } from '../../../Router/loaders';
 
 import logo from '../../../Assets/Turku_vaaka_300ppi_viiva_white.png';
 
 function AdminAppBar() {
     const [avatarDropDownMenu, setAvatarDropDownMenu] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const { messages } = useRouteLoaderData('admin') as Awaited<ReturnType<typeof adminLoader>>;
+    // const { messages } = useRouteLoaderData('admin') as Awaited<ReturnType<typeof adminLoader>>;
 
     const handleClickAvatarDropDownMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAvatarDropDownMenu(!avatarDropDownMenu);
@@ -94,15 +94,15 @@ function AdminAppBar() {
                                 </IconButton>
                             </Tooltip>
                         </Box> */}
-                        <Box id="mail" sx={{ margin: '0 1rem 0 1rem' }}>
+                        {/* <Box id="mail" sx={{ margin: '0 1rem 0 1rem' }}>
                             <Tooltip title="Uudet viestit">
-                                <IconButton component={Link} to="/admin/saapuneet?tila=Lukemattomat">
+                                <IconButton component={Link} to="/admin/viestit">
                                     <Badge badgeContent={messages.count} color="error">
                                         <MailIcon sx={{ color: 'primary.contrastText' }} />
                                     </Badge>
                                 </IconButton>
                             </Tooltip>
-                        </Box>
+                        </Box> */}
                         <Box id="avatar" sx={{ margin: '0 0 0 1rem' }}>
                             {/* <Tooltip title="Kirjautuminen" position="left"> */}
                             <IconButton onClick={handleClickAvatarDropDownMenu}>

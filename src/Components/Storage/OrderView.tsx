@@ -144,7 +144,9 @@ function OrderView({ isAdmin }: Props) {
                             </TableRow>
                             <TableRow>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Lisätiedot:</TableCell>
-                                <TableCell colSpan={3}>{order.order_info}</TableCell>
+                                <TableCell colSpan={3} sx={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
+                                    {order.order_info}
+                                </TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -162,7 +164,7 @@ function OrderView({ isAdmin }: Props) {
                         </TableHead>
 
                         <TableBody id="orders-products-tablebody">
-                            {productRenderItems.map((itemArray, index) => (
+                            {productRenderItems?.map((itemArray, index) => (
                                 <Fragment key={itemArray[0].id}>
                                     <StyledTableRow>
                                         <TableCell>

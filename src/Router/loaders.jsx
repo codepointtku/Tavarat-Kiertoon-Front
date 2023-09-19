@@ -75,16 +75,23 @@ const productListLoader = async ({ request }) => {
     if (url.searchParams.has('haku') || url.searchParams.has('kategoria')) {
         const { data } = await productsApi.productsList(
             url.searchParams.getAll('kategoria'),
-            url.searchParams.get('varit'),
+            url.searchParams.getAll('varit'),
             null,
-            null,
-            null,
+            url.searchParams.get('sivu'),
+            url.searchParams.get('sivukoko') || 25,
             url.searchParams.get('haku')
         );
         return data;
     }
 
-    const { data } = await productsApi.productsList();
+    const { data } = await productsApi.productsList(
+        null,
+        null,
+        null,
+        url.searchParams.get('sivu'),
+        url.searchParams.get('sivukoko') || 25,
+        null
+    );
 
     return data;
 };
@@ -104,27 +111,6 @@ const productDetailsLoader = async ({ params }) => {
  */
 const ordersListLoader = async () => {
     const response = await ordersApi.ordersList();
-    // num will tell back-end which entries to bring
-    // view is order status, unless archived can bring all?
-    // or will be replaced into the back-end later?
-    // const statuses = {
-    //     waiting: 2,
-    //     delivery: 1,
-    //     finished: 0,
-    // };
-    // statuses[params.view] = 10;
-    // data.results.sort((a, b) => {
-    //     if (statuses[a.status] > statuses[b.status]) {
-    //         return -1;
-    //     }
-    //     if (a.status === b.status) {
-    //         if (a.id > b.id) {
-    //             return -1;
-    //         }
-    //     }
-    //     return 1;
-    // });
-
     return response.data;
 };
 
@@ -214,21 +200,16 @@ const usersListLoader = async () => {
 };
 
 /**
- * Get one user and all auth groups in separate apicalls, combine these responses into an array.
- * Array item 0 === user data, item 1 === auth groups.
- * Used in src/Components/Admin/UserEdit.jsx
+ * Get one user and all auth groups
+ * Used in src/Components/Admin/UserEdit.tsx
  */
 const userEditLoader = async ({ params }) => {
-    const dataList = [];
-    let { data } = await usersApi.usersRetrieve(params.userid);
-    data.groups = data.groups.map((group) => group.id);
-    dataList.push(data);
-    data = await usersApi.usersGroupsList();
-    dataList.push(data.data);
-    if (dataList) {
-        return dataList;
-    }
-    return null;
+    const [{ data: userInfo }, { data: userAuthGroups }] = await Promise.all([
+        usersApi.usersRetrieve(params.userid),
+        usersApi.usersGroupsList(),
+    ]);
+
+    return { userInfo, userAuthGroups };
 };
 
 const userAddressEditLoader = async ({ params }) => {
@@ -435,17 +416,18 @@ const adminLoader = async () => {
 };
 
 const adminInboxLoader = async ({ request }) => {
-    const searchParams = new URL(request.url).searchParams;
+    // const searchParams = new URL(request.url).searchParams;
 
-    const statusMap = {
-        Luetut: 'Read',
-        Lukemattomat: 'Not read',
-        Hoidetut: 'Handled',
-    };
+    // const statusMap = {
+    //     Luetut: 'Read',
+    //     Lukemattomat: 'Not read',
+    //     Hoidetut: 'Handled',
+    // };
 
-    const status = statusMap[searchParams.get('tila')] || null;
+    // const status = statusMap[searchParams.get('tila')] || null;
 
-    const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null, status);
+    // const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null, status);
+    const { data: messages } = await contactFormsApi.contactFormsList(null, null, null, 'Not read');
 
     return messages;
 };
