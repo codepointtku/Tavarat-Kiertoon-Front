@@ -15,7 +15,7 @@ function DefaultView() {
     return (
         <Box id="front-page-main-block">
             {responseStatus?.type === 'orderCreated' && responseStatus?.status === true && (
-                <AlertBox text="Tilaus onnistui!" status="success" timer={3000} />
+                <AlertBox text="Kiitos tilauksestasi!" status="success" timer={10000} />
             )}
             <SearchField treeSelectedState={{ categoryTreeSelected, setCategoryTreeSelected }} />
             <Grid id="front-page-grid" container mt={2} mb={2}>

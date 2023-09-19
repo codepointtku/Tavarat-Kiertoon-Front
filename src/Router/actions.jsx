@@ -548,7 +548,7 @@ const cartViewAction = async ({ request }) => {
 };
 
 /**
- * Adds an item in order
+ * Place order
  */
 
 const confirmationAction = async ({ request }) => {
