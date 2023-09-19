@@ -20,7 +20,7 @@ interface CartState {
     orderInfo: string;
     firstName: string;
     lastName: string;
-    zipcode: string;
+    zip_code: string;
     city: string;
     fetchDate: string;
 }
@@ -46,14 +46,23 @@ function Confirmation() {
     const { id } = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
 
     const onSubmit = async () => {
-        const { recipient, deliveryAddress, recipient_phone_number, orderInfo, deliveryRequired /* fetchDate */ } =
-            state;
+        const {
+            recipient,
+            deliveryAddress,
+            zip_code,
+            city,
+            recipient_phone_number,
+            orderInfo,
+            deliveryRequired /* fetchDate */,
+        } = state;
 
         if (deliveryAddress === '') {
             submit(
                 {
                     recipient,
                     deliveryAddress: 'nouto', // creates a placeholder for backend
+                    zip_code,
+                    city,
                     recipient_phone_number,
                     id: id.toString(),
                     orderInfo,
@@ -69,6 +78,8 @@ function Confirmation() {
             {
                 recipient,
                 deliveryAddress,
+                zip_code,
+                city,
                 recipient_phone_number,
                 id: id.toString(),
                 orderInfo,
@@ -116,7 +127,7 @@ function Confirmation() {
                         {state.deliveryRequired === 'true' ? (
                             <Stack direction="row" spacing={'1rem'} padding={'1rem'}>
                                 <Typography variant="subtitle1">
-                                    {state.deliveryAddress} {state.zipcode} {state.city}
+                                    {state.deliveryAddress} {state.zip_code} {state.city}
                                 </Typography>
                             </Stack>
                         ) : (
