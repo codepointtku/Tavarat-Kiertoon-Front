@@ -60,7 +60,7 @@ interface DrawerProps {
 }
 
 interface StyledBadgeIF {
-    isanimated: number;
+    // isanimated: number;
     theme?: Theme;
 }
 
@@ -94,7 +94,7 @@ function Drawer({ currentOpenDrawer, name, onClose, children }: DrawerProps) {
     );
 }
 
-const StyledBadge = styled(Badge)(({ theme, isanimated }: StyledBadgeIF) => ({
+const StyledBadge = styled(Badge)(({ theme }: StyledBadgeIF) => ({
     '& .MuiBadge-badge': {
         color: theme?.palette.primary.contrastText,
         right: -8,
@@ -147,20 +147,20 @@ function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
     const { cart, products, amountList } = useLoaderData() as Awaited<ReturnType<typeof shoppingCartLoader>>;
-    const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
+    // const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
     const [cartEmpty, setCartEmpty] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const openPopover = Boolean(anchorEl);
     const location = useLocation();
     const [unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts] = useState(initializeCartProducts());
 
-    useEffect(() => {
-        if (cart?.product_items?.length !== productsLength) {
-            setTimeout(() => {
-                setProductsLength(cart?.product_items?.length);
-            }, 3000);
-        }
-    }, [cart?.product_items?.length, productsLength]);
+    // useEffect(() => {
+    //     if (cart?.product_items?.length !== productsLength) {
+    //         setTimeout(() => {
+    //             setProductsLength(cart?.product_items?.length);
+    //         }, 3000);
+    //     }
+    // }, [cart?.product_items?.length, productsLength]);
 
     function initializeCartProducts() {
         const productArr = [] as object[];
@@ -223,7 +223,7 @@ function DefaultAppBar() {
                             <Tooltip title="Ostoskori">
                                 <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
                                     <StyledBadge
-                                        isanimated={productsLength === cart?.product_items?.length ? 1 : 0}
+                                        // isanimated={productsLength === cart?.product_items?.length ? 1 : 0}
                                         badgeContent={cart?.product_items?.length}
                                         sx={{ color: 'primary.contrastText' }}
                                         anchorOrigin={{
