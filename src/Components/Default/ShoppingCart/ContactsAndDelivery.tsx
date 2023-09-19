@@ -100,6 +100,8 @@ function ContactsAndDelivery() {
             recipient: '',
             recipient_phone_number: '',
             deliveryAddress: '',
+            zip_code: '',
+            city: '',
             deliveryRequired: 'true',
             fetchDate: state.fetchDate ? state.fetchDate : currentDate,
             orderInfo: state.orderInfo ? state.orderInfo : '',
@@ -282,7 +284,33 @@ function ContactsAndDelivery() {
                                 label="Toimitusosoite"
                                 variant="outlined"
                                 {...register('deliveryAddress', {
-                                    required: 'Tämä kenttä on täytettävä',
+                                    required: { value: true, message: 'Tämä kenttä on täytettävä' },
+                                    maxLength: { value: 80, message: 'Sisältö on liian pitkä' },
+                                })}
+                                inputProps={{ required: false }}
+                                error={!!errors.deliveryAddress}
+                                helperText={errors.deliveryAddress?.message?.toString() || ''}
+                                required
+                            />
+
+                            <TextField
+                                label="Postinumero"
+                                variant="outlined"
+                                {...register('zip_code', {
+                                    required: { value: true, message: 'Tämä kenttä on täytettävä' },
+                                    maxLength: { value: 5, message: 'Sisältö on liian pitkä' },
+                                })}
+                                inputProps={{ required: false }}
+                                error={!!errors.zip_code}
+                                helperText={errors.zip_code?.message?.toString() || ''}
+                                required
+                            />
+
+                            <TextField
+                                label="Kaupunki"
+                                variant="outlined"
+                                {...register('city', {
+                                    required: { value: true, message: 'Tämä kenttä on täytettävä' },
                                     maxLength: { value: 80, message: 'Sisältö on liian pitkä' },
                                 })}
                                 inputProps={{ required: false }}
@@ -303,8 +331,7 @@ function ContactsAndDelivery() {
                             variant="outlined"
                             value={selectedAddress}
                             {...register('deliveryAddress', {
-                                required: 'Tämä kenttä on täytettävä',
-                                maxLength: { value: 255, message: 'Sisältö on liian pitkä' },
+                                required: 'Tämä kenttä on valittava',
                             })}
                             onChange={(SelectChangeEvent) => {
                                 setSelectedAddress(SelectChangeEvent.target.value);
@@ -415,19 +442,22 @@ function ContactsAndDelivery() {
                 rows={5}
                 sx={{ marginTop: '2rem' }}
             />
-            <Box
-                sx={{
-                    p: 5,
-                    fontWeight: 'bold',
-                    fontSize: '22px',
-                    marginTop: 5,
-                    borderStyle: 'solid',
-                    borderWidth: 5,
-                    borderColor: 'secondary.dark',
-                }}
-            >
-                Toimituksessa kestää keskimäärin 1-2 viikkoa.
-            </Box>
+
+            {selectedDeliveryMethod === 'true' && (
+                <Box
+                    sx={{
+                        p: 5,
+                        fontWeight: 'bold',
+                        fontSize: '22px',
+                        marginTop: 5,
+                        borderStyle: 'solid',
+                        borderWidth: 5,
+                        borderColor: 'secondary.dark',
+                    }}
+                >
+                    Toimituksessa kestää keskimäärin 1-2 viikkoa.
+                </Box>
+            )}
 
             <CartButtons backText="Takaisin" forwardText="Seuraava" actions={actions} formData={getValues()} />
         </form>
