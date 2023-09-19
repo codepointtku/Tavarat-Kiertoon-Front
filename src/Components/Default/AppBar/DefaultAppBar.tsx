@@ -100,20 +100,23 @@ const StyledBadge = styled(Badge)(({ theme, isanimated }: StyledBadgeIF) => ({
         right: -8,
         border: `0.1rem solid ${theme?.palette.background.paper}`,
         backgroundColor: theme?.palette.error.main,
-        animationName: isanimated ? 'idle' : 'badgePulse',
-        animationDuration: '1s',
+        // animationName: isanimated ? 'idle' : 'badgePulse',
+        // animationDuration: '0.6s',
+        // animationTimingFunction: 'ease-in-out',
     },
-    '@keyframes badgePulse': {
-        from: {
-            fontSize: '100%',
-            color: 'white',
-        },
-        to: {
-            fontSize: '125%',
-            // color: theme?.palette.primary.main,
-        },
-    },
-    '@keyframes idle': { '100%': {} },
+    // '@keyframes badgePulse': {
+    //     // from: {
+    //     //     backgroundColor: theme?.palette.error.main,
+    //     // },
+    //     // to: {
+    //     //     backgroundColor: theme?.palette.success.main,
+    //     // },
+    //     //
+    //     '0%': { backgroundColor: theme?.palette.error.main },
+    //     '50%': { backgroundColor: theme?.palette.success.main },
+    //     '100%': { backgroundColor: theme?.palette.error.main },
+    // },
+    // '@keyframes idle': { '100%': {} },
 }));
 
 const iconHover = {
@@ -286,10 +289,17 @@ function DefaultAppBar() {
                     })}
                 </List>
 
-                <Grid container sx={{ display: 'flex', justifyContent: 'center', margin: '1rem 0 6rem 0' }}>
+                <Grid
+                    container
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        margin: '1rem 0 2rem 0',
+                    }}
+                >
                     <Grid item xs={2} />
                     <Grid item xs={8}>
-                        <Stack gap={4}>
+                        <Stack gap={6} alignItems="center">
                             <Button
                                 onClick={() => navigateToCart()}
                                 variant="contained"
@@ -305,9 +315,16 @@ function DefaultAppBar() {
                             </Button>
                             {cart?.product_items?.length > 0 && (
                                 <>
-                                    <Button size="small" variant="outlined" color="error" onClick={handlePopOverOpen}>
-                                        Tyhjennä kori
-                                    </Button>
+                                    <Box>
+                                        <Button
+                                            size="small"
+                                            variant="outlined"
+                                            color="error"
+                                            onClick={handlePopOverOpen}
+                                        >
+                                            Tyhjennä kori
+                                        </Button>
+                                    </Box>
                                     <Popover
                                         open={openPopover}
                                         anchorEl={anchorEl}
