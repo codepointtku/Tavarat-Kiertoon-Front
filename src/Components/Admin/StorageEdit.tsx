@@ -24,8 +24,6 @@ function StorageEdit() {
     const storageInfo = storageData.storageInfo;
     const storageAvailableProductsCount = storageData.hasProducts.count;
 
-    const storageStates = ['Käytössä', 'Ei käytössä'];
-
     const {
         register,
         handleSubmit: createHandleSubmit,
@@ -110,7 +108,11 @@ function StorageEdit() {
                                 required: { value: true, message: 'Varaston katuosoite on pakollinen' },
                                 minLength: {
                                     value: 1,
-                                    message: 'Osoite on pakollinen',
+                                    message: 'Syötä katuosoite',
+                                },
+                                maxLength: {
+                                    value: 50,
+                                    message: 'Maksimipituus 50 merkkiä',
                                 },
                             })}
                             inputProps={{ required: false }}
@@ -132,12 +134,16 @@ function StorageEdit() {
                                         value: 1,
                                         message: 'Syötä postinumero',
                                     },
+                                    maxLength: {
+                                        value: 5,
+                                        message: 'Postinumero on 5 merkkiä',
+                                    },
                                 })}
                                 inputProps={{ required: false }}
                                 required
-                                error={!!formStateErrors.address}
+                                error={!!formStateErrors.zip_code}
                                 helperText={formStateErrors.zip_code?.message?.toString() || ' '}
-                                color={dirtyFields.address ? 'warning' : 'primary'}
+                                color={dirtyFields.zip_code ? 'warning' : 'primary'}
                                 fullWidth
                             />
                             <TextField
@@ -150,12 +156,16 @@ function StorageEdit() {
                                         value: 1,
                                         message: 'Syötä kaupunki',
                                     },
+                                    maxLength: {
+                                        value: 50,
+                                        message: 'Maksimipituus 50 merkkiä',
+                                    },
                                 })}
                                 inputProps={{ required: false }}
                                 required
-                                error={!!formStateErrors.address}
+                                error={!!formStateErrors.city}
                                 helperText={formStateErrors.city?.message?.toString() || ' '}
-                                color={dirtyFields.address ? 'warning' : 'primary'}
+                                color={dirtyFields.city ? 'warning' : 'primary'}
                                 fullWidth
                             />
                         </Stack>
@@ -163,7 +173,6 @@ function StorageEdit() {
                         <TextField
                             select
                             label="Käyttötila"
-                            // defaultValue="Ei käytössä"
                             {...register('in_use', {
                                 required: { value: true, message: 'Valitse varaston tila' },
                             })}
@@ -173,12 +182,10 @@ function StorageEdit() {
                             helperText={formStateErrors.in_use?.message?.toString() || ' '}
                             color={dirtyFields.in_use ? 'warning' : 'primary'}
                             fullWidth
+                            defaultValue={storageInfo.in_use ? 1 : 0}
                         >
-                            {storageStates.map((state) => (
-                                <MenuItem key={state} value={state}>
-                                    {state}
-                                </MenuItem>
-                            ))}
+                            <MenuItem value="1">Käytössä</MenuItem>
+                            <MenuItem value="0">Ei käytössä</MenuItem>
                         </TextField>
 
                         <Stack id="submit-reset-btns" direction="row" gap={2}>
@@ -233,7 +240,7 @@ function StorageEdit() {
                                 </Tooltip>
                             </Grid>
                             <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                <Tooltip title="Siirry poistonäkymään">
+                                <Tooltip title="Siirry poistamaan varasto järjestelmästä">
                                     <Button
                                         id="initialize-deletion-process-btn"
                                         size="small"

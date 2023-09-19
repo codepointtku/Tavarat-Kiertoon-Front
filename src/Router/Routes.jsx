@@ -9,7 +9,7 @@ import AuthContext from '../Context/AuthContext';
 import ErrorBoundary from './ErrorBoundary';
 import BaseBoundary from './BaseBoundary';
 // import AdminViewBoundary from './AdminViewBoundary';
-// import UserError from './ErrorElements/UserError';
+import UserError from './ErrorElements/UserError';
 import OrderViewError from './ErrorElements/OrderViewError';
 
 import HasRole from '../Utils/HasRole';
@@ -26,46 +26,48 @@ import StorageLayout from '../Layouts/StorageLayout';
 import AdminLayout from '../Layouts/AdminLayout';
 import BikesLayout from '../Layouts/BikesLayout';
 
+// storage
+import QrScanner from '../Components/Storage/QrScanner';
+import PDFView from '../Components/Storage/PDFView';
+
 import OrdersList from '../Components/Storage/OrdersList';
 import OrderView from '../Components/Storage/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
 import AdminOrderDelete from '../Components/Admin/AdminOrderDelete';
 
-import QrScanner from '../Components/Storage/QrScanner';
 import StorageProducts from '../Components/Storage/StorageProducts';
 import AddNewItem from '../Components/Storage/AddNewItem';
 import EditProduct from '../Components/Storage/EditProduct';
 
+// admin
 import Overview from '../Components/Admin/Panel/Overview/Overview';
+import Stats from '../Components/Admin/Stats/Stats';
+
 import OrdersGrid from '../Components/Admin/OrdersGrid';
-import AdminOrderCreate from '../Components/Admin/AdminOrderCreate';
-import ProductsGrid from '../Components/Admin/ProductsGrid';
-import AdminProductEdit from '../Components/Admin/AdminProductEdit';
-import AdminProductCreate from '../Components/Admin/AdminProductCreate';
 import AdminOrderEmailList from '../Components/Admin/AdminOrderEmailList';
 
-import AdminInbox from '../Components/Admin/AdminInbox';
+import ProductsGrid from '../Components/Admin/ProductsGrid';
 
 import UsersGrid from '../Components/Admin/UsersGrid';
 import UserEdit from '../Components/Admin/UserEdit';
+import UserDelete from '../Components/Admin/UserDelete';
 import UserAddressEdit from '../Components/Admin/UserAddressEdit';
 import UserAddressCreate from '../Components/Admin/UserAddressCreate';
 
-import BulletinPosts from '../Components/Admin/BulletinPosts';
-import BulletinPostCreate from '../Components/Admin/BulletinPostCreate';
-import BulletinPostEdit from '../Components/Admin/BulletinPostEdit';
-
-import Stats from '../Components/Admin/Stats/Stats';
-
-import StoragesList from '../Components/Admin/StoragesList';
+import StoragesGrid from '../Components/Admin/StoragesGrid';
 import StorageEdit from '../Components/Admin/StorageEdit';
 import StorageDelete from '../Components/Admin/StorageDelete';
 import StorageCreate from '../Components/Admin/StorageCreate';
 import StorageProductsTransfer from '../Components/Admin/StorageProductsTransfer';
 import StorageProductsHandleItemsTransfer from '../Components/Admin/StorageProductsHandleItemsTransfer';
 
-import PDFView from '../Components/Storage/PDFView';
+import BulletinPosts from '../Components/Admin/BulletinPosts';
+import BulletinPostCreate from '../Components/Admin/BulletinPostCreate';
+import BulletinPostEdit from '../Components/Admin/BulletinPostEdit';
 
+import AdminInbox from '../Components/Admin/AdminInbox';
+
+// default
 import ProductDetails from '../Components/Default/ProductDetails';
 import ShoppingCart from '../Components/Default/ShoppingCart/ShoppingCart';
 import ContactsAndDelivery from '../Components/Default/ShoppingCart/ContactsAndDelivery';
@@ -103,6 +105,7 @@ import GuideOrdering from '../Components/Default/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Default/Instructions/GuideShipping';
 import GuideBikes from '../Components/Default/Instructions/GuideBikes';
 
+// bikes
 import ModifyBikePacket from '../Components/Bikes/ModifyBikePacket';
 import BikesPage from '../Components/Bikes/BikesPage';
 import Bikes from '../Components/Bikes/Bikes';
@@ -112,6 +115,7 @@ import BikeRentals from '../Components/Bikes/BikeRentals';
 import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 import BikeModels from '../Components/Bikes/BikeModels';
 import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
+import BikesHomePage from '../Components/Bikes/BikesHomePage';
 
 import {
     bikesPacketLoader,
@@ -155,12 +159,14 @@ import {
     contactAction,
     orderEditAction,
     addProductAction,
+    orderDeleteAction,
     storageCreateAction,
     storageEditAction,
     storageDeleteAction,
     productsTransferAction,
     frontPageActions,
     userEditAction,
+    userDeleteAction,
     adminUserAddressEditAction,
     adminUserAddressCreateAction,
     cartViewAction,
@@ -187,13 +193,10 @@ import {
     deletePacketAction,
     userProfilePageAction,
     modifyUserAddressesAction,
-    orderDeleteAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
-
-import BikesHomePage from '../Components/Bikes/BikesHomePage';
 
 createStore({});
 
@@ -584,10 +587,6 @@ function Routes() {
                                             ],
                                         },
                                         {
-                                            path: 'uusi',
-                                            element: <AdminOrderCreate />,
-                                        },
-                                        {
                                             path: 'sahkopostilista',
                                             element: <AdminOrderEmailList />,
                                             loader: emailRecipientsLoader,
@@ -604,18 +603,6 @@ function Routes() {
                                             element: <ProductsGrid />,
                                             loader: productListLoader,
                                         },
-                                        {
-                                            path: ':id',
-                                            element: <AdminProductEdit />,
-                                            // loader: productDetailsLoader,
-                                            // action: undefined,
-                                        },
-                                        {
-                                            path: 'uusi',
-                                            element: <AdminProductCreate />,
-                                            // loader: undefined,
-                                            // action: undefined,
-                                        },
                                     ],
                                 },
                                 {
@@ -625,28 +612,35 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <UsersGrid />,
-                                            // errorElement: <UserError />,
+                                            errorElement: <UserError />,
                                             id: 'kayttajat',
                                             loader: usersListLoader,
                                         },
                                         {
                                             path: ':userid',
                                             element: <UserEdit />,
-                                            // errorElement: <UserError />,
+                                            errorElement: <UserError />,
                                             loader: userEditLoader,
                                             action: userEditAction,
                                         },
                                         {
+                                            path: ':userid/poista',
+                                            element: <UserDelete randomInt={getRandomInt()} />,
+                                            errorElement: <UserError />,
+                                            loader: userEditLoader,
+                                            action: userDeleteAction,
+                                        },
+                                        {
                                             path: ':userid/osoitteet/:aid',
                                             element: <UserAddressEdit />,
-                                            // errorElement: <UserError />,
+                                            errorElement: <UserError />,
                                             loader: userAddressEditLoader,
                                             action: adminUserAddressEditAction,
                                         },
                                         {
                                             path: ':userid/osoitteet/luo',
                                             element: <UserAddressCreate />,
-                                            // errorElement: <UserError />,
+                                            errorElement: <UserError />,
                                             loader: userAddressCreateLoader,
                                             action: adminUserAddressCreateAction,
                                         },
@@ -658,7 +652,7 @@ function Routes() {
                                     children: [
                                         {
                                             index: true,
-                                            element: <StoragesList />,
+                                            element: <StoragesGrid />,
                                             loader: storagesListLoader,
                                         },
                                         {
@@ -673,6 +667,7 @@ function Routes() {
                                             loader: storageEditLoader,
                                             action: storageDeleteAction,
                                         },
+                                        // todo: move these two into a singular path, StorageProductsTransferBase
                                         {
                                             path: ':id/siirto',
                                             element: <StorageProductsTransfer />,
@@ -717,7 +712,7 @@ function Routes() {
                                     ],
                                 },
                                 {
-                                    path: ':saapuneet',
+                                    path: 'viestit',
                                     element: <AdminInbox />,
                                     loader: adminInboxLoader,
                                     action: adminInboxAction,

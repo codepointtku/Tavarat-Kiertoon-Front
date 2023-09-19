@@ -83,7 +83,9 @@ function ProductList() {
             ) : (
                 <NoSearchResults />
             )}
-            <Pagination count={count} />
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Pagination count={count} itemsText="Tuotteita" />
+            </Box>
         </>
     );
 }

@@ -20,17 +20,8 @@ import TypographyTitle from '../TypographyTitle';
 import type { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import type { storagesListLoader } from '../../Router/loaders';
 
-function StoragesList() {
+function StoragesGrid() {
     const storages = useLoaderData() as Awaited<ReturnType<typeof storagesListLoader>>;
-
-    // [
-    //     {
-    //         id: 0,
-    //         name: 'string',
-    //         address: 'string',
-    //         in_use: true,
-    //     },
-    // ];
 
     // const pageSize = 10;
     // const pageCount = Math.ceil(count! / pageSize);
@@ -260,8 +251,8 @@ function StoragesList() {
                             );
                         },
                     }}
-                    checkboxSelection
                     localeText={localizedTextsMap}
+                    // checkboxSelection
                     // showColumnVerticalBorder
                     // showCellVerticalBorder
                     // loading
@@ -285,4 +276,4 @@ function StoragesList() {
     );
 }
 
-export default StoragesList;
+export default StoragesGrid;
