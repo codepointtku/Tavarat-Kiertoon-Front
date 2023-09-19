@@ -2984,7 +2984,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/UserAddressPutRequest'
-        required: true
       security:
       - CustomJWTAuthentication: []
       responses:
@@ -5902,6 +5901,7 @@ components:
       properties:
         id:
           type: integer
+          readOnly: true
         address:
           type: string
           maxLength: 255
