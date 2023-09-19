@@ -261,7 +261,7 @@ const addProductAction = async (auth, setAuth, request) => {
     //     shelf_id: formData.get('shelf_id'),
     // });
 
-    const formDataWithProductItem = {
+    const newProduct = {
         barcode: formData.get('barcode'),
         available: formData.get('available'),
         storage: formData.get('storages'),
@@ -277,12 +277,12 @@ const addProductAction = async (auth, setAuth, request) => {
         pictures: formData.getAll('pictures[]'),
         //pictures: JSON.parse(formData.get('pictures')),
     };
-    console.log(formDataWithProductItem);
+    console.log(newProduct);
 
-    // const response = await apiCall(auth, setAuth, '/storage/products/', 'post', formData, {
+    // const response = await apiCall(auth, setAuth, '/storage/products/', 'post', newProduct, {
     //     headers: { 'Content-Type': 'multipart/form-data' },
     // });
-    const response = await productsApi.productsCreate(formDataWithProductItem, {
+    const response = await productsApi.productsCreate(newProduct, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
     console.log('response actionissa :', response);

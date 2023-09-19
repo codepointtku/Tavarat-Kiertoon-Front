@@ -108,14 +108,13 @@ function StorageProductsTable() {
                     <TableRow>
                         <StyledTableCell>Viivakoodi</StyledTableCell>
                         <StyledTableCell>
-                            {/* Viivakoodi */}
                             {/* todo: searchbar peruskomponentti tuotteiden hakua varten */}
                             <Form onSubmit={handleSubmit(handleBarcodeSearch)}>
                                 {/* todo: näytä vain hakuikoni kunnes painetaan, jolloin tekstikenttä laajenee/aktivoituu? */}
                                 <TextField
                                     type="search"
                                     {...register('searchString')}
-                                    placeholder="Viivakoodi / tuoteID / nimi"
+                                    placeholder="Viivakoodihaku"
                                     sx={{ backgroundColor: 'white' }}
                                     size="medium"
                                 >
@@ -213,6 +212,7 @@ function StorageProductsTable() {
                                 </StyledTableRow>
                                 <StyledTableRow>
                                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                                        {/* TODO: Outlet for product info, picture and return items to storage / new item functionality, when search is active */}
                                         <Collapse in={isOpen === index} timeout="auto" unmountOnExit>
                                             <Box
                                                 id="product-detail-indent-box"
