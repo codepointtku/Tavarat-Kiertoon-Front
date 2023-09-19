@@ -22,11 +22,7 @@ function HeroText({ title, subtitle, text, subtext, subtext2, footer }: Props) {
                     </Typography>
                 )}
 
-                {text && (
-                    <Typography textAlign="center" sx={{ mt: '1rem' }}>
-                        {text}
-                    </Typography>
-                )}
+                {text && <Typography textAlign="center">{text}</Typography>}
 
                 {subtext && (
                     <Typography textAlign="center" variant="body2" paragraph sx={{ mt: '1rem' }}>
