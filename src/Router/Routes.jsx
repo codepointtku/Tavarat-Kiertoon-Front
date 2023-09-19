@@ -362,6 +362,7 @@ function Routes() {
                                     element: <ContactPage />,
                                     action: async ({ request }) => contactAction(auth, setAuth, request),
                                 },
+                                // this should probably be /tili child:
                                 {
                                     path: 'sahkopostinvaihto',
                                     element: <ChangeEmail />,
@@ -439,6 +440,11 @@ function Routes() {
                                 },
                                 {
                                     path: 'tili/tilaukset/:id',
+                                    element: <OrderPage />,
+                                },
+                                // poor , acute fix:
+                                {
+                                    path: 'tili/tilaushistoria/:id',
                                     element: <OrderPage />,
                                 },
                             ],
