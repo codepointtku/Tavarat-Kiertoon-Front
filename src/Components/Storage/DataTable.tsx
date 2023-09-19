@@ -50,7 +50,7 @@ function OrderListTable() {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Box>
                 <Pagination count={count} itemsText="Tilauksia" />
             </Box>
         </>
