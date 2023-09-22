@@ -36,6 +36,8 @@ interface Props {
     setCurrentOpenDrawer?: (value: string) => void;
 }
 
+// component used in login page and drawer
+
 function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
     const { register, handleSubmit } = useForm<FormValues>();
     const { auth } = useContext(AuthContext);
@@ -43,7 +45,7 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
     const fetcher = useFetcher();
     // fetcher.data works like useActionData, can be used instead when fetcher is used
     const responseStatus = fetcher.data;
-    console.log(responseStatus);
+    console.log('responseStatus loginformissa', responseStatus);
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -53,16 +55,26 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
 
     // onSubmit with action would always redirect to the action url, so we need to use fetcher in components where redirection is not wanted.
     // fetcher.submit will not redirect, but uses the action in the url route
-    const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
+    const onLoginSubmit: SubmitHandler<FieldValues> = async (formData) => {
         fetcher.submit(formData, {
             method: 'post',
             action: '/',
         });
-        console.log(formData);
+    };
+
+    const onLogoutSubmit = () => {
+        fetcher.submit(null, {
+            method: 'post',
+            action: '/',
+        });
+        sessionStorage.clear();
     };
 
     return (
         <>
+            {responseStatus?.type === 'logout' && responseStatus?.status && (
+                <AlertBox text="Uloskirjautuminen onnistui, tervetuloa uudelleen!" status="success" timer={5000} />
+            )}
             {auth.username ? (
                 <>
                     {responseStatus?.type === 'login' && responseStatus?.status && (
@@ -73,16 +85,43 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
                             redirectUrl={redirectUrl as string}
                         />
                     )}
-                    <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} />
+                    <>
+                        <Container maxWidth="xs" component={fetcher.Form} onSubmit={handleSubmit(onLogoutSubmit)}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Typography variant="h4" align="center" color="primary.main" sx={{ mt: 5 }}>
+                                    Tervetuloa {auth.username}!
+                                </Typography>
+                                <Button
+                                    sx={{ mt: 3, backgroundColor: 'primary.dark' }}
+                                    onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
+                                    component={Link}
+                                    to="/profiili"
+                                    fullWidth
+                                >
+                                    Käyttäjätili
+                                </Button>
+
+                                <Button sx={{ mt: 3, mb: 5 }} type="submit" fullWidth>
+                                    Kirjaudu ulos
+                                </Button>
+                            </Box>
+                        </Container>
+                    </>
                 </>
             ) : (
                 <>
                     {responseStatus?.type === 'login' && !responseStatus?.status && (
-                        // tämä laukoo kun kirjautuu ulos /kirjaudu sivulta
-                        <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" />
+                        <AlertBox text="Sisäänkirjautuminen epäonnistui" status="error" timer={10000} />
                     )}
 
-                    <Container maxWidth="xs" component={fetcher.Form} onSubmit={handleSubmit(onSubmit)}>
+                    <Container maxWidth="xs" component={fetcher.Form} onSubmit={handleSubmit(onLoginSubmit)}>
                         <Box
                             sx={{
                                 marginTop: 2,
