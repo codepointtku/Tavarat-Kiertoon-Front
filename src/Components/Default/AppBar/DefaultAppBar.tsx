@@ -24,7 +24,6 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 import AuthContext from '../../../Context/AuthContext';
-import Welcome from './Welcome';
 import ProductInCart from './ProductInCart';
 import CloseDrawerButton from './CloseDrawerButton';
 import type { shoppingCartLoader } from '../../../Router/loaders';
@@ -380,11 +379,7 @@ function DefaultAppBar() {
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
-                {/* {auth.username ? ( */}
-                {/* <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} /> */}
-                {/* ) : ( */}
                 <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
-                {/* )} */}
                 <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>
         </Box>

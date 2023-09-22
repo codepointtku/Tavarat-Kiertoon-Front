@@ -66,7 +66,7 @@ import BulletinPostEdit from '../Components/Admin/BulletinPostEdit';
 import AdminInbox from '../Components/Admin/AdminInbox';
 
 // default
-import LoginForm from '../Components/LoginForm';
+import LoginPage from '../Components/LoginPage';
 
 import ProductDetails from '../Components/Default/ProductDetails';
 import ShoppingCart from '../Components/Default/ShoppingCart/ShoppingCart';
@@ -338,7 +338,7 @@ function Routes() {
                                 },
                                 {
                                     path: '/kirjaudu',
-                                    element: <LoginForm />,
+                                    element: <LoginPage />,
                                 },
                                 {
                                     path: 'rekisteroidy',

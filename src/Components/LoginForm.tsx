@@ -24,7 +24,6 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import AlertBox from './AlertBox';
 import AuthContext from '../Context/AuthContext';
-import Welcome from './Default/AppBar/Welcome';
 
 interface FormValues {
     email: string;
@@ -36,7 +35,7 @@ interface Props {
     setCurrentOpenDrawer?: (value: string) => void;
 }
 
-// component used in login page and drawer
+// login & welcome & logout component used in login page and drawer
 
 function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
     const { register, handleSubmit } = useForm<FormValues>();
