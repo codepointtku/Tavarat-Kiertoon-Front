@@ -12,11 +12,11 @@ function StorageLayout() {
         <Stack id="storage-view-stack" sx={{ minHeight: ['100vh', '100svh'] }}>
             <Header />
             <StorageBar />
-            <Container maxWidth="xl" sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
-                <main>
-                    <Outlet />
-                </main>
-            </Container>
+            {/* <Container maxWidth="xl" sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}> */}
+            <main>
+                <Outlet />
+            </main>
+            {/* </Container> */}
             <footer>
                 <Footer />
             </footer>

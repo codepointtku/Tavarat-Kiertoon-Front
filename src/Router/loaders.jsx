@@ -37,6 +37,7 @@ const rootLoader = async () => {
  * Get shoppingCart for logged in user
  */
 const shoppingCartLoader = async () => {
+    // TODO: why not combine these into one call?
     const { data: cart } = await shoppingCartApi.shoppingCartRetrieve();
     const { data: amountList } = await shoppingCartApi.shoppingCartAvailableAmountList();
     // console.log('@shoppingCartLoader, cart.product_items:', cart?.product_items);
@@ -97,21 +98,34 @@ const productListLoader = async ({ request }) => {
 };
 
 /**
- * Get one product
+ * Get one product (with product_items)
  */
 const productDetailsLoader = async ({ params }) => {
-    // const { data } = await apiCall(auth, setAuth, `/products/${params.id}`, 'get');
     const { data: product } = await productsApi.productsRetrieve(params.id);
     const { data: products } = await productsApi.productsList(product.category);
     return { product, products };
 };
 
 /**
+ * Get one product (with product_items), categories and colors, for editing
+ */
+const productEditLoader = async ({ params }) => {
+    const [{ data: storages }, { data: colors }, { data: categories }, { data: product }] = await Promise.all([
+        storagesApi.storagesList(),
+        colorsApi.colorsList(),
+        categoriesApi.categoriesList(),
+        productsApi.productsRetrieve(params.id),
+    ]);
+    return { storages, colors, categories, product };
+};
+
+/**
  * Get all orders.
  */
 const ordersListLoader = async () => {
-    const response = await ordersApi.ordersList();
-    return response.data;
+    const { data } = await ordersApi.ordersList();
+
+    return data;
 };
 
 /**
@@ -138,16 +152,20 @@ const emailRecipientsLoader = async () => {
 /**
  * Get all categories and storages
  */
-const addItemLoader = async () => {
-    const dataList = [];
-    let { data } = await axios.get('http://localhost:8000/categories/');
-    dataList.push(data);
-    data = await axios.get('http://localhost:8000/storages/');
-    dataList.push(data.data);
-    if (dataList) {
-        return dataList;
-    }
-    return null;
+const storageProductsLoader = async ({ request }) => {
+    const url = new URL(request.url);
+
+    const [{ data: storages }, { data: colors }, { data: categories }, { data: products }, { data: productItems }] =
+        await Promise.all([
+            storagesApi.storagesList(),
+            colorsApi.colorsList(),
+            categoriesApi.categoriesList(),
+            productsApi.productsList(null, null, null, null, null, url.searchParams.get('search')),
+            // pagesize hardcoded to 50, should be enough for now
+            productsApi.productsItemsList(null, null, null, 50, null, url.searchParams.get('search')),
+        ]);
+
+    return { storages, colors, categories, products, productItems };
 };
 
 /**
@@ -411,8 +429,25 @@ const shoppingProcessLoader = async () => {
 };
 
 const adminLoader = async () => {
-    const { data: messages } = await contactFormsApi.contactFormsList(null, null, null, 'Not read');
-    return { messages };
+    // console.log('adminLoader auth', auth);
+    // tämä ei toiminut, auth.admin_group oli edelleen true
+    // if (auth.admin_group === false) {
+    //     return redirect('/');
+    // }
+
+    const [{ data: user }, { data: messages }] = await Promise.all([
+        userApi
+            .userRetrieve()
+            // this could be removed if logic is moved to errorBoundary
+            .catch((e) => {
+                console.log('adminLoader userApi.userRetrieve error', e);
+                // Todo redirect to admin/login or /login
+                return redirect('/kirjaudu');
+            }),
+        contactFormsApi.contactFormsList(null, null, null, { status: 'Not read' }),
+    ]);
+
+    return { user, messages };
 };
 
 const adminInboxLoader = async ({ request }) => {
@@ -480,11 +515,12 @@ export {
     rootLoader,
     productListLoader,
     productDetailsLoader,
+    productEditLoader,
     productTransferLoader,
     ordersListLoader,
     orderViewLoader,
     orderEditLoader,
-    addItemLoader,
+    storageProductsLoader,
     storagesListLoader,
     storageEditLoader,
     usersListLoader,

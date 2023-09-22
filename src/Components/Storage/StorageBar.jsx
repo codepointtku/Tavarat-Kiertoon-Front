@@ -11,16 +11,16 @@ export default function StorageBar() {
 
     const pages = [
         { name: 'Tilaukset', path: '/varasto/' },
-        { name: 'Luo tuote', path: '/varasto/luo' },
+        { name: 'Tuotteet', path: '/varasto/tuotteet' },
     ];
 
     const location = useLocation();
     const { id } = useParams();
 
     useEffect(() => {
-        if (location.pathname.startsWith('/varasto/luo')) {
-            setCurrentPage('Lisää tuote');
-        } else if (location.pathname.startsWith(`/varasto/tilaus/${id}`)) {
+        if (location.pathname.startsWith('/varasto/tuotteet')) {
+            setCurrentPage('Tuotteet');
+        } else if (location.pathname.startsWith(`/varasto/tilaukset/${id}`)) {
             setCurrentPage(`Tilaus: ${id}`);
         } else if (location.pathname.startsWith('/varasto')) {
             setCurrentPage('Tilaukset');
@@ -30,16 +30,18 @@ export default function StorageBar() {
     }, [location]);
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box
+        // sx={{ flexGrow: 1 }}
+        >
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         <Link to="/varasto/" style={{ color: 'white' }}>
                             Varasto
                         </Link>
                         <Typography variant="subtitle2">{currentPage}</Typography>
-                    </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
+                    </Typography> */}
+                    <Box sx={{ display: { xs: 'flex', md: 'flex' } }}>
                         {pages.map((page) => (
                             <Button
                                 key={page.name}
