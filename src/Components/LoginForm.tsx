@@ -44,7 +44,6 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
     const fetcher = useFetcher();
     // fetcher.data works like useActionData, can be used instead when fetcher is used
     const responseStatus = fetcher.data;
-    console.log('responseStatus loginformissa', responseStatus);
 
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
