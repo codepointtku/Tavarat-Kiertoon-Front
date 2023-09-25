@@ -554,23 +554,26 @@ const cartViewAction = async ({ request }) => {
 const confirmationAction = async ({ request }) => {
     const formData = await request.formData();
 
-    const response = await ordersApi.ordersCreate({
-        recipient: formData.get('recipient'),
-        delivery_address: formData
-            .get('deliveryAddress')
-            .concat(' ', formData.get('zip_code').concat(' ', formData.get('city'))),
-        recipient_phone_number: formData.get('recipient_phone_number'),
-        user: Number(formData.get('id')),
-        order_info: formData.get('orderInfo'),
-        delivery_required: formData.get('deliveryRequired'),
+    const checkki = await shoppingCartApi.shoppingCartRetrieve();
 
-        // delivery_date: formData.get('fetchDate'),
-        // ^ uncomment when date works
-        status: 'Waiting',
-    });
+    if (checkki?.product_items?.length !== 0) {
+        const response = await ordersApi.ordersCreate({
+            recipient: formData.get('recipient'),
+            delivery_address: formData
+                .get('deliveryAddress')
+                .concat(' ', formData.get('zip_code').concat(' ', formData.get('city'))),
+            recipient_phone_number: formData.get('recipient_phone_number'),
+            user: Number(formData.get('id')),
+            order_info: formData.get('orderInfo'),
+            delivery_required: formData.get('deliveryRequired'),
+            // delivery_date: formData.get('fetchDate'),
+            // ^ uncomment when date works
+            status: 'Waiting',
+        });
 
-    if (response.status === 201) {
-        return { type: 'orderCreated', status: true };
+        if (response.status === 201) {
+            return { type: 'orderCreated', status: true };
+        }
     }
 
     return { type: 'orderCreated', status: false };
