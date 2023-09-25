@@ -3,7 +3,19 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { useStateMachine } from 'little-state-machine';
 
-import { Typography, TextField, Grid, MenuItem, Box, Button, Stack } from '@mui/material';
+import {
+    Typography,
+    TextField,
+    Grid,
+    MenuItem,
+    Box,
+    Button,
+    Stack,
+    Card,
+    CardContent,
+    CardActions,
+    CardActionArea,
+} from '@mui/material';
 
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
@@ -25,13 +37,11 @@ import { fi } from 'date-fns/locale';
 import Holidays from 'date-holidays';
 
 export interface CartFormData {
-    firstName: string;
-    lastName: string;
     recipient: string;
     recipient_phone_number: string;
     deliveryAddress: string;
-    // zipcode: string;
-    // city: string;
+    zip_code: string;
+    city: string;
     deliveryRequired: string;
     fetchDate?: string | Date;
     orderInfo?: string;
@@ -44,6 +54,38 @@ export type StateMachineActions = {
 
 function ContactsAndDelivery() {
     const user = useRouteLoaderData('shoppingCart') as Awaited<ReturnType<typeof shoppingProcessLoader>>;
+
+    const AddressBoxes = () => {
+        return (
+            <Box id="user-address-boxes-wrapper">
+                <Stack
+                    id="address-boxes"
+                    direction="row"
+                    gap={1}
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    flexWrap="wrap"
+                >
+                    {user.address_list.map((item) => (
+                        <Box className="address-box" key={item.id}>
+                            <Card sx={{ minWidth: 160 }}>
+                                <CardActionArea onClick={() => handleAddressSelect(item)}>
+                                    <Stack padding={'1rem'}>
+                                        <Typography variant="body2">{item.address}</Typography>
+                                        <Typography variant="body2">{item.city}</Typography>
+                                        <Typography variant="body2">{item.zip_code}</Typography>
+                                        <Typography variant="caption" color="primary" sx={{ marginTop: '0.4rem' }}>
+                                            Valitse
+                                        </Typography>
+                                    </Stack>
+                                </CardActionArea>
+                            </Card>
+                        </Box>
+                    ))}
+                </Stack>
+            </Box>
+        );
+    };
 
     const [selectedAddress, setSelectedAddress] = useState(
         Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
@@ -59,10 +101,17 @@ function ContactsAndDelivery() {
         (address: { address: string }) => address.address === selectedAddress
     );
 
-    const [optAddressList, setOptAddressList] = useState(false);
+    const [showAddressList, setShowAddressList] = useState(false);
 
     const handleAddressSelection = () => {
-        setOptAddressList(!optAddressList);
+        setShowAddressList(!showAddressList);
+    };
+
+    const handleAddressSelect = (item: any) => {
+        setValue('deliveryAddress', item.address);
+        setValue('zip_code', item.zip_code);
+        setValue('city', item.city);
+        setShowAddressList(false);
     };
 
     const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
@@ -78,12 +127,15 @@ function ContactsAndDelivery() {
             : currentDate
     );
     const maxDate = new Date().setDate(currentDate.getDate() + 64);
+    const hd = new Holidays('FI');
+    const finnishHolidays = hd.getHolidays();
+
     const { actions, state } = useStateMachine({ Update }) as unknown as {
         actions: StateMachineActions;
         state: CartFormData;
     };
-    const hd = new Holidays('FI');
-    const finnishHolidays = hd.getHolidays();
+
+    console.log('steit:', state);
 
     const {
         register,
@@ -95,18 +147,29 @@ function ContactsAndDelivery() {
     } = useForm({
         mode: 'all',
         defaultValues: {
-            firstName: state.firstName ? state.firstName : '',
-            lastName: state.lastName ? state.lastName : '',
-            recipient: '',
-            recipient_phone_number: '',
-            deliveryAddress: '',
-            zip_code: '',
-            city: '',
-            deliveryRequired: 'true',
+            recipient: state.recipient ? state.recipient : '',
+            recipient_phone_number: state.recipient_phone_number ? state.recipient_phone_number : '',
+            deliveryAddress: state.deliveryAddress ? state.deliveryAddress : '',
+            zip_code: state.zip_code ? state.zip_code : '',
+            city: state.city ? state.city : '',
+            deliveryRequired: state.deliveryRequired ? state.deliveryRequired : 'true',
             fetchDate: state.fetchDate ? state.fetchDate : currentDate,
             orderInfo: state.orderInfo ? state.orderInfo : '',
         },
     });
+
+    function handleAutoFillInformation() {
+        setValue('recipient', user.first_name + ' ' + user.last_name);
+        setValue('recipient_phone_number', user.phone_number as string);
+
+        if (user.address_list.length === 1) {
+            setValue('deliveryAddress', user.address_list[0].address);
+            setValue('zip_code', user.address_list[0].zip_code);
+            setValue('city', user.address_list[0].city);
+        } else {
+            setShowAddressList(!showAddressList);
+        }
+    }
 
     const navigate = useNavigate();
 
@@ -119,11 +182,6 @@ function ContactsAndDelivery() {
         actions.Update(data);
         navigate('/ostoskori/vaihe3');
     };
-
-    function handleAutoFillInformation() {
-        setValue('recipient', user.first_name + ' ' + user.last_name);
-        setValue('recipient_phone_number', user.phone_number as string);
-    }
 
     function disableDate(date: Date) {
         const dateIsHoliday = finnishHolidays.some((holiday) => String(holiday.start) === String(date));
@@ -213,16 +271,14 @@ function ContactsAndDelivery() {
             >
                 <TypographyTitle text="Vastaanottajan yhteystiedot" />
                 <Grid container margin="2rem 0 2rem 0">
-                    <Grid item xs={4}>
-                        <TypographyHeading text="Vastaanottaja sama kuin tilaaja?" />
-                    </Grid>
+                    <Grid item xs={4} />
                     <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button onClick={() => handleAutoFillInformation()}>Täytä tiedot samoina</Button>
+                        <Button onClick={() => handleAutoFillInformation()}>Tilaan itselleni</Button>
                     </Grid>
                     <Grid item xs={4} />
                 </Grid>
 
-                <Stack id="receiver-input-fields-container" direction="row" gap={2} mb="2rem">
+                <Stack id="receiver-input-fields-container" direction="row" gap={2} justifyContent="center">
                     <TextField
                         label="Vastaanottaja"
                         placeholder="Vastaanottajan nimi"
@@ -256,6 +312,13 @@ function ContactsAndDelivery() {
                 {/* //// */}
 
                 <TypographyHeading text="Toimitusosoitetiedot" />
+                <Button
+                    variant="outlined"
+                    onClick={() => setShowAddressList(!showAddressList)}
+                    sx={{ marginTop: '1rem' }}
+                >
+                    {showAddressList ? 'Kirjoita osoite' : 'Valitse osoitelistasta'}
+                </Button>
                 <Stack id="delivery-fields-grid-container" direction="row" gap={2} margin="2rem 0 1rem 0">
                     <TextField
                         {...register('deliveryRequired')}
@@ -277,11 +340,12 @@ function ContactsAndDelivery() {
                         </MenuItem>
                     </TextField>
 
-                    {selectedDeliveryMethod === 'true' && !optAddressList && (
+                    {selectedDeliveryMethod === 'true' && !showAddressList && (
                         // free input text field
                         <>
                             <TextField
-                                label="Toimitusosoite"
+                                // label="Toimitusosoite"
+                                placeholder="Toimitusosoite"
                                 variant="outlined"
                                 {...register('deliveryAddress', {
                                     required: { value: true, message: 'Tämä kenttä on täytettävä' },
@@ -294,7 +358,8 @@ function ContactsAndDelivery() {
                             />
 
                             <TextField
-                                label="Postinumero"
+                                // label="Postinumero"
+                                placeholder="Postinumero"
                                 variant="outlined"
                                 {...register('zip_code', {
                                     required: { value: true, message: 'Tämä kenttä on täytettävä' },
@@ -307,7 +372,8 @@ function ContactsAndDelivery() {
                             />
 
                             <TextField
-                                label="Kaupunki"
+                                // label="Kaupunki"
+                                placeholder="Kaupunki"
                                 variant="outlined"
                                 {...register('city', {
                                     required: { value: true, message: 'Tämä kenttä on täytettävä' },
@@ -318,45 +384,43 @@ function ContactsAndDelivery() {
                                 helperText={errors.deliveryAddress?.message?.toString() || ''}
                                 required
                             />
-                            <Button variant="outlined" onClick={handleAddressSelection}>
-                                Valitse osoitelistasta
-                            </Button>
                         </>
                     )}
 
-                    {selectedDeliveryMethod === 'true' && optAddressList && (
+                    {selectedDeliveryMethod === 'true' && showAddressList && (
                         // address list selection
-                        <TextField
-                            label="Toimitusosoite"
-                            variant="outlined"
-                            value={selectedAddress}
-                            {...register('deliveryAddress', {
-                                required: 'Tämä kenttä on valittava',
-                            })}
-                            onChange={(SelectChangeEvent) => {
-                                setSelectedAddress(SelectChangeEvent.target.value);
-                            }}
-                            inputProps={{ required: false }}
-                            error={!!errors.deliveryAddress}
-                            helperText={errors.deliveryAddress?.message?.toString()}
-                            select
-                            required
-                        >
-                            {user.address_list?.map((a: { address: string; id: number }) => (
-                                <MenuItem value={a.address} key={a.id}>
-                                    {a.address}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+                        // <TextField
+                        //     label="Toimitusosoite"
+                        //     variant="outlined"
+                        //     value={selectedAddress}
+                        //     {...register('deliveryAddress', {
+                        //         required: 'Tämä kenttä on valittava',
+                        //     })}
+                        //     onChange={(SelectChangeEvent) => {
+                        //         setSelectedAddress(SelectChangeEvent.target.value);
+                        //     }}
+                        //     inputProps={{ required: false }}
+                        //     error={!!errors.deliveryAddress}
+                        //     helperText={errors.deliveryAddress?.message?.toString()}
+                        //     select
+                        //     required
+                        // >
+                        //     {user.address_list?.map((a: { address: string; id: number }) => (
+                        //         <MenuItem value={a.address} key={a.id}>
+                        //             {a.address}
+                        //         </MenuItem>
+                        //     ))}
+                        // </TextField>
+                        <AddressBoxes />
                     )}
 
-                    {optAddressList && selectedAddress && (
+                    {/* {optAddressList && selectedAddress && (
                         <Stack direction="row" gap={2}>
                             <TextField
                                 label="Postinumero"
                                 variant="outlined"
                                 value={correctAddress[0]?.zip_code}
-                                // {...register('zipcode')}
+                                // {...register('zip_code_from-list')}
                                 sx={{ opacity: 0.7 }}
                                 disabled
                             />
@@ -365,7 +429,7 @@ function ContactsAndDelivery() {
                                 label="Kaupunki"
                                 variant="outlined"
                                 value={correctAddress[0]?.city}
-                                // {...register('city')}
+                                // {...register('city_from-list')}
                                 sx={{ opacity: 0.7 }}
                                 disabled
                             />
@@ -373,7 +437,7 @@ function ContactsAndDelivery() {
                                 Kirjoita osoite manuaalisesti
                             </Button>
                         </Stack>
-                    )}
+                    )} */}
 
                     {selectedDeliveryMethod === 'false' && (
                         <LocalizationProvider adapterLocale={fi} dateAdapter={AdapterDateFns}>

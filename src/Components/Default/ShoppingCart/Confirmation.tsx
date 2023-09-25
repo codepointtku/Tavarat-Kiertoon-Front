@@ -11,6 +11,7 @@ import TypographyTitle from '../../TypographyTitle';
 import type { AnyCallback, ActionsOutput, GlobalState } from 'little-state-machine/dist/types';
 import ClearInfo from './ClearInfo';
 import TypographyHeading from '../../TypographyHeading';
+import CartEmptyWarningModal from './CartEmptyWarningModal';
 
 interface CartState {
     recipient: string;
@@ -98,75 +99,88 @@ function Confirmation() {
     }, [responseStatus]);
 
     return (
-        <Container maxWidth="md">
-            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '-2rem' }}>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <TypographyTitle text="Tilauksen yhteenveto" />
-                    <Box
-                        sx={{
-                            // minWidth: 420,
-                            margin: '1rem 0 2rem 0',
-                            p: '2rem',
-                            borderStyle: 'dashed',
-                            borderWidth: '0.1rem',
-                            borderRadius: '1rem',
-                            borderColor: 'primary.main',
-                        }}
-                    >
-                        <TypographyHeading text="Vastaanottajan yhteystiedot" />
-                        <Stack spacing={2} padding={'1rem 1rem 1rem 1rem'}>
-                            <Typography variant="subtitle1" {...register('recipient')}>
-                                {state.recipient}
-                            </Typography>
-                            <Typography variant="subtitle1" {...register('recipient_phone_number')}>
-                                {state.recipient_phone_number}
-                            </Typography>
-                        </Stack>
+        <>
+            {products.length === 0 && <CartEmptyWarningModal />}
 
-                        <TypographyHeading text="Toimitustiedot" />
-                        {state.deliveryRequired === 'true' ? (
-                            <Stack direction="row" spacing={'1rem'} padding={'1rem'}>
-                                <Typography variant="subtitle1">
-                                    {state.deliveryAddress} {state.zip_code} {state.city}
+            <Container maxWidth="md">
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '-2rem' }}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <TypographyTitle text="Tilauksen yhteenveto" />
+                        <Box
+                            sx={{
+                                // minWidth: 420,
+                                margin: '1rem 0 2rem 0',
+                                p: '2rem',
+                                borderStyle: 'dashed',
+                                borderWidth: '0.1rem',
+                                borderRadius: '1rem',
+                                borderColor: 'primary.main',
+                            }}
+                        >
+                            <TypographyHeading text="Vastaanottajan yhteystiedot" />
+                            <Stack spacing={2} padding={'1rem 1rem 1rem 1rem'}>
+                                <Typography variant="subtitle1" {...register('recipient')}>
+                                    {state.recipient}
+                                </Typography>
+                                <Typography variant="subtitle1" {...register('recipient_phone_number')}>
+                                    {state.recipient_phone_number}
                                 </Typography>
                             </Stack>
-                        ) : (
-                            <Typography variant="subtitle1" sx={{ padding: '1rem' }}>
-                                Nouto: {state.fetchDate}
-                            </Typography>
-                        )}
 
-                        {state.orderInfo && (
-                            <Typography
-                                id="order-additional-info-textfield"
-                                variant="subtitle1"
-                                sx={{
-                                    wordBreak: 'break-all',
-                                    whiteSpace: 'pre-wrap',
-                                    margin: '0rem 0 1rem 0',
-                                    padding: '0 0 0 1rem',
-                                }}
-                            >
-                                Lisätiedot: {state.orderInfo}
-                            </Typography>
-                        )}
+                            <TypographyHeading text="Toimitustiedot" />
+                            {state.deliveryRequired === 'true' ? (
+                                <Stack direction="row" spacing={'1rem'} padding={'1rem'}>
+                                    <Typography variant="subtitle1">
+                                        {state.deliveryAddress} {state.zip_code} {state.city}
+                                    </Typography>
+                                </Stack>
+                            ) : (
+                                <Typography variant="subtitle1" sx={{ padding: '1rem' }}>
+                                    Nouto: {state.fetchDate}
+                                </Typography>
+                            )}
 
-                        <TypographyHeading text="Tuotteet" />
-                        <List sx={{ padding: '1rem 1rem 0 1rem' }}>
-                            {products?.map((product_item: { count: number; product: { id: number; name: string } }) => (
-                                <ListItem key={product_item.product.id} disableGutters disablePadding>
-                                    <ListItemText primary={`${product_item.count}x ${product_item.product.name}`} />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </Box>
-                    <Typography variant="subtitle2" align="center">
-                        Tilausvahvistus lähetetään sähköpostiin.
-                    </Typography>
-                    <CartButtons backText="Takaisin" forwardText="Vahvista" isSubmitted={isSubmitted} />
-                </form>
-            </Box>
-        </Container>
+                            {state.orderInfo && (
+                                <Typography
+                                    id="order-additional-info-textfield"
+                                    variant="subtitle1"
+                                    sx={{
+                                        wordBreak: 'break-all',
+                                        whiteSpace: 'pre-wrap',
+                                        margin: '0rem 0 1rem 0',
+                                        padding: '0 0 0 1rem',
+                                    }}
+                                >
+                                    Lisätiedot: {state.orderInfo}
+                                </Typography>
+                            )}
+
+                            <TypographyHeading text="Tuotteet" />
+                            <List sx={{ padding: '1rem 1rem 0 1rem' }}>
+                                {products?.map(
+                                    (product_item: { count: number; product: { id: number; name: string } }) => (
+                                        <ListItem key={product_item.product.id} disableGutters disablePadding>
+                                            <ListItemText
+                                                primary={`${product_item.count}x ${product_item.product.name}`}
+                                            />
+                                        </ListItem>
+                                    )
+                                )}
+                            </List>
+                        </Box>
+                        <Typography variant="subtitle2" align="center">
+                            Tilausvahvistus lähetetään sähköpostiin.
+                        </Typography>
+                        <CartButtons
+                            backText="Takaisin"
+                            forwardText="Vahvista"
+                            isSubmitted={isSubmitted}
+                            // cartEmpty={products.length === 0}
+                        />
+                    </form>
+                </Box>
+            </Container>
+        </>
     );
 }
 
