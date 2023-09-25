@@ -100,7 +100,7 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
                                     sx={{ mt: 3, backgroundColor: 'primary.dark' }}
                                     onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
                                     component={Link}
-                                    to="/profiili"
+                                    to="/tili"
                                     fullWidth
                                 >
                                     Käyttäjätili
