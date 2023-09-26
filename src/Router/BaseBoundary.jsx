@@ -2,28 +2,28 @@ import { Alert, AlertTitle, Box, Button, Typography } from '@mui/material';
 import { useLocation, useNavigate, useRouteError, Link } from 'react-router-dom';
 
 const errorType = (err) => {
-    console.log(err);
-    if (err?.status === 400 || err?.response.status === 400) {
+    console.log('BaseBoundary err:', err);
+    if (err?.status === 400 || err?.response?.status === 400) {
         console.log(err?.response?.request?.responseText);
         return 'badrequest';
     }
-    if (err?.status === 401 || err?.response.status === 401) {
+    if (err?.status === 401 || err?.response?.status === 401) {
         return 'unauthorized';
     }
-    if (err?.status === 403 || err?.response.status === 403) {
+    if (err?.status === 403 || err?.response?.status === 403) {
         return 'forbidden';
     }
-    if (err?.status === 404 || err?.response.status === 404) {
+    if (err?.status === 404 || err?.response?.status === 404) {
         return 'noroute';
     }
-    if (err?.status === 418 || err?.response.status === 418) {
+    if (err?.status === 418 || err?.response?.status === 418) {
         return 'teapot';
     }
     if (err?.status === 500 || err?.response?.status === 500) {
         console.log('500 @', err?.response?.request?.responseURL);
         return 'internalservererror';
     }
-    if (err?.status === 503 || err?.response.status === 503) {
+    if (err?.status === 503 || err?.response?.status === 503) {
         return 'serviceunavailable';
     }
     return 'else';

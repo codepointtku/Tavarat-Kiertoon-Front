@@ -66,6 +66,8 @@ import BulletinPostEdit from '../Components/Admin/BulletinPostEdit';
 import AdminInbox from '../Components/Admin/AdminInbox';
 
 // default
+import LoginPage from '../Components/LoginPage';
+
 import ProductDetails from '../Components/Default/ProductDetails';
 import ShoppingCart from '../Components/Default/ShoppingCart/ShoppingCart';
 import ContactsAndDelivery from '../Components/Default/ShoppingCart/ContactsAndDelivery';
@@ -338,6 +340,10 @@ function Routes() {
                                     element: <Bulletins />,
                                 },
                                 {
+                                    path: '/kirjaudu',
+                                    element: <LoginPage />,
+                                },
+                                {
                                     path: 'rekisteroidy',
                                     element: <Outlet />,
                                     children: [
@@ -443,12 +449,7 @@ function Routes() {
                                     ],
                                 },
                                 {
-                                    path: 'tili/tilaukset/:id',
-                                    element: <OrderPage />,
-                                },
-                                // poor , acute fix:
-                                {
-                                    path: 'tili/tilaushistoria/:id',
+                                    path: 'profiili/:tilaustila/tilaus/:id',
                                     element: <OrderPage />,
                                 },
                             ],
@@ -457,7 +458,8 @@ function Routes() {
                         {
                             path: 'varasto',
                             element: (
-                                <HasRole role="storage_group" fallback={<Navigate to="/" />}>
+                                // Mihin navigoidaan jos oikeudet eivät riitä? ErrorBoundaryyn ohje pyytää oikeuksia esimieheltä?
+                                <HasRole role="storage_group" fallback={<Navigate to="/kirjaudu" />}>
                                     <ThemeProvider theme={storageTheme}>
                                         <StorageLayout />
                                     </ThemeProvider>
@@ -520,7 +522,8 @@ function Routes() {
                         {
                             path: 'admin',
                             element: (
-                                <HasRole role="admin_group" fallback={<Navigate to="/" />}>
+                                // TODO: Mihin navigoidaan jos oikeudet eivät riitä? ErrorBoundaryyn ohje pyytää oikeuksia esimieheltä?
+                                <HasRole role="admin_group" fallback={<Navigate to="/kirjaudu" />}>
                                     <ThemeProvider theme={adminTheme}>
                                         <AdminLayout />
                                     </ThemeProvider>
@@ -715,7 +718,8 @@ function Routes() {
                         {
                             path: 'pyorat',
                             element: (
-                                <HasRole role="bicycle_group" fallback={<Navigate to="/" />}>
+                                // TODO: Mihin navigoidaan jos oikeudet eivät riitä? ErrorBoundaryyn ohje pyytää oikeuksia esimieheltä?
+                                <HasRole role="bicycle_group" fallback={<Navigate to="/kirjaudu" />}>
                                     <ThemeProvider theme={bikeTheme}>
                                         <BikesLayout />
                                     </ThemeProvider>

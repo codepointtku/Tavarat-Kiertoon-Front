@@ -64,6 +64,13 @@ test.describe('rekisteroidytoimipaikka', () => {
     });
 });
 
+test.describe('kirjaudu', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/kirjaudu');
+        await expect(page.getByText('Virhe sijainnissa /kirjaudu')).not.toBeVisible();
+    });
+});
+
 test.describe('ohjeet', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/ohjeet');

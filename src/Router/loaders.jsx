@@ -1,5 +1,6 @@
 import axios from 'axios';
-// import apiCall from '../Utils/apiCall';
+import { redirect } from 'react-router-dom';
+
 import {
     bikesApi,
     bulletinsApi,
@@ -457,29 +458,32 @@ const createBulletinLoader = async () => {
 };
 
 /* get logged in users data and user orders*/
-const userInfoLoader = async ({ request }) => {
-    // const searchParams = new URL(request.url).searchParams;
 
-    // const statusMap = {
-    //     Aktiivinen: ['Waiting', 'Processing'],
-    //     Odottaa: 'Waiting',
-    //     Käsitellään: 'Processing',
-    //     Toimitettu: 'Finished',
-    // };
+const userInfoLoader = async (request) => {
+    const searchParams = new URL(request.url).searchParams;
+    const statusMap = {
+        Aktiivinen: ['Waiting', 'Processing'],
+        Odottaa: 'Waiting',
+        Käsitellään: 'Processing',
+        Toimitettu: 'Finished',
+    };
+    const orderingMap = {
+        Uusinensin: '-creation_date',
+        Vanhinensin: 'creation_date',
+        Normaalitilanmukaan: 'status',
+        Käänteinentilanmukaan: '-status',
+    };
 
-    // const orderingMap = {
-    //     Uusinensin: '-creation_date',
-    //     Vanhinensin: 'creation_date',
-    // };
-
-    // const status = statusMap[searchParams.get('tila')] || null;
-
-    // const ordering = orderingMap[searchParams.get('järjestys') || null];
+    const status = statusMap[searchParams.get('tila')] || null;
+    const ordering = orderingMap[searchParams.get('järjestys') || null];
 
     const [{ data: userInfo }, { data: userOrders }] = await Promise.all([
-        userApi.userRetrieve(),
-        // ordersApi.ordersUserList(ordering, searchParams.get('sivu'), null, status),
-        ordersApi.ordersUserList(null, null, 99999, null),
+        userApi.userRetrieve().catch(() => {
+            return redirect('/');
+        }),
+        ordersApi.ordersUserList(ordering, searchParams.get('sivu'), null, status).catch(() => {
+            return redirect('/');
+        }),
     ]);
 
     return { userInfo, userOrders };
