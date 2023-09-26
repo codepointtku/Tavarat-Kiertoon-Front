@@ -278,7 +278,7 @@ function ContactsAndDelivery() {
                 {user.username.includes('@') ? (
                     <Box sx={{ display: 'flex', justifyContent: 'center', margin: '2rem 0 2rem 0' }}>
                         <Button id="autofill-btn" onClick={() => handleAutoFillInformation()}>
-                            Tilaan itselleni
+                            Täytä tiedot automaattisesti
                         </Button>
                     </Box>
                 ) : (
