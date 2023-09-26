@@ -18,7 +18,7 @@ interface Props {
     text: string;
     status: AlertColor;
     timer?: number;
-    redirectUrl?: string;
+    redirectUrl?: string | number;
 }
 
 function AlertBox({ text, status, timer, redirectUrl }: Props) {
@@ -30,7 +30,7 @@ function AlertBox({ text, status, timer, redirectUrl }: Props) {
             setTimeout(() => {
                 setOpen(false);
                 if (redirectUrl) {
-                    navigate(redirectUrl);
+                    navigate(redirectUrl as string);
                 }
             }, timer);
         }
@@ -39,7 +39,7 @@ function AlertBox({ text, status, timer, redirectUrl }: Props) {
     const handleClose = () => {
         setOpen(false);
         if (redirectUrl) {
-            navigate(redirectUrl);
+            navigate(redirectUrl as string);
         }
     };
 

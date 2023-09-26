@@ -53,6 +53,13 @@ test.describe('tiedotteet', () => {
     });
 });
 
+test.describe('kirjaudu', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/kirjaudu');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
 test.describe('rekisteroidy', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/rekisteroidy');
