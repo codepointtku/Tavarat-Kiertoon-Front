@@ -274,12 +274,16 @@ function ContactsAndDelivery() {
                 }}
             >
                 <TypographyTitle text="Vastaanottajan yhteystiedot" />
-                <Box sx={{ display: 'flex', justifyContent: 'center', margin: '2rem 0 2rem 0' }}>
-                    <Button id="autofill-btn" onClick={() => handleAutoFillInformation()}>
-                        Tilaan itselleni
-                    </Button>
-                </Box>
-
+                {/* show autofill btn only for regular users */}
+                {user.username.includes('@') ? (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', margin: '2rem 0 2rem 0' }}>
+                        <Button id="autofill-btn" onClick={() => handleAutoFillInformation()}>
+                            Tilaan itselleni
+                        </Button>
+                    </Box>
+                ) : (
+                    <Box id="spacer-placeholder" margin="2rem"></Box>
+                )}
                 <Stack id="receiver-input-fields-container" direction="row" gap={2} justifyContent="center">
                     <TextField
                         label="Vastaanottaja"
