@@ -2,10 +2,16 @@ import * as React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 
+import Slide, { type SlideProps } from '@mui/material/Slide';
+
 import CloseIcon from '@mui/icons-material/Close';
 
 interface Props {
     text: string;
+}
+
+function SlideTransition(props: SlideProps) {
+    return <Slide {...props} direction="up" />;
 }
 
 function Toaster({ text }: Props) {
@@ -29,7 +35,14 @@ function Toaster({ text }: Props) {
 
     return (
         <div>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} action={action} message={text} />
+            <Snackbar
+                open={open}
+                autoHideDuration={10000}
+                onClose={handleClose}
+                action={action}
+                TransitionComponent={SlideTransition}
+                message={text}
+            />
         </div>
     );
 }
