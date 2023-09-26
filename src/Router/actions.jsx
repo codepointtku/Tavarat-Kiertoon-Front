@@ -554,11 +554,11 @@ const cartViewAction = async ({ request }) => {
 const confirmationAction = async ({ request }) => {
     const formData = await request.formData();
 
-    const checkki = await shoppingCartApi.shoppingCartRetrieve();
+    const getCart = await shoppingCartApi.shoppingCartRetrieve();
 
     // check if the cart has not been emptied @ backend
     try {
-        if (checkki?.product_items?.length !== 0) {
+        if (getCart?.product_items?.length !== 0) {
             const response = await ordersApi.ordersCreate({
                 recipient: formData.get('recipient'),
                 delivery_address: formData
@@ -577,6 +577,7 @@ const confirmationAction = async ({ request }) => {
                 return { type: 'orderCreated', status: true };
             }
         }
+        // if the cart has been emptied backend throws 400 -->
     } catch (error) {
         return { type: 'orderCreated', status: false };
     }
