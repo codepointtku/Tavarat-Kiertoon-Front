@@ -274,13 +274,11 @@ function ContactsAndDelivery() {
                 }}
             >
                 <TypographyTitle text="Vastaanottajan yhteystiedot" />
-                <Grid container margin="2rem 0 2rem 0">
-                    <Grid item xs={4} />
-                    <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button onClick={() => handleAutoFillInformation()}>Tilaan itselleni</Button>
-                    </Grid>
-                    <Grid item xs={4} />
-                </Grid>
+                <Box sx={{ display: 'flex', justifyContent: 'center', margin: '2rem 0 2rem 0' }}>
+                    <Button id="autofill-btn" onClick={() => handleAutoFillInformation()}>
+                        Tilaan itselleni
+                    </Button>
+                </Box>
 
                 <Stack id="receiver-input-fields-container" direction="row" gap={2} justifyContent="center">
                     <TextField
