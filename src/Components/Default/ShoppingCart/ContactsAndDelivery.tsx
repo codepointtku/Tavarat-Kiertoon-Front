@@ -216,7 +216,9 @@ function ContactsAndDelivery() {
 
     return (
         <>
-            {showAddressList && selectedAddress === '' && <Toaster text="Valitse osoite, ole hyvä!" />}
+            {showAddressList && selectedAddress === '' && (
+                <Toaster text="Valitse tai kirjoita toimitusosoite, ole hyvä!" />
+            )}
 
             <form onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues> & CartFormData)}>
                 <Box
