@@ -80,7 +80,7 @@ import ChangeEmail from '../Components/ChangeEmail';
 
 import UserAccountPage from '../Components/Default/Accountpage/UserAccountPage';
 import OrderPage from '../Components/Default/Accountpage/OrderPage';
-import UserAccountInfo from '../Components/Default/Accountpage/ProfileInfo';
+import UserAccountInfo from '../Components/Default/Accountpage/UserAccountInfo';
 import AddressEdit from '../Components/Default/Accountpage/AddressEdit';
 import OrdersHistory from '../Components/Default/Accountpage/OrdersHistory';
 import OrdersActive from '../Components/Default/Accountpage/OrdersActive';
