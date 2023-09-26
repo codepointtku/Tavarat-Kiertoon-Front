@@ -465,14 +465,19 @@ const userInfoLoader = async (request) => {
         Normaalitilanmukaan: 'status',
         Käänteinentilanmukaan: '-status',
     };
+
     const status = statusMap[searchParams.get('tila')] || null;
     const ordering = orderingMap[searchParams.get('järjestys') || null];
+
     const [{ data: userInfo }, { data: userOrders }] = await Promise.all([
         userApi.userRetrieve().catch(() => {
             return redirect('/');
         }),
-        ordersApi.ordersUserList(ordering, searchParams.get('sivu'), null, status),
+        ordersApi.ordersUserList(ordering, searchParams.get('sivu'), null, status).catch(() => {
+            return redirect('/');
+        }),
     ]);
+
     return { userInfo, userOrders };
 };
 
