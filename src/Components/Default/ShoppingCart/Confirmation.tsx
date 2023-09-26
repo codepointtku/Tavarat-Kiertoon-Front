@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useRouteLoaderData, useSubmit, useActionData, useNavigate } from 'react-router-dom';
-import { Typography, Grid, Box, List, ListItem, ListItemText, Container, Stack } from '@mui/material';
+import { Typography, Box, List, ListItem, ListItemText, Container, Stack } from '@mui/material';
 import { useStateMachine } from 'little-state-machine';
 import { useForm } from 'react-hook-form';
 
@@ -102,6 +102,8 @@ function Confirmation() {
         <>
             {products.length === 0 && <CartEmptyWarningModal />}
 
+            {responseStatus?.type === 'orderCreated' && responseStatus?.status === false && <CartEmptyWarningModal />}
+
             <Container maxWidth="md">
                 <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '-2rem' }}>
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -156,17 +158,21 @@ function Confirmation() {
                             )}
 
                             <TypographyHeading text="Tuotteet" />
-                            <List sx={{ padding: '1rem 1rem 0 1rem' }}>
-                                {products?.map(
-                                    (product_item: { count: number; product: { id: number; name: string } }) => (
-                                        <ListItem key={product_item.product.id} disableGutters disablePadding>
-                                            <ListItemText
-                                                primary={`${product_item.count}x ${product_item.product.name}`}
-                                            />
-                                        </ListItem>
-                                    )
-                                )}
-                            </List>
+                            {products.length === 0 ? (
+                                <Typography sx={{ padding: '1rem 0 0 1rem' }}>Ostoskori on tyhjennetty</Typography>
+                            ) : (
+                                <List sx={{ padding: '1rem 1rem 0 1rem' }}>
+                                    {products?.map(
+                                        (product_item: { count: number; product: { id: number; name: string } }) => (
+                                            <ListItem key={product_item.product.id} disableGutters disablePadding>
+                                                <ListItemText
+                                                    primary={`${product_item.count}x ${product_item.product.name}`}
+                                                />
+                                            </ListItem>
+                                        )
+                                    )}
+                                </List>
+                            )}
                         </Box>
                         <Typography variant="subtitle2" align="center">
                             Tilausvahvistus lähetetään sähköpostiin.

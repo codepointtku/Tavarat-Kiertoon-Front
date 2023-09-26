@@ -135,8 +135,6 @@ function ContactsAndDelivery() {
         state: CartFormData;
     };
 
-    console.log('steit:', state);
-
     const {
         register,
         handleSubmit,
@@ -159,16 +157,22 @@ function ContactsAndDelivery() {
     });
 
     function handleAutoFillInformation() {
+        // this means delivery_required === true
+        if (selectedDeliveryMethod === 'true') {
+            setValue('recipient', user.first_name + ' ' + user.last_name);
+            setValue('recipient_phone_number', user.phone_number as string);
+
+            if (user.address_list.length === 1) {
+                setValue('deliveryAddress', user.address_list[0].address);
+                setValue('zip_code', user.address_list[0].zip_code);
+                setValue('city', user.address_list[0].city);
+            } else {
+                setShowAddressList(!showAddressList);
+            }
+        }
+        // delivery_required === false, aka noutotilaus
         setValue('recipient', user.first_name + ' ' + user.last_name);
         setValue('recipient_phone_number', user.phone_number as string);
-
-        if (user.address_list.length === 1) {
-            setValue('deliveryAddress', user.address_list[0].address);
-            setValue('zip_code', user.address_list[0].zip_code);
-            setValue('city', user.address_list[0].city);
-        } else {
-            setShowAddressList(!showAddressList);
-        }
     }
 
     const navigate = useNavigate();
@@ -311,11 +315,13 @@ function ContactsAndDelivery() {
 
                 {/* //// */}
 
-                <TypographyHeading text="Toimitusosoitetiedot" />
+                <TypographyHeading text="Toimitustiedot" />
                 <Button
                     variant="outlined"
                     onClick={() => setShowAddressList(!showAddressList)}
                     sx={{ marginTop: '1rem' }}
+                    // i hate this, comparing to string instead of boolean >.>
+                    disabled={selectedDeliveryMethod === 'false'}
                 >
                     {showAddressList ? 'Kirjoita osoite' : 'Valitse osoitelistasta'}
                 </Button>

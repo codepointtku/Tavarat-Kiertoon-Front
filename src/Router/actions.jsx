@@ -556,27 +556,32 @@ const confirmationAction = async ({ request }) => {
 
     const checkki = await shoppingCartApi.shoppingCartRetrieve();
 
-    if (checkki?.product_items?.length !== 0) {
-        const response = await ordersApi.ordersCreate({
-            recipient: formData.get('recipient'),
-            delivery_address: formData
-                .get('deliveryAddress')
-                .concat(' ', formData.get('zip_code').concat(' ', formData.get('city'))),
-            recipient_phone_number: formData.get('recipient_phone_number'),
-            user: Number(formData.get('id')),
-            order_info: formData.get('orderInfo'),
-            delivery_required: formData.get('deliveryRequired'),
-            // delivery_date: formData.get('fetchDate'),
-            // ^ uncomment when date works
-            status: 'Waiting',
-        });
+    // check if the cart has not been emptied @ backend
+    try {
+        if (checkki?.product_items?.length !== 0) {
+            const response = await ordersApi.ordersCreate({
+                recipient: formData.get('recipient'),
+                delivery_address: formData
+                    .get('deliveryAddress')
+                    .concat(' ', formData.get('zip_code').concat(' ', formData.get('city'))),
+                recipient_phone_number: formData.get('recipient_phone_number'),
+                user: Number(formData.get('id')),
+                order_info: formData.get('orderInfo'),
+                delivery_required: formData.get('deliveryRequired'),
+                // delivery_date: formData.get('fetchDate'),
+                // ^ uncomment when date works
+                status: 'Waiting',
+            });
 
-        if (response.status === 201) {
-            return { type: 'orderCreated', status: true };
+            if (response.status === 201) {
+                return { type: 'orderCreated', status: true };
+            }
         }
+    } catch (error) {
+        return { type: 'orderCreated', status: false };
     }
 
-    return { type: 'orderCreated', status: false };
+    return null;
 };
 
 //
