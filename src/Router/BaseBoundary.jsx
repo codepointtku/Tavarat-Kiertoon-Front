@@ -2,7 +2,7 @@ import { Alert, AlertTitle, Box, Button, Typography } from '@mui/material';
 import { useLocation, useNavigate, useRouteError, Link } from 'react-router-dom';
 
 const errorType = (err) => {
-    console.log(err);
+    console.log('BaseBoundary err:', err);
     if (err?.status === 400 || err?.response.status === 400) {
         console.log(err?.response?.request?.responseText);
         return 'badrequest';

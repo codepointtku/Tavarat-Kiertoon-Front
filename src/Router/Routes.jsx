@@ -411,7 +411,7 @@ function Routes() {
                                 {
                                     path: 'profiili',
                                     element: (
-                                        <HasRole role="user_group" fallback={<Navigate to="/kirjaudu" />}>
+                                        <HasRole role="user_group" fallback={<Navigate to="/" />}>
                                             <UserProfilePage />
                                         </HasRole>
                                     ),

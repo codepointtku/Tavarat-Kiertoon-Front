@@ -468,10 +468,11 @@ const userInfoLoader = async (request) => {
     const status = statusMap[searchParams.get('tila')] || null;
     const ordering = orderingMap[searchParams.get('järjestys') || null];
     const [{ data: userInfo }, { data: userOrders }] = await Promise.all([
-        userApi.userRetrieve(),
+        userApi.userRetrieve().catch(() => {
+            return redirect('/');
+        }),
         ordersApi.ordersUserList(ordering, searchParams.get('sivu'), null, status),
     ]);
-
     return { userInfo, userOrders };
 };
 
