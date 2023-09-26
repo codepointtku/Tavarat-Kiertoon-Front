@@ -202,8 +202,6 @@ function ContactsAndDelivery() {
         setSelectedAddress('');
     };
 
-    console.log('sel add:', selectedAddress, typeof selectedAddress);
-
     const navigate = useNavigate();
 
     const onSubmit = (data: CartFormData) => {

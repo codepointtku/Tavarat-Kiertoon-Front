@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
+import MuiAlert, { type AlertProps } from '@mui/material/Alert';
 
 import Slide, { type SlideProps } from '@mui/material/Slide';
 
@@ -9,6 +10,19 @@ import CloseIcon from '@mui/icons-material/Close';
 interface Props {
     text: string;
 }
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+    return (
+        <MuiAlert
+            elevation={6}
+            ref={ref}
+            variant="filled"
+            severity="info"
+            {...props}
+            sx={{ backgroundColor: 'primary.main', padding: '1.4rem' }}
+        />
+    );
+});
 
 function SlideTransition(props: SlideProps) {
     return <Slide {...props} direction="up" />;
@@ -37,12 +51,13 @@ function Toaster({ text }: Props) {
         <div>
             <Snackbar
                 open={open}
-                autoHideDuration={10000}
+                // autoHideDuration={10000}
                 onClose={handleClose}
                 action={action}
                 TransitionComponent={SlideTransition}
-                message={text}
-            />
+            >
+                <Alert>{text}</Alert>
+            </Snackbar>
         </div>
     );
 }
