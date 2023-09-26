@@ -531,7 +531,13 @@ function ContactsAndDelivery() {
                 </Box>
             )}
 
-            <CartButtons backText="Takaisin" forwardText="Seuraava" actions={actions} formData={getValues()} />
+            <CartButtons
+                backText="Takaisin"
+                forwardText="Seuraava"
+                actions={actions}
+                formData={getValues()}
+                disableForwardBtn={showAddressList && selectedAddress !== null}
+            />
         </form>
     );
 }

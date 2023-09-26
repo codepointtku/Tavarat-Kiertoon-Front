@@ -14,6 +14,7 @@ interface Props {
     formData?: CartFormData;
     unconfirmedChangesCartProducts?: object[];
     isSubmitted?: boolean;
+    disableForwardBtn?: boolean;
 }
 
 interface CustomButtonProps extends ButtonProps {
@@ -46,6 +47,7 @@ function CartButtons({
     formData,
     unconfirmedChangesCartProducts,
     isSubmitted,
+    disableForwardBtn,
 }: Props) {
     return (
         <Grid container justifyContent="space-between" sx={{ marginTop: '2rem' }}>
@@ -59,7 +61,8 @@ function CartButtons({
                 disabled={
                     cartEmpty ||
                     (unconfirmedChangesCartProducts && unconfirmedChangesCartProducts.length > 0) ||
-                    isSubmitted
+                    isSubmitted ||
+                    disableForwardBtn
                 }
                 endIcon={<ArrowForwardIcon />}
             >
