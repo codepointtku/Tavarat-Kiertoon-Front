@@ -1,7 +1,8 @@
-import OrderListTable from './DataTable';
+import OrdersListTable from './OrdersListTable';
 
 function OrdersList() {
-    return <OrderListTable />;
+    // TODO: here could be a search bar to find orders by name, date, etc.
+    return <OrdersListTable />;
 }
 
 export default OrdersList;
