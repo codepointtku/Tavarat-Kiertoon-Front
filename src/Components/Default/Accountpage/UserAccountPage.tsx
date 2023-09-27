@@ -11,8 +11,6 @@ function UserAccountPage() {
     const url = window.location.href;
     const [value, setValue] = useState(initializeValue);
 
-    console.log(value);
-
     function initializeValue() {
         switch (true) {
             case url.endsWith('tili'):
