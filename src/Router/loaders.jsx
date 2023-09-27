@@ -460,28 +460,28 @@ const createBulletinLoader = async () => {
 /* get logged in users data and user orders*/
 
 const userInfoLoader = async (request) => {
-    const searchParams = new URL(request.url).searchParams;
-    const statusMap = {
-        Aktiivinen: ['Waiting', 'Processing'],
-        Odottaa: 'Waiting',
-        Käsitellään: 'Processing',
-        Toimitettu: 'Finished',
-    };
-    const orderingMap = {
-        Uusinensin: '-creation_date',
-        Vanhinensin: 'creation_date',
-        Normaalitilanmukaan: 'status',
-        Käänteinentilanmukaan: '-status',
-    };
+    // const searchParams = new URL(request.url).searchParams;
+    // const statusMap = {
+    //     Aktiivinen: ['Waiting', 'Processing'],
+    //     Odottaa: 'Waiting',
+    //     Käsitellään: 'Processing',
+    //     Toimitettu: 'Finished',
+    // };
+    // const orderingMap = {
+    //     Uusinensin: '-creation_date',
+    //     Vanhinensin: 'creation_date',
+    //     Normaalitilanmukaan: 'status',
+    //     Käänteinentilanmukaan: '-status',
+    // };
 
-    const status = statusMap[searchParams.get('tila')] || null;
-    const ordering = orderingMap[searchParams.get('järjestys') || null];
+    // const status = statusMap[searchParams.get('tila')] || null;
+    // const ordering = orderingMap[searchParams.get('järjestys') || null];
 
     const [{ data: userInfo }, { data: userOrders }] = await Promise.all([
         userApi.userRetrieve().catch(() => {
             return redirect('/');
         }),
-        ordersApi.ordersUserList(ordering, searchParams.get('sivu'), null, status).catch(() => {
+        ordersApi.ordersUserList(null, 9999, null, null).catch(() => {
             return redirect('/');
         }),
     ]);
