@@ -34,8 +34,8 @@ function OrdersHistory() {
     // };
 
     const filteredOrders = userOrders?.results
-        ?.filter((order) => order.status === 'Finished')
-        .map((order) => <OrderCard key={order.id} orderInfo={order} />);
+        ?.filter((order: any) => order.status === 'Finished')
+        .map((order: any) => <OrderCard key={order.id} orderInfo={order} />);
 
     return (
         <Box id="orders-history-container">

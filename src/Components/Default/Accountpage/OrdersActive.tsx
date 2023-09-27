@@ -16,8 +16,8 @@ function OrdersActive() {
     // const orderCards = userOrders?.results?.map((order) => <OrderCard key={order.id} orderInfo={order} />);
 
     const filteredOrders = userOrders?.results
-        ?.filter((order) => order.status === 'Waiting' || order.status === 'Processing')
-        .map((order) => <OrderCard key={order.id} orderInfo={order} />);
+        ?.filter((order: any) => order.status === 'Waiting' || order.status === 'Processing')
+        .map((order: any) => <OrderCard key={order.id} orderInfo={order} />);
 
     // useEffect(() => {
     //     switch (filter.status) {
