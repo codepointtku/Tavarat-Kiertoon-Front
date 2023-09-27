@@ -155,17 +155,17 @@ const emailRecipientsLoader = async () => {
 const storageProductsLoader = async ({ request }) => {
     const url = new URL(request.url);
 
-    const [{ data: storages }, { data: colors }, { data: categories }, { data: products }, { data: productItems }] =
-        await Promise.all([
-            storagesApi.storagesList(),
-            colorsApi.colorsList(),
-            categoriesApi.categoriesList(),
-            productsApi.productsList(null, null, null, null, null, url.searchParams.get('search')),
-            // pagesize hardcoded to 50, should be enough for now
-            productsApi.productsItemsList(null, null, null, 50, null, url.searchParams.get('search')),
-        ]);
+    const [{ data: storages }, { data: colors }, { data: categories }, { data: products }] = await Promise.all([
+        storagesApi.storagesList(),
+        colorsApi.colorsList(),
+        categoriesApi.categoriesList(),
+        // productsApi.productsList(null, null, null, null, null, url.searchParams.get('search')),
+        storagesApi.storagesProductsList(url.searchParams.get('barcode_search')),
+        // pagesize hardcoded to 50, should be enough for now
+        // productsApi.productsItemsList(null, null, null, 50, null, url.searchParams.get('search')),
+    ]);
 
-    return { storages, colors, categories, products, productItems };
+    return { storages, colors, categories, products };
 };
 
 /**

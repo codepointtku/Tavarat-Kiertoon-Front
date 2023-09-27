@@ -1,3 +1,13 @@
+function StorageProductSearch() {
+    return (
+        <div>
+            StorageProductSearch for typescript, this component can be removed if not needed in storageproducts view
+        </div>
+    );
+}
+
+export default StorageProductSearch;
+
 // import { Box, InputBase } from '@mui/material';
 // import { styled, alpha } from '@mui/material/styles';
 // import { Form, useSearchParams } from 'react-router-dom';

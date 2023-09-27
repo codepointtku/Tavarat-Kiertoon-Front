@@ -64,8 +64,10 @@ function StorageProductsTable() {
     const [isOpen, setIsOpen] = useState<number>();
     const [searchParams, setSearchParams] = useSearchParams();
     // const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
-    const { categories, productItems } = useLoaderData() as StorageProductsLoaderType;
-    const { register, handleSubmit, watch } = useForm({ defaultValues: { searchString: searchParams.get('search') } });
+    const { categories, products } = useLoaderData() as StorageProductsLoaderType;
+    const { register, handleSubmit, watch } = useForm({
+        defaultValues: { searchString: searchParams.get('barcode_search') },
+    });
     // todo: fill search field with search param if scanned with qrcodescanner or entered with link
 
     console.log('categories:', categories);
@@ -78,23 +80,25 @@ function StorageProductsTable() {
     const handleBarcodeSearch = (formData: Search) => {
         console.log('handleBarcodeSearch', formData);
         // TODO: search from all products, not just available products
-        setSearchParams({ search: formData.searchString as string });
+        // TODO: keep other search params (pagination)
+        setSearchParams({ barcode_search: formData.searchString as string });
     };
 
-    // array with an array for each unique product_item.product.id and all products with that id
-    const productRenderItems: StorageProductsLoaderType['productItems'][] = [];
-    productItems?.results?.map((productItem) => {
-        // check if array already contains an item.barcode array
-        const productIndex = productRenderItems.findIndex((index) => index[0]?.barcode === productItem.barcode);
-        if (productIndex < 0) {
-            // if not, push a new array with this item as its first object
-            productRenderItems.push([productItem]);
-        } else {
-            // if yes, push this item to that array
-            productRenderItems[productIndex].push(productItem);
-        }
-        return null;
-    });
+    // TODO: remove this reference code when done, was used in previous version with productItems
+    // // array with an array for each unique product_item.product.id and all products with that id
+    // const productRenderItems: StorageProductsLoaderType['productItems'][] = [];
+    // productItems?.results?.map((productItem) => {
+    //     // check if array already contains an item.barcode array
+    //     const productIndex = productRenderItems.findIndex((index) => index[0]?.barcode === productItem.barcode);
+    //     if (productIndex < 0) {
+    //         // if not, push a new array with this item as its first object
+    //         productRenderItems.push([productItem]);
+    //     } else {
+    //         // if yes, push this item to that array
+    //         productRenderItems[productIndex].push(productItem);
+    //     }
+    //     return null;
+    // });
 
     // todo: count rows of productRenderItems and use that fo page size?
 
@@ -142,116 +146,52 @@ function StorageProductsTable() {
                 </TableHead>
                 {/* todo: näytä nollasaldoiset tuotteet -ruksi */}
                 {/* todo: näytä tilauksille varatut tuotteet ja kplmäärä? */}
-                {productItems?.results?.length === 0 ? (
+
+                {products?.results?.length === 0 ? (
                     // todo: tyylittely
                     <Typography padding={3} fontSize={24}>
                         Ei hakutuloksia...
                     </Typography>
                 ) : (
                     <TableBody>
-                        {productRenderItems.map((itemArray, index) => (
-                            <Fragment key={itemArray[0].id}>
-                                <StyledTableRow>
-                                    {/* <StyledTableCell>
-                                        <IconButton
-                                            aria-label="expand row"
-                                            size="small"
-                                            onClick={() => {
-                                                isOpen === index ? setIsOpen(undefined) : setIsOpen(index);
-                                            }}
-                                        >
-                                            {isOpen === index ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                        </IconButton>
-                                    </StyledTableCell> */}
-                                    <StyledTableCell>{itemArray[0].barcode}</StyledTableCell>
-                                    <StyledTableCell>
-                                        <Button
-                                            component={Link}
-                                            to={`/varasto/tuotteet/${itemArray[0].product.id}/muokkaa`}
-                                            variant="outlined"
-                                            color="primary"
-                                            sx={{ paddingRight: 6, paddingLeft: 6 }}
-                                        >
-                                            Muokkaa
-                                        </Button>
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right" component="th" scope="row">
-                                        <Tooltip title={itemArray[0].product.free_description}>
-                                            <Box
-                                                component={Link}
-                                                // to do: link to = adminview | storageview product editview, not defaults
-                                                to={`/tuotteet/${itemArray[0].product.id}`}
-                                            >
-                                                {itemArray[0].product.name}
-                                            </Box>
-                                        </Tooltip>
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        {/* TODO: only show add button if there is a search or barcode search in searchParams? */}
-                                        <IconButton color="primary">
-                                            {itemArray.length} {/* TODO: Add/return products (to same storage) logic */}
-                                            <AddCircle />
-                                        </IconButton>
-                                    </StyledTableCell>
-                                    {/* todo: show some symbol[!] if there are multiple storages for these products? */}
-                                    <StyledTableCell align="right">{itemArray[0].storage.name}</StyledTableCell>
-                                    {/* <StyledTableCell>{itemArray[0].product.id}</StyledTableCell> */}
-                                    <StyledTableCell align="right">
-                                        {itemArray[0].product.category
-                                            ? categories[itemArray[0].product.category]?.name
-                                            : 'ei kategoriaa'}
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        {new Date(itemArray[0].modified_date).toLocaleDateString('fi-FI') +
-                                            ', klo ' +
-                                            new Date(itemArray[0].modified_date).toLocaleTimeString('fi-FI', {
-                                                hour: '2-digit',
-                                                minute: '2-digit',
-                                            })}
-                                    </StyledTableCell>
-                                </StyledTableRow>
-                                <StyledTableRow>
-                                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                                        {/* TODO: Outlet for product info, picture and return items to storage / new item functionality, when search is active */}
-                                        <Collapse in={isOpen === index} timeout="auto" unmountOnExit>
-                                            <Box
-                                                id="product-detail-indent-box"
-                                                sx={{ margin: '0.4rem 1rem -0.1rem 1rem' }}
-                                            >
-                                                <Table size="small">
-                                                    <TableHead>
-                                                        <TableRow>
-                                                            <TableCell align="right">Mitat</TableCell>
-                                                            <TableCell align="right">Paino</TableCell>
-                                                            <TableCell align="right">
-                                                                Yksittäisen tuotteen tunnistenumero
-                                                            </TableCell>
-                                                            {/* Todo: add storage, to show product_items in multiple storages? */}
-                                                            {/* <TableCell align="right">Varasto</TableCell> */}
-                                                            <TableCell align="right">Hyllynumero</TableCell>
-                                                        </TableRow>
-                                                    </TableHead>
-                                                    <TableBody>
-                                                        {/* todo: why type does not flow? */}
-                                                        {itemArray.map((item: any) => (
-                                                            <TableRow key={item.id}>
-                                                                <TableCell align="right">
-                                                                    {item.product.measurements}
-                                                                </TableCell>
-                                                                <TableCell align="right">
-                                                                    {item.product.weight}
-                                                                </TableCell>
-                                                                <TableCell align="right">{item.id}</TableCell>
-                                                                <TableCell align="right">{item.shelf_id}</TableCell>
-                                                            </TableRow>
-                                                        ))}
-                                                    </TableBody>
-                                                </Table>
-                                            </Box>
-                                        </Collapse>
-                                    </TableCell>
-                                </StyledTableRow>
-                            </Fragment>
+                        {products?.results?.map((product) => (
+                            <StyledTableRow key={product.id}>
+                                <StyledTableCell component="th" scope="row">
+                                    {/* TODO: varastopuolen tuotesivu, ProductDetails komponenttia hyödyntäen */}
+                                    <Link to={`/varasto/tuotteet/${product.id}/muokkaa`}>
+                                        {product.product_items[0].barcode}
+                                    </Link>
+                                </StyledTableCell>
+                                <StyledTableCell>
+                                    <Button
+                                        component={Link}
+                                        to={`/varasto/tuotteet/${product.id}/muokkaa`}
+                                        variant="outlined"
+                                        color="primary"
+                                        sx={{ paddingRight: 6, paddingLeft: 6 }}
+                                    >
+                                        Muokkaa
+                                    </Button>
+                                </StyledTableCell>
+                                <StyledTableCell align="right">
+                                    {/* todo: link to working product page with storage related info and edit functionality */}
+                                    <Link to={`/varasto/tuotteet/${product.id}/muokkaa`}>{product.name}</Link>
+                                </StyledTableCell>
+                                <StyledTableCell align="right">{product.product_items.length}</StyledTableCell>
+                                <StyledTableCell align="right">{product.product_items[0].storage.name}</StyledTableCell>
+                                <StyledTableCell align="right">
+                                    {product.category ? categories[product.category]?.name : ''}
+                                </StyledTableCell>
+                                <StyledTableCell align="right">
+                                    {/* TODO: show most recent modified date of product_items. backend change needed? */}
+                                    {new Date(product.product_items[0].modified_date).toLocaleTimeString('fi-FI', {
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                    }) +
+                                        '   ' +
+                                        new Date(product.product_items[0].modified_date).toLocaleDateString('fi-FI')}
+                                </StyledTableCell>
+                            </StyledTableRow>
                         ))}
                     </TableBody>
                 )}
@@ -281,3 +221,113 @@ function StorageProductsTable() {
 }
 
 export default StorageProductsTable;
+
+// // TODO: remove this reference code when done
+//  {
+//      productItems?.results?.length === 0 ? (
+//          // todo: tyylittely
+//          <Typography padding={3} fontSize={24}>
+//              Ei hakutuloksia...
+//          </Typography>
+//      ) : (
+//          <TableBody>
+//              {productRenderItems?.map((itemArray, index) => (
+//                  <Fragment key={itemArray[0].id}>
+//                      <StyledTableRow>
+//                          {/* <StyledTableCell>
+//                                         <IconButton
+//                                             aria-label="expand row"
+//                                             size="small"
+//                                             onClick={() => {
+//                                                 isOpen === index ? setIsOpen(undefined) : setIsOpen(index);
+//                                             }}
+//                                         >
+//                                             {isOpen === index ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+//                                         </IconButton>
+//                                     </StyledTableCell> */}
+//                          <StyledTableCell>{itemArray[0].barcode}</StyledTableCell>
+//                          <StyledTableCell>
+//                              <Button
+//                                  component={Link}
+//                                  to={`/varasto/tuotteet/${itemArray[0].product.id}/muokkaa`}
+//                                  variant="outlined"
+//                                  color="primary"
+//                                  sx={{ paddingRight: 6, paddingLeft: 6 }}
+//                              >
+//                                  Muokkaa
+//                              </Button>
+//                          </StyledTableCell>
+//                          <StyledTableCell align="right" component="th" scope="row">
+//                              <Tooltip title={itemArray[0].product.free_description}>
+//                                  <Box
+//                                      component={Link}
+//                                      // to do: link to = adminview | storageview product editview, not defaults
+//                                      to={`/tuotteet/${itemArray[0].product.id}`}
+//                                  >
+//                                      {itemArray[0].product.name}
+//                                  </Box>
+//                              </Tooltip>
+//                          </StyledTableCell>
+//                          <StyledTableCell align="right">
+//                              {/* TODO: only show add button if there is a search or barcode search in searchParams? */}
+//                              <IconButton color="primary">
+//                                  {itemArray.length} {/* TODO: Add/return products (to same storage) logic */}
+//                                  <AddCircle />
+//                              </IconButton>
+//                          </StyledTableCell>
+//                          {/* todo: show some symbol[!] if there are multiple storages for these products? */}
+//                          <StyledTableCell align="right">{itemArray[0].storage.name}</StyledTableCell>
+//                          {/* <StyledTableCell>{itemArray[0].product.id}</StyledTableCell> */}
+//                          <StyledTableCell align="right">
+//                              {itemArray[0].product.category
+//                                  ? categories[itemArray[0].product.category]?.name
+//                                  : 'ei kategoriaa'}
+//                          </StyledTableCell>
+//                          <StyledTableCell align="right">
+//                              {new Date(itemArray[0].modified_date).toLocaleDateString('fi-FI') +
+//                                  ', klo ' +
+//                                  new Date(itemArray[0].modified_date).toLocaleTimeString('fi-FI', {
+//                                      hour: '2-digit',
+//                                      minute: '2-digit',
+//                                  })}
+//                          </StyledTableCell>
+//                      </StyledTableRow>
+//                      <StyledTableRow>
+//                          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+//                              {/* TODO: Outlet for product info, picture and return items to storage / new item functionality, when search is active */}
+//                              <Collapse in={isOpen === index} timeout="auto" unmountOnExit>
+//                                  <Box id="product-detail-indent-box" sx={{ margin: '0.4rem 1rem -0.1rem 1rem' }}>
+//                                      <Table size="small">
+//                                          <TableHead>
+//                                              <TableRow>
+//                                                  <TableCell align="right">Mitat</TableCell>
+//                                                  <TableCell align="right">Paino</TableCell>
+//                                                  <TableCell align="right">
+//                                                      Yksittäisen tuotteen tunnistenumero
+//                                                  </TableCell>
+//                                                  {/* Todo: add storage, to show product_items in multiple storages? */}
+//                                                  {/* <TableCell align="right">Varasto</TableCell> */}
+//                                                  <TableCell align="right">Hyllynumero</TableCell>
+//                                              </TableRow>
+//                                          </TableHead>
+//                                          <TableBody>
+//                                              {/* todo: why type does not flow? */}
+//                                              {itemArray.map((item: any) => (
+//                                                  <TableRow key={item.id}>
+//                                                      <TableCell align="right">{item.product.measurements}</TableCell>
+//                                                      <TableCell align="right">{item.product.weight}</TableCell>
+//                                                      <TableCell align="right">{item.id}</TableCell>
+//                                                      <TableCell align="right">{item.shelf_id}</TableCell>
+//                                                  </TableRow>
+//                                              ))}
+//                                          </TableBody>
+//                                      </Table>
+//                                  </Box>
+//                              </Collapse>
+//                          </TableCell>
+//                      </StyledTableRow>
+//                  </Fragment>
+//              ))}
+//          </TableBody>
+//      );
+//  }
