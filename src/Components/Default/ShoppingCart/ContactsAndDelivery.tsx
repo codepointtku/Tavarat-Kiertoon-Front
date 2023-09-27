@@ -67,7 +67,7 @@ function ContactsAndDelivery() {
                 message: 'Menneitä päiviä ei sallita noutopäiviksi.',
             },
             { value: isWeekend(date), message: 'Viikonloppuja ei sallita noutopäiviksi.' },
-            { value: isValid(date), message: 'Noutoajat ma-pe 9-16' },
+            { value: isValid(date), message: 'Noutoajat ma-pe 9-15' },
         ];
 
         const errorFound = disabledDatesMessages.find((dateErrObj) => dateErrObj.value) as {
@@ -407,7 +407,7 @@ function ContactsAndDelivery() {
                                             })}
                                             autoFocus
                                             error={
-                                                (dateErrorObj?.message !== 'Noutoajat ma-pe 9-16' ||
+                                                (dateErrorObj?.message !== 'Noutoajat ma-pe 9-15' ||
                                                     errors.fetchDate?.type === 'required' ||
                                                     errors.fetchDate?.type === 'pattern') &&
                                                 !!errors.fetchDate
@@ -415,7 +415,7 @@ function ContactsAndDelivery() {
                                             helperText={
                                                 errors.fetchDate?.message?.toString() ||
                                                 dateErrorObj?.message ||
-                                                'Noutoajat ma-pe 9-16'
+                                                'Noutoajat ma-pe 9-15'
                                             }
                                         />
                                     )}
