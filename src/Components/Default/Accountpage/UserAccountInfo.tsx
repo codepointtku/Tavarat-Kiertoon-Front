@@ -41,6 +41,19 @@ type SubmitTarget =
       }
     | null;
 
+interface GroupObject {
+    id: number;
+    name: string;
+}
+
+interface AddressObject {
+    id: number;
+    address: string;
+    zip_code: string;
+    city: string;
+    user: number;
+}
+
 const groupNames = {
     user_group: 'oikeus tilata tuotteita',
     admin_group: 'ylläpitäjän oikeudet',
@@ -59,7 +72,9 @@ function UserAccountInfo() {
     lastLoginDateInfo.push(lastLoginDate.toLocaleDateString('fi-FI'));
     lastLoginDateInfo.push(lastLoginDate.toLocaleTimeString('fi-FI'));
 
-    const userGroups = userInfo.groups.map((group) => groupNames[group.name as keyof typeof groupNames]).join(', ');
+    const userGroups = userInfo.groups
+        .map((group: GroupObject) => groupNames[group.name as keyof typeof groupNames])
+        .join(', ');
 
     const {
         register,
@@ -204,7 +219,7 @@ function UserAccountInfo() {
                         flexWrap="wrap"
                         sx={{ margin: '1rem 0 1rem 0' }}
                     >
-                        {userInfo.address_list.map((item) => (
+                        {userInfo.address_list.map((item: AddressObject) => (
                             <Box className="address-box" key={item.id}>
                                 <Card sx={{ minWidth: 160 }}>
                                     <CardContent>
