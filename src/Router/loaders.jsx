@@ -160,7 +160,15 @@ const storageProductsLoader = async ({ request }) => {
         colorsApi.colorsList(),
         categoriesApi.categoriesList(),
         // productsApi.productsList(null, null, null, null, null, url.searchParams.get('search')),
-        storagesApi.storagesProductsList(url.searchParams.get('barcode_search')),
+        storagesApi.storagesProductsList(
+            // barcode should support partial search
+            url.searchParams.get('viivakoodi'),
+            url.searchParams.get('kategoria'),
+            null,
+            url.searchParams.get('sivu'),
+            url.searchParams.get('sivukoko')
+            // url.searchParams.get('varasto') // varasto can be a param too, storages/id/products
+        ),
         // pagesize hardcoded to 50, should be enough for now
         // productsApi.productsItemsList(null, null, null, 50, null, url.searchParams.get('search')),
     ]);

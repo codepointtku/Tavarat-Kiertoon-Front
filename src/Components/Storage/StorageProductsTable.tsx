@@ -55,7 +55,7 @@ function StorageProductsTable() {
     // const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const { categories, products } = useLoaderData() as StorageProductsLoaderType;
     const { register, handleSubmit, watch } = useForm({
-        defaultValues: { searchString: searchParams.get('barcode_search') },
+        defaultValues: { searchString: searchParams.get('viivakoodi') },
     });
     // todo: fill search field with search param if scanned with qrcodescanner or entered with link
 
@@ -70,7 +70,7 @@ function StorageProductsTable() {
         console.log('handleBarcodeSearch', formData);
         // TODO: search from all products, not just available products
         // TODO: keep other search params (pagination)
-        setSearchParams({ barcode_search: formData.searchString as string });
+        setSearchParams({ viivakoodi: formData.searchString as string });
     };
 
     // TODO: remove this reference code when done, was used in previous version with productItems
@@ -178,13 +178,14 @@ function StorageProductsTable() {
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
                                         {/* TODO: show most recent modified date of product_items. backend change needed? */}
-                                        {new Date(product.product_items[0].modified_date).toLocaleTimeString('fi-FI', {
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                        }) +
-                                            '   ' +
-                                            new Date(product.product_items[0].modified_date).toLocaleDateString(
-                                                'fi-FI'
+                                        {new Date(product.product_items[0].modified_date).toLocaleDateString('fi-FI') +
+                                            ', klo ' +
+                                            new Date(product.product_items[0].modified_date).toLocaleTimeString(
+                                                'fi-FI',
+                                                {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                }
                                             )}
                                     </StyledTableCell>
                                 </StyledTableRow>
