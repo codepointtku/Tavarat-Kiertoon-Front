@@ -100,7 +100,7 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
                                     sx={{ mt: 3, backgroundColor: 'primary.dark' }}
                                     onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
                                     component={Link}
-                                    to="/profiili"
+                                    to="/tili"
                                     fullWidth
                                 >
                                     Käyttäjätili
@@ -191,7 +191,7 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
                                         backgroundColor: 'error.main',
                                     }}
                                     component={Link}
-                                    to="salasananvaihto"
+                                    to="/salasananvaihto"
                                     onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
                                 >
                                     Unohtunut salasana?
@@ -200,7 +200,7 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
                                 <MuiLink
                                     variant="body2"
                                     component={Link}
-                                    to="salasananvaihto"
+                                    to="/salasananvaihto"
                                     sx={{
                                         display: 'block',
                                         mt: 4,
@@ -215,7 +215,7 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
                                 sx={{ mt: 2 }}
                                 variant="outlined"
                                 component={Link}
-                                to="rekisteroidy"
+                                to="/rekisteroidy"
                                 onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
                             >
                                 Luo uusi tunnus

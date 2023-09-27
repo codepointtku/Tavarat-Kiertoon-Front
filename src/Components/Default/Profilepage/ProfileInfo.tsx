@@ -6,7 +6,7 @@ import { Grid, TextField, Typography, MenuItem, Button, Container } from '@mui/m
 import AlertBox from '../../AlertBox';
 
 import type { userInfoLoader } from '../../../Router/loaders';
-import { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
+import type { SubmitHandler, FieldValues } from 'react-hook-form/dist/types';
 
 interface FormData extends SubmitHandler<FieldValues> {
     [key: string]: string | null;
@@ -30,11 +30,14 @@ type SubmitTarget =
       }
     | null;
 
+type UserInfoLoaderType = typeof userInfoLoader;
+
 function ProfileInfo() {
-    const { userInfo } = useRouteLoaderData('profile') as Awaited<ReturnType<typeof userInfoLoader>>;
+    const { userInfo } = useRouteLoaderData('profile') as Awaited<ReturnType<UserInfoLoaderType>>;
     const submit = useSubmit();
     const responseStatus = useActionData() as ResponseStatus;
-    const address = userInfo.address_list.map((item) => item.address);
+    const address = userInfo.address_list.map((item: { address: string }) => item.address);
+
     const [selectedAddress, setSelectedAddress] = useState(address[0]);
 
     const {
@@ -137,7 +140,7 @@ function ProfileInfo() {
                                 sx={{ width: '13.25rem' }}
                                 select
                             >
-                                {userInfo.address_list?.map((a) => (
+                                {userInfo.address_list?.map((a: { address: string; id: number }) => (
                                     <MenuItem key={a.id} value={a.address}>
                                         {a.address}
                                     </MenuItem>
