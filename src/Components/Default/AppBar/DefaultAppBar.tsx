@@ -24,13 +24,12 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 import AuthContext from '../../../Context/AuthContext';
-import Welcome from './Welcome';
 import ProductInCart from './ProductInCart';
-import LoginForm from './LoginForm';
+import CloseDrawerButton from './CloseDrawerButton';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
 import { type ShoppingCartAvailableAmountList } from '../../../api';
-import CloseDrawerButton from './CloseDrawerButton';
+import LoginForm from '../../LoginForm';
 
 //
 
@@ -249,7 +248,7 @@ function DefaultAppBar() {
                 {/* tähän oma komponentti.. */}
                 {auth.username ? (
                     <>
-                        <List>
+                        <List sx={{ width: '100%', maxWidth: 490 }}>
                             {cart?.product_items?.length === 0 && (
                                 <>
                                     {cartEmpty ? (
@@ -380,11 +379,8 @@ function DefaultAppBar() {
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
-                {auth.username ? (
-                    <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} auth={auth} />
-                ) : (
-                    <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} notLoggedIn={notLoggedIn} />
-                )}
+                <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
+                <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>
         </Box>
     );

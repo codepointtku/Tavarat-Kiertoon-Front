@@ -9,7 +9,6 @@ function Pagination({ count, itemsText }: { count?: number; itemsText?: string }
     const [rowsPerPage, setRowsPerPage] = useState(parseInt(searchParams.get('sivukoko') || '25'));
 
     const handleChangePage = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
-        console.log('newPage', newPage);
         setPage(newPage + 1);
         // return back to top of page
         // window.scrollTo(0, 0);

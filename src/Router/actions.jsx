@@ -34,22 +34,18 @@ const frontPageActions = async ({ request }) => {
                 username: formData.get('email'),
                 password: formData.get('password'),
             });
-            if (response.status === 200) {
+            if (response.status === 200 && response.data.username) {
                 return { type: 'login', status: true };
             }
             return { type: 'login', status: false };
         } else {
             const response = await usersApi.usersLogoutCreate();
 
-            if (response.status === 200) {
+            if (response.data.Success) {
                 return { type: 'logout', status: true };
             }
             return { type: 'logout', status: false };
         }
-        // const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
-        //     username: formData.get('email'),
-        //     password: formData.get('password'),
-        // });
     }
     if (request.method === 'PUT') {
         if (!id) {
