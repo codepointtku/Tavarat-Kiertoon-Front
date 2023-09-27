@@ -199,6 +199,7 @@ function ContactsAndDelivery() {
     }
 
     const onDeliveryMethodFalse = () => {
+        setShowAddressList(!showAddressList);
         setSelectedAddress('');
     };
 
@@ -474,7 +475,7 @@ function ContactsAndDelivery() {
                     forwardText="Seuraava"
                     actions={actions}
                     formData={getValues()}
-                    disableForwardBtn={showAddressList /*&& selectedAddress !== null*/}
+                    disableForwardBtn={showAddressList && selectedAddress === ''}
                 />
             </form>
         </>
