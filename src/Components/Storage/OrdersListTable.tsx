@@ -41,7 +41,7 @@ function OrdersListTable() {
                                 <TableCell align="right">{row.status}</TableCell>
                                 <TableCell align="right">{row.delivery_address}</TableCell>
                                 <TableCell align="right">{row.user}</TableCell>
-                                <TableCell align="right">{row.contact}</TableCell>
+                                <TableCell align="right">{row.recipient_phone_number}</TableCell>
                                 <TableCell align="right">
                                     {row.creation_date ? new Date(row.creation_date).toLocaleDateString('fi-FI') : '-'}
                                 </TableCell>
