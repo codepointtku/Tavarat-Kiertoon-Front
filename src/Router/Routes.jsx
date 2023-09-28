@@ -86,7 +86,7 @@ import UserAccountInfo from '../Components/Default/Accountpage/UserAccountInfo';
 import AddressEdit from '../Components/Default/Accountpage/AddressEdit';
 import OrdersHistory from '../Components/Default/Accountpage/OrdersHistory';
 import OrdersActive from '../Components/Default/Accountpage/OrdersActive';
-import SearchWatch from '../Components/Default/Accountpage/SearchWatch'
+import SearchWatch from '../Components/Default/Accountpage/SearchWatch';
 
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
@@ -195,6 +195,7 @@ import {
     userAccountPageAction,
     userAddressCreateAction,
     userAddressEditAction,
+    searchWatchCreateAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
@@ -451,8 +452,9 @@ function Routes() {
                                         {
                                             path: 'hakuvahti',
                                             element: <SearchWatch />,
-                                            loader: searchWatchLoader
-                                        }
+                                            loader: searchWatchLoader,
+                                            action: searchWatchCreateAction,
+                                        },
                                     ],
                                 },
                                 {
