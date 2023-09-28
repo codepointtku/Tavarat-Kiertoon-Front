@@ -14,7 +14,6 @@ function PDFView() {
 
     return (
         <>
-            <p>what's up</p>
             <PDFViewer style={{ width: '100%', height: '1500px' }}>
                 <PDFDocument order={loader} />
             </PDFViewer>

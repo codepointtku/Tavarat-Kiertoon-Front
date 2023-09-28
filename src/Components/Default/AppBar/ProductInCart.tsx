@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useFetcher } from 'react-router-dom';
+import { useFetcher, Link } from 'react-router-dom';
 import { ListItem, ListItemButton, ListItemText, IconButton, Input, Button, Typography } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
@@ -77,41 +77,41 @@ function ProductInCart({ name, id, count, maxCount, amountChangeState }: Props) 
     };
 
     return (
-        <ListItem key={id} sx={{ height: 50 }} disablePadding>
-            <ListItemButton>
+        <ListItem key={id} sx={{ height: 50 }}>
+            <ListItemButton component={Link} to={`/tuotteet/${id}`}>
                 <ListItemText primary={name} />
-                <IconButton onClick={() => handleClick('remove')} disabled={amountN === 0}>
-                    <RemoveIcon />
-                </IconButton>
-                <Input
-                    inputProps={{
-                        style: { width: 30, textAlign: 'center', border: '0.5px solid gray', borderRadius: '0.25rem' },
-                    }}
-                    value={amountN}
-                    onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
-                    disableUnderline
-                />
-                <IconButton onClick={() => handleClick('add')} disabled={amountN === maxCount + selectedAmount}>
-                    <AddIcon />
-                </IconButton>
-                <Button
-                    color={amountN === 0 ? 'error' : 'primary'}
-                    size="small"
-                    sx={{
-                        ml: 2,
-                        width: '7rem',
-                    }}
-                    aria-label="add more of same item to shopping cart"
-                    onClick={() => handleSubmit('add')}
-                    disabled={changeAmount}
-                >
-                    {amountN === 0 ? (
-                        <Typography variant="inherit">Poista korista</Typography>
-                    ) : (
-                        <Typography variant="inherit">Muuta määrää</Typography>
-                    )}
-                </Button>
             </ListItemButton>
+            <IconButton onClick={() => handleClick('remove')} disabled={amountN === 0}>
+                <RemoveIcon />
+            </IconButton>
+            <Input
+                inputProps={{
+                    style: { width: 30, textAlign: 'center', border: '0.5px solid gray', borderRadius: '0.25rem' },
+                }}
+                value={amountN}
+                onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
+                disableUnderline
+            />
+            <IconButton onClick={() => handleClick('add')} disabled={amountN === maxCount + selectedAmount}>
+                <AddIcon />
+            </IconButton>
+            <Button
+                color={amountN === 0 ? 'error' : 'primary'}
+                size="small"
+                sx={{
+                    ml: 2,
+                    width: '7rem',
+                }}
+                aria-label="add more of same item to shopping cart"
+                onClick={() => handleSubmit('add')}
+                disabled={changeAmount}
+            >
+                {amountN === 0 ? (
+                    <Typography variant="inherit">Poista korista</Typography>
+                ) : (
+                    <Typography variant="inherit">Muuta määrää</Typography>
+                )}
+            </Button>
         </ListItem>
     );
 }

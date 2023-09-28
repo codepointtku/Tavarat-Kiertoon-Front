@@ -28,20 +28,19 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import StyledTableRow from '../StyledTableRow';
 import StyledTableCell from '../StyledTableCell';
 import AlertBox from '../AlertBox';
-import BackButton from '../BackButton';
 import TypographyTitle from '../TypographyTitle';
+import Tooltip from '../Tooltip';
 
 import type { orderEditLoader } from '../../Router/loaders';
 import type { orderEditAction } from '../../Router/actions';
 import { type ProductItemResponse, productsApi } from '../../api';
-import Tooltip from '../Tooltip';
 
 export type OrderEditLoaderType = Awaited<ReturnType<typeof orderEditLoader>>;
 
 type FormValues = {
     orderId: number;
-    contact: OrderEditLoaderType['contact'];
-    phoneNumber: OrderEditLoaderType['phone_number'];
+    recipient: OrderEditLoaderType['recipient'];
+    recipient_phone_number: OrderEditLoaderType['recipient_phone_number'];
     deliveryAddress: OrderEditLoaderType['delivery_address'];
     status: OrderEditLoaderType['status'];
     orderInfo: OrderEditLoaderType['order_info'];
@@ -56,6 +55,7 @@ type FormValues = {
  */
 function OrderEdit() {
     const orderData = useLoaderData() as OrderEditLoaderType;
+
     const actionData = useActionData() as Awaited<ReturnType<typeof orderEditAction>>;
 
     const currentStatus = ['Waiting', 'Processing', 'Finished'];
@@ -157,8 +157,8 @@ function OrderEdit() {
         mode: 'onTouched',
         defaultValues: {
             orderId: orderData.id,
-            contact: orderData.contact,
-            phoneNumber: orderData.phone_number,
+            recipient: orderData.recipient,
+            recipient_phone_number: orderData.recipient_phone_number,
             deliveryAddress: orderData.delivery_address,
             status: orderData.status,
             orderInfo: orderData.order_info,
@@ -183,7 +183,7 @@ function OrderEdit() {
         control,
     });
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     // Remove product handler
     const removeProduct = (index: number) => {
@@ -290,20 +290,7 @@ function OrderEdit() {
 
             <Container maxWidth="xl">
                 <Stack id="order-info-container-main-stack" sx={{ padding: '1rem 0 1rem 0' }}>
-                    <Grid
-                        id="header-grid-container"
-                        container
-                        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                    >
-                        <Grid item xs={4} justifyContent="flex-start">
-                            <BackButton />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TypographyTitle text={`Tilauksen #${orderData.id} muokkaus`} />
-                        </Grid>
-                        <Grid item xs={4} />
-                    </Grid>
-
+                    <TypographyTitle text={`Tilauksen #${orderData.id} muokkaus`} />
                     <Box id="form-container" component={Form} onSubmit={handleSubmit(onSubmit)}>
                         <TableContainer
                             id="main-table-container"
@@ -320,12 +307,12 @@ function OrderEdit() {
                                 <Table id="order-contact-info-textfields-table">
                                     <TableBody>
                                         <TableRow>
-                                            <TableCell sx={{ fontWeight: 'bold' }}>Yhteystieto:</TableCell>
+                                            <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottaja:</TableCell>
                                             <TableCell>
                                                 <TextField
                                                     id="textfield-contact"
-                                                    value={watch('contact')}
-                                                    {...register('contact', {
+                                                    value={watch('recipient')}
+                                                    {...register('recipient', {
                                                         required: { value: true, message: 'Pakollinen kenttä' },
                                                         maxLength: {
                                                             value: 255,
@@ -338,19 +325,21 @@ function OrderEdit() {
                                                     })}
                                                     required
                                                     inputProps={{ required: false }}
-                                                    color={formStateErrors.contact ? 'error' : 'primary'}
-                                                    error={!!formStateErrors.contact}
-                                                    helperText={formStateErrors.contact?.message?.toString() || ' '}
+                                                    color={formStateErrors.recipient ? 'error' : 'primary'}
+                                                    error={!!formStateErrors.recipient}
+                                                    helperText={formStateErrors.recipient?.message?.toString() || ' '}
                                                     sx={{ marginBottom: '-1rem' }}
                                                     fullWidth
                                                 />
                                             </TableCell>
-                                            <TableCell sx={{ fontWeight: 'bold' }}>Puhelinnumero:</TableCell>
+                                            <TableCell sx={{ fontWeight: 'bold' }}>
+                                                Vastaanottajan puhelinnumero:
+                                            </TableCell>
                                             <TableCell>
                                                 <TextField
                                                     id="textfield-phonenumber"
-                                                    value={watch('phoneNumber')}
-                                                    {...register('phoneNumber', {
+                                                    value={watch('recipient_phone_number')}
+                                                    {...register('recipient_phone_number', {
                                                         required: {
                                                             value: true,
                                                             message: 'Puhelinnumero on pakollinen',
@@ -358,9 +347,12 @@ function OrderEdit() {
                                                     })}
                                                     required
                                                     inputProps={{ required: false }}
-                                                    color={formStateErrors.phoneNumber ? 'error' : 'primary'}
-                                                    error={!!formStateErrors.phoneNumber}
-                                                    helperText={formStateErrors.phoneNumber?.message?.toString() || ' '}
+                                                    color={formStateErrors.recipient_phone_number ? 'error' : 'primary'}
+                                                    error={!!formStateErrors.recipient_phone_number}
+                                                    helperText={
+                                                        formStateErrors.recipient_phone_number?.message?.toString() ||
+                                                        ' '
+                                                    }
                                                     sx={{ marginBottom: '-1rem' }}
                                                     fullWidth
                                                 />
@@ -595,9 +587,8 @@ function OrderEdit() {
                                 <Button
                                     id="submit-btn"
                                     type="submit"
-                                    // disabled={isSubmitting || isSubmitSuccessful}
                                     disabled={isSubmitting || isSubmitSuccessful}
-                                    // fullWidth
+                                    fullWidth
                                     sx={{
                                         '&:hover': {
                                             backgroundColor: 'success.dark',

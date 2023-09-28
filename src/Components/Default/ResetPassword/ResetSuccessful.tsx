@@ -30,7 +30,7 @@ function ResetSuccessful() {
                 gap={2}
             >
                 <Grid item>
-                    <TypographyHeading text="Salasana palautettu onnistuneesti" />
+                    <TypographyHeading text="Salasana vaihdettu onnistuneesti" />
                 </Grid>
                 <Grid item>
                     <Button component={Link} to="/" sx={{ width: 200, p: 2 }}>

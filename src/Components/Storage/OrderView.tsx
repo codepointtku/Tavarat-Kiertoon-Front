@@ -14,15 +14,16 @@ import {
     Stack,
     Container,
     Grid,
+    Link as MuiLink,
 } from '@mui/material';
 
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import StyledTableRow from '../StyledTableRow';
 import StyledTableCell from '../StyledTableCell';
 import TypographyTitle from '../TypographyTitle';
-import BackButton from '../BackButton';
 import Tooltip from '../Tooltip';
 import HasRole from '../../Utils/HasRole';
 
@@ -68,13 +69,24 @@ function OrderView({ isAdmin }: Props) {
                     container
                     sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                 >
-                    <Grid item xs={4} justifyContent="flex-start">
-                        <BackButton />
+                    <Grid item xs={3} justifyContent="flex-start">
+                        <Tooltip title="Palaa tilaukset-listaukseen">
+                            <Button
+                                id="cancel-btn"
+                                size="small"
+                                variant="outlined"
+                                component={Link}
+                                to="/admin/tilaukset/"
+                                startIcon={<ArrowBackIcon />}
+                            >
+                                Takaisin
+                            </Button>
+                        </Tooltip>
                     </Grid>
-                    <Grid item xs={4}>
-                        <TypographyTitle text={`Tilausnumero #${order.id}`} />
+                    <Grid item xs={6}>
+                        <TypographyTitle text={`Tilaus #${order.id}`} />
                     </Grid>
-                    <Grid item xs={4} />
+                    <Grid item xs={3} />
                 </Grid>
 
                 <Box id="order-info-main-wrapper" sx={{ margin: '2rem 0 1rem 0' }}>
@@ -85,7 +97,9 @@ function OrderView({ isAdmin }: Props) {
                                     Tilaaja:
                                 </TableCell>
                                 <TableCell width="30%">
-                                    {order.user.first_name} {order.user.last_name}
+                                    <MuiLink component={Link} to={`/admin/kayttajat/${order.user.id}`}>
+                                        {order.user.first_name} {order.user.last_name}
+                                    </MuiLink>
                                 </TableCell>
                                 <TableCell width="20%" sx={{ fontWeight: 'bold' }}>
                                     Tilaus tehty:
@@ -103,14 +117,14 @@ function OrderView({ isAdmin }: Props) {
                                 )}
                             </TableRow>
                             <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottajan yhteystiedot:</TableCell>
-                                <TableCell>{order.contact}</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottaja:</TableCell>
+                                <TableCell>{order.recipient}</TableCell>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Tilauksen tila:</TableCell>
                                 <TableCell>{order.status}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottajan puhelinnumero:</TableCell>
-                                <TableCell>{order.phone_number}</TableCell>
+                                <TableCell>{order.recipient_phone_number}</TableCell>
                                 <TableCell>
                                     <HasRole role="admin_group">
                                         <Button
