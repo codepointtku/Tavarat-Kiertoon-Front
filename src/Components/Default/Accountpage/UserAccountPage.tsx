@@ -45,6 +45,7 @@ function UserAccountPage() {
                     {value === 'userInfo' && <PersonPinIcon sx={{ fontSize: 48, color: 'primary.main' }} />}
                     {value === 'activeOrders' && <AutoStoriesIcon sx={{ fontSize: 48, color: 'primary.main' }} />}
                     {value === 'orderHistory' && <ManageSearchIcon sx={{ fontSize: 48, color: 'primary.main' }} />}
+                    {/* Icon for SearchWatch */}
                 </Grid>
                 <Grid
                     id="tabs-container"
@@ -56,6 +57,7 @@ function UserAccountPage() {
                         <Tab component={Link} to="" value="userInfo" label="Käyttäjätiedot" />
                         <Tab component={Link} to="tilaukset" value="activeOrders" label="Aktiiviset tilaukset" />
                         <Tab component={Link} to="tilaushistoria" value="orderHistory" label="Tilaushistoria" />
+                        <Tab component={Link} to="hakuvahti" value="searchWatch" label="Hakuvahti" />
                     </Tabs>
                 </Grid>
                 <Grid id="spacer" item xs={1} />
