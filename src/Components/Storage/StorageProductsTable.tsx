@@ -7,6 +7,7 @@ import {
     useRouteLoaderData,
     useSearchParams,
     type URLSearchParamsInit,
+    createSearchParams,
 } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
@@ -70,7 +71,15 @@ function StorageProductsTable() {
         console.log('handleBarcodeSearch', formData);
         // TODO: search from all products, not just available products
         // TODO: keep other search params (pagination)
-        setSearchParams({ viivakoodi: formData.searchString as string });
+        setSearchParams((prevParams) => {
+            return createSearchParams({
+                ...Object.fromEntries(prevParams.entries()),
+                viivakoodi: formData.searchString as string,
+                sivu: '1',
+                // TODO: show also unavailable products in storage
+                // all: true,
+            });
+        });
     };
 
     // TODO: remove this reference code when done, was used in previous version with productItems

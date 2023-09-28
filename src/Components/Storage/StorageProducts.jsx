@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useLoaderData, useRouteLoaderData, useSearchParams } from 'react-router-dom';
+import { Link, createSearchParams, useLoaderData, useRouteLoaderData, useSearchParams } from 'react-router-dom';
 
 import { Box, Grid, IconButton, Modal, Typography, styled } from '@mui/material';
 import HorizontalSplitIcon from '@mui/icons-material/HorizontalSplit';
@@ -33,7 +33,16 @@ function StorageProducts() {
 
     const onNewScanResult = (decodedText, decodedResult) => {
         setQrSearchOpen(false);
-        setSearchParams({ search: decodedText });
+        setSearchParams((prevParams) => {
+            return createSearchParams({
+                ...Object.fromEntries(prevParams.entries()),
+                viivakoodi: decodedText,
+                sivu: '1',
+                // show unavailable products in storage
+                // TODO: show also unavailable products in storage
+                // all: true,
+            });
+        });
     };
 
     return (
