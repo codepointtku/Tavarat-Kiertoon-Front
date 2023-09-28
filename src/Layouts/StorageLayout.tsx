@@ -17,7 +17,7 @@ function StorageLayout() {
                 <Outlet />
             </main>
             {/* </Container> */}
-            <footer>
+            <footer style={{ marginTop: 'auto' }}>
                 <Footer />
             </footer>
         </Stack>
