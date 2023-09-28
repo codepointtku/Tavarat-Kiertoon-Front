@@ -34,7 +34,7 @@ export default function StorageBar() {
         // sx={{ flexGrow: 1 }}
         >
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar sx={{ display: 'flex', justifyContent: 'center' }}>
                     {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         <Link to="/varasto/" style={{ color: 'white' }}>
                             Varasto
