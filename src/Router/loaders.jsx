@@ -524,7 +524,7 @@ const userInfoLoader = async (request) => {
         userApi.userRetrieve().catch(() => {
             return redirect('/');
         }),
-        ordersApi.ordersUserList(null, 9999, null, null).catch(() => {
+        ordersApi.ordersUserList(null, null, 9999, null, null).catch(() => {
             return redirect('/');
         }),
     ]);
