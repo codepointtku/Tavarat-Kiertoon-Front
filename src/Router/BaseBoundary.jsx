@@ -60,13 +60,13 @@ function BaseBoundary() {
         serviceunavailable: (
             <Typography variant="h6">Huollamme paraikaa järjestelmäämme! Tule takaisin myöhemmin uudelleen.</Typography>
         ),
-        else: <Typography variant="h6">Ny kävi köplästi {location.pathname}</Typography>,
+        else: <Typography variant="h6">Tuntematon virhe {location.pathname}</Typography>,
     };
 
     return (
         <Box>
             <Alert severity="success">
-                <AlertTitle>Jaahas, se sit kössähti.</AlertTitle>
+                <AlertTitle>Hups! Tapahtui virhe: </AlertTitle>
                 {errorTypes[errorType(error)]}
                 <Button onClick={handleGoBack} sx={{ margin: '1rem 1rem 0 0' }}>
                     Takaisin

@@ -7,7 +7,7 @@ import SortByMenu from '../SortByMenu';
 import Pagination from '../Pagination';
 import { type ordersListLoader } from '../../Router/loaders';
 
-function OrderListTable() {
+function OrdersListTable() {
     const { results: orders, count } = useLoaderData() as Awaited<ReturnType<typeof ordersListLoader>>;
     const navigate = useNavigate();
 
@@ -57,4 +57,4 @@ function OrderListTable() {
     );
 }
 
-export default OrderListTable;
+export default OrdersListTable;

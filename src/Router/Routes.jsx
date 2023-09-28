@@ -219,6 +219,7 @@ function Routes() {
                     errorElement: <ErrorBoundary />,
                     id: 'root',
                     loader: rootLoader,
+                    // TODO: should revalidate when colors, categories, contacts, or bulletins are added/removed
                     shouldRevalidate: () => false,
                     children: [
                         // main routes
