@@ -28,9 +28,9 @@ function CommonErrorMessage() {
         <Box id="error-element" padding="2rem">
             <HeroHeader Icon={<MoodBadIcon />} />
             <HeroText
-                title="Whooops!"
+                title="Hups!"
                 subtitle="Tapahtui odottamaton virhe"
-                subtext="Ei hätää, lähetimme koulutetut apinamme tutkimaan asiaa."
+                // subtext="Ei hätää, lähetimme koulutetut apinamme tutkimaan asiaa."
                 subtext2="Voit kokeilla sivun uudelleenlataamista."
                 footer={<HeroFooter />}
             />
