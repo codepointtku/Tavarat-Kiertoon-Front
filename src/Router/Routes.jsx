@@ -82,19 +82,19 @@ import Activation from '../Components/Default/Signup/Activation';
 import EmailChangeSuccessful from '../Components/EmailChangeSuccessful';
 import ChangeEmail from '../Components/ChangeEmail';
 
-import UserProfilePage from '../Components/Default/Profilepage/UserProfilePage';
-import OrderPage from '../Components/Default/Profilepage/OrderPage';
-import ProfileInfo from '../Components/Default/Profilepage/ProfileInfo';
-import ModifyAddressInfo from '../Components/Default/Profilepage/ModifyAddressInfo';
-import OrdersHistory from '../Components/Default/Profilepage/OrdersHistory';
-import OrdersActive from '../Components/Default/Profilepage/OrdersActive';
+import UserAccountPage from '../Components/Default/Accountpage/UserAccountPage';
+import OrderPage from '../Components/Default/Accountpage/OrderPage';
+import UserAccountInfo from '../Components/Default/Accountpage/UserAccountInfo';
+import AddressEdit from '../Components/Default/Accountpage/AddressEdit';
+import OrdersHistory from '../Components/Default/Accountpage/OrdersHistory';
+import OrdersActive from '../Components/Default/Accountpage/OrdersActive';
 
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
 import DeliveryView from '../Components/DeliveryView';
 import BgInfo from '../Components/Default/BgInfo';
 
-import ForgotPassword from '../Components/Default/ResetPassword/ForgotPassword';
+import PasswordChange from '../Components/Default/ResetPassword/PasswordChange';
 import ResetPassword from '../Components/Default/ResetPassword/ResetPassword';
 import ResetSuccessful from '../Components/Default/ResetPassword/ResetSuccessful';
 import LinkExpired from '../Components/Default/ResetPassword/LinkExpired';
@@ -154,6 +154,7 @@ import {
     adminBulletinLoader,
     adminBulletinsLoader,
     productEditLoader,
+    addressEditLoader,
 } from './loaders';
 
 import {
@@ -193,12 +194,14 @@ import {
     adminEmailRecipientsAction,
     createNewPacketAction,
     deletePacketAction,
-    userProfilePageAction,
-    modifyUserAddressesAction,
+    userAccountPageAction,
+    userAddressCreateAction,
+    userAddressEditAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
+import AddressCreate from '../Components/Default/Accountpage/AddressCreate';
 
 createStore({});
 
@@ -370,10 +373,11 @@ function Routes() {
                                     element: <ContactPage />,
                                     action: async ({ request }) => contactAction(auth, setAuth, request),
                                 },
+                                // this should probably be /tili child:
                                 {
                                     path: 'sahkopostinvaihto',
                                     element: <ChangeEmail />,
-                                    action: async ({ request }) => changeEmailAction(auth, setAuth, request),
+                                    action: changeEmailAction,
                                 },
                                 {
                                     path: 'emailvaihto/:uid/:token/:newEmail',
@@ -382,8 +386,8 @@ function Routes() {
                                 },
                                 {
                                     path: 'salasananvaihto',
-                                    element: <ForgotPassword />,
-                                    action: async ({ request }) => resetEmailAction(auth, setAuth, request),
+                                    element: <PasswordChange />,
+                                    action: resetEmailAction,
                                 },
                                 {
                                     path: 'salasananpalautus',
@@ -414,27 +418,33 @@ function Routes() {
                                     action: async ({ request }) => activationAction(auth, setAuth, request),
                                 },
                                 {
-                                    path: 'profiili',
+                                    path: 'tili',
                                     element: (
-                                        <HasRole role="user_group" fallback={<Navigate to="/" />}>
-                                            <UserProfilePage />
+                                        <HasRole role="user_group" fallback={<Navigate to="/kirjaudu" />}>
+                                            <UserAccountPage />
                                         </HasRole>
                                     ),
-                                    id: 'profile',
-                                    loader: async ({ request }) => userInfoLoader(request),
-                                    action: async ({ request }) => userProfilePageAction(request),
+                                    id: 'account',
+                                    loader: userInfoLoader,
+                                    action: userAccountPageAction,
                                     children: [
                                         {
                                             index: true,
-                                            element: <ProfileInfo />,
+                                            element: <UserAccountInfo />,
                                         },
                                         {
-                                            path: 'osoitetiedot/:id',
-                                            element: <ModifyAddressInfo />,
-                                            action: async ({ request }) => modifyUserAddressesAction(request),
+                                            path: 'osoitteet/:aid',
+                                            element: <AddressEdit />,
+                                            loader: addressEditLoader,
+                                            action: userAddressEditAction,
                                         },
                                         {
-                                            path: 'aktiivisettilaukset',
+                                            path: 'osoitteet/uusi',
+                                            element: <AddressCreate />,
+                                            action: userAddressCreateAction,
+                                        },
+                                        {
+                                            path: 'tilaukset',
                                             element: <OrdersActive />,
                                         },
                                         {
@@ -445,11 +455,7 @@ function Routes() {
                                 },
                                 {
                                     path: 'profiili/:tilaustila/tilaus/:id',
-                                    element: (
-                                        <HasRole role="user_group" fallback={<Navigate to="/kirjaudu" />}>
-                                            <OrderPage />
-                                        </HasRole>
-                                    ),
+                                    element: <OrderPage />,
                                 },
                             ],
                         },

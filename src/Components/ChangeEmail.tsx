@@ -1,11 +1,28 @@
 import { useForm } from 'react-hook-form';
-import { useSubmit, useActionData, Link } from 'react-router-dom';
+import { useSubmit, useActionData, Link, Form } from 'react-router-dom';
 
-import { Container, Box, Grid, Typography, Button, FormControl, OutlinedInput, InputLabel, Alert } from '@mui/material';
+import { Container, Typography, Button, Alert, TextField, Stack, Link as MuiLink } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
-import TypographyTitle from './TypographyTitle';
+
 import AlertBox from './AlertBox';
 import HeroHeader from './HeroHeader';
+import HeroText from './HeroText';
+
+const SuperLink = MuiLink as typeof MuiLink | typeof Link;
+
+function MsgFooter() {
+    return (
+        <Typography>
+            <SuperLink component={Link} to={'/tili'}>
+                Palaa takaisin tilisivulle
+            </SuperLink>{' '}
+            tai{' '}
+            <SuperLink component={Link} to="/">
+                siirry etusivulle
+            </SuperLink>
+        </Typography>
+    );
+}
 
 function ChangeEmail() {
     const submit = useSubmit();
@@ -14,8 +31,8 @@ function ChangeEmail() {
     const {
         register,
         handleSubmit,
-        formState: { errors },
-    } = useForm({});
+        formState: { errors, isSubmitSuccessful, isValid },
+    } = useForm({ mode: 'all' });
 
     const onSubmit = (data: any) => {
         const { newEmail } = data;
@@ -23,66 +40,53 @@ function ChangeEmail() {
     };
 
     return (
-        <Container sx={{ border: '0.1rem solid #bfe6f6', borderRadius: '1rem', p: 5 }}>
-            {responseStatus?.status && (
-                <AlertBox
-                    text="Sähköpostiosoitteen vaihdon vahvistuslinkki on lähetetty uuteen sähköpostiisi"
-                    status="success"
-                />
-            )}
-            <HeroHeader Icon={<EmailIcon />} />
-            <Box sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
-                <TypographyTitle text="Sähköpostiosoitteen vaihto" />
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <Grid direction="column" width={500} gap={2} container>
-                        <Grid item>
-                            <Typography variant="h6">Syötä uusi sähköposti</Typography>
-                        </Grid>
-                        <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
-                            <InputLabel htmlFor="outlined-input-change-email">Uusi sähköposti</InputLabel>
-                            <OutlinedInput
+        <>
+            {responseStatus?.status === false && <AlertBox text="Jokin meni pieleen" status="warning" />}
+
+            <Container maxWidth="md" sx={{ border: '0.1rem solid #bfe6f6', borderRadius: '1rem', p: 5 }}>
+                <HeroHeader Icon={<EmailIcon />} hideInAdmin />
+                {!isSubmitSuccessful && (
+                    <HeroText
+                        title="Sähköpostiosoitteen vaihto"
+                        subtext2="Lähetämme syöttämääsi sähköpostiosoitteeseen linkin, josta voi suorittaa tilin sähköpostiosoitteen vaihdon."
+                    />
+                )}
+                <Container maxWidth="md">
+                    {isSubmitSuccessful ? (
+                        <HeroText
+                            title="Sähköpostin vaihtolinkki on nyt lähetetty."
+                            subtitle="Olet vielä sisäänkirjautuneena tilillesi nykyisellä sähköpostiosoitteella."
+                            subtext=" Seuraa linkin ohjeita tilin sähköpostiosoitteen vaihtamiseksi."
+                            footer={<MsgFooter />}
+                        />
+                    ) : (
+                        <Stack component={Form} onSubmit={handleSubmit(onSubmit)} alignItems="center" spacing={1}>
+                            <TextField
+                                label="Sähköposti"
                                 {...register('newEmail', {
-                                    required: true,
-                                    maxLength: 255,
-                                    pattern: /.+@turku.fi$|.+@edu.turku.fi$/,
+                                    required: { value: true, message: 'Syötä sähköpostiosoite' },
+                                    pattern: {
+                                        value: /.+@turku.fi$|.+@edu.turku.fi$/,
+                                        message: 'Osoitteen on oltava muotoa @turku.fi tai @edu.turku.fi',
+                                    },
                                 })}
-                                color={errors.newEmail ? 'error' : 'primary'}
-                                id="outlined-input-change-email"
-                                label="Uusi sähköposti"
+                                inputProps={{ required: false }}
+                                required
+                                error={!!errors.newEmail}
+                                helperText={errors.newEmail?.message?.toString() || ' '}
+                                color={isValid ? 'success' : 'primary'}
+                                fullWidth
                             />
-                            {errors.newEmail && errors.newEmail.type === 'required' && (
-                                <Alert severity="error" sx={{ mt: 1 }}>
-                                    Tämä kenttä on täytettävä
-                                </Alert>
-                            )}
-                            {errors.newEmail && errors.newEmail.type === 'maxLength' && (
-                                <Alert severity="error" sx={{ mt: 1 }}>
-                                    Sähköpostisi on liian pitkä
-                                </Alert>
-                            )}
-                            {errors.newEmail && errors.newEmail.type === 'pattern' && (
-                                <Alert severity="error" sx={{ mt: 1 }}>
-                                    Sähköpostisi täytyy loppua turku.fi tai edu.turku.fi
-                                </Alert>
-                            )}
-                        </FormControl>
-                        <Grid item>
-                            {responseStatus?.status ? (
-                                <Button component={Link} to="/" sx={{ fontWeight: 'fontWeightMediumBold' }}>
-                                    Palaa etusivulle
-                                </Button>
-                            ) : (
-                                <Button type="submit" sx={{ fontWeight: 'fontWeightMediumBold' }}>
-                                    Vaihda sähköposti
-                                </Button>
-                            )}
-                        </Grid>
-                    </Grid>
-                </form>
-            </Box>
-        </Container>
+
+                            <Button type="submit">Lähetä linkki</Button>
+                        </Stack>
+                    )}
+                    <Button id="back-btn" variant="outlined" size="small" component={Link} to="/tili" sx={{ mt: 2 }}>
+                        Takaisin
+                    </Button>
+                </Container>
+            </Container>
+        </>
     );
 }
 

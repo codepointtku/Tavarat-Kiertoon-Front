@@ -37,10 +37,10 @@ function OrdersGrid() {
     //       "status": "string",
     //       "delivery_address": "string",
     //       "delivery_required": true,
-    //       "contact": "string",
+    //       "recipient": "string",
     //       "order_info": "string",
     //       "delivery_date": "2023-06-28T11:37:57.850Z",
-    //       "phone_number": "string",
+    //       "recipient_phone_number": "string",
     //       "creation_date": "2023-06-28T11:37:57.850Z",
     //       "user": 0,
     //       "product_items": [
@@ -70,9 +70,20 @@ function OrdersGrid() {
                 }
             },
         },
-        { field: 'delivery_address', headerName: 'Toimitusosoite', flex: 1 },
-        { field: 'contact', headerName: 'Yhteystieto', flex: 1 },
-        { field: 'phone_number', headerName: 'Puhelinnumero', flex: 1 },
+        {
+            field: 'delivery_address',
+            headerName: 'Toimitusosoite',
+            valueGetter: (params: GridValueGetterParams) => {
+                if (params.row.delivery_address === 'nouto') {
+                    return '-';
+                } else {
+                    return params.row.delivery_address;
+                }
+            },
+            flex: 2,
+        },
+        { field: 'recipient', headerName: 'Vastaanottaja', flex: 1 },
+        { field: 'recipient_phone_number', headerName: 'Puhelinnumero', flex: 1 },
         {
             field: 'delivery_required',
             headerName: 'Toimitus',

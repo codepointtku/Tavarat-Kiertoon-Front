@@ -106,7 +106,7 @@ function BulletinModal({ title, date, content }: Props) {
                                 id="bulletin-modal-content"
                                 sx={{
                                     mt: '1rem',
-                                    wordBreak: 'break-all',
+                                    overflowWrap: 'break-word',
                                     whiteSpace: 'pre-wrap',
                                 }}
                                 textAlign="center"
