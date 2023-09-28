@@ -114,12 +114,8 @@ function AdminAppBar() {
                                     onClose={handleCloseAvatarDropDownMenu}
                                 >
                                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                        <MenuItem
-                                            onClick={handleCloseAvatarDropDownMenu}
-                                            component={Link}
-                                            to="/profiili"
-                                        >
-                                            Käyttäjäprofiili
+                                        <MenuItem onClick={handleCloseAvatarDropDownMenu} component={Link} to="/tili">
+                                            Tili
                                         </MenuItem>
                                     </Box>
                                     <Box
@@ -129,7 +125,7 @@ function AdminAppBar() {
                                     >
                                         {/* <MenuItem>Kirjaudu ulos</MenuItem> */}
                                         <Button type="submit" variant="text">
-                                            Kirjaudu ulos
+                                            Ulos
                                         </Button>
                                     </Box>
                                 </Menu>

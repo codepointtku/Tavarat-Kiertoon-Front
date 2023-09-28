@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, type ReactNode } from 'react';
+import { useState, useContext, /* useEffect, */ type ReactNode } from 'react';
 import { useLoaderData, useNavigate, useLocation, useFetcher } from 'react-router-dom';
 
 import {
@@ -11,12 +11,14 @@ import {
     Badge,
     Drawer as MuiDrawer,
     List,
-    ListItem,
-    ListItemText,
+    // ListItem,
+    // ListItemText,
     Typography,
     Popover,
     Grid,
     type Theme,
+    ListItem,
+    ListItemText,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -59,7 +61,7 @@ interface DrawerProps {
 }
 
 interface StyledBadgeIF {
-    isanimated: number;
+    // isanimated: number;
     theme?: Theme;
 }
 
@@ -93,26 +95,29 @@ function Drawer({ currentOpenDrawer, name, onClose, children }: DrawerProps) {
     );
 }
 
-const StyledBadge = styled(Badge)(({ theme, isanimated }: StyledBadgeIF) => ({
+const StyledBadge = styled(Badge)(({ theme }: StyledBadgeIF) => ({
     '& .MuiBadge-badge': {
         color: theme?.palette.primary.contrastText,
         right: -8,
         border: `0.1rem solid ${theme?.palette.background.paper}`,
         backgroundColor: theme?.palette.error.main,
-        animationName: isanimated ? 'idle' : 'badgePulse',
-        animationDuration: '1s',
+        // animationName: isanimated ? 'idle' : 'badgePulse',
+        // animationDuration: '0.6s',
+        // animationTimingFunction: 'ease-in-out',
     },
-    '@keyframes badgePulse': {
-        from: {
-            fontSize: '100%',
-            color: 'white',
-        },
-        to: {
-            fontSize: '125%',
-            // color: theme?.palette.primary.main,
-        },
-    },
-    '@keyframes idle': { '100%': {} },
+    // '@keyframes badgePulse': {
+    //     // from: {
+    //     //     backgroundColor: theme?.palette.error.main,
+    //     // },
+    //     // to: {
+    //     //     backgroundColor: theme?.palette.success.main,
+    //     // },
+    //     //
+    //     '0%': { backgroundColor: theme?.palette.error.main },
+    //     '50%': { backgroundColor: theme?.palette.success.main },
+    //     '100%': { backgroundColor: theme?.palette.error.main },
+    // },
+    // '@keyframes idle': { '100%': {} },
 }));
 
 const iconHover = {
@@ -143,20 +148,20 @@ function DefaultAppBar() {
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
     const { cart, products, amountList } = useLoaderData() as Awaited<ReturnType<typeof shoppingCartLoader>>;
-    const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
+    // const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
     const [cartEmpty, setCartEmpty] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const openPopover = Boolean(anchorEl);
     const location = useLocation();
     const [unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts] = useState(initializeCartProducts());
 
-    useEffect(() => {
-        if (cart?.product_items?.length !== productsLength) {
-            setTimeout(() => {
-                setProductsLength(cart?.product_items?.length);
-            }, 3000);
-        }
-    }, [cart?.product_items?.length, productsLength]);
+    // useEffect(() => {
+    //     if (cart?.product_items?.length !== productsLength) {
+    //         setTimeout(() => {
+    //             setProductsLength(cart?.product_items?.length);
+    //         }, 3000);
+    //     }
+    // }, [cart?.product_items?.length, productsLength]);
 
     function initializeCartProducts() {
         const productArr = [] as object[];
@@ -199,8 +204,9 @@ function DefaultAppBar() {
     }
 
     return (
-        <Box id="appbar-containing-div" sx={toolBarHover}>
+        <Box id="appbar-container" sx={toolBarHover}>
             <AppBar
+                id="appbar"
                 sx={{
                     backgroundColor: 'rgba(0, 155, 216, 0.55)',
                     zIndex: 1250,
@@ -212,14 +218,14 @@ function DefaultAppBar() {
                     borderTopLeftRadius: '0.4rem',
                 }}
             >
-                <Toolbar>
+                <Toolbar id="action-iconbtns">
                     <Stack direction="row" spacing={4}>
                         {!location.pathname.includes('/ostoskori') && (
                             <Tooltip title="Ostoskori">
                                 <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
                                     {auth.username ? (
                                         <StyledBadge
-                                            isanimated={productsLength === cart?.product_items?.length ? 1 : 0}
+                                            // isanimated={productsLength === cart?.product_items?.length ? 1 : 0}
                                             badgeContent={cart?.product_items?.length}
                                             sx={{ color: 'primary.contrastText' }}
                                             anchorOrigin={{
@@ -235,7 +241,7 @@ function DefaultAppBar() {
                                 </IconButton>
                             </Tooltip>
                         )}
-                        <Tooltip title="Kirjautuminen">
+                        <Tooltip title="Käyttäjätili ja kirjautuminen">
                             <IconButton onClick={drawerOpen('account')} sx={iconHover}>
                                 <AccountCircleOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
                             </IconButton>
