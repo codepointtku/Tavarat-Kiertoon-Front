@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { Box, Button, Container, Divider, Stack, TextField, Typography } from '@mui/material';
 import { Form, useLoaderData, useSubmit } from 'react-router-dom';
+import HeroText from '../../HeroText';
 
 function SearchWatch() {
     const searchWatchList = useLoaderData();
@@ -47,7 +48,10 @@ function SearchWatch() {
                             );
                         })
                     ) : (
-                        <h1>Ohje</h1>
+                        <HeroText
+                            title="Tervetuloa hakuvahtiin!"
+                            subtext="Alla olevasta tekstikentästä voi lisätä itsellesi hakuvahdin. Hakuvahti lähettää sinulle sähköpostin, kun hakusanoja vastaava tuote lisätään järjestelmään"
+                        />
                     )}
                 </Stack>
             </Box>
@@ -84,7 +88,7 @@ function SearchWatch() {
                             },
                         }}
                     >
-                        Tallenna
+                        Lisää hakuvahti
                     </Button>
                 </Stack>
             </Box>
