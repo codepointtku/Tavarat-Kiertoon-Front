@@ -1021,16 +1021,12 @@ const resetPasswordAction = async (auth, setAuth, request) => {
 
 const searchWatchCreateAction = async ({ request, params }) => {
     const formData = await request.formData();
-    console.log(formData.get('id'));
-    console.log(params);
     if (request.method === 'DELETE') {
         const response = await userApi.userSearchwatchDestroy(formData.get('id'));
-        console.log(response);
     } else if (request.method === 'POST') {
         const response = await userApi.userSearchwatchCreate({
             words: formData.get('words').split(' '),
         });
-        console.log(response);
     }
 
     return null;
