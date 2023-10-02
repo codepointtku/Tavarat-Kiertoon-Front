@@ -1,17 +1,18 @@
+import { useState } from 'react';
 import { Form, useSubmit, useLoaderData, useActionData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-import { Box, Button, Container, Divider, Grid, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, Divider, Grid, Popover, Stack, TextField, Typography } from '@mui/material';
 
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 
 import HeroText from '../HeroText';
-import AlertBox from '../AlertBox';
 import HeroHeader from '../HeroHeader';
+import AlertBox from '../AlertBox';
+import Tooltip from '../Tooltip';
 
 import type { colorsLoader } from '../../Router/loaders';
 import type { colorsManageAction } from '../../Router/actions';
-import Tooltip from '../Tooltip';
 
 // interface Color {
 //     id: number;
@@ -23,6 +24,13 @@ function ColorsManage() {
     const { colors } = useLoaderData() as Awaited<ReturnType<typeof colorsLoader>>;
     const responseStatus = useActionData() as Awaited<ReturnType<typeof colorsManageAction>>;
 
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const openPopover = Boolean(anchorEl);
+
+    function handlePopOverOpen(event: React.MouseEvent<HTMLElement>) {
+        setAnchorEl(event.currentTarget);
+    }
+
     const submit = useSubmit();
     const onSubmit = (data: any) => {
         submit(data, { method: 'post' });
@@ -31,6 +39,10 @@ function ColorsManage() {
 
     const onDeleteSubmit = (color: any) => {
         submit(color, { method: 'delete' });
+    };
+
+    const onPutSubmit = (color: any) => {
+        submit(color, { method: 'put' });
     };
 
     const {
@@ -42,6 +54,7 @@ function ColorsManage() {
         mode: 'all',
         defaultValues: {
             color: '',
+            mutatecolor: '',
         },
     });
 
@@ -145,11 +158,68 @@ function ColorsManage() {
                                                 <Typography variant="body2" alignSelf="center">
                                                     {color.name}
                                                 </Typography>
+                                                <Button onClick={handlePopOverOpen} size="small">
+                                                    Muokkaa
+                                                </Button>
                                                 <Button onClick={() => onDeleteSubmit(color)} size="small">
                                                     Poista
                                                 </Button>
                                             </Stack>
-                                            {/* {color.length !== i + 1 && <Divider sx={{ margin: '1rem 0 0 0' }} />} */}
+
+                                            <Popover
+                                                open={openPopover}
+                                                anchorEl={anchorEl}
+                                                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                                                onClose={() => setAnchorEl(null)}
+                                                sx={{ mt: 1 }}
+                                            >
+                                                <TextField
+                                                    id="input-mutate-color"
+                                                    type="text"
+                                                    defaultValue={color.name}
+                                                    {...register('mutatecolor', {
+                                                        required: {
+                                                            value: true,
+                                                            message: 'Syötä väri',
+                                                        },
+                                                        minLength: {
+                                                            value: 3,
+                                                            message: 'Värin tulee olla vähintään kolme merkkiä pitkä',
+                                                        },
+                                                        maxLength: {
+                                                            value: 50,
+                                                            message: 'Maksimipituus',
+                                                        },
+                                                        // pattern: {
+                                                        //     value: /(^([a-zA-ZåäöÅÄÖ]{3,}\s){1,}[a-zA-ZåäöÅÄÖ]{3,})|(^[a-zA-ZåäöÅÄÖ]{3,}$)/,
+                                                        //     message:
+                                                        //         'Hakusanat tulee erottaa toisistaan välilyönneillä ja koostua vähintään kolmesta kirjaimesta',
+                                                        // },
+                                                    })}
+                                                    error={!!errors.mutatecolor}
+                                                    helperText={errors.mutatecolor?.message?.toString() || ' '}
+                                                    sx={{ padding: '1rem 1rem 0 1rem' }}
+                                                />
+                                                <Stack
+                                                    direction="row"
+                                                    justifyContent="space-between"
+                                                    alignItems="center"
+                                                    sx={{ padding: '0 1rem 1rem 1rem' }}
+                                                    spacing="1rem"
+                                                >
+                                                    <Button size="small" variant="outlined" onClick={onPutSubmit}>
+                                                        Vahvista
+                                                    </Button>
+                                                    <Button
+                                                        size="small"
+                                                        variant="outlined"
+                                                        onClick={() => setAnchorEl(null)}
+                                                    >
+                                                        Peruuta
+                                                    </Button>
+                                                </Stack>
+                                            </Popover>
+                                            {/* {color.name.length !== i + 1 && <Divider sx={{ margin: '1rem 0 0 0' }} />} */}
                                         </Stack>
                                     );
                                 })}
