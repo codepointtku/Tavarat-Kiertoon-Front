@@ -1,11 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { Box, Button, Container, Divider, Stack, TextField, Typography } from '@mui/material';
-import { Form, useLoaderData, useSubmit, Link } from 'react-router-dom';
+import { Form, useLoaderData, useSubmit, Link, useNavigation } from 'react-router-dom';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import HeroText from '../../HeroText';
 
 function SearchWatch() {
     const searchWatchList = useLoaderData();
+    const navigation = useNavigation();
 
     const submit = useSubmit();
     const onSubmit = (data) => {
@@ -20,7 +21,7 @@ function SearchWatch() {
         register,
         reset,
         handleSubmit,
-        formState: { isDirty, isValid, errors },
+        formState: { isDirty, isValid, errors, isSubmitting },
     } = useForm({
         mode: 'all',
         defaultValues: {
@@ -39,11 +40,17 @@ function SearchWatch() {
                                 const searchWatchTitled = searchWatch.words.map((word) => {
                                     return word[0].toUpperCase() + word.toLowerCase().substring(1);
                                 });
+
                                 return (
                                     <Stack key={searchWatch.id}>
                                         <Stack direction="row" justifyContent="space-between">
                                             <Typography alignSelf="center">{searchWatchTitled.join(', ')}</Typography>
-                                            <Button onClick={() => onDeleteSubmit(searchWatch)}>Poista</Button>
+                                            <Button
+                                                onClick={() => onDeleteSubmit(searchWatch)}
+                                                disabled={navigation.formData?.get('id') === searchWatch.id.toString()}
+                                            >
+                                                Poista
+                                            </Button>
                                         </Stack>
                                         {searchWatchList.length !== i + 1 && <Divider sx={{ margin: '1rem 0 0 0' }} />}
                                     </Stack>
@@ -84,7 +91,7 @@ function SearchWatch() {
                     ></TextField>
                     <Button
                         type="submit"
-                        disabled={!isDirty || !isValid}
+                        disabled={!isDirty || !isValid || isSubmitting}
                         sx={{
                             '&:hover': {
                                 backgroundColor: 'success.dark',
