@@ -160,15 +160,17 @@ function ProductDetails() {
                                                     id={productId as number & string}
                                                     groupId={Number(productId)}
                                                 />
-                                                <Button
-                                                    component={Link}
-                                                    to={`/varasto/tuotteet/${productId}/muokkaa`}
-                                                    size="large"
-                                                    color="primary"
-                                                    sx={{ marginY: 2 }}
-                                                >
-                                                    Muokkaa tuotetta
-                                                </Button>
+                                                {(auth.storage_group || auth.admin_group) && (
+                                                    <Button
+                                                        component={Link}
+                                                        to={`/varasto/tuotteet/${productId}/muokkaa`}
+                                                        size="large"
+                                                        color="primary"
+                                                        sx={{ marginY: 2 }}
+                                                    >
+                                                        Muokkaa tuotetta
+                                                    </Button>
+                                                )}
                                             </Grid>
                                         </CardActions>
                                     </Grid>
