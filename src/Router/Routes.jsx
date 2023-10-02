@@ -448,11 +448,16 @@ function Routes() {
                                             element: <OrdersActive />,
                                         },
                                         {
+                                            path: 'tilaukset/:id',
+                                            element: <OrderPage />,
+                                        },
+                                        {
                                             path: 'tilaushistoria',
                                             element: <OrdersHistory />,
                                         },
                                     ],
                                 },
+                                // Onko tälle tarvetta?
                                 {
                                     path: 'profiili/:tilaustila/tilaus/:id',
                                     element: <OrderPage />,
