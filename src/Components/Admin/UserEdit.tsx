@@ -211,10 +211,13 @@ function UserEdit() {
                                                 value: true,
                                                 message: 'Käyttäjän puhelinnumero ei voi olla tyhjä',
                                             },
-                                            maxLength: { value: 11, message: 'Puhelinnumero on liian pitkä' },
+                                            maxLength: {
+                                                value: 15,
+                                                message: 'Puhelinnumero on enintään 15 merkkiä pitkä',
+                                            },
                                             minLength: {
-                                                value: 10,
-                                                message: 'Puhelinnumero on 10 merkkiä pitkä, muodossa 0401234567',
+                                                value: 7,
+                                                message: 'Puhelinnumero on vähintään 7 merkkiä pitkä',
                                             },
                                         })}
                                         inputProps={{ required: false }}

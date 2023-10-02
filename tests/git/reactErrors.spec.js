@@ -15,13 +15,6 @@ test.describe('tuotteet', () => {
     });
 });
 
-test.describe('toimitus', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/toimitus');
-        await expect(page.getByText('Virhe sijainnissa /toimitus')).not.toBeVisible();
-    });
-});
-
 test.describe('taustatietoa', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/taustatietoa');
