@@ -193,7 +193,7 @@ export default function BikeConfirmation({
                     <Controller
                         name="contactPersonPhoneNumber"
                         control={control}
-                        rules={{ required: true }}
+                        rules={{ required: true, minLength: 7, maxLength: 15 }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextField
                                 name="contact_phone_number"
