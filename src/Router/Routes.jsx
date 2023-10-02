@@ -455,7 +455,6 @@ function Routes() {
                         {
                             path: 'varasto',
                             element: (
-                                // Mihin navigoidaan jos oikeudet eivät riitä? ErrorBoundaryyn ohje pyytää oikeuksia esimieheltä?
                                 <HasRole role="storage_group" fallback={<Navigate to="/kirjaudu" />}>
                                     <ThemeProvider theme={storageTheme}>
                                         <StorageLayout />
@@ -519,7 +518,6 @@ function Routes() {
                         {
                             path: 'admin',
                             element: (
-                                // TODO: Mihin navigoidaan jos oikeudet eivät riitä? ErrorBoundaryyn ohje pyytää oikeuksia esimieheltä?
                                 <HasRole role="admin_group" fallback={<Navigate to="/kirjaudu" />}>
                                     <ThemeProvider theme={adminTheme}>
                                         <AdminLayout />
