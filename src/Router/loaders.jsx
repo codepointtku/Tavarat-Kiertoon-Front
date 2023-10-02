@@ -234,6 +234,11 @@ const addressEditLoader = async ({ params }) => {
     return { addressData };
 };
 
+const colorsLoader = async ({ params }) => {
+    const { data: colors } = await colorsApi.colorsList();
+    return { colors };
+};
+
 /**
  * Get lists of bikes and packets for front page
  *
@@ -524,4 +529,5 @@ export {
     adminBulletinLoader,
     createBulletinLoader,
     addressEditLoader,
+    colorsLoader,
 };

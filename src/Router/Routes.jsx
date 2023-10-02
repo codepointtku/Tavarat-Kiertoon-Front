@@ -152,6 +152,7 @@ import {
     adminBulletinLoader,
     adminBulletinsLoader,
     addressEditLoader,
+    colorsLoader,
 } from './loaders';
 
 import {
@@ -198,6 +199,7 @@ import {
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
 import AddressCreate from '../Components/Default/Accountpage/AddressCreate';
+import ColorsManage from '../Components/Admin/ColorsManage';
 
 createStore({});
 
@@ -597,6 +599,12 @@ function Routes() {
                                             index: true,
                                             element: <ProductsGrid />,
                                             loader: productListLoader,
+                                        },
+                                        {
+                                            path: 'varit',
+                                            element: <ColorsManage />,
+                                            loader: colorsLoader,
+                                            action: undefined,
                                         },
                                     ],
                                 },
