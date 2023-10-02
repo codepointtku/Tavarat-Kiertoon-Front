@@ -83,6 +83,7 @@ import ChangeEmail from '../Components/ChangeEmail';
 import UserAccountPage from '../Components/Default/Accountpage/UserAccountPage';
 import OrderPage from '../Components/Default/Accountpage/OrderPage';
 import UserAccountInfo from '../Components/Default/Accountpage/UserAccountInfo';
+import AddressCreate from '../Components/Default/Accountpage/AddressCreate';
 import AddressEdit from '../Components/Default/Accountpage/AddressEdit';
 import OrdersHistory from '../Components/Default/Accountpage/OrdersHistory';
 import OrdersActive from '../Components/Default/Accountpage/OrdersActive';
@@ -197,7 +198,6 @@ import {
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
-import AddressCreate from '../Components/Default/Accountpage/AddressCreate';
 
 createStore({});
 
@@ -297,10 +297,7 @@ function Routes() {
                                         },
                                     ],
                                 },
-                                {
-                                    path: 'toimitus',
-                                    element: <DeliveryView />,
-                                },
+
                                 {
                                     path: 'taustatietoa',
                                     element: <BgInfo />,
