@@ -190,7 +190,7 @@ function SearchWatchHelp() {
                 Hakusanoja täytyy olla vähintään yksi ja useampi hakusana samaan hakuvahtiin erotellaan välilyönneillä.
             </Typography>
             <Typography>
-                Esimerkiksi hakuvahti <b>tuoli</b> lähettää ilmoituksen sähköpostiisi jos uusi tuoli lisätään
+                Esimerkiksi hakuvahti <b>tuoli</b> lähettää ilmoituksen sähköpostiisi, jos uusi tuoli lisätään
                 järjestelmään.
             </Typography>
             <Typography>

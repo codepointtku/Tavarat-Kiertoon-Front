@@ -13,7 +13,6 @@ function SearchWatch() {
         reset({ words: '' });
     };
     const onDeleteSubmit = (data) => {
-        console.log(data);
         submit(data, { method: 'delete', action: '/tili/hakuvahti' });
     };
 
@@ -77,7 +76,7 @@ function SearchWatch() {
                                 message: 'Hakusanan tulee olla vähintään kolme merkkiä pitkä',
                             },
                             pattern: {
-                                value: /(^([a-zA-ZåäöÅÄÖ]{3,}\s){1,}[a-zA-ZåäöÅÄÖ]{3,})|(^[a-zA-ZåäöÅÄÖ]{3,}$)/,
+                                value: /(^([a-zA-ZåäöÅÄÖ]{3,}\s){1,}[a-zA-ZåäöÅÄÖ]{3,}$)|(^[a-zA-ZåäöÅÄÖ]{3,}$)/,
                                 message:
                                     'Hakusanat tulee erottaa toisistaan välilyönneillä ja koostua vähintään kolmesta kirjaimesta',
                             },
