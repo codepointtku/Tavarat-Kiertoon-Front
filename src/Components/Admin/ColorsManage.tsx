@@ -41,8 +41,15 @@ function ColorsManage() {
 
     return (
         <>
-            {responseStatus?.type === 'colormanageaction' && !responseStatus?.status && (
-                <AlertBox text="Jokin meni pieleen" status="warning" />
+            {responseStatus?.type === 'colormanageaction' && responseStatus?.status === false && (
+                <AlertBox text="Jokin meni pieleen" status="error" />
+            )}
+
+            {responseStatus?.type === 'colordelete' && responseStatus?.status === false && (
+                <AlertBox
+                    text="Tämä väri kuuluu järjestelmän perusväreihin. Sen poistaminen on estetty."
+                    status="warning"
+                />
             )}
 
             <Container maxWidth="sm">

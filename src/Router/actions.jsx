@@ -487,10 +487,17 @@ const colorsManageAction = async ({ request }) => {
     }
 
     if (request.method === 'DELETE') {
-        const response = await colorsApi.colorsDestroy(formData.get('id'));
+        try {
+            const response = await colorsApi.colorsDestroy(formData.get('id'));
 
-        if (response.status === 204) {
-            return { type: 'colordelete', status: true };
+            if (response.status === 204) {
+                return { type: 'colordelete', status: true };
+            }
+        } catch (error) {
+            if (error.response.status === 405) {
+                return { type: 'colordelete', status: false };
+            }
+            return { type: 'colorsmanageaction', status: false };
         }
     }
 
