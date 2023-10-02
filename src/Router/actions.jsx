@@ -484,6 +484,8 @@ const colorsManageAction = async ({ request }) => {
         if (response.status === 201) {
             return { type: 'colorcreate', status: true };
         }
+
+        return { type: 'colorcreate', status: false };
     }
 
     if (request.method === 'DELETE') {
@@ -497,6 +499,7 @@ const colorsManageAction = async ({ request }) => {
             if (error.response.status === 405) {
                 return { type: 'colordelete', status: false };
             }
+
             return { type: 'colorsmanageaction', status: false };
         }
     }
