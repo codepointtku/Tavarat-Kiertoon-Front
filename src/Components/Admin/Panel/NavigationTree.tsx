@@ -35,13 +35,14 @@ import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 // import NotesIcon from '@mui/icons-material/Notes'; // three vertical lines
 // import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch'; // a sheet with magnifying glass
 import WarehouseIcon from '@mui/icons-material/Warehouse';
-import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+// import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd'; // three horizontal lines and a plus sign
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import DomainIcon from '@mui/icons-material/Domain';
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import MailIcon from '@mui/icons-material/Mail';
 // import MarkEmailUnreadIcon from '@mui/icons-material/MarkEmailUnread';
+import ColorLensIcon from '@mui/icons-material/ColorLens';
 
 import Tooltip from '../../Tooltip';
 import { ListItemButtonLink } from '../../MUILinkComponents';
@@ -54,7 +55,10 @@ const tilaukset = [
     { icon: <ImportExportIcon />, label: 'Lähetyslista', to: '/admin/tilaukset/sahkopostilista' },
 ];
 
-const tuotteet = [{ icon: <ManageSearchIcon />, label: 'Tarkastele', to: '/admin/tuotteet' }];
+const tuotteet = [
+    { icon: <ManageSearchIcon />, label: 'Tarkastele', to: '/admin/tuotteet' },
+    { icon: <ColorLensIcon />, label: 'Värit', to: '/admin/tuotteet/varit' },
+];
 
 const kayttajat = [{ icon: <People />, label: 'Tarkastele', to: '/admin/kayttajat' }];
 
