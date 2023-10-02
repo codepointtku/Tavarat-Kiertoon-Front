@@ -166,14 +166,40 @@ function SearchWatchHelp() {
             <Typography variant="h5" color="primary.main" gutterBottom>
                 Hakuvahdin hyödyntäminen
             </Typography>
-            <Typography gutterBottom>Hakuvahdin luonti tehdään omalta käyttäjätili sivulta.</Typography>
+            <MuiLink gutterBottom component={Link} to="/tili/hakuvahti">
+                Hakuvahdin luonti tehdään omalta käyttäjätilisivulta Hakuvahti osiosta.
+            </MuiLink>
             <Typography gutterBottom>
-                Käytäjätili sivulle pääsee sivuston oikeasta yläkulmasta painamalla ensin{' '}
+                Käytäjätilisivulle pääsee sivuston oikeasta yläkulmasta painamalla ensin{' '}
                 <AccountCircleOutlinedIcon fontSize="24" /> kuvaketta, sen jälkeen painetaan Käyttäjätili painiketta.
             </Typography>
             <Typography gutterBottom>
-                Käyttäjätili sivulta hakuvahti sivulle pääsee painamalla Hakuvahti painiketta käyttäjätili sivun
+                Käyttäjätilisivulta hakuvahti sivulle pääsee painamalla Hakuvahti painiketta käyttäjätilisivun
                 yläpalkista.
+            </Typography>
+            <Typography variant="h5" color="primary.main" gutterBottom>
+                Hakuvahdin luominen
+            </Typography>
+            <Typography gutterBottom>
+                Hakuvahdin voi tehdä itselleen syöttämällä hakusanoja hakuvahtisivun alalaidassa olevaan tekstikenttään.
+            </Typography>
+            <Typography gutterBottom>
+                Sanat syötetään muodossa <b>hakusana hakusana hakusana</b>.
+            </Typography>
+            <Typography gutterBottom>
+                Hakusanoja täytyy olla vähintään yksi ja useampi hakusana samaan hakuvahtiin erotellaan välilyönneillä.
+            </Typography>
+            <Typography gutterBottom>
+                Esimerkiksi hakuvahti <b>tuoli</b> lähettää ilmoituksen sähköpostiisi jos uusi tuoli lisätään
+                järjestelmään.
+            </Typography>
+            <Typography>
+                Jos hakuvahdiksi asetettaisiin <b>tuoli punainen</b>, ilmoitus sähköpostiin tulee vain silloin ku
+                järjestelmään lisätty tuoli on myös punainen.
+            </Typography>
+            <Typography gutterBottom>
+                Hakuvahteja voi asettaa useamman ja jokainen hakusana yhdessä hakuvahdissa rajaa hakua entisestään,
+                koska jokaisen sanan täytyy löytä järjestelmään lisätystä tuotteesta.
             </Typography>
         </>
     );

@@ -96,7 +96,7 @@ function SearchWatch() {
                     </Button>
                     <Button
                         component={Link}
-                        to="/ohjeet/tili/kayttaja"
+                        to="/ohjeet/tili/hakuvahti"
                         sx={{ margin: '1rem 0' }}
                         variant="text"
                         endIcon={<HelpOutlineIcon />}
