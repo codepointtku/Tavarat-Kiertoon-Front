@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { Box, Button, Container, Divider, Stack, TextField, Typography } from '@mui/material';
-import { Form, useLoaderData, useSubmit } from 'react-router-dom';
+import { Form, useLoaderData, useSubmit, Link } from 'react-router-dom';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import HeroText from '../../HeroText';
 
 function SearchWatch() {
@@ -33,20 +34,23 @@ function SearchWatch() {
             <Box>
                 <Stack spacing={2} sx={{ margin: '2rem 15rem' }}>
                     {searchWatchList.length !== 0 ? (
-                        searchWatchList.map((searchWatch, i) => {
-                            const searchWatchTitled = searchWatch.words.map((word) => {
-                                return word[0].toUpperCase() + word.toLowerCase().substring(1);
-                            });
-                            return (
-                                <Stack key={searchWatch.id}>
-                                    <Stack direction="row" justifyContent="space-between">
-                                        <Typography alignSelf="center">{searchWatchTitled.join(', ')}</Typography>
-                                        <Button onClick={() => onDeleteSubmit(searchWatch)}>Poista</Button>
+                        <>
+                            <HeroText title="Aktiiviset hakuvahdit" />
+                            {searchWatchList.map((searchWatch, i) => {
+                                const searchWatchTitled = searchWatch.words.map((word) => {
+                                    return word[0].toUpperCase() + word.toLowerCase().substring(1);
+                                });
+                                return (
+                                    <Stack key={searchWatch.id}>
+                                        <Stack direction="row" justifyContent="space-between">
+                                            <Typography alignSelf="center">{searchWatchTitled.join(', ')}</Typography>
+                                            <Button onClick={() => onDeleteSubmit(searchWatch)}>Poista</Button>
+                                        </Stack>
+                                        {searchWatchList.length !== i + 1 && <Divider sx={{ margin: '1rem 0 0 0' }} />}
                                     </Stack>
-                                    {searchWatchList.length !== i + 1 && <Divider sx={{ margin: '1rem 0 0 0' }} />}
-                                </Stack>
-                            );
-                        })
+                                );
+                            })}
+                        </>
                     ) : (
                         <HeroText
                             title="Tervetuloa hakuvahtiin!"
@@ -89,6 +93,15 @@ function SearchWatch() {
                         }}
                     >
                         Lisää hakuvahti
+                    </Button>
+                    <Button
+                        component={Link}
+                        to="/ohjeet/tili/kayttaja"
+                        sx={{ margin: '1rem 0' }}
+                        variant="text"
+                        endIcon={<HelpOutlineIcon />}
+                    >
+                        Ohjeet
                     </Button>
                 </Stack>
             </Box>
