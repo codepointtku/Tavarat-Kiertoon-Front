@@ -3,6 +3,7 @@ import apiCall from '../Utils/apiCall';
 import {
     bikesApi,
     bulletinsApi,
+    colorsApi,
     contactFormsApi,
     // contactsApi,
     ordersApi,
@@ -472,6 +473,20 @@ const adminEmailRecipientsAction = async ({ request }) => {
     }
 
     return { type: 'emailrecipient', status: false };
+};
+
+const colorsManageAction = async ({ request }) => {
+    const formData = await request.formData();
+
+    if (request.method === 'POST') {
+        const response = await colorsApi.colorsCreate({ name: formData.get('color') });
+
+        if (response.status === 201) {
+            return { type: 'colorcreate', status: true };
+        }
+    }
+
+    return { type: 'colorsmanageaction', status: false };
 };
 
 /**
@@ -1060,4 +1075,5 @@ export {
     deletePacketAction,
     userAddressEditAction,
     userAddressCreateAction,
+    colorsManageAction,
 };

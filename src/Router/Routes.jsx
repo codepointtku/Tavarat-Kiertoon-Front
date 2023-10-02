@@ -194,6 +194,7 @@ import {
     userAccountPageAction,
     userAddressCreateAction,
     userAddressEditAction,
+    colorsManageAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
@@ -604,7 +605,7 @@ function Routes() {
                                             path: 'varit',
                                             element: <ColorsManage />,
                                             loader: colorsLoader,
-                                            action: undefined,
+                                            action: colorsManageAction,
                                         },
                                     ],
                                 },
