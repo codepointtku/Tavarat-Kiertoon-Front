@@ -166,10 +166,10 @@ function SearchWatchHelp() {
             <Typography variant="h5" color="primary.main" gutterBottom>
                 Hakuvahdin hyödyntäminen
             </Typography>
-            <MuiLink gutterBottom component={Link} to="/tili/hakuvahti">
+            <MuiLink component={Link} to="/tili/hakuvahti">
                 Hakuvahdin luonti tehdään omalta käyttäjätilisivulta Hakuvahti osiosta.
             </MuiLink>
-            <Typography gutterBottom>
+            <Typography>
                 Käytäjätilisivulle pääsee sivuston oikeasta yläkulmasta painamalla ensin{' '}
                 <AccountCircleOutlinedIcon fontSize="24" /> kuvaketta, sen jälkeen painetaan Käyttäjätili painiketta.
             </Typography>
@@ -180,16 +180,16 @@ function SearchWatchHelp() {
             <Typography variant="h5" color="primary.main" gutterBottom>
                 Hakuvahdin luominen
             </Typography>
-            <Typography gutterBottom>
+            <Typography>
                 Hakuvahdin voi tehdä itselleen syöttämällä hakusanoja hakuvahtisivun alalaidassa olevaan tekstikenttään.
             </Typography>
-            <Typography gutterBottom>
+            <Typography>
                 Sanat syötetään muodossa <b>hakusana hakusana hakusana</b>.
             </Typography>
-            <Typography gutterBottom>
+            <Typography>
                 Hakusanoja täytyy olla vähintään yksi ja useampi hakusana samaan hakuvahtiin erotellaan välilyönneillä.
             </Typography>
-            <Typography gutterBottom>
+            <Typography>
                 Esimerkiksi hakuvahti <b>tuoli</b> lähettää ilmoituksen sähköpostiisi jos uusi tuoli lisätään
                 järjestelmään.
             </Typography>
