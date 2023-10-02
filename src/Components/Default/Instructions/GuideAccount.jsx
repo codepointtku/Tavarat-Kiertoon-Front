@@ -8,6 +8,8 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import GiteIcon from '@mui/icons-material/Gite';
 import Person2Icon from '@mui/icons-material/Person2';
+import ImageSearch from '@mui/icons-material/ImageSearch';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 import HeroHeader from '../../HeroHeader';
 import HeroText from '../../HeroText';
@@ -22,8 +24,8 @@ function SignupHelp() {
                 Nopea hallintapaneeli oikeassa ylälaidassa sisältää myös tiliin liittyvät toiminnot.
             </Typography>
             <Typography>
-                Napauttaessa Käyttäjä <Person2Icon fontSize="24" /> -ikonia, aukeavasta vetolaatikosta pääset
-                kirjautumaan sisään, tai luomaan uuden tilin.
+                Napauttaessa Käyttäjä <AccountCircleOutlinedIcon fontSize="24" /> -ikonia, aukeavasta vetolaatikosta
+                pääset kirjautumaan sisään, tai luomaan uuden tilin.
             </Typography>
             <Typography>
                 Sisäänkirjautuneena samassa paikassa voit tarkastella tilisi, ja tilauksiesi tietoja.
@@ -154,6 +156,28 @@ function LocationAccountHelp() {
         </>
     );
 }
+
+function SearchWatchHelp() {
+    return (
+        <>
+            <Typography variant="subtitle2" align="center" mb={2}>
+                Hakuvahdilla saat ilmoituksen sähköpostiin kun uusia tuotteita lisätään järjestelmään.
+            </Typography>
+            <Typography variant="h5" color="primary.main" gutterBottom>
+                Hakuvahdin hyödyntäminen
+            </Typography>
+            <Typography gutterBottom>Hakuvahdin luonti tehdään omalta käyttäjätili sivulta.</Typography>
+            <Typography gutterBottom>
+                Käytäjätili sivulle pääsee sivuston oikeasta yläkulmasta painamalla ensin{' '}
+                <AccountCircleOutlinedIcon fontSize="24" /> kuvaketta, sen jälkeen painetaan Käyttäjätili painiketta.
+            </Typography>
+            <Typography gutterBottom>
+                Käyttäjätili sivulta hakuvahti sivulle pääsee painamalla Hakuvahti painiketta käyttäjätili sivun
+                yläpalkista.
+            </Typography>
+        </>
+    );
+}
 function TabPage(props) {
     const { children, value, name, ...other } = props;
 
@@ -192,6 +216,7 @@ function TitleTabs() {
                     <Tab label="Yleiset" {...tabProps('tilit')} icon={<AppRegistrationIcon />} />
                     <Tab label="Käyttäjätili" {...tabProps('kayttaja')} icon={<Person2Icon />} />
                     <Tab label="Toimipaikkatili" {...tabProps('toimipaikka')} icon={<GiteIcon />} />
+                    <Tab label="Hakuvahti" {...tabProps('hakuvahti')} icon={<ImageSearch />} />
                 </Tabs>
             </Box>
             <TabPage value={value} name="tilit">
@@ -202,6 +227,9 @@ function TitleTabs() {
             </TabPage>
             <TabPage value={value} name="toimipaikka">
                 <LocationAccountHelp />
+            </TabPage>
+            <TabPage value={value} name="hakuvahti">
+                <SearchWatchHelp />
             </TabPage>
         </Box>
     );
