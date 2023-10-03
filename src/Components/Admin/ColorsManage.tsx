@@ -17,6 +17,7 @@ import {
     Stack,
     TextField,
     Typography,
+    List,
 } from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -25,7 +26,6 @@ import ColorLensIcon from '@mui/icons-material/ColorLens';
 import HeroText from '../HeroText';
 import HeroHeader from '../HeroHeader';
 import AlertBox from '../AlertBox';
-import Tooltip from '../Tooltip';
 
 import type { colorsLoader } from '../../Router/loaders';
 import type { colorsManageAction } from '../../Router/actions';
@@ -40,7 +40,8 @@ function ColorsManage() {
     const { colors } = useLoaderData() as Awaited<ReturnType<typeof colorsLoader>>;
     const responseStatus = useActionData() as Awaited<ReturnType<typeof colorsManageAction>>;
 
-    const [expanded, setExpanded] = useState('panel1');
+    let colorNamesMap = colors.map((color) => color.name);
+
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const openPopover = Boolean(anchorEl);
 
@@ -66,6 +67,7 @@ function ColorsManage() {
         register,
         handleSubmit,
         reset,
+        getValues,
         formState: { isValid, errors },
     } = useForm({
         mode: 'all',
@@ -114,14 +116,14 @@ function ColorsManage() {
                                                 message: 'Värin tulee olla vähintään kolme merkkiä pitkä',
                                             },
                                             maxLength: {
-                                                value: 50,
+                                                value: 30,
                                                 message: 'Maksimipituus',
                                             },
-                                            // pattern: {
-                                            //     value: /(^([a-zA-ZåäöÅÄÖ]{3,}\s){1,}[a-zA-ZåäöÅÄÖ]{3,})|(^[a-zA-ZåäöÅÄÖ]{3,}$)/,
-                                            //     message:
-                                            //         'Hakusanat tulee erottaa toisistaan välilyönneillä ja koostua vähintään kolmesta kirjaimesta',
-                                            // },
+                                            validate: () => {
+                                                if (colorNamesMap.includes(getValues('color'))) {
+                                                    return 'Väri on jo järjestelmässä';
+                                                }
+                                            },
                                         })}
                                         error={!!errors.color}
                                         helperText={errors.color?.message?.toString() || ' '}
@@ -178,87 +180,90 @@ function ColorsManage() {
                         <Stack spacing={2}>
                             <Typography>Lisätyt värit</Typography>
                             <Divider />
-                            {colors
-                                .filter((color) => color.default === false)
-                                .map((color, i) => {
-                                    // const searchWatchTitled = color.words.map((word) => {
-                                    //     return word[0].toUpperCase() + word.toLowerCase().substring(1);
-                                    // });
-                                    return (
-                                        <Stack key={color.id} direction="row" justifyContent="space-between">
-                                            <ListItem dense disablePadding>
-                                                <ListItemButton onClick={handlePopOverOpen}>
-                                                    {color.name}
-                                                </ListItemButton>
-                                            </ListItem>
-                                            <Stack direction="row" spacing={2} justifyContent="space-between">
-                                                <Button onClick={handlePopOverOpen} size="small" variant="outlined">
-                                                    Muokkaa
-                                                </Button>
-                                                <Button
-                                                    onClick={() => onDeleteSubmit(color)}
-                                                    size="small"
-                                                    variant="text"
-                                                    sx={{
-                                                        '&:hover': {
-                                                            backgroundColor: 'warning.main',
-                                                        },
-                                                    }}
-                                                >
-                                                    Poista
-                                                </Button>
-                                            </Stack>
-
-                                            <Popover
-                                                open={openPopover}
-                                                anchorEl={anchorEl}
-                                                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-                                                onClose={() => setAnchorEl(null)}
-                                                sx={{ mt: 1 }}
-                                                elevation={3}
-                                            >
-                                                <TextField
-                                                    id="input-mutate-color"
-                                                    type="text"
-                                                    defaultValue={color.name}
-                                                    {...register('mutatecolor', {
-                                                        minLength: {
-                                                            value: 3,
-                                                            message: 'Värin tulee olla vähintään kolme merkkiä pitkä',
-                                                        },
-                                                        maxLength: {
-                                                            value: 30,
-                                                            message: 'Maksimipituus',
-                                                        },
-                                                        shouldUnregister: true,
-                                                    })}
-                                                    error={!!errors.mutatecolor}
-                                                    helperText={errors.mutatecolor?.message?.toString() || ' '}
-                                                    sx={{ padding: '1rem 1rem 0 1rem' }}
-                                                />
-                                                <Stack
-                                                    direction="row"
-                                                    justifyContent="space-between"
-                                                    alignItems="center"
-                                                    sx={{ padding: '0 1rem 1rem 1rem' }}
-                                                    spacing="1rem"
-                                                >
-                                                    <Button size="small" variant="outlined" onClick={onPutSubmit}>
-                                                        Vahvista
+                            <List>
+                                {colors
+                                    .filter((color) => color.default === false)
+                                    .map((color, i) => {
+                                        // const searchWatchTitled = color.words.map((word) => {
+                                        //     return word[0].toUpperCase() + word.toLowerCase().substring(1);
+                                        // });
+                                        return (
+                                            <Stack key={color.id} direction="row" justifyContent="space-between">
+                                                <ListItem disablePadding>
+                                                    <ListItemButton onClick={handlePopOverOpen}>
+                                                        {color.name}
+                                                    </ListItemButton>
+                                                </ListItem>
+                                                <Stack direction="row" spacing={2} justifyContent="space-between">
+                                                    <Button onClick={handlePopOverOpen} size="small" variant="text">
+                                                        Muokkaa
                                                     </Button>
                                                     <Button
+                                                        onClick={() => onDeleteSubmit(color)}
                                                         size="small"
-                                                        variant="outlined"
-                                                        onClick={() => setAnchorEl(null)}
+                                                        variant="text"
+                                                        sx={{
+                                                            '&:hover': {
+                                                                backgroundColor: 'warning.main',
+                                                            },
+                                                        }}
                                                     >
-                                                        Peruuta
+                                                        Poista
                                                     </Button>
                                                 </Stack>
-                                            </Popover>
-                                            {/* {color.name.length !== i + 1 && <Divider sx={{ margin: '1rem 0 0 0' }} />} */}
-                                        </Stack>
-                                    );
-                                })}
+
+                                                <Popover
+                                                    open={openPopover}
+                                                    anchorEl={anchorEl}
+                                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                                                    onClose={() => setAnchorEl(null)}
+                                                    sx={{ mt: 1 }}
+                                                    elevation={3}
+                                                >
+                                                    <TextField
+                                                        id="input-mutate-color"
+                                                        type="text"
+                                                        defaultValue={color.name}
+                                                        {...register('mutatecolor', {
+                                                            minLength: {
+                                                                value: 3,
+                                                                message:
+                                                                    'Värin tulee olla vähintään kolme merkkiä pitkä',
+                                                            },
+                                                            maxLength: {
+                                                                value: 30,
+                                                                message: 'Maksimipituus',
+                                                            },
+                                                            shouldUnregister: true,
+                                                        })}
+                                                        error={!!errors.mutatecolor}
+                                                        helperText={errors.mutatecolor?.message?.toString() || ' '}
+                                                        sx={{ padding: '1rem 1rem 0 1rem' }}
+                                                    />
+                                                    <Stack
+                                                        direction="row"
+                                                        justifyContent="space-between"
+                                                        alignItems="center"
+                                                        sx={{ padding: '0 1rem 1rem 1rem' }}
+                                                        spacing="1rem"
+                                                    >
+                                                        <Button size="small" variant="outlined" onClick={onPutSubmit}>
+                                                            Vahvista
+                                                        </Button>
+                                                        <Button
+                                                            size="small"
+                                                            variant="outlined"
+                                                            onClick={() => setAnchorEl(null)}
+                                                        >
+                                                            Peruuta
+                                                        </Button>
+                                                    </Stack>
+                                                </Popover>
+                                                {/* {color.name.length !== i + 1 && <Divider sx={{ margin: '1rem 0 0 0' }} />} */}
+                                            </Stack>
+                                        );
+                                    })}
+                            </List>
                         </Stack>
                     </Grid>
                 </Grid>
