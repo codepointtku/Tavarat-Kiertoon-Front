@@ -41,13 +41,24 @@ function ColorsManage() {
     const responseStatus = useActionData() as Awaited<ReturnType<typeof colorsManageAction>>;
 
     let colorNamesMap = colors.map((color) => color.name);
+    const [isOpen, setIsOpen] = useState<number>();
 
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const openPopover = Boolean(anchorEl);
+    const {
+        register,
+        handleSubmit,
+        reset,
+        getValues,
+        formState: { isValid, errors },
+    } = useForm({
+        mode: 'all',
+        defaultValues: {
+            color: '',
+            colormutate: '',
+        },
+    });
 
-    function handlePopOverOpen(event: React.MouseEvent<HTMLElement>) {
-        setAnchorEl(event.currentTarget);
-    }
+    // let testijeesus = getValues('colormutate');
+    // console.log(testijeesus);
 
     const submit = useSubmit();
     const onSubmit = (data: any) => {
@@ -60,22 +71,16 @@ function ColorsManage() {
     };
 
     const onPutSubmit = (color: any) => {
-        submit(color, { method: 'put' });
-    };
+        const uusiVari = {
+            id: color.id,
+            name: getValues('colormutate'),
+        };
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        getValues,
-        formState: { isValid, errors },
-    } = useForm({
-        mode: 'all',
-        defaultValues: {
-            color: '',
-            mutatecolor: '',
-        },
-    });
+        submit(uusiVari, { method: 'put' });
+
+        reset();
+        setIsOpen(undefined);
+    };
 
     return (
         <>
@@ -91,14 +96,18 @@ function ColorsManage() {
                 />
             )}
 
+            {responseStatus?.type === 'colorupdate' && responseStatus?.status === true && (
+                <AlertBox text="Tämä väri jeejee." status="success" timer={3000} />
+            )}
+
             <Container maxWidth="xl">
                 <HeroHeader Icon={<ColorLensIcon />} hideInAdmin />
                 <HeroText title="Värien hallinta" subtext2="Lisää, muokkaa ja poista käytettävissä olevia värejä" />
 
-                <Grid container spacing={8} marginBottom="1rem">
-                    <Grid item xs={6}>
-                        <Stack id="main-spacer" spacing={7}>
-                            <Box component={Form} onSubmit={handleSubmit(onSubmit)}>
+                <Box component={Form} onSubmit={handleSubmit(onSubmit)}>
+                    <Grid container spacing={8} marginBottom="1rem">
+                        <Grid item xs={6}>
+                            <Stack id="main-spacer" spacing={2}>
                                 <Stack spacing={2}>
                                     <Typography>Uuden värin lisäys</Typography>
                                     <Divider />
@@ -141,132 +150,160 @@ function ColorsManage() {
                                 >
                                     Lisää väri
                                 </Button>
-                            </Box>
 
-                            <Box>
-                                <Accordion>
-                                    <AccordionSummary
-                                        aria-controls="panel1d-content"
-                                        id="panel1d-header"
-                                        expandIcon={<ExpandMoreIcon />}
-                                    >
-                                        <Typography>Järjestelmän perusvärit</Typography>
-                                    </AccordionSummary>
+                                <Box id="accordion-wrapper" py="2rem">
+                                    <Accordion>
+                                        <AccordionSummary
+                                            aria-controls="panel1d-content"
+                                            id="panel1d-header"
+                                            expandIcon={<ExpandMoreIcon />}
+                                        >
+                                            <Typography>Järjestelmän perusvärit</Typography>
+                                        </AccordionSummary>
 
-                                    <AccordionDetails>
-                                        {colors
-                                            .filter((color) => color.default === true)
-                                            .map((color, i) => {
-                                                return (
-                                                    <Typography key={color.id} variant="body2">
-                                                        {color.name}
-                                                    </Typography>
-                                                );
-                                            })}
+                                        <AccordionDetails>
+                                            {colors
+                                                .filter((color) => color.default === true)
+                                                .map((color, i) => {
+                                                    return (
+                                                        <Typography key={color.id} variant="body2">
+                                                            {color.name}
+                                                        </Typography>
+                                                    );
+                                                })}
 
-                                        <Divider sx={{ my: '1rem' }} />
+                                            <Divider sx={{ my: '1rem' }} />
 
-                                        <Typography color="primary.dark">
-                                            Perusvärien muokkaus- ja poisto-toiminnot ovat estetty järjestelmän
-                                            toiminnan turvaamiseksi.
-                                        </Typography>
-                                    </AccordionDetails>
-                                </Accordion>
-                            </Box>
-                        </Stack>
-                    </Grid>
+                                            <Typography color="primary.dark">
+                                                Perusvärien muokkaus- ja poisto-toiminnot ovat estetty järjestelmän
+                                                toiminnan turvaamiseksi.
+                                            </Typography>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </Box>
+                            </Stack>
+                        </Grid>
 
-                    <Grid item xs={6} justifyContent="center">
-                        <Stack spacing={2}>
-                            <Typography>Lisätyt värit</Typography>
-                            <Divider />
-                            <List>
-                                {colors
-                                    .filter((color) => color.default === false)
-                                    .map((color, i) => {
-                                        // const searchWatchTitled = color.words.map((word) => {
-                                        //     return word[0].toUpperCase() + word.toLowerCase().substring(1);
-                                        // });
-                                        return (
-                                            <Stack key={color.id} direction="row" justifyContent="space-between">
-                                                <ListItem disablePadding>
-                                                    <ListItemButton onClick={handlePopOverOpen}>
-                                                        {color.name}
-                                                    </ListItemButton>
-                                                </ListItem>
-                                                <Stack direction="row" spacing={2} justifyContent="space-between">
-                                                    <Button onClick={handlePopOverOpen} size="small" variant="text">
-                                                        Muokkaa
-                                                    </Button>
-                                                    <Button
-                                                        onClick={() => onDeleteSubmit(color)}
-                                                        size="small"
-                                                        variant="text"
-                                                        sx={{
-                                                            '&:hover': {
-                                                                backgroundColor: 'warning.main',
-                                                            },
-                                                        }}
-                                                    >
-                                                        Poista
-                                                    </Button>
-                                                </Stack>
-
-                                                <Popover
-                                                    open={openPopover}
-                                                    anchorEl={anchorEl}
-                                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-                                                    onClose={() => setAnchorEl(null)}
-                                                    sx={{ mt: 1 }}
-                                                    elevation={3}
-                                                >
-                                                    <TextField
-                                                        id="input-mutate-color"
-                                                        type="text"
-                                                        defaultValue={color.name}
-                                                        {...register('mutatecolor', {
-                                                            minLength: {
-                                                                value: 3,
-                                                                message:
-                                                                    'Värin tulee olla vähintään kolme merkkiä pitkä',
-                                                            },
-                                                            maxLength: {
-                                                                value: 30,
-                                                                message: 'Maksimipituus',
-                                                            },
-                                                            shouldUnregister: true,
-                                                        })}
-                                                        error={!!errors.mutatecolor}
-                                                        helperText={errors.mutatecolor?.message?.toString() || ' '}
-                                                        sx={{ padding: '1rem 1rem 0 1rem' }}
-                                                    />
-                                                    <Stack
-                                                        direction="row"
-                                                        justifyContent="space-between"
-                                                        alignItems="center"
-                                                        sx={{ padding: '0 1rem 1rem 1rem' }}
-                                                        spacing="1rem"
-                                                    >
-                                                        <Button size="small" variant="outlined" onClick={onPutSubmit}>
-                                                            Vahvista
-                                                        </Button>
-                                                        <Button
-                                                            size="small"
-                                                            variant="outlined"
-                                                            onClick={() => setAnchorEl(null)}
+                        <Grid item xs={6} justifyContent="center">
+                            <Stack spacing={2}>
+                                <Typography>Lisätyt värit</Typography>
+                                <Divider />
+                                <List>
+                                    {colors
+                                        .filter((color) => color.default === false)
+                                        .map((color, index) => {
+                                            // const searchWatchTitled = color.words.map((word) => {
+                                            //     return word[0].toUpperCase() + word.toLowerCase().substring(1);
+                                            // });
+                                            return (
+                                                <Stack key={color.id} direction="row" justifyContent="space-between">
+                                                    <ListItem disablePadding>
+                                                        <ListItemButton
+                                                            onClick={() => {
+                                                                isOpen === index
+                                                                    ? console.log('yeehaw')
+                                                                    : setIsOpen(index);
+                                                            }}
                                                         >
-                                                            Peruuta
-                                                        </Button>
-                                                    </Stack>
-                                                </Popover>
-                                                {/* {color.name.length !== i + 1 && <Divider sx={{ margin: '1rem 0 0 0' }} />} */}
-                                            </Stack>
-                                        );
-                                    })}
-                            </List>
-                        </Stack>
+                                                            {isOpen === index ? (
+                                                                <Box>
+                                                                    <TextField
+                                                                        id="input-mutate-color"
+                                                                        type="text"
+                                                                        placeholder={color.name}
+                                                                        {...register('colormutate', {
+                                                                            minLength: {
+                                                                                value: 3,
+                                                                                message:
+                                                                                    'Värin tulee olla vähintään kolme merkkiä pitkä',
+                                                                            },
+                                                                            maxLength: {
+                                                                                value: 30,
+                                                                                message: 'Maksimipituus',
+                                                                            },
+                                                                        })}
+                                                                        error={!!errors.color}
+                                                                        helperText={
+                                                                            errors.color?.message?.toString() || ' '
+                                                                        }
+                                                                    />
+                                                                    <Stack
+                                                                        direction="row"
+                                                                        justifyContent="space-between"
+                                                                        alignItems="center"
+                                                                        spacing="1rem"
+                                                                    >
+                                                                        <Button
+                                                                            size="small"
+                                                                            variant="outlined"
+                                                                            onClick={() => onPutSubmit(color)}
+                                                                            sx={{
+                                                                                '&:hover': {
+                                                                                    backgroundColor: 'success.main',
+                                                                                },
+                                                                            }}
+                                                                        >
+                                                                            Vahvista
+                                                                        </Button>
+                                                                        <Button
+                                                                            size="small"
+                                                                            variant="outlined"
+                                                                            onClick={() => {
+                                                                                setIsOpen(undefined);
+                                                                                reset();
+                                                                            }}
+                                                                        >
+                                                                            Peruuta
+                                                                        </Button>
+                                                                    </Stack>
+                                                                </Box>
+                                                            ) : (
+                                                                color.name
+                                                            )}
+                                                        </ListItemButton>
+                                                    </ListItem>
+
+                                                    {isOpen !== index && (
+                                                        <Stack
+                                                            direction="row"
+                                                            spacing={2}
+                                                            justifyContent="space-between"
+                                                        >
+                                                            <Button
+                                                                onClick={() => setIsOpen(index)}
+                                                                size="small"
+                                                                variant="text"
+                                                                sx={{
+                                                                    '&:hover': {
+                                                                        backgroundColor: 'success.main',
+                                                                    },
+                                                                }}
+                                                            >
+                                                                Muokkaa
+                                                            </Button>
+                                                            <Button
+                                                                onClick={() => onDeleteSubmit(color)}
+                                                                size="small"
+                                                                variant="text"
+                                                                sx={{
+                                                                    '&:hover': {
+                                                                        backgroundColor: 'warning.main',
+                                                                    },
+                                                                }}
+                                                            >
+                                                                Poista
+                                                            </Button>
+                                                        </Stack>
+                                                    )}
+                                                    {/* {color.name.length !== i + 1 && <Divider sx={{ margin: '1rem 0 0 0' }} />} */}
+                                                </Stack>
+                                            );
+                                        })}
+                                </List>
+                            </Stack>
+                        </Grid>
                     </Grid>
-                </Grid>
+                </Box>
             </Container>
         </>
     );

@@ -505,8 +505,17 @@ const colorsManageAction = async ({ request }) => {
     }
 
     if (request.method === 'PUT') {
-        console.log('haijjaa!');
-        return null;
+        const newColor = {
+            name: formData.get('name'),
+        };
+
+        const response = await colorsApi.colorsUpdate(formData.get('id'), newColor);
+
+        if (response.status === 200) {
+            return { type: 'colorupdate', status: true };
+        }
+
+        return { type: 'colorupdate', status: false };
     }
 
     return { type: 'colorsmanageaction', status: false };
