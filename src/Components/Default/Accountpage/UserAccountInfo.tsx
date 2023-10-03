@@ -179,10 +179,10 @@ function UserAccountInfo() {
                                     message: 'Käyttäjän puhelinnumero ei voi olla tyhjä',
                                 },
                                 minLength: {
-                                    value: 10,
-                                    message: 'Puhelinnumero on 10 merkkiä pitkä, muodossa 0401234567',
+                                    value: 7,
+                                    message: 'Puhelinnumero on vähintään 7 merkkiä pitkä',
                                 },
-                                maxLength: { value: 10, message: 'Puhelinnumero on liian pitkä' },
+                                maxLength: { value: 15, message: 'Puhelinnumero on enintään 15 merkkiä pitkä' },
                                 pattern: { value: /^\d+$/, message: 'Sisällön täytyy koostua vain numeroista' },
                             })}
                             inputProps={{ required: false }}
