@@ -32,11 +32,10 @@ function OrderCard({ orderInfo }: OrderCardProps) {
             >
                 <CardActionArea component={Link} to={`${orderInfo.id}`} state={{ orderInfo }} sx={{ height: '100%' }}>
                     <CardHeader
-                        component={Typography}
                         sx={{ backgroundColor: 'primary.light' }}
                         align="center"
-                        color="primary.dark"
                         title={`Tilaus #${orderInfo.id}`}
+                        titleTypographyProps={{ variant: 'h6', color: 'primary.dark' }}
                     />
                     <CardContent>
                         <Stack
