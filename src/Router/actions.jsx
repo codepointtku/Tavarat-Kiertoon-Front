@@ -504,6 +504,11 @@ const colorsManageAction = async ({ request }) => {
         }
     }
 
+    if (request.method === 'PUT') {
+        console.log('haijjaa!');
+        return null;
+    }
+
     return { type: 'colorsmanageaction', status: false };
 };
 

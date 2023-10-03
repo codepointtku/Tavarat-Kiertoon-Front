@@ -2,8 +2,24 @@ import { useState } from 'react';
 import { Form, useSubmit, useLoaderData, useActionData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-import { Box, Button, Container, Divider, Grid, Popover, Stack, TextField, Typography } from '@mui/material';
+import {
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    Box,
+    Button,
+    Container,
+    Divider,
+    Grid,
+    ListItem,
+    ListItemButton,
+    Popover,
+    Stack,
+    TextField,
+    Typography,
+} from '@mui/material';
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 
 import HeroText from '../HeroText';
@@ -24,6 +40,7 @@ function ColorsManage() {
     const { colors } = useLoaderData() as Awaited<ReturnType<typeof colorsLoader>>;
     const responseStatus = useActionData() as Awaited<ReturnType<typeof colorsManageAction>>;
 
+    const [expanded, setExpanded] = useState('panel1');
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const openPopover = Boolean(anchorEl);
 
@@ -49,7 +66,7 @@ function ColorsManage() {
         register,
         handleSubmit,
         reset,
-        formState: { isDirty, isValid, errors },
+        formState: { isValid, errors },
     } = useForm({
         mode: 'all',
         defaultValues: {
@@ -74,62 +91,46 @@ function ColorsManage() {
 
             <Container maxWidth="xl">
                 <HeroHeader Icon={<ColorLensIcon />} hideInAdmin />
-                <HeroText title="Hallinnoi värejä" subtext2="Lisää ja poista käytettävissä olevia värejä" />
+                <HeroText title="Värien hallinta" subtext2="Lisää, muokkaa ja poista käytettävissä olevia värejä" />
 
                 <Grid container spacing={8} marginBottom="1rem">
-                    <Grid item xs={4} justifyContent="center">
-                        <Tooltip title="Järjestelmän perusvärien poistaminen on estetty">
-                            <Stack spacing={2}>
-                                <Typography variant="body1">Järjestelmän perusvärit</Typography>
-                                <Divider />
-                                {colors
-                                    .filter((color) => color.default === true)
-                                    .map((color, i) => {
-                                        return (
-                                            <Typography key={color.id} variant="body2">
-                                                {color.name}
-                                            </Typography>
-                                        );
-                                    })}
-                            </Stack>
-                        </Tooltip>
-                    </Grid>
-
-                    <Grid item xs={4} justifyContent="center">
-                        <Box component={Form} onSubmit={handleSubmit(onSubmit)}>
-                            <Stack spacing={2}>
-                                <Typography>Uuden värin lisäys</Typography>
-                                <Divider />
-                                <TextField
-                                    id="input-color"
-                                    type="text"
-                                    label="Uusi väri"
-                                    {...register('color', {
-                                        required: {
-                                            value: true,
-                                            message: 'Syötä väri',
-                                        },
-                                        minLength: {
-                                            value: 3,
-                                            message: 'Värin tulee olla vähintään kolme merkkiä pitkä',
-                                        },
-                                        maxLength: {
-                                            value: 50,
-                                            message: 'Maksimipituus',
-                                        },
-                                        // pattern: {
-                                        //     value: /(^([a-zA-ZåäöÅÄÖ]{3,}\s){1,}[a-zA-ZåäöÅÄÖ]{3,})|(^[a-zA-ZåäöÅÄÖ]{3,}$)/,
-                                        //     message:
-                                        //         'Hakusanat tulee erottaa toisistaan välilyönneillä ja koostua vähintään kolmesta kirjaimesta',
-                                        // },
-                                    })}
-                                    error={!!errors.color}
-                                    helperText={errors.color?.message?.toString() || ' '}
-                                />
-
+                    <Grid item xs={6}>
+                        <Stack id="main-spacer" spacing={7}>
+                            <Box component={Form} onSubmit={handleSubmit(onSubmit)}>
+                                <Stack spacing={2}>
+                                    <Typography>Uuden värin lisäys</Typography>
+                                    <Divider />
+                                    <TextField
+                                        id="input-color"
+                                        type="text"
+                                        label="Uusi väri"
+                                        {...register('color', {
+                                            required: {
+                                                value: true,
+                                                message: 'Syötä väri',
+                                            },
+                                            minLength: {
+                                                value: 3,
+                                                message: 'Värin tulee olla vähintään kolme merkkiä pitkä',
+                                            },
+                                            maxLength: {
+                                                value: 50,
+                                                message: 'Maksimipituus',
+                                            },
+                                            // pattern: {
+                                            //     value: /(^([a-zA-ZåäöÅÄÖ]{3,}\s){1,}[a-zA-ZåäöÅÄÖ]{3,})|(^[a-zA-ZåäöÅÄÖ]{3,}$)/,
+                                            //     message:
+                                            //         'Hakusanat tulee erottaa toisistaan välilyönneillä ja koostua vähintään kolmesta kirjaimesta',
+                                            // },
+                                        })}
+                                        error={!!errors.color}
+                                        helperText={errors.color?.message?.toString() || ' '}
+                                    />
+                                </Stack>
                                 <Button
                                     type="submit"
-                                    disabled={!isDirty || !isValid}
+                                    disabled={!isValid}
+                                    fullWidth
                                     sx={{
                                         '&:hover': {
                                             backgroundColor: 'success.dark',
@@ -138,11 +139,42 @@ function ColorsManage() {
                                 >
                                     Lisää väri
                                 </Button>
-                            </Stack>
-                        </Box>
+                            </Box>
+
+                            <Box>
+                                <Accordion>
+                                    <AccordionSummary
+                                        aria-controls="panel1d-content"
+                                        id="panel1d-header"
+                                        expandIcon={<ExpandMoreIcon />}
+                                    >
+                                        <Typography>Järjestelmän perusvärit</Typography>
+                                    </AccordionSummary>
+
+                                    <AccordionDetails>
+                                        {colors
+                                            .filter((color) => color.default === true)
+                                            .map((color, i) => {
+                                                return (
+                                                    <Typography key={color.id} variant="body2">
+                                                        {color.name}
+                                                    </Typography>
+                                                );
+                                            })}
+
+                                        <Divider sx={{ my: '1rem' }} />
+
+                                        <Typography color="primary.dark">
+                                            Perusvärien muokkaus- ja poisto-toiminnot ovat estetty järjestelmän
+                                            toiminnan turvaamiseksi.
+                                        </Typography>
+                                    </AccordionDetails>
+                                </Accordion>
+                            </Box>
+                        </Stack>
                     </Grid>
 
-                    <Grid item xs={4} justifyContent="center">
+                    <Grid item xs={6} justifyContent="center">
                         <Stack spacing={2}>
                             <Typography>Lisätyt värit</Typography>
                             <Divider />
@@ -153,15 +185,26 @@ function ColorsManage() {
                                     //     return word[0].toUpperCase() + word.toLowerCase().substring(1);
                                     // });
                                     return (
-                                        <Stack key={color.id}>
-                                            <Stack direction="row" spacing={2} justifyContent="space-between">
-                                                <Typography variant="body2" alignSelf="center">
+                                        <Stack key={color.id} direction="row" justifyContent="space-between">
+                                            <ListItem dense disablePadding>
+                                                <ListItemButton onClick={handlePopOverOpen}>
                                                     {color.name}
-                                                </Typography>
-                                                <Button onClick={handlePopOverOpen} size="small">
+                                                </ListItemButton>
+                                            </ListItem>
+                                            <Stack direction="row" spacing={2} justifyContent="space-between">
+                                                <Button onClick={handlePopOverOpen} size="small" variant="outlined">
                                                     Muokkaa
                                                 </Button>
-                                                <Button onClick={() => onDeleteSubmit(color)} size="small">
+                                                <Button
+                                                    onClick={() => onDeleteSubmit(color)}
+                                                    size="small"
+                                                    variant="text"
+                                                    sx={{
+                                                        '&:hover': {
+                                                            backgroundColor: 'warning.main',
+                                                        },
+                                                    }}
+                                                >
                                                     Poista
                                                 </Button>
                                             </Stack>
@@ -172,29 +215,22 @@ function ColorsManage() {
                                                 anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                                                 onClose={() => setAnchorEl(null)}
                                                 sx={{ mt: 1 }}
+                                                elevation={3}
                                             >
                                                 <TextField
                                                     id="input-mutate-color"
                                                     type="text"
                                                     defaultValue={color.name}
                                                     {...register('mutatecolor', {
-                                                        required: {
-                                                            value: true,
-                                                            message: 'Syötä väri',
-                                                        },
                                                         minLength: {
                                                             value: 3,
                                                             message: 'Värin tulee olla vähintään kolme merkkiä pitkä',
                                                         },
                                                         maxLength: {
-                                                            value: 50,
+                                                            value: 30,
                                                             message: 'Maksimipituus',
                                                         },
-                                                        // pattern: {
-                                                        //     value: /(^([a-zA-ZåäöÅÄÖ]{3,}\s){1,}[a-zA-ZåäöÅÄÖ]{3,})|(^[a-zA-ZåäöÅÄÖ]{3,}$)/,
-                                                        //     message:
-                                                        //         'Hakusanat tulee erottaa toisistaan välilyönneillä ja koostua vähintään kolmesta kirjaimesta',
-                                                        // },
+                                                        shouldUnregister: true,
                                                     })}
                                                     error={!!errors.mutatecolor}
                                                     helperText={errors.mutatecolor?.message?.toString() || ' '}
