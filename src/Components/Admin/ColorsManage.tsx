@@ -57,9 +57,6 @@ function ColorsManage() {
         },
     });
 
-    // let testijeesus = getValues('colormutate');
-    // console.log(testijeesus);
-
     const submit = useSubmit();
     const onSubmit = (data: any) => {
         submit(data, { method: 'post' });
@@ -71,12 +68,12 @@ function ColorsManage() {
     };
 
     const onPutSubmit = (color: any) => {
-        const uusiVari = {
+        const mutatedColor = {
             id: color.id,
             name: getValues('colormutate'),
         };
 
-        submit(uusiVari, { method: 'put' });
+        submit(mutatedColor, { method: 'put' });
 
         reset();
         setIsOpen(undefined);
@@ -128,8 +125,8 @@ function ColorsManage() {
                                                 value: 30,
                                                 message: 'Maksimipituus',
                                             },
-                                            validate: () => {
-                                                if (colorNamesMap.includes(getValues('color'))) {
+                                            validate: (val: string) => {
+                                                if (colorNamesMap.includes(val)) {
                                                     return 'Väri on jo järjestelmässä';
                                                 }
                                             },
@@ -164,7 +161,7 @@ function ColorsManage() {
                                         <AccordionDetails>
                                             {colors
                                                 .filter((color) => color.default === true)
-                                                .map((color, i) => {
+                                                .map((color) => {
                                                     return (
                                                         <Typography key={color.id} variant="body2">
                                                             {color.name}
@@ -192,17 +189,12 @@ function ColorsManage() {
                                     {colors
                                         .filter((color) => color.default === false)
                                         .map((color, index) => {
-                                            // const searchWatchTitled = color.words.map((word) => {
-                                            //     return word[0].toUpperCase() + word.toLowerCase().substring(1);
-                                            // });
                                             return (
                                                 <Stack key={color.id} direction="row" justifyContent="space-between">
                                                     <ListItem disablePadding>
                                                         <ListItemButton
                                                             onClick={() => {
-                                                                isOpen === index
-                                                                    ? console.log('yeehaw')
-                                                                    : setIsOpen(index);
+                                                                isOpen === index ? null : setIsOpen(index);
                                                             }}
                                                         >
                                                             {isOpen === index ? (
@@ -222,9 +214,10 @@ function ColorsManage() {
                                                                                 message: 'Maksimipituus',
                                                                             },
                                                                         })}
-                                                                        error={!!errors.color}
+                                                                        error={!!errors.colormutate}
                                                                         helperText={
-                                                                            errors.color?.message?.toString() || ' '
+                                                                            errors.colormutate?.message?.toString() ||
+                                                                            ' '
                                                                         }
                                                                     />
                                                                     <Stack
@@ -236,6 +229,7 @@ function ColorsManage() {
                                                                         <Button
                                                                             size="small"
                                                                             variant="outlined"
+                                                                            disabled={!!errors.colormutate}
                                                                             onClick={() => onPutSubmit(color)}
                                                                             sx={{
                                                                                 '&:hover': {
