@@ -128,7 +128,7 @@ function ProductDetails() {
                                             </Grid>
                                             <Grid item>
                                                 <Typography variant="body2" color="text.secondary">
-                                                    Värit: {colorNames.join(', ')}
+                                                    Värit: {colorNames?.join(', ')}
                                                 </Typography>
                                             </Grid>
                                         </Grid>
