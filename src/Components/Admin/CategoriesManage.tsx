@@ -2,12 +2,13 @@
 // import { createContext, useContext } from 'react';
 import { useState } from 'react';
 import { useRef } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { Form, useSubmit, useLoaderData } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import arrayToTree from 'array-to-tree';
 
 import { TreeView, TreeItem } from '@mui/lab';
-import { Box, Container, Stack, Typography } from '@mui/material';
+import { Box, Button, Container, Divider, Stack, TextField, Typography } from '@mui/material';
 
 import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
@@ -94,7 +95,50 @@ function CategoryTree() {
         </TreeItem>
     );
 
-    console.log('selectedCategory', selectedCategory);
+    // console.log('selectedCategory', selectedCategory);
+
+    // alright here goes boilerplate for NodeDataDisplay:
+    // let categoriesMap = categories.map((cat) => cat.name);
+
+    if (selectedCategory !== null) {
+        let suattanaSentaan = Object.entries(selectedCategory).forEach(([key, value]) => {
+            console.log(`${key}: ${value}`);
+        });
+    }
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        getValues,
+        formState: { isValid, errors },
+    } = useForm({
+        mode: 'all',
+        defaultValues: {
+            cat: '',
+        },
+    });
+
+    const submit = useSubmit();
+    const onSubmit = (data: any) => {
+        submit(data, { method: 'post' });
+        reset();
+    };
+
+    const onDeleteSubmit = (color: any) => {
+        submit(color, { method: 'delete' });
+    };
+
+    const onPutSubmit = (color: any) => {
+        const mutatedColor = {
+            id: color.id,
+            name: getValues('cat'),
+        };
+
+        submit(mutatedColor, { method: 'put' });
+
+        reset();
+    };
 
     return (
         <Stack direction="row" spacing={4} justifyContent="space-between">
@@ -108,12 +152,68 @@ function CategoryTree() {
                 </TreeView>
             </Box>
 
-            {/*
+            {/* <NodeDataDisplay /> :
              * i'd like to separate this logic to it's own component, but i'll just bang this up and running in here for now
              */}
 
-            <Box sx={{ display: 'flex', flexGrow: '1', border: '1px solid red', padding: '2rem' }}>
-                <p>yolo</p>
+            <Box
+                id="nodestats-component-wrapper"
+                sx={{ display: 'flex', flexGrow: '1', border: '1px solid red', padding: '2rem' }}
+            >
+                <Box id="nodestats-stats-container" sx={{ border: '1px solid cyan', padding: '1rem' }}>
+                    {/* id: 1,
+    product_count: 32,
+    name: 'Huonekalut',
+    lft: 1,
+    rght: 38,
+    tree_id: 1,
+    level: 0,
+    parent: null, */}
+                    <Typography>keke</Typography>
+                </Box>
+
+                {/* <Stack spacing={2} sx={{ border: '1px solid blue' }}>
+                    <Typography>Uuden katin lisäys</Typography>
+                    <Divider />
+                    <TextField
+                        id="input-color"
+                        type="text"
+                        label="Uusi väri"
+                        {...register('cat', {
+                            required: {
+                                value: true,
+                                message: 'Syötä katti',
+                            },
+                            minLength: {
+                                value: 3,
+                                message: 'Katin tulee olla vähintään kolme merkkiä pitkä',
+                            },
+                            maxLength: {
+                                value: 30,
+                                message: 'Maksimipituus',
+                            },
+                            validate: (val: string) => {
+                                if (categoriesMap.includes(val)) {
+                                    return 'Katti on jo järjestelmässä';
+                                }
+                            },
+                        })}
+                        error={!!errors.cat}
+                        helperText={errors.cat?.message?.toString() || ' '}
+                    />
+                    <Button
+                        type="submit"
+                        disabled={!isValid}
+                        fullWidth
+                        sx={{
+                            '&:hover': {
+                                backgroundColor: 'success.dark',
+                            },
+                        }}
+                    >
+                        Lisää katti
+                    </Button>
+                </Stack> */}
             </Box>
         </Stack>
     );
