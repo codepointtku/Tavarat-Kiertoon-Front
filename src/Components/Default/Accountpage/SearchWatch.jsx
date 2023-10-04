@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Box, Button, Container, Divider, Stack, TextField, Typography } from '@mui/material';
+import { Grid, Button, Container, Divider, Stack, TextField, Typography, Box } from '@mui/material';
 import { Form, useLoaderData, useSubmit, Link, useNavigation } from 'react-router-dom';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import HeroText from '../../HeroText';
@@ -30,43 +30,41 @@ function SearchWatch() {
     });
 
     return (
-        <Container>
-            <Box>
-                <Stack spacing={2} sx={{ margin: '2rem 15rem' }}>
-                    {searchWatchList.length !== 0 ? (
-                        <>
-                            <HeroText title="Aktiiviset hakuvahdit" />
-                            {searchWatchList.map((searchWatch, i) => {
-                                const searchWatchTitled = searchWatch.words.map((word) => {
-                                    return word[0].toUpperCase() + word.toLowerCase().substring(1);
-                                });
+        <Container maxWidth="sm">
+            <Stack sx={{ margin: '2rem 0 0 0' }}>
+                {searchWatchList.length !== 0 ? (
+                    <>
+                        <HeroText title="Aktiiviset hakuvahdit" />
+                        {searchWatchList.map((searchWatch, i) => {
+                            const searchWatchTitled = searchWatch.words.map((word) => {
+                                return word[0].toUpperCase() + word.toLowerCase().substring(1);
+                            });
 
-                                return (
-                                    <Stack key={searchWatch.id}>
-                                        <Stack direction="row" justifyContent="space-between">
-                                            <Typography alignSelf="center">{searchWatchTitled.join(', ')}</Typography>
-                                            <Button
-                                                onClick={() => onDeleteSubmit(searchWatch)}
-                                                disabled={navigation.formData?.get('id') === searchWatch.id.toString()}
-                                            >
-                                                Poista
-                                            </Button>
-                                        </Stack>
-                                        {searchWatchList.length !== i + 1 && <Divider sx={{ margin: '1rem 0 0 0' }} />}
+                            return (
+                                <Stack key={searchWatch.id}>
+                                    <Stack direction="row" justifyContent="space-between" sx={{ margin: '1rem 0' }}>
+                                        <Typography alignSelf="center">{searchWatchTitled.join(', ')}</Typography>
+                                        <Button
+                                            onClick={() => onDeleteSubmit(searchWatch)}
+                                            disabled={navigation.formData?.get('id') === searchWatch.id.toString()}
+                                        >
+                                            Poista
+                                        </Button>
                                     </Stack>
-                                );
-                            })}
-                        </>
-                    ) : (
-                        <HeroText
-                            title="Tervetuloa hakuvahtiin!"
-                            subtext="Alla olevasta tekstikentästä voi lisätä itsellesi hakuvahdin. Hakuvahti lähettää sinulle sähköpostin, kun hakusanoja vastaava tuote lisätään järjestelmään"
-                        />
-                    )}
-                </Stack>
-            </Box>
-            <Box component={Form} onSubmit={handleSubmit(onSubmit)}>
-                <Stack sx={{ margin: '2rem 15rem' }}>
+                                    {searchWatchList.length !== i + 1 && <Divider />}
+                                </Stack>
+                            );
+                        })}
+                    </>
+                ) : (
+                    <HeroText
+                        title="Tervetuloa hakuvahtiin!"
+                        subtext="Alla olevasta tekstikentästä voi lisätä itsellesi hakuvahdin. Hakuvahti lähettää sinulle sähköpostin, kun hakusanoja vastaava tuote lisätään järjestelmään"
+                    />
+                )}
+            </Stack>
+            <Box component={Form} onSubmit={handleSubmit(onSubmit)} justifyContent="center">
+                <Stack>
                     <TextField
                         id="textfield-words"
                         type="text"
