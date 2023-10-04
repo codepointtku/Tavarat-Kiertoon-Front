@@ -198,7 +198,12 @@ function ColorsManage() {
                                                             }}
                                                         >
                                                             {isOpen === index ? (
-                                                                <Box>
+                                                                <Stack
+                                                                    flex="1"
+                                                                    direction="row"
+                                                                    justifyContent="space-between"
+                                                                    alignItems="center"
+                                                                >
                                                                     <TextField
                                                                         id="input-mutate-color"
                                                                         type="text"
@@ -215,16 +220,13 @@ function ColorsManage() {
                                                                             },
                                                                         })}
                                                                         error={!!errors.colormutate}
-                                                                        helperText={
-                                                                            errors.colormutate?.message?.toString() ||
-                                                                            ' '
-                                                                        }
+                                                                        helperText={errors.colormutate?.message?.toString()}
                                                                     />
                                                                     <Stack
                                                                         direction="row"
-                                                                        justifyContent="space-between"
+                                                                        spacing={2}
                                                                         alignItems="center"
-                                                                        spacing="1rem"
+                                                                        justifyContent="space-between"
                                                                     >
                                                                         <Button
                                                                             size="small"
@@ -246,11 +248,16 @@ function ColorsManage() {
                                                                                 setIsOpen(undefined);
                                                                                 reset();
                                                                             }}
+                                                                            sx={{
+                                                                                '&:hover': {
+                                                                                    backgroundColor: 'warning.main',
+                                                                                },
+                                                                            }}
                                                                         >
                                                                             Peruuta
                                                                         </Button>
                                                                     </Stack>
-                                                                </Box>
+                                                                </Stack>
                                                             ) : (
                                                                 color.name
                                                             )}
@@ -281,9 +288,10 @@ function ColorsManage() {
                                                                 variant="text"
                                                                 sx={{
                                                                     '&:hover': {
-                                                                        backgroundColor: 'warning.main',
+                                                                        backgroundColor: 'error.main',
                                                                     },
                                                                 }}
+                                                                disabled={!!isOpen}
                                                             >
                                                                 Poista
                                                             </Button>
