@@ -234,6 +234,14 @@ const addressEditLoader = async ({ params }) => {
     return { addressData };
 };
 
+const categoriesManageLoader = async () => {
+    const [{ data: categories }, { data: categoryTree }] = await Promise.all([
+        categoriesApi.categoriesList(),
+        categoriesApi.categoriesTreeRetrieve(),
+    ]);
+    return { categories, categoryTree };
+};
+
 /**
  * Get lists of bikes and packets for front page
  *
@@ -524,4 +532,5 @@ export {
     adminBulletinLoader,
     createBulletinLoader,
     addressEditLoader,
+    categoriesManageLoader,
 };

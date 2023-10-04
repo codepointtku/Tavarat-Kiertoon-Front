@@ -42,6 +42,7 @@ import DomainIcon from '@mui/icons-material/Domain';
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import MailIcon from '@mui/icons-material/Mail';
 // import MarkEmailUnreadIcon from '@mui/icons-material/MarkEmailUnread';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 
 import Tooltip from '../../Tooltip';
 import { ListItemButtonLink } from '../../MUILinkComponents';
@@ -54,7 +55,14 @@ const tilaukset = [
     { icon: <ImportExportIcon />, label: 'Lähetyslista', to: '/admin/tilaukset/sahkopostilista' },
 ];
 
-const tuotteet = [{ icon: <ManageSearchIcon />, label: 'Tarkastele', to: '/admin/tuotteet' }];
+const tuotteet = [
+    { icon: <ManageSearchIcon />, label: 'Tarkastele', to: '/admin/tuotteet' },
+    {
+        icon: <AccountTreeIcon />,
+        label: 'Kategoriat',
+        to: '/admin/tuotteet/kategoriat',
+    },
+];
 
 const kayttajat = [{ icon: <People />, label: 'Tarkastele', to: '/admin/kayttajat' }];
 

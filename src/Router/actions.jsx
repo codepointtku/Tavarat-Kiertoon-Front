@@ -474,6 +474,11 @@ const adminEmailRecipientsAction = async ({ request }) => {
     return { type: 'emailrecipient', status: false };
 };
 
+const categoriesManageAction = async ({ request }) => {
+    const placeholder = 'hodor';
+    return placeholder;
+};
+
 /**
  * creates a new item
  */
@@ -1060,4 +1065,5 @@ export {
     deletePacketAction,
     userAddressEditAction,
     userAddressCreateAction,
+    categoriesManageAction,
 };

@@ -153,6 +153,7 @@ import {
     adminBulletinLoader,
     adminBulletinsLoader,
     addressEditLoader,
+    categoriesManageLoader,
 } from './loaders';
 
 import {
@@ -194,10 +195,12 @@ import {
     userAccountPageAction,
     userAddressCreateAction,
     userAddressEditAction,
+    categoriesManageAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
+import CategoriesManage from '../Components/Admin/CategoriesManage';
 
 createStore({});
 
@@ -592,6 +595,12 @@ function Routes() {
                                             index: true,
                                             element: <ProductsGrid />,
                                             loader: productListLoader,
+                                        },
+                                        {
+                                            path: 'kategoriat',
+                                            element: <CategoriesManage />,
+                                            loader: categoriesManageLoader,
+                                            action: categoriesManageAction,
                                         },
                                     ],
                                 },
