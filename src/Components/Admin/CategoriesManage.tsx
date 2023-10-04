@@ -1,12 +1,20 @@
 // import { useMemo } from 'react';
-import { useLoaderData, useSearchParams } from 'react-router-dom';
+// import { createContext, useContext } from 'react';
+import { useState } from 'react';
+import { useRef } from 'react';
+import { useLoaderData } from 'react-router-dom';
+
 import arrayToTree from 'array-to-tree';
 
 import { TreeView, TreeItem } from '@mui/lab';
-import { Box, Typography } from '@mui/material';
+import { Box, Container, Stack, Typography } from '@mui/material';
 
 import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
+import DeviceHubIcon from '@mui/icons-material/DeviceHub';
+
+import HeroText from '../HeroText';
+import HeroHeader from '../HeroHeader';
 
 import type { categoriesManageLoader } from '../../Router/loaders';
 import type { CategoryResponse } from '../../api';
@@ -21,24 +29,22 @@ interface FullTree {
     product_count?: number;
 }
 
+// const NodeContext = createContext(null)
+
+// <NodeContext.Provider value={}>
+
+// </NodeContext.Provider>
+
 function CategoryTree() {
     const { categories, categoryTree } = useLoaderData() as Awaited<ReturnType<typeof categoriesManageLoader>>;
-    const [searchParams, setSearchParams] = useSearchParams();
-    const categoryParams = searchParams.getAll('kategoria');
-    const categoryTreeIndexes = categoryTree as unknown as CategoryTreeIndexes;
 
-    const handleClick = (categoryId: string) => {
-        const iniParams = new URLSearchParams(searchParams);
-        iniParams.delete('kategoria');
-        iniParams.delete('sivu');
-        iniParams.delete('haku');
-        iniParams.delete('varit');
-        if (categoryId !== 'root') {
-            categoryTreeIndexes[categoryId as unknown as number].forEach((each: string) => {
-                iniParams.append('kategoria', each);
-            });
-        }
-        setSearchParams(iniParams);
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+    let selectedNodeRef = useRef<string | null>(null);
+
+    const handleClick = (node: string) => {
+        selectedNodeRef.current = node;
+        setSelectedCategory(selectedNodeRef.current);
     };
 
     const categoryTreeMain = arrayToTree(categories, {
@@ -61,13 +67,8 @@ function CategoryTree() {
                     <Typography variant="body1" sx={{ flexGrow: 1 }}>
                         {nodes.name}
                     </Typography>
-                    <Typography
-                        variant="caption"
-                        color="primary.main"
-                        fontSize="fontSizeSmall"
-                        fontWeight="fontWeightThin"
-                    >
-                        {nodes.product_count}
+                    <Typography color="primary.main" fontSize="fontSizeSmall" fontWeight="fontWeightThin">
+                        Tuotemäärä: {nodes.product_count}
                     </Typography>
                 </Box>
             }
@@ -81,27 +82,41 @@ function CategoryTree() {
         </TreeItem>
     );
 
+    // console.log('selectedCategory', selectedCategory);
+
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <TreeView
-                aria-label="product category tree view"
-                defaultExpanded={['root']}
-                selected={categoryParams}
-                sx={{ flexGrow: 1, minWidth: 620, overflowY: 'auto' }}
-            >
-                {renderTree(fullTree)}
-            </TreeView>
-        </Box>
+        <Stack direction="row" spacing={4} justifyContent="space-between">
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <TreeView
+                    aria-label="product category tree view"
+                    defaultExpanded={['root']}
+                    sx={{ flexGrow: 1, minWidth: 320, overflowY: 'auto' }}
+                >
+                    {renderTree(fullTree)}
+                </TreeView>
+            </Box>
+
+            {/*
+             * i'd like to separate this logic to it's own component, but i'll just bang this up and running in here for now
+             */}
+
+            <Box sx={{ display: 'flex', flexGrow: '1', border: '1px solid red', padding: '2rem' }}>
+                <p>yolo</p>
+            </Box>
+        </Stack>
     );
 }
 
 function CategoriesManage() {
-    // const { categories, categoryTree } = useLoaderData() as Awaited<ReturnType<typeof categoriesManageLoader>>;
-
-    // console.log('cats', categories);
-    // console.log('tree', categoryTree);
-
-    return <CategoryTree />;
+    return (
+        <Container maxWidth="lg">
+            <HeroHeader Icon={<DeviceHubIcon />} hideInAdmin />
+            <HeroText title="Kategorioiden hallinta" subtext2="Lisää, muokkaa ja poista tuotekategorioita" />
+            {/* <Container maxWidth="sm"> */}
+            <CategoryTree />
+            {/* </Container> */}
+        </Container>
+    );
 }
 
 export default CategoriesManage;
