@@ -8,7 +8,11 @@ import { useForm } from 'react-hook-form';
 import arrayToTree from 'array-to-tree';
 
 import { TreeView, TreeItem } from '@mui/lab';
-import { Box, Button, Container, Divider, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, Divider, IconButton, Stack, TextField, Typography } from '@mui/material';
+
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
@@ -31,17 +35,17 @@ interface FullTree {
     product_count?: number;
 }
 
-// interface CategoryObject {
-//     id: number;
-//     level: number;
-//     lft: number;
-//     name: string;
-//     parent: number | null;
-//     product_count: number;
-//     rght: number;
-//     tree_id: number;
-//     children?: [];
-// }
+interface CategoryObject {
+    id: number;
+    level: number;
+    lft: number;
+    name: string;
+    parent: number | null;
+    product_count: number;
+    rght: number;
+    tree_id: number;
+    children?: [];
+}
 
 // const NodeContext = createContext(null)
 
@@ -52,13 +56,18 @@ interface FullTree {
 function CategoryTree() {
     const { categories, categoryTree } = useLoaderData() as Awaited<ReturnType<typeof categoriesManageLoader>>;
 
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<CategoryObject | null>(null);
     let selectedNodeRef = useRef<string | null>(null);
 
     const handleClick = (node: any) => {
         selectedNodeRef.current = node;
+        //         Argument of type 'string | null' is not assignable to parameter of type 'SetStateAction<CategoryObject | null>'.
+        //   Type 'string' is not assignable to type 'SetStateAction<CategoryObject | null>'.ts(2345)
+        // let selectedNodeRef: React.MutableRefObject<string | null>
         setSelectedCategory(selectedNodeRef.current);
     };
+
+    console.log(selectedCategory);
 
     const categoryTreeMain = arrayToTree(categories, {
         parentProperty: 'parent',
@@ -80,6 +89,23 @@ function CategoryTree() {
                     <Typography variant="body1" sx={{ flexGrow: 1 }}>
                         {nodes.name}
                     </Typography>
+
+                    {/* // */}
+                    {selectedCategory?.id === Number(nodes.id) ? (
+                        <Stack direction="row" mx={4} spacing={1}>
+                            <IconButton size="small">
+                                <AddCircleOutlineIcon />
+                            </IconButton>
+                            <IconButton size="small">
+                                <EditIcon />
+                            </IconButton>
+                            <IconButton size="small">
+                                <DeleteForeverIcon />
+                            </IconButton>
+                        </Stack>
+                    ) : null}
+                    {/* // */}
+
                     <Typography color="primary.main" fontSize="fontSizeSmall" fontWeight="fontWeightThin">
                         Tuotemäärä: {nodes.product_count}
                     </Typography>
@@ -95,16 +121,14 @@ function CategoryTree() {
         </TreeItem>
     );
 
-    // console.log('selectedCategory', selectedCategory);
-
     // alright here goes boilerplate for NodeDataDisplay:
     // let categoriesMap = categories.map((cat) => cat.name);
 
-    if (selectedCategory !== null) {
-        let suattanaSentaan = Object.entries(selectedCategory).forEach(([key, value]) => {
-            console.log(`${key}: ${value}`);
-        });
-    }
+    // if (selectedCategory !== null) {
+    //     let suattanaSentaan = Object.entries(selectedCategory).forEach(([key, value]) => {
+    //         console.log(`${key}: ${value}`);
+    //     });
+    // }
 
     const {
         register,
@@ -146,7 +170,7 @@ function CategoryTree() {
                 <TreeView
                     aria-label="product category tree view"
                     defaultExpanded={['root']}
-                    sx={{ flexGrow: 1, minWidth: 320, overflowY: 'auto' }}
+                    sx={{ flexGrow: 1, minWidth: 520, overflowY: 'auto' }}
                 >
                     {renderTree(fullTree)}
                 </TreeView>
