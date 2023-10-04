@@ -18,9 +18,10 @@ import HeroHeader from '../HeroHeader';
 
 import type { categoriesManageLoader } from '../../Router/loaders';
 import type { CategoryResponse } from '../../api';
-export interface CategoryTreeIndexes {
-    [key: number]: [];
-}
+
+// interface CategoryTreeIndexes {
+//     [key: number]: [];
+// }
 
 interface FullTree {
     id: string;
@@ -28,6 +29,18 @@ interface FullTree {
     children: arrayToTree.Tree<CategoryResponse>[];
     product_count?: number;
 }
+
+// interface CategoryObject {
+//     id: number;
+//     level: number;
+//     lft: number;
+//     name: string;
+//     parent: number | null;
+//     product_count: number;
+//     rght: number;
+//     tree_id: number;
+//     children?: [];
+// }
 
 // const NodeContext = createContext(null)
 
@@ -39,10 +52,9 @@ function CategoryTree() {
     const { categories, categoryTree } = useLoaderData() as Awaited<ReturnType<typeof categoriesManageLoader>>;
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
     let selectedNodeRef = useRef<string | null>(null);
 
-    const handleClick = (node: string) => {
+    const handleClick = (node: any) => {
         selectedNodeRef.current = node;
         setSelectedCategory(selectedNodeRef.current);
     };
@@ -72,7 +84,7 @@ function CategoryTree() {
                     </Typography>
                 </Box>
             }
-            onClick={() => handleClick(nodes.id)}
+            onClick={() => handleClick(nodes)}
             expandIcon={<ArrowRightOutlinedIcon />}
             collapseIcon={<ArrowDropDownOutlinedIcon />}
         >
@@ -82,7 +94,7 @@ function CategoryTree() {
         </TreeItem>
     );
 
-    // console.log('selectedCategory', selectedCategory);
+    console.log('selectedCategory', selectedCategory);
 
     return (
         <Stack direction="row" spacing={4} justifyContent="space-between">
