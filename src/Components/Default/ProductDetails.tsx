@@ -134,7 +134,7 @@ function ProductDetails() {
                                             </Grid>
                                             <Grid item>
                                                 <Typography variant="body2" color="text.secondary">
-                                                    Värit: {colorNames.join(', ')}
+                                                    Värit: {colorNames?.join(', ')}
                                                 </Typography>
                                             </Grid>
                                         </Grid>
@@ -145,25 +145,25 @@ function ProductDetails() {
                                                 </Typography>
                                                 {/* to be implemented when backend is ready */}
                                             </Grid>
+                                            {/* miten näyttää kategoriat, buttoneina? */}
                                         </Grid>
-                                        {/* miten näyttää kategoriat, buttoneina? */}
                                     </Paper>
                                     <Grid container justifyContent="center" sx={{ mt: 5 }}>
                                         <CardActions>
                                             <Grid container direction="row" gap={2}>
-                                                {!location.pathname.includes('admin') ||
-                                                    (!location.pathname.includes('varasto') && (
-                                                        <AddToCartButton
-                                                            size={
-                                                                'large' as OverridableStringUnion<
-                                                                    'small' | 'medium' | 'large',
-                                                                    ButtonPropsSizeOverrides
-                                                                >
-                                                            }
-                                                            id={productId as number & string}
-                                                            groupId={Number(productId)}
-                                                        />
-                                                    ))}
+                                                {location.pathname.includes('admin') ||
+                                                location.pathname.includes('varasto') ? null : (
+                                                    <AddToCartButton
+                                                        size={
+                                                            'large' as OverridableStringUnion<
+                                                                'small' | 'medium' | 'large',
+                                                                ButtonPropsSizeOverrides
+                                                            >
+                                                        }
+                                                        id={productId as number & string}
+                                                        groupId={Number(productId)}
+                                                    />
+                                                )}
                                                 {(auth.storage_group || auth.admin_group) && (
                                                     <Button
                                                         component={Link}
@@ -247,67 +247,96 @@ function ProductDetails() {
                                 </CardContent>
                             </Grid>
                         </Grid>
-                        {!location.pathname.includes('admin') ||
-                            (!location.pathname.includes('varasto') && (
-                                <Box sx={{ mx: 2 }}>
-                                    {productsInSameCategory.results && productsInSameCategory.results.length > 1 && (
-                                        <>
-                                            <Typography
-                                                gutterBottom
-                                                variant="h5"
-                                                component="div"
-                                                color="primary.main"
-                                                sx={{ mt: '7rem' }}
-                                            >
-                                                Samankaltaisia tuotteita
-                                            </Typography>
-                                            <SimilarProductsCarousel
-                                                currentId={Number(productId)}
-                                                similarProducts={
-                                                    productsInSameCategory as unknown as SimilarProductCarouselProps['similarProducts']
-                                                }
-                                            />
-                                        </>
-                                    )}
-                                </Box>
-                            ))}
-                        {location.pathname.includes('varasto') && (
-                            // list of product_items, with their storage and barcode, and logs
-                            <Grid container justifyContent="center" sx={{ mt: 5 }}>
+                        <>
+                            {!location.pathname.includes('admin') ||
+                                (!location.pathname.includes('varasto') && (
+                                    <Box sx={{ mx: 2 }}>
+                                        {productsInSameCategory.results &&
+                                            productsInSameCategory.results.length > 1 && (
+                                                <>
+                                                    <Typography
+                                                        gutterBottom
+                                                        variant="h5"
+                                                        component="div"
+                                                        color="primary.main"
+                                                        sx={{ mt: '7rem' }}
+                                                    >
+                                                        Samankaltaisia tuotteita
+                                                    </Typography>
+                                                    <SimilarProductsCarousel
+                                                        currentId={Number(productId)}
+                                                        similarProducts={
+                                                            productsInSameCategory as unknown as SimilarProductCarouselProps['similarProducts']
+                                                        }
+                                                    />
+                                                </>
+                                            )}
+                                    </Box>
+                                ))}
+                            {location.pathname.includes('varasto') && (
+                                // list of product_items, with their storage and barcode, and logs
                                 <Paper variant="outlined" sx={{ p: 5 }} color="primary">
-                                    <Typography gutterBottom variant="h5" component="div" color="primary">
+                                    <Typography variant="h5" color="primary">
                                         Tuotteen lokitiedot
                                     </Typography>
-                                    {product.product_items.map((item) => (
-                                        <Grid
-                                            key={item.id}
-                                            container
-                                            direction="row"
-                                            justifyContent="space-between"
-                                            sx={{ mt: 2 }}
-                                        >
-                                            <Grid item>
-                                                <Typography variant="body2" color="text.secondary">
-                                                    Varasto: {item.storage.name}
-                                                </Typography>
-                                                <Typography variant="body2" color="text.secondary">
-                                                    Viivakoodi: {item.barcode}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                {item.log_entries?.map((log) => (
-                                                    <Typography key={log.id} variant="body2" color="text.secondary">
-                                                        Tyyppi:{log?.action} Aika:
-                                                        {new Date(log?.date).toLocaleDateString('fi-FI')}
-                                                        Käyttäjä:{log?.user}
+                                    <Grid container justifyContent="center" sx={{ mt: 5 }}>
+                                        {product?.product_items?.map((item) => (
+                                            <Grid
+                                                key={item.id}
+                                                container
+                                                direction="row"
+                                                justifyContent="space-evenly"
+                                                sx={{
+                                                    border: 1,
+                                                    borderColor: 'primary.light',
+                                                    borderRadius: 2,
+                                                    padding: 2,
+                                                    margin: 1,
+                                                }}
+                                            >
+                                                <Grid item>
+                                                    <Typography variant="body2" color="text.secondary">
+                                                        Yksittäisen tuotteen id järjestelmässä: {item?.id}
                                                     </Typography>
-                                                ))}
+                                                    <Typography variant="body2" color="text.secondary">
+                                                        Varasto: {item?.storage.name}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary">
+                                                        Viivakoodi: {item?.barcode}
+                                                    </Typography>
+
+                                                    <Typography variant="body2" color="text.secondary">
+                                                        Tila: {item?.status}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item>
+                                                    <Typography gutterBottom variant="body1" color="text.secondary">
+                                                        Tapahtumat:
+                                                    </Typography>
+                                                    {item.log_entries?.map((log) => (
+                                                        <Box key={log.id}>
+                                                            <Typography
+                                                                key={log.id}
+                                                                variant="body2"
+                                                                color="text.secondary"
+                                                            >
+                                                                {new Date(log?.date).toLocaleString('fi-FI')}{' '}
+                                                                {log?.action}{' '}
+                                                                <Link to={`/admin/kayttajat/${log?.user}`}>
+                                                                    {/* <Typography variant="body2" color="text.secondary"> */}
+                                                                    Käyttäjä:{log?.user}
+                                                                    {/* </Typography> */}
+                                                                </Link>
+                                                            </Typography>
+                                                        </Box>
+                                                    ))}
+                                                </Grid>
                                             </Grid>
-                                        </Grid>
-                                    ))}
+                                        ))}
+                                    </Grid>
                                 </Paper>
-                            </Grid>
-                        )}
+                            )}
+                        </>
                     </Card>
                 </Grid>
             </Grid>
