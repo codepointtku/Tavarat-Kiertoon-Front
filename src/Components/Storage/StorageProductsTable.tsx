@@ -157,7 +157,7 @@ function StorageProductsTable() {
                                 <StyledTableRow key={product.id}>
                                     <StyledTableCell component="th" scope="row">
                                         {/* TODO: varastopuolen tuotesivu, ProductDetails komponenttia hyödyntäen */}
-                                        <Link to={`/varasto/tuotteet/${product.id}/muokkaa`}>
+                                        <Link to={`/varasto/tuotteet/${product.id}`}>
                                             {/* TODO: support multiple barcodes */}
                                             {product.product_items[0].barcode}
                                         </Link>
@@ -175,7 +175,7 @@ function StorageProductsTable() {
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
                                         {/* todo: link to working product page with storage related info and edit functionality */}
-                                        <Link to={`/varasto/tuotteet/${product.id}/muokkaa`}>{product.name}</Link>
+                                        <Link to={`/varasto/tuotteet/${product.id}`}>{product.name}</Link>
                                     </StyledTableCell>
                                     <StyledTableCell align="right">{product.product_items.length}</StyledTableCell>
                                     <StyledTableCell align="right">
