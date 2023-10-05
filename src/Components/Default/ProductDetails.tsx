@@ -243,8 +243,9 @@ function ProductDetails() {
                                 </CardContent>
                             </Grid>
                         </Grid>
-
-                        <Box sx={{ mx: 2 }}>
+                        {!location.pathname.includes('admin') ||
+                            (!location.pathname.includes('varasto') && (
+                                <Box sx={{ mx: 2 }}>
                             {/* TODO: don't show if path is just /tuotteet/:id , storage or admin does not need this component*/}
                             {productsInSameCategory.results && productsInSameCategory.results.length > 1 && (
                                 <>
