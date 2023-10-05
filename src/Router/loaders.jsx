@@ -235,8 +235,12 @@ const addressEditLoader = async ({ params }) => {
 };
 
 const searchWatchLoader = async () => {
-    const { data } = await userApi.userSearchwatchList();
-    return data;
+    try {
+        const { data } = await userApi.userSearchwatchList();
+        return data;
+    } catch {
+        return null;
+    }
 };
 
 /**
