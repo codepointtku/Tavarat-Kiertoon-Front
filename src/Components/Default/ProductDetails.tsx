@@ -1,4 +1,4 @@
-import { useLoaderData, useParams, useRouteLoaderData, Link } from 'react-router-dom';
+import { useLoaderData, useParams, useRouteLoaderData, Link, useLocation } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { type SimilarProductCarouselProps } from './SimilarProductsCarousel';
 
@@ -38,6 +38,7 @@ function ProductDetails() {
     const { name: productName, free_description: description, amount, measurements, weight, colors } = product;
     const [image, setImage] = useState(product?.pictures[0]?.picture_address);
     const { auth } = useContext(AuthContext);
+    const location = useLocation();
 
     const productCategory = categories.find((category) => category.id === product.category);
     const productColors = allColors.filter((color) => colors.includes(color.id));
@@ -150,16 +151,19 @@ function ProductDetails() {
                                     <Grid container justifyContent="center" sx={{ mt: 5 }}>
                                         <CardActions>
                                             <Grid container direction="row" gap={2}>
-                                                <AddToCartButton
-                                                    size={
-                                                        'large' as OverridableStringUnion<
-                                                            'small' | 'medium' | 'large',
-                                                            ButtonPropsSizeOverrides
-                                                        >
-                                                    }
-                                                    id={productId as number & string}
-                                                    groupId={Number(productId)}
-                                                />
+                                                {!location.pathname.includes('admin') ||
+                                                    (!location.pathname.includes('varasto') && (
+                                                        <AddToCartButton
+                                                            size={
+                                                                'large' as OverridableStringUnion<
+                                                                    'small' | 'medium' | 'large',
+                                                                    ButtonPropsSizeOverrides
+                                                                >
+                                                            }
+                                                            id={productId as number & string}
+                                                            groupId={Number(productId)}
+                                                        />
+                                                    ))}
                                                 {(auth.storage_group || auth.admin_group) && (
                                                     <Button
                                                         component={Link}
@@ -246,27 +250,64 @@ function ProductDetails() {
                         {!location.pathname.includes('admin') ||
                             (!location.pathname.includes('varasto') && (
                                 <Box sx={{ mx: 2 }}>
-                            {/* TODO: don't show if path is just /tuotteet/:id , storage or admin does not need this component*/}
-                            {productsInSameCategory.results && productsInSameCategory.results.length > 1 && (
-                                <>
-                                    <Typography
-                                        gutterBottom
-                                        variant="h5"
-                                        component="div"
-                                        color="primary.main"
-                                        sx={{ mt: '7rem' }}
-                                    >
-                                        Samankaltaisia tuotteita
+                                    {productsInSameCategory.results && productsInSameCategory.results.length > 1 && (
+                                        <>
+                                            <Typography
+                                                gutterBottom
+                                                variant="h5"
+                                                component="div"
+                                                color="primary.main"
+                                                sx={{ mt: '7rem' }}
+                                            >
+                                                Samankaltaisia tuotteita
+                                            </Typography>
+                                            <SimilarProductsCarousel
+                                                currentId={Number(productId)}
+                                                similarProducts={
+                                                    productsInSameCategory as unknown as SimilarProductCarouselProps['similarProducts']
+                                                }
+                                            />
+                                        </>
+                                    )}
+                                </Box>
+                            ))}
+                        {location.pathname.includes('varasto') && (
+                            // list of product_items, with their storage and barcode, and logs
+                            <Grid container justifyContent="center" sx={{ mt: 5 }}>
+                                <Paper variant="outlined" sx={{ p: 5 }} color="primary">
+                                    <Typography gutterBottom variant="h5" component="div" color="primary">
+                                        Tuotteen lokitiedot
                                     </Typography>
-                                    <SimilarProductsCarousel
-                                        currentId={Number(productId)}
-                                        similarProducts={
-                                            productsInSameCategory as unknown as SimilarProductCarouselProps['similarProducts']
-                                        }
-                                    />
-                                </>
-                            )}
-                        </Box>
+                                    {product.product_items.map((item) => (
+                                        <Grid
+                                            key={item.id}
+                                            container
+                                            direction="row"
+                                            justifyContent="space-between"
+                                            sx={{ mt: 2 }}
+                                        >
+                                            <Grid item>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    Varasto: {item.storage.name}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    Viivakoodi: {item.barcode}
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item>
+                                                {item.log_entries?.map((log) => (
+                                                    <Typography key={log.id} variant="body2" color="text.secondary">
+                                                        Tyyppi:{log?.action} Aika:
+                                                        {new Date(log?.date).toLocaleDateString('fi-FI')}
+                                                        Käyttäjä:{log?.user}
+                                                    </Typography>
+                                                ))}
+                                            </Grid>
+                                        </Grid>
+                                    ))}
+                                </Paper>
+                            </Grid>
+                        )}
                     </Card>
                 </Grid>
             </Grid>
