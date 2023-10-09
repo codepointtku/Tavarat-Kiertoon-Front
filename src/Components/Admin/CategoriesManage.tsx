@@ -63,6 +63,8 @@ function CategoryTree() {
     const [selectedCategory, setSelectedCategory] = useState<CategoryObject | null>(null);
     let selectedNodeRef = useRef<string | null>(null);
 
+    console.log(selectedCategory);
+
     const handleClick = (node: any) => {
         selectedNodeRef.current = node;
         //         Argument of type 'string | null' is not assignable to parameter of type 'SetStateAction<CategoryObject | null>'.
@@ -145,8 +147,6 @@ function CategoryTree() {
         console.log(value);
         setSelectedChoice(value);
     };
-
-    console.log(selectedChoice);
 
     return (
         <Stack direction="row" spacing={4} justifyContent="space-between" marginBottom="1rem">
@@ -321,7 +321,7 @@ function CategoryTree() {
 
 function CategoriesManage() {
     return (
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
             <HeroHeader Icon={<DeviceHubIcon />} hideInAdmin />
             <HeroText title="Kategorioiden hallinta" subtext2="Lisää, muokkaa ja poista tuotekategorioita" />
             {/* <Container maxWidth="sm"> */}

@@ -3,6 +3,7 @@ import apiCall from '../Utils/apiCall';
 import {
     bikesApi,
     bulletinsApi,
+    categoriesApi,
     contactFormsApi,
     // contactsApi,
     ordersApi,
@@ -475,8 +476,34 @@ const adminEmailRecipientsAction = async ({ request }) => {
 };
 
 const categoriesManageAction = async ({ request }) => {
-    const placeholder = 'hodor';
-    return placeholder;
+    // const placeholder = 'hodor';
+    // return placeholder;
+
+    const formData = await request.formData();
+    const cat = formData.get('cat');
+    const id = formData.get('id');
+
+    if (request.method === 'PUT') {
+        const mutatedCategory = { name: formData.get('cat'), parent: formData.get('parent') };
+
+        const response = await categoriesApi.categoriesUpdate(id, mutatedCategory);
+
+        if (response.status === 200) {
+            return { type: 'categorymutate', status: true };
+        }
+        return { type: 'categorymutate', status: false };
+    }
+
+    if (request.method === 'DELETE') {
+        const response = await categoriesApi.categoriesDestroy(id);
+
+        if (response.status === 204) {
+            return { type: 'categorydel', status: true };
+        }
+        return { type: 'categorydel', status: false };
+    }
+
+    return { type: 'emailrecipient', status: false };
 };
 
 /**
