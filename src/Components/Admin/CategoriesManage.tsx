@@ -274,15 +274,15 @@ function CategoryTree() {
                                     <TextField
                                         id="input-color"
                                         type="text"
-                                        label="Nimen muok"
+                                        label="Nimen muokkaus"
                                         {...register('cat', {
                                             required: {
                                                 value: true,
-                                                message: 'Syötä katti',
+                                                message: 'Syötä nimi',
                                             },
                                             minLength: {
                                                 value: 3,
-                                                message: 'Katin tulee olla vähintään kolme merkkiä pitkä',
+                                                message: 'Nimen tulee olla vähintään kolme merkkiä pitkä',
                                             },
                                             maxLength: {
                                                 value: 30,
@@ -290,7 +290,7 @@ function CategoryTree() {
                                             },
                                             validate: (val: string) => {
                                                 if (categoriesMap.includes(val)) {
-                                                    return 'Katti on jo järjestelmässä';
+                                                    return 'Kategoria on jo järjestelmässä';
                                                 }
                                             },
                                         })}
