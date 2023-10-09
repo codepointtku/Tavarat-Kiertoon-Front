@@ -57,6 +57,7 @@ interface CategoryObject {
 
 function CategoryTree() {
     const { categories, categoryTree } = useLoaderData() as Awaited<ReturnType<typeof categoriesManageLoader>>;
+    const categoriesMap = categories.map((category) => category.name);
 
     const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<CategoryObject | null>(null);
@@ -146,14 +147,11 @@ function CategoryTree() {
     };
 
     console.log(selectedChoice);
+
     return (
         <Stack direction="row" spacing={4} justifyContent="space-between" marginBottom="1rem">
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <TreeView
-                    aria-label="product category tree view"
-                    defaultExpanded={['root']}
-                    sx={{ flexGrow: 1, minWidth: 420, overflowY: 'auto' }}
-                >
+            <Box id="treeview-container" sx={{ display: 'flex', justifyContent: 'center' }}>
+                <TreeView defaultExpanded={['root']} sx={{ flexGrow: 1, minWidth: 420, overflowY: 'auto' }}>
                     {renderTree(fullTree)}
                 </TreeView>
             </Box>
@@ -164,12 +162,12 @@ function CategoryTree() {
              * i'd like to separate this logic to it's own component, but i'll just bang this up and running in here for now
              */}
 
-            <Box
-                id="nodestats-component-wrapper"
-                my="1rem"
-                sx={{ display: 'flex', flexGrow: '1', padding: '0 2rem 2rem 2rem' }}
-            >
-                <Box id="nodestats-stats-container" sx={{ display: 'flex', flex: '1', justifyContent: 'center' }}>
+            <Box id="nodestats-component-wrapper" sx={{ padding: '1rem 2rem 2rem 2rem' }}>
+                <Stack
+                    id="nodestats-stats-container"
+                    direction="column"
+                    sx={{ display: 'flex', flex: '1', justifyContent: 'center', minWidth: 420 }}
+                >
                     {/* id: 1,
     product_count: 32,
     name: 'Huonekalut',
@@ -182,7 +180,7 @@ function CategoryTree() {
                     {selectedCategory !== null ? (
                         <Box id="nodestat-wrapper">
                             <Typography>Valittu: {selectedCategory?.name}</Typography>
-                            <Stack direction="row" spacing={4} my="1rem">
+                            <Stack direction="row" spacing={4} my="1rem" sx={{ justifyContent: 'center' }}>
                                 <Tooltip title="Lisää uusi kategoria tämän alle">
                                     <IconButton
                                         size="small"
@@ -220,54 +218,102 @@ function CategoryTree() {
                                     </IconButton>
                                 </Tooltip>
                             </Stack>
+                            <Divider />
                         </Box>
                     ) : (
                         <Typography>Ei valittua kategoriaa</Typography>
                     )}
-                </Box>
 
-                {/* <Stack spacing={2} sx={{ border: '1px solid blue' }}>
-                    <Typography>Uuden katin lisäys</Typography>
-                    <Divider />
-                    <TextField
-                        id="input-color"
-                        type="text"
-                        label="Uusi väri"
-                        {...register('cat', {
-                            required: {
-                                value: true,
-                                message: 'Syötä katti',
-                            },
-                            minLength: {
-                                value: 3,
-                                message: 'Katin tulee olla vähintään kolme merkkiä pitkä',
-                            },
-                            maxLength: {
-                                value: 30,
-                                message: 'Maksimipituus',
-                            },
-                            validate: (val: string) => {
-                                if (categoriesMap.includes(val)) {
-                                    return 'Katti on jo järjestelmässä';
-                                }
-                            },
-                        })}
-                        error={!!errors.cat}
-                        helperText={errors.cat?.message?.toString() || ' '}
-                    />
-                    <Button
-                        type="submit"
-                        disabled={!isValid}
-                        fullWidth
-                        sx={{
-                            '&:hover': {
-                                backgroundColor: 'success.dark',
-                            },
-                        }}
-                    >
-                        Lisää katti
-                    </Button>
-                </Stack> */}
+                    <Box id="nodestat-action-area">
+                        <Stack marginTop="1.6rem">
+                            {selectedChoice === 'add' && (
+                                <>
+                                    <TextField
+                                        id="input-color"
+                                        type="text"
+                                        label="Uusi kategoria"
+                                        {...register('cat', {
+                                            required: {
+                                                value: true,
+                                                message: 'Syötä nimi',
+                                            },
+                                            minLength: {
+                                                value: 3,
+                                                message: 'Nimen tulee olla vähintään kolme merkkiä pitkä',
+                                            },
+                                            maxLength: {
+                                                value: 30,
+                                                message: 'Maksimipituus',
+                                            },
+                                            validate: (val: string) => {
+                                                if (categoriesMap.includes(val)) {
+                                                    return 'Kategoria on jo järjestelmässä';
+                                                }
+                                            },
+                                        })}
+                                        error={!!errors.cat}
+                                        helperText={errors.cat?.message?.toString() || ' '}
+                                    />
+                                    <Button
+                                        type="submit"
+                                        disabled={!isValid}
+                                        fullWidth
+                                        sx={{
+                                            '&:hover': {
+                                                backgroundColor: 'success.dark',
+                                            },
+                                        }}
+                                    >
+                                        Lisää
+                                    </Button>
+                                </>
+                            )}
+
+                            {selectedChoice === 'mutate' && (
+                                <>
+                                    <TextField
+                                        id="input-color"
+                                        type="text"
+                                        label="Nimen muok"
+                                        {...register('cat', {
+                                            required: {
+                                                value: true,
+                                                message: 'Syötä katti',
+                                            },
+                                            minLength: {
+                                                value: 3,
+                                                message: 'Katin tulee olla vähintään kolme merkkiä pitkä',
+                                            },
+                                            maxLength: {
+                                                value: 30,
+                                                message: 'Maksimipituus',
+                                            },
+                                            validate: (val: string) => {
+                                                if (categoriesMap.includes(val)) {
+                                                    return 'Katti on jo järjestelmässä';
+                                                }
+                                            },
+                                        })}
+                                        error={!!errors.cat}
+                                        helperText={errors.cat?.message?.toString() || ' '}
+                                    />
+                                    <Button
+                                        type="submit"
+                                        disabled={!isValid}
+                                        fullWidth
+                                        sx={{
+                                            '&:hover': {
+                                                backgroundColor: 'success.dark',
+                                            },
+                                        }}
+                                    >
+                                        Vahvista
+                                    </Button>
+                                </>
+                            )}
+                        </Stack>
+                    </Box>
+                </Stack>
             </Box>
         </Stack>
     );
@@ -275,7 +321,7 @@ function CategoryTree() {
 
 function CategoriesManage() {
     return (
-        <Container maxWidth="lg">
+        <Container maxWidth="md">
             <HeroHeader Icon={<DeviceHubIcon />} hideInAdmin />
             <HeroText title="Kategorioiden hallinta" subtext2="Lisää, muokkaa ja poista tuotekategorioita" />
             {/* <Container maxWidth="sm"> */}
