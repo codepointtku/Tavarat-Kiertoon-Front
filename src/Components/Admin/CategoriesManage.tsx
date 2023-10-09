@@ -17,12 +17,14 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import DeviceHubIcon from '@mui/icons-material/DeviceHub';
+import InputIcon from '@mui/icons-material/Input';
 
 import HeroText from '../HeroText';
 import HeroHeader from '../HeroHeader';
 
 import type { categoriesManageLoader } from '../../Router/loaders';
 import type { CategoryResponse } from '../../api';
+import Tooltip from '../Tooltip';
 
 // interface CategoryTreeIndexes {
 //     [key: number]: [];
@@ -56,6 +58,7 @@ interface CategoryObject {
 function CategoryTree() {
     const { categories, categoryTree } = useLoaderData() as Awaited<ReturnType<typeof categoriesManageLoader>>;
 
+    const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<CategoryObject | null>(null);
     let selectedNodeRef = useRef<string | null>(null);
 
@@ -66,8 +69,6 @@ function CategoryTree() {
         // let selectedNodeRef: React.MutableRefObject<string | null>
         setSelectedCategory(selectedNodeRef.current);
     };
-
-    console.log(selectedCategory);
 
     const categoryTreeMain = arrayToTree(categories, {
         parentProperty: 'parent',
@@ -90,22 +91,6 @@ function CategoryTree() {
                         {nodes.name}
                     </Typography>
 
-                    {/* // */}
-                    {selectedCategory?.id === Number(nodes.id) ? (
-                        <Stack direction="row" mx={4} spacing={1}>
-                            <IconButton size="small">
-                                <AddCircleOutlineIcon />
-                            </IconButton>
-                            <IconButton size="small">
-                                <EditIcon />
-                            </IconButton>
-                            <IconButton size="small">
-                                <DeleteForeverIcon />
-                            </IconButton>
-                        </Stack>
-                    ) : null}
-                    {/* // */}
-
                     <Typography color="primary.main" fontSize="fontSizeSmall" fontWeight="fontWeightThin">
                         Tuotemäärä: {nodes.product_count}
                     </Typography>
@@ -120,15 +105,6 @@ function CategoryTree() {
                 : null}
         </TreeItem>
     );
-
-    // alright here goes boilerplate for NodeDataDisplay:
-    // let categoriesMap = categories.map((cat) => cat.name);
-
-    // if (selectedCategory !== null) {
-    //     let suattanaSentaan = Object.entries(selectedCategory).forEach(([key, value]) => {
-    //         console.log(`${key}: ${value}`);
-    //     });
-    // }
 
     const {
         register,
@@ -164,17 +140,25 @@ function CategoryTree() {
         reset();
     };
 
+    const handleChoice = (value: string) => {
+        console.log(value);
+        setSelectedChoice(value);
+    };
+
+    console.log(selectedChoice);
     return (
-        <Stack direction="row" spacing={4} justifyContent="space-between">
+        <Stack direction="row" spacing={4} justifyContent="space-between" marginBottom="1rem">
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <TreeView
                     aria-label="product category tree view"
                     defaultExpanded={['root']}
-                    sx={{ flexGrow: 1, minWidth: 520, overflowY: 'auto' }}
+                    sx={{ flexGrow: 1, minWidth: 420, overflowY: 'auto' }}
                 >
                     {renderTree(fullTree)}
                 </TreeView>
             </Box>
+
+            {/* ////// ----- ///// */}
 
             {/* <NodeDataDisplay /> :
              * i'd like to separate this logic to it's own component, but i'll just bang this up and running in here for now
@@ -182,9 +166,10 @@ function CategoryTree() {
 
             <Box
                 id="nodestats-component-wrapper"
-                sx={{ display: 'flex', flexGrow: '1', border: '1px solid red', padding: '2rem' }}
+                my="1rem"
+                sx={{ display: 'flex', flexGrow: '1', padding: '0 2rem 2rem 2rem' }}
             >
-                <Box id="nodestats-stats-container" sx={{ border: '1px solid cyan', padding: '1rem' }}>
+                <Box id="nodestats-stats-container" sx={{ display: 'flex', flex: '1', justifyContent: 'center' }}>
                     {/* id: 1,
     product_count: 32,
     name: 'Huonekalut',
@@ -193,7 +178,52 @@ function CategoryTree() {
     tree_id: 1,
     level: 0,
     parent: null, */}
-                    <Typography>keke</Typography>
+
+                    {selectedCategory !== null ? (
+                        <Box id="nodestat-wrapper">
+                            <Typography>Valittu: {selectedCategory?.name}</Typography>
+                            <Stack direction="row" spacing={4} my="1rem">
+                                <Tooltip title="Lisää uusi kategoria tämän alle">
+                                    <IconButton
+                                        size="small"
+                                        sx={{ '&:hover': { backgroundColor: 'success.main' } }}
+                                        onClick={() => handleChoice('add')}
+                                    >
+                                        <AddCircleOutlineIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Nimeä uudelleen">
+                                    <IconButton
+                                        size="small"
+                                        sx={{ '&:hover': { backgroundColor: 'warning.main' } }}
+                                        onClick={() => handleChoice('mutate')}
+                                    >
+                                        <EditIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Tuotteiden siirto toiseen kategoriaan">
+                                    <IconButton
+                                        size="small"
+                                        sx={{ '&:hover': { backgroundColor: 'info.main' } }}
+                                        onClick={() => handleChoice('transfer')}
+                                    >
+                                        <InputIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Poista">
+                                    <IconButton
+                                        size="small"
+                                        sx={{ '&:hover': { backgroundColor: 'error.main' } }}
+                                        onClick={() => handleChoice('delete')}
+                                    >
+                                        <DeleteForeverIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </Stack>
+                        </Box>
+                    ) : (
+                        <Typography>Ei valittua kategoriaa</Typography>
+                    )}
                 </Box>
 
                 {/* <Stack spacing={2} sx={{ border: '1px solid blue' }}>

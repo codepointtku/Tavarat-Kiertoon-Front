@@ -45,6 +45,7 @@ import OrdersGrid from '../Components/Admin/OrdersGrid';
 import AdminOrderEmailList from '../Components/Admin/AdminOrderEmailList';
 
 import ProductsGrid from '../Components/Admin/ProductsGrid';
+import CategoriesManage from '../Components/Admin/CategoriesManage';
 
 import UsersGrid from '../Components/Admin/UsersGrid';
 import UserEdit from '../Components/Admin/UserEdit';
@@ -200,7 +201,6 @@ import {
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
-import CategoriesManage from '../Components/Admin/CategoriesManage';
 
 createStore({});
 
