@@ -149,26 +149,28 @@ function CategoryTree() {
     };
 
     return (
-        <Stack direction="row" spacing={4} justifyContent="space-between" marginBottom="1rem">
+        <Stack id="components-wrapper" direction="row" spacing={4} justifyContent="space-between" marginBottom="1rem">
             <Box id="treeview-container" sx={{ display: 'flex', justifyContent: 'center' }}>
                 <TreeView defaultExpanded={['root']} sx={{ flexGrow: 1, minWidth: 420, overflowY: 'auto' }}>
                     {renderTree(fullTree)}
                 </TreeView>
             </Box>
 
-            {/* ////// ----- ///// */}
-
-            {/* <NodeDataDisplay /> :
+            {/* <NodeActionsDisplay /> :
              * i'd like to separate this logic to it's own component, but i'll just bang this up and running in here for now
              */}
 
-            <Box id="nodestats-component-wrapper" sx={{ padding: '1rem 2rem 2rem 2rem' }}>
-                <Stack
-                    id="nodestats-stats-container"
-                    direction="column"
-                    sx={{ display: 'flex', flex: '1', justifyContent: 'center', minWidth: 420 }}
-                >
-                    {/* id: 1,
+            <Stack
+                id="nodeactions-component-container"
+                direction="column"
+                sx={{
+                    display: 'flex',
+                    flex: '1',
+                    minWidth: 420,
+                    padding: '1rem 2rem 2rem 2rem',
+                }}
+            >
+                {/* id: 1,
     product_count: 32,
     name: 'Huonekalut',
     lft: 1,
@@ -177,144 +179,152 @@ function CategoryTree() {
     level: 0,
     parent: null, */}
 
-                    {selectedCategory !== null ? (
-                        <Box id="nodestat-wrapper">
-                            <Typography>Valittu: {selectedCategory?.name}</Typography>
-                            <Stack direction="row" spacing={4} my="1rem" sx={{ justifyContent: 'center' }}>
-                                <Tooltip title="Lisää uusi kategoria tämän alle">
-                                    <IconButton
-                                        size="small"
-                                        sx={{ '&:hover': { backgroundColor: 'success.main' } }}
-                                        onClick={() => handleChoice('add')}
-                                    >
-                                        <AddCircleOutlineIcon />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Nimeä uudelleen">
-                                    <IconButton
-                                        size="small"
-                                        sx={{ '&:hover': { backgroundColor: 'warning.main' } }}
-                                        onClick={() => handleChoice('mutate')}
-                                    >
-                                        <EditIcon />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Tuotteiden siirto toiseen kategoriaan">
-                                    <IconButton
-                                        size="small"
-                                        sx={{ '&:hover': { backgroundColor: 'info.main' } }}
-                                        onClick={() => handleChoice('transfer')}
-                                    >
-                                        <InputIcon />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Poista">
-                                    <IconButton
-                                        size="small"
-                                        sx={{ '&:hover': { backgroundColor: 'error.main' } }}
-                                        onClick={() => handleChoice('delete')}
-                                    >
-                                        <DeleteForeverIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </Stack>
-                            <Divider />
-                        </Box>
-                    ) : (
-                        <Typography>Ei valittua kategoriaa</Typography>
-                    )}
-
-                    <Box id="nodestat-action-area">
-                        <Stack marginTop="1.6rem">
-                            {selectedChoice === 'add' && (
-                                <>
-                                    <TextField
-                                        id="input-color"
-                                        type="text"
-                                        label="Uusi kategoria"
-                                        {...register('cat', {
-                                            required: {
-                                                value: true,
-                                                message: 'Syötä nimi',
-                                            },
-                                            minLength: {
-                                                value: 3,
-                                                message: 'Nimen tulee olla vähintään kolme merkkiä pitkä',
-                                            },
-                                            maxLength: {
-                                                value: 30,
-                                                message: 'Maksimipituus',
-                                            },
-                                            validate: (val: string) => {
-                                                if (categoriesMap.includes(val)) {
-                                                    return 'Kategoria on jo järjestelmässä';
-                                                }
-                                            },
-                                        })}
-                                        error={!!errors.cat}
-                                        helperText={errors.cat?.message?.toString() || ' '}
-                                    />
-                                    <Button
-                                        type="submit"
-                                        disabled={!isValid}
-                                        fullWidth
-                                        sx={{
-                                            '&:hover': {
-                                                backgroundColor: 'success.dark',
-                                            },
-                                        }}
-                                    >
-                                        Lisää
-                                    </Button>
-                                </>
-                            )}
-
-                            {selectedChoice === 'mutate' && (
-                                <>
-                                    <TextField
-                                        id="input-color"
-                                        type="text"
-                                        label="Nimen muokkaus"
-                                        {...register('cat', {
-                                            required: {
-                                                value: true,
-                                                message: 'Syötä nimi',
-                                            },
-                                            minLength: {
-                                                value: 3,
-                                                message: 'Nimen tulee olla vähintään kolme merkkiä pitkä',
-                                            },
-                                            maxLength: {
-                                                value: 30,
-                                                message: 'Maksimipituus',
-                                            },
-                                            validate: (val: string) => {
-                                                if (categoriesMap.includes(val)) {
-                                                    return 'Kategoria on jo järjestelmässä';
-                                                }
-                                            },
-                                        })}
-                                        error={!!errors.cat}
-                                        helperText={errors.cat?.message?.toString() || ' '}
-                                    />
-                                    <Button
-                                        type="submit"
-                                        disabled={!isValid}
-                                        fullWidth
-                                        sx={{
-                                            '&:hover': {
-                                                backgroundColor: 'success.dark',
-                                            },
-                                        }}
-                                    >
-                                        Vahvista
-                                    </Button>
-                                </>
-                            )}
+                {selectedCategory !== null ? (
+                    <Box id="nodeaction-btns-wrapper">
+                        <Typography>Valittu: {selectedCategory?.name}</Typography>
+                        <Stack direction="row" spacing={4} my="1rem" sx={{ justifyContent: 'center' }}>
+                            <Tooltip title="Lisää uusi kategoria tämän alle">
+                                <IconButton
+                                    size="small"
+                                    sx={{ '&:hover': { backgroundColor: 'success.main' } }}
+                                    onClick={() => handleChoice('add')}
+                                >
+                                    <AddCircleOutlineIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Nimeä uudelleen">
+                                <IconButton
+                                    size="small"
+                                    sx={{ '&:hover': { backgroundColor: 'warning.main' } }}
+                                    onClick={() => handleChoice('mutate')}
+                                >
+                                    <EditIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Tuotteiden siirto toiseen kategoriaan">
+                                <IconButton
+                                    size="small"
+                                    sx={{ '&:hover': { backgroundColor: 'info.main' } }}
+                                    onClick={() => handleChoice('transfer')}
+                                >
+                                    <InputIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Poista">
+                                <IconButton
+                                    size="small"
+                                    sx={{ '&:hover': { backgroundColor: 'error.main' } }}
+                                    onClick={() => handleChoice('delete')}
+                                >
+                                    <DeleteForeverIcon />
+                                </IconButton>
+                            </Tooltip>
                         </Stack>
+                        <Divider />
                     </Box>
-                </Stack>
-            </Box>
+                ) : (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flex: '1',
+                            height: 'max-content',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Typography>Ei valittua kategoriaa</Typography>
+                    </Box>
+                )}
+
+                <Box id="nodestat-action-area">
+                    <Stack marginTop="1.6rem">
+                        {selectedChoice === 'add' && (
+                            <>
+                                <TextField
+                                    id="input-color"
+                                    type="text"
+                                    label="Uusi kategoria"
+                                    {...register('cat', {
+                                        required: {
+                                            value: true,
+                                            message: 'Syötä nimi',
+                                        },
+                                        minLength: {
+                                            value: 3,
+                                            message: 'Nimen tulee olla vähintään kolme merkkiä pitkä',
+                                        },
+                                        maxLength: {
+                                            value: 30,
+                                            message: 'Maksimipituus',
+                                        },
+                                        validate: (val: string) => {
+                                            if (categoriesMap.includes(val)) {
+                                                return 'Kategoria on jo järjestelmässä';
+                                            }
+                                        },
+                                    })}
+                                    error={!!errors.cat}
+                                    helperText={errors.cat?.message?.toString() || ' '}
+                                />
+                                <Button
+                                    type="submit"
+                                    disabled={!isValid}
+                                    fullWidth
+                                    sx={{
+                                        '&:hover': {
+                                            backgroundColor: 'success.dark',
+                                        },
+                                    }}
+                                >
+                                    Lisää
+                                </Button>
+                            </>
+                        )}
+
+                        {selectedChoice === 'mutate' && (
+                            <>
+                                <TextField
+                                    id="input-color"
+                                    type="text"
+                                    label="Nimen muokkaus"
+                                    {...register('cat', {
+                                        required: {
+                                            value: true,
+                                            message: 'Syötä nimi',
+                                        },
+                                        minLength: {
+                                            value: 3,
+                                            message: 'Nimen tulee olla vähintään kolme merkkiä pitkä',
+                                        },
+                                        maxLength: {
+                                            value: 30,
+                                            message: 'Maksimipituus',
+                                        },
+                                        validate: (val: string) => {
+                                            if (categoriesMap.includes(val)) {
+                                                return 'Kategoria on jo järjestelmässä';
+                                            }
+                                        },
+                                    })}
+                                    error={!!errors.cat}
+                                    helperText={errors.cat?.message?.toString() || ' '}
+                                />
+                                <Button
+                                    type="submit"
+                                    disabled={!isValid}
+                                    fullWidth
+                                    sx={{
+                                        '&:hover': {
+                                            backgroundColor: 'success.dark',
+                                        },
+                                    }}
+                                >
+                                    Vahvista
+                                </Button>
+                            </>
+                        )}
+                    </Stack>
+                </Box>
+            </Stack>
         </Stack>
     );
 }

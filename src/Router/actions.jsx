@@ -503,7 +503,7 @@ const categoriesManageAction = async ({ request }) => {
         return { type: 'categorydel', status: false };
     }
 
-    return { type: 'emailrecipient', status: false };
+    return { type: 'categorymanage', status: false };
 };
 
 /**
