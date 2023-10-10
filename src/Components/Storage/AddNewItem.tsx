@@ -472,6 +472,7 @@ function AddNewItem() {
                                 onChange: handlePictureChange,
                                 validate: {
                                     amount: (value) => {
+                                        // TODO / known issue: validation shows error if user adds 4 or more pics at the same time
                                         if (value.length + fileList.length > 6) {
                                             return 'Kuvia voi olla enintään 6';
                                         }
