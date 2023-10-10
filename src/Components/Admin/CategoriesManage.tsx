@@ -246,7 +246,6 @@ function CategoryTree() {
                             flex: '1',
                             height: 'max-content',
                             justifyContent: 'center',
-                            alignItems: 'center',
                         }}
                     >
                         <Typography>Ei valittua kategoriaa</Typography>
@@ -280,8 +279,10 @@ function CategoryTree() {
                                             }
                                         },
                                     })}
+                                    color={isValid ? 'success' : 'primary'}
                                     error={!!errors.cat}
                                     helperText={errors.cat?.message?.toString() || ' '}
+                                    disabled={selectedCategory?.level === 2}
                                     fullWidth
                                 />
                                 <Button
@@ -296,6 +297,11 @@ function CategoryTree() {
                                 >
                                     Lisää
                                 </Button>
+                                {selectedCategory?.level === 2 && (
+                                    <Typography fontSize="small" color="info.main">
+                                        Kategoriarakenteen syvyys on rajoitettu kolmeen tasoon
+                                    </Typography>
+                                )}
                             </Box>
                         )}
 
