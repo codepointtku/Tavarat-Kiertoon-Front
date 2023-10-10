@@ -59,13 +59,11 @@ function CategoryTree() {
     const { categories, categoryTree } = useLoaderData() as Awaited<ReturnType<typeof categoriesManageLoader>>;
     const categoryNamesMap = categories.map((category) => category.name);
 
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const openPopover = Boolean(anchorEl);
+    const [showDeletePrompt, setShowDeletePrompt] = useState<boolean>(true);
+    const [showDeleteErrorMessage, setShowDeleteErrorMessage] = useState<boolean>(false);
     const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<CategoryObject | null>(null);
     let selectedNodeRef = useRef<string | null>(null);
-
-    console.log(selectedCategory);
 
     const handleClick = (node: any) => {
         selectedNodeRef.current = node;
@@ -73,6 +71,8 @@ function CategoryTree() {
         //   Type 'string' is not assignable to type 'SetStateAction<CategoryObject | null>'.ts(2345)
         // let selectedNodeRef: React.MutableRefObject<string | null>
         setSelectedCategory(selectedNodeRef.current);
+        setShowDeletePrompt(false);
+        setShowDeleteErrorMessage(false);
     };
 
     const categoryTreeMain = arrayToTree(categories, {
@@ -168,26 +168,24 @@ function CategoryTree() {
     };
 
     const handleCategoryDelete = () => {
-        if (
-            selectedCategory?.product_count !== 0 ||
-            selectedCategory.children
-            // selectedCategory.children === undefined
-        ) {
-            console.log('ei menny seulast läpi');
+        if (selectedCategory?.product_count !== 0 || selectedCategory.children) {
+            setShowDeletePrompt(false);
+            setShowDeleteErrorMessage(true);
             return;
         }
 
         submit({ id: selectedCategory?.id }, { method: 'delete' });
-        setAnchorEl(null);
+        setShowDeletePrompt(false);
         setSelectedCategory(null);
+        handleChoice(null);
     };
 
-    function handlePopOverOpen(event: React.MouseEvent<HTMLElement>) {
-        setAnchorEl(event.currentTarget);
-    }
-
-    const handleChoice = (value: string) => {
+    const handleChoice = (value: string | null) => {
         setSelectedChoice(value);
+
+        if (value === 'delete') {
+            setShowDeletePrompt(true);
+        }
     };
 
     return (
@@ -250,37 +248,11 @@ function CategoryTree() {
                                 <IconButton
                                     size="small"
                                     sx={{ '&:hover': { backgroundColor: 'error.main' } }}
-                                    onClick={handlePopOverOpen}
+                                    onClick={() => handleChoice('delete')}
                                 >
                                     <DeleteForeverIcon />
                                 </IconButton>
                             </Tooltip>
-
-                            <Popover
-                                open={openPopover}
-                                anchorEl={anchorEl}
-                                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-                                onClose={() => setAnchorEl(null)}
-                                sx={{ mt: 1 }}
-                            >
-                                <Stack
-                                    direction="row"
-                                    justifyContent="space-between"
-                                    alignItems="center"
-                                    sx={{ p: '1rem' }}
-                                    spacing="1rem"
-                                >
-                                    <Typography variant="body2">
-                                        Oletko varma? Tämä toiminto on peruuttamaton.
-                                    </Typography>
-                                    <Button size="small" variant="outlined" onClick={handleCategoryDelete}>
-                                        Kyllä
-                                    </Button>
-                                    <Button size="small" variant="outlined" onClick={() => setAnchorEl(null)}>
-                                        Peruuta
-                                    </Button>
-                                </Stack>
-                            </Popover>
                         </Stack>
                         <Divider />
                     </Box>
@@ -289,7 +261,6 @@ function CategoryTree() {
                         sx={{
                             display: 'flex',
                             flex: '1',
-                            height: 'max-content',
                             justifyContent: 'center',
                         }}
                     >
@@ -392,6 +363,47 @@ function CategoryTree() {
                                     Vahvista
                                 </Button>
                             </>
+                        )}
+
+                        {selectedChoice === 'delete' && (
+                            <Box>
+                                {showDeletePrompt && (
+                                    <Stack
+                                        direction="row"
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                        sx={{ p: '1rem' }}
+                                        spacing="1rem"
+                                    >
+                                        <Typography variant="body2">Oletko varma?</Typography>
+                                        <Button
+                                            size="small"
+                                            variant="outlined"
+                                            onClick={handleCategoryDelete}
+                                            sx={{
+                                                '&:hover': {
+                                                    backgroundColor: 'error.main',
+                                                },
+                                            }}
+                                        >
+                                            Kyllä
+                                        </Button>
+                                        <Button
+                                            size="small"
+                                            variant="outlined"
+                                            onClick={() => setShowDeletePrompt(false)}
+                                        >
+                                            Peruuta
+                                        </Button>
+                                    </Stack>
+                                )}
+
+                                {showDeleteErrorMessage ? (
+                                    <Box>Poistoa ei voi suorittaa koska jaadijaadi</Box>
+                                ) : (
+                                    <Box>Tässä on ihan vaan laatikko, ollaan delete choicessa</Box>
+                                )}
+                            </Box>
                         )}
                     </Stack>
                 </Box>
