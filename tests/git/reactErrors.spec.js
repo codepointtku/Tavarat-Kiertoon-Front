@@ -127,7 +127,7 @@ test.describe('tilaus', () => {
     });
 });
 
-test.describe('tuotteet', () => {
+test.describe('varasto-tuotteet', () => {
     test('no errors', async ({ page }) => {
         await page.goto('varasto/tuotteet');
         await expect(page.getByText('Virhe sijainnissa /varasto/tuotteet')).not.toBeVisible();
