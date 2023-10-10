@@ -986,7 +986,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/BulletinResponse'
           description: ''
-  /bulletins/{id}/:
+  /bulletins/{id}:
     get:
       operationId: bulletins_retrieve
       parameters:
@@ -2245,128 +2245,6 @@ paths:
       responses:
         '204':
           description: No response body
-  /products/{id}/add/:
-    get:
-      operationId: products_add_list
-      description: View for adding product items to an existing product
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - products
-      security:
-      - cookieAuth: []
-      - basicAuth: []
-      - jwtAuth: []
-      - CustomJWTAuthentication: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ReturnAddProductItems'
-          description: ''
-    post:
-      operationId: products_add_create
-      description: View for adding product items to an existing product
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - products
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ReturnAddProductItems'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ReturnAddProductItems'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/ReturnAddProductItems'
-        required: true
-      security:
-      - cookieAuth: []
-      - basicAuth: []
-      - jwtAuth: []
-      - CustomJWTAuthentication: []
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ReturnAddProductItems'
-          description: ''
-  /products/{id}/return/:
-    get:
-      operationId: products_return_list
-      description: View for returning product items back to circulation(available)
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - products
-      security:
-      - cookieAuth: []
-      - basicAuth: []
-      - jwtAuth: []
-      - CustomJWTAuthentication: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ReturnAddProductItems'
-          description: ''
-    post:
-      operationId: products_return_create
-      description: View for returning product items back to circulation(available)
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - products
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ReturnAddProductItems'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ReturnAddProductItems'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/ReturnAddProductItems'
-        required: true
-      security:
-      - cookieAuth: []
-      - basicAuth: []
-      - jwtAuth: []
-      - CustomJWTAuthentication: []
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ReturnAddProductItems'
-          description: ''
   /products/items/:
     get:
       operationId: products_items_list
@@ -2403,11 +2281,6 @@ paths:
         explode: true
         style: form
       - in: query
-        name: search
-        schema:
-          type: string
-        description: Barcode search
-      - in: query
         name: shelf_id
         schema:
           type: string
@@ -2433,7 +2306,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedProductItemResponseList'
           description: ''
-  /products/items/{id}/:
+  /products/items/{id}:
     get:
       operationId: products_items_retrieve
       description: View for modifying single Product item
@@ -5334,9 +5207,6 @@ components:
           type: integer
         shelf_id:
           type: string
-        pictures:
-          type: array
-          items: {}
         name:
           type: string
           maxLength: 255
@@ -5354,10 +5224,6 @@ components:
         category:
           type: integer
           nullable: true
-        colors:
-          type: array
-          items:
-            type: integer
       required:
       - amount
       - available
@@ -5439,8 +5305,6 @@ components:
         barcode:
           type: string
           maxLength: 255
-        status:
-          $ref: '#/components/schemas/Status2c2Enum'
         product:
           type: integer
           nullable: true
@@ -5534,8 +5398,6 @@ components:
         barcode:
           type: string
           maxLength: 255
-        status:
-          $ref: '#/components/schemas/Status2c2Enum'
       required:
       - available
       - barcode
@@ -5572,8 +5434,6 @@ components:
         barcode:
           type: string
           maxLength: 255
-        status:
-          $ref: '#/components/schemas/Status2c2Enum'
       required:
       - available
       - barcode
@@ -5603,8 +5463,6 @@ components:
         barcode:
           type: string
           maxLength: 255
-        status:
-          $ref: '#/components/schemas/Status2c2Enum'
         product:
           type: integer
           readOnly: true
@@ -5737,9 +5595,6 @@ components:
         id:
           type: integer
           readOnly: true
-        new_pictures:
-          type: array
-          items: {}
         name:
           type: string
           maxLength: 255
@@ -5761,23 +5616,23 @@ components:
           type: array
           items:
             type: integer
+          readOnly: true
         colors:
           type: array
           items:
             type: integer
       required:
       - category
+      - colors
       - id
       - name
+      - pictures
     ProductUpdateResponse:
       type: object
       properties:
         id:
           type: integer
           readOnly: true
-        new_pictures:
-          type: array
-          items: {}
         name:
           type: string
           maxLength: 255
@@ -5813,13 +5668,6 @@ components:
       - pictures
       - price
       - weight
-    ReturnAddProductItems:
-      type: object
-      properties:
-        amount:
-          type: integer
-      required:
-      - amount
     SearchWatch:
       type: object
       description: Serializer for user search watchs for normal users
@@ -5933,18 +5781,6 @@ components:
       - id
       - product_items
       - user
-    Status2c2Enum:
-      enum:
-      - Available
-      - In cart
-      - Unavailable
-      - Retired
-      type: string
-      description: |-
-        * `Available` - Available
-        * `In cart` - In Cart
-        * `Unavailable` - Unavailable
-        * `Retired` - Retired
     Storage:
       type: object
       properties:
