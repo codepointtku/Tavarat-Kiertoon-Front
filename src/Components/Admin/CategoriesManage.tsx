@@ -38,7 +38,7 @@ interface FullTree {
 }
 
 interface CategoryObject {
-    id: number;
+    id: number | string;
     level: number;
     lft: number;
     name: string;
@@ -57,7 +57,7 @@ interface CategoryObject {
 
 function CategoryTree() {
     const { categories, categoryTree } = useLoaderData() as Awaited<ReturnType<typeof categoriesManageLoader>>;
-    const categoriesMap = categories.map((category) => category.name);
+    const categoryNamesMap = categories.map((category) => category.name);
 
     const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<CategoryObject | null>(null);
@@ -123,28 +123,51 @@ function CategoryTree() {
     });
 
     const submit = useSubmit();
+
     const onSubmit = (data: any) => {
-        submit(data, { method: 'post' });
-        reset();
+        if (selectedChoice === null || selectedChoice === undefined) {
+            return null;
+        }
+
+        if (selectedChoice === 'add') {
+            if (selectedCategory?.parent === null || selectedCategory?.id === 'root') {
+                const newCategory = {
+                    name: getValues('cat'),
+                };
+
+                submit(newCategory, { method: 'post' });
+                reset();
+            }
+
+            const newCategory = {
+                ...data,
+                name: getValues('cat'),
+                parent: selectedCategory?.id,
+            };
+
+            submit(newCategory, { method: 'post' });
+            reset();
+        }
+
+        if (selectedChoice === 'mutate') {
+            const mutatedCategory = {
+                ...data,
+                id: selectedCategory?.id,
+                name: getValues('cat'),
+            };
+
+            submit(mutatedCategory, { method: 'put' });
+
+            reset();
+        }
     };
 
-    const onDeleteSubmit = (color: any) => {
-        submit(color, { method: 'delete' });
-    };
-
-    const onPutSubmit = (color: any) => {
-        const mutatedColor = {
-            id: color.id,
-            name: getValues('cat'),
-        };
-
-        submit(mutatedColor, { method: 'put' });
-
-        reset();
+    const onDeleteSubmit = (data: any) => {
+        submit(data, { method: 'delete' });
     };
 
     const handleChoice = (value: string) => {
-        console.log(value);
+        // console.log(value);
         setSelectedChoice(value);
     };
 
@@ -156,12 +179,14 @@ function CategoryTree() {
                 </TreeView>
             </Box>
 
+            {/* /// --- /// */}
             {/* <NodeActionsDisplay /> :
-             * i'd like to separate this logic to it's own component, but i'll just bang this up and running in here for now
-             */}
+             * i'd like to separate this logic to it's own component, but i'll just bang this up and running in here for now */}
 
             <Stack
                 id="nodeactions-component-container"
+                component={Form}
+                onSubmit={handleSubmit(onSubmit)}
                 direction="column"
                 sx={{
                     display: 'flex',
@@ -170,15 +195,6 @@ function CategoryTree() {
                     padding: '1rem 2rem 2rem 2rem',
                 }}
             >
-                {/* id: 1,
-    product_count: 32,
-    name: 'Huonekalut',
-    lft: 1,
-    rght: 38,
-    tree_id: 1,
-    level: 0,
-    parent: null, */}
-
                 {selectedCategory !== null ? (
                     <Box id="nodeaction-btns-wrapper">
                         <Typography>Valittu: {selectedCategory?.name}</Typography>
@@ -188,6 +204,7 @@ function CategoryTree() {
                                     size="small"
                                     sx={{ '&:hover': { backgroundColor: 'success.main' } }}
                                     onClick={() => handleChoice('add')}
+                                    disabled={selectedCategory.level === 2}
                                 >
                                     <AddCircleOutlineIcon />
                                 </IconButton>
@@ -229,6 +246,7 @@ function CategoryTree() {
                             flex: '1',
                             height: 'max-content',
                             justifyContent: 'center',
+                            alignItems: 'center',
                         }}
                     >
                         <Typography>Ei valittua kategoriaa</Typography>
@@ -238,7 +256,7 @@ function CategoryTree() {
                 <Box id="nodestat-action-area">
                     <Stack marginTop="1.6rem">
                         {selectedChoice === 'add' && (
-                            <>
+                            <Box>
                                 <TextField
                                     id="input-color"
                                     type="text"
@@ -257,17 +275,18 @@ function CategoryTree() {
                                             message: 'Maksimipituus',
                                         },
                                         validate: (val: string) => {
-                                            if (categoriesMap.includes(val)) {
+                                            if (categoryNamesMap.includes(val)) {
                                                 return 'Kategoria on jo järjestelmässä';
                                             }
                                         },
                                     })}
                                     error={!!errors.cat}
                                     helperText={errors.cat?.message?.toString() || ' '}
+                                    fullWidth
                                 />
                                 <Button
                                     type="submit"
-                                    disabled={!isValid}
+                                    disabled={!isValid || selectedCategory?.level === 2}
                                     fullWidth
                                     sx={{
                                         '&:hover': {
@@ -277,7 +296,7 @@ function CategoryTree() {
                                 >
                                     Lisää
                                 </Button>
-                            </>
+                            </Box>
                         )}
 
                         {selectedChoice === 'mutate' && (
@@ -300,13 +319,14 @@ function CategoryTree() {
                                             message: 'Maksimipituus',
                                         },
                                         validate: (val: string) => {
-                                            if (categoriesMap.includes(val)) {
+                                            if (categoryNamesMap.includes(val)) {
                                                 return 'Kategoria on jo järjestelmässä';
                                             }
                                         },
                                     })}
                                     error={!!errors.cat}
                                     helperText={errors.cat?.message?.toString() || ' '}
+                                    fullWidth
                                 />
                                 <Button
                                     type="submit"
