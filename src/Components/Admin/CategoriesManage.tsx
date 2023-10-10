@@ -66,6 +66,8 @@ function CategoryTree() {
     const [selectedCategory, setSelectedCategory] = useState<CategoryObject | null>(null);
     let selectedNodeRef = useRef<string | null>(null);
 
+    console.log(selectedNodeRef);
+
     const handleClick = (node: any) => {
         selectedNodeRef.current = node;
         //         Argument of type 'string | null' is not assignable to parameter of type 'SetStateAction<CategoryObject | null>'.
@@ -189,6 +191,12 @@ function CategoryTree() {
         }
     };
 
+    const handleDeselect = () => {
+        setSelectedCategory(null);
+        handleChoice(null);
+        selectedNodeRef.current = null;
+    };
+
     return (
         <Stack id="components-wrapper" direction="row" spacing={4} justifyContent="space-between" marginBottom="1rem">
             <Box id="treeview-container" sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -221,7 +229,7 @@ function CategoryTree() {
                                 <IconButton
                                     size="small"
                                     // sx={{ '&:hover': { backgroundColor: 'success.dark' } }}
-                                    onClick={() => handleChoice(null)}
+                                    onClick={handleDeselect}
                                 >
                                     <DeselectIcon />
                                 </IconButton>
