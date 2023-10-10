@@ -161,9 +161,11 @@ function PDFDocument({ order }: { order: PDFOrderType }) {
             </View>
             <View style={styles.addressValue}>
                 {/* <Text style={{ marginVertical: '2px' }}>{order.id ? order.id : ' '}</Text> */}
-                <Text style={{ marginVertical: '2px' }}>{order.contact ? order.contact : ' '}</Text>
+                <Text style={{ marginVertical: '2px' }}>{order.recipient ? order.recipient : ' '}</Text>
                 <Text style={{ marginVertical: '2px' }}>{order.delivery_address ? order.delivery_address : ' '}</Text>
-                <Text style={{ marginVertical: '2px' }}>{order.phone_number ? order.phone_number : ' '}</Text>
+                <Text style={{ marginVertical: '2px' }}>
+                    {order.recipient_phone_number ? order.recipient_phone_number : ' '}
+                </Text>
             </View>
         </View>
     );
@@ -192,7 +194,7 @@ function PDFDocument({ order }: { order: PDFOrderType }) {
         return (
             <View style={styles.productCard} key={product[0].id}>
                 <Image
-                    src={`${baseUrl}/media/${product[0].product.pictures[0].picture_address}`}
+                    src={`${baseUrl}/media/${product[0]?.product?.pictures[0]?.picture_address}`}
                     style={styles.productImg}
                 />
 

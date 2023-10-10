@@ -1,7 +1,8 @@
-import { useSubmit } from 'react-router-dom';
-import { Box, Paper, Typography, Button, Grid } from '@mui/material';
+// import { useSubmit } from 'react-router-dom';
+import { Box, Paper, Typography, Button, Grid, Link } from '@mui/material';
 
 import TypographyHeading from '../TypographyHeading';
+import Tooltip from '../Tooltip';
 
 interface Props {
     subject: string;
@@ -14,11 +15,15 @@ interface Props {
 }
 
 function MessageCard({ subject, date, message, id, currentStatus, name, email }: Props) {
-    const submit = useSubmit();
+    // const submit = useSubmit();
 
-    function handleSubmit(status: string) {
-        submit({ id, status, subject, message, name, email }, { method: 'put', action: '/admin/saapuneet' });
-    }
+    // function handleSubmit(status: string) {
+    //     submit({ id, status, subject, message, name, email }, { method: 'put', action: '/admin/saapuneet' });
+    // }
+
+    const mailtoLink = `mailto:${email}?subject=Vastaus: ${encodeURIComponent(
+        subject
+    )}&body=Hei, kiitos viestistäsi: " ${encodeURIComponent(message)} "`;
 
     return (
         <Paper
@@ -27,28 +32,33 @@ function MessageCard({ subject, date, message, id, currentStatus, name, email }:
             sx={{
                 mb: '2rem',
                 p: '2rem',
-                opacity: currentStatus === 'Read' ? 0.4 : 1,
+                // opacity: currentStatus === 'Read' ? 0.6 : 1,
             }}
         >
-            <Grid container justifyContent="space-between">
-                <Grid item>
+            <Grid className="msg-card-title-header" container justifyContent="space-between">
+                <Grid className="msg-card-heading-txt" item>
                     <TypographyHeading text={subject} />
                 </Grid>
-                <Grid item>
-                    <Button onClick={() => handleSubmit(currentStatus === 'Read' ? 'Not read' : 'Read')}>
+                <Grid className="msg-card-action-btns" item>
+                    {/* <Button onClick={() => handleSubmit(currentStatus === 'Read' ? 'Not read' : 'Read')}>
                         {currentStatus === 'Read' ? (
                             <Typography variant="inherit">Merkitse lukemattomaksi</Typography>
                         ) : (
                             <Typography variant="inherit">Merkitse luetuksi</Typography>
                         )}
-                    </Button>
+                    </Button> */}
+                    <Tooltip title="Avaa viesti sähköposti-sovellukseen">
+                        <Button variant="outlined">
+                            <Link href={mailtoLink}>Vastaa</Link>
+                        </Button>
+                    </Tooltip>
                 </Grid>
             </Grid>
             <Typography variant="caption" sx={{ color: 'text.hintContrast', mt: '0.5rem' }}>
                 {date[0]} {date[1]}
             </Typography>
-            <Box id="message-content-text-indent-container" sx={{ m: '1rem 2rem 1rem 2rem' }}>
-                <Typography id="message-content-text-typography" variant="body1" sx={{ wordWrap: 'break-word' }}>
+            <Box className="message-content-text-indent-container" sx={{ m: '1rem 2rem 1rem 2rem' }}>
+                <Typography className="message-content-text-typography" variant="body1" sx={{ wordWrap: 'break-word' }}>
                     {message}
                 </Typography>
             </Box>

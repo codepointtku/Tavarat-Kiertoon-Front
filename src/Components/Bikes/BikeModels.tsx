@@ -97,10 +97,10 @@ function BikeModels() {
                                                 <TableCell>{model.type.name}</TableCell>
                                             </TableRow>
                                             <TableRow>
-                                                <TableCell sx={{ fontWeight: 'bold' }}>Väri:</TableCell>
-                                                <TableCell>{model.color.name}</TableCell>
                                                 <TableCell sx={{ fontWeight: 'bold' }}>Koko:</TableCell>
                                                 <TableCell>{model.size.name}</TableCell>
+                                                <TableCell sx={{ fontWeight: 'bold' }}></TableCell>
+                                                <TableCell></TableCell>
                                             </TableRow>
                                             <TableRow>
                                                 <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Kuvaus:</TableCell>

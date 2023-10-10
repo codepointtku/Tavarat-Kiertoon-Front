@@ -6,13 +6,13 @@ import { usersApi } from '../api';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:8000`;
 
 const axiosWithoutInterceptor = axios.create();
 axiosWithoutInterceptor.defaults.xsrfCookieName = 'csrftoken';
 axiosWithoutInterceptor.defaults.xsrfHeaderName = 'X-CSRFToken';
 axiosWithoutInterceptor.defaults.withCredentials = true;
-axiosWithoutInterceptor.defaults.baseURL = 'http://localhost:8000';
+axiosWithoutInterceptor.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:8000`;
 
 export default function useLoginAxiosInterceptor() {
     useRefreshInterval();
@@ -29,6 +29,14 @@ function useAxiosInterceptAuthAPICalls() {
             if (['/users/login/', '/users/logout/', '/users/login/refresh/'].includes(url.pathname)) {
                 // if refresh fails apiCalls to logout in order to remove the cookies
                 if (response.status === 204) {
+                    // remove user goups from auth object
+                    setAuth({
+                        user_group: false,
+                        storage_group: false,
+                        admin_group: false,
+                        bicycle_group: false,
+                        username: false,
+                    });
                     // use different axios instance to avoid infinite loop
                     return axiosWithoutInterceptor.post('/users/logout/');
                 }

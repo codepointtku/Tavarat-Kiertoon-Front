@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useSubmit } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useFetcher, Link } from 'react-router-dom';
 import { ListItem, ListItemButton, ListItemText, IconButton, Input, Button, Typography } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
@@ -10,13 +10,29 @@ interface Props {
     id: number & string;
     count: number;
     maxCount: number;
+    amountChangeState: {
+        unconfirmedChangesCartProducts: object[];
+        setUnconfirmedChangesCartProducts: React.Dispatch<React.SetStateAction<object[]>>;
+    };
 }
 
-function ProductInCart({ name, id, count, maxCount }: Props) {
+function ProductInCart({ name, id, count, maxCount, amountChangeState }: Props) {
+    const fetcher = useFetcher();
     const [changeAmount, setChangeAmount] = useState(true);
     const [amountN, setAmountN] = useState(count);
     const [selectedAmount, setSelectedAmount] = useState(count);
-    const submit = useSubmit();
+    const { unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts } = amountChangeState;
+
+    useEffect(() => {
+        if (changeAmount) {
+            unconfirmedChangesCartProducts.includes(id) &&
+                setUnconfirmedChangesCartProducts((changes) => changes.filter((item) => item !== id));
+        }
+        if (!changeAmount) {
+            !unconfirmedChangesCartProducts.includes(id) &&
+                setUnconfirmedChangesCartProducts((changes) => [...changes, id]);
+        }
+    }, [changeAmount]);
 
     function addAmount() {
         setAmountN(amountN + 1);
@@ -46,7 +62,7 @@ function ProductInCart({ name, id, count, maxCount }: Props) {
     const handleSubmit = (action: string) => {
         const amount = amountN.toString();
         if (action === 'add') {
-            submit(
+            fetcher.submit(
                 { id, amount },
                 {
                     method: 'put',
@@ -56,44 +72,46 @@ function ProductInCart({ name, id, count, maxCount }: Props) {
             setSelectedAmount(amountN);
             setChangeAmount(true);
         } else if (action === 'remove') {
-            submit({ id }, { method: 'delete', action: '/' });
+            fetcher.submit({ id }, { method: 'delete', action: '/' });
         }
     };
 
     return (
-        <ListItem key={id} sx={{ height: 50 }} disablePadding>
-            <ListItemButton>
+        <ListItem key={id} sx={{ height: 50 }}>
+            <ListItemButton component={Link} to={`/tuotteet/${id}`}>
                 <ListItemText primary={name} />
-                <IconButton onClick={() => handleClick('remove')} disabled={amountN === 0}>
-                    <RemoveIcon />
-                </IconButton>
-                <Input
-                    inputProps={{ style: { width: 30, textAlign: 'center' } }}
-                    value={amountN}
-                    onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
-                    disableUnderline
-                />
-                <IconButton onClick={() => handleClick('add')} disabled={amountN === maxCount + selectedAmount}>
-                    <AddIcon />
-                </IconButton>
-                <Button
-                    color={amountN === 0 ? 'error' : 'primary'}
-                    size="small"
-                    sx={{
-                        ml: 2,
-                        width: '7rem',
-                    }}
-                    aria-label="add more of same item to shopping cart"
-                    onClick={() => handleSubmit('add')}
-                    disabled={changeAmount}
-                >
-                    {amountN === 0 ? (
-                        <Typography variant="inherit">Poista korista</Typography>
-                    ) : (
-                        <Typography variant="inherit">Muuta määrää</Typography>
-                    )}
-                </Button>
             </ListItemButton>
+            <IconButton onClick={() => handleClick('remove')} disabled={amountN === 0}>
+                <RemoveIcon />
+            </IconButton>
+            <Input
+                inputProps={{
+                    style: { width: 30, textAlign: 'center', border: '0.5px solid gray', borderRadius: '0.25rem' },
+                }}
+                value={amountN}
+                onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
+                disableUnderline
+            />
+            <IconButton onClick={() => handleClick('add')} disabled={amountN === maxCount + selectedAmount}>
+                <AddIcon />
+            </IconButton>
+            <Button
+                color={amountN === 0 ? 'error' : 'primary'}
+                size="small"
+                sx={{
+                    ml: 2,
+                    width: '7rem',
+                }}
+                aria-label="add more of same item to shopping cart"
+                onClick={() => handleSubmit('add')}
+                disabled={changeAmount}
+            >
+                {amountN === 0 ? (
+                    <Typography variant="inherit">Poista korista</Typography>
+                ) : (
+                    <Typography variant="inherit">Muuta määrää</Typography>
+                )}
+            </Button>
         </ListItem>
     );
 }

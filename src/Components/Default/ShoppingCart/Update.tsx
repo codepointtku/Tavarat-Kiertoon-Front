@@ -1,5 +1,5 @@
-import { GlobalState } from 'little-state-machine/dist/types';
-import { CartFormData } from './ContactsAndDelivery';
+import type { GlobalState } from 'little-state-machine/dist/types';
+import type { CartFormData } from './ContactsAndDelivery';
 
 function Update(state: GlobalState, actions: CartFormData) {
     return {

@@ -15,13 +15,6 @@ test.describe('tuotteet', () => {
     });
 });
 
-test.describe('toimitus', () => {
-    test('no errors', async ({ page }) => {
-        await page.goto('/toimitus');
-        await expect(page.getByText('Virhe sijainnissa /toimitus')).not.toBeVisible();
-    });
-});
-
 test.describe('taustatietoa', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/taustatietoa');
@@ -61,6 +54,13 @@ test.describe('rekisteroidytoimipaikka', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/rekisteroidy/toimipaikka');
         await expect(page.getByText('Virhe sijainnissa /rekisteroidy/toimipaikka')).not.toBeVisible();
+    });
+});
+
+test.describe('kirjaudu', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/kirjaudu');
+        await expect(page.getByText('Virhe sijainnissa /kirjaudu')).not.toBeVisible();
     });
 });
 
@@ -182,10 +182,60 @@ test.describe('fail-test', () => {
         await expect(page.getByText('Virhe sijainnissa /test/failing')).not.toBeVisible();
     });
 });
+
 test.describe('luotiedote', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/admin/tiedotteet/luo');
-        await expect(page.getByText('Etsimääsi sijaintia /admin/tiedotteet/luo')).not.toBeVisible();
+        await expect(page.getByText('Virhe sijainnissa /admin/tiedotteet/luo')).not.toBeVisible();
+    });
+});
+
+test.describe('admin-emailrecipientslist', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tilaukset/sahkopostilista');
+        await expect(page.getByText('Virhe sijainnissa /admin/tilaukset/sahkopostilista')).not.toBeVisible();
+    });
+});
+
+test.describe('admin-orderslist', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tilaukset');
+        await expect(page.getByText('Virhe sijaintia /admin/tilaukset')).not.toBeVisible();
+    });
+});
+
+// test.describe('admin-singleorderview', () => {
+//     test('no errors', async ({ page }) => {
+//         await page.goto('/admin/tilaukset');
+//         await expect(page.getByText('Virhe sijaintia /admin/tilaukset/1')).not.toBeVisible();
+//     });
+// });
+
+test.describe('admin-createorder', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tilaukset/uusi');
+        await expect(page.getByText('Virhe sijaintia /admin/tilaukset/uusi')).not.toBeVisible();
+    });
+});
+
+test.describe('admin-productslist', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tuotteet');
+        await expect(page.getByText('Virhe sijaintia /admin/tuotteet')).not.toBeVisible();
+    });
+});
+
+// test.describe('admin-singleproductview', () => {
+//     test('no errors', async ({ page }) => {
+//         await page.goto('/admin/tuotteet/1');
+//         await expect(page.getByText('Virhe sijaintia /admin/tuotteet/1')).not.toBeVisible();
+//     });
+// });
+
+test.describe('admin-createproduct', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tilaukset/uusi');
+        await expect(page.getByText('Virhe sijaintia /admin/tuotteet/uusi')).not.toBeVisible();
     });
 });
 

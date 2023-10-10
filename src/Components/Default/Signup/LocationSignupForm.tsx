@@ -48,7 +48,7 @@ function LocationForm() {
         handleSubmit: createHandleSubmit,
         watch,
         formState: { isSubmitSuccessful, errors: formErrors },
-    } = useForm({ mode: 'onTouched' });
+    } = useForm({ mode: 'all' });
     const submit = useSubmit();
 
     const responseStatus = useActionData() as Awaited<ReturnType<typeof userSignupAction>>;
@@ -93,7 +93,6 @@ function LocationForm() {
                             placeholder="Käyttäjätunnus yhteiskäyttöön"
                             {...register('username', {
                                 required: { value: true, message: 'Tunnus on pakollinen' },
-                                minLength: { value: 1, message: 'Tunnuksen oltava vähintään 1 merkki' },
                             })}
                             error={!!formErrors.username}
                             helperText={formErrors.username?.message?.toString() || ' '}
@@ -118,7 +117,6 @@ function LocationForm() {
                                 placeholder="Tilin vastuuhenkilön etunimi"
                                 {...register('firstname', {
                                     required: { value: true, message: 'Etunimi on pakollinen' },
-                                    minLength: { value: 1, message: 'Etunimen oltava vähintään 1 merkki' },
                                 })}
                                 error={!!formErrors.firstname}
                                 helperText={formErrors.firstname?.message?.toString() || ' '}
@@ -135,7 +133,6 @@ function LocationForm() {
                                 placeholder="Tilin vastuuhenkilön sukunimi"
                                 {...register('lastname', {
                                     required: { value: true, message: 'Sukunimi on pakollinen' },
-                                    minLength: { value: 1, message: 'Sukunimen on oltava vähintään 1 merkki' },
                                 })}
                                 error={!!formErrors.lastname}
                                 helperText={formErrors.lastname?.message?.toString() || ' '}
@@ -185,14 +182,11 @@ function LocationForm() {
                             id="input-phonenumber"
                             type="text"
                             label="Puhelinnumero"
-                            placeholder="010 123 1234"
+                            placeholder="010 1231234"
                             {...register('phonenumber', {
                                 required: { value: true, message: 'Puhelinnumero on pakollinen' },
-                                minLength: { value: 1, message: 'Puhelinnumeron on oltava vähintään 1 merkki' },
-                                // pattern: {
-                                //     value: /.+@turku.fi$|.+@edu.turku.fi$/,
-                                //     message: 'Puhelinnumero muodossa 010 123 1234',
-                                // },
+                                minLength: { value: 7, message: 'Puhelinnumeron on vähintään 7 merkkiä' },
+                                maxLength: { value: 15, message: 'Puhelinnumero on enintään 15 merkkiä' },
                             })}
                             error={!!formErrors.phonenumber}
                             helperText={formErrors.phonenumber?.message?.toString() || ' '}
@@ -216,7 +210,6 @@ function LocationForm() {
                             placeholder="Toimipaikan katuosoite"
                             {...register('address', {
                                 required: { value: true, message: 'Osoite on pakollinen' },
-                                minLength: { value: 1, message: 'Osoitteen on oltava vähintään 1 merkki' },
                             })}
                             error={!!formErrors.address}
                             helperText={formErrors.address?.message?.toString() || ' '}
@@ -242,6 +235,7 @@ function LocationForm() {
                                 {...register('zipcode', {
                                     required: { value: true, message: 'Postinumero on pakollinen' },
                                     minLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
+                                    maxLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
                                 })}
                                 error={!!formErrors.zipcode}
                                 helperText={formErrors.zipcode?.message?.toString() || ' '}
@@ -258,7 +252,6 @@ function LocationForm() {
                                 placeholder="Turku"
                                 {...register('town', {
                                     required: { value: true, message: 'Kaupunki on pakollinen' },
-                                    minLength: { value: 1, message: 'Kaupungin on oltava vähintään 1 merkki' },
                                 })}
                                 error={!!formErrors.town}
                                 helperText={formErrors.town?.message?.toString() || ' '}
@@ -328,7 +321,6 @@ function LocationForm() {
                         />
                     </FormControl>
 
-                    {/* <Button sx={{ mt: 1, mb: 3 }} fullWidth type="submit"> */}
                     <Button sx={{ mt: 1, mb: 3 }} fullWidth type="submit" disabled={isSubmitSuccessful}>
                         Rekisteröidy
                     </Button>

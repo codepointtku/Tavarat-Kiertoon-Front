@@ -1,5 +1,5 @@
-import { useState, useContext, useEffect, type ReactNode } from 'react';
-import { useLoaderData, useNavigate, useSubmit, useLocation } from 'react-router-dom';
+import { useState, useContext, /* useEffect, */ type ReactNode } from 'react';
+import { useLoaderData, useNavigate, useLocation, useFetcher } from 'react-router-dom';
 
 import {
     AppBar,
@@ -11,29 +11,27 @@ import {
     Badge,
     Drawer as MuiDrawer,
     List,
-    Divider,
-    ListItem,
-    ListItemText,
+    // ListItem,
+    // ListItemText,
     Typography,
     Popover,
     Grid,
     type Theme,
+    ListItem,
+    ListItemText,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 import AuthContext from '../../../Context/AuthContext';
-import Welcome from './Welcome';
 import ProductInCart from './ProductInCart';
-import LoginForm from './LoginForm';
+import CloseDrawerButton from './CloseDrawerButton';
 import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
 import { type ShoppingCartAvailableAmountList } from '../../../api';
-import CloseDrawerButton from './CloseDrawerButton';
+import LoginForm from '../../LoginForm';
 
 //
 
@@ -62,8 +60,8 @@ interface DrawerProps {
     children: ReactNode;
 }
 
-interface StyledBadge {
-    isanimated: number;
+interface StyledBadgeIF {
+    // isanimated: number;
     theme?: Theme;
 }
 
@@ -97,26 +95,29 @@ function Drawer({ currentOpenDrawer, name, onClose, children }: DrawerProps) {
     );
 }
 
-const StyledBadge = styled(Badge)(({ theme, isanimated }: StyledBadge) => ({
+const StyledBadge = styled(Badge)(({ theme }: StyledBadgeIF) => ({
     '& .MuiBadge-badge': {
         color: theme?.palette.primary.contrastText,
         right: -8,
         border: `0.1rem solid ${theme?.palette.background.paper}`,
         backgroundColor: theme?.palette.error.main,
-        animationName: isanimated ? 'idle' : 'badgePulse',
-        animationDuration: '1s',
+        // animationName: isanimated ? 'idle' : 'badgePulse',
+        // animationDuration: '0.6s',
+        // animationTimingFunction: 'ease-in-out',
     },
-    '@keyframes badgePulse': {
-        from: {
-            fontSize: '100%',
-            color: 'white',
-        },
-        to: {
-            fontSize: '125%',
-            // color: theme?.palette.primary.main,
-        },
-    },
-    '@keyframes idle': { '100%': {} },
+    // '@keyframes badgePulse': {
+    //     // from: {
+    //     //     backgroundColor: theme?.palette.error.main,
+    //     // },
+    //     // to: {
+    //     //     backgroundColor: theme?.palette.success.main,
+    //     // },
+    //     //
+    //     '0%': { backgroundColor: theme?.palette.error.main },
+    //     '50%': { backgroundColor: theme?.palette.success.main },
+    //     '100%': { backgroundColor: theme?.palette.error.main },
+    // },
+    // '@keyframes idle': { '100%': {} },
 }));
 
 const iconHover = {
@@ -131,9 +132,9 @@ const toolBarHover = {
     },
 };
 
-interface SubmitFunction {
-    (SubmitTarget: string, options: { method: string; action: string }): any;
-}
+// interface SubmitFunction {
+//     (SubmitTarget: string, options: { method: string; action: string }): any;
+// }
 
 interface CartProduct {
     count: number;
@@ -142,24 +143,31 @@ interface CartProduct {
 
 function DefaultAppBar() {
     const { auth } = useContext(AuthContext);
+    const fetcher = useFetcher();
     const [notLoggedIn, setNotLoggedIn] = useState(false);
     const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
-    const submit = useSubmit() as unknown as SubmitFunction;
     const { cart, products, amountList } = useLoaderData() as Awaited<ReturnType<typeof shoppingCartLoader>>;
-    const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
+    // const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
     const [cartEmpty, setCartEmpty] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
+    const openPopover = Boolean(anchorEl);
     const location = useLocation();
+    const [unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts] = useState(initializeCartProducts());
 
-    useEffect(() => {
-        if (cart?.product_items?.length !== productsLength) {
-            setTimeout(() => {
-                setProductsLength(cart?.product_items?.length);
-            }, 3000);
-        }
-    }, [cart?.product_items?.length]);
+    // useEffect(() => {
+    //     if (cart?.product_items?.length !== productsLength) {
+    //         setTimeout(() => {
+    //             setProductsLength(cart?.product_items?.length);
+    //         }, 3000);
+    //     }
+    // }, [cart?.product_items?.length, productsLength]);
+
+    function initializeCartProducts() {
+        const productArr = [] as object[];
+        products?.forEach((product) => productArr.push(product.product.id));
+        return productArr;
+    }
 
     const drawerOpen = (drawer: string) => () => {
         notLoggedIn && setNotLoggedIn(false);
@@ -190,13 +198,15 @@ function DefaultAppBar() {
     }
 
     function handleEmptyCart() {
-        submit('a', { method: 'put', action: '/' });
+        fetcher.submit('a' as unknown as HTMLFormElement, { method: 'put', action: '/' });
+        setUnconfirmedChangesCartProducts([]);
         setAnchorEl(null);
     }
 
     return (
-        <Box id="appbar-containing-div" sx={toolBarHover}>
+        <Box id="appbar-container" sx={toolBarHover}>
             <AppBar
+                id="appbar"
                 sx={{
                     backgroundColor: 'rgba(0, 155, 216, 0.55)',
                     zIndex: 1250,
@@ -208,26 +218,30 @@ function DefaultAppBar() {
                     borderTopLeftRadius: '0.4rem',
                 }}
             >
-                <Toolbar>
+                <Toolbar id="action-iconbtns">
                     <Stack direction="row" spacing={4}>
                         {!location.pathname.includes('/ostoskori') && (
                             <Tooltip title="Ostoskori">
                                 <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
-                                    <StyledBadge
-                                        isanimated={productsLength === cart?.product_items?.length ? 1 : 0}
-                                        badgeContent={cart?.product_items?.length}
-                                        sx={{ color: 'primary.contrastText' }}
-                                        anchorOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right',
-                                        }}
-                                    >
+                                    {auth.username ? (
+                                        <StyledBadge
+                                            // isanimated={productsLength === cart?.product_items?.length ? 1 : 0}
+                                            badgeContent={cart?.product_items?.length}
+                                            sx={{ color: 'primary.contrastText' }}
+                                            anchorOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                        >
+                                            <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
+                                        </StyledBadge>
+                                    ) : (
                                         <ShoppingCartOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
-                                    </StyledBadge>
+                                    )}
                                 </IconButton>
                             </Tooltip>
                         )}
-                        <Tooltip title="Kirjautuminen">
+                        <Tooltip title="Käyttäjätili ja kirjautuminen">
                             <IconButton onClick={drawerOpen('account')} sx={iconHover}>
                                 <AccountCircleOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />
                             </IconButton>
@@ -238,106 +252,141 @@ function DefaultAppBar() {
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="shoppingCart" onClose={drawerOpen('')}>
                 {/* tähän oma komponentti.. */}
-                <List>
-                    {cart?.product_items?.length === 0 && (
-                        <>
-                            {cartEmpty ? (
-                                <Typography variant="h6" align="center" sx={{ color: 'error.main' }}>
-                                    Et voi siirtyä kassalle tyhjällä ostoskorilla.
-                                </Typography>
-                            ) : (
-                                <Typography variant="h6" align="center">
-                                    Ostoskorisi on tyhjä.
-                                </Typography>
+                {auth.username ? (
+                    <>
+                        <List sx={{ width: '100%', maxWidth: 490 }}>
+                            {cart?.product_items?.length === 0 && (
+                                <>
+                                    {cartEmpty ? (
+                                        <Typography
+                                            variant="h6"
+                                            align="center"
+                                            sx={{ color: 'info.main', margin: '1rem 0 0 0' }}
+                                        >
+                                            Lisää tuotteita koriin jatkaaksesi tilaamaan
+                                        </Typography>
+                                    ) : (
+                                        <Typography
+                                            variant="h6"
+                                            align="center"
+                                            sx={{ color: 'info.main', margin: '1rem 0 0 0' }}
+                                        >
+                                            Ostoskorisi on tyhjä
+                                        </Typography>
+                                    )}
+                                </>
                             )}
-                        </>
-                    )}
-                    {products?.map((cartProduct: CartProduct) => {
-                        const product = amountList.find(
-                            (p) => p.id == cartProduct.product.id
-                        ) as ShoppingCartAvailableAmountList;
-                        return (
-                            <ProductInCart
-                                key={cartProduct.product.id}
-                                name={cartProduct.product.name}
-                                count={cartProduct.count}
-                                id={cartProduct.product.id}
-                                maxCount={product.amount}
-                            />
-                        );
-                    })}
-                </List>
-                {/* <Divider /> */}
-                <Grid container sx={{ display: 'flex', justifyContent: 'center', marginBottom: '6rem' }}>
-                    <Grid item xs={2} />
-                    <Grid item xs={8}>
-                        <List>
-                            <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <Button
-                                    onClick={() => navigateToCart()}
-                                    variant="contained"
-                                    fullWidth
-                                    // endIcon={<ShoppingCartCheckoutIcon />}
-                                    sx={{
-                                        '&:hover': {
-                                            backgroundColor: 'success.dark',
-                                        },
-                                    }}
-                                >
-                                    <ListItemText primary="Kassalle" primaryTypographyProps={{ fontWeight: 'bold' }} />
-                                </Button>
-                            </ListItem>
+                            {products?.map((cartProduct: CartProduct) => {
+                                const product = amountList.find(
+                                    (p) => p.id == cartProduct.product.id
+                                ) as ShoppingCartAvailableAmountList;
+                                return (
+                                    <ProductInCart
+                                        key={cartProduct.product.id}
+                                        name={cartProduct.product.name}
+                                        count={cartProduct.count}
+                                        id={cartProduct.product.id}
+                                        maxCount={product.amount}
+                                        amountChangeState={{
+                                            unconfirmedChangesCartProducts,
+                                            setUnconfirmedChangesCartProducts,
+                                        }}
+                                    />
+                                );
+                            })}
+                            {/* <ListItem>
+                            <Typography variant="body2" sx={{ color: 'error.main', fontWeight: 'bold' }}>
+                                Vahvista muutokset ostoskorissa jatkaaksesi kassalle.
+                            </Typography>
+                        </ListItem> */}
                         </List>
+                        {/* <Divider /> */}
+                        <Grid container sx={{ display: 'flex', justifyContent: 'center', marginBottom: '6rem' }}>
+                            <Grid item xs={2} />
+                            <Grid item xs={8}>
+                                <List>
+                                    <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                        <Button
+                                            onClick={() => navigateToCart()}
+                                            variant="contained"
+                                            fullWidth
+                                            // endIcon={<ShoppingCartCheckoutIcon />}
+                                            sx={{
+                                                '&:hover': {
+                                                    backgroundColor: 'success.dark',
+                                                },
+                                            }}
+                                            disabled={unconfirmedChangesCartProducts.length > 0}
+                                        >
+                                            <ListItemText
+                                                primary="Tilaamaan"
+                                                primaryTypographyProps={{ fontWeight: 'bold' }}
+                                            />
+                                        </Button>
+                                    </ListItem>
+                                </List>
 
-                        {/* ///// */}
-                        {cart?.product_items?.length > 0 && (
-                            <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <Button
-                                    color="error"
-                                    fullWidth
-                                    // startIcon={<DeleteIcon />}
-                                    onClick={handlePopOverOpen}
-                                >
-                                    <ListItemText
+                                {/* ///// */}
+                                {cart?.product_items?.length > 0 && (
+                                    <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                        <Button
+                                            size="small"
+                                            variant="outlined"
+                                            color="error"
+                                            fullWidth
+                                            // startIcon={<DeleteIcon />}
+                                            onClick={handlePopOverOpen}
+                                        >
+                                            Tyhjennä kori
+                                            {/* <ListItemText
                                         primary="Tyhjennä ostoskori"
                                         primaryTypographyProps={{ fontWeight: 'bold' }}
-                                    />
-                                </Button>
-                                <Popover
-                                    open={open}
-                                    anchorEl={anchorEl}
-                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-                                    onClose={() => setAnchorEl(null)}
-                                    sx={{ mt: 1 }}
-                                >
-                                    <Grid
-                                        container
-                                        direction="row"
-                                        justifyContent="space-evenly"
-                                        sx={{ p: 1, width: 200 }}
-                                    >
-                                        <Grid item sx={{ mt: '0.5rem' }}>
-                                            <Typography variant="body2">Oletko varma?</Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <Button onClick={handleEmptyCart}>Kyllä</Button>
-                                        </Grid>
-                                    </Grid>
-                                </Popover>
-                            </ListItem>
-                        )}
-                    </Grid>
-                    <Grid item xs={2} />
-                </Grid>
+                                    /> */}
+                                        </Button>
+                                        <Popover
+                                            open={openPopover}
+                                            anchorEl={anchorEl}
+                                            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                                            onClose={() => setAnchorEl(null)}
+                                            sx={{ mt: 1 }}
+                                        >
+                                            <Stack
+                                                direction="row"
+                                                justifyContent="space-between"
+                                                alignItems="center"
+                                                sx={{ p: '1rem' }}
+                                                spacing="1rem"
+                                            >
+                                                <Typography variant="body2">Oletko varma?</Typography>
+                                                <Button size="small" variant="outlined" onClick={handleEmptyCart}>
+                                                    Kyllä
+                                                </Button>
+                                                <Button
+                                                    size="small"
+                                                    variant="outlined"
+                                                    onClick={() => setAnchorEl(null)}
+                                                >
+                                                    Peruuta
+                                                </Button>
+                                            </Stack>
+                                        </Popover>
+                                    </ListItem>
+                                )}
+                            </Grid>
+                            <Grid item xs={2} />
+                        </Grid>
+                    </>
+                ) : (
+                    <Button sx={{ m: 5 }} onClick={() => setCurrentOpenDrawer('account')}>
+                        Kirjaudu sisään
+                    </Button>
+                )}
                 <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>
 
             <Drawer currentOpenDrawer={currentOpenDrawer} name="account" onClose={drawerOpen('')}>
-                {auth.username ? (
-                    <Welcome setCurrentOpenDrawer={setCurrentOpenDrawer} auth={auth} />
-                ) : (
-                    <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} notLoggedIn={notLoggedIn} />
-                )}
+                <LoginForm setCurrentOpenDrawer={setCurrentOpenDrawer} />
+                <CloseDrawerButton setCurrentOpenDrawer={setCurrentOpenDrawer} />
             </Drawer>
         </Box>
     );

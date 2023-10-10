@@ -6,28 +6,19 @@ import {
     contactFormsApi,
     // contactsApi,
     ordersApi,
+    productsApi,
     shoppingCartApi,
     storagesApi,
     userApi,
     usersApi,
 } from '../api';
 
-const adminLogOut = async (auth, setAuth, request) => {
-    // const formData = await request.formData();
+const adminLogOut = async ({ request }) => {
     if (request.method === 'POST') {
-        if (auth.username) {
-            // const response = await apiCall(auth, setAuth, '/users/logout/', 'post', {
-            //     formData,
-            // });
-            const response = await usersApi.usersLogoutCreate();
-            // await usersApi.usersLogoutCreate();
-            if (response.status === 200) {
-                // return { type: 'logout', status: true };
-                return redirect('/');
-            }
-            // return { type: 'logout', status: false };
-        }
+        await usersApi.usersLogoutCreate();
+        return { type: 'logout', status: true };
     }
+    return { type: 'logout', status: false };
 };
 
 /**
@@ -35,31 +26,32 @@ const adminLogOut = async (auth, setAuth, request) => {
  */
 const frontPageActions = async ({ request }) => {
     const formData = await request.formData();
+
     const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+
     const amount = formData.has('amount') ? Number(formData.get('amount')) : request.method === 'PUT' ? 1 : 0;
+
     if (request.method === 'POST') {
         if (formData.get('password')) {
             const response = await usersApi.usersLoginCreate({
                 username: formData.get('email'),
                 password: formData.get('password'),
             });
-            if (response.status === 200) {
+            if (response.status === 200 && response.data.username) {
                 return { type: 'login', status: true };
             }
             return { type: 'login', status: false };
         } else {
+            // drawer log out btn -->
             const response = await usersApi.usersLogoutCreate();
 
-            if (response.status === 200) {
+            if (response.data.Success) {
                 return { type: 'logout', status: true };
             }
             return { type: 'logout', status: false };
         }
-        // const response = await apiCall(auth, setAuth, '/users/login/', 'post', {
-        //     username: formData.get('email'),
-        //     password: formData.get('password'),
-        // });
     }
+
     if (request.method === 'PUT') {
         if (!id) {
             // clear cart if no id is being sent or clear cart and return "type: orderCreated" when a new order is created.
@@ -90,7 +82,7 @@ const frontPageActions = async ({ request }) => {
         //     product: id,
         //     amount,
         // });
-        console.log('is in delete block');
+        // console.log('is in delete block');
         const response = await shoppingCartApi.shoppingCartUpdate({
             product: id,
             amount,
@@ -138,11 +130,9 @@ const userSignupAction = async (request) => {
             return { type: 'create', status: true, message: response.data.message };
         }
         if (response.status === 400) {
-            // console.log(',0ooiuioh');
             return { type: 'create', status: false, message: response.data.message };
         }
     } catch (error) {
-        // console.log('cats', error);
         return { type: 'create', status: false, message: request.responseText };
     }
 
@@ -158,74 +148,34 @@ const contactAction = async (auth, setAuth, request) => {
     const response = await contactFormsApi.contactFormsCreate(Object.fromEntries(formData));
     return response.data || null;
 };
+
 /**
- * sends bike order form to back-end
+ * edits order data
  */
-const bikeOrderAction = async (auth, setAuth, request) => {
+const orderEditAction = async ({ request, params }) => {
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/bikes/rental/', 'post', {
-    //     contact_name: formData.get('contactPersonName'),
-    //     contact_phone_number: formData.get('contactPersonPhoneNumber'),
-    //     delivery_address: formData.get('deliveryAddress'),
-    //     start_date: formData.get('startDateTime'),
-    //     end_date: formData.get('endDateTime'),
-    //     bike_stock: JSON.parse(formData.get('selectedBikes')),
-    //     extra_info: formData.get('extraInfo'),
-    //     pickup: formData.get('pickup'),
-    // });
-    const response = await bikesApi.bikesRentalCreate({
-        contact_name: formData.get('contactPersonName'),
-        contact_phone_number: formData.get('contactPersonPhoneNumber'),
-        delivery_address: formData.get('deliveryAddress'),
-        start_date: formData.get('startDateTime'),
-        end_date: formData.get('endDateTime'),
-        bike_stock: JSON.parse(formData.get('selectedBikes')),
-        extra_info: formData.get('extraInfo'),
-        pickup: formData.get('pickup'),
-    });
-    return response.data || null;
-};
-/**
- * removes items from the order and edits order data
- */
-const orderEditAction = async (auth, setAuth, request, params) => {
-    const formData = await request.formData();
+
     const submission = {
         id: formData.get('orderId'),
-        contact: formData.get('contact'),
-        phone_number: formData.get('phoneNumber'),
+        recipient: formData.get('recipient'),
+        recipient_phone_number: formData.get('recipient_phone_number'),
         delivery_address: formData.get('deliveryAddress'),
         status: formData.get('status'),
         order_info: formData.get('orderInfo'),
         product_items: JSON.parse(formData.get('productItems')),
     };
-    await ordersApi.ordersUpdate(params.id, submission);
-    return redirect(`/varasto/tilaus/${params.id}`);
 
-    /*
-    // collect data that needs to be sent to backend
-    const data = await request.formData();
-    const submission = {
-        name: data.get('packetName'),
-        description: data.get('packetDescription'),
-        bikes: JSON.parse(data.get('bikes')),
-    };
-    // send data and redirect back to bike list
-    // await apiCall(auth, setAuth, `/bikes/packages/${params.id}/`, 'put', submission);
-    await bikesApi.bikesPackagesUpdate(params.id, submission);
-    return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+    const response = await ordersApi.ordersUpdate(params.id, submission);
 
-    orderId: orderData.id,
-    contact: orderData.contact,
-    phoneNumber: orderData.phone_number,
-    deliveryAddress: orderData.delivery_address,
-    status: orderData.status,
-    orderInfo: orderData.order_info,
-    productItems: orderData.product_items,
-    productRenderItems: productRenderItems,
+    if (response.status === 202) {
+        return { type: 'orderupdate', status: true };
+    }
+    return { type: 'orderupdate', status: false };
+};
 
-    */
-    /*
+// return redirect(`/varasto/tilaukset/${params.id}`);
+
+/*
     // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
     // const productName = formData.get('productName');
     if (request.method === 'POST') {
@@ -269,104 +219,259 @@ const orderEditAction = async (auth, setAuth, request, params) => {
     }
 
     return null;
+}
 */
+
+//
+//
+// admin bing bings
+
+const orderDeleteAction = async ({ params }) => {
+    await ordersApi.ordersDestroy(params.id);
+    return redirect('/admin/tilaukset');
 };
 
 /*
-creates new storage
-*/
-const storageCreateAction = async (auth, setAuth, request) => {
+ * Creates a new storage
+ */
+const storageCreateAction = async ({ request }) => {
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/storages/', 'post', {
-    //     address: formData.get('address'),
-    //     name: formData.get('name'),
-    //     in_use: formData.get('in_use') === 'käytössä' ? true : false,
-    // });
-    const response = await storagesApi.storagesCreate({
-        address: formData.get('address'),
+
+    const newStorage = {
         name: formData.get('name'),
-        in_use: formData.get('in_use') === 'käytössä' ? true : false,
-    });
+        address: formData.get('address'),
+        zip_code: formData.get('zip_code'),
+        city: formData.get('city'),
+        in_use: formData.get('in_use') === 'Käytössä' ? true : false,
+    };
+
+    const response = await storagesApi.storagesCreate(newStorage);
+
     if (response.status === 201) {
-        return { type: 'post', status: true };
+        return { type: 'createstorage', status: true };
     }
-    return { type: 'post', status: false };
+
+    return { type: 'createstorage', status: false };
 };
 
 /**
- * edits storage information
+ * Edits storage information
  */
-const storageEditAction = async (auth, setAuth, request, params) => {
+const storageEditAction = async ({ request, params }) => {
     const formData = await request.formData();
-    if (request.method === 'POST') {
-        if (formData.get('type') === 'put') {
-            // const response = await apiCall(auth, setAuth, `/storages/${params.id}/`, 'put', {
-            //     address: formData.get('address'),
-            //     name: formData.get('name'),
-            //     in_use: formData.get('in_use'),
-            // });
-            const response = await storagesApi.storagesUpdate(params.id, {
-                address: formData.get('address'),
-                name: formData.get('name'),
-                in_use: formData.get('in_use'),
-            });
-            if (response.status === 200) {
-                return { type: 'update', status: true };
-            }
-            return { type: 'update', status: false };
-        }
+
+    const response = await storagesApi.storagesUpdate(params.id, {
+        address: formData.get('address'),
+        name: formData.get('name'),
+        zip_code: formData.get('zip_code'),
+        city: formData.get('city'),
+        in_use: formData.get('in_use') === 'Käytössä' ? true : false,
+    });
+
+    if (response.status === 200) {
+        return { type: 'updatestorage', status: true };
     }
-    return null;
+
+    return { type: 'updatestorage', status: false };
 };
 
-const userEditAction = async (auth, setAuth, request, params) => {
-    // This action handles user data: info, addressinfo and users auth groups.
-    // User data has different BE endpoints for different user data sections.
+/**
+ * Deletes storage information
+ */
+const storageDeleteAction = async ({ params }) => {
+    await storagesApi.storagesDestroy(params.id);
+    return redirect('/admin/varastot');
+};
 
-    // First apicall updates users editable info.
-    // Second apicall patches users addressinfo. (not finalized, working on it)
-
-    // Third apicall updates users auth groups: BE expects integers (representing different auth groups) in an array.
-    // It gets all the checked checkboxes values into an array's first index.
-    // The array is then splitted by comma into an array of strings. These indexes are then mapped into an array of integers,
-    // and then sent to the BE in a composition BE expects.
-
+/**
+ * Products transfer
+ */
+const productsTransferAction = async ({ request }) => {
     const formData = await request.formData();
-    // let response = await apiCall(auth, setAuth, `/users/${params.id}/`, 'put', {
-    //     first_name: formData.get('first_name'),
-    //     last_name: formData.get('last_name'),
-    //     phone_number: formData.get('phone_number'),
-    // });
 
-    let response = await usersApi.usersUpdate(params.id, {
+    const selectedStorage = JSON.parse(formData.get('storage_to'));
+    const productIds = JSON.parse(formData.get('product_ids'));
+
+    // console.log('%c @action function - selected prodIds:', 'color: red; font-weight: bold', productIds);
+
+    const transfer = {
+        storage: selectedStorage,
+        product_items: productIds,
+    };
+
+    // console.log(' @action function, transfer object:', transfer);
+
+    const response = await productsApi.productsTransferUpdate(transfer);
+
+    if (productIds.length === 0 && response.status === 200) {
+        return { type: 'productstransferempty', status: true };
+    }
+    if (response.status === 200) {
+        return { type: 'productstransfer', status: true };
+    }
+
+    return { type: 'productstransfer', status: false };
+};
+
+const userEditAction = async ({ request, params }) => {
+    const formData = await request.formData();
+
+    const userInfo = {
         first_name: formData.get('first_name'),
         last_name: formData.get('last_name'),
         phone_number: formData.get('phone_number'),
+    };
+
+    // if formdata.get('groups') comes in as an empty array, keep it as an empty array.
+    // else get the values, split by comma (this creates an array), map the values and typecast them as numbers.
+    let selectedAuthGroups =
+        formData.get('groups') === ''
+            ? []
+            : formData
+                  .get('groups')
+                  .split(',')
+                  .map((group) => Number(group));
+
+    try {
+        const userPermissionsUpdateResponse = await usersApi.usersGroupsPermissionUpdate(params.userid, {
+            groups: selectedAuthGroups,
+        });
+
+        const userInfoUpdateResponse = await usersApi.usersUpdate(params.userid, userInfo);
+
+        if (userInfoUpdateResponse.status === 200 && userPermissionsUpdateResponse.status === 200) {
+            return { type: 'userdataupdate', status: true };
+        }
+    } catch (err) {
+        return { type: 'userdataupdate', status: false, responseMsg: err.response.data };
+    }
+};
+
+const userDeleteAction = async ({ params }) => {
+    await usersApi.usersDestroy(params.userid);
+    return redirect('/admin/kayttajat');
+};
+
+const adminUserAddressEditAction = async ({ request, params }) => {
+    const formData = await request.formData();
+
+    const modifiedAddress = {
+        address: formData.get('address'),
+        zip_code: formData.get('zip_code'),
+        city: formData.get('city'),
+        user: params.userid,
+    };
+
+    const userAddressUpdateResponse = await usersApi.usersAddressUpdate(params.aid, modifiedAddress);
+
+    if (userAddressUpdateResponse.status === 200) {
+        return { type: 'addressupdate', status: true };
+    }
+
+    return { type: 'addressupdate', status: false };
+};
+
+const adminUserAddressCreateAction = async ({ request, params }) => {
+    const formData = await request.formData();
+
+    const newAddress = {
+        address: formData.get('address'),
+        zip_code: formData.get('zip_code'),
+        city: formData.get('city'),
+        user: params.userid,
+    };
+
+    const userAddressCreateResponse = await usersApi.usersAddressCreate(newAddress);
+
+    if (userAddressCreateResponse.status === 201) {
+        return { type: 'addresscreate', status: true };
+    }
+
+    return { type: 'addresscreate', status: false };
+};
+
+/**
+ * deletes or modifies a bulletin
+ */
+const adminBulletinsAction = async ({ request, params }) => {
+    const formData = await request.formData();
+
+    if (request.method === 'DELETE') {
+        const response = await bulletinsApi.bulletinsDestroy(formData.get('id'));
+        if (response.status === 204) {
+            return { type: 'bulletindelete', status: true };
+        }
+        return { type: 'bulletindelete', status: false };
+    }
+
+    if (request.method === 'PUT') {
+        const response = await bulletinsApi.bulletinsUpdate(params.id, {
+            title: formData.get('title'),
+            content: formData.get('content'),
+        });
+
+        if (response.status === 200) {
+            return { type: 'bulletinedit', status: true };
+        }
+        return { type: 'bulletinedit', status: false };
+    }
+
+    return null;
+};
+
+/**
+ * create a new bulletin post
+ */
+const createBulletinAction = async ({ request }) => {
+    const formData = await request.formData();
+    const response = await bulletinsApi.bulletinsCreate(Object.fromEntries(formData.entries()));
+
+    if (response.status === 201) {
+        return { type: 'bulletincreate', status: true };
+    }
+
+    return { type: 'bulletincreate', status: false };
+};
+
+/**
+ * Changes read state of message
+ * UPD: currently not used.
+ */
+const adminInboxAction = async ({ request }) => {
+    const formData = await request.formData();
+    const id = Number(formData.get('id'));
+
+    const response = await contactFormsApi.contactFormsUpdate(id, {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        subject: formData.get('subject'),
+        message: formData.get('message'),
+        status: formData.get('status'),
     });
 
-    // works if used perfectly. needs more validation. not yet ready for production. disabled for this pr.
-    // const newAddress = {
-    //     address: formData.get('address'),
-    //     zipcode: formData.get('zip_code'),
-    //     city: formData.get('city'),
-    // };
-
-    // response = await apiCall(auth, setAuth, `/users/address/${params.id}/`, 'patch', newAddress);
-
-    const selectedAuthGroups = formData
-        .getAll('groups')[0]
-        .split(',')
-        .map((group) => Number(group));
-    // response = await apiCall(auth, setAuth, `/users/${params.id}/groups/permission/`, 'put', {
-    //     groups: selectedAuthGroups,
-    // });
-
-    response = await usersApi.usersGroupsPermissionUpdate(params.id, { groups: selectedAuthGroups });
-
     if (response.status === 200) {
-        return { type: 'update', status: true };
+        return { type: 'markasread', status: true };
     }
-    return { type: 'update', status: false };
+
+    return { type: 'markasread', status: false };
+};
+
+const adminEmailRecipientsAction = async ({ request }) => {
+    const formData = await request.formData();
+    const recipient = formData.get('email');
+    const id = formData.get('id');
+
+    if (request.method === 'POST') {
+        await ordersApi.ordersEmailrecipientsCreate({ email: recipient });
+        return { type: 'emailrecipient', status: true };
+    }
+
+    if (request.method === 'DELETE') {
+        await ordersApi.ordersEmailrecipientsDestroy(id);
+        return { type: 'emailrecipient-del', status: true };
+    }
+
+    return { type: 'emailrecipient', status: false };
 };
 
 /**
@@ -383,20 +488,6 @@ const itemCreateAction = async (auth, setAuth, request) => {
         return { type: 'createitem', status: true };
     }
     return { type: 'createitem', status: false };
-};
-
-/**
- * create new bulletin post
- */
-
-const createBulletinAction = async (auth, setAuth, request) => {
-    const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/bulletins/', 'post', formData);
-    const response = await bulletinsApi.bulletinsCreate(Object.fromEntries(formData.entries()));
-    if (response.status === 200) {
-        return { type: 'createnewannouncement', status: true };
-    }
-    return { type: 'createnewannouncement', status: false };
 };
 
 /**
@@ -456,67 +547,63 @@ const cartViewAction = async ({ request }) => {
 };
 
 /**
- * Adds an item in order
+ * Place order
  */
 
 const confirmationAction = async ({ request }) => {
     const formData = await request.formData();
 
-    const response = await ordersApi.ordersCreate({
-        contact: formData.get('email'),
-        delivery_address: formData.get('deliveryAddress'),
-        phone_number: formData.get('phoneNumber'),
-        user: Number(formData.get('id')),
-        order_info: formData.get('orderInfo'),
-        delivery_required: formData.get('deliveryRequired'),
-        status: 'Waiting',
-    });
+    const getCart = await shoppingCartApi.shoppingCartRetrieve();
 
-    if (response.status === 201) {
-        return { type: 'orderCreated', status: true };
+    // check if the cart has not been emptied @ backend
+    try {
+        if (getCart?.product_items?.length !== 0) {
+            const response = await ordersApi.ordersCreate({
+                recipient: formData.get('recipient'),
+                delivery_address: formData
+                    .get('deliveryAddress')
+                    .concat(' ', formData.get('zip_code').concat(' ', formData.get('city'))),
+                recipient_phone_number: formData.get('recipient_phone_number'),
+                user: Number(formData.get('id')),
+                order_info: formData.get('orderInfo'),
+                delivery_required: formData.get('deliveryRequired'),
+                // delivery_date: formData.get('fetchDate'),
+                // ^ uncomment when date works
+                status: 'Waiting',
+            });
+
+            if (response.status === 201) {
+                return { type: 'orderCreated', status: true };
+            }
+        }
+        // if the cart has been emptied backend throws 400 -->
+    } catch (error) {
+        return { type: 'orderCreated', status: false };
     }
 
-    return { type: 'orderCreated', status: false };
+    return null;
 };
+
+//
+//
+// bikes bling blings
 
 /**
- * sends email for resetting user password
+ * sends bike order form to back-end
  */
-
-const resetEmailAction = async (auth, setAuth, request) => {
+const bikeOrderAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/users/password/resetemail/', 'post', {
-    //     username: formData.get('username'),
-    // });
-    const response = await usersApi.usersPasswordResetemailCreate({
-        username: formData.get('username'),
+    const response = await bikesApi.bikesRentalCreate({
+        contact_name: formData.get('contactPersonName'),
+        contact_phone_number: formData.get('contactPersonPhoneNumber'),
+        delivery_address: formData.get('deliveryAddress'),
+        start_date: formData.get('startDateTime'),
+        end_date: formData.get('endDateTime'),
+        bike_stock: JSON.parse(formData.get('selectedBikes')),
+        extra_info: formData.get('extraInfo'),
+        pickup: formData.get('pickup'),
     });
-    if (response.status === 200) {
-        return { type: 'emailsent', status: true };
-    }
-    return { type: 'emailsent', status: false };
-};
-
-const resetPasswordAction = async (auth, setAuth, request) => {
-    const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, 'users/password/reset/', 'post', {
-    //     new_password: formData.get('new_password'),
-    //     new_password_again: formData.get('new_password_again'),
-    //     uid: formData.get('uid'),
-    //     token: formData.get('token'),
-    // });
-    const response = await usersApi.usersPasswordResetCreate({
-        new_password: formData.get('new_password'),
-        new_password_again: formData.get('new_password_again'),
-        uid: formData.get('uid'),
-        token: formData.get('token'),
-    });
-    if (response.status === 200) {
-        return { type: 'passwordreset', status: true };
-    } else if (response.status === 204) {
-        return { type: 'outdatedtoken', status: true };
-    }
-    return { type: 'passwordreset', status: false };
+    return response.data || null;
 };
 
 /**
@@ -533,6 +620,7 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
     const packageOnly = data.get('bikePackageOnlyCheckBox');
     const submission = {
         bike: data.get('bikeModelIdSelect'),
+        color: data.get('bikeColorIdSelect'),
         frame_number: data.get('bikeFrameNumberTextField'),
         number: data.get('bikeNumberTextField'),
         storage: data.get('bikeStorageIdSelect'),
@@ -541,7 +629,6 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
     };
 
     // send data and redirect back to bike list
-    // await apiCall(auth, setAuth, `/bikes/stock/${params.id}/`, 'put', submission);
     await bikesApi.bikesStockUpdate(params.id, submission);
     return redirect('/pyorat/pyoravarasto/pyoralista');
 };
@@ -552,6 +639,7 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     const packageOnly = data.get('bikePackageOnlyCheckBox');
     const submission = {
         bike: data.get('bikeModelIdSelect'),
+        color: data.get('bikeColorIdSelect'),
         frame_number: data.get('bikeFrameNumberTextField'),
         number: data.get('bikeNumberTextField'),
         storage: data.get('bikeStorageIdSelect'),
@@ -560,26 +648,70 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     };
 
     // send data and redirect back to bike list
-    // await apiCall(auth, setAuth, `/bikes/stock/`, 'post', submission);
     await bikesApi.bikesStockCreate(submission);
     return redirect('/pyorat/pyoravarasto/pyoralista');
 };
 
-// kommentti
-const modifyBikeOrderAction = async (auth, setAuth, request, params) => {
-    // collect data that needs to be sent to backend
-    const data = await request.formData();
-    const submission = {
-        name: data.get('packetName'),
-        description: data.get('packetDescription'),
-        bikes: JSON.parse(data.get('bikes')),
-    };
-    // send data and redirect back to bike list
-    // await apiCall(auth, setAuth, `/bikes/packages/${params.id}/`, 'put', submission);
-    await bikesApi.bikesPackagesUpdate(params.id, submission);
-    return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+/**
+ * Update the 'packet_only' flag on each individual bike
+ * This function is needed when individual bikes are not put on packets. Instead the packets
+ * just know how many of each bikeModel is included in the package
+ */
+const updateBikesStockPacketOnlyFlag = async () => {
+    // create a list of all bike ID's and their amounts
+    const allPackets = await bikesApi.bikesPackagesList();
+    const bikeAmounts = [];
+    // loop through all bikeIds in all packets
+    allPackets.data.forEach((packet) => {
+        packet.bikes.forEach((bike) => {
+            const index = bikeAmounts.findIndex((entry) => entry.bikeId === bike.bike);
+            if (index < 0) {
+                // bikeId not found, create new bikeId and amount
+                const newEntry = { bikeId: bike.bike, amount: bike.amount };
+                bikeAmounts.push(newEntry);
+            } else {
+                // add amount to existing bikeId
+                bikeAmounts[index].amount += bike.amount;
+            }
+        });
+    });
+
+    // Get all bikes, compare their package_only flagged bike amounts to packets amounts
+    // and change the needed number of flags to true or false
+    const allBikes = await bikesApi.bikesStockList();
+    const uniqueBikeIds = [...new Set(allBikes.data.map((item) => item.bike.id))];
+    for (const uniqueBikeId of uniqueBikeIds) {
+        const bikesWithuniqueBikeId = allBikes.data.filter((item) => item.bike.id === uniqueBikeId);
+        const amountNeeded = bikeAmounts.find((item) => item.bikeId === uniqueBikeId)?.amount ?? 0;
+        // bikes with packet_only === true
+        for (let i = 0; i < amountNeeded; i++) {
+            const newBike = {
+                ...bikesWithuniqueBikeId[i],
+                bike: bikesWithuniqueBikeId[i].bike.id,
+                package_only: true,
+            };
+            await bikesApi.bikesStockUpdate(bikesWithuniqueBikeId[i].id, newBike);
+        }
+        // bikes with packet_only === false
+        for (let i = amountNeeded; i < bikesWithuniqueBikeId.length; i++) {
+            const newBike = {
+                ...bikesWithuniqueBikeId[i],
+                bike: bikesWithuniqueBikeId[i].bike.id,
+                package_only: false,
+            };
+            await bikesApi.bikesStockUpdate(bikesWithuniqueBikeId[i].id, newBike);
+        }
+    }
 };
-const createNewPacketAction = async (auth, setAuth, request) => {
+
+/**
+ * Modify existing bike packet
+ *
+ * @param {*} request
+ * @param {*} params
+ * @returns
+ */
+const modifyBikePacketAction = async (request, params) => {
     // collect data that needs to be sent to backend
     const data = await request.formData();
     const submission = {
@@ -589,10 +721,11 @@ const createNewPacketAction = async (auth, setAuth, request) => {
     };
 
     // send data and redirect back to bike list
-    // await apiCall(auth, setAuth, `/bikes/stock/`, 'post', submission);
-    await bikesApi.bikesPackagesCreate(submission);
+    await bikesApi.bikesPackagesUpdate(params.id, submission);
+    await updateBikesStockPacketOnlyFlag();
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
+
 const deleteBikeOrderAction = async ({ request }) => {
     const data = await request.formData();
     const response = await bikesApi.bikesRentalDestroy(data.get('id'));
@@ -603,62 +736,6 @@ const deleteBikeOrderAction = async ({ request }) => {
     return { type: 'rentalDelete', status: false };
 };
 
-const deletePacketAction = async (auth, setAuth, params) => {
-    // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
-    await bikesApi.bikesPackagesDestroy(params.id);
-    return redirect('/pyorat/pyoravarasto/pyorapaketit/');
-};
-
-const activationAction = async (auth, setAuth, request) => {
-    const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/users/activate/', 'post', {
-    //     uid: formData.get('uid'),
-    //     token: formData.get('token'),
-    // });
-    const response = await usersApi.usersActivateCreate({
-        uid: formData.get('uid'),
-        token: formData.get('token'),
-    });
-    if (response.status === 200) {
-        return { type: 'userActivation', status: true };
-    }
-    return { type: 'userActivation', status: false };
-};
-
-const changeEmailAction = async (auth, setAuth, request) => {
-    const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/users/emailchange/', 'post', {
-    //     new_email: formData.get('newEmail'),
-    // });
-    const response = await usersApi.usersEmailchangeCreate({
-        new_email: formData.get('newEmail'),
-    });
-
-    if (response.status === 200) {
-        return { type: 'changeEmail', status: true };
-    }
-    return { type: 'changeEmail', status: false };
-};
-
-const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
-    const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/users/emailchange/finish/', 'post', {
-    //     uid: formData.get('uid'),
-    //     token: formData.get('token'),
-    //     new_email: formData.get('newEmail'),
-    // });
-    const response = await usersApi.usersEmailchangeFinishCreate({
-        uid: formData.get('uid'),
-        token: formData.get('token'),
-        new_email: formData.get('newEmail'),
-    });
-
-    if (response.status === 200) {
-        return { type: 'emailchangesuccessful', status: true };
-    }
-    return { type: 'emailchangesuccessful', status: false };
-};
-
 /**
  * Delete a single bike
  * @param {*} auth
@@ -667,16 +744,48 @@ const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
  * @returns
  */
 const deleteBikeAction = async (auth, setAuth, params) => {
-    // await apiCall(auth, setAuth, `/bikes/stock/${params.id}`, 'delete');
     await bikesApi.bikesStockDestroy(params.id);
     return redirect('/pyorat/pyoravarasto/pyoralista');
+};
+
+/**
+ * Create a new bike packet
+ *
+ * @param {*} request
+ * @returns
+ */
+const createNewPacketAction = async (request) => {
+    // collect data that needs to be sent to backend
+    const data = await request.formData();
+    const submission = {
+        name: data.get('packetName'),
+        description: data.get('packetDescription'),
+        bikes: JSON.parse(data.get('bikes')),
+    };
+
+    // send data and redirect back to bike list
+    await bikesApi.bikesPackagesCreate(submission);
+    await updateBikesStockPacketOnlyFlag();
+    return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+};
+
+/**
+ * Delete existing bike packet
+ *
+ * @param {*} params
+ * @returns
+ */
+const deletePacketAction = async (params) => {
+    await bikesApi.bikesPackagesDestroy(params.id);
+    await updateBikesStockPacketOnlyFlag();
+
+    return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
 
 /**
  * Delete a single bike model
  */
 const deleteBikeModelAction = async (auth, setAuth, params) => {
-    // await apiCall(auth, setAuth, `/bikes/models/${params.id}`, 'delete');
     await bikesApi.bikesModelsDestroy(params.id);
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
@@ -695,26 +804,24 @@ const getOrCreateBikeModelIds = async (auth, setAuth, data) => {
     // if selected type, brand or size do not exist they need to be created
     // need to create new is indicated by setting the bikeModelXXXId to -1 in the form
     let typeId = data.get('bikeModelTypeId');
+
+    let bikeName =
+        data.get('bikeModelSizeName') + '" ' + data.get('bikeModelTypeName') + ' ' + data.get('bikeModelBrandName');
     if (typeId <= 0) {
-        // const response = await apiCall(auth, setAuth, `/bikes/type/`, 'post', { name: data.get('bikeModelTypeName') });
         const response = await bikesApi.bikesTypeCreate({ name: data.get('bikeModelTypeName') });
         typeId = response.data.id;
     }
     let brandId = data.get('bikeModelBrandId');
     if (brandId <= 0) {
-        // const response = await apiCall(auth, setAuth, `/bikes/brand/`, 'post', {
-        //     name: data.get('bikeModelBrandName'),
-        // });
         const response = await bikesApi.bikesBrandCreate({ name: data.get('bikeModelBrandName') });
         brandId = response.data.id;
     }
     let sizeId = data.get('bikeModelSizeId');
     if (sizeId <= 0) {
-        // const response = await apiCall(auth, setAuth, `/bikes/size/`, 'post', { name: data.get('bikeModelSizeName') });
         const response = await bikesApi.bikesSizeCreate({ name: data.get('bikeModelSizeName') });
         sizeId = response.data.id;
     }
-    return { typeId, brandId, sizeId };
+    return { typeId, brandId, sizeId, bikeName };
 };
 
 /**
@@ -732,20 +839,17 @@ const modifyBikeModelAction = async (auth, setAuth, request, params) => {
     const data = await request.formData();
 
     // get or create new ids for type, brand and size
-    const { typeId, brandId, sizeId } = await getOrCreateBikeModelIds(auth, setAuth, data);
+    const { typeId, brandId, sizeId, bikeName } = await getOrCreateBikeModelIds(auth, setAuth, data);
 
     // append modified data to form data
-    data.append('name', data.get('bikeModelName'));
+    data.append('name', bikeName);
     data.append('description', data.get('bikeModelDescription'));
-    data.append('color', data.get('bikeModelColorId'));
+    data.append('color', 1);
     data.append('type', typeId);
     data.append('brand', brandId);
     data.append('size', sizeId);
 
     // send data and redirect
-    // await apiCall(auth, setAuth, `/bikes/models/${params.id}/`, 'put', data, {
-    //     headers: { 'Content-Type': 'multipart/form-data' },
-    // });
     await bikesApi.bikesModelsUpdate(params.id, data, { headers: { 'Content-Type': 'multipart/form-data' } });
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
@@ -764,122 +868,165 @@ const createBikeModelAction = async (auth, setAuth, request) => {
     const data = await request.formData();
 
     // get or create new ids for type, brand and size
-    const { typeId, brandId, sizeId } = await getOrCreateBikeModelIds(auth, setAuth, data);
+    const { typeId, brandId, sizeId, bikeName } = await getOrCreateBikeModelIds(auth, setAuth, data);
 
     // append modified data to form data
-    data.append('name', data.get('bikeModelName'));
+    data.append('name', bikeName);
     data.append('description', data.get('bikeModelDescription'));
-    data.append('color', data.get('bikeModelColorId'));
+    data.append('color', 1);
     data.append('type', typeId);
     data.append('brand', brandId);
     data.append('size', sizeId);
 
     // send data and redirect
-    // await apiCall(auth, setAuth, `/bikes/models/`, 'post', data, {
-    //     headers: { 'Content-Type': 'multipart/form-data' },
-    // });
     await bikesApi.bikesModelsCreate(data, { headers: { 'Content-Type': 'multipart/form-data' } });
-
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
 
-/**
- * deletes or modifies a bulletin
- * @param {*} auth
- * @param {*} setAuth
- * @param {*} request
- * @returns
- */
-const adminBulletinsAction = async (auth, setAuth, request) => {
-    if (request.method === 'DELETE') {
-        const formData = await request.formData();
-        // const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'delete');
-        const response = await bulletinsApi.bulletinsRetrieve(formData.get('id'));
-        if (response.status === 204) {
-            return { type: 'deleted', status: true };
-        }
-        return { type: 'deleted', status: false };
-    }
+//
+//
+// user ting tings
+
+const userAccountPageAction = async ({ request }) => {
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, `/bulletins/${formData.get('id')}`, 'put', {
-    //     title: formData.get('title'),
-    //     content: formData.get('content'),
-    // });
-    const response = await bulletinsApi.bulletinsUpdate(formData.get('id'), {
-        title: formData.get('title'),
-        content: formData.get('content'),
-    });
 
-    if (response.status === 200) {
-        return { type: 'modified', status: true };
+    if (request.method === 'POST') {
+        await usersApi.usersLogoutCreate();
+        return redirect('/');
     }
-    return { type: 'modified', status: false };
-};
 
-/**
- * Changes read state of message
- */
-
-const adminInboxAction = async (auth, setAuth, request) => {
-    const formData = await request.formData();
-    const id = Number(formData.get('id'));
-    // const response = await apiCall(auth, setAuth, `/contact_forms/${id}/`, 'put', {
-    //     name: formData.get('name'),
-    //     email: formData.get('email'),
-    //     subject: formData.get('subject'),
-    //     message: formData.get('message'),
-    //     status: formData.get('status'),
-    // });
-    const response = await contactFormsApi.contactFormsUpdate(id, {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        subject: formData.get('subject'),
-        message: formData.get('message'),
-        status: formData.get('status'),
-    });
-    if (response.status === 200) {
-        return { type: 'markasread', status: true };
-    }
-    return { type: 'markasread', status: false };
-};
-
-const userProfilePageAction = async (request) => {
-    const formData = await request.formData();
-    const response = await userApi.userUpdate({
-        username: formData.get('username'),
-        first_name: formData.get('first_name'),
-        last_name: formData.get('last_name'),
-        phone_number: formData.get('phone_number'),
-    });
-    if (response.status === 200) {
-        return { type: 'userinfoupdated', status: true };
-    }
-    return { type: 'userinfoupdated', status: false };
-};
-
-const modifyUserAddressesAction = async (request) => {
-    const formData = await request.formData();
     if (request.method === 'PUT') {
-        const response = await userApi.userAddressEditUpdate({
-            id: formData.get('id'),
+        const response = await userApi.userUpdate({
+            first_name: formData.get('first_name'),
+            last_name: formData.get('last_name'),
+            phone_number: formData.get('phone_number'),
+        });
+
+        if (response.status === 200) {
+            return { type: 'userinfoupdated', status: true };
+        }
+        return { type: 'userinfoupdated', status: false };
+    }
+
+    return null;
+};
+
+const userAddressEditAction = async ({ request, params }) => {
+    const formData = await request.formData();
+
+    if (request.method === 'PUT') {
+        const newAddress = {
             address: formData.get('address'),
             city: formData.get('city'),
             zip_code: formData.get('zip_code'),
-        });
+        };
+
+        const response = await userApi.userAddressUpdate(params.aid, newAddress);
+
         if (response.status === 200) {
             return { type: 'addressmodified', status: true };
         }
+
         return { type: 'addressmodified', status: false };
     }
-    const response = await userApi.userAddressEditCreate({
+
+    if (request.method === 'DELETE') {
+        userApi.userAddressDestroy(params.aid);
+        return redirect('/tili');
+    }
+
+    return { type: 'addressneutral', status: true };
+};
+
+const userAddressCreateAction = async ({ request }) => {
+    const formData = await request.formData();
+
+    const newAddress = {
         address: formData.get('address'),
         city: formData.get('city'),
         zip_code: formData.get('zip_code'),
+    };
+
+    const response = await userApi.userAddressCreate(newAddress);
+
+    if (response.status === 200) {
+        return { type: 'addresscreate', status: true };
+    }
+
+    return { type: 'addresscreate', status: false };
+};
+
+const activationAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+
+    const response = await usersApi.usersActivateCreate({
+        uid: formData.get('uid'),
+        token: formData.get('token'),
     });
     if (response.status === 200) {
-        return { type: 'addresscreated', status: true };
+        return { type: 'userActivation', status: true };
     }
-    return { type: 'addresscreated', status: false };
+    return { type: 'userActivation', status: false };
+};
+
+const changeEmailAction = async ({ request }) => {
+    const formData = await request.formData();
+
+    const response = await usersApi.usersEmailchangeCreate({
+        new_email: formData.get('newEmail'),
+    });
+
+    if (response.status === 200) {
+        return { type: 'changeEmail', status: true };
+    }
+    return { type: 'changeEmail', status: false };
+};
+
+const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+
+    const response = await usersApi.usersEmailchangeFinishCreate({
+        uid: formData.get('uid'),
+        token: formData.get('token'),
+        new_email: formData.get('newEmail'),
+    });
+
+    if (response.status === 200) {
+        return { type: 'emailchangesuccessful', status: true };
+    }
+    return { type: 'emailchangesuccessful', status: false };
+};
+
+/**
+ * sends email for resetting user accounts password
+ */
+const resetEmailAction = async ({ request }) => {
+    const formData = await request.formData();
+
+    const response = await usersApi.usersPasswordResetemailCreate({
+        username: formData.get('username'),
+    });
+    if (response.status === 200) {
+        return { type: 'emailsent', status: true };
+    }
+    return { type: 'emailsent', status: false };
+};
+
+const resetPasswordAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+
+    const response = await usersApi.usersPasswordResetCreate({
+        new_password: formData.get('new_password'),
+        new_password_again: formData.get('new_password_again'),
+        uid: formData.get('uid'),
+        token: formData.get('token'),
+    });
+    if (response.status === 200) {
+        return { type: 'passwordreset', status: true };
+    } else if (response.status === 204) {
+        return { type: 'outdatedtoken', status: true };
+    }
+    return { type: 'passwordreset', status: false };
 };
 
 export {
@@ -888,10 +1035,16 @@ export {
     frontPageActions,
     contactAction,
     orderEditAction,
+    orderDeleteAction,
     storageCreateAction,
     storageEditAction,
+    storageDeleteAction,
+    productsTransferAction,
     createBulletinAction,
     userEditAction,
+    userDeleteAction,
+    adminUserAddressEditAction,
+    adminUserAddressCreateAction,
     itemCreateAction,
     itemUpdateAction,
     cartViewAction,
@@ -906,14 +1059,16 @@ export {
     modifyBikeModelAction,
     deleteBikeAction,
     adminLogOut,
-    modifyBikeOrderAction,
+    modifyBikePacketAction,
     adminInboxAction,
+    adminEmailRecipientsAction,
     createBikeModelAction,
     deleteBikeModelAction,
     emailChangeSuccessfulAction,
     changeEmailAction,
-    userProfilePageAction,
+    userAccountPageAction,
     createNewPacketAction,
     deletePacketAction,
-    modifyUserAddressesAction,
+    userAddressEditAction,
+    userAddressCreateAction,
 };

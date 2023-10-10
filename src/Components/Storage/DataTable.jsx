@@ -1,5 +1,4 @@
 import { useLoaderData, useNavigate } from 'react-router-dom';
-// import PropTypes from 'prop-types';
 
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
@@ -7,7 +6,8 @@ import StyledTableCell from '../StyledTableCell';
 import SortByMenu from '../SortByMenu';
 
 function OrderListTable() {
-    const orders = useLoaderData();
+    const { results: orders } = useLoaderData();
+    console.log(orders);
     const navigate = useNavigate();
 
     const dateParse = (value) => {
@@ -27,17 +27,17 @@ function OrderListTable() {
                         <StyledTableCell align="right">Status</StyledTableCell>
                         <StyledTableCell align="right">Toimitusosoite</StyledTableCell>
                         <StyledTableCell align="right">Tilaaja</StyledTableCell>
-                        <StyledTableCell align="right">Yhteystiedot</StyledTableCell>
+                        <StyledTableCell align="right">Vastaanottaja</StyledTableCell>
                         <StyledTableCell align="right">Päivämäärä</StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {orders.map((row) => (
+                    {orders?.map((row) => (
                         <TableRow
                             key={row.id}
                             style={{ cursor: 'pointer' }}
                             hover
-                            onClick={() => navigate(`/varasto/tilaus/${row.id}`)}
+                            onClick={() => navigate(`/varasto/tilaukset/${row.id}`)}
                         >
                             <TableCell component="th" scope="row">
                                 {row.id}
@@ -45,9 +45,9 @@ function OrderListTable() {
                             <TableCell align="right">{row.status}</TableCell>
                             <TableCell align="right">{row.delivery_address}</TableCell>
                             <TableCell align="right">{row.user}</TableCell>
-                            <TableCell align="right">{row.contact}</TableCell>
+                            <TableCell align="right">{row.recipient}</TableCell>
                             <TableCell align="right">
-                                {row.delivery_date ? dateParse(row.delivery_date) : '-'}
+                                {row.creation_date ? dateParse(row.creation_date) : '-'}
                             </TableCell>
                         </TableRow>
                     ))}
@@ -56,11 +56,5 @@ function OrderListTable() {
         </TableContainer>
     );
 }
-
-// OrderListTable.propTypes = {
-//     page: PropTypes.number.isRequired,
-//     setUsedParams: PropTypes.func.isRequired,
-//     rowsPerPage: PropTypes.number.isRequired,
-// };
 
 export default OrderListTable;

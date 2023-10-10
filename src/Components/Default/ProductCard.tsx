@@ -10,9 +10,9 @@ import {
     Typography,
     Tooltip,
     Grid,
-    ButtonPropsSizeOverrides,
+    type ButtonPropsSizeOverrides,
 } from '@mui/material';
-import { OverridableStringUnion } from '@material-ui/types';
+import { type OverridableStringUnion } from '@material-ui/types';
 import Carousel from 'react-material-ui-carousel';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
@@ -63,7 +63,6 @@ function ProductCard({
             <Card sx={{ width: 300, height: 365 }}>
                 <CardActionArea component={Box}>
                     <Carousel
-                        animation="slide"
                         duration={850}
                         interval={2000}
                         autoPlay={false}
@@ -87,7 +86,7 @@ function ProductCard({
                                                 width: '100%',
                                                 height: '100%',
                                                 paddingLeft: 2,
-                                                backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                                                backgroundColor: 'rgba(255, 255, 255, 0.8)',
                                                 backdropFilter: 'blur(6px)',
                                             }}
                                             justifyContent="space-evenly"

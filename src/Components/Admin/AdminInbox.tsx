@@ -1,29 +1,30 @@
-import { useLoaderData, useSearchParams } from 'react-router-dom';
-import { Stack, Grid, Container, ButtonGroup, Button, Box, Pagination } from '@mui/material';
+import * as React from 'react';
+import { useLoaderData /* useSearchParams */ } from 'react-router-dom';
+
+import { Stack, Container, /* ButtonGroup, Button, */ Box, Pagination } from '@mui/material';
+
+import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 import MessageCard from './MessageCard';
+
+import MailIcon from '@mui/icons-material/Mail';
+
 import type { adminInboxLoader } from '../../Router/loaders';
 
-// interface Message {
-//     subject: string;
-//     date: Date & string;
-//     message: string;
-//     id: number;
-//     status: string;
-//     name: string;
-//     email: string;
-// }
-
 function AdminInbox() {
-    const [searchParams, setSearchParams] = useSearchParams();
     const messages = useLoaderData() as Awaited<ReturnType<typeof adminInboxLoader>>;
+
+    // const [searchParams, setSearchParams] = useSearchParams();
+    // const url = window.location.href;
+
     const pageCount = messages?.count && Math.ceil(messages.count / 5);
-    const url = window.location.href;
+
     const messageCards = messages?.results?.map((message) => {
         const date = new Date(message.date);
         const dateInfo = [];
         dateInfo.push(date.toLocaleDateString());
         dateInfo.push(date.toLocaleTimeString());
+
         return (
             <MessageCard
                 key={message.id}
@@ -38,24 +39,33 @@ function AdminInbox() {
         );
     });
 
-    function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
-        let assignedParams;
-        if (searchParams.has('tila')) {
-            assignedParams = {
-                tila: searchParams.get('tila') as string,
-                sivu: String(newPage),
-            };
-        } else {
-            assignedParams = { sivu: String(newPage) };
-        }
-        setSearchParams(assignedParams);
-    }
+    // function handlePageChange(event: React.ChangeEvent<unknown>, newPage: number) {
+    //     // let assignedParams;
+    //     // if (searchParams.has('tila')) {
+    //     //     assignedParams = {
+    //     //         tila: searchParams.get('tila') as string,
+    //     //         sivu: String(newPage),
+    //     //     };
+    //     // } else {
+    //     // assignedParams = { sivu: String(newPage) };
+    //     // }
+    //     // let assignedParams = { sivu: String(newPage) };
+    //     // setSearchParams(assignedParams);
+    // }
 
     return (
-        <Container maxWidth="lg" component={Grid} direction="column" container>
-            <HeroText title="Saapuneet viestit" />
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <ButtonGroup variant="contained" aria-label="read-and-unread-buttons" size="large">
+        <Container maxWidth="lg">
+            <HeroHeader Icon={<MailIcon />} hideInAdmin />
+            <HeroText title="Saapuneet viestit" subtext="Ota yhteyttä-lomakkeen kautta lähetetyt viestit" />
+
+            {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <ButtonGroup
+                    id="inbox-btns"
+                    variant="contained"
+                    aria-label="read-and-unread-buttons"
+                    size="large"
+                    sx={{ marginBottom: '1rem' }}
+                >
                     <Button
                         sx={{
                             backgroundColor:
@@ -88,11 +98,13 @@ function AdminInbox() {
                         Hoidetut
                     </Button>
                 </ButtonGroup>
-            </Box>
+            </Box> */}
+
             <Stack id="admin-messages-stack" sx={{ m: '1rem 0 1rem 0' }}>
                 {messageCards}
             </Stack>
-            <Grid justifyContent="center" container>
+
+            {/* <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Pagination
                     size="large"
                     color="primary"
@@ -101,7 +113,7 @@ function AdminInbox() {
                     showFirstButton
                     showLastButton
                 />
-            </Grid>
+            </Box> */}
         </Container>
     );
 }

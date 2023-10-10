@@ -10,7 +10,7 @@ function AdminLayout() {
     return (
         <Stack id="admin-view-layout-stack" sx={{ minHeight: ['100vh', '100svh'] }}>
             <PanelHeader />
-            <Box id="admin-layout-admin-panel-container" sx={{ display: 'flex' }}>
+            <Box id="admin-layout-admin-panel-container" sx={{ display: 'flex', flex: '1' }}>
                 <AdminPanel />
             </Box>
             <footer style={{ marginTop: 'auto' }}>

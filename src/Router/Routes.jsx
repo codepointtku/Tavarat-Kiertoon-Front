@@ -4,8 +4,15 @@ import { StateMachineProvider, createStore } from 'little-state-machine';
 import { ThemeProvider } from '@mui/material';
 
 import AuthContext from '../Context/AuthContext';
+
+// import ErrorBoundary from './ErrorBoundary_NewStash';
 import ErrorBoundary from './ErrorBoundary';
-// import HasRole from '../Utils/HasRole';
+import BaseBoundary from './BaseBoundary';
+// import AdminViewBoundary from './AdminViewBoundary';
+import UserError from './ErrorElements/UserError';
+import OrderViewError from './ErrorElements/OrderViewError';
+
+import HasRole from '../Utils/HasRole';
 
 import DefaultView from '../Views/DefaultView';
 
@@ -19,28 +26,47 @@ import StorageLayout from '../Layouts/StorageLayout';
 import AdminLayout from '../Layouts/AdminLayout';
 import BikesLayout from '../Layouts/BikesLayout';
 
+// storage
+import QrScanner from '../Components/Storage/QrScanner';
+import PDFView from '../Components/Storage/PDFView';
+
+import AddItem from '../Components/Storage/AddItem';
+
 import OrdersList from '../Components/Storage/OrdersList';
 import OrderView from '../Components/Storage/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
-import QrScanner from '../Components/Storage/QrScanner';
+import AdminOrderDelete from '../Components/Admin/AdminOrderDelete';
 
+// admin
 import Overview from '../Components/Admin/Panel/Overview/Overview';
-import PageTest from '../Components/Admin/Panel/PageTest';
-import AdminInbox from '../Components/Admin/AdminInbox';
-
-import UsersList from '../Components/Admin/UsersList';
-import UserEdit from '../Components/Admin/UserEdit';
-import BulletinPosts from '../Components/Admin/BulletinPosts';
-import CreateBulletinPost from '../Components/Admin/CreateBulletinPost';
-import ModifyBulletinPost from '../Components/Admin/ModifyBulletinPost';
 import Stats from '../Components/Admin/Stats/Stats';
 
-import StoragesList from '../Components/Admin/StoragesList';
-import StorageEdit from '../Components/Admin/StorageEdit';
-import AddStorage from '../Components/Admin/AddStorage';
-import AddItem from '../Components/Storage/AddItem';
+import OrdersGrid from '../Components/Admin/OrdersGrid';
+import AdminOrderEmailList from '../Components/Admin/AdminOrderEmailList';
 
-import PDFView from '../Components/Storage/PDFView';
+import ProductsGrid from '../Components/Admin/ProductsGrid';
+
+import UsersGrid from '../Components/Admin/UsersGrid';
+import UserEdit from '../Components/Admin/UserEdit';
+import UserDelete from '../Components/Admin/UserDelete';
+import UserAddressEdit from '../Components/Admin/UserAddressEdit';
+import UserAddressCreate from '../Components/Admin/UserAddressCreate';
+
+import StoragesGrid from '../Components/Admin/StoragesGrid';
+import StorageEdit from '../Components/Admin/StorageEdit';
+import StorageDelete from '../Components/Admin/StorageDelete';
+import StorageCreate from '../Components/Admin/StorageCreate';
+import StorageProductsTransfer from '../Components/Admin/StorageProductsTransfer';
+import StorageProductsHandleItemsTransfer from '../Components/Admin/StorageProductsHandleItemsTransfer';
+
+import BulletinPosts from '../Components/Admin/BulletinPosts';
+import BulletinPostCreate from '../Components/Admin/BulletinPostCreate';
+import BulletinPostEdit from '../Components/Admin/BulletinPostEdit';
+
+import AdminInbox from '../Components/Admin/AdminInbox';
+
+// default
+import LoginPage from '../Components/LoginPage';
 
 import ProductDetails from '../Components/Default/ProductDetails';
 import ShoppingCart from '../Components/Default/ShoppingCart/ShoppingCart';
@@ -54,19 +80,20 @@ import Activation from '../Components/Default/Signup/Activation';
 import EmailChangeSuccessful from '../Components/EmailChangeSuccessful';
 import ChangeEmail from '../Components/ChangeEmail';
 
-import UserProfilePage from '../Components/Default/Profilepage/UserProfilePage';
-import OrderPage from '../Components/Default/Profilepage/OrderPage';
-import ProfileInfo from '../Components/Default/Profilepage/ProfileInfo';
-import ModifyAddressInfo from '../Components/Default/Profilepage/ModifyAddressInfo';
-import OrdersHistory from '../Components/Default/Profilepage/OrdersHistory';
-import OrdersActive from '../Components/Default/Profilepage/OrdersActive';
+import UserAccountPage from '../Components/Default/Accountpage/UserAccountPage';
+import OrderPage from '../Components/Default/Accountpage/OrderPage';
+import UserAccountInfo from '../Components/Default/Accountpage/UserAccountInfo';
+import AddressCreate from '../Components/Default/Accountpage/AddressCreate';
+import AddressEdit from '../Components/Default/Accountpage/AddressEdit';
+import OrdersHistory from '../Components/Default/Accountpage/OrdersHistory';
+import OrdersActive from '../Components/Default/Accountpage/OrdersActive';
 
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
 import DeliveryView from '../Components/DeliveryView';
 import BgInfo from '../Components/Default/BgInfo';
 
-import ForgotPassword from '../Components/Default/ResetPassword/ForgotPassword';
+import PasswordChange from '../Components/Default/ResetPassword/PasswordChange';
 import ResetPassword from '../Components/Default/ResetPassword/ResetPassword';
 import ResetSuccessful from '../Components/Default/ResetPassword/ResetSuccessful';
 import LinkExpired from '../Components/Default/ResetPassword/LinkExpired';
@@ -79,7 +106,8 @@ import GuideOrdering from '../Components/Default/Instructions/GuideOrdering';
 import GuideShipping from '../Components/Default/Instructions/GuideShipping';
 import GuideBikes from '../Components/Default/Instructions/GuideBikes';
 
-import ModifyBikeOrder from '../Components/Bikes/ModifyBikeOrder';
+// bikes
+import ModifyBikePacket from '../Components/Bikes/ModifyBikePacket';
 import BikesPage from '../Components/Bikes/BikesPage';
 import Bikes from '../Components/Bikes/Bikes';
 import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
@@ -88,6 +116,7 @@ import BikeRentals from '../Components/Bikes/BikeRentals';
 import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 import BikeModels from '../Components/Bikes/BikeModels';
 import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
+import BikesHomePage from '../Components/Bikes/BikesHomePage';
 
 import {
     bikeRentalLoader,
@@ -96,29 +125,35 @@ import {
     orderEditLoader,
     ordersListLoader,
     orderViewLoader,
-    pdfViewLoader,
     productDetailsLoader,
     productListLoader,
+    productTransferLoader,
     rootLoader,
     storagesListLoader,
     storageEditLoader,
     userEditLoader,
+    userAddressEditLoader,
+    userAddressCreateLoader,
     usersListLoader,
-    userSignupLoader,
+    userInfoLoader,
     shoppingCartLoader,
     bikesDefaultLoader,
     bikesListLoader,
-    bikeLoader,
+    modifyBikeLoader,
     createNewBikeLoader,
     bikeModelsLoader,
     bikeSingleModelLoader,
     shoppingProcessLoader,
-    modifyBikeOrderLoader,
+    modifyBikePacketLoader,
     adminLoader,
     adminInboxLoader,
+    emailRecipientsLoader,
     bikeNewModelLoader,
-    createBikeOrderLoader,
-    userInfoLoader,
+    createBikePacketLoader,
+    createBulletinLoader,
+    adminBulletinLoader,
+    adminBulletinsLoader,
+    addressEditLoader,
 } from './loaders';
 
 import {
@@ -126,10 +161,16 @@ import {
     userSignupAction,
     contactAction,
     orderEditAction,
+    orderDeleteAction,
     storageEditAction,
     storageCreateAction,
+    storageDeleteAction,
+    productsTransferAction,
     frontPageActions,
     userEditAction,
+    userDeleteAction,
+    adminUserAddressEditAction,
+    adminUserAddressCreateAction,
     cartViewAction,
     createBulletinAction,
     bikeOrderAction,
@@ -140,7 +181,7 @@ import {
     createNewBikeAction,
     activationAction,
     adminLogOut,
-    modifyBikeOrderAction,
+    modifyBikePacketAction,
     deleteBikeAction,
     adminInboxAction,
     modifyBikeModelAction,
@@ -149,14 +190,16 @@ import {
     emailChangeSuccessfulAction,
     changeEmailAction,
     adminBulletinsAction,
+    adminEmailRecipientsAction,
     createNewPacketAction,
     deletePacketAction,
-    userProfilePageAction,
-    modifyUserAddressesAction,
+    userAccountPageAction,
+    userAddressCreateAction,
+    userAddressEditAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
-import BikesHomePage from '../Components/Bikes/BikesHomePage';
+import { getRandomInt } from '../Utils/getRandomInt';
 
 createStore({});
 
@@ -174,15 +217,13 @@ function Routes() {
                     errorElement: <ErrorBoundary />,
                     id: 'root',
                     loader: rootLoader,
-                    // Loads data only at first page load, not with every route
-                    shouldRevalidate: ({ currentUrl }) => {
-                        return currentUrl.pathname === '/admin/tiedotteet' || '/admin/tiedotteet/';
-                    },
+                    shouldRevalidate: () => false,
                     children: [
                         // main routes
                         {
                             path: '/',
                             element: <BaseLayout />,
+                            errorElement: <BaseBoundary />,
                             id: 'frontPage',
                             loader: shoppingCartLoader,
                             action: frontPageActions,
@@ -205,6 +246,7 @@ function Routes() {
                                         {
                                             path: ':id',
                                             element: <ProductDetails />,
+                                            errorElement: <BaseBoundary />,
                                             loader: productDetailsLoader,
                                         },
                                     ],
@@ -257,10 +299,7 @@ function Routes() {
                                         },
                                     ],
                                 },
-                                {
-                                    path: 'toimitus',
-                                    element: <DeliveryView />,
-                                },
+
                                 {
                                     path: 'taustatietoa',
                                     element: <BgInfo />,
@@ -300,6 +339,10 @@ function Routes() {
                                     element: <Bulletins />,
                                 },
                                 {
+                                    path: '/kirjaudu',
+                                    element: <LoginPage />,
+                                },
+                                {
                                     path: 'rekisteroidy',
                                     element: <Outlet />,
                                     children: [
@@ -310,13 +353,11 @@ function Routes() {
                                         {
                                             path: 'kayttaja',
                                             element: <SignupPage isLocationForm={false} />,
-                                            // loader: userSignupLoader,
                                             action: async ({ request }) => userSignupAction(request),
                                         },
                                         {
                                             path: 'toimipaikka',
                                             element: <SignupPage isLocationForm />,
-                                            // loader: userSignupLoader,
                                             action: async ({ request }) => userSignupAction(request),
                                         },
                                     ],
@@ -326,10 +367,11 @@ function Routes() {
                                     element: <ContactPage />,
                                     action: async ({ request }) => contactAction(auth, setAuth, request),
                                 },
+                                // this should probably be /tili child:
                                 {
                                     path: 'sahkopostinvaihto',
                                     element: <ChangeEmail />,
-                                    action: async ({ request }) => changeEmailAction(auth, setAuth, request),
+                                    action: changeEmailAction,
                                 },
                                 {
                                     path: 'emailvaihto/:uid/:token/:newEmail',
@@ -338,8 +380,8 @@ function Routes() {
                                 },
                                 {
                                     path: 'salasananvaihto',
-                                    element: <ForgotPassword />,
-                                    action: async ({ request }) => resetEmailAction(auth, setAuth, request),
+                                    element: <PasswordChange />,
+                                    action: resetEmailAction,
                                 },
                                 {
                                     path: 'salasananpalautus',
@@ -370,23 +412,33 @@ function Routes() {
                                     action: async ({ request }) => activationAction(auth, setAuth, request),
                                 },
                                 {
-                                    path: 'profiili',
-                                    element: <UserProfilePage />,
-                                    id: 'profile',
-                                    loader: async ({ request }) => userInfoLoader(request),
-                                    action: async ({ request }) => userProfilePageAction(request),
+                                    path: 'tili',
+                                    element: (
+                                        <HasRole role="user_group" fallback={<Navigate to="/kirjaudu" />}>
+                                            <UserAccountPage />
+                                        </HasRole>
+                                    ),
+                                    id: 'account',
+                                    loader: userInfoLoader,
+                                    action: userAccountPageAction,
                                     children: [
                                         {
                                             index: true,
-                                            element: <ProfileInfo />,
+                                            element: <UserAccountInfo />,
                                         },
                                         {
-                                            path: 'osoitetiedot/:id',
-                                            element: <ModifyAddressInfo />,
-                                            action: async ({ request }) => modifyUserAddressesAction(request),
+                                            path: 'osoitteet/:aid',
+                                            element: <AddressEdit />,
+                                            loader: addressEditLoader,
+                                            action: userAddressEditAction,
                                         },
                                         {
-                                            path: 'aktiivisettilaukset',
+                                            path: 'osoitteet/uusi',
+                                            element: <AddressCreate />,
+                                            action: userAddressCreateAction,
+                                        },
+                                        {
+                                            path: 'tilaukset',
                                             element: <OrdersActive />,
                                         },
                                         {
@@ -405,9 +457,11 @@ function Routes() {
                         {
                             path: 'varasto',
                             element: (
-                                <ThemeProvider theme={storageTheme}>
-                                    <StorageLayout />
-                                </ThemeProvider>
+                                <HasRole role="storage_group" fallback={<Navigate to="/kirjaudu" />}>
+                                    <ThemeProvider theme={storageTheme}>
+                                        <StorageLayout />
+                                    </ThemeProvider>
+                                </HasRole>
                             ),
                             errorElement: (
                                 <ThemeProvider theme={storageTheme}>
@@ -415,43 +469,24 @@ function Routes() {
                                 </ThemeProvider>
                             ),
                             children: [
-                                // {
-                                //     index: true,
-                                //     element: <Navigate to="0/delivery?page=0&rows=5" />,
-                                // },
                                 {
                                     index: true,
-                                    // path: ':num/:view',
                                     element: <OrdersList />,
                                     loader: ordersListLoader,
                                 },
                                 {
-                                    path: 'tilaus',
+                                    path: 'tilaukset',
                                     element: <Outlet />,
                                     children: [
-                                        // {
-                                        //     index: true,
-                                        //     element: <Navigate to="/varasto" />,
-                                        // },
+                                        {
+                                            index: true,
+                                            element: <Navigate to="/varasto" />,
+                                        },
                                         {
                                             path: ':id',
-                                            element: <Outlet />,
-                                            children: [
-                                                {
-                                                    index: true,
-                                                    element: <OrderView />,
-                                                    loader: async ({ params }) =>
-                                                        orderViewLoader(auth, setAuth, params),
-                                                },
-                                                {
-                                                    path: 'muokkaa',
-                                                    element: <OrderEdit />,
-                                                    action: async ({ request, params }) =>
-                                                        orderEditAction(auth, setAuth, request, params),
-                                                    loader: async ({ params }) =>
-                                                        orderEditLoader(auth, setAuth, params),
-                                                },
-                                            ],
+                                            element: <OrderView isAdmin={false} />,
+                                            errorElement: <div>varasto orderview kössähdys</div>,
+                                            loader: orderViewLoader,
                                         },
                                     ],
                                 },
@@ -475,7 +510,7 @@ function Routes() {
                                         {
                                             path: ':id',
                                             element: <PDFView />,
-                                            loader: ({ params }) => pdfViewLoader(auth, setAuth, params),
+                                            loader: orderEditLoader,
                                         },
                                     ],
                                 },
@@ -485,32 +520,82 @@ function Routes() {
                         {
                             path: 'admin',
                             element: (
-                                // <HasRole role="admin_group" fallback={<Navigate to="/" />}>
-                                <ThemeProvider theme={adminTheme}>
-                                    <AdminLayout />
-                                </ThemeProvider>
-                                // </HasRole>
+                                <HasRole role="admin_group" fallback={<Navigate to="/kirjaudu" />}>
+                                    <ThemeProvider theme={adminTheme}>
+                                        <AdminLayout />
+                                    </ThemeProvider>
+                                </HasRole>
                             ),
                             id: 'admin',
-                            errorElement: (
-                                <ThemeProvider theme={adminTheme}>
-                                    <ErrorBoundary />,
-                                </ThemeProvider>
-                            ),
-                            loader: async () => adminLoader(auth, setAuth),
-                            action: async ({ request }) => adminLogOut(auth, setAuth, request),
+                            // errorElement: (
+                            //     <ThemeProvider theme={adminTheme}>
+                            //         <AdminViewBoundary />,
+                            //     </ThemeProvider>
+                            // ),
+                            loader: adminLoader,
+                            action: adminLogOut,
                             children: [
                                 {
                                     index: true,
                                     element: <Overview />,
                                 },
                                 {
-                                    path: 'pagetest',
-                                    element: <PageTest />,
-                                },
-                                {
                                     path: 'tilastot',
                                     element: <Stats />,
+                                },
+                                {
+                                    path: 'tilaukset',
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <OrdersGrid />,
+                                            loader: ordersListLoader,
+                                        },
+                                        {
+                                            path: ':id',
+                                            element: <Outlet />,
+                                            children: [
+                                                {
+                                                    index: true,
+                                                    element: <OrderView isAdmin />,
+                                                    errorElement: <OrderViewError />,
+                                                    loader: orderViewLoader,
+                                                },
+                                                {
+                                                    path: 'muokkaa',
+                                                    element: <OrderEdit />,
+                                                    errorElement: <OrderViewError />,
+                                                    loader: orderEditLoader,
+                                                    action: orderEditAction,
+                                                },
+                                                {
+                                                    path: 'poista',
+                                                    element: <AdminOrderDelete randomInt={getRandomInt()} />,
+                                                    errorElement: <OrderViewError />,
+                                                    loader: orderEditLoader,
+                                                    action: orderDeleteAction,
+                                                },
+                                            ],
+                                        },
+                                        {
+                                            path: 'sahkopostilista',
+                                            element: <AdminOrderEmailList />,
+                                            loader: emailRecipientsLoader,
+                                            action: adminEmailRecipientsAction,
+                                        },
+                                    ],
+                                },
+                                {
+                                    path: 'tuotteet',
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <ProductsGrid />,
+                                            loader: productListLoader,
+                                        },
+                                    ],
                                 },
                                 {
                                     path: 'kayttajat',
@@ -518,22 +603,40 @@ function Routes() {
                                     children: [
                                         {
                                             index: true,
-                                            element: <UsersList />,
+                                            element: <UsersGrid />,
+                                            errorElement: <UserError />,
                                             id: 'kayttajat',
-                                            loader: async () => usersListLoader(auth, setAuth),
+                                            loader: usersListLoader,
                                         },
                                         {
-                                            path: ':id',
+                                            path: ':userid',
                                             element: <UserEdit />,
-                                            loader: async ({ params }) => userEditLoader(auth, setAuth, params),
-                                            action: async ({ request, params }) =>
-                                                userEditAction(auth, setAuth, request, params),
+                                            errorElement: <UserError />,
+                                            loader: userEditLoader,
+                                            action: userEditAction,
+                                        },
+                                        {
+                                            path: ':userid/poista',
+                                            element: <UserDelete randomInt={getRandomInt()} />,
+                                            errorElement: <UserError />,
+                                            loader: userEditLoader,
+                                            action: userDeleteAction,
+                                        },
+                                        {
+                                            path: ':userid/osoitteet/:aid',
+                                            element: <UserAddressEdit />,
+                                            errorElement: <UserError />,
+                                            loader: userAddressEditLoader,
+                                            action: adminUserAddressEditAction,
+                                        },
+                                        {
+                                            path: ':userid/osoitteet/luo',
+                                            element: <UserAddressCreate />,
+                                            errorElement: <UserError />,
+                                            loader: userAddressCreateLoader,
+                                            action: adminUserAddressCreateAction,
                                         },
                                     ],
-                                },
-                                {
-                                    path: 'hakemukset',
-                                    element: <h2 style={{ textAlign: 'center' }}>Tässä on hakemukset</h2>,
                                 },
                                 {
                                     path: 'varastot',
@@ -541,42 +644,70 @@ function Routes() {
                                     children: [
                                         {
                                             index: true,
-                                            element: <StoragesList />,
-                                            loader: async () => storagesListLoader(auth, setAuth),
+                                            element: <StoragesGrid />,
+                                            loader: storagesListLoader,
                                         },
                                         {
                                             path: ':id',
                                             element: <StorageEdit />,
-                                            loader: async ({ params }) => storageEditLoader(auth, setAuth, params),
-                                            action: async ({ request, params }) =>
-                                                storageEditAction(auth, setAuth, request, params),
+                                            loader: storageEditLoader,
+                                            action: storageEditAction,
+                                        },
+                                        {
+                                            path: ':id/poista',
+                                            element: <StorageDelete randomInt={getRandomInt()} />,
+                                            loader: storageEditLoader,
+                                            action: storageDeleteAction,
+                                        },
+                                        // todo: move these two into a singular path, StorageProductsTransferBase
+                                        {
+                                            path: ':id/siirto',
+                                            element: <StorageProductsTransfer />,
+                                            loader: productTransferLoader,
+                                            action: productsTransferAction,
+                                        },
+                                        {
+                                            path: ':id/siirtotemp',
+                                            element: <StorageProductsHandleItemsTransfer />,
+                                            loader: productTransferLoader,
+                                            action: productsTransferAction,
+                                        },
+                                        {
+                                            path: 'luo',
+                                            element: <StorageCreate />,
+                                            action: storageCreateAction,
                                         },
                                     ],
                                 },
                                 {
-                                    path: 'varastot/luo',
-                                    element: <AddStorage />,
-                                    action: async ({ request }) => storageCreateAction(auth, setAuth, request),
-                                },
-                                {
                                     path: 'tiedotteet',
-                                    element: <BulletinPosts />,
-                                    action: async ({ request }) => adminBulletinsAction(auth, setAuth, request),
+                                    element: <Outlet />,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <BulletinPosts />,
+                                            loader: adminBulletinsLoader,
+                                            action: adminBulletinsAction,
+                                        },
+                                        {
+                                            path: ':id/muokkaa',
+                                            element: <BulletinPostEdit />,
+                                            loader: adminBulletinLoader,
+                                            action: adminBulletinsAction,
+                                        },
+                                        {
+                                            path: 'luo',
+                                            element: <BulletinPostCreate />,
+                                            loader: createBulletinLoader,
+                                            action: createBulletinAction,
+                                        },
+                                    ],
                                 },
                                 {
-                                    path: 'tiedotteet/:id/muokkaa',
-                                    element: <ModifyBulletinPost />,
-                                },
-                                {
-                                    path: 'tiedotteet/luo',
-                                    element: <CreateBulletinPost />,
-                                    action: async ({ request }) => createBulletinAction(auth, setAuth, request),
-                                },
-                                {
-                                    path: ':saapuneet',
+                                    path: 'viestit',
                                     element: <AdminInbox />,
-                                    loader: async ({ request }) => adminInboxLoader(auth, setAuth, request),
-                                    action: async ({ request }) => adminInboxAction(auth, setAuth, request),
+                                    loader: adminInboxLoader,
+                                    action: adminInboxAction,
                                 },
                             ],
                         },
@@ -584,9 +715,12 @@ function Routes() {
                         {
                             path: 'pyorat',
                             element: (
-                                <ThemeProvider theme={bikeTheme}>
-                                    <BikesLayout />
-                                </ThemeProvider>
+                                // TODO: Mihin navigoidaan jos oikeudet eivät riitä? ErrorBoundaryyn ohje pyytää oikeuksia esimieheltä?
+                                <HasRole role="bicycle_group" fallback={<Navigate to="/kirjaudu" />}>
+                                    <ThemeProvider theme={bikeTheme}>
+                                        <BikesLayout />
+                                    </ThemeProvider>
+                                </HasRole>
                             ),
                             children: [
                                 {
@@ -630,16 +764,15 @@ function Routes() {
                                                 },
                                                 {
                                                     path: ':id',
-                                                    element: <ModifyBikeOrder createNewPacket={false} />,
+                                                    element: <ModifyBikePacket createNewPacket={false} />,
                                                     loader: async ({ params }) =>
-                                                        modifyBikeOrderLoader(auth, setAuth, params),
+                                                        modifyBikePacketLoader(auth, setAuth, params),
                                                     action: async ({ request, params }) =>
-                                                        modifyBikeOrderAction(auth, setAuth, request, params),
+                                                        modifyBikePacketAction(request, params),
                                                     children: [
                                                         {
                                                             path: 'poista',
-                                                            action: async ({ params }) =>
-                                                                deletePacketAction(auth, setAuth, params),
+                                                            action: async ({ params }) => deletePacketAction(params),
                                                         },
                                                     ],
                                                 },
@@ -647,10 +780,10 @@ function Routes() {
                                         },
                                         {
                                             path: 'lisaapaketti',
-                                            element: <ModifyBikeOrder createNewPacket={true} />,
-                                            loader: async ({ params }) => createBikeOrderLoader(auth, setAuth, params),
+                                            element: <ModifyBikePacket createNewPacket={true} />,
+                                            loader: async ({ params }) => createBikePacketLoader(auth, setAuth, params),
                                             action: async ({ request, params }) =>
-                                                createNewPacketAction(auth, setAuth, request, params),
+                                                createNewPacketAction(request, params),
                                         },
                                         {
                                             path: 'muokkaa',
@@ -663,7 +796,8 @@ function Routes() {
                                                 {
                                                     path: ':id',
                                                     element: <ModifyBikePage createNewBike={false} />,
-                                                    loader: async ({ params }) => bikeLoader(auth, setAuth, params),
+                                                    loader: async ({ params }) =>
+                                                        modifyBikeLoader(auth, setAuth, params),
                                                     action: async ({ request, params }) =>
                                                         modifyBikeAction(auth, setAuth, request, params),
                                                     children: [

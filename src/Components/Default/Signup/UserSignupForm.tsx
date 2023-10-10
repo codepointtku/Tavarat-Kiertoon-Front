@@ -122,7 +122,6 @@ function UserForm() {
                                 placeholder="Tilin omistajan etunimi"
                                 {...register('firstname', {
                                     required: { value: true, message: 'Etunimi on pakollinen' },
-                                    minLength: { value: 1, message: 'Etunimen oltava vähintään 1 merkki' },
                                 })}
                                 error={!!formErrors.firstname}
                                 helperText={formErrors.firstname?.message?.toString() || ' '}
@@ -139,7 +138,6 @@ function UserForm() {
                                 placeholder="Tilin omistajan sukunimi"
                                 {...register('lastname', {
                                     required: { value: true, message: 'Sukunimi on pakollinen' },
-                                    minLength: { value: 1, message: 'Sukunimen on oltava vähintään 1 merkki' },
                                 })}
                                 error={!!formErrors.lastname}
                                 helperText={formErrors.lastname?.message?.toString() || ' '}
@@ -161,14 +159,11 @@ function UserForm() {
                             id="input-phonenumber"
                             type="text"
                             label="Puhelinnumero"
-                            placeholder="010 123 1234"
+                            placeholder="010 1231234"
                             {...register('phonenumber', {
                                 required: { value: true, message: 'Puhelinnumero on pakollinen' },
-                                minLength: { value: 1, message: 'Puhelinnumeron on oltava vähintään 1 merkki' },
-                                // pattern: {
-                                //     value: /.+@turku.fi$|.+@edu.turku.fi$/,
-                                //     message: 'Puhelinnumero muodossa 010 123 1234',
-                                // },
+                                minLength: { value: 7, message: 'Puhelinnumeron on vähintään 7 merkkiä' },
+                                maxLength: { value: 15, message: 'Puhelinnumero on enintään 15 merkkiä' },
                             })}
                             error={!!formErrors.phonenumber}
                             helperText={formErrors.phonenumber?.message?.toString() || ' '}
@@ -194,7 +189,6 @@ function UserForm() {
                                 placeholder="Tavaran vastaanotto-osoite"
                                 {...register('address', {
                                     required: { value: true, message: 'Osoite on pakollinen' },
-                                    minLength: { value: 1, message: 'Osoitteen on oltava vähintään 1 merkki' },
                                 })}
                                 error={!!formErrors.address}
                                 helperText={formErrors.address?.message?.toString() || ' '}
@@ -236,7 +230,6 @@ function UserForm() {
                             placeholder="Turku"
                             {...register('town', {
                                 required: { value: true, message: 'Kaupunki on pakollinen' },
-                                minLength: { value: 1, message: 'Kaupungin on oltava vähintään 1 merkki' },
                             })}
                             error={!!formErrors.town}
                             helperText={formErrors.town?.message?.toString() || ' '}
