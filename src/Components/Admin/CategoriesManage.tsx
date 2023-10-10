@@ -66,8 +66,6 @@ function CategoryTree() {
     const [selectedCategory, setSelectedCategory] = useState<CategoryObject | null>(null);
     let selectedNodeRef = useRef<string | null>(null);
 
-    console.log(selectedNodeRef);
-
     const handleClick = (node: any) => {
         selectedNodeRef.current = node;
         //         Argument of type 'string | null' is not assignable to parameter of type 'SetStateAction<CategoryObject | null>'.
