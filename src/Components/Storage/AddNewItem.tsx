@@ -413,8 +413,8 @@ function AddNewItem() {
                             endAdornment: <InputAdornment position="end">kg</InputAdornment>,
                         }}
                         // required
-                        error={!!errors.amount}
-                        helperText={errors.amount?.message || ' '}
+                        error={!!errors.weight}
+                        helperText={errors.weight?.message || ' '}
                     />
                     <TextField
                         id="hinta"
@@ -433,8 +433,8 @@ function AddNewItem() {
                         InputProps={{
                             endAdornment: <InputAdornment position="end">€</InputAdornment>,
                         }}
-                        error={!!errors.amount}
-                        helperText={errors.amount?.message || ' '}
+                        error={!!errors.weight}
+                        helperText={errors.weight?.message || ' '}
                     />
                     <TextField
                         fullWidth
