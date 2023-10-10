@@ -322,11 +322,13 @@ function ProductDetails() {
                                                             >
                                                                 {new Date(log?.date).toLocaleString('fi-FI')}{' '}
                                                                 {log?.action}{' '}
-                                                                <Link to={`/admin/kayttajat/${log?.user}`}>
-                                                                    {/* <Typography variant="body2" color="text.secondary"> */}
-                                                                    Käyttäjä:{log?.user}
-                                                                    {/* </Typography> */}
-                                                                </Link>
+                                                                {auth.admin_group ? (
+                                                                    <Link to={`/admin/kayttajat/${log?.user}`}>
+                                                                        Käyttäjä:{log?.user}
+                                                                    </Link>
+                                                                ) : (
+                                                                    `Käyttäjä: ${log?.user}`
+                                                                )}
                                                             </Typography>
                                                         </Box>
                                                     ))}
