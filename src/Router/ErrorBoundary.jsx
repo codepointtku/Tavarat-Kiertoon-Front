@@ -31,6 +31,8 @@ function ErrorBoundary() {
                 <AlertTitle>Jokin meni pieleen</AlertTitle>
                 {
                     {
+                        // TODO: navigoi pyöräpuolen etusivulle, riippuen mistä tultiin?
+                        //Vaihtoehtoisesti: poista, HasRole-komponentti hoitaa uudelleenohjauksen eri osioissa?
                         unauthorized: <Navigate to="/kirjaudu" />,
                         axios: (
                             <Typography variant="h6">

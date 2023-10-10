@@ -176,9 +176,16 @@ test.describe('varasto tilaukset', () => {
     });
 });
 
+test.describe('varasto tuotteet', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('varasto/tuotteet');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
 test.describe('varasto luo', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('varasto/luo');
+        await page.goto('varasto/tuotteet/luo');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
 });
