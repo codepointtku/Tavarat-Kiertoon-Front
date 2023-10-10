@@ -314,7 +314,7 @@ function CategoryTree() {
                                     Lisää
                                 </Button>
                                 {selectedCategory?.level === 2 && (
-                                    <Typography fontSize="small" color="info.main">
+                                    <Typography fontSize="14px" color="info.main">
                                         Kategoriarakenteen syvyys on rajoitettu kolmeen tasoon
                                     </Typography>
                                 )}
