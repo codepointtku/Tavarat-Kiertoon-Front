@@ -11,6 +11,7 @@ function ErrorBoundary() {
     };
 
     const errorType = (err) => {
+        console.log(err);
         if (err?.status === 401 || err?.response?.status === 401) {
             console.log('unauthorized in errorboundary');
             return 'unauthorized';

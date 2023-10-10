@@ -452,7 +452,6 @@ const adminLoader = async () => {
             .userRetrieve()
             // this could be removed if logic is moved to errorBoundary
             .catch((e) => {
-                console.log('adminLoader userApi.userRetrieve error', e);
                 // Todo redirect to admin/login or /login
                 return redirect('/kirjaudu');
             }),

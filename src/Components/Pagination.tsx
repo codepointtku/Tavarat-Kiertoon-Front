@@ -2,7 +2,7 @@ import { createSearchParams, useLocation, useSearchParams } from 'react-router-d
 import { useEffect, useState } from 'react';
 import { Box, TablePagination } from '@mui/material';
 
-function Pagination({ count, itemsText }: { count?: number; itemsText?: string; sticky?: boolean }) {
+function Pagination({ count, itemsText }: { count?: number; itemsText?: string }) {
     const location = useLocation();
     const [searchParams, setSearchParams] = useSearchParams();
     const [page, setPage] = useState(parseInt(searchParams.get('sivu') || '1'));

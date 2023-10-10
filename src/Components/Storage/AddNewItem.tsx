@@ -16,13 +16,15 @@ import {
     FormHelperText,
     FormControl,
     InputLabel,
-    type SelectChangeEvent,
     Grid,
     Paper,
     IconButton,
     Typography,
     InputAdornment,
+    type SelectChangeEvent,
 } from '@mui/material';
+
+import { CropFree, Delete } from '@mui/icons-material';
 
 // import imageCompression from 'browser-image-compression';
 import Html5QrcodePlugin from '../../Utils/qrcodeScanner';
@@ -30,9 +32,9 @@ import Barcode from 'react-barcode';
 
 import TypographyTitle from '../TypographyTitle';
 import AlertBox from '../AlertBox';
+
 import type { rootLoader, storageProductsLoader } from '../../Router/loaders';
 import type { addProductAction } from '../../Router/actions';
-import { CropFree, Delete } from '@mui/icons-material';
 
 type PicUpload = {
     file: File;
@@ -42,9 +44,8 @@ type PicUpload = {
 function AddNewItem() {
     const [qrScanOpen, setQrScanOpen] = useState(false);
     const [fileList, setFilelist] = useState<PicUpload[]>([]);
-    const { categories, categoryTree } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
+    const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const { storages, colors } = useLoaderData() as Awaited<ReturnType<typeof storageProductsLoader>>;
-    // console.log('categories:', categories, 'storages:', storages, 'colors:', colors);
     const submit = useSubmit();
     const actionData = useActionData() as Awaited<ReturnType<typeof addProductAction>>;
     const navigation = useNavigation();
@@ -57,11 +58,7 @@ function AddNewItem() {
         watch,
         setValue,
         getValues,
-        formState: {
-            errors,
-            // isSubmitting,
-            isSubmitSuccessful,
-        },
+        formState: { errors, isSubmitSuccessful },
     } = useForm<{
         available: boolean;
         amount: number;
@@ -81,23 +78,10 @@ function AddNewItem() {
         // after first error, shows errors on every change
         mode: 'onTouched',
         defaultValues: {
-            // defaultValues for faster testing
             available: true,
             shelf_id: '',
             barcode: '',
-            // storages: undefined,
-
-            // amount: 1,
-            // price: 99.0,
-            // shelf_id: '',
-            // measurements: 'wrdrqwf',
-            // weight: 0.0,
-            // name: 'testi',
-            // barcode: '1234',
-            // free_description: 'testi',
-            // category: 10,
             colors: [],
-            // // pictures: [1],
         },
     });
 
@@ -106,8 +90,6 @@ function AddNewItem() {
     const description = watch('free_description');
     const barcode = watch('barcode');
     const colorsSelected = watch('colors');
-
-    // console.log('errors', errors);
 
     // QR code scanner
     const onNewScanResult = (decodedText: string, decodedResult: any) => {
@@ -121,13 +103,9 @@ function AddNewItem() {
     const RemoveImage = (id: number) => {
         setFilelist((prevFileList) => prevFileList.filter((file, index) => index !== id));
         setValue('pictures', []);
-        // setValue('pictures', getValues('pictures') ? getValues('pictures').filter((file, index) => index !== id) : []);
     };
     const handlePictureChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const pictureFileList = getValues('pictures');
-        // TODO: check if there are already 6 pictures, if so, don't add more
-        console.log('pictureFileList:', pictureFileList);
-        console.log(fileList);
 
         // // Image preview with base 64 encoding
 
@@ -144,12 +122,6 @@ function AddNewItem() {
                 return null;
             });
         }
-
-        // // Simple image add alternative
-        // Array.from(files).map((file) => {
-        //     // TODO clean up objectURLs from memory ???
-        //     setImgUrls([...imgUrls, URL.createObjectURL(file)]);
-        // });
     };
 
     const onSubmit = async (data: any) => {
@@ -157,7 +129,6 @@ function AddNewItem() {
 
         console.log(data);
         Object.entries(data).forEach(([key, value]) => {
-            // console.log(key, value);
             if (key !== 'pictures' && key !== 'colors') formData.append(key, data[key]);
         });
 
@@ -169,33 +140,6 @@ function AddNewItem() {
             encType: 'multipart/form-data',
         });
     };
-
-    // // TODO: add image compression
-    // // commented code left for future image upload improvements
-
-    // await apiCall(auth, setAuth, '/products/', 'post', formData, {
-    //     headers: { 'Content-Type': 'multipart/form-data' },
-    // });
-
-    // const uploadFile = async (files) => {
-    //     const options = {
-    //         maxSizeMB: 1,
-    //         useWebWorker: true,
-    //     };
-
-    //     const uploads = await Promise.all(Object.values(files).map(async (file) => imageCompression(file, options)));
-    //     // // some code from kuvatestit branch, could be reused if pictures need to be sent before sending whole form:
-    //     // // bring images to back-end with a call, then setItems into images brought back.
-    //     // console.log(uploads);
-    //     // const response = await axios.post('http://localhost:8000/pictures/', uploads, {
-    //     //     headers: { 'content-type': 'multipart/form-data' },
-    //     // });
-    //     // console.log('axios pictures post', response.data);
-    //     // setValue('pictures', response.data);
-    //     setValue('pictures', uploads);
-    // };
-
-    // console.log('errors', errors);
 
     return (
         <>
@@ -277,12 +221,8 @@ function AddNewItem() {
                         })}
                         // inputProps for underlying html input
                         inputProps={{
-                            // test if numeric works on tablet
                             inputMode: 'numeric',
-                            // pattern: '[0-9]*',
                             title: 'Määrä',
-                            // min: '1',
-                            // max: '1000',
                             required: false,
                         }}
                         // InputProps for MUI input
@@ -298,17 +238,10 @@ function AddNewItem() {
                         id="storage-select"
                         select
                         label="Varasto"
-                        // TODO productin edittiin: miten toteutetaan tuotteen lisääminen eri varastoon kuin olemassaolevat tuotteet? Halutaanko tätä välttää?
-                        // defaultvalue set to fix this MUI warning:
-                        // MUI: You have provided an out-of-range value `undefined` for the select (name="storages") component. Consider providing a value that matches one of the available options or ''.
-                        defaultValue={
-                            // getValues('storages') ||
-                            ''
-                        }
+                        defaultValue={''}
                         {...register('storages', {
                             required: { value: true, message: 'Varasto on valittava' },
                         })}
-                        //  TODO default varastosijainti sama kuin varastokäyttäjätilin sijainti? - Ei tarvetta aluksi
                         inputProps={{ required: false }}
                         required
                         error={!!errors.storages}
@@ -390,7 +323,6 @@ function AddNewItem() {
                     </Paper>
                 </Grid>
 
-                {/* TODO: change all select fields to use Controller to fix issues with MUI: https://react-hook-form.com/docs/usecontroller/controller  */}
                 <Grid item xs={12} md={6}>
                     <TextField
                         fullWidth
@@ -406,26 +338,12 @@ function AddNewItem() {
                         error={!!errors.category}
                         helperText={errors.category?.message || ' '}
                     >
-                        {/* TODO Uusia kategorioita voi luoda vain admin, huomautus varastokäyttäjälle? "ota yhteyttä adminiin kun tarvitaan uusi kategoria" */}
-                        {/* TODO kategorian valikkoon valittavaksi vain alimmat kategoriat. ylemmät väliotsikoiksi? "valitse alakategoria tai "muut tuolit" "  */}
-                        {/* {categories?.map((category) => (
-                            <MenuItem
-                                // TODO: better select - disabled if category has subcategories
-                                key={category.id}
-                                value={category.id}
-                            >
-                                {category.name}
-                            </MenuItem>
-                        ))} */}
-                        {/* // TODO: map categories, as expandable tree, with only the level 2 categories selectable? use current catTree from front page, in modal? */}
-                        {/* TODO: check if ListSubheader would be suitable for this. https://mui.com/material-ui/react-select/#grouping */}
                         {categories?.map((category) => (
                             <MenuItem key={category.id} value={category.id} disabled={category.level !== 2}>
                                 {category.name}
                             </MenuItem>
                         ))}
                     </TextField>
-                    {/* TODO Värin luonti modaali tms */}
                     <FormControl error={!!errors.colors} fullWidth>
                         <InputLabel htmlFor="component-outlined">Väri</InputLabel>
                         <Select
@@ -449,12 +367,8 @@ function AddNewItem() {
                                 </Box>
                             )}
                         >
-                            {/* TODO värikenttä, uuden värin lisäys mahdollisuus, backend hyväksyy(?) stringin ja luo uuden ellei ole olemassa. Lisäkenttä lisää uusi väri */}
-                            {/* TODO uuden värin lisäyksen yhteydessä rootLoaderin on mahdollisesti lauettava uudelleen, jotta uusi väri näkyy heti valikossa */}
-                            {/* TODO värin nimen oltava muotoa iso alkukirjain, ilman välejä, muutettava oikeaksi ennen lähetystä jottei tule "meren sininen" ja "Merensininen" */}
                             {colors?.map((color) => (
                                 <MenuItem key={color.id} value={color.id}>
-                                    {/* {color.name} */}
                                     <Checkbox checked={colorsSelected.indexOf(color.id) > -1} />
                                     <ListItemText primary={color.name} />
                                 </MenuItem>
@@ -482,18 +396,13 @@ function AddNewItem() {
                         id="weight"
                         type="number"
                         label="Paino"
-                        // placeholder="kg"
                         multiline
                         {...register('weight', {
                             pattern: { value: RegExp('[0-9]*'), message: 'Painon on oltava numero' },
                         })}
                         inputProps={{
-                            // test if numeric works on tablet
                             inputMode: 'numeric',
-                            // pattern: '[0-9]*',
                             title: 'Paino',
-                            // min: '1',
-                            // max: '1000',
                             required: false,
                         }}
                         // InputProps for MUI input
@@ -505,29 +414,22 @@ function AddNewItem() {
                         helperText={errors.amount?.message || ' '}
                     />
                     <TextField
-                        // fullWidth
                         id="hinta"
                         type="number"
                         label="Hinta-arvio"
-                        // placeholder="€"
                         {...register('price', {
                             pattern: { value: RegExp('[0-9]*'), message: 'Hinnan on oltava numero' },
                         })}
                         // inputprops for underlying html input
                         inputProps={{
-                            // test if numeric works on tablet
                             inputMode: 'numeric',
-                            // pattern: '[0-9]*',
                             title: 'Hinta',
-                            // min: '1',
-                            // max: '1000',
                             required: false,
                         }}
                         // InputProps for MUI input
                         InputProps={{
                             endAdornment: <InputAdornment position="end">€</InputAdornment>,
                         }}
-                        // required
                         error={!!errors.amount}
                         helperText={errors.amount?.message || ' '}
                     />
@@ -557,22 +459,16 @@ function AddNewItem() {
                         sx={{ marginTop: 2, marginBottom: 2 }}
                     >
                         Lisää kuvat
-                        {/* TODO mui input? */}
                         <input
                             type="file"
                             accept="image/*"
                             multiple
                             hidden
                             {...register('pictures', {
-                                // TODO tarkistettava että kuvatiedostot ovat oikeaa muotoa, ja niitä on 1-6
-                                // TODO: validaatio ei toimi jos kuvia on jo lisätty(ja poistettu), vaikka kuvia olisi 0
                                 required: { value: true, message: 'Tuotteella on oltava vähintään yksi kuva' },
-                                // minLength: { value: 1, message: 'Tuotteella on oltava vähintään yksi kuva' },
-                                // maxLength: { value: 6, message: 'Kuvia voi olla enintään 6' },
                                 onChange: handlePictureChange,
                                 validate: {
                                     amount: (value) => {
-                                        console.log(value.length, fileList.length);
                                         if (value.length + fileList.length > 6) {
                                             return 'Kuvia voi olla enintään 6';
                                         }
@@ -584,12 +480,6 @@ function AddNewItem() {
                                     },
                                 },
                             })}
-
-                            // setValue in uploadFile
-                            // onChange={(event) => {
-                            //     uploadFile(event.target.files);
-                            // }}
-                            // inputProps={{ required: false }}
                         />
                     </Button>
                     <FormHelperText>{fileList.length} / 6</FormHelperText>
@@ -597,7 +487,6 @@ function AddNewItem() {
                     <Grid container spacing={2}>
                         {fileList.map((pic, index) => (
                             <Grid item xs={12} sm={6} md={4} key={index}>
-                                {/* <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}> */}
                                 <Paper elevation={3} sx={{ position: 'relative', width: '100%', paddingTop: '100%' }}>
                                     <img
                                         src={pic.url}
@@ -611,17 +500,6 @@ function AddNewItem() {
                                             objectFit: 'cover',
                                         }}
                                     />
-                                    {/* <Button
-                                        id="image_del_btn"
-                                        color="error"
-                                        type="button"
-                                        sx={{ height: 30, width: 30, alignSelf: 'center' }}
-                                        onClick={() => {
-                                            RemoveImage(index);
-                                        }}
-                                    >
-                                        Poista
-                                    </Button> */}
                                     <IconButton
                                         id="image_del_btn"
                                         color="error"
