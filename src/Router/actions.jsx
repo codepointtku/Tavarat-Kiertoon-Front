@@ -236,17 +236,6 @@ creates new product
 */
 const addProductAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
-    console.log('formData actionissa :', formData);
-    console.log('get colors', formData.get('colors[]'));
-    console.log('getAll colors', formData.getAll('colors[]'));
-
-    // formData.append('product_item', {
-    //     barcode: formData.get('barcode'),
-    //     available: formData.get('available'),
-    //     storage: formData.get('storage'),
-    //     shelf_id: formData.get('shelf_id'),
-    // });
 
     const newProduct = {
         barcode: formData.get('barcode'),
@@ -262,35 +251,15 @@ const addProductAction = async (auth, setAuth, request) => {
         category: formData.get('category'),
         colors: formData.getAll('colors[]'),
         pictures: formData.getAll('pictures[]'),
-        //pictures: JSON.parse(formData.get('pictures')),
     };
-    console.log(newProduct);
 
-    // const response = await apiCall(auth, setAuth, '/storage/products/', 'post', newProduct, {
-    //     headers: { 'Content-Type': 'multipart/form-data' },
-    // });
     const response = await productsApi.productsCreate(newProduct, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
-    console.log('response actionissa :', response);
     if (response.status === 201) {
         return { type: 'createProduct', status: true };
     }
     return { type: 'createProduct', status: false };
-
-    // placeholder
-    // // id haettava editointia varten
-    // if (request.method === 'PUT') {
-    //     const response = await axios.put(
-    //         'http://localhost:8000/products/:id',
-    //         formData
-    //     );
-    //     console.log(response);
-    //     if (response.status === 201) {
-    //         return 'Tuote lisätty';
-    //     }
-    //     return 'Virhe lisättäessä tuotetta';
-    // }
 };
 
 /*
