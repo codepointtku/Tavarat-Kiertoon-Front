@@ -340,6 +340,9 @@ function AddNewItem() {
                     >
                         {categories?.map((category) => (
                             <MenuItem key={category.id} value={category.id} disabled={category.level !== 2}>
+                                {/* 2 spaces for each category level */}
+                                {category.level === 1 && '-- '}
+                                {category.level === 2 && '---- '}
                                 {category.name}
                             </MenuItem>
                         ))}
