@@ -10,6 +10,7 @@ import arrayToTree from 'array-to-tree';
 import { TreeView, TreeItem } from '@mui/lab';
 import { Box, Button, Container, Divider, IconButton, Popover, Stack, TextField, Typography } from '@mui/material';
 
+import DeselectIcon from '@mui/icons-material/Deselect';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -216,6 +217,15 @@ function CategoryTree() {
                     <Box id="nodeaction-btns-wrapper">
                         <Typography>Valittu: {selectedCategory?.name}</Typography>
                         <Stack direction="row" spacing={4} my="1rem" sx={{ justifyContent: 'center' }}>
+                            <Tooltip title="Poista valinta">
+                                <IconButton
+                                    size="small"
+                                    // sx={{ '&:hover': { backgroundColor: 'success.dark' } }}
+                                    onClick={() => handleChoice(null)}
+                                >
+                                    <DeselectIcon />
+                                </IconButton>
+                            </Tooltip>
                             <Tooltip title="Lisää uusi kategoria tämän alle">
                                 <IconButton
                                     size="small"
