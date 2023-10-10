@@ -248,31 +248,29 @@ function ProductDetails() {
                             </Grid>
                         </Grid>
                         <>
-                            {!location.pathname.includes('admin') ||
-                                (!location.pathname.includes('varasto') && (
-                                    <Box sx={{ mx: 2 }}>
-                                        {productsInSameCategory.results &&
-                                            productsInSameCategory.results.length > 1 && (
-                                                <>
-                                                    <Typography
-                                                        gutterBottom
-                                                        variant="h5"
-                                                        component="div"
-                                                        color="primary.main"
-                                                        sx={{ mt: '7rem' }}
-                                                    >
-                                                        Samankaltaisia tuotteita
-                                                    </Typography>
-                                                    <SimilarProductsCarousel
-                                                        currentId={Number(productId)}
-                                                        similarProducts={
-                                                            productsInSameCategory as unknown as SimilarProductCarouselProps['similarProducts']
-                                                        }
-                                                    />
-                                                </>
-                                            )}
-                                    </Box>
-                                ))}
+                            {!(location.pathname.includes('admin') || location.pathname.includes('varasto')) && (
+                                <Box sx={{ mx: 2 }}>
+                                    {productsInSameCategory.results && productsInSameCategory.results.length > 1 && (
+                                        <>
+                                            <Typography
+                                                gutterBottom
+                                                variant="h5"
+                                                component="div"
+                                                color="primary.main"
+                                                sx={{ mt: '7rem' }}
+                                            >
+                                                Samankaltaisia tuotteita
+                                            </Typography>
+                                            <SimilarProductsCarousel
+                                                currentId={Number(productId)}
+                                                similarProducts={
+                                                    productsInSameCategory as unknown as SimilarProductCarouselProps['similarProducts']
+                                                }
+                                            />
+                                        </>
+                                    )}
+                                </Box>
+                            )}
                             {location.pathname.includes('varasto') && (
                                 // list of product_items, with their storage and barcode, and logs
                                 <Paper variant="outlined" sx={{ p: 5 }} color="primary">
