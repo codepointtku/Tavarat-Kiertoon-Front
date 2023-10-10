@@ -302,11 +302,10 @@ function ProductDetails() {
                                                         Varasto: {item?.storage.name}
                                                     </Typography>
                                                     <Typography variant="body2" color="text.secondary">
-                                                        Viivakoodi: {item?.barcode}
+                                                        {item?.shelf_id && `Varastopaikka: ${item?.shelf_id}`}
                                                     </Typography>
-
                                                     <Typography variant="body2" color="text.secondary">
-                                                        Tila: {item?.status}
+                                                        Viivakoodi: {item?.barcode}
                                                     </Typography>
                                                 </Grid>
                                                 <Grid item>
