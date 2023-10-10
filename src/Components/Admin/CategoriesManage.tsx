@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import arrayToTree from 'array-to-tree';
 
 import { TreeView, TreeItem } from '@mui/lab';
-import { Box, Button, Container, Divider, IconButton, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, Divider, IconButton, Popover, Stack, TextField, Typography } from '@mui/material';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
@@ -59,6 +59,8 @@ function CategoryTree() {
     const { categories, categoryTree } = useLoaderData() as Awaited<ReturnType<typeof categoriesManageLoader>>;
     const categoryNamesMap = categories.map((category) => category.name);
 
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const openPopover = Boolean(anchorEl);
     const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<CategoryObject | null>(null);
     let selectedNodeRef = useRef<string | null>(null);
@@ -165,12 +167,26 @@ function CategoryTree() {
         }
     };
 
-    const onDeleteSubmit = (data: any) => {
-        submit(data, { method: 'delete' });
+    const handleCategoryDelete = () => {
+        if (
+            selectedCategory?.product_count !== 0 ||
+            selectedCategory.children
+            // selectedCategory.children === undefined
+        ) {
+            console.log('ei menny seulast läpi');
+            return;
+        }
+
+        submit({ id: selectedCategory?.id }, { method: 'delete' });
+        setAnchorEl(null);
+        setSelectedCategory(null);
     };
 
+    function handlePopOverOpen(event: React.MouseEvent<HTMLElement>) {
+        setAnchorEl(event.currentTarget);
+    }
+
     const handleChoice = (value: string) => {
-        // console.log(value);
         setSelectedChoice(value);
     };
 
@@ -205,11 +221,11 @@ function CategoryTree() {
                             <Tooltip title="Lisää uusi kategoria tämän alle">
                                 <IconButton
                                     size="small"
-                                    sx={{ '&:hover': { backgroundColor: 'success.main' } }}
+                                    sx={{ '&:hover': { backgroundColor: 'success.dark' } }}
                                     onClick={() => handleChoice('add')}
                                     disabled={selectedCategory.level === 2}
                                 >
-                                    <AddCircleOutlineIcon />
+                                    <AddCircleOutlineIcon color={selectedChoice === 'add' ? 'success' : 'inherit'} />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Nimeä uudelleen">
@@ -218,7 +234,7 @@ function CategoryTree() {
                                     sx={{ '&:hover': { backgroundColor: 'warning.main' } }}
                                     onClick={() => handleChoice('mutate')}
                                 >
-                                    <EditIcon />
+                                    <EditIcon color={selectedChoice === 'mutate' ? 'warning' : 'inherit'} />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Tuotteiden siirto toiseen kategoriaan">
@@ -234,11 +250,37 @@ function CategoryTree() {
                                 <IconButton
                                     size="small"
                                     sx={{ '&:hover': { backgroundColor: 'error.main' } }}
-                                    onClick={() => handleChoice('delete')}
+                                    onClick={handlePopOverOpen}
                                 >
                                     <DeleteForeverIcon />
                                 </IconButton>
                             </Tooltip>
+
+                            <Popover
+                                open={openPopover}
+                                anchorEl={anchorEl}
+                                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                                onClose={() => setAnchorEl(null)}
+                                sx={{ mt: 1 }}
+                            >
+                                <Stack
+                                    direction="row"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    sx={{ p: '1rem' }}
+                                    spacing="1rem"
+                                >
+                                    <Typography variant="body2">
+                                        Oletko varma? Tämä toiminto on peruuttamaton.
+                                    </Typography>
+                                    <Button size="small" variant="outlined" onClick={handleCategoryDelete}>
+                                        Kyllä
+                                    </Button>
+                                    <Button size="small" variant="outlined" onClick={() => setAnchorEl(null)}>
+                                        Peruuta
+                                    </Button>
+                                </Stack>
+                            </Popover>
                         </Stack>
                         <Divider />
                     </Box>
