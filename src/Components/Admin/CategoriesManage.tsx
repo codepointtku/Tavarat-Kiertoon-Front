@@ -159,7 +159,7 @@ function CategoryTree() {
                 ...data,
                 id: selectedCategory?.id,
                 name: getValues('cat'),
-                // parent: 9999999999999999999999999999999999999999
+                parent: selectedCategory?.parent,
             };
 
             submit(mutatedCategory, { method: 'put' });
