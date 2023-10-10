@@ -150,14 +150,17 @@ function CategoryTree() {
         }
 
         if (selectedChoice === 'mutate') {
+            // parent	integer
+            // nullable: true
+
             const mutatedCategory = {
                 ...data,
                 id: selectedCategory?.id,
                 name: getValues('cat'),
+                // parent: 9999999999999999999999999999999999999999
             };
 
             submit(mutatedCategory, { method: 'put' });
-
             reset();
         }
     };
