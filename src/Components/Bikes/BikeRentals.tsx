@@ -16,8 +16,8 @@ import { useLoaderData } from 'react-router';
 import StyledTableCell from '../StyledTableCell';
 import { GridDeleteIcon } from '@mui/x-data-grid';
 import { useState } from 'react';
-import { bikeRentalLoader } from '../../Router/loaders';
-import { Form, useSubmit } from 'react-router-dom';
+import type { bikeRentalLoader } from '../../Router/loaders';
+import { Form, useSubmit, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 interface Rental {
@@ -46,27 +46,34 @@ export default function BikeRentals() {
     const currentRentalStatus = ['ACTIVE', 'FINISHED', 'WAITING'];
 
     const dataRental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalLoader>>;
+    const dataRentalCopy = useLoaderData() as Awaited<ReturnType<typeof bikeRentalLoader>>;
+    const navigate = useNavigate()
     const submit = useSubmit();
     const onSubmit = (data: any) => {
         console.log('data', data);
         submit(data, { method: 'put', action: '/pyorat/pyoravarasto/pyoratilaukset/' });
     };
 
-    const [data, setData] = useState<Rental[]>(dataRental.results);
+    // const [data, setData] = useState<Rental[]>(dataRental.results);
+    const [data, setData] = useState(dataRental.results);
     const { formState, handleSubmit, register, watch, setValue } = useForm({
-        defaultValues: { bikeRentalState: dataRental.results[0].state },
+        defaultValues: { bikeRentalState: dataRental.results[0]?.state },
     });
     const { errors } = formState;
 
     const handleRemoveOrder = (id: number) => {
         const updatedData = data?.filter((rental) => rental.id !== id);
         setData(updatedData);
-        submit({ id: id }, { method: 'delete', action: '/pyorat/pyoravarasto/pyoratilaukset/' });
+        submit({ id: String(id) }, { method: 'delete', action: '/pyorat/pyoravarasto/pyoratilaukset/' });
     };
 
     const handleStatusChange = (id: number, status: string) => {
         setValue(`bikeRentalState${id}`, status);
     };
+
+    if(dataRental.results?.length === 0) {
+        return <Typography variant="h6" margin="auto">ei tilauksia</Typography>
+    }
 
     return (
         <Box component={Form} onSubmit={handleSubmit(onSubmit)} width="100%">
@@ -77,20 +84,25 @@ export default function BikeRentals() {
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell align="right">Alotuspäivä</StyledTableCell>
+                            <StyledTableCell align="right">Aloituspäivä</StyledTableCell>
                             <StyledTableCell align="right">Lopetuspäivä</StyledTableCell>
-                            <StyledTableCell align="right">Status</StyledTableCell>
+                            <StyledTableCell align="right">Tila</StyledTableCell>
                             <StyledTableCell align="right">Osoite</StyledTableCell>
                             <StyledTableCell align="right">Nouto</StyledTableCell>
                             <StyledTableCell align="right">Tilaaja</StyledTableCell>
                             <StyledTableCell align="right">Puh</StyledTableCell>
-                            <StyledTableCell align="right">extra info</StyledTableCell>
+                            <StyledTableCell align="right">lisätiedot</StyledTableCell>
                             <StyledTableCell align="right">Remove</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {data?.map((rental) => (
-                            <TableRow key={rental.id} hover>
+                            <TableRow
+                                key={rental.id}
+                                style={{ cursor: 'pointer' }}
+                                hover
+                                onClick={() => navigate(`/pyorat/pyoravarasto/pyoratilaukset/${rental.id}`)}
+                            >
                                 <TableCell align="right">{getYearAndMonth(rental.start_date)}</TableCell>
                                 <TableCell align="right">{getYearAndMonth(rental.end_date)}</TableCell>
                                 <TableCell align="right">
