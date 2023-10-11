@@ -265,6 +265,16 @@ const bikeRentalLoader = async (auth, setAuth) => {
     console.log('bikerentalLoader', data);
     return data;
 };
+
+/**
+ * Get one order
+ */
+const bikeRentalViewLoader = async ({ params }) => {
+    const response = await bikesApi.bikesRentalRetrieve(params.id);
+    console.log("bikerentalLoaderasdsasdasdsadsa", response)
+    return response.data;
+};
+
 /**
  * Get all bikepackets and models
  *
@@ -526,6 +536,7 @@ export {
     modifyBikePacketLoader,
     bikeNewModelLoader,
     bikeRentalLoader,
+    bikeRentalViewLoader,
     createBikePacketLoader,
     adminBulletinsLoader,
     adminBulletinLoader,
