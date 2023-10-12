@@ -36,25 +36,48 @@ type PicUpload = {
 interface Props {
     fileList: PicUpload[];
     setFilelist: React.Dispatch<React.SetStateAction<PicUpload[]>>;
-    productData?: ProductDetailResponse | {};
+    productData?:
+        | ProductDetailResponse
+        | {
+              name: string;
+              pictures: { id: number; picture_address: string }[];
+              amount: number;
+              price: number;
+              free_description: string;
+              measurements: string;
+              weight: number;
+              category?: number;
+              product_items: { id: number; barcode: string; storage: { id: string } }[];
+              colors: number[];
+          };
     storages: StorageResponse[];
     categories: CategoryResponse[];
     colorList: Color[];
 }
 
-function ProductForm({ fileList, setFilelist, productData = {}, storages, categories, colorList }: Props) {
-    const {
-        name = '',
-        pictures = [],
-        amount = null,
-        price = 0,
-        free_description = '',
-        measurements = '',
-        weight = 0,
-        category = null,
-        product_items = [],
-        colors = [],
-    } = productData;
+const defaultProductData = {
+    name: '',
+    pictures: [],
+    amount: 0,
+    price: 0,
+    free_description: '',
+    measurements: '',
+    weight: 0,
+    category: undefined,
+    product_items: [],
+    colors: [],
+};
+
+function ProductForm({
+    fileList,
+    setFilelist,
+    productData = defaultProductData,
+    storages,
+    categories,
+    colorList,
+}: Props) {
+    const { name, pictures, amount, price, free_description, measurements, weight, category, product_items, colors } =
+        productData;
     const {
         register,
         handleSubmit,
@@ -89,16 +112,16 @@ function ProductForm({ fileList, setFilelist, productData = {}, storages, catego
             available: true,
             shelf_id: '',
             barcode: product_items[0]?.barcode,
-            storages: product_items[0]?.storage.id,
+            storages: product_items[0]?.storage.id.toString() ?? '',
 
-            amount: amount,
+            amount: amount ?? 0,
             price: price,
             // shelf_id: '',
             measurements: measurements,
             weight: weight,
             name: name,
             free_description: free_description,
-            category: category,
+            category: category ?? undefined,
             colors: colors,
             // pictures: [1],
         },
@@ -181,7 +204,7 @@ function ProductForm({ fileList, setFilelist, productData = {}, storages, catego
 
         Object.values(data?.colors).forEach((color: any) => formData.append('colors[]', color));
 
-        Object.values(oldPictures).forEach((pic) => formData.append('old_pictures[]', pic.id));
+        Object.values(oldPictures).forEach((pic) => formData.append('old_pictures[]', pic.id.toString()));
 
         Object.values(fileList).forEach((pic: PicUpload) => formData.append('new_pictures[]', pic.file));
 
