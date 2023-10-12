@@ -93,7 +93,7 @@ function ColorsManage() {
             )}
 
             {responseStatus?.type === 'colorupdate' && responseStatus?.status === true && (
-                <AlertBox text="Tämä väri jeejee." status="success" timer={3000} />
+                <AlertBox text="Väri lisätty" status="success" timer={3000} />
             )}
 
             <Container maxWidth="xl">
@@ -216,6 +216,11 @@ function ColorsManage() {
                                                                             maxLength: {
                                                                                 value: 30,
                                                                                 message: 'Maksimipituus',
+                                                                            },
+                                                                            validate: (val: string) => {
+                                                                                if (colorNamesMap.includes(val)) {
+                                                                                    return 'Väri on jo järjestelmässä';
+                                                                                }
                                                                             },
                                                                         })}
                                                                         error={!!errors.colormutate}
