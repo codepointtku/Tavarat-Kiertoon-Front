@@ -89,6 +89,7 @@ import AddressCreate from '../Components/Default/Accountpage/AddressCreate';
 import AddressEdit from '../Components/Default/Accountpage/AddressEdit';
 import OrdersHistory from '../Components/Default/Accountpage/OrdersHistory';
 import OrdersActive from '../Components/Default/Accountpage/OrdersActive';
+import SearchWatch from '../Components/Default/Accountpage/SearchWatch';
 
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
@@ -137,6 +138,7 @@ import {
     usersListLoader,
     storageProductsLoader,
     userInfoLoader,
+    searchWatchLoader,
     shoppingCartLoader,
     bikesDefaultLoader,
     bikesListLoader,
@@ -198,6 +200,7 @@ import {
     userAccountPageAction,
     userAddressCreateAction,
     userAddressEditAction,
+    searchWatchCreateAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
@@ -451,6 +454,12 @@ function Routes() {
                                         {
                                             path: 'tilaushistoria',
                                             element: <OrdersHistory />,
+                                        },
+                                        {
+                                            path: 'hakuvahti',
+                                            element: <SearchWatch />,
+                                            loader: searchWatchLoader,
+                                            action: searchWatchCreateAction,
                                         },
                                     ],
                                 },

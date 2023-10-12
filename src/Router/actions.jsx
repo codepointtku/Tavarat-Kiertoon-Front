@@ -1050,6 +1050,21 @@ const resetPasswordAction = async (auth, setAuth, request) => {
     return { type: 'passwordreset', status: false };
 };
 
+const searchWatchCreateAction = async ({ request }) => {
+    const formData = await request.formData();
+    if (request.method === 'DELETE') {
+        const response = await userApi.userSearchwatchDestroy(formData.get('id'));
+        return response;
+    } else if (request.method === 'POST') {
+        const response = await userApi.userSearchwatchCreate({
+            words: formData.get('words').split(' '),
+        });
+        return response;
+    }
+
+    return null;
+};
+
 export {
     userSignupAction,
     frontPageActions,
@@ -1092,4 +1107,5 @@ export {
     deletePacketAction,
     userAddressEditAction,
     userAddressCreateAction,
+    searchWatchCreateAction,
 };

@@ -257,6 +257,15 @@ const addressEditLoader = async ({ params }) => {
     return { addressData };
 };
 
+const searchWatchLoader = async () => {
+    try {
+        const { data } = await userApi.userSearchwatchList();
+        return data;
+    } catch {
+        return null;
+    }
+};
+
 /**
  * Get lists of bikes and packets for front page
  *
@@ -520,7 +529,7 @@ const userInfoLoader = async (request) => {
         userApi.userRetrieve().catch(() => {
             return redirect('/');
         }),
-        ordersApi.ordersUserList(null, null, null, null).catch(() => {
+        ordersApi.ordersUserList().catch(() => {
             return redirect('/');
         }),
     ]);
@@ -546,6 +555,7 @@ export {
     userAddressEditLoader,
     userAddressCreateLoader,
     userInfoLoader,
+    searchWatchLoader,
     bikesDefaultLoader,
     bikesListLoader,
     modifyBikeLoader,
