@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { Form, useSubmit, useLoaderData, Link,  } from 'react-router-dom';
 import type { bikeRentalViewLoader } from '../../Router/loaders';
+import { useForm } from 'react-hook-form';
 
 import {
     Table,
@@ -7,6 +9,7 @@ import {
     TableHead,
     TableCell,
     TableRow,
+    TextField,
     IconButton,
     Box,
     Collapse,
@@ -25,10 +28,38 @@ export default function BikeRentalView() {
     const rental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalViewLoader>>
     const currentRentalStatus = ['WAITING', 'ACTIVE', 'FINISHED'];
 
+    const submit = useSubmit()
+    const onSubmit = (data: any) => {
+        console.log('data', data);
+        console.log('products', data.bikeStock)
+        submit(data, { method: 'put', action: `/pyorat/pyoravarasto/pyoratilaukset/${rental.id}`});
+    };
+
+    const { formState, handleSubmit, register, watch, setValue } = useForm({
+        defaultValues: {
+            startDate: rental?.start_date,
+            endDate: rental?.end_date,
+            state: rental?.state,
+            deliveryAddress: rental?.delivery_address,
+            pickup: rental?.pickup,
+            contact: rental?.contact_name,
+            contactPhoneNumber: rental?.contact_phone_number,
+            extraInfo: rental?.extra_info,
+            user: rental?.user,
+            bikeStock: JSON.stringify(rental?.bike_stock)
+        }
+    });
+
+    const { errors } = formState;
+
+    const handleStatusChange = (status: string) => {
+        setValue('state', status);
+    };
+
     // Parse Date objects from backend data string
     const dateParse = (value: string) => {
         const date = new Date(value);
-        const dateString = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+        const dateString = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
         return dateString;
     };
     
@@ -38,15 +69,35 @@ export default function BikeRentalView() {
                 {`Tilaus #${rental.id}`}
             </Typography>
             <Container maxWidth="xl" component={Paper}>
-                <Box id="bike-rental-info" sx={{ margin: '2rem 0 1rem 0'}}>
+                <Box component={Form} onSubmit={handleSubmit(onSubmit)} id="bike-rental-info" sx={{ margin: '2rem 0 1rem 0'}}>
                     <Table id="bike-rental-state-table">
                         <TableBody>
                             <TableRow>
                                 <TableCell align="right" width="50%" sx={{ fontWeight: 'bold', fontSize: '20px' }}>
                                     Tila:
                                 </TableCell>
-                                <TableCell>
-                                    {rental.state}
+                                <TableCell width="20%">
+                                    <TextField
+                                        select
+                                        label="Muuta tilaa"
+                                        {...register('state', {
+                                            required: 'Pakollinen tieto puuttuu',
+                                        })}
+                                        value={watch('state')}
+                                        fullWidth
+                                        inputProps={{ required: false }}
+                                        required
+                                        onChange={(event) => handleStatusChange(event.target.value)}
+                                    >
+                                        {currentRentalStatus?.map((status) => (
+                                            <MenuItem key={status} value={status}>
+                                                {status}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </TableCell>
+                                <TableCell width="30%">
+                                    <button>Päivitä tila</button>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
@@ -99,7 +150,6 @@ export default function BikeRentalView() {
                         </MenuItem>
                     ))}
                 </div>
-                <div>Tila: {rental.state}</div>
             </Container>
         </>
     )
