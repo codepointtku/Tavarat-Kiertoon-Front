@@ -333,21 +333,21 @@ test.describe('user', () => {
 
 test.describe('user active orders', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/tili');
+        await page.goto('/tili/tilaukset');
         await expect(page.getByText('Virhe sijainnissa /tili/tilaukset')).not.toBeVisible();
     });
 });
 
 test.describe('user order history', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/tili');
+        await page.goto('/tili/tilaushistoria');
         await expect(page.getByText('Virhe sijainnissa /tili/tilaushistoria')).not.toBeVisible();
     });
 });
 
 test.describe('user search watch', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('/tili');
+        await page.goto('/tili/hakuvahti');
         await expect(page.getByText('Virhe sijainnissa /tili/hakuvahti')).not.toBeVisible();
     });
 });
