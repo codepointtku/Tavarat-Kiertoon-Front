@@ -197,30 +197,28 @@ function ProductDetails() {
 
                                                 <Typography variant="body2" color="text.secondary">
                                                     Varasto:{' '}
-                                                    {
-                                                        // show different storage.names of all product_items, separated by comma. don't show one name multiple times, and show times it appears in the list
-                                                        product.product_items
-                                                            .map((item) => item.storage.name)
-                                                            .filter((name, index, self) => self.indexOf(name) === index)
-                                                            .map((name) => (
-                                                                <span key={name}>
-                                                                    {name}
-                                                                    {': '}
-                                                                    {
-                                                                        product.product_items.filter(
-                                                                            (item) => item.storage.name === name
-                                                                        ).length
-                                                                    }
-                                                                    {' kpl'}
-                                                                </span>
-                                                            ))
-                                                    }{' '}
-                                                    Hylly/paikka: 
-                                                    {/* // show different shelf_ids of all product_items,
-                                                    separated by comma. don't show one name multiple times, and show
-                                                    times it appears in the list */}
-                                                    {
-                                                        product.product_items
+                                                    {product.product_items
+                                                        .map((item) => item.storage.name)
+                                                        .filter((name, index, self) => self.indexOf(name) === index)
+                                                        .map((name) => (
+                                                            <span key={name}>
+                                                                {name}
+                                                                {': '}
+                                                                {
+                                                                    product.product_items.filter(
+                                                                        (item) => item.storage.name === name
+                                                                    ).length
+                                                                }
+                                                                {' kpl'}
+                                                            </span>
+                                                        ))}
+                                                    {', '}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    Hylly/paikka:
+                                                    {product.product_items[0]?.shelf_id || ' ei hyllypaikkaa'}
+                                                    {/* Support for multiple shelves, if that feature is implemented: */}
+                                                    {/* {product.product_items
                                                         .map((item) => item.shelf_id)
                                                         .filter((shelf, index, self) => self.indexOf(shelf) === index)
                                                         .map((shelf) => (
@@ -234,11 +232,7 @@ function ProductDetails() {
                                                                 }
                                                                 {' kpl'}
                                                             </span>
-                                                        ))
-
-
-
-                                                    }
+                                                        ))} */}
                                                 </Typography>
                                                 <Paper
                                                     elevation={3}
@@ -251,6 +245,7 @@ function ProductDetails() {
                                                         alignItems: 'center',
                                                         width: 'fit-content',
                                                         paddingX: '1rem',
+                                                        marginTop: '1rem',
                                                     }}
                                                     // TODO : add onClick to open a page to print barcodes
                                                     // onClick={() => setQrScanOpen(true)}
@@ -329,9 +324,9 @@ function ProductDetails() {
                                                         Viivakoodi: {item?.barcode}
                                                     </Typography>
 
-                                                    <Typography variant="body2" color="text.secondary">
+                                                    {/* <Typography variant="body2" color="text.secondary">
                                                         Tila: {item?.status}
-                                                    </Typography>
+                                                    </Typography> */}
                                                 </Grid>
                                                 <Grid item>
                                                     <Typography gutterBottom variant="body1" color="text.secondary">
