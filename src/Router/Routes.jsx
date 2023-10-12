@@ -176,6 +176,7 @@ import {
     cartViewAction,
     createBulletinAction,
     bikeOrderAction,
+    bikeOrderEditAction,
     confirmationAction,
     resetEmailAction,
     resetPasswordAction,
@@ -757,7 +758,8 @@ function Routes() {
                                                 {
                                                     path: ':id',
                                                     element: <BikeRentalView />,
-                                                    loader: bikeRentalViewLoader,                                                    
+                                                    loader: bikeRentalViewLoader,
+                                                    action: bikeOrderEditAction,
                                                 },
                                             ]
                                         },
