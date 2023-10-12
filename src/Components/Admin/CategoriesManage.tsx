@@ -1,14 +1,11 @@
-// import { useMemo } from 'react';
-// import { createContext, useContext } from 'react';
-import { useState } from 'react';
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Form, useSubmit, useLoaderData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import arrayToTree from 'array-to-tree';
 
 import { TreeView, TreeItem } from '@mui/lab';
-import { Box, Button, Container, Divider, IconButton, Popover, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, Divider, Grid, IconButton, Stack, TextField, Typography } from '@mui/material';
 
 import DeselectIcon from '@mui/icons-material/Deselect';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -22,14 +19,10 @@ import InputIcon from '@mui/icons-material/Input';
 
 import HeroText from '../HeroText';
 import HeroHeader from '../HeroHeader';
+import Tooltip from '../Tooltip';
 
 import type { categoriesManageLoader } from '../../Router/loaders';
 import type { CategoryResponse } from '../../api';
-import Tooltip from '../Tooltip';
-
-// interface CategoryTreeIndexes {
-//     [key: number]: [];
-// }
 
 interface FullTree {
     id: string;
@@ -39,7 +32,7 @@ interface FullTree {
 }
 
 interface CategoryObject {
-    id: number | string;
+    id: number | string; // id's are ints except the trees mandatory 'root', hence the str type
     level: number;
     lft: number;
     name: string;
@@ -47,30 +40,24 @@ interface CategoryObject {
     product_count: number;
     rght: number;
     tree_id: number;
-    children?: [];
+    children?: CategoryObject[];
 }
 
-// const NodeContext = createContext(null)
-
-// <NodeContext.Provider value={}>
-
-// </NodeContext.Provider>
+type EmptyObject = Record<string, never>;
 
 function CategoryTree() {
-    const { categories, categoryTree } = useLoaderData() as Awaited<ReturnType<typeof categoriesManageLoader>>;
+    const { categories } = useLoaderData() as Awaited<ReturnType<typeof categoriesManageLoader>>;
     const categoryNamesMap = categories.map((category) => category.name);
 
     const [showDeletePrompt, setShowDeletePrompt] = useState<boolean>(true);
     const [showDeleteErrorMessage, setShowDeleteErrorMessage] = useState<boolean>(false);
     const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
-    const [selectedCategory, setSelectedCategory] = useState<CategoryObject | null>(null);
-    let selectedNodeRef = useRef<string | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<CategoryObject | EmptyObject>({});
+    let selectedNodeRef = useRef<CategoryObject | EmptyObject>({});
 
     const handleClick = (node: any) => {
         selectedNodeRef.current = node;
-        //         Argument of type 'string | null' is not assignable to parameter of type 'SetStateAction<CategoryObject | null>'.
-        //   Type 'string' is not assignable to type 'SetStateAction<CategoryObject | null>'.ts(2345)
-        // let selectedNodeRef: React.MutableRefObject<string | null>
+
         setSelectedCategory(selectedNodeRef.current);
         setShowDeletePrompt(false);
         setShowDeleteErrorMessage(false);
@@ -177,7 +164,7 @@ function CategoryTree() {
 
         submit({ id: selectedCategory?.id }, { method: 'delete' });
         setShowDeletePrompt(false);
-        setSelectedCategory(null);
+        setSelectedCategory({});
         handleChoice(null);
     };
 
@@ -190,241 +177,247 @@ function CategoryTree() {
     };
 
     const handleDeselect = () => {
-        setSelectedCategory(null);
+        setSelectedCategory({});
         handleChoice(null);
-        selectedNodeRef.current = null;
+        selectedNodeRef.current = {};
     };
 
     return (
-        <Stack id="components-wrapper" direction="row" spacing={4} justifyContent="space-between" marginBottom="1rem">
-            <Box id="treeview-container" sx={{ display: 'flex', justifyContent: 'center' }}>
-                <TreeView defaultExpanded={['root']} sx={{ flexGrow: 1, minWidth: 420, overflowY: 'auto' }}>
-                    {renderTree(fullTree)}
-                </TreeView>
-            </Box>
+        <Grid
+            container
+            id="components-wrapper"
+            justifyContent="space-between"
+            gap={6}
+            marginBottom="1rem"
+            flexWrap="wrap-reverse"
+        >
+            <Grid item xs={12} sm={true}>
+                <Box id="treeview-container" sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <TreeView defaultExpanded={['root']} sx={{ flexGrow: 1, minWidth: 380, overflowY: 'auto' }}>
+                        {renderTree(fullTree)}
+                    </TreeView>
+                </Box>
+            </Grid>
 
             {/* /// --- /// */}
-            {/* <NodeActionsDisplay /> :
-             * i'd like to separate this logic to it's own component, but i'll just bang this up and running in here for now */}
-
-            <Stack
-                id="nodeactions-component-container"
-                component={Form}
-                onSubmit={handleSubmit(onSubmit)}
-                direction="column"
-                sx={{
-                    display: 'flex',
-                    flex: '1',
-                    minWidth: 420,
-                    padding: '1rem 2rem 2rem 2rem',
-                }}
-            >
-                {selectedCategory !== null ? (
-                    <Box id="nodeaction-btns-wrapper">
-                        <Typography>Valittu: {selectedCategory?.name}</Typography>
-                        <Stack direction="row" spacing={4} my="1rem" sx={{ justifyContent: 'center' }}>
-                            <Tooltip title="Poista valinta">
-                                <IconButton
-                                    size="small"
-                                    // sx={{ '&:hover': { backgroundColor: 'success.dark' } }}
-                                    onClick={handleDeselect}
-                                >
-                                    <DeselectIcon />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Lisää uusi kategoria tämän alle">
-                                <IconButton
-                                    size="small"
-                                    sx={{ '&:hover': { backgroundColor: 'success.dark' } }}
-                                    onClick={() => handleChoice('add')}
-                                    disabled={selectedCategory.level === 2}
-                                >
-                                    <AddCircleOutlineIcon color={selectedChoice === 'add' ? 'success' : 'inherit'} />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Nimeä uudelleen">
-                                <IconButton
-                                    size="small"
-                                    sx={{ '&:hover': { backgroundColor: 'warning.main' } }}
-                                    onClick={() => handleChoice('mutate')}
-                                >
-                                    <EditIcon color={selectedChoice === 'mutate' ? 'warning' : 'inherit'} />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Tuotteiden siirto toiseen kategoriaan">
-                                <IconButton
-                                    size="small"
-                                    sx={{ '&:hover': { backgroundColor: 'info.main' } }}
-                                    onClick={() => handleChoice('transfer')}
-                                >
-                                    <InputIcon />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Poista">
-                                <IconButton
-                                    size="small"
-                                    sx={{ '&:hover': { backgroundColor: 'error.main' } }}
-                                    onClick={() => handleChoice('delete')}
-                                >
-                                    <DeleteForeverIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Stack>
-                        <Divider />
-                    </Box>
-                ) : (
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flex: '1',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <Typography>Ei valittua kategoriaa</Typography>
-                    </Box>
-                )}
-
-                <Box id="nodestat-action-area">
-                    <Stack marginTop="1.6rem">
-                        {selectedChoice === 'add' && (
-                            <Box>
-                                <TextField
-                                    id="input-color"
-                                    type="text"
-                                    label="Uusi kategoria"
-                                    {...register('cat', {
-                                        required: {
-                                            value: true,
-                                            message: 'Syötä nimi',
-                                        },
-                                        minLength: {
-                                            value: 3,
-                                            message: 'Nimen tulee olla vähintään kolme merkkiä pitkä',
-                                        },
-                                        maxLength: {
-                                            value: 30,
-                                            message: 'Maksimipituus',
-                                        },
-                                        validate: (val: string) => {
-                                            if (categoryNamesMap.includes(val)) {
-                                                return 'Kategoria on jo järjestelmässä';
-                                            }
-                                        },
-                                    })}
-                                    color={isValid ? 'success' : 'primary'}
-                                    error={!!errors.cat}
-                                    helperText={errors.cat?.message?.toString() || ' '}
-                                    disabled={selectedCategory?.level === 2}
-                                    fullWidth
-                                />
-                                <Button
-                                    type="submit"
-                                    disabled={!isValid || selectedCategory?.level === 2}
-                                    fullWidth
-                                    sx={{
-                                        '&:hover': {
-                                            backgroundColor: 'success.dark',
-                                        },
-                                    }}
-                                >
-                                    Lisää
-                                </Button>
-                                {selectedCategory?.level === 2 && (
-                                    <Typography fontSize="14px" color="info.main">
-                                        Kategoriarakenteen syvyys on rajoitettu kolmeen tasoon
-                                    </Typography>
-                                )}
-                            </Box>
-                        )}
-
-                        {selectedChoice === 'mutate' && (
-                            <>
-                                <TextField
-                                    id="input-color"
-                                    type="text"
-                                    label="Nimen muokkaus"
-                                    {...register('cat', {
-                                        required: {
-                                            value: true,
-                                            message: 'Syötä nimi',
-                                        },
-                                        minLength: {
-                                            value: 3,
-                                            message: 'Nimen tulee olla vähintään kolme merkkiä pitkä',
-                                        },
-                                        maxLength: {
-                                            value: 30,
-                                            message: 'Maksimipituus',
-                                        },
-                                        validate: (val: string) => {
-                                            if (categoryNamesMap.includes(val)) {
-                                                return 'Kategoria on jo järjestelmässä';
-                                            }
-                                        },
-                                    })}
-                                    error={!!errors.cat}
-                                    helperText={errors.cat?.message?.toString() || ' '}
-                                    fullWidth
-                                />
-                                <Button
-                                    type="submit"
-                                    disabled={!isValid}
-                                    fullWidth
-                                    sx={{
-                                        '&:hover': {
-                                            backgroundColor: 'success.dark',
-                                        },
-                                    }}
-                                >
-                                    Vahvista
-                                </Button>
-                            </>
-                        )}
-
-                        {selectedChoice === 'delete' && (
-                            <Box>
-                                {showDeletePrompt && (
-                                    <Stack
-                                        direction="row"
-                                        justifyContent="space-between"
-                                        alignItems="center"
-                                        sx={{ p: '1rem' }}
-                                        spacing="1rem"
+            <Grid item xs={12} sm={true}>
+                <Stack
+                    id="nodeactions-component-container"
+                    component={Form}
+                    onSubmit={handleSubmit(onSubmit)}
+                    direction="column"
+                    sx={{
+                        display: 'flex',
+                        flex: '1',
+                        minWidth: 380,
+                        paddingTop: '1rem',
+                    }}
+                >
+                    {selectedCategory !== null ? (
+                        <Box id="nodeaction-btns-wrapper">
+                            <Typography>Valittu: {selectedCategory?.name}</Typography>
+                            <Stack direction="row" spacing={4} my="1rem" sx={{ justifyContent: 'center' }}>
+                                <Tooltip title="Poista valinta">
+                                    <IconButton size="small" onClick={handleDeselect}>
+                                        <DeselectIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Lisää uusi kategoria tämän alle">
+                                    <IconButton
+                                        size="small"
+                                        sx={{ '&:hover': { backgroundColor: 'success.dark' } }}
+                                        onClick={() => handleChoice('add')}
+                                        disabled={selectedCategory.level === 2}
                                     >
-                                        <Typography variant="body2">Oletko varma?</Typography>
-                                        <Button
-                                            size="small"
-                                            variant="outlined"
-                                            onClick={handleCategoryDelete}
-                                            sx={{
-                                                '&:hover': {
-                                                    backgroundColor: 'error.main',
-                                                },
-                                            }}
-                                        >
-                                            Kyllä
-                                        </Button>
-                                        <Button
-                                            size="small"
-                                            variant="outlined"
-                                            onClick={() => setShowDeletePrompt(false)}
-                                        >
-                                            Peruuta
-                                        </Button>
-                                    </Stack>
-                                )}
+                                        <AddCircleOutlineIcon
+                                            color={selectedChoice === 'add' ? 'success' : 'inherit'}
+                                        />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Nimeä uudelleen">
+                                    <IconButton
+                                        size="small"
+                                        sx={{ '&:hover': { backgroundColor: 'warning.main' } }}
+                                        onClick={() => handleChoice('mutate')}
+                                    >
+                                        <EditIcon color={selectedChoice === 'mutate' ? 'warning' : 'inherit'} />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Tuotteiden siirto toiseen kategoriaan">
+                                    <IconButton
+                                        size="small"
+                                        sx={{ '&:hover': { backgroundColor: 'info.main' } }}
+                                        onClick={() => handleChoice('transfer')}
+                                    >
+                                        <InputIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Poista">
+                                    <IconButton
+                                        size="small"
+                                        sx={{ '&:hover': { backgroundColor: 'error.main' } }}
+                                        onClick={() => handleChoice('delete')}
+                                    >
+                                        <DeleteForeverIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </Stack>
+                            <Divider />
+                        </Box>
+                    ) : (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flex: '1',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Typography>Ei valittua kategoriaa</Typography>
+                        </Box>
+                    )}
 
-                                {showDeleteErrorMessage ? (
-                                    <Box>Poistoa ei voi suorittaa koska jaadijaadi</Box>
-                                ) : (
-                                    <Box>Tässä on ihan vaan laatikko, ollaan delete choicessa</Box>
-                                )}
-                            </Box>
-                        )}
-                    </Stack>
-                </Box>
-            </Stack>
-        </Stack>
+                    <Box id="nodestat-action-area">
+                        <Stack marginTop="1.6rem">
+                            {selectedChoice === 'add' && (
+                                <Box>
+                                    <TextField
+                                        id="input-color"
+                                        type="text"
+                                        label="Uusi kategoria"
+                                        {...register('cat', {
+                                            required: {
+                                                value: true,
+                                                message: 'Syötä nimi',
+                                            },
+                                            minLength: {
+                                                value: 3,
+                                                message: 'Nimen tulee olla vähintään kolme merkkiä pitkä',
+                                            },
+                                            maxLength: {
+                                                value: 30,
+                                                message: 'Maksimipituus',
+                                            },
+                                            validate: (val: string) => {
+                                                if (categoryNamesMap.includes(val)) {
+                                                    return 'Kategoria on jo järjestelmässä';
+                                                }
+                                            },
+                                        })}
+                                        color={isValid ? 'success' : 'primary'}
+                                        error={!!errors.cat}
+                                        helperText={errors.cat?.message?.toString() || ' '}
+                                        disabled={selectedCategory?.level === 2}
+                                        fullWidth
+                                    />
+                                    <Button
+                                        type="submit"
+                                        disabled={!isValid || selectedCategory?.level === 2}
+                                        fullWidth
+                                        sx={{
+                                            '&:hover': {
+                                                backgroundColor: 'success.dark',
+                                            },
+                                        }}
+                                    >
+                                        Lisää
+                                    </Button>
+                                    {selectedCategory?.level === 2 && (
+                                        <Typography fontSize="14px" color="info.main">
+                                            Kategoriarakenteen syvyys on rajoitettu kolmeen tasoon
+                                        </Typography>
+                                    )}
+                                </Box>
+                            )}
+
+                            {selectedChoice === 'mutate' && (
+                                <>
+                                    <TextField
+                                        id="input-color"
+                                        type="text"
+                                        label="Nimen muokkaus"
+                                        {...register('cat', {
+                                            required: {
+                                                value: true,
+                                                message: 'Syötä nimi',
+                                            },
+                                            minLength: {
+                                                value: 3,
+                                                message: 'Nimen tulee olla vähintään kolme merkkiä pitkä',
+                                            },
+                                            maxLength: {
+                                                value: 30,
+                                                message: 'Maksimipituus',
+                                            },
+                                            validate: (val: string) => {
+                                                if (categoryNamesMap.includes(val)) {
+                                                    return 'Kategoria on jo järjestelmässä';
+                                                }
+                                            },
+                                        })}
+                                        error={!!errors.cat}
+                                        helperText={errors.cat?.message?.toString() || ' '}
+                                        fullWidth
+                                    />
+                                    <Button
+                                        type="submit"
+                                        disabled={!isValid}
+                                        fullWidth
+                                        sx={{
+                                            '&:hover': {
+                                                backgroundColor: 'success.dark',
+                                            },
+                                        }}
+                                    >
+                                        Vahvista
+                                    </Button>
+                                </>
+                            )}
+
+                            {selectedChoice === 'delete' && (
+                                <Box>
+                                    {showDeletePrompt && (
+                                        <Stack
+                                            direction="row"
+                                            justifyContent="space-between"
+                                            alignItems="center"
+                                            sx={{ p: '1rem' }}
+                                            spacing="1rem"
+                                        >
+                                            <Typography variant="body2">Oletko varma?</Typography>
+                                            <Button
+                                                size="small"
+                                                variant="outlined"
+                                                onClick={handleCategoryDelete}
+                                                sx={{
+                                                    '&:hover': {
+                                                        backgroundColor: 'error.main',
+                                                    },
+                                                }}
+                                            >
+                                                Kyllä
+                                            </Button>
+                                            <Button
+                                                size="small"
+                                                variant="outlined"
+                                                onClick={() => setShowDeletePrompt(false)}
+                                            >
+                                                Peruuta
+                                            </Button>
+                                        </Stack>
+                                    )}
+
+                                    {showDeleteErrorMessage ? (
+                                        <Box>Poistoa ei voi suorittaa koska jaadijaadi</Box>
+                                    ) : (
+                                        <Box>Tässä on ihan vaan laatikko, ollaan delete choicessa</Box>
+                                    )}
+                                </Box>
+                            )}
+                        </Stack>
+                    </Box>
+                </Stack>
+            </Grid>
+        </Grid>
     );
 }
 
