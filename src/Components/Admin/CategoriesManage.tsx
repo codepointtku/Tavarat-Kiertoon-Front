@@ -51,7 +51,7 @@ function CategoryTree() {
 
     const [showDeletePrompt, setShowDeletePrompt] = useState<boolean>(true);
     const [showDeleteErrorMessage, setShowDeleteErrorMessage] = useState<boolean>(false);
-    const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
+    const [selectedChoice, setSelectedChoice] = useState<string>('');
     const [selectedCategory, setSelectedCategory] = useState<CategoryObject | EmptyObject>({});
     let selectedNodeRef = useRef<CategoryObject | EmptyObject>({});
 
@@ -84,8 +84,8 @@ function CategoryTree() {
                         {nodes.name}
                     </Typography>
 
-                    <Typography color="primary.main" fontSize="fontSizeSmall" fontWeight="fontWeightThin">
-                        Tuotemäärä: {nodes.product_count}
+                    <Typography fontSize="fontSizeSmall" fontWeight="fontWeightThin">
+                        {nodes.product_count !== 0 ? `Tuotemäärä: ${nodes.product_count}` : 'Tyhjä'}
                     </Typography>
                 </Box>
             }
@@ -165,10 +165,10 @@ function CategoryTree() {
         submit({ id: selectedCategory?.id }, { method: 'delete' });
         setShowDeletePrompt(false);
         setSelectedCategory({});
-        handleChoice(null);
+        handleChoice('');
     };
 
-    const handleChoice = (value: string | null) => {
+    const handleChoice = (value: string) => {
         setSelectedChoice(value);
 
         if (value === 'delete') {
@@ -178,7 +178,7 @@ function CategoryTree() {
 
     const handleDeselect = () => {
         setSelectedCategory({});
-        handleChoice(null);
+        handleChoice('');
         selectedNodeRef.current = {};
     };
 
