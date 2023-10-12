@@ -214,6 +214,30 @@ function ProductDetails() {
                                                                     {' kpl'}
                                                                 </span>
                                                             ))
+                                                    }{' '}
+                                                    Hylly/paikka: 
+                                                    {/* // show different shelf_ids of all product_items,
+                                                    separated by comma. don't show one name multiple times, and show
+                                                    times it appears in the list */}
+                                                    {
+                                                        product.product_items
+                                                        .map((item) => item.shelf_id)
+                                                        .filter((shelf, index, self) => self.indexOf(shelf) === index)
+                                                        .map((shelf) => (
+                                                            <span key={shelf}>
+                                                                {shelf}
+                                                                {': '}
+                                                                {
+                                                                    product.product_items.filter(
+                                                                        (item) => item.shelf_id === shelf
+                                                                    ).length
+                                                                }
+                                                                {' kpl'}
+                                                            </span>
+                                                        ))
+
+
+
                                                     }
                                                 </Typography>
                                                 <Paper
