@@ -155,7 +155,7 @@ function CategoryTree() {
         }
     };
 
-    const handleCategoryDelete = () => {
+    const handleSubmitCategoryDelete = () => {
         if (selectedCategory?.product_count !== 0 || selectedCategory.children) {
             setShowDeletePrompt(false);
             setShowDeleteErrorMessage(true);
@@ -387,7 +387,7 @@ function CategoryTree() {
                                             <Button
                                                 size="small"
                                                 variant="outlined"
-                                                onClick={handleCategoryDelete}
+                                                onClick={handleSubmitCategoryDelete}
                                                 sx={{
                                                     '&:hover': {
                                                         backgroundColor: 'error.main',
@@ -406,11 +406,7 @@ function CategoryTree() {
                                         </Stack>
                                     )}
 
-                                    {showDeleteErrorMessage ? (
-                                        <Box>Poistoa ei voi suorittaa koska jaadijaadi</Box>
-                                    ) : (
-                                        <Box>Tässä on ihan vaan laatikko, ollaan delete choicessa</Box>
-                                    )}
+                                    {showDeleteErrorMessage && <Box>Poistoa ei voi suorittaa koska jaadijaadi</Box>}
                                 </Box>
                             )}
                         </Stack>
