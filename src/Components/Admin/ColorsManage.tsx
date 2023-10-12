@@ -67,6 +67,8 @@ function ColorsManage() {
     };
 
     const onPutSubmit = (color: any) => {
+        if (!getValues('colormutate')) return;
+
         const mutatedColor = {
             id: color.id,
             name: getValues('colormutate'),
