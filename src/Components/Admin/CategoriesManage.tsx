@@ -22,14 +22,15 @@ import HeroHeader from '../HeroHeader';
 import Tooltip from '../Tooltip';
 
 import type { categoriesManageLoader } from '../../Router/loaders';
-import type { CategoryResponse } from '../../api';
 
-interface FullTree {
-    id: string;
-    name: string;
-    children: arrayToTree.Tree<CategoryResponse>[];
-    product_count?: number;
-}
+import type { Tree } from 'array-to-tree';
+
+// interface FullTree {
+//     id: number | string;
+//     name: string;
+//     children: arrayToTree.Tree<CategoryResponse>[];
+//     product_count?: number;
+// }
 
 interface CategoryObject {
     id: number | string; // id's are ints except the trees mandatory 'root', hence the str type
@@ -40,7 +41,7 @@ interface CategoryObject {
     product_count: number;
     rght: number;
     tree_id: number;
-    children?: CategoryObject[];
+    children?: Tree<CategoryObject>[];
 }
 
 type EmptyObject = Record<string, never>;
@@ -74,7 +75,7 @@ function CategoryTree() {
         children: categoryTreeMain,
     };
 
-    const renderTree = (nodes: FullTree) => (
+    const renderTree = (nodes: CategoryObject) => (
         <TreeItem
             key={nodes.id}
             nodeId={String(nodes.id)}
@@ -93,9 +94,7 @@ function CategoryTree() {
             expandIcon={<ArrowRightOutlinedIcon />}
             collapseIcon={<ArrowDropDownOutlinedIcon />}
         >
-            {Array.isArray(nodes.children)
-                ? nodes.children.map((node) => renderTree(node as unknown as FullTree))
-                : null}
+            {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node as CategoryObject)) : null}
         </TreeItem>
     );
 
@@ -194,7 +193,7 @@ function CategoryTree() {
             <Grid item xs={12} sm={true}>
                 <Box id="treeview-container" sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TreeView defaultExpanded={['root']} sx={{ flexGrow: 1, minWidth: 380, overflowY: 'auto' }}>
-                        {renderTree(fullTree)}
+                        {renderTree(fullTree as CategoryObject)}
                     </TreeView>
                 </Box>
             </Grid>
