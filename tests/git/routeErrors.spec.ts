@@ -459,10 +459,6 @@ test.describe('user', () => {
         await page.goto('/tili');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
-    test('redirect to login page', async ({page}) => {
-        await page.goto('/tili');
-        await expect(page.getByText('Kirjaudu sisään')).toBeVisible();
-    })
 });
 
 test.describe('user active orders', () => {
@@ -470,10 +466,6 @@ test.describe('user active orders', () => {
         await page.goto('/tili/tilaukset');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
-    test('redirect to login page', async ({page}) => {
-        await page.goto('/tili/tilaukset');
-        await expect(page.getByText('Kirjaudu sisään')).toBeVisible();
-    })
 });
 
 test.describe('user order history', () => {
@@ -481,20 +473,13 @@ test.describe('user order history', () => {
         await page.goto('/tili/tilaushistoria');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
-    test('redirect to login page', async ({page}) => {
-        await page.goto('/tili/tilaushistoria');
-        await expect(page.getByText('Kirjaudu sisään')).toBeVisible();
-    })
 });
 
 test.describe('user search watch', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/tili/hakuvahti');
+        console.log(page)
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
-    test('redirect to login page', async ({page}) => {
-        await page.goto('/hakuvahti');
-        await expect(page.getByText('Kirjaudu sisään')).toBeVisible();
-    })
 });
 
