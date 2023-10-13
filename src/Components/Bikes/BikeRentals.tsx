@@ -50,6 +50,18 @@ export default function BikeRentals() {
     
     const [data, setData] = useState(dataRental.results);
 
+    const statusTranslate = (value: string) => {
+        if (value === 'WAITING') {
+            return 'Odottaa';
+        }
+        if (value === 'ACTIVE') {
+            return 'Aktiivinen';
+        }
+        if (value === 'FINISHED') {
+            return 'Päättynyt';
+        }
+    };
+
     const handleRemoveOrder = (id: number) => {
         const updatedData = data?.filter((rental) => rental.id !== id);
         setData(updatedData);
@@ -69,14 +81,13 @@ export default function BikeRentals() {
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell align="right">Aloituspäivä</StyledTableCell>
-                            <StyledTableCell align="right">Lopetuspäivä</StyledTableCell>
+                            <StyledTableCell align="right">Alkaa</StyledTableCell>
+                            <StyledTableCell align="right">Päättyy</StyledTableCell>
                             <StyledTableCell align="right">Tila</StyledTableCell>
-                            <StyledTableCell align="right">Osoite</StyledTableCell>
+                            <StyledTableCell align="right">Toimitusosoite</StyledTableCell>
                             <StyledTableCell align="right">Nouto</StyledTableCell>
                             <StyledTableCell align="right">Tilaaja</StyledTableCell>
                             <StyledTableCell align="right">Puh</StyledTableCell>
-                            <StyledTableCell align="right">lisätiedot</StyledTableCell>
                             <StyledTableCell align="right">Remove</StyledTableCell>
                         </TableRow>
                     </TableHead>
@@ -90,12 +101,11 @@ export default function BikeRentals() {
                             >
                                 <TableCell align="right">{getYearAndMonth(rental.start_date)}</TableCell>
                                 <TableCell align="right">{getYearAndMonth(rental.end_date)}</TableCell>
-                                <TableCell align="right">{rental.state}</TableCell>
+                                <TableCell align="right">{statusTranslate(rental.state)}</TableCell>
                                 <TableCell align="right">{rental.delivery_address}</TableCell>
                                 <TableCell align="right">{rental.pickup ? 'Kyllä' : 'Ei'}</TableCell>
                                 <TableCell align="right">{rental.contact_name}</TableCell>
                                 <TableCell align="right">{rental.contact_phone_number}</TableCell>
-                                <TableCell align="right">{rental.extra_info}</TableCell>
                                 <TableCell align="right">
                                     <IconButton onClick={() => handleRemoveOrder(rental.id)}>
                                         <GridDeleteIcon />

@@ -63,6 +63,18 @@ export default function BikeRentalView() {
         return dateString;
     };
     
+    const statusTranslate = (value: string) => {
+        if (value === 'WAITING') {
+            return 'Odottaa';
+        }
+        if (value === 'ACTIVE') {
+            return 'Aktiivinen';
+        }
+        if (value === 'FINISHED') {
+            return 'Päättynyt';
+        }
+    };
+
     return (
         <>  
             <Grid
@@ -110,7 +122,7 @@ export default function BikeRentalView() {
                                     >
                                         {currentRentalStatus?.map((status) => (
                                             <MenuItem key={status} value={status}>
-                                                {status}
+                                                {statusTranslate(status)}
                                             </MenuItem>
                                         ))}
                                     </TextField>
