@@ -790,7 +790,6 @@ function Routes() {
                                                 {
                                                     index: true,
                                                     loader: async () => bikeRentalLoader(auth, setAuth),
-                                                    action: deleteBikeOrderAction,
                                                     element: <BikeRentals />,
                                                 },
                                                 {
@@ -798,6 +797,13 @@ function Routes() {
                                                     element: <BikeRentalView />,
                                                     loader: bikeRentalViewLoader,
                                                     action: bikeOrderEditAction,
+                                                    children: [
+                                                        {
+                                                            path: 'poista',
+                                                            action: async ({ params }) =>
+                                                                deleteBikeOrderAction(auth, setAuth, params),
+                                                        },
+                                                    ],
                                                 },
                                             ]
                                         },

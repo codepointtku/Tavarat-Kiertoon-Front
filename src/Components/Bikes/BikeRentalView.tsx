@@ -56,6 +56,12 @@ export default function BikeRentalView() {
         setValue('state', status);
     };
 
+    const handleRemoveOrder = (id: number) => {
+        // const updatedData = data?.filter((rental) => rental.id !== id);
+        // setData(updatedData);
+        submit({ id: String(id) }, { method: 'delete', action: `/pyorat/pyoravarasto/pyoratilaukset/${rental.id}/poista` });
+    };
+
     // Parse Date objects from backend data string
     const dateParse = (value: string) => {
         const date = new Date(value);
@@ -197,9 +203,24 @@ export default function BikeRentalView() {
                                 <TableCell colSpan={3}>
                                     {rental.extra_info}
                                 </TableCell>
-                            </TableRow>    
+                            </TableRow>  
                         </TableBody>
-                    </Table>            
+                    </Table>
+                    <Grid
+                        id="delete-grid"
+                        sx={{ margin: "1rem 0 1rem 0" }}
+                        container
+                        justifyContent="flex-end"
+                    >
+                        <Button
+                            id="delete-button"
+                            type="button"
+                            color="error"
+                            onClick={() => handleRemoveOrder(rental.id)}
+                        >
+                            Poista tilaus
+                        </Button>
+                    </Grid>
                 </Box>
             </Container>
         </>

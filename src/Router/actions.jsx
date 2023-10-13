@@ -782,14 +782,17 @@ const modifyBikePacketAction = async (request, params) => {
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
 
-const deleteBikeOrderAction = async ({ request }) => {
-    const data = await request.formData();
-    const response = await bikesApi.bikesRentalDestroy(data.get('id'));
-
-    if (response.status === 204) {
-        return { type: 'rentalDelete', status: true };
-    }
-    return { type: 'rentalDelete', status: false };
+/**
+ * Delete a single bikeOrder
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} params
+ * @returns
+ */
+const deleteBikeOrderAction = async (auth, setAuth, params) => {
+    const response = await bikesApi.bikesRentalDestroy(params.id);
+    console.log(response)
+    return redirect('/pyorat/pyoravarasto/pyoratilaukset');
 };
 
 /**

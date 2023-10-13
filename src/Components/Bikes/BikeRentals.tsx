@@ -62,12 +62,6 @@ export default function BikeRentals() {
         }
     };
 
-    const handleRemoveOrder = (id: number) => {
-        const updatedData = data?.filter((rental) => rental.id !== id);
-        setData(updatedData);
-        submit({ id: String(id) }, { method: 'delete', action: '/pyorat/pyoravarasto/pyoratilaukset/' });
-    };
-
     if(dataRental.results?.length === 0) {
         return <Typography variant="h6" margin="auto">ei tilauksia</Typography>
     }
@@ -88,7 +82,6 @@ export default function BikeRentals() {
                             <StyledTableCell align="right">Nouto</StyledTableCell>
                             <StyledTableCell align="right">Tilaaja</StyledTableCell>
                             <StyledTableCell align="right">Puh</StyledTableCell>
-                            <StyledTableCell align="right">Remove</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -106,11 +99,6 @@ export default function BikeRentals() {
                                 <TableCell align="right">{rental.pickup ? 'Kyllä' : 'Ei'}</TableCell>
                                 <TableCell align="right">{rental.contact_name}</TableCell>
                                 <TableCell align="right">{rental.contact_phone_number}</TableCell>
-                                <TableCell align="right">
-                                    <IconButton onClick={() => handleRemoveOrder(rental.id)}>
-                                        <GridDeleteIcon />
-                                    </IconButton>
-                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
