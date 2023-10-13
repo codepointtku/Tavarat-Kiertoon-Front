@@ -6,6 +6,7 @@ import { Grid, Tabs, Tab, Container } from '@mui/material';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories'; // book
 import ManageSearchIcon from '@mui/icons-material/ManageSearch'; // spying glass
+import ImageSearch from '@mui/icons-material/ImageSearch';
 
 function UserAccountPage() {
     const url = window.location.href;
@@ -19,6 +20,8 @@ function UserAccountPage() {
                 return 'activeOrders';
             case url.includes('tilaushistoria'):
                 return 'orderHistory';
+            case url.includes('hakuvahti'):
+                return 'searchWatch';
             default:
                 return 'userInfo';
         }
@@ -45,6 +48,7 @@ function UserAccountPage() {
                     {value === 'userInfo' && <PersonPinIcon sx={{ fontSize: 48, color: 'primary.main' }} />}
                     {value === 'activeOrders' && <AutoStoriesIcon sx={{ fontSize: 48, color: 'primary.main' }} />}
                     {value === 'orderHistory' && <ManageSearchIcon sx={{ fontSize: 48, color: 'primary.main' }} />}
+                    {value === 'searchWatch' && <ImageSearch sx={{ fontSize: 48, color: 'primary.main' }} />}
                 </Grid>
                 <Grid
                     id="tabs-container"
@@ -56,6 +60,7 @@ function UserAccountPage() {
                         <Tab component={Link} to="" value="userInfo" label="Käyttäjätiedot" />
                         <Tab component={Link} to="tilaukset" value="activeOrders" label="Aktiiviset tilaukset" />
                         <Tab component={Link} to="tilaushistoria" value="orderHistory" label="Tilaushistoria" />
+                        <Tab component={Link} to="hakuvahti" value="searchWatch" label="Hakuvahti" />
                     </Tabs>
                 </Grid>
                 <Grid id="spacer" item xs={1} />

@@ -99,7 +99,9 @@ const defaultTheme = createTheme({
         //     styleOverrides: {
         //         root: {
         //             // backgroundColor: 'lightgoldenrodyellow',
-        //             border: '1px solid green',
+        //             // border: '1px solid green',
+        //             outline: '1px solid red',
+        //             outlineOffset: ' -1px',
         //         },
         //     },
         // },
