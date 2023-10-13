@@ -232,6 +232,37 @@ const orderDeleteAction = async ({ params }) => {
 };
 
 /*
+creates new product
+*/
+const addProductAction = async (auth, setAuth, request) => {
+    const formData = await request.formData();
+
+    const newProduct = {
+        barcode: formData.get('barcode'),
+        available: formData.get('available'),
+        storage: formData.get('storages'),
+        shelf_id: formData.get('shelf_id'),
+        weight: formData.get('weight'),
+        measurements: formData.get('measurements'),
+        amount: formData.get('amount'),
+        name: formData.get('name'),
+        free_description: formData.get('free_description'),
+        price: formData.get('price'),
+        category: formData.get('category'),
+        colors: formData.getAll('colors[]'),
+        pictures: formData.getAll('pictures[]'),
+    };
+
+    const response = await productsApi.productsCreate(newProduct, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    if (response.status === 201) {
+        return { type: 'createProduct', status: true };
+    }
+    return { type: 'createProduct', status: false };
+};
+
+/*
  * Creates a new storage
  */
 const storageCreateAction = async ({ request }) => {
@@ -481,10 +512,10 @@ const adminEmailRecipientsAction = async ({ request }) => {
 // this will be replaced with openapi api call
 const itemCreateAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/products/', 'post', formData, {
+    const response = await apiCall(auth, setAuth, '/storage/products/', 'post', formData, {
         headers: { 'content-type': 'multipart/form-data' },
     });
-    if (response.status === 200) {
+    if (response.status === 201) {
         return { type: 'createitem', status: true };
     }
     return { type: 'createitem', status: false };
@@ -497,7 +528,7 @@ const itemCreateAction = async (auth, setAuth, request) => {
 // this will be replaced with openapi api call
 const itemUpdateAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/products/', 'put', formData);
+    const response = await apiCall(auth, setAuth, '/storage/products/', 'put', formData);
     if (response.status === 200) {
         return { type: 'updateitem', status: true };
     }
@@ -1054,6 +1085,21 @@ const resetPasswordAction = async (auth, setAuth, request) => {
     return { type: 'passwordreset', status: false };
 };
 
+const searchWatchCreateAction = async ({ request }) => {
+    const formData = await request.formData();
+    if (request.method === 'DELETE') {
+        const response = await userApi.userSearchwatchDestroy(formData.get('id'));
+        return response;
+    } else if (request.method === 'POST') {
+        const response = await userApi.userSearchwatchCreate({
+            words: formData.get('words').split(' '),
+        });
+        return response;
+    }
+
+    return null;
+};
+
 export {
     deleteBikeOrderAction,
     userSignupAction,
@@ -1063,6 +1109,7 @@ export {
     orderDeleteAction,
     storageCreateAction,
     storageEditAction,
+    addProductAction,
     storageDeleteAction,
     productsTransferAction,
     createBulletinAction,
@@ -1097,4 +1144,5 @@ export {
     deletePacketAction,
     userAddressEditAction,
     userAddressCreateAction,
+    searchWatchCreateAction,
 };

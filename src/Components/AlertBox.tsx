@@ -10,9 +10,10 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 // USAGE:
 // available status cases: info, warning, error, success
+// redirectUrl and timer are optional
 
 // example:
-// <AlertBox text="asia pihvi" status="success" timer={5000} redirectUrl="/some-url" />
+// <AlertBox text="asia pihvi" status="success" timer={2000} redirectUrl="/some-url" />
 
 interface Props {
     text: string;
@@ -62,6 +63,7 @@ function AlertBox({ text, status, timer, redirectUrl }: Props) {
                         sx={{ minWidth: '20rem' }}
                     >
                         {text}
+                        {redirectUrl && timer && '  Uudelleenohjataan...'}
                     </Alert>
                 </Snackbar>
             )}

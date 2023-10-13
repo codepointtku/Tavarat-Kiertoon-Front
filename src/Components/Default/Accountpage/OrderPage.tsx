@@ -21,7 +21,7 @@ interface ProductItem {
 function OrderPage() {
     const { state } = useLocation();
     const productRenderItems: ProductItem[][] = [];
-    state.orderInfo.product_items.forEach((productItem: ProductItem) => {
+    state?.orderInfo?.product_items?.forEach((productItem: ProductItem) => {
         // check if array already contains an item.product.id array
         const productIndex = productRenderItems.findIndex((index) => index[0]?.product.id === productItem.product.id);
         if (productIndex < 0) {
