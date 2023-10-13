@@ -64,16 +64,35 @@ export default function BikeRentalView() {
     };
     
     return (
-        <>
-            <Typography variant="h3" align="center" color="primary.main" mb="2rem" width="100%">
-                {`Tilaus #${rental.id}`}
-            </Typography>
+        <>  
+            <Grid
+                id="rental-header"
+                sx={{ display: 'flex', alignItems: 'center', margin: "0 0 1rem 0" }}
+                container
+            >
+                <Grid item xs={3}>
+                    <Button
+                        id="back-button"
+                        size="medium"
+                        variant="outlined"
+                        component={Link}
+                        to="/pyorat/pyoravarasto/pyoratilaukset/"
+                    >
+                        Takaisin
+                    </Button>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography variant="h3" align="center" color="primary.main">
+                        {`Tilaus #${rental.id}`}
+                    </Typography>
+                </Grid>
+            </Grid>
             <Container maxWidth="xl" component={Paper}>
-                <Box component={Form} onSubmit={handleSubmit(onSubmit)} id="bike-rental-info" sx={{ margin: '2rem 0 1rem 0'}}>
+                <Box component={Form} onSubmit={handleSubmit(onSubmit)} id="bike-rental-info" sx={{ margin: '0 0 1rem 0'}}>
                     <Table id="bike-rental-state-table">
                         <TableBody>
                             <TableRow>
-                                <TableCell align="right" width="50%" sx={{ fontWeight: 'bold', fontSize: '20px' }}>
+                                <TableCell align="right" width="30%" sx={{ fontWeight: 'bold', fontSize: '20px' }}>
                                     Tila:
                                 </TableCell>
                                 <TableCell width="20%">
@@ -97,7 +116,12 @@ export default function BikeRentalView() {
                                     </TextField>
                                 </TableCell>
                                 <TableCell width="30%">
-                                    <button>Päivitä tila</button>
+                                    <Button 
+                                        id="submit-button"
+                                        type="submit"
+                                    >
+                                        Päivitä tila
+                                    </Button>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
@@ -108,48 +132,63 @@ export default function BikeRentalView() {
                                 <TableCell width="20%" sx={{ fontWeight: 'bold' }}>
                                     Alkamispäivä:
                                 </TableCell>
-                                <TableCell>
+                                <TableCell width="30%">
                                     {dateParse(rental?.start_date as string)}
                                 </TableCell>
                                 <TableCell width="20%" sx={{ fontWeight: 'bold' }}>
                                     Päättymispäivä:
                                 </TableCell>
-                                <TableCell>
+                                <TableCell width="30%">
                                 {dateParse(rental?.end_date as string)}
                                 </TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell width="20%" sx={{ fontWeight: 'bold' }}>
+                                <TableCell sx={{ fontWeight: 'bold' }}>
                                     Tilaaja:
                                 </TableCell>
-                                <TableCell width="30%">
+                                <TableCell colSpan={3}>
                                     {rental.user}
                                 </TableCell>
-                                <TableCell width="20%" sx={{ fontWeight: 'bold' }}>
-                                    Tilausnumero:
+                            </TableRow>
+                            <TableRow>
+                                <TableCell sx={{ fontWeight: 'bold' }}>
+                                    Vastaanottaja:
                                 </TableCell>
-                                <TableCell width="30%">
-                                    {rental.id}
+                                <TableCell>
+                                    {rental.contact_name}
+                                </TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>
+                                    Nouto:
+                                </TableCell>
+                                <TableCell>
+                                    {rental.pickup ? 'Kyllä' : 'Ei'}
                                 </TableCell>
                             </TableRow>
+                            <TableRow>
+                                <TableCell sx={{ fontWeight: 'bold' }}>
+                                    Vastaanottajan puhelinnumero:
+                                </TableCell>
+                                <TableCell>
+                                    {rental.contact_phone_number}
+                                </TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>
+                                    Toimitusosoite:
+                                </TableCell>
+                                <TableCell>
+                                    {rental.delivery_address}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell sx={{ fontWeight: 'bold' }}>
+                                    Lisätiedot:
+                                </TableCell>
+                                <TableCell colSpan={3}>
+                                    {rental.extra_info}
+                                </TableCell>
+                            </TableRow>    
                         </TableBody>
                     </Table>            
                 </Box>
-                <div>Tilausnumero: {rental.id}</div>
-                <div>Pyörät: {rental.bike_stock}</div>
-                <div>Vastaanottaja: {rental.contact_name}</div>
-                <div>Vastaanottajan puh.nro.: {rental.contact_phone_number}</div>
-                <div>Toimitusosoite: {rental.delivery_address}</div>
-                <div>Alkamispäivä: {rental.start_date}</div>
-                <div>Loppumispäivä: {rental.end_date}</div>
-                <div>Nouto: {rental.pickup ? 'Kyllä' : 'Ei'}</div>
-                <div>
-                    {currentRentalStatus?.map((status) => (
-                        <MenuItem key={status} value={status}>
-                            {status}
-                        </MenuItem>
-                    ))}
-                </div>
             </Container>
         </>
     )

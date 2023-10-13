@@ -47,10 +47,6 @@ export default function BikeRentals() {
     const dataRentalCopy = useLoaderData() as Awaited<ReturnType<typeof bikeRentalLoader>>;
     const navigate = useNavigate()
     const submit = useSubmit();
-    const onSubmit = (data: any) => {
-        console.log('data', data);
-        submit(data, { method: 'put', action: '/pyorat/pyoravarasto/pyoratilaukset/' });
-    };
     
     const [data, setData] = useState(dataRental.results);
 
@@ -66,7 +62,7 @@ export default function BikeRentals() {
 
     return (
         <Box width="100%">
-            <Typography variant="h3" align="center" color="primary.main" width="100%">
+            <Typography variant="h3" align="center" color="primary.main" width="100%" sx={{margin: "0 0 1rem 0"}}>
                 Tilaukset{' '}
             </Typography>
             <TableContainer component={Paper} sx={{ padding: '2rem' }}>
