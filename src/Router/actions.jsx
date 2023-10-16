@@ -274,7 +274,7 @@ const addProductAction = async (auth, setAuth, request) => {
         category: formData.get('category'),
         colors: formData.getAll('colors[]'),
         // kuvan lisäys ei toimi bäkissä
-        pictures: formData.getAll('pictures[]'),
+        pictures: formData.getAll('new_pictures[]'),
         //pictures: JSON.parse(formData.get('pictures')),
     };
     console.log(formDataWithProductItem);
