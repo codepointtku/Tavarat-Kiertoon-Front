@@ -136,7 +136,6 @@ function AddNewItem() {
         Object.values(fileList).forEach((pic: PicUpload) => formData.append('pictures[]', pic.file));
         submit(formData, {
             method: 'post',
-            action: '/varasto/tuotteet/luo/',
             encType: 'multipart/form-data',
         });
     };
@@ -473,10 +472,10 @@ function AddNewItem() {
                                 validate: {
                                     amount: (value) => {
                                         // TODO / known issue: validation shows error if user adds 4 or more pics at the same time
-                                        if (value.length + fileList.length > 6) {
+                                        if (fileList.length > 6) {
                                             return 'Kuvia voi olla enintään 6';
                                         }
-                                        if (value.length + fileList.length < 1) {
+                                        if (fileList.length < 1) {
                                             return 'Tuotteella on oltava vähintään yksi kuva';
                                         }
 

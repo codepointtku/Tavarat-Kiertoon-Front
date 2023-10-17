@@ -165,6 +165,7 @@ import {
     contactAction,
     orderEditAction,
     addProductAction,
+    editProductAction,
     orderDeleteAction,
     storageCreateAction,
     storageEditAction,
@@ -528,7 +529,8 @@ function Routes() {
                                     path: 'tuotteet/:id/muokkaa',
                                     element: <EditProduct />,
                                     loader: productEditLoader,
-                                    // action: async ({ request, params }) => editProductAction(auth, setAuth, request, params),
+                                    action: async ({ request, params }) =>
+                                        editProductAction(auth, setAuth, request, params),
                                 },
                                 {
                                     path: 'koodinlukija',
