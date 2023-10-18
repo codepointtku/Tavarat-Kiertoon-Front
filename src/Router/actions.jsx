@@ -659,7 +659,7 @@ const bikeOrderEditAction = async ({ request, params }) => {
 
     const response = await bikesApi.bikesRentalUpdate(params.id, submission);
 
-    return response.data
+    return response
 };
 
 /**

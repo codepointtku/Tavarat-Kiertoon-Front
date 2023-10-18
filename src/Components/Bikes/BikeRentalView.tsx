@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Form, useSubmit, useLoaderData, Link,  } from 'react-router-dom';
-import type { bikeRentalViewLoader } from '../../Router/loaders';
+import { Form, useSubmit, useLoaderData, useActionData, Link } from 'react-router-dom';
+
 import { useForm } from 'react-hook-form';
 
 import {
@@ -10,22 +10,27 @@ import {
     TableCell,
     TableRow,
     TextField,
-    IconButton,
     Box,
     Collapse,
     Button,
     Stack,
     Container,
     Grid,
-    Link as MuiLink,
     Paper,
     Typography,
     Checkbox,
     MenuItem
 } from '@mui/material';
 
+import AlertBox from '../AlertBox';
+
+import type { bikeRentalViewLoader } from '../../Router/loaders';
+import type { bikeOrderEditAction } from '../../Router/actions';
+import type { BikeRentalEnum } from '../../api';
+
 export default function BikeRentalView() {
     const rental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalViewLoader>>
+    const response = useActionData() as Awaited<ReturnType<typeof bikeOrderEditAction>>;
     const currentRentalStatus = ['WAITING', 'ACTIVE', 'FINISHED'];
 
     const submit = useSubmit()
@@ -52,7 +57,7 @@ export default function BikeRentalView() {
 
     const { errors } = formState;
 
-    const handleStatusChange = (status: string) => {
+    const handleStatusChange = (status: BikeRentalEnum) => {
         setValue('state', status);
     };
 
@@ -80,9 +85,13 @@ export default function BikeRentalView() {
             return 'Päättynyt';
         }
     };
+    console.log("ASDASD", response)
 
     return (
         <>  
+            { response?.status === 200 && (
+                <AlertBox text="Tila päivitetty" status="success" timer={3000} />
+            )}
             <Grid
                 id="rental-header"
                 sx={{ display: 'flex', alignItems: 'center', margin: "0 0 1rem 0" }}
