@@ -19,11 +19,12 @@ import {
     Paper,
     Typography,
     Checkbox,
-    MenuItem
+    MenuItem,
 } from '@mui/material';
 
 import AlertBox from '../AlertBox';
 
+import DeleteBikeRentalModal from './DeleteBikeRentalModal';
 import type { bikeRentalViewLoader } from '../../Router/loaders';
 import type { bikeOrderEditAction } from '../../Router/actions';
 import type { BikeRentalEnum } from '../../api';
@@ -32,6 +33,8 @@ export default function BikeRentalView() {
     const rental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalViewLoader>>
     const response = useActionData() as Awaited<ReturnType<typeof bikeOrderEditAction>>;
     const currentRentalStatus = ['WAITING', 'ACTIVE', 'FINISHED'];
+
+    const [renderDeleteBikeRentalModal, setRenderDeleteBikeRentalModal] = useState(false);
 
     const submit = useSubmit()
     const onSubmit = (data: any) => {
@@ -61,11 +64,11 @@ export default function BikeRentalView() {
         setValue('state', status);
     };
 
-    const handleRemoveOrder = (id: number) => {
-        // const updatedData = data?.filter((rental) => rental.id !== id);
-        // setData(updatedData);
-        submit({ id: String(id) }, { method: 'delete', action: `/pyorat/pyoravarasto/pyoratilaukset/${rental.id}/poista` });
-    };
+    // const handleRemoveOrder = (id: number) => {
+    //     // const updatedData = data?.filter((rental) => rental.id !== id);
+    //     // setData(updatedData);
+    //     submit({ id: String(id) }, { method: 'delete', action: `/pyorat/pyoravarasto/pyoratilaukset/${rental.id}/poista` });
+    // };
 
     // Parse Date objects from backend data string
     const dateParse = (value: string) => {
@@ -225,12 +228,17 @@ export default function BikeRentalView() {
                             id="delete-button"
                             type="button"
                             color="error"
-                            onClick={() => handleRemoveOrder(rental.id)}
+                            onClick={() => setRenderDeleteBikeRentalModal(true)}
                         >
                             Poista tilaus
                         </Button>
                     </Grid>
                 </Box>
+                <DeleteBikeRentalModal
+                    renderModal={renderDeleteBikeRentalModal}
+                    setRenderModal={setRenderDeleteBikeRentalModal}
+                    rentalId={rental.id}
+                />
             </Container>
         </>
     )
