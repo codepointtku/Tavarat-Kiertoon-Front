@@ -63,7 +63,9 @@ export default function BikesLayout() {
             <Container maxWidth="xl" sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
                 <Outlet />
             </Container>
-            <Footer />
+            <footer style={{ marginTop: 'auto' }}>
+                <Footer />
+            </footer>
         </Stack>
     );
 }

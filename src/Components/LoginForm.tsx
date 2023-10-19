@@ -134,7 +134,7 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
                                 <LockOutlinedIcon />
                             </Avatar>
                             {/* TODO add from prop to navigation from signup pages  */}
-                            {location.state?.from.includes('rekisteroidy') ? (
+                            {location.state?.from?.includes('rekisteroidy') ? (
                                 <Typography>
                                     Kun olet käynyt sähköpostissa aktivoimassa tilisi, voit kirjautua tässä
                                 </Typography>

@@ -127,10 +127,10 @@ test.describe('tilaus', () => {
     });
 });
 
-test.describe('luo', () => {
+test.describe('varasto-tuotteet', () => {
     test('no errors', async ({ page }) => {
-        await page.goto('varasto/luo');
-        await expect(page.getByText('Virhe sijainnissa /varasto/luo')).not.toBeVisible();
+        await page.goto('varasto/tuotteet');
+        await expect(page.getByText('Virhe sijainnissa /varasto/tuotteet')).not.toBeVisible();
     });
 });
 
@@ -321,6 +321,34 @@ test.describe('bike-orders', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/pyorat/pyoravarasto/pyoratilaukset');
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/pyoratilaukset')).not.toBeVisible();
+    });
+});
+
+test.describe('user', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/tili');
+        await expect(page.getByText('Virhe sijainnissa /tili')).not.toBeVisible();
+    });
+});
+
+test.describe('user active orders', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/tili/tilaukset');
+        await expect(page.getByText('Virhe sijainnissa /tili/tilaukset')).not.toBeVisible();
+    });
+});
+
+test.describe('user order history', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/tili/tilaushistoria');
+        await expect(page.getByText('Virhe sijainnissa /tili/tilaushistoria')).not.toBeVisible();
+    });
+});
+
+test.describe('user search watch', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/tili/hakuvahti');
+        await expect(page.getByText('Virhe sijainnissa /tili/hakuvahti')).not.toBeVisible();
     });
 });
 

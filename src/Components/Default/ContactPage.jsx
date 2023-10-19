@@ -59,8 +59,8 @@ function ContactForm() {
                     label="Sähköpostisi"
                     fullWidth
                     inputProps={{
-                        title: 'vaatii @turku.fi päätteen',
-                        pattern: '.+@turku\\.fi$',
+                        title: 'vaatii @turku.fi päätteen (tai @edu.turku.fi)',
+                        pattern: '.+@turku\\.fi$|.+@edu\\.turku\\.fi$',
                     }}
                     required
                     placeholder="@turku.fi"

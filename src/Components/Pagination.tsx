@@ -1,6 +1,6 @@
 import { createSearchParams, useLocation, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { TablePagination } from '@mui/material';
+import { Box, TablePagination } from '@mui/material';
 
 function Pagination({ count, itemsText }: { count?: number; itemsText?: string }) {
     const location = useLocation();
@@ -48,17 +48,19 @@ function Pagination({ count, itemsText }: { count?: number; itemsText?: string }
     }, [location, searchParams]);
 
     return (
-        <TablePagination
-            component="div"
-            count={count || 0}
-            page={page - 1}
-            onPageChange={handleChangePage}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            rowsPerPageOptions={[10, 25, 50, 100]}
-            labelRowsPerPage={itemsText ? `${itemsText} per sivu` : 'per sivu'}
-            labelDisplayedRows={({ from, to, count }) => `${from}-${to} / ${count}`}
-        />
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <TablePagination
+                component="div"
+                count={count || 0}
+                page={page - 1}
+                onPageChange={handleChangePage}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                rowsPerPageOptions={[10, 25, 50, 100]}
+                labelRowsPerPage={itemsText ? `${itemsText} per sivu` : 'per sivu'}
+                labelDisplayedRows={({ from, to, count }) => `${from}-${to} / ${count}`}
+            />
+        </Box>
     );
 }
 

@@ -30,12 +30,14 @@ import BikesLayout from '../Layouts/BikesLayout';
 import QrScanner from '../Components/Storage/QrScanner';
 import PDFView from '../Components/Storage/PDFView';
 
-import AddItem from '../Components/Storage/AddItem';
-
 import OrdersList from '../Components/Storage/OrdersList';
 import OrderView from '../Components/Storage/OrderView';
 import OrderEdit from '../Components/Storage/OrderEdit';
 import AdminOrderDelete from '../Components/Admin/AdminOrderDelete';
+
+import StorageProducts from '../Components/Storage/StorageProducts';
+import AddNewItem from '../Components/Storage/AddNewItem';
+import EditProduct from '../Components/Storage/EditProduct';
 
 // admin
 import Overview from '../Components/Admin/Panel/Overview/Overview';
@@ -88,6 +90,7 @@ import AddressCreate from '../Components/Default/Accountpage/AddressCreate';
 import AddressEdit from '../Components/Default/Accountpage/AddressEdit';
 import OrdersHistory from '../Components/Default/Accountpage/OrdersHistory';
 import OrdersActive from '../Components/Default/Accountpage/OrdersActive';
+import SearchWatch from '../Components/Default/Accountpage/SearchWatch';
 
 import ContactPage from '../Components/Default/ContactPage';
 import Bulletins from '../Components/Default/BulletinsPage';
@@ -121,7 +124,6 @@ import BikesHomePage from '../Components/Bikes/BikesHomePage';
 
 import {
     bikesPacketLoader,
-    addItemLoader,
     orderEditLoader,
     ordersListLoader,
     orderViewLoader,
@@ -135,7 +137,9 @@ import {
     userAddressEditLoader,
     userAddressCreateLoader,
     usersListLoader,
+    storageProductsLoader,
     userInfoLoader,
+    searchWatchLoader,
     shoppingCartLoader,
     bikesDefaultLoader,
     bikesListLoader,
@@ -153,6 +157,7 @@ import {
     createBulletinLoader,
     adminBulletinLoader,
     adminBulletinsLoader,
+    productEditLoader,
     addressEditLoader,
     categoriesManageLoader,
 } from './loaders';
@@ -161,9 +166,10 @@ import {
     userSignupAction,
     contactAction,
     orderEditAction,
+    addProductAction,
     orderDeleteAction,
-    storageEditAction,
     storageCreateAction,
+    storageEditAction,
     storageDeleteAction,
     productsTransferAction,
     frontPageActions,
@@ -196,6 +202,7 @@ import {
     userAccountPageAction,
     userAddressCreateAction,
     userAddressEditAction,
+    searchWatchCreateAction,
     categoriesManageAction,
 } from './actions';
 
@@ -218,6 +225,7 @@ function Routes() {
                     errorElement: <ErrorBoundary />,
                     id: 'root',
                     loader: rootLoader,
+                    // TODO: should revalidate when colors, categories, contacts, or bulletins are added/removed
                     shouldRevalidate: () => false,
                     children: [
                         // main routes
@@ -443,11 +451,22 @@ function Routes() {
                                             element: <OrdersActive />,
                                         },
                                         {
+                                            path: 'tilaukset/:id',
+                                            element: <OrderPage />,
+                                        },
+                                        {
                                             path: 'tilaushistoria',
                                             element: <OrdersHistory />,
                                         },
+                                        {
+                                            path: 'hakuvahti',
+                                            element: <SearchWatch />,
+                                            loader: searchWatchLoader,
+                                            action: searchWatchCreateAction,
+                                        },
                                     ],
                                 },
+                                // Onko tälle tarvetta?
                                 {
                                     path: 'profiili/:tilaustila/tilaus/:id',
                                     element: <OrderPage />,
@@ -492,9 +511,27 @@ function Routes() {
                                     ],
                                 },
                                 {
-                                    path: 'luo',
-                                    element: <AddItem />,
-                                    loader: addItemLoader,
+                                    path: 'tuotteet',
+                                    id: 'storageProducts',
+                                    element: <StorageProducts />,
+                                    loader: storageProductsLoader,
+                                },
+                                {
+                                    path: 'tuotteet/luo',
+                                    element: <AddNewItem />,
+                                    loader: storageProductsLoader,
+                                    action: async ({ request }) => addProductAction(auth, setAuth, request),
+                                },
+                                {
+                                    path: 'tuotteet/:id',
+                                    element: <ProductDetails />,
+                                    loader: productDetailsLoader,
+                                },
+                                {
+                                    path: 'tuotteet/:id/muokkaa',
+                                    element: <EditProduct />,
+                                    loader: productEditLoader,
+                                    // action: async ({ request, params }) => editProductAction(auth, setAuth, request, params),
                                 },
                                 {
                                     path: 'koodinlukija',
@@ -523,6 +560,7 @@ function Routes() {
                             element: (
                                 <HasRole role="admin_group" fallback={<Navigate to="/kirjaudu" />}>
                                     <ThemeProvider theme={adminTheme}>
+                                        {/* TODO ohjaa kirjaudu sivulle */}
                                         <AdminLayout />
                                     </ThemeProvider>
                                 </HasRole>
