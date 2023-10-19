@@ -83,6 +83,7 @@ function StorageProductsTable() {
                             <StyledTableCell align="right">Määrä</StyledTableCell>
                             <StyledTableCell align="right">Varasto</StyledTableCell>
                             {/* TODO: add storage filter option */}
+                            <StyledTableCell align="left">Hylly/Paikka</StyledTableCell>
                             <StyledTableCell align="right">Kategoria</StyledTableCell>
                             <StyledTableCell align="right">Viimeksi muokattu</StyledTableCell>
                             {/* <StyledTableCell align="right">Varastopaikka</StyledTableCell> */}
@@ -126,6 +127,7 @@ function StorageProductsTable() {
                                         {/* TODO: show multiple storages for products */}
                                         {product.product_items[0].storage.name}
                                     </StyledTableCell>
+                                    <StyledTableCell align="left">{product.product_items[0]?.shelf_id}</StyledTableCell>
                                     <StyledTableCell align="right">
                                         {product.category ? categories[product.category]?.name : ''}
                                     </StyledTableCell>
