@@ -52,10 +52,12 @@ function ContactsAndDelivery() {
     const currentDate = new Date(Date.now());
     const maxDate = new Date().setDate(currentDate.getDate() + 64);
     const hd = new Holidays('FI');
-    const finnishHolidays = hd.getHolidays();
+    const holidaysCurrentYear = hd.getHolidays();
+    const holidaysNextYear = hd.getHolidays((new Date().getFullYear() + 1));
 
     function disableDate(date: Date) {
-        const dateIsHoliday = finnishHolidays.some((holiday) => String(holiday.start) === String(date));
+        const dateIsHoliday = (holidaysCurrentYear.some((holiday) => String(holiday.start) === String(date))
+            || holidaysNextYear.some((holiday) => String(holiday.start) === String(date)))
         const disabledDatesMessages = [
             {
                 value: date >= new Date(maxDate),
