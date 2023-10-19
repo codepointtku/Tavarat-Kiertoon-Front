@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import { useState, Fragment } from 'react';
 import { Form, Link, useLoaderData, useSearchParams, createSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
@@ -12,10 +13,16 @@ import {
     Button,
     Typography,
     Box,
+    TableCell,
+    Collapse,
 } from '@mui/material';
 
 import ClearIcon from '@mui/icons-material/Clear';
+// import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+// import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import AddCircle from '@mui/icons-material/AddCircle';
 
+import ProductsReturn from './ProductsReturn';
 import Pagination from '../Pagination';
 import StyledTableCell from '../StyledTableCell';
 import StyledTableRow from '../StyledTableRow';
@@ -29,6 +36,8 @@ interface Search {
 export type StorageProductsLoaderType = Awaited<ReturnType<typeof storageProductsLoader>>;
 
 function StorageProductsTable() {
+    // state to control product info collapse field:
+    const [isOpen, setIsOpen] = useState<number>();
     const [searchParams, setSearchParams] = useSearchParams();
     const { categories, products } = useLoaderData() as StorageProductsLoaderType;
     const { register, handleSubmit } = useForm({
@@ -54,6 +63,7 @@ function StorageProductsTable() {
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
                         <TableRow>
+                            {/* <StyledTableCell></StyledTableCell> */}
                             <StyledTableCell>Viivakoodi</StyledTableCell>
                             <StyledTableCell>
                                 {/* todo: searchbar peruskomponentti tuotteiden hakua varten */}
@@ -99,51 +109,95 @@ function StorageProductsTable() {
                         </Typography>
                     ) : (
                         <TableBody>
-                            {products?.results?.map((product) => (
-                                <StyledTableRow key={product.id}>
-                                    <StyledTableCell component="th" scope="row">
-                                        <Link to={`/varasto/tuotteet/${product.id}`}>
-                                            {/* TODO: support multiple barcodes */}
-                                            {product.product_items[0].barcode}
-                                        </Link>
-                                    </StyledTableCell>
-                                    <StyledTableCell>
-                                        <Button
-                                            component={Link}
-                                            to={`/varasto/tuotteet/${product.id}/muokkaa`}
-                                            variant="outlined"
-                                            color="primary"
-                                            sx={{ paddingRight: 6, paddingLeft: 6 }}
-                                        >
-                                            Muokkaa
-                                        </Button>
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        {/* todo: link to working product page with storage related info and edit functionality */}
-                                        <Link to={`/varasto/tuotteet/${product.id}`}>{product.name}</Link>
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">{product.product_items.length}</StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        {/* TODO: show multiple storages for products */}
-                                        {product.product_items[0].storage.name}
-                                    </StyledTableCell>
-                                    <StyledTableCell align="left">{product.product_items[0]?.shelf_id}</StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        {product.category ? categories[product.category]?.name : ''}
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        {/* TODO: show most recent modified date of product_items. backend change needed? */}
-                                        {new Date(product.product_items[0].modified_date).toLocaleDateString('fi-FI') +
-                                            ', klo ' +
-                                            new Date(product.product_items[0].modified_date).toLocaleTimeString(
-                                                'fi-FI',
-                                                {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit',
-                                                }
-                                            )}
-                                    </StyledTableCell>
-                                </StyledTableRow>
+                            {products?.results?.map((product, index) => (
+                                <Fragment key={product.id}>
+                                    <StyledTableRow key={product.id}>
+                                        {/* <StyledTableCell>
+                                            <IconButton
+                                                aria-label="expand row"
+                                                size="small"
+                                                onClick={() => {
+                                                    isOpen === index ? setIsOpen(undefined) : setIsOpen(index);
+                                                }}
+                                            >
+                                                {isOpen === index ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                            </IconButton>
+                                        </StyledTableCell> */}
+                                        <StyledTableCell component="th" scope="row">
+                                            <Link to={`/varasto/tuotteet/${product.id}`}>
+                                                {/* TODO: support multiple barcodes */}
+                                                {product.product_items[0].barcode}
+                                            </Link>
+                                        </StyledTableCell>
+                                        <StyledTableCell>
+                                            <Button
+                                                component={Link}
+                                                to={`/varasto/tuotteet/${product.id}/muokkaa`}
+                                                variant="outlined"
+                                                color="primary"
+                                                sx={{ paddingRight: 6, paddingLeft: 6 }}
+                                            >
+                                                Muokkaa
+                                            </Button>
+                                        </StyledTableCell>
+                                        <StyledTableCell align="right">
+                                            {/* todo: link to working product page with storage related info and edit functionality */}
+                                            <Link to={`/varasto/tuotteet/${product.id}`}>{product.name}</Link>
+                                        </StyledTableCell>
+                                        <StyledTableCell align="right">
+                                            {/* TODO: only show add button if there is a search or barcode search in searchParams? */}
+                                            <IconButton
+                                                color="primary"
+                                                aria-label="expand row"
+                                                onClick={() => {
+                                                    isOpen === index ? setIsOpen(undefined) : setIsOpen(index);
+                                                }}
+                                            >
+                                                {product.product_items.length}
+                                                {'  '}
+                                                {/* TODO: Add/return products (to same storage) logic */}
+                                                <AddCircle />
+                                            </IconButton>
+                                        </StyledTableCell>
+                                        <StyledTableCell align="right">
+                                            {/* TODO: show multiple storages for products */}
+                                            {product.product_items[0].storage.name}
+                                        </StyledTableCell>
+                                        <StyledTableCell align="left">
+                                            {product.product_items[0]?.shelf_id}
+                                        </StyledTableCell>
+                                        <StyledTableCell align="right">
+                                            {product.category ? categories[product.category]?.name : ''}
+                                        </StyledTableCell>
+                                        <StyledTableCell align="right">
+                                            {/* TODO: show most recent modified date of product_items. backend change needed? */}
+                                            {new Date(product.product_items[0].modified_date).toLocaleDateString(
+                                                'fi-FI'
+                                            ) +
+                                                ', klo ' +
+                                                new Date(product.product_items[0].modified_date).toLocaleTimeString(
+                                                    'fi-FI',
+                                                    {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit',
+                                                    }
+                                                )}
+                                        </StyledTableCell>
+                                    </StyledTableRow>
+                                    <StyledTableRow>
+                                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                                            {/* TODO: Outlet for product info, picture and return items to storage / new item functionality, when search is active */}
+                                            <Collapse in={isOpen === index} timeout="auto" unmountOnExit>
+                                                <Box
+                                                    id="product-detail-indent-box"
+                                                    sx={{ margin: '0.4rem 1rem -0.1rem 1rem' }}
+                                                >
+                                                    <ProductsReturn id={product.id} />
+                                                </Box>
+                                            </Collapse>
+                                        </TableCell>
+                                    </StyledTableRow>
+                                </Fragment>
                             ))}
                         </TableBody>
                     )}
