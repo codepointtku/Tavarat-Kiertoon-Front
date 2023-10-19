@@ -46,7 +46,6 @@ function StorageProductsTable() {
             });
         });
     };
-
     return (
         <>
             <TableContainer component={Box} sx={{ mt: '3rem' }}>
@@ -129,7 +128,9 @@ function StorageProductsTable() {
                                     </StyledTableCell>
                                     <StyledTableCell align="left">{product.product_items[0]?.shelf_id}</StyledTableCell>
                                     <StyledTableCell align="right">
-                                        {product.category ? categories[product.category]?.name : ''}
+                                        {product.category
+                                            ? categories.filter((e) => e.id === product.category)[0].name
+                                            : ''}
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
                                         {/* TODO: show most recent modified date of product_items. backend change needed? */}
