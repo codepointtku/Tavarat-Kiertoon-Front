@@ -197,24 +197,42 @@ function ProductDetails() {
 
                                                 <Typography variant="body2" color="text.secondary">
                                                     Varasto:{' '}
-                                                    {
-                                                        // show different storage.names of all product_items, separated by comma. don't show one name multiple times, and show times it appears in the list
-                                                        product.product_items
-                                                            .map((item) => item.storage.name)
-                                                            .filter((name, index, self) => self.indexOf(name) === index)
-                                                            .map((name) => (
-                                                                <span key={name}>
-                                                                    {name}
-                                                                    {': '}
-                                                                    {
-                                                                        product.product_items.filter(
-                                                                            (item) => item.storage.name === name
-                                                                        ).length
-                                                                    }
-                                                                    {' kpl'}
-                                                                </span>
-                                                            ))
-                                                    }
+                                                    {product.product_items
+                                                        .map((item) => item.storage.name)
+                                                        .filter((name, index, self) => self.indexOf(name) === index)
+                                                        .map((name) => (
+                                                            <span key={name}>
+                                                                {name}
+                                                                {': '}
+                                                                {
+                                                                    product.product_items.filter(
+                                                                        (item) => item.storage.name === name
+                                                                    ).length
+                                                                }
+                                                                {' kpl'}
+                                                            </span>
+                                                        ))}
+                                                    {', '}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    Hylly/paikka:
+                                                    {product.product_items[0]?.shelf_id || ' ei hyllypaikkaa'}
+                                                    {/* Support for multiple shelves, if that feature is implemented: */}
+                                                    {/* {product.product_items
+                                                        .map((item) => item.shelf_id)
+                                                        .filter((shelf, index, self) => self.indexOf(shelf) === index)
+                                                        .map((shelf) => (
+                                                            <span key={shelf}>
+                                                                {shelf}
+                                                                {': '}
+                                                                {
+                                                                    product.product_items.filter(
+                                                                        (item) => item.shelf_id === shelf
+                                                                    ).length
+                                                                }
+                                                                {' kpl'}
+                                                            </span>
+                                                        ))} */}
                                                 </Typography>
                                                 <Paper
                                                     elevation={3}
@@ -227,6 +245,7 @@ function ProductDetails() {
                                                         alignItems: 'center',
                                                         width: 'fit-content',
                                                         paddingX: '1rem',
+                                                        marginTop: '1rem',
                                                     }}
                                                     // TODO : add onClick to open a page to print barcodes
                                                     // onClick={() => setQrScanOpen(true)}
@@ -248,29 +267,31 @@ function ProductDetails() {
                             </Grid>
                         </Grid>
                         <>
-                            {!(location.pathname.includes('admin') || location.pathname.includes('varasto')) && (
-                                <Box sx={{ mx: 2 }}>
-                                    {productsInSameCategory.results && productsInSameCategory.results.length > 1 && (
-                                        <>
-                                            <Typography
-                                                gutterBottom
-                                                variant="h5"
-                                                component="div"
-                                                color="primary.main"
-                                                sx={{ mt: '7rem' }}
-                                            >
-                                                Samankaltaisia tuotteita
-                                            </Typography>
-                                            <SimilarProductsCarousel
-                                                currentId={Number(productId)}
-                                                similarProducts={
-                                                    productsInSameCategory as unknown as SimilarProductCarouselProps['similarProducts']
-                                                }
-                                            />
-                                        </>
-                                    )}
-                                </Box>
-                            )}
+                            {!location.pathname.includes('admin') ||
+                                (!location.pathname.includes('varasto') && (
+                                    <Box sx={{ mx: 2 }}>
+                                        {productsInSameCategory.results &&
+                                            productsInSameCategory.results.length > 1 && (
+                                                <>
+                                                    <Typography
+                                                        gutterBottom
+                                                        variant="h5"
+                                                        component="div"
+                                                        color="primary.main"
+                                                        sx={{ mt: '7rem' }}
+                                                    >
+                                                        Samankaltaisia tuotteita
+                                                    </Typography>
+                                                    <SimilarProductsCarousel
+                                                        currentId={Number(productId)}
+                                                        similarProducts={
+                                                            productsInSameCategory as unknown as SimilarProductCarouselProps['similarProducts']
+                                                        }
+                                                    />
+                                                </>
+                                            )}
+                                    </Box>
+                                ))}
                             {location.pathname.includes('varasto') && (
                                 // list of product_items, with their storage and barcode, and logs
                                 <Paper variant="outlined" sx={{ p: 5 }} color="primary">
@@ -300,11 +321,12 @@ function ProductDetails() {
                                                         Varasto: {item?.storage.name}
                                                     </Typography>
                                                     <Typography variant="body2" color="text.secondary">
-                                                        {item?.shelf_id && `Varastopaikka: ${item?.shelf_id}`}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary">
                                                         Viivakoodi: {item?.barcode}
                                                     </Typography>
+
+                                                    {/* <Typography variant="body2" color="text.secondary">
+                                                        Tila: {item?.status}
+                                                    </Typography> */}
                                                 </Grid>
                                                 <Grid item>
                                                     <Typography gutterBottom variant="body1" color="text.secondary">
