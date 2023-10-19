@@ -33,7 +33,7 @@ import Barcode from 'react-barcode';
 import TypographyTitle from '../TypographyTitle';
 import AlertBox from '../AlertBox';
 
-import type { rootLoader, storageProductsLoader } from '../../Router/loaders';
+import type { rootLoader, productAddLoader } from '../../Router/loaders';
 import type { addProductAction } from '../../Router/actions';
 
 type PicUpload = {
@@ -45,7 +45,7 @@ function AddNewItem() {
     const [qrScanOpen, setQrScanOpen] = useState(false);
     const [fileList, setFilelist] = useState<PicUpload[]>([]);
     const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
-    const { storages, colors } = useLoaderData() as Awaited<ReturnType<typeof storageProductsLoader>>;
+    const { storages, colors } = useLoaderData() as Awaited<ReturnType<typeof productAddLoader>>;
     const submit = useSubmit();
     const actionData = useActionData() as Awaited<ReturnType<typeof addProductAction>>;
     const navigation = useNavigation();

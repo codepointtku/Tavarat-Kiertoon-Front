@@ -137,6 +137,7 @@ import {
     userAddressCreateLoader,
     usersListLoader,
     storageProductsLoader,
+    productAddLoader,
     userInfoLoader,
     searchWatchLoader,
     shoppingCartLoader,
@@ -517,7 +518,7 @@ function Routes() {
                                 {
                                     path: 'tuotteet/luo',
                                     element: <AddNewItem />,
-                                    loader: storageProductsLoader,
+                                    loader: productAddLoader,
                                     action: async ({ request }) => addProductAction(auth, setAuth, request),
                                 },
                                 {

@@ -132,10 +132,16 @@ function EditProduct() {
     const handleColorSelectChange = (event: SelectChangeEvent<number[]>) => {
         setValue('colors', event.target.value as number[]);
     };
-    const RemoveImage = (id: number) => {
-        setFilelist((prevFileList) => prevFileList.filter((file, index) => index !== id));
+    const RemoveImage = (pic: string, id: number) => {
+        setFilelist((prevFileList) => prevFileList.filter((file: PicUpload, index) => file.url !== pic));
         setImageList((prevImageList) => prevImageList.filter((file, index) => index !== id));
-        setOldPictures((prevOldPictures) => prevOldPictures.filter((value, index) => index !== id));
+        setOldPictures((prevOldPictures) =>
+            prevOldPictures.filter(
+                (value, index) =>
+                    `${window.location.protocol}//${window.location.hostname}:8000/media/${value.picture_address}` !==
+                    pic
+            )
+        );
         setValue('pictures', []);
     };
     const handlePictureChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -168,8 +174,8 @@ function EditProduct() {
         Object.values(data?.colors).forEach((color: any) => formData.append('colors[]', color));
         Object.values(oldPictures).forEach((pic) => formData.append('old_pictures[]', pic.id.toString()));
         Object.values(fileList).forEach((pic: PicUpload) => formData.append('pictures[]', pic.file));
-        
-        console.log(formData.forEach((item,key) => console.log(key,item)));
+
+        console.log(formData.forEach((item, key) => console.log(key, item)));
         submit(formData, {
             method: 'PUT',
             encType: 'multipart/form-data',
@@ -507,10 +513,10 @@ function EditProduct() {
                                 validate: {
                                     amount: (value) => {
                                         // TODO / known issue: validation shows error if user adds 4 or more pics at the same time
-                                        if (oldPictures.length + fileList.length > 6) {
+                                        if (imageList.length > 6) {
                                             return 'Kuvia voi olla enintään 6';
                                         }
-                                        if (oldPictures.length + fileList.length < 1) {
+                                        if (imageList.length < 1) {
                                             return 'Tuotteella on oltava vähintään yksi kuva';
                                         }
 
@@ -543,7 +549,7 @@ function EditProduct() {
                                         color="error"
                                         sx={{ position: 'absolute', top: 0, right: 0 }}
                                         onClick={() => {
-                                            RemoveImage(index);
+                                            RemoveImage(pic, index);
                                         }}
                                     >
                                         <Delete />

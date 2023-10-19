@@ -30,7 +30,7 @@ export type StorageProductsLoaderType = Awaited<ReturnType<typeof storageProduct
 
 function StorageProductsTable() {
     const [searchParams, setSearchParams] = useSearchParams();
-    const { categories, products } = useLoaderData() as StorageProductsLoaderType;
+    const { products } = useLoaderData() as StorageProductsLoaderType;
     const { register, handleSubmit } = useForm({
         defaultValues: { searchString: searchParams.get('viivakoodi') },
     });
@@ -128,9 +128,7 @@ function StorageProductsTable() {
                                     </StyledTableCell>
                                     <StyledTableCell align="left">{product.product_items[0]?.shelf_id}</StyledTableCell>
                                     <StyledTableCell align="right">
-                                        {product.category
-                                            ? categories.filter((e) => e.id === product.category)[0].name
-                                            : ''}
+                                        {product.category_name ? product.category_name : ''}
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
                                         {/* TODO: show most recent modified date of product_items. backend change needed? */}
