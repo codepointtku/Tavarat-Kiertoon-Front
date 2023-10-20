@@ -33,7 +33,6 @@ import ClearIcon from '@mui/icons-material/Clear';
 import AddCircle from '@mui/icons-material/AddCircle';
 import SearchIcon from '@mui/icons-material/Search';
 
-import ProductsReturn from './ProductsReturn';
 import Pagination from '../Pagination';
 import StyledTableCell from '../StyledTableCell';
 import StyledTableRow from '../StyledTableRow';
@@ -45,8 +44,9 @@ interface Search {
 }
 
 export type StorageProductsLoaderType = Awaited<ReturnType<typeof storageProductsLoader>>;
-// type ContextType = { product: Partial<StorageProductsLoaderType> | null };
-type ContextType = number;
+
+//  // custom hook type for accessing the context value, recommended by react-router-dom docs
+// type ContextType = number;
 
 function StorageProductsTable() {
     // state to control product info collapse field:
@@ -212,7 +212,10 @@ function StorageProductsTable() {
                                                     id="product-detail-indent-box"
                                                     sx={{ margin: '0.4rem 1rem -0.1rem 1rem' }}
                                                 >
-                                                    <Outlet context={product.id satisfies ContextType} />
+                                                    {/* custom typings for accessing the context value, recommended by
+                                                    react-router-dom docs: */}
+                                                    {/* <Outlet context={product.id satisfies ContextType} /> */}
+                                                    <Outlet context={product.id} />
                                                 </Box>
                                             </Collapse>
                                         </TableCell>
@@ -228,8 +231,9 @@ function StorageProductsTable() {
     );
 }
 
-export function useProduct() {
-    return useOutletContext<ContextType>();
-}
+//  // custom hook for accessing the context value, recommended by react-router-dom docs
+// export function useProduct() {
+//     return useOutletContext<ContextType>();
+// }
 
 export default StorageProductsTable;
