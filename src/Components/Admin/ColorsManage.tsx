@@ -147,6 +147,10 @@ function ColorsManage() {
                                                 value: 30,
                                                 message: 'Maksimipituus',
                                             },
+                                            pattern: {
+                                                value: /(^([a-zA-ZåäöÅÄÖ]{3,}\s){1,}[a-zA-ZåäöÅÄÖ]{3,}$)|(^[a-zA-ZåäöÅÄÖ]{3,}$)/,
+                                                message: 'Virheellinen syöte',
+                                            },
                                             validate: (val: string) => {
                                                 if (colorNamesMap.includes(val)) {
                                                     return 'Väri on jo järjestelmässä';
@@ -242,6 +246,10 @@ function ColorsManage() {
                                                                             maxLength: {
                                                                                 value: 30,
                                                                                 message: 'Maksimipituus',
+                                                                            },
+                                                                            pattern: {
+                                                                                value: /(^([a-zA-ZåäöÅÄÖ]{3,}\s){1,}[a-zA-ZåäöÅÄÖ]{3,}$)|(^[a-zA-ZåäöÅÄÖ]{3,}$)/,
+                                                                                message: 'Virheellinen syöte',
                                                                             },
                                                                             validate: (val: string) => {
                                                                                 if (colorNamesMap.includes(val)) {
