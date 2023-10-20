@@ -53,7 +53,7 @@ function CategoryTree() {
     const [showDeletePrompt, setShowDeletePrompt] = useState<boolean>(true);
     const [showDeleteErrorMessage, setShowDeleteErrorMessage] = useState<boolean>(false);
     const [selectedChoice, setSelectedChoice] = useState<string>('');
-    const [selectedCategory, setSelectedCategory] = useState<CategoryObject | EmptyObject>({});
+    const [selectedCategory, setSelectedCategory] = useState<CategoryObject | EmptyObject | null>(null);
     let selectedNodeRef = useRef<CategoryObject | EmptyObject>({});
 
     const handleClick = (node: any) => {
@@ -155,7 +155,7 @@ function CategoryTree() {
     };
 
     const handleSubmitCategoryDelete = () => {
-        if (selectedCategory?.product_count !== 0 || selectedCategory.children) {
+        if (selectedCategory?.product_count !== 0 || selectedCategory.children || selectedCategory?.id === 'root') {
             setShowDeletePrompt(false);
             setShowDeleteErrorMessage(true);
             return;
@@ -176,7 +176,7 @@ function CategoryTree() {
     };
 
     const handleDeselect = () => {
-        setSelectedCategory({});
+        setSelectedCategory(null);
         handleChoice('');
         selectedNodeRef.current = {};
     };

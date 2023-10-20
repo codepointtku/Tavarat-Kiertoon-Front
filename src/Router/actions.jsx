@@ -547,12 +547,15 @@ const categoriesManageAction = async ({ request }) => {
     }
 
     if (request.method === 'DELETE') {
-        const response = await categoriesApi.categoriesDestroy(id);
+        try {
+            const response = await categoriesApi.categoriesDestroy(id);
 
-        if (response.status === 204) {
-            return { type: 'categorydel', status: true };
+            if (response.status === 204) {
+                return { type: 'categorydel', status: true };
+            }
+        } catch (error) {
+            return { type: 'categorydel', status: false };
         }
-        return { type: 'categorydel', status: false };
     }
 
     return { type: 'categorymanage', status: false };
