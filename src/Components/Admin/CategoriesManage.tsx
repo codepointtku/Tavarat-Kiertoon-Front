@@ -72,6 +72,7 @@ function CategoryTree() {
     const fullTree = {
         id: 'root',
         name: 'Kategoriat:',
+        product_count: null,
         children: categoryTreeMain,
     };
 
@@ -84,10 +85,19 @@ function CategoryTree() {
                     <Typography variant="body1" sx={{ flexGrow: 1 }}>
                         {nodes.name}
                     </Typography>
-
-                    <Typography fontSize="fontSizeSmall" fontWeight="fontWeightThin">
-                        {nodes.product_count !== 0 ? `Tuotemäärä: ${nodes.product_count}` : 'Tyhjä'}
-                    </Typography>
+                    {nodes.product_count === null ? null : (
+                        <>
+                            {nodes.product_count !== 0 ? (
+                                <Typography fontSize="fontSizeSmall" fontWeight="fontWeightThin">
+                                    Tuotemäärä: {nodes.product_count}
+                                </Typography>
+                            ) : (
+                                <Typography fontSize="fontSizeSmall" fontWeight="fontWeightThin" color="error.main">
+                                    Tyhjä
+                                </Typography>
+                            )}
+                        </>
+                    )}
                 </Box>
             }
             onClick={() => handleClick(nodes)}
