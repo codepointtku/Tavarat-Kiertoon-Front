@@ -40,7 +40,18 @@ function ColorsManage() {
     const responseStatus = useActionData() as Awaited<ReturnType<typeof colorsManageAction>>;
 
     let colorNamesMap = colors.map((color) => color.name);
-    const [isOpen, setIsOpen] = useState<number>();
+    const [activeColorId, setActiveColorId] = useState<number | null>(null);
+    const [activeColorDeletePrompt, setActiveColorDeletePrompt] = useState<number | null>(null);
+
+    const handleDeletePrompt = (colorId: number) => {
+        setActiveColorId(colorId);
+        setActiveColorDeletePrompt(colorId);
+    };
+
+    const handleDeleteCancel = () => {
+        setActiveColorId(null);
+        setActiveColorDeletePrompt(null);
+    };
 
     const {
         register,
@@ -64,10 +75,12 @@ function ColorsManage() {
 
     const onDeleteSubmit = (color: any) => {
         submit(color, { method: 'delete' });
+        setActiveColorId(null);
+        setActiveColorDeletePrompt(null);
     };
 
     const onPutSubmit = (color: any) => {
-        if (!getValues('colormutate')) return;
+        if (!getValues('colormutate') || getValues('colormutate') === '') return;
 
         const mutatedColor = {
             id: color.id,
@@ -76,8 +89,8 @@ function ColorsManage() {
 
         submit(mutatedColor, { method: 'put' });
 
+        setActiveColorId(null);
         reset();
-        setIsOpen(undefined);
     };
 
     return (
@@ -86,16 +99,24 @@ function ColorsManage() {
                 <AlertBox text="Jokin meni pieleen" status="error" />
             )}
 
-            {responseStatus?.type === 'colordelete' && responseStatus?.status === false && (
-                <AlertBox
-                    text="Tämä väri kuuluu järjestelmän perusväreihin. Sen poistaminen on estetty."
-                    status="warning"
-                    timer={3000}
-                />
+            {responseStatus?.type === 'colorcreate' && responseStatus?.status === true && (
+                <AlertBox text="Väri lisätty" status="success" timer={2000} />
             )}
 
             {responseStatus?.type === 'colorupdate' && responseStatus?.status === true && (
-                <AlertBox text="Väri lisätty" status="success" timer={3000} />
+                <AlertBox text="Nimi muokattu" status="success" timer={2000} />
+            )}
+
+            {responseStatus?.type === 'colordelete' && responseStatus?.status === true && (
+                <AlertBox text="Väri poistettu" status="success" timer={2000} />
+            )}
+
+            {responseStatus?.type === 'colordelete' && responseStatus?.status === false && (
+                <AlertBox
+                    text="Väri kuuluu järjestelmän perusväreihin. Sen poistaminen on estetty."
+                    status="warning"
+                    timer={5000}
+                />
             )}
 
             <Container maxWidth="xl">
@@ -189,16 +210,19 @@ function ColorsManage() {
                                 <List>
                                     {colors
                                         .filter((color) => color.default === false)
-                                        .map((color, index) => {
+                                        .map((color) => {
                                             return (
                                                 <Stack key={color.id} direction="row" justifyContent="space-between">
                                                     <ListItem disablePadding>
                                                         <ListItemButton
                                                             onClick={() => {
-                                                                isOpen === index ? null : setIsOpen(index);
+                                                                activeColorId === color.id
+                                                                    ? null
+                                                                    : setActiveColorId(color.id);
                                                             }}
                                                         >
-                                                            {isOpen === index ? (
+                                                            {activeColorId === color.id &&
+                                                            activeColorDeletePrompt !== color.id ? (
                                                                 <Stack
                                                                     flex="1"
                                                                     direction="row"
@@ -251,7 +275,7 @@ function ColorsManage() {
                                                                             size="small"
                                                                             variant="outlined"
                                                                             onClick={() => {
-                                                                                setIsOpen(undefined);
+                                                                                setActiveColorId(null);
                                                                                 reset();
                                                                             }}
                                                                             sx={{
@@ -270,14 +294,14 @@ function ColorsManage() {
                                                         </ListItemButton>
                                                     </ListItem>
 
-                                                    {isOpen !== index && (
+                                                    {activeColorId !== color.id && (
                                                         <Stack
                                                             direction="row"
                                                             spacing={2}
                                                             justifyContent="space-between"
                                                         >
                                                             <Button
-                                                                onClick={() => setIsOpen(index)}
+                                                                onClick={() => setActiveColorId(color.id)}
                                                                 size="small"
                                                                 variant="text"
                                                                 sx={{
@@ -289,7 +313,7 @@ function ColorsManage() {
                                                                 Muokkaa
                                                             </Button>
                                                             <Button
-                                                                onClick={() => onDeleteSubmit(color)}
+                                                                onClick={() => handleDeletePrompt(color.id)}
                                                                 size="small"
                                                                 variant="text"
                                                                 sx={{
@@ -297,13 +321,41 @@ function ColorsManage() {
                                                                         backgroundColor: 'error.main',
                                                                     },
                                                                 }}
-                                                                disabled={!!isOpen}
+                                                                disabled={!!activeColorId}
                                                             >
                                                                 Poista
                                                             </Button>
                                                         </Stack>
                                                     )}
-                                                    {/* {color.name.length !== i + 1 && <Divider sx={{ margin: '1rem 0 0 0' }} />} */}
+
+                                                    {activeColorId === color.id &&
+                                                        activeColorDeletePrompt === color.id && (
+                                                            <Stack
+                                                                direction="row"
+                                                                justifyContent="space-between"
+                                                                alignItems="center"
+                                                                sx={{ p: '1rem' }}
+                                                                spacing="1rem"
+                                                            >
+                                                                <Typography variant="body2">
+                                                                    Poista väri "{color.name}"?
+                                                                </Typography>
+                                                                <Button
+                                                                    onClick={() => onDeleteSubmit(color)}
+                                                                    size="small"
+                                                                    variant="outlined"
+                                                                >
+                                                                    Vahvista
+                                                                </Button>
+                                                                <Button
+                                                                    onClick={handleDeleteCancel}
+                                                                    size="small"
+                                                                    variant="outlined"
+                                                                >
+                                                                    Peruuta
+                                                                </Button>
+                                                            </Stack>
+                                                        )}
                                                 </Stack>
                                             );
                                         })}
