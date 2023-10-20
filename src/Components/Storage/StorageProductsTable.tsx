@@ -1,6 +1,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useState, Fragment } from 'react';
-import { Form, Link, useLoaderData, useSearchParams, createSearchParams } from 'react-router-dom';
+import {
+    Form,
+    Link,
+    useLoaderData,
+    useSearchParams,
+    createSearchParams,
+    Outlet,
+    useOutletContext,
+} from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
     Table,
@@ -15,12 +23,15 @@ import {
     Box,
     TableCell,
     Collapse,
+    TableSortLabel,
+    Icon,
 } from '@mui/material';
 
 import ClearIcon from '@mui/icons-material/Clear';
 // import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 // import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AddCircle from '@mui/icons-material/AddCircle';
+import SearchIcon from '@mui/icons-material/Search';
 
 import ProductsReturn from './ProductsReturn';
 import Pagination from '../Pagination';
@@ -34,6 +45,8 @@ interface Search {
 }
 
 export type StorageProductsLoaderType = Awaited<ReturnType<typeof storageProductsLoader>>;
+// type ContextType = { product: Partial<StorageProductsLoaderType> | null };
+type ContextType = number;
 
 function StorageProductsTable() {
     // state to control product info collapse field:
@@ -63,6 +76,7 @@ function StorageProductsTable() {
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
                         <TableRow>
+                            {/* TODO: Tablerow for search boxes, filters, etc. */}
                             {/* <StyledTableCell></StyledTableCell> */}
                             <StyledTableCell>Viivakoodi</StyledTableCell>
                             <StyledTableCell>
@@ -89,7 +103,12 @@ function StorageProductsTable() {
                                     </Button>
                                 </Form>
                             </StyledTableCell>
-                            <StyledTableCell align="right">Tuotenimi</StyledTableCell>
+                            <StyledTableCell align="right">
+                                Tuotenimi {/* Testing icon for sorting: */}
+                                <TableSortLabel IconComponent={IconButton}>
+                                    <SearchIcon></SearchIcon>
+                                </TableSortLabel>
+                            </StyledTableCell>
                             <StyledTableCell align="right">Määrä</StyledTableCell>
                             <StyledTableCell align="right">Varasto</StyledTableCell>
                             {/* TODO: add storage filter option */}
@@ -126,7 +145,7 @@ function StorageProductsTable() {
                                         <StyledTableCell component="th" scope="row">
                                             <Link to={`/varasto/tuotteet/${product.id}`}>
                                                 {/* TODO: support multiple barcodes */}
-                                                {product.product_items[0].barcode}
+                                                {product.product_items[0]?.barcode}
                                             </Link>
                                         </StyledTableCell>
                                         <StyledTableCell>
@@ -153,7 +172,7 @@ function StorageProductsTable() {
                                                     isOpen === index ? setIsOpen(undefined) : setIsOpen(index);
                                                 }}
                                             >
-                                                {product.product_items.length}
+                                                {product.product_items?.length}
                                                 {'  '}
                                                 {/* TODO: Add/return products (to same storage) logic */}
                                                 <AddCircle />
@@ -161,21 +180,21 @@ function StorageProductsTable() {
                                         </StyledTableCell>
                                         <StyledTableCell align="right">
                                             {/* TODO: show multiple storages for products */}
-                                            {product.product_items[0].storage.name}
+                                            {product.product_items[0]?.storage.name}
                                         </StyledTableCell>
                                         <StyledTableCell align="left">
                                             {product.product_items[0]?.shelf_id}
                                         </StyledTableCell>
                                         <StyledTableCell align="right">
-                                            {product.category ? categories[product.category]?.name : ''}
+                                            {product.category ? categories[product?.category]?.name : ''}
                                         </StyledTableCell>
                                         <StyledTableCell align="right">
                                             {/* TODO: show most recent modified date of product_items. backend change needed? */}
-                                            {new Date(product.product_items[0].modified_date).toLocaleDateString(
+                                            {new Date(product?.product_items[0]?.modified_date).toLocaleDateString(
                                                 'fi-FI'
                                             ) +
                                                 ', klo ' +
-                                                new Date(product.product_items[0].modified_date).toLocaleTimeString(
+                                                new Date(product?.product_items[0]?.modified_date).toLocaleTimeString(
                                                     'fi-FI',
                                                     {
                                                         hour: '2-digit',
@@ -185,6 +204,7 @@ function StorageProductsTable() {
                                         </StyledTableCell>
                                     </StyledTableRow>
                                     <StyledTableRow>
+                                        {/* TODO: fix styles, table row colors messed up after collapse was added */}
                                         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                                             {/* TODO: Outlet for product info, picture and return items to storage / new item functionality, when search is active */}
                                             <Collapse in={isOpen === index} timeout="auto" unmountOnExit>
@@ -192,7 +212,7 @@ function StorageProductsTable() {
                                                     id="product-detail-indent-box"
                                                     sx={{ margin: '0.4rem 1rem -0.1rem 1rem' }}
                                                 >
-                                                    <ProductsReturn id={product.id} />
+                                                    <Outlet context={product.id satisfies ContextType} />
                                                 </Box>
                                             </Collapse>
                                         </TableCell>
@@ -206,6 +226,10 @@ function StorageProductsTable() {
             <Pagination count={products.count} itemsText="Tuotetta" />
         </>
     );
+}
+
+export function useProduct() {
+    return useOutletContext<ContextType>();
 }
 
 export default StorageProductsTable;
