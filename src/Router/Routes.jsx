@@ -201,10 +201,12 @@ import {
     userAddressCreateAction,
     userAddressEditAction,
     searchWatchCreateAction,
+    returnProductsAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
+import ProductsReturn from '../Components/Storage/ProductsReturn';
 
 createStore({});
 
@@ -512,6 +514,14 @@ function Routes() {
                                     id: 'storageProducts',
                                     element: <StorageProducts />,
                                     loader: storageProductsLoader,
+                                    action: returnProductsAction,
+                                    children: [
+                                        {
+                                            index: true,
+                                            element: <ProductsReturn />,
+                                            errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
+                                        },
+                                    ],
                                 },
                                 {
                                     path: 'tuotteet/luo',
