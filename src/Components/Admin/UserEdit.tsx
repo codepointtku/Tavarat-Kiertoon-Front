@@ -98,7 +98,7 @@ function UserEdit() {
 
             {actionData?.type === 'userdataupdate' && actionData?.status && (
                 <AlertBox
-                    text="Käyttäjätiedot tallennettu onnistuneesti. Uudelleenohjataan..."
+                    text="Käyttäjätiedot tallennettu onnistuneesti"
                     status="success"
                     timer={3000}
                     redirectUrl="/admin/kayttajat"

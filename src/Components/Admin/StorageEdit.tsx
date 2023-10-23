@@ -57,7 +57,7 @@ function StorageEdit() {
 
             {responseStatus?.type === 'updatestorage' && responseStatus?.status && (
                 <AlertBox
-                    text="Varaston tiedot päivitetty. Uudelleenohjataan..."
+                    text="Varaston tiedot päivitetty"
                     status="success"
                     timer={3000}
                     redirectUrl="/admin/varastot"
