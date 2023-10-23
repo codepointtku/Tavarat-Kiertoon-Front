@@ -28,11 +28,14 @@ import DeleteBikeRentalModal from './DeleteBikeRentalModal';
 import type { bikeRentalViewLoader } from '../../Router/loaders';
 import type { bikeOrderEditAction } from '../../Router/actions';
 import type { BikeRentalEnum } from '../../api';
+import { BorderColor } from '@mui/icons-material';
+import { alignProperty } from '@mui/material/styles/cssUtils';
 
 export default function BikeRentalView() {
     const rental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalViewLoader>>
     const response = useActionData() as Awaited<ReturnType<typeof bikeOrderEditAction>>;
     const currentRentalStatus = ['WAITING', 'ACTIVE', 'FINISHED'];
+    console.log(rental)
 
     const [renderDeleteBikeRentalModal, setRenderDeleteBikeRentalModal] = useState(false);
 
@@ -64,11 +67,21 @@ export default function BikeRentalView() {
         setValue('state', status);
     };
 
-    // const handleRemoveOrder = (id: number) => {
-    //     // const updatedData = data?.filter((rental) => rental.id !== id);
-    //     // setData(updatedData);
-    //     submit({ id: String(id) }, { method: 'delete', action: `/pyorat/pyoravarasto/pyoratilaukset/${rental.id}/poista` });
-    // };
+    let bikeModels = rental?.bike_stock.map(item => item.bike.id)
+
+    function removeDuplicates(bikeModels) {
+        return bikeModels.filter((item,
+            index) => bikeModels.indexOf(item) === index); 
+    }
+    console.log(bikeModels)
+
+    let renderBikes = removeDuplicates(bikeModels)
+
+    console.log(renderBikes)
+
+    let bikeModelData = removeDuplicates(bikeModels).map(bikeId => (rental?.bike_stock.find(item => item.bike.id === bikeId)))
+
+    console.log("UNIIKIT", bikeModelData)
 
     // Parse Date objects from backend data string
     const dateParse = (value: string) => {
@@ -239,6 +252,60 @@ export default function BikeRentalView() {
                     setRenderModal={setRenderDeleteBikeRentalModal}
                     rentalId={rental.id}
                 />
+                <Table id="bike-rental-bikes-table">
+                    <TableHead sx={{ border: 1 }}>
+                        <TableRow sx={{ fontWeight: 'bold', fontSize: '16px', backgroundColor: 'primary.main' }}>
+                            <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', color: 'common.white' }}>
+                                Pyörämalli
+                            </TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', color: 'common.white' }}>
+                                Määrä
+                            </TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', color: 'common.white' }} align="center">
+                                Pyörien tiedot
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody id="bike-rental-bikes-content" >
+                        {bikeModelData.map(item => (
+                            <TableRow key={item.bike.id} sx={{ border: 1}}>
+                                <TableCell align="left" width="20%" sx={{ fontWeight: 'bold', fontSize: '16px', borderBottom: 1}}>
+                                    <img src={`${window.location.protocol}//${window.location.hostname}:8000/media/${item.bike.picture.picture_address}`} alt="bike-model" />
+                                    <div>
+                                        {item.bike.name}
+                                    </div>
+                                </TableCell>
+                                <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', borderBottom: 1 }}>
+                                    {"x "} {rental?.bike_stock.filter(bikeItem => bikeItem.bike.id === item.bike.id).length}
+                                </TableCell>
+                                <Table sx={{ borderLeft: 1, borderBottom: 1 }}>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell width="50%" sx={{ fontWeight: 'bold', fontSize: '14px' }}>
+                                                Pyörän numero
+                                            </TableCell>
+                                            <TableCell sx={{ fontWeight: 'bold', fontSize: '14px' }}>
+                                                Pyörän väri
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {rental?.bike_stock.filter(bikeItem => bikeItem.bike.id === item.bike.id).map(filteredItem => (
+                                            <TableRow key={filteredItem.id}>
+                                                <TableCell>
+                                                    {filteredItem.number}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {filteredItem.color.name}
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
             </Container>
         </>
     )
