@@ -273,6 +273,13 @@ test.describe('admin products list', () => {
     });
 });
 
+test.describe('admin product color managing', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tuotteet/varit');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
 // users
 test.describe('admin users list', () => {
     test('no errors', async ({ page }) => {
