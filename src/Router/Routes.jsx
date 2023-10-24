@@ -47,6 +47,7 @@ import OrdersGrid from '../Components/Admin/OrdersGrid';
 import AdminOrderEmailList from '../Components/Admin/AdminOrderEmailList';
 
 import ProductsGrid from '../Components/Admin/ProductsGrid';
+import ColorsManage from '../Components/Admin/ColorsManage';
 import CategoriesManage from '../Components/Admin/CategoriesManage';
 
 import UsersGrid from '../Components/Admin/UsersGrid';
@@ -160,6 +161,7 @@ import {
     productEditLoader,
     addressEditLoader,
     categoriesManageLoader,
+    colorsLoader,
 } from './loaders';
 
 import {
@@ -204,6 +206,7 @@ import {
     userAddressEditAction,
     searchWatchCreateAction,
     categoriesManageAction,
+    colorsManageAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
@@ -633,6 +636,12 @@ function Routes() {
                                             index: true,
                                             element: <ProductsGrid />,
                                             loader: productListLoader,
+                                        },
+                                        {
+                                            path: 'varit',
+                                            element: <ColorsManage />,
+                                            loader: colorsLoader,
+                                            action: colorsManageAction,
                                         },
                                         {
                                             path: 'kategoriat',
