@@ -70,7 +70,7 @@ function UserForm() {
             setIsSubmitSuccessful(responseStatus?.status);
 
             if (responseStatus?.data?.username) {
-                setError('email', { type: 'custom', message: 'käyttäjä on jo olemassa' });
+                setError('email', { type: 'custom', message: 'Tämä tunnus on jo varattu' });
             }
         }
     }, [responseStatus]);

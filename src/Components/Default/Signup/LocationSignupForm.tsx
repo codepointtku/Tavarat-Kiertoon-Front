@@ -71,7 +71,7 @@ function LocationForm() {
             setIsSubmitSuccessful(responseStatus?.status);
 
             if (responseStatus?.data?.username) {
-                setError('username', { type: 'custom', message: 'käyttäjä on jo olemassa' });
+                setError('username', { type: 'custom', message: 'Tämä tunnus on jo varattu' });
             }
         }
     }, [responseStatus]);
