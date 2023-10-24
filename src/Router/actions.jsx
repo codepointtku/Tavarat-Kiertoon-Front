@@ -3,8 +3,8 @@ import apiCall from '../Utils/apiCall';
 import {
     bikesApi,
     bulletinsApi,
-    categoriesApi,
     colorsApi,
+    categoriesApi,
     contactFormsApi,
     // contactsApi,
     ordersApi,

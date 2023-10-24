@@ -63,7 +63,6 @@ const tuotteet = [
         label: 'Kategoriat',
         to: '/admin/tuotteet/kategoriat',
     },
-    ,
     { icon: <ColorLensIcon />, label: 'Värit', to: '/admin/tuotteet/varit' },
 ];
 
