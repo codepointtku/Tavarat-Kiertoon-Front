@@ -121,8 +121,18 @@ const productEditLoader = async ({ params }) => {
 /**
  * Get all orders.
  */
-const ordersListLoader = async () => {
-    const { data } = await ordersApi.ordersList();
+const ordersListLoader = async ({ request }) => {
+    const url = new URL(request.url);
+
+    const { data } = await ordersApi.ordersList(
+        url.searchParams.get('jarjestys'), // requires front-end implementation
+        url.searchParams.get('sivu'),
+        url.searchParams.get('sivukoko'),
+        url.searchParams.get('tila')
+        // url.searchParams.get('vastaanottaja'), // requires backend support
+        // url.searchParams.get('tilausnumero'), // requires backend support
+        // url.searchParams.get('haku'), // requires backend support
+    );
 
     return data;
 };

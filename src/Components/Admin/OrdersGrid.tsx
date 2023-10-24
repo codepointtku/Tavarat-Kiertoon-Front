@@ -1,14 +1,16 @@
 import * as React from 'react';
 
-import { useLoaderData } from 'react-router';
-import { Link } from 'react-router-dom';
+import { useLoaderData, useNavigation } from 'react-router';
+import { Link, useSearchParams } from 'react-router-dom';
 
 import { Stack, Button } from '@mui/material';
+
+import Pagination from '../Pagination';
 
 import {
     DataGrid,
     GridToolbarContainer,
-    GridToolbarColumnsButton,
+    // GridToolbarColumnsButton,
     GridToolbarDensitySelector,
     GridToolbarExport,
     GridToolbarQuickFilter,
@@ -21,33 +23,16 @@ import type { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import type { ordersListLoader } from '../../Router/loaders';
 
 function OrdersGrid() {
-    const { count, /* next, previous, */ results } = useLoaderData() as Awaited<ReturnType<typeof ordersListLoader>>;
-
-    const pageSize = 10; // page_size @ BE: 10
+    const { count, results } = useLoaderData() as Awaited<ReturnType<typeof ordersListLoader>>;
+    const [searchParams, setSearchParams] = useSearchParams();
+    const pageSize = parseInt(searchParams.get('sivukoko') || '100');
     const pageCount = Math.ceil(count! / pageSize);
-
     const [rowCountState, setRowCountState] = React.useState(pageCount);
+    const navigation = useNavigation();
+
     React.useEffect(() => {
         setRowCountState((prevRowCountState) => (pageCount !== undefined ? pageCount : prevRowCountState));
     }, [pageCount, setRowCountState]);
-
-    //     "results": [
-    //     {
-    //       "id": 0,
-    //       "status": "string",
-    //       "delivery_address": "string",
-    //       "delivery_required": true,
-    //       "recipient": "string",
-    //       "order_info": "string",
-    //       "delivery_date": "2023-06-28T11:37:57.850Z",
-    //       "recipient_phone_number": "string",
-    //       "creation_date": "2023-06-28T11:37:57.850Z",
-    //       "user": 0,
-    //       "product_items": [
-    //         0
-    //       ]
-    //     }
-    //   ]
 
     const columns: GridColDef[] = [
         {
@@ -284,8 +269,8 @@ function OrdersGrid() {
         return (
             <div style={{ height: 500 }}>
                 <DataGrid
-                    // paginationMode={'server'}
-                    // rowCount={pageCount}
+                    pagination
+                    paginationMode={'server'}
                     rowCount={rowCountState}
                     rows={results}
                     columns={columns}
@@ -295,18 +280,21 @@ function OrdersGrid() {
                                 <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
                                     <GridToolbarQuickFilter />
                                     <GridToolbarFilterButton />
-                                    <GridToolbarColumnsButton />
+                                    {/* <GridToolbarColumnsButton /> */}
                                     <GridToolbarDensitySelector />
                                     <GridToolbarExport />
                                 </GridToolbarContainer>
                             );
+                        },
+                        pagination: () => {
+                            return <Pagination count={count} itemsText="Tilausta" />;
                         },
                     }}
                     localeText={localizedTextsMap}
                     // checkboxSelection
                     // showColumnVerticalBorder
                     // showCellVerticalBorder
-                    // loading
+                    loading={navigation.state === 'loading'}
                 />
             </div>
         );
