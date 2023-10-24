@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { redirect } from 'react-router-dom';
 
 import {
@@ -264,6 +263,11 @@ const searchWatchLoader = async () => {
     } catch {
         return null;
     }
+};
+
+const colorsLoader = async ({ params }) => {
+    const { data: colors } = await colorsApi.colorsList();
+    return { colors };
 };
 
 const categoriesManageLoader = async () => {
@@ -582,5 +586,6 @@ export {
     adminBulletinLoader,
     createBulletinLoader,
     addressEditLoader,
+    colorsLoader,
     categoriesManageLoader,
 };
