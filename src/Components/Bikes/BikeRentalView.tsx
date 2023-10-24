@@ -50,6 +50,8 @@ export default function BikeRentalView() {
         submit(data, { method: 'put', action: `/pyorat/pyoravarasto/pyoratilaukset/${rental.id}` });
     };
 
+    const rentalBikeStock = rental?.bike_stock.map((item) => item.id);
+
     const { formState, handleSubmit, register, watch, setValue } = useForm({
         defaultValues: {
             startDate: rental?.start_date,
@@ -60,8 +62,8 @@ export default function BikeRentalView() {
             contact: rental?.contact_name,
             contactPhoneNumber: rental?.contact_phone_number,
             extraInfo: rental?.extra_info,
-            user: rental?.user,
-            bikeStock: JSON.stringify(rental?.bike_stock),
+            user: rental?.user.id,
+            bikeStock: JSON.stringify(rentalBikeStock),
         },
     });
 
@@ -71,20 +73,11 @@ export default function BikeRentalView() {
         setValue('state', status);
     };
 
-    let bikeModels = rental?.bike_stock.map((item) => item.bike.id);
+    const bikeModels = rental?.bike_stock.map((item) => item.bike.id);
 
-    function removeDuplicates(bikeModels) {
-        return bikeModels.filter((item, index) => bikeModels.indexOf(item) === index);
-    }
-    console.log(bikeModels);
-
-    let renderBikes = removeDuplicates(bikeModels);
-
-    console.log(renderBikes);
-
-    let bikeModelData = removeDuplicates(bikeModels).map((bikeId: number) =>
-        rental?.bike_stock.find((item) => item.bike.id === bikeId)
-    );
+    const bikeModelData = bikeModels
+        .filter((item, index) => bikeModels.indexOf(item) === index)
+        .map((bikeId: number) => rental?.bike_stock.find((item) => item.bike.id === bikeId));
 
     console.log('UNIIKIT', bikeModelData);
 
@@ -150,12 +143,12 @@ export default function BikeRentalView() {
                                         </AccordionSummary>
                                         <Divider />
                                         <AccordionDetails>
-                                            <Typography>Käyttäjän tunniste: {rental.user.id}</Typography>
+                                            <Typography>Tunnistenumero: {rental.user.id}</Typography>
                                             <Typography>
-                                                Käyttäjän nimi: {rental.user.first_name} {rental.user.last_name}
+                                                Nimi: {rental.user.first_name} {rental.user.last_name}
                                             </Typography>
-                                            <Typography>Käyttäjän puhelinnumero: {rental.user.phone_number}</Typography>
-                                            <Typography>Käyttäjän sähköposti: {rental.user.email}</Typography>
+                                            <Typography>Puhelinnumero: {rental.user.phone_number}</Typography>
+                                            <Typography>Sähköposti: {rental.user.email}</Typography>
                                         </AccordionDetails>
                                     </Accordion>
                                 </TableCell>
