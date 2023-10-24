@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider, Outlet } from 'react-router-dom';
 import { StateMachineProvider, createStore } from 'little-state-machine';
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider, Typography } from '@mui/material';
 
 import AuthContext from '../Context/AuthContext';
 
@@ -590,6 +590,9 @@ function Routes() {
                                             index: true,
                                             element: <OrdersGrid />,
                                             loader: ordersListLoader,
+                                            errorElement: (
+                                                <Typography variant="h6">Virhe, lataa sivu uudelleen...</Typography>
+                                            ),
                                         },
                                         {
                                             path: ':id',
