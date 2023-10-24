@@ -130,11 +130,11 @@ export default function BikeRentalView() {
                     </Typography>
                 </Grid>
             </Grid>
-            <Container maxWidth="xl" component={Paper}>
-                <Box component={Form} onSubmit={handleSubmit(onSubmit)} id="bike-rental-info" sx={{ margin: '0 0 1rem 0'}}>
+            <Container maxWidth="xl" component={Paper} >
+                <Box component={Form} onSubmit={handleSubmit(onSubmit)} id="bike-rental-info" sx={{ margin: '1rem 0 1rem 0', border: 2, borderBottom: 1, borderColor: "grey.300"}}>
                     <Table id="bike-rental-state-table">
                         <TableBody>
-                            <TableRow>
+                            <TableRow sx={{ borderBottom: 2, borderColor: "grey.300" }}>
                                 <TableCell align="right" width="30%" sx={{ fontWeight: 'bold', fontSize: '20px' }}>
                                     Tila:
                                 </TableCell>
@@ -164,6 +164,16 @@ export default function BikeRentalView() {
                                         type="submit"
                                     >
                                         Päivitä tila
+                                    </Button>
+                                </TableCell>
+                                <TableCell align="right">
+                                    <Button
+                                        id="delete-button"
+                                        type="button"
+                                        color="error"
+                                        onClick={() => setRenderDeleteBikeRentalModal(true)}
+                                    >
+                                        Poista tilaus
                                     </Button>
                                 </TableCell>
                             </TableRow>
@@ -231,81 +241,68 @@ export default function BikeRentalView() {
                             </TableRow>  
                         </TableBody>
                     </Table>
-                    <Grid
-                        id="delete-grid"
-                        sx={{ margin: "1rem 0 1rem 0" }}
-                        container
-                        justifyContent="flex-end"
-                    >
-                        <Button
-                            id="delete-button"
-                            type="button"
-                            color="error"
-                            onClick={() => setRenderDeleteBikeRentalModal(true)}
-                        >
-                            Poista tilaus
-                        </Button>
-                    </Grid>
                 </Box>
                 <DeleteBikeRentalModal
                     renderModal={renderDeleteBikeRentalModal}
                     setRenderModal={setRenderDeleteBikeRentalModal}
                     rentalId={rental.id}
                 />
-                <Table id="bike-rental-bikes-table">
-                    <TableHead sx={{ border: 1 }}>
-                        <TableRow sx={{ fontWeight: 'bold', fontSize: '16px', backgroundColor: 'primary.main' }}>
-                            <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', color: 'common.white' }}>
-                                Pyörämalli
-                            </TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', color: 'common.white' }}>
-                                Määrä
-                            </TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', color: 'common.white' }} align="center">
-                                Pyörien tiedot
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody id="bike-rental-bikes-content" >
-                        {bikeModelData.map(item => (
-                            <TableRow key={item.bike.id} sx={{ border: 1}}>
-                                <TableCell align="left" width="20%" sx={{ fontWeight: 'bold', fontSize: '16px', borderBottom: 1}}>
-                                    <img src={`${window.location.protocol}//${window.location.hostname}:8000/media/${item.bike.picture.picture_address}`} alt="bike-model" />
-                                    <div>
-                                        {item.bike.name}
-                                    </div>
+                <Box sx={{ margin: "0 0 1rem 0", border: 2, borderBottom: 0, borderColor: "grey.300" }}>
+                    <Table id="bike-rental-bikes-table">
+                        <TableHead sx={{ borderBottom: 2, borderBottomColor: "grey.300"}}>
+                            <TableRow sx={{ fontWeight: 'bold', fontSize: '16px', backgroundColor: 'primary.main' }}>
+                                <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', color: 'common.white' }}>
+                                    Pyörämalli
                                 </TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', borderBottom: 1 }}>
-                                    {"x "} {rental?.bike_stock.filter(bikeItem => bikeItem.bike.id === item.bike.id).length}
+                                <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', color: 'common.white' }}>
+                                    Määrä
                                 </TableCell>
-                                <Table sx={{ borderLeft: 1, borderBottom: 1 }}>
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell width="50%" sx={{ fontWeight: 'bold', fontSize: '14px' }}>
-                                                Pyörän numero
-                                            </TableCell>
-                                            <TableCell sx={{ fontWeight: 'bold', fontSize: '14px' }}>
-                                                Pyörän väri
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {rental?.bike_stock.filter(bikeItem => bikeItem.bike.id === item.bike.id).map(filteredItem => (
-                                            <TableRow key={filteredItem.id}>
-                                                <TableCell>
-                                                    {filteredItem.number}
+                                <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', color: 'common.white' }} align="center">
+                                    Pyörien tiedot
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody id="bike-rental-bikes-content" >
+                            {bikeModelData.map(item => (
+                                <TableRow key={item.bike.id} sx={{ borderBottom: 3, borderBottomColor: "grey.300" }}>
+                                    <TableCell align="left" width="20%" sx={{ fontWeight: 'bold', fontSize: '16px', borderBottom: 4, borderBottomColor: "grey.300" }}>
+                                        <img src={`${window.location.protocol}//${window.location.hostname}:8000/media/${item.bike.picture.picture_address}`} alt="bike-model" />
+                                        <div>
+                                            {item.bike.name}
+                                        </div>
+                                    </TableCell>
+                                    <TableCell width="10%" sx={{ fontWeight: 'bold', fontSize: '16px', borderBottom: 4, borderBottomColor: "grey.300" }}>
+                                        {"x "} {rental?.bike_stock.filter(bikeItem => bikeItem.bike.id === item.bike.id).length}
+                                    </TableCell>
+                                    <Table>
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell width="50%" align="right" sx={{ fontWeight: 'bold', fontSize: '14px', borderBottom: 3, borderLeft: 1,  borderLeftColor: "grey.300", borderBottomColor: "grey.300" }}>
+                                                    Pyörän numero
                                                 </TableCell>
-                                                <TableCell>
-                                                    {filteredItem.color.name}
+                                                <TableCell align="right" sx={{ fontWeight: 'bold', fontSize: '14px', borderBottom: 3, borderBottomColor: "grey.300" }}>
+                                                    Pyörän väri
                                                 </TableCell>
                                             </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                                        </TableHead>
+                                        <TableBody>
+                                            {rental?.bike_stock.filter(bikeItem => bikeItem.bike.id === item.bike.id).map(filteredItem => (
+                                                <TableRow key={filteredItem.id}>
+                                                    <TableCell align="right" sx={{ borderLeft: 1, borderLeftColor: "grey.300" }} >
+                                                        {filteredItem.number}
+                                                    </TableCell>
+                                                    <TableCell align="right" >
+                                                        {filteredItem.color.name}
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </Box>
             </Container>
         </>
     )
