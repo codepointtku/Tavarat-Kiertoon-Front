@@ -133,7 +133,7 @@ const userSignupAction = async (request) => {
             return { type: 'create', status: false, message: response.data.message };
         }
     } catch (error) {
-        return { type: 'create', status: false, message: request.responseText };
+        return { type: 'create', status: false, message: request.responseText, data: error.response.data };
     }
 
     return { type: 'create', status: false, r: 'returnauksien returnaus' };
