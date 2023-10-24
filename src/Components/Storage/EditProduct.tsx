@@ -56,7 +56,7 @@ function EditProduct() {
     const {
         name,
         pictures,
-        amount,
+        //amount,
         price,
         free_description,
         measurements,
@@ -77,7 +77,7 @@ function EditProduct() {
         formState: { errors, isSubmitSuccessful },
     } = useForm<{
         available: boolean;
-        amount: number;
+        // amount: number;
         price: number;
         shelf_id: string;
         measurements: string;
@@ -99,7 +99,7 @@ function EditProduct() {
             barcode: product_items[0]?.barcode,
             storages: product_items[0]?.storage.id.toString() ?? '',
 
-            amount: amount ?? 0,
+            //amount: amount ?? 0,
             price: price,
             // shelf_id: '',
             measurements: measurements,
@@ -248,7 +248,7 @@ function EditProduct() {
                         error={!!errors.name}
                         helperText={errors.name?.message || ' '}
                     />
-                    <TextField
+                    {/* <TextField
                         // fullWidth
                         id="amount"
                         type="number"
@@ -273,7 +273,7 @@ function EditProduct() {
                         required
                         error={!!errors.amount}
                         helperText={errors.amount?.message || ' '}
-                    />
+                    /> */}
                     <TextField
                         fullWidth
                         id="storage-select"
