@@ -131,10 +131,10 @@ export default function BikeRentalView() {
                 </Grid>
             </Grid>
             <Container maxWidth="xl" component={Paper} >
-                <Box component={Form} onSubmit={handleSubmit(onSubmit)} id="bike-rental-info" sx={{ margin: '1rem 0 1rem 0', border: 2, borderBottom: 1, borderColor: "grey.300"}}>
+                <Box component={Form} onSubmit={handleSubmit(onSubmit)} id="bike-rental-info" sx={{ margin: '1rem 0 1rem 0', borderTop: 1, borderTopColor: "grey.300"}}>
                     <Table id="bike-rental-state-table">
                         <TableBody>
-                            <TableRow sx={{ borderBottom: 2, borderColor: "grey.300" }}>
+                            <TableRow sx={{ borderBottom: 1, borderColor: "grey.300" }}>
                                 <TableCell align="right" width="30%" sx={{ fontWeight: 'bold', fontSize: '20px' }}>
                                     Tila:
                                 </TableCell>
@@ -247,7 +247,7 @@ export default function BikeRentalView() {
                     setRenderModal={setRenderDeleteBikeRentalModal}
                     rentalId={rental.id}
                 />
-                <Box sx={{ margin: "0 0 1rem 0", border: 2, borderBottom: 0, borderColor: "grey.300" }}>
+                <Box sx={{ margin: "0 0 1rem 0" }}>
                     <Table id="bike-rental-bikes-table">
                         <TableHead sx={{ borderBottom: 2, borderBottomColor: "grey.300"}}>
                             <TableRow sx={{ fontWeight: 'bold', fontSize: '16px', backgroundColor: 'primary.main' }}>
@@ -264,23 +264,23 @@ export default function BikeRentalView() {
                         </TableHead>
                         <TableBody id="bike-rental-bikes-content" >
                             {bikeModelData.map(item => (
-                                <TableRow key={item.bike.id} sx={{ borderBottom: 3, borderBottomColor: "grey.300" }}>
-                                    <TableCell align="left" width="20%" sx={{ fontWeight: 'bold', fontSize: '16px', borderBottom: 4, borderBottomColor: "grey.300" }}>
+                                <TableRow key={item.bike.id} sx={{ borderBottom: 2, borderBottomColor: "grey.500" }}>
+                                    <TableCell align="left" width="20%" sx={{ borderBottom: 2, borderBottomColor: "grey.500", fontWeight: 'bold', fontSize: '16px'}}>
                                         <img src={`${window.location.protocol}//${window.location.hostname}:8000/media/${item.bike.picture.picture_address}`} alt="bike-model" />
                                         <div>
                                             {item.bike.name}
                                         </div>
                                     </TableCell>
-                                    <TableCell width="10%" sx={{ fontWeight: 'bold', fontSize: '16px', borderBottom: 4, borderBottomColor: "grey.300" }}>
+                                    <TableCell width="10%" sx={{  borderBottom: 2, borderBottomColor: "grey.500", fontWeight: 'bold', fontSize: '16px' }}>
                                         {"x "} {rental?.bike_stock.filter(bikeItem => bikeItem.bike.id === item.bike.id).length}
                                     </TableCell>
                                     <Table>
                                         <TableHead>
-                                            <TableRow>
-                                                <TableCell width="50%" align="right" sx={{ fontWeight: 'bold', fontSize: '14px', borderBottom: 3, borderLeft: 1,  borderLeftColor: "grey.300", borderBottomColor: "grey.300" }}>
+                                            <TableRow sx={{ borderBottom: 2, borderBottomColor: "grey.500"}}>
+                                                <TableCell width="50%" align="right" sx={{ fontWeight: 'bold' }}>
                                                     Pyörän numero
                                                 </TableCell>
-                                                <TableCell align="right" sx={{ fontWeight: 'bold', fontSize: '14px', borderBottom: 3, borderBottomColor: "grey.300" }}>
+                                                <TableCell align="right" sx={{ fontWeight: 'bold', fontSize: '14px' }}>
                                                     Pyörän väri
                                                 </TableCell>
                                             </TableRow>
@@ -288,7 +288,7 @@ export default function BikeRentalView() {
                                         <TableBody>
                                             {rental?.bike_stock.filter(bikeItem => bikeItem.bike.id === item.bike.id).map(filteredItem => (
                                                 <TableRow key={filteredItem.id}>
-                                                    <TableCell align="right" sx={{ borderLeft: 1, borderLeftColor: "grey.300" }} >
+                                                    <TableCell align="right" sx={{ borderLeftColor: "grey.300" }} >
                                                         {filteredItem.number}
                                                     </TableCell>
                                                     <TableCell align="right" >
