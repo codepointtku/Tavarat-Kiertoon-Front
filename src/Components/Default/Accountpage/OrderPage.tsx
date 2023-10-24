@@ -45,9 +45,9 @@ function OrderPage() {
                 <Grid item xs={6} component={Paper} square variant="outlined" sx={{ p: 5 }}>
                     <TypographyHeading text="Tilaamasi tuotteet" />
                     <Grid gap={2} sx={{ mt: 2 }} container>
-                        {productRenderItems.map((product_item: ProductItem[]) => (
+                        {productRenderItems?.map((product_items: ProductItem[]) => (
                             <Grid
-                                key={product_item[0].id}
+                                key={product_items[0].id}
                                 item
                                 component={Card}
                                 sx={{
@@ -61,11 +61,11 @@ function OrderPage() {
                                 <CardActionArea
                                     sx={{ height: '100%' }}
                                     component={Link}
-                                    to={`/tuotteet/${product_item[0].product.id}`}
+                                    to={`/tuotteet/${product_items[0].product.id}`}
                                 >
                                     <CardMedia
                                         sx={{ height: '100%' }}
-                                        image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product_item[0]?.product?.pictures[0]?.picture_address}`}
+                                        image={`${window.location.protocol}//${window.location.hostname}:8000/media/${product_items[0]?.product?.pictures[0]?.picture_address}`}
                                     >
                                         <Box
                                             sx={{
@@ -79,12 +79,12 @@ function OrderPage() {
                                                 color="primary.dark"
                                                 sx={{ p: 2, fontWeight: 'fontWeightMediumBold' }}
                                             >
-                                                {product_item[0].product.name}
+                                                {product_items[0].product.name}
                                             </Typography>
                                             <CardContent>
                                                 <Typography variant="body2" color="primary.dark" align="center">
                                                     <b>Määrä: </b>
-                                                    {product_item.length}
+                                                    {product_items.length}
                                                 </Typography>
                                             </CardContent>
                                         </Box>

@@ -9,6 +9,7 @@ import TypographyTitle from '../../TypographyTitle';
 
 // import type { UserOrders } from './OrdersHistory';
 import type { userInfoLoader } from '../../../Router/loaders';
+import { type OrderUser } from '../../../api';
 
 function OrdersActive() {
     // const { userOrders } = useRouteLoaderData('account') as Awaited<UserOrders>;
@@ -16,7 +17,7 @@ function OrdersActive() {
     // const orderCards = userOrders?.results?.map((order) => <OrderCard key={order.id} orderInfo={order} />);
 
     const filteredOrders = userOrders?.results
-        ?.filter((order: any) => order.status === 'Waiting' || order.status === 'Processing')
+        ?.filter((order: OrderUser) => order.status === 'Waiting' || order.status === 'Processing')
         .map((order: any) => <OrderCard key={order.id} orderInfo={order} />);
 
     // useEffect(() => {

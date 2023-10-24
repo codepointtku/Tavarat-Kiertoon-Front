@@ -86,7 +86,7 @@ function OrderCard({ orderInfo }: OrderCardProps) {
                                         wordWrap: 'break-word',
                                     }}
                                 >
-                                    {orderInfo.order_info}
+                                    {orderInfo?.order_info}
                                 </Typography>
                             </Stack>
                             {deliveryDate != '1.1.1970' ? (
