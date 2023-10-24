@@ -4,6 +4,10 @@ import { Form, useSubmit, useLoaderData, useActionData, Link } from 'react-route
 import { useForm } from 'react-hook-form';
 
 import {
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    Divider,
     Table,
     TableBody,
     TableHead,
@@ -22,14 +26,14 @@ import {
     MenuItem,
 } from '@mui/material';
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 import AlertBox from '../AlertBox';
 
 import DeleteBikeRentalModal from './DeleteBikeRentalModal';
 import type { bikeRentalViewLoader } from '../../Router/loaders';
 import type { bikeOrderEditAction } from '../../Router/actions';
 import type { BikeRentalEnum } from '../../api';
-import { BorderColor } from '@mui/icons-material';
-import { alignProperty } from '@mui/material/styles/cssUtils';
 
 export default function BikeRentalView() {
     const rental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalViewLoader>>;
@@ -130,12 +134,32 @@ export default function BikeRentalView() {
                     component={Form}
                     onSubmit={handleSubmit(onSubmit)}
                     id="bike-rental-info"
-                    sx={{ margin: '1rem 0 1rem 0', borderTop: 1, borderTopColor: 'grey.300' }}
+                    sx={{ margin: '1rem 0 1rem 0' }}
                 >
                     <Table id="bike-rental-state-table">
                         <TableBody>
                             <TableRow sx={{ borderBottom: 1, borderColor: 'grey.300' }}>
-                                <TableCell align="right" width="30%" sx={{ fontWeight: 'bold', fontSize: '20px' }}>
+                                <TableCell width="20%">
+                                    <Accordion>
+                                        <AccordionSummary
+                                            aria-controls="panel1d-content"
+                                            id="panel1d-header"
+                                            expandIcon={<ExpandMoreIcon />}
+                                        >
+                                            <Typography>Tilaajan tiedot</Typography>
+                                        </AccordionSummary>
+                                        <Divider />
+                                        <AccordionDetails>
+                                            <Typography>Käyttäjän tunniste: {rental.user.id}</Typography>
+                                            <Typography>
+                                                Käyttäjän nimi: {rental.user.first_name} {rental.user.last_name}
+                                            </Typography>
+                                            <Typography>Käyttäjän puhelinnumero: {rental.user.phone_number}</Typography>
+                                            <Typography>Käyttäjän sähköposti: {rental.user.email}</Typography>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </TableCell>
+                                <TableCell align="right" width="10%" sx={{ fontWeight: 'bold', fontSize: '20px' }}>
                                     Tila:
                                 </TableCell>
                                 <TableCell width="20%">
@@ -158,7 +182,7 @@ export default function BikeRentalView() {
                                         ))}
                                     </TextField>
                                 </TableCell>
-                                <TableCell width="30%">
+                                <TableCell width="20%">
                                     <Button id="submit-button" type="submit">
                                         Päivitä tila
                                     </Button>
@@ -189,10 +213,6 @@ export default function BikeRentalView() {
                                 <TableCell width="30%">{dateParse(rental?.end_date as string)}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Tilaaja:</TableCell>
-                                <TableCell colSpan={3}>{rental.user}</TableCell>
-                            </TableRow>
-                            <TableRow>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottaja:</TableCell>
                                 <TableCell>{rental.contact_name}</TableCell>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Nouto:</TableCell>
@@ -220,10 +240,16 @@ export default function BikeRentalView() {
                     <Table id="bike-rental-bikes-table">
                         <TableHead sx={{ borderBottom: 2, borderBottomColor: 'grey.300' }}>
                             <TableRow sx={{ fontWeight: 'bold', fontSize: '16px', backgroundColor: 'primary.main' }}>
-                                <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', color: 'common.white' }}>
+                                <TableCell
+                                    sx={{ fontWeight: 'bold', fontSize: '16px', color: 'common.white' }}
+                                    align="center"
+                                >
                                     Pyörämalli
                                 </TableCell>
-                                <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', color: 'common.white' }}>
+                                <TableCell
+                                    sx={{ fontWeight: 'bold', fontSize: '16px', color: 'common.white' }}
+                                    align="center"
+                                >
                                     Määrä
                                 </TableCell>
                                 <TableCell
@@ -234,34 +260,23 @@ export default function BikeRentalView() {
                                 </TableCell>
                             </TableRow>
                         </TableHead>
-                        <TableBody id="bike-rental-bikes-content" sx={{ backgroundColor: 'red' }}>
-                            {/* <Stack id="pertti"> */}
+                        <TableBody id="bike-rental-bikes-content" sx={{ backgroundColor: 'grey.100' }}>
                             {bikeModelData.map((item) => (
-                                <TableRow key={item.bike.id} sx={{ borderBottom: 2, borderBottomColor: 'grey.500' }}>
+                                <TableRow key={item.bike.id}>
                                     <TableCell
-                                        align="left"
+                                        align="center"
                                         width="20%"
-                                        sx={{
-                                            borderBottom: 2,
-                                            borderBottomColor: 'grey.500',
-                                            fontWeight: 'bold',
-                                            fontSize: '16px',
-                                        }}
+                                        sx={{ borderBottom: 0, fontWeight: 'bold', fontSize: '16px' }}
                                     >
                                         <img
                                             src={`${window.location.protocol}//${window.location.hostname}:8000/media/${item.bike.picture.picture_address}`}
                                             alt="bike-model"
                                         />
-                                        <div>{item.bike.name}</div>
+                                        <Typography textAlign="center">{item.bike.name}</Typography>
                                     </TableCell>
                                     <TableCell
                                         width="10%"
-                                        sx={{
-                                            borderBottom: 2,
-                                            borderBottomColor: 'grey.500',
-                                            fontWeight: 'bold',
-                                            fontSize: '16px',
-                                        }}
+                                        sx={{ textAlign: 'center', borderBottom: 0, fontSize: '16px' }}
                                     >
                                         {'x '}{' '}
                                         {
@@ -269,11 +284,11 @@ export default function BikeRentalView() {
                                                 .length
                                         }
                                     </TableCell>
-                                    <TableCell id="jarmo" /* sx={{ backgroundColor: 'grey.100' }} */>
+                                    <TableCell sx={{ borderBottom: 0 }}>
                                         <Table>
                                             <TableHead>
                                                 <TableRow sx={{ borderBottom: 2, borderBottomColor: 'grey.500' }}>
-                                                    <TableCell width="50%" align="right" sx={{ fontWeight: 'bold' }}>
+                                                    <TableCell width="50%" sx={{ fontWeight: 'bold' }}>
                                                         Pyörän numero
                                                     </TableCell>
                                                     <TableCell
@@ -289,10 +304,7 @@ export default function BikeRentalView() {
                                                     .filter((bikeItem) => bikeItem.bike.id === item.bike.id)
                                                     .map((filteredItem) => (
                                                         <TableRow key={filteredItem.id}>
-                                                            <TableCell
-                                                                align="right"
-                                                                sx={{ borderLeftColor: 'grey.300' }}
-                                                            >
+                                                            <TableCell sx={{ borderLeftColor: 'grey.300' }}>
                                                                 {filteredItem.number}
                                                             </TableCell>
                                                             <TableCell align="right">
