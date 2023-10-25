@@ -418,7 +418,26 @@ function CategoryTree() {
                                         </Stack>
                                     )}
 
-                                    {showDeleteErrorMessage && <Box>Poistoa ei voi suorittaa koska jaadijaadi</Box>}
+                                    {showDeleteErrorMessage && (
+                                        <Box>
+                                            <Typography variant="body1">Poistoa ei suoritettu.</Typography>
+                                            <Box paddingLeft={2}>
+                                                <Typography variant="body2">
+                                                    Kategorian poisto on estetty seuraavin ehdoin:
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    Kategorian on oltava tyhjä tuotteista
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    Kategorialla ei voi olla ala-kategorioita, vaikka ne olisivat
+                                                    tyhjiä.
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    Rakenteen ylintä osaa ei voi poistaa.
+                                                </Typography>
+                                            </Box>
+                                        </Box>
+                                    )}
                                 </Box>
                             )}
                         </Stack>
