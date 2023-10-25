@@ -789,7 +789,7 @@ function Routes() {
                                             children: [
                                                 {
                                                     index: true,
-                                                    loader: async () => bikeRentalLoader(auth, setAuth),
+                                                    loader: async ({request}) => bikeRentalLoader(request, auth, setAuth),
                                                     element: <BikeRentals />,
                                                 },
                                                 {

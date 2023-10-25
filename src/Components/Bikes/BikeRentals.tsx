@@ -17,7 +17,8 @@ import StyledTableCell from '../StyledTableCell';
 import { GridDeleteIcon } from '@mui/x-data-grid';
 import { useState } from 'react';
 import type { bikeRentalLoader } from '../../Router/loaders';
-import { useSubmit, useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import Pagination from '../Pagination';
 
 // interface Rental {
 //     id: number;
@@ -43,12 +44,10 @@ function getYearAndMonth(dateString: string) {
 
 export default function BikeRentals() {
 
-    const dataRental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalLoader>>;
-    const dataRentalCopy = useLoaderData() as Awaited<ReturnType<typeof bikeRentalLoader>>;
+    const { results, count } = useLoaderData() as Awaited<ReturnType<typeof bikeRentalLoader>>;
     const navigate = useNavigate()
-    const submit = useSubmit();
-    
-    const [data, setData] = useState(dataRental.results);
+
+    console.log(results)
 
     const statusTranslate = (value: string) => {
         if (value === 'WAITING') {
@@ -62,7 +61,7 @@ export default function BikeRentals() {
         }
     };
 
-    if(dataRental.results?.length === 0) {
+    if(results?.length === 0) {
         return <Typography variant="h6" margin="auto">ei tilauksia</Typography>
     }
 
@@ -85,7 +84,7 @@ export default function BikeRentals() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data?.map((rental) => (
+                        {results?.map((rental) => (
                             <TableRow
                                 key={rental.id}
                                 style={{ cursor: 'pointer' }}
@@ -104,6 +103,10 @@ export default function BikeRentals() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Pagination count={count} itemsText="Tilauksia" />
+            </Box>
         </Box>
+        
     );
 }
