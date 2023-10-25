@@ -52,7 +52,7 @@ import { ListItemButtonLink } from '../../MUILinkComponents';
 // list item links data (mapped out variables)
 const tilaukset = [
     { icon: <AutoStoriesIcon />, label: 'Tarkastele', to: '/admin/tilaukset' },
-    { icon: <ImportExportIcon />, label: 'Lähetyslista', to: '/admin/tilaukset/sahkopostilista' },
+    { icon: <ImportExportIcon />, label: 'Tilausilmoitukset', to: '/admin/tilaukset/sahkopostilista' },
 ];
 
 const tuotteet = [

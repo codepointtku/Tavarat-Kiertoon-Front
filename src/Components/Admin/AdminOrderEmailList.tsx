@@ -162,7 +162,7 @@ function AdminOrderEmailList() {
                     <HeroHeader Icon={<ListIcon />} hideInAdmin />
                     <HeroText
                         title="Sähköpostilista"
-                        subtext="Lisää ja poista osoitteita, mihin lähetetään sähköposti tilauksen vahvistuksen yhteydessä."
+                        subtext="Lisää ja poista osoitteita, joihin lähetetään sähköposti-ilmoitus uudesta tilauksesta."
                     />
                     <TypographyHeading text="Vastaanottajat" />
                     <EmailRecipients />
