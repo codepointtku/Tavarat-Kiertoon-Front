@@ -598,10 +598,10 @@ const categoriesManageAction = async ({ request }) => {
             const response = await categoriesApi.categoriesDestroy(id);
 
             if (response.status === 204) {
-                return { type: 'categorydel', status: true };
+                return { type: 'categorydelete', status: true };
             }
         } catch (error) {
-            return { type: 'categorydel', status: false };
+            return { type: 'categorydelete', status: false };
         }
     }
 
