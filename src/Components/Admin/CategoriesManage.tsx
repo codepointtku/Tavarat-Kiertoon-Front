@@ -25,15 +25,8 @@ import type { categoriesManageLoader } from '../../Router/loaders';
 
 import type { Tree } from 'array-to-tree';
 
-// interface FullTree {
-//     id: number | string;
-//     name: string;
-//     children: arrayToTree.Tree<CategoryResponse>[];
-//     product_count?: number;
-// }
-
 interface CategoryObject {
-    id: number; // id's are ints except the trees mandatory 'root', hence the str type
+    id: number;
     level: number;
     lft: number;
     name: string;
@@ -451,9 +444,7 @@ function CategoriesManage() {
         <Container maxWidth="lg">
             <HeroHeader Icon={<DeviceHubIcon />} hideInAdmin />
             <HeroText title="Kategorioiden hallinta" subtext2="Lisää, muokkaa ja poista tuotekategorioita" />
-            {/* <Container maxWidth="sm"> */}
             <CategoryTree />
-            {/* </Container> */}
         </Container>
     );
 }
