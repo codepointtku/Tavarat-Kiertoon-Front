@@ -203,7 +203,7 @@ function CategoryTree() {
             <Grid item xs={12} sm={true}>
                 <Box id="treeview-container" sx={{ display: 'flex', justifyContent: 'center' }}>
                     <TreeView defaultExpanded={['root']} sx={{ flexGrow: 1, minWidth: 380, overflowY: 'auto' }}>
-                        {renderTree(fullTree as CategoryObject)}
+                        {renderTree(fullTree as unknown as CategoryObject)}
                     </TreeView>
                 </Box>
             </Grid>
