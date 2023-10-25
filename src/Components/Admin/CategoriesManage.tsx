@@ -171,7 +171,7 @@ function CategoryTree() {
             return;
         }
 
-        submit({ id: selectedCategory?.id }, { method: 'delete' });
+        submit({ id: selectedCategory?.id.toString() }, { method: 'delete' });
         setShowDeletePrompt(false);
         setSelectedCategory(null);
         handleChoice('');
