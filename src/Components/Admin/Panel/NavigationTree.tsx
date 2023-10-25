@@ -46,6 +46,7 @@ import ColorLensIcon from '@mui/icons-material/ColorLens';
 
 import Tooltip from '../../Tooltip';
 import { ListItemButtonLink } from '../../MUILinkComponents';
+import { LinkOffSharp } from '@mui/icons-material';
 
 //
 
@@ -144,9 +145,14 @@ function NavigationTree() {
     // tilaukset
     const ordersListItems = (
         <Box
+            component={Link}
+            // component={open?.ordersNavList ? Box : Link} // Alternate: only work as link when closed. UX unconsistent?
+            to={'/admin/tilaukset'}
             sx={{
                 bgcolor: open.ordersNavList ? 'rgba(71, 98, 130, 0.2)' : null, // #476282
                 pb: open.ordersNavList ? 2 : 0,
+                textDecoration: 'none',
+                color: 'inherit',
             }}
         >
             <ListItemButton
@@ -205,9 +211,13 @@ function NavigationTree() {
     // tuotteet
     const productsListItems = (
         <Box
+            component={Link}
+            to={'/admin/tilaukset'}
             sx={{
                 bgcolor: open.productsNavList ? 'rgba(71, 98, 130, 0.2)' : null,
                 pb: open.productsNavList ? 2 : 0,
+                textDecoration: 'none',
+                color: 'inherit',
             }}
         >
             <ListItemButton
@@ -266,9 +276,13 @@ function NavigationTree() {
     // käyttäjät
     const usersListItems = (
         <Box
+            component={Link}
+            to={'/admin/tilaukset'}
             sx={{
                 bgcolor: open.usersNavList ? 'rgba(71, 98, 130, 0.2)' : null,
                 pb: open.usersNavList ? 2 : 0,
+                textDecoration: 'none',
+                color: 'inherit',
             }}
         >
             <ListItemButton
@@ -327,9 +341,13 @@ function NavigationTree() {
     // varastot
     const storagesListItems = (
         <Box
+            component={Link}
+            to={'/admin/tilaukset'}
             sx={{
                 bgcolor: open.storagesNavList ? 'rgba(71, 98, 130, 0.2)' : null,
                 pb: open.storagesNavList ? 2 : 0,
+                textDecoration: 'none',
+                color: 'inherit',
             }}
         >
             <ListItemButton
@@ -388,9 +406,13 @@ function NavigationTree() {
     // tiedotteet
     const bulletinsListItems = (
         <Box
+            component={Link}
+            to={'/admin/tilaukset'}
             sx={{
                 bgcolor: open.bulletinsNavList ? 'rgba(71, 98, 130, 0.2)' : null,
                 pb: open.bulletinsNavList ? 2 : 0,
+                textDecoration: 'none',
+                color: 'inherit',
             }}
         >
             <ListItemButton
@@ -449,9 +471,13 @@ function NavigationTree() {
     // viestit
     const messagingListItems = (
         <Box
+            component={Link}
+            to={'/admin/tilaukset'}
             sx={{
                 bgcolor: open.messagingNavList ? 'rgba(71, 98, 130, 0.2)' : null,
                 pb: open.messagingNavList ? 2 : 0,
+                textDecoration: 'none',
+                color: 'inherit',
             }}
         >
             <ListItemButton
