@@ -171,7 +171,9 @@ function CategoryTree() {
             return;
         }
 
-        submit({ id: selectedCategory?.id }, { method: 'delete' });
+        // Type 'number' is not assignable to type 'string'.ts(2322)
+        // This error probably comes from the CatObj type where it's id can be str | num
+        submit({ id: Number(selectedCategory?.id) }, { method: 'delete' });
         setShowDeletePrompt(false);
         setSelectedCategory(null);
         handleChoice('');
