@@ -33,7 +33,7 @@ import type { Tree } from 'array-to-tree';
 // }
 
 interface CategoryObject {
-    id: number | string; // id's are ints except the trees mandatory 'root', hence the str type
+    id: number; // id's are ints except the trees mandatory 'root', hence the str type
     level: number;
     lft: number;
     name: string;
@@ -70,7 +70,7 @@ function CategoryTree() {
     });
 
     const fullTree = {
-        id: 'root',
+        id: 99999,
         name: 'Kategoriat:',
         product_count: null,
         children: categoryTreeMain,
@@ -129,7 +129,7 @@ function CategoryTree() {
         }
 
         if (selectedChoice === 'add') {
-            if (selectedCategory?.parent === null || selectedCategory?.id === 'root') {
+            if (selectedCategory?.parent === null || selectedCategory?.id === 99999) {
                 const newCategory = {
                     name: getValues('cat'),
                 };
@@ -165,7 +165,7 @@ function CategoryTree() {
     };
 
     const handleSubmitCategoryDelete = () => {
-        if (selectedCategory?.product_count !== 0 || selectedCategory?.children || selectedCategory?.id === 'root') {
+        if (selectedCategory?.product_count !== 0 || selectedCategory?.children || selectedCategory?.id === 99999) {
             setShowDeletePrompt(false);
             setShowDeleteErrorMessage(true);
             return;
@@ -173,7 +173,7 @@ function CategoryTree() {
 
         // Type 'number' is not assignable to type 'string'.ts(2322)
         // This error probably comes from the CatObj type where it's id can be str | num
-        submit({ id: Number(selectedCategory?.id) }, { method: 'delete' });
+        submit(selectedCategory?.id, { method: 'delete' });
         setShowDeletePrompt(false);
         setSelectedCategory(null);
         handleChoice('');
