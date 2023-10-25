@@ -211,7 +211,7 @@ function NavigationTree() {
     const productsListItems = (
         <Box
             component={Link}
-            to={'/admin/tilaukset'}
+            to={'/admin/tuotteet'}
             sx={{
                 bgcolor: open.productsNavList ? 'rgba(71, 98, 130, 0.2)' : null,
                 pb: open.productsNavList ? 2 : 0,
@@ -276,7 +276,7 @@ function NavigationTree() {
     const usersListItems = (
         <Box
             component={Link}
-            to={'/admin/tilaukset'}
+            to={'/admin/kayttajat'}
             sx={{
                 bgcolor: open.usersNavList ? 'rgba(71, 98, 130, 0.2)' : null,
                 pb: open.usersNavList ? 2 : 0,
@@ -341,7 +341,7 @@ function NavigationTree() {
     const storagesListItems = (
         <Box
             component={Link}
-            to={'/admin/tilaukset'}
+            to={'/admin/varastot'}
             sx={{
                 bgcolor: open.storagesNavList ? 'rgba(71, 98, 130, 0.2)' : null,
                 pb: open.storagesNavList ? 2 : 0,
@@ -406,7 +406,7 @@ function NavigationTree() {
     const bulletinsListItems = (
         <Box
             component={Link}
-            to={'/admin/tilaukset'}
+            to={'/admin/tiedotteet'}
             sx={{
                 bgcolor: open.bulletinsNavList ? 'rgba(71, 98, 130, 0.2)' : null,
                 pb: open.bulletinsNavList ? 2 : 0,
@@ -471,7 +471,7 @@ function NavigationTree() {
     const messagingListItems = (
         <Box
             component={Link}
-            to={'/admin/tilaukset'}
+            to={'/admin/viestit'}
             sx={{
                 bgcolor: open.messagingNavList ? 'rgba(71, 98, 130, 0.2)' : null,
                 pb: open.messagingNavList ? 2 : 0,
