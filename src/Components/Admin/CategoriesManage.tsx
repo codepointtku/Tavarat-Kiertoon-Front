@@ -281,7 +281,9 @@ function CategoryTree() {
                                             sx={{ '&:hover': { backgroundColor: 'error.main' } }}
                                             onClick={() => handleChoice('delete')}
                                         >
-                                            <DeleteForeverIcon />
+                                            <DeleteForeverIcon
+                                                color={selectedChoice === 'delete' ? 'error' : 'inherit'}
+                                            />
                                         </IconButton>
                                     </Tooltip>
                                 </Stack>
@@ -413,7 +415,7 @@ function CategoryTree() {
                                                     onClick={handleSubmitCategoryDelete}
                                                     sx={{
                                                         '&:hover': {
-                                                            backgroundColor: 'error.main',
+                                                            backgroundColor: 'success.main',
                                                         },
                                                     }}
                                                 >
@@ -423,6 +425,11 @@ function CategoryTree() {
                                                     size="small"
                                                     variant="outlined"
                                                     onClick={() => setShowDeletePrompt(false)}
+                                                    sx={{
+                                                        '&:hover': {
+                                                            backgroundColor: 'warning.main',
+                                                        },
+                                                    }}
                                                 >
                                                     Peruuta
                                                 </Button>
@@ -432,7 +439,7 @@ function CategoryTree() {
                                         {showDeleteErrorMessage && (
                                             <Box>
                                                 <Typography variant="body1">Poistoa ei suoritettu.</Typography>
-                                                <Box paddingLeft={2}>
+                                                <Box paddingTop={2} paddingLeft={2}>
                                                     <Typography variant="body2">
                                                         Kategorian poisto on estetty seuraavin ehdoin:
                                                     </Typography>
