@@ -15,7 +15,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import DeviceHubIcon from '@mui/icons-material/DeviceHub';
-import InputIcon from '@mui/icons-material/Input';
+// import InputIcon from '@mui/icons-material/Input';
 
 import HeroText from '../HeroText';
 import HeroHeader from '../HeroHeader';
@@ -252,7 +252,8 @@ function CategoryTree() {
                                         <EditIcon color={selectedChoice === 'mutate' ? 'warning' : 'inherit'} />
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title="Tuotteiden siirto toiseen kategoriaan">
+                                {/* probably needs a new view @ BE: */}
+                                {/* <Tooltip title="Tuotteiden siirto toiseen kategoriaan">
                                     <IconButton
                                         size="small"
                                         sx={{ '&:hover': { backgroundColor: 'info.main' } }}
@@ -260,7 +261,7 @@ function CategoryTree() {
                                     >
                                         <InputIcon />
                                     </IconButton>
-                                </Tooltip>
+                                </Tooltip> */}
                                 <Tooltip title="Poista">
                                     <IconButton
                                         size="small"
