@@ -165,7 +165,7 @@ function CategoryTree() {
     };
 
     const handleSubmitCategoryDelete = () => {
-        if (selectedCategory?.product_count !== 0 || selectedCategory.children || selectedCategory?.id === 'root') {
+        if (selectedCategory?.product_count !== 0 || selectedCategory?.children || selectedCategory?.id === 'root') {
             setShowDeletePrompt(false);
             setShowDeleteErrorMessage(true);
             return;
@@ -173,7 +173,7 @@ function CategoryTree() {
 
         submit({ id: selectedCategory?.id }, { method: 'delete' });
         setShowDeletePrompt(false);
-        setSelectedCategory({});
+        setSelectedCategory(null);
         handleChoice('');
     };
 
