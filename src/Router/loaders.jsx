@@ -68,31 +68,19 @@ const shoppingCartLoader = async () => {
 
 /**
  * Get all products / get products based on category id || search string
+ * Note: storage has it's own productListLoader with additional data (storageProductsLoader)
  */
 const productListLoader = async ({ request }) => {
     const url = new URL(request.url);
 
-    if (url.searchParams.has('haku') || url.searchParams.has('kategoria')) {
-        const { data } = await productsApi.productsList(
-            url.searchParams.getAll('kategoria'),
-            url.searchParams.getAll('varit'),
-            null,
-            url.searchParams.get('sivu'),
-            url.searchParams.get('sivukoko') || 25,
-            url.searchParams.get('haku')
-        );
-        return data;
-    }
-
     const { data } = await productsApi.productsList(
-        null,
-        null,
-        null,
+        url.searchParams.getAll('kategoria'),
+        url.searchParams.getAll('varit'),
+        null, // TODO: ordering by amount? (as suggested by testers)
         url.searchParams.get('sivu'),
         url.searchParams.get('sivukoko') || 25,
-        null
+        url.searchParams.get('haku')
     );
-
     return data;
 };
 
