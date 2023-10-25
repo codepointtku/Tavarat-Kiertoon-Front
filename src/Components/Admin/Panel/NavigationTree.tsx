@@ -46,35 +46,34 @@ import ColorLensIcon from '@mui/icons-material/ColorLens';
 
 import Tooltip from '../../Tooltip';
 import { ListItemButtonLink } from '../../MUILinkComponents';
-import { LinkOffSharp } from '@mui/icons-material';
 
 //
 
 // list item links data (mapped out variables)
 const tilaukset = [
-    { icon: <AutoStoriesIcon />, label: 'Tarkastele', to: '/admin/tilaukset' },
+    { icon: <AutoStoriesIcon />, label: 'Tilauslista', to: '/admin/tilaukset' },
     { icon: <ImportExportIcon />, label: 'Tilausilmoitukset', to: '/admin/tilaukset/sahkopostilista' },
 ];
 
 const tuotteet = [
-    { icon: <ManageSearchIcon />, label: 'Tarkastele', to: '/admin/tuotteet' },
+    { icon: <ManageSearchIcon />, label: 'Tuotelista', to: '/admin/tuotteet' },
     { icon: <ColorLensIcon />, label: 'Värit', to: '/admin/tuotteet/varit' },
 ];
 
-const kayttajat = [{ icon: <People />, label: 'Tarkastele', to: '/admin/kayttajat' }];
+const kayttajat = [{ icon: <People />, label: 'Käyttäjälista', to: '/admin/kayttajat' }];
 
 const varastot = [
-    { icon: <DomainIcon />, label: 'Tarkastele', to: '/admin/varastot' },
+    { icon: <DomainIcon />, label: 'Varastolista', to: '/admin/varastot' },
     { icon: <DomainAddIcon />, label: 'Lisää uusi', to: '/admin/varastot/luo' },
 ];
 
 const tiedotteet = [
-    { icon: <LibraryBooksIcon />, label: 'Tarkastele', to: '/admin/tiedotteet' },
+    { icon: <LibraryBooksIcon />, label: 'Tiedotelista', to: '/admin/tiedotteet' },
     { icon: <LibraryAddIcon />, label: 'Luo uusi', to: '/admin/tiedotteet/luo' },
 ];
 
 const viestit = [
-    { icon: <MailIcon />, label: 'Tarkastele', to: '/admin/viestit' },
+    { icon: <MailIcon />, label: 'Viestit asiakkailta', to: '/admin/viestit' },
     // { icon: <MarkEmailUnreadIcon />, label: 'Lukemattomat', to: '/admin/viestit?tila=Lukemattomat' },
 ];
 
