@@ -244,7 +244,16 @@ function CategoryTree() {
                     >
                         {selectedCategory !== null ? (
                             <Box id="nodeaction-btns-wrapper">
-                                <Typography>Valittu: {selectedCategory?.name}</Typography>
+                                <Stack direction="row" justifyContent="space-between">
+                                    <Typography>
+                                        Valittu: {selectedCategory?.name} / Syvyys: {selectedCategory?.level}
+                                    </Typography>
+                                    {selectedCategory?.level === 0 || selectedCategory?.level === 1 ? (
+                                        <Typography fontSize="14px" color="info.main">
+                                            Tähän kategoriaan ei voi lisätä tuotteita.
+                                        </Typography>
+                                    ) : null}
+                                </Stack>
                                 <Stack direction="row" spacing={4} my="1rem" sx={{ justifyContent: 'center' }}>
                                     <Tooltip title="Poista valinta">
                                         <IconButton size="small" onClick={handleDeselect}>
@@ -451,21 +460,27 @@ function CategoryTree() {
 
                                         {showDeleteErrorMessage && (
                                             <Box>
-                                                <Typography variant="body1">Poistoa ei suoritettu.</Typography>
+                                                <Typography variant="body1" color="info.main" textAlign="center">
+                                                    Poistoa ei suoritettu.
+                                                </Typography>
                                                 <Box paddingTop={2} paddingLeft={2}>
                                                     <Typography variant="body2">
-                                                        Kategorian poisto on estetty seuraavin ehdoin:
+                                                        Kategorian poistamiseksi seuraavien ehtojen on täytyttävä:
                                                     </Typography>
-                                                    <Typography variant="body2">
-                                                        Kategorian on oltava tyhjä tuotteista
-                                                    </Typography>
-                                                    <Typography variant="body2">
-                                                        Kategorialla ei voi olla ala-kategorioita, vaikka ne olisivat
-                                                        tyhjiä.
-                                                    </Typography>
-                                                    <Typography variant="body2">
-                                                        Rakenteen ylintä osaa ei voi poistaa.
-                                                    </Typography>
+                                                    <Box paddingTop={1} paddingLeft={1}>
+                                                        <Typography variant="body2">
+                                                            - Kategorian on oltava tyhjä tuotteista.
+                                                        </Typography>
+                                                        <Typography variant="body2">
+                                                            - Kategorialla ei ole ala-kategorioita, vaikka ne olisivat
+                                                            tyhjiä.
+                                                        </Typography>
+                                                        <Divider sx={{ my: 2 }} />
+                                                        <Typography variant="body2">
+                                                            Huom: Koko kategoriarakenteen ylimmän osan poistaminen on
+                                                            estetty.
+                                                        </Typography>
+                                                    </Box>
                                                 </Box>
                                             </Box>
                                         )}
