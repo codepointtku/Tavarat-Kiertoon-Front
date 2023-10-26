@@ -42,6 +42,11 @@ function ModalFooter() {
 }
 
 function UserForm() {
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof userSignupAction>>;
+
+    const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+
     const {
         register,
         handleSubmit: createHandleSubmit,
@@ -49,12 +54,8 @@ function UserForm() {
         setError,
         formState: { errors: formErrors },
     } = useForm({ mode: 'onTouched' });
-    const submit = useSubmit();
-    const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
-    const responseStatus = useActionData() as Awaited<ReturnType<typeof userSignupAction>>;
 
-    const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data) => {
         const formData = { ...data };
@@ -65,15 +66,19 @@ function UserForm() {
         });
         setIsSubmitSuccessful(true);
     });
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
     useEffect(() => {
         if (responseStatus?.data) {
             setIsSubmitSuccessful(responseStatus?.status);
 
             if (responseStatus?.data?.username) {
-                setError('email', { type: 'custom', message: 'Tämä tunnus on jo varattu' });
+                setError('email', { type: 'custom', message: 'Tämä tunnus on varattu' });
             }
         }
     }, [responseStatus]);
+
     return (
         <>
             {isSubmitSuccessful === false && responseStatus?.status === false && (
@@ -100,7 +105,7 @@ function UserForm() {
                             id="input-email"
                             type="text"
                             label="Sähköpostiosoite"
-                            placeholder="sinä@turku.fi"
+                            placeholder="etunimi.sukunimi@turku.fi"
                             {...register('email', {
                                 required: { value: true, message: 'Sähköpostiosoite on pakollinen' },
                                 minLength: { value: 5, message: 'Sähköpostiosoitteen on oltava vähintään 5 merkkiä' },
@@ -171,11 +176,12 @@ function UserForm() {
                             id="input-phonenumber"
                             type="text"
                             label="Puhelinnumero"
-                            placeholder="010 1231234"
+                            placeholder="Sisältäen vain numeroita"
                             {...register('phonenumber', {
                                 required: { value: true, message: 'Puhelinnumero on pakollinen' },
-                                minLength: { value: 7, message: 'Puhelinnumeron on vähintään 7 merkkiä' },
-                                maxLength: { value: 15, message: 'Puhelinnumero on enintään 15 merkkiä' },
+                                minLength: { value: 7, message: 'Vähintään 7 merkkiä' },
+                                maxLength: { value: 15, message: 'Enintään 15 merkkiä' },
+                                pattern: { value: /^[0-9]+$/, message: 'Sisällön tulee koostua vain numeroista' },
                             })}
                             error={!!formErrors.phonenumber}
                             helperText={formErrors.phonenumber?.message?.toString() || ' '}
@@ -218,6 +224,7 @@ function UserForm() {
                                 {...register('zipcode', {
                                     required: { value: true, message: 'Postinumero on pakollinen' },
                                     minLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
+                                    maxLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
                                 })}
                                 error={!!formErrors.zipcode}
                                 helperText={formErrors.zipcode?.message?.toString() || ' '}

@@ -53,11 +53,12 @@ function ContactsAndDelivery() {
     const maxDate = new Date().setDate(currentDate.getDate() + 64);
     const hd = new Holidays('FI');
     const holidaysCurrentYear = hd.getHolidays();
-    const holidaysNextYear = hd.getHolidays((new Date().getFullYear() + 1));
+    const holidaysNextYear = hd.getHolidays(new Date().getFullYear() + 1);
 
     function disableDate(date: Date) {
-        const dateIsHoliday = (holidaysCurrentYear.some((holiday) => String(holiday.start) === String(date))
-            || holidaysNextYear.some((holiday) => String(holiday.start) === String(date)))
+        const dateIsHoliday =
+            holidaysCurrentYear.some((holiday) => String(holiday.start) === String(date)) ||
+            holidaysNextYear.some((holiday) => String(holiday.start) === String(date));
         const disabledDatesMessages = [
             {
                 value: date >= new Date(maxDate),
@@ -295,9 +296,10 @@ function ContactsAndDelivery() {
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}
                             {...register('recipient_phone_number', {
-                                required: 'Tämä kenttä on täytettävä',
-                                pattern: { value: /^[0-9]+$/, message: 'Sisällön täytyy koostua vain numeroista' },
-                                maxLength: { value: 11, message: 'Numerosarja on liian pitkä' },
+                                required: { value: true, message: 'Puhelinnumero on pakollinen' },
+                                minLength: { value: 7, message: 'Vähintään 7 merkkiä' },
+                                maxLength: { value: 15, message: 'Enintään 15 merkkiä' },
+                                pattern: { value: /^[0-9]+$/, message: 'Sisällön tulee koostua vain numeroista' },
                             })}
                             error={!!errors.recipient_phone_number}
                             helperText={errors.recipient_phone_number?.message?.toString() || ' '}
@@ -362,7 +364,8 @@ function ContactsAndDelivery() {
                                     variant="outlined"
                                     {...register('zip_code', {
                                         required: { value: true, message: 'Tämä kenttä on täytettävä' },
-                                        maxLength: { value: 5, message: 'Sisältö on liian pitkä' },
+                                        minLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
+                                        maxLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
                                     })}
                                     inputProps={{ required: false }}
                                     error={!!errors.zip_code}

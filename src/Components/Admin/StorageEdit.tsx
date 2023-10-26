@@ -130,14 +130,8 @@ function StorageEdit() {
                                 placeholder="Postinumero"
                                 {...register('zip_code', {
                                     required: { value: true, message: 'Postinumero on pakollinen' },
-                                    minLength: {
-                                        value: 1,
-                                        message: 'Syötä postinumero',
-                                    },
-                                    maxLength: {
-                                        value: 5,
-                                        message: 'Postinumero on 5 merkkiä',
-                                    },
+                                    minLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
+                                    maxLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
                                 })}
                                 inputProps={{ required: false }}
                                 required
