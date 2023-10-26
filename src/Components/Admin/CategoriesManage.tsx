@@ -48,6 +48,7 @@ function CategoryTree() {
 
     const [showDeletePrompt, setShowDeletePrompt] = useState<boolean>(true);
     const [showDeleteErrorMessage, setShowDeleteErrorMessage] = useState<boolean>(false);
+    const [showMutateErrorMessage, setShowMutateErrorMessage] = useState<boolean>(false);
     const [selectedChoice, setSelectedChoice] = useState<string>('');
     const [selectedCategory, setSelectedCategory] = useState<CategoryObject | EmptyObject | null>(null);
     let selectedNodeRef = useRef<CategoryObject | EmptyObject>({});
@@ -58,6 +59,7 @@ function CategoryTree() {
         setSelectedCategory(selectedNodeRef.current);
         setShowDeletePrompt(false);
         setShowDeleteErrorMessage(false);
+        setShowMutateErrorMessage(false);
     };
 
     const categoryTreeMain = arrayToTree(categories, {
@@ -108,7 +110,6 @@ function CategoryTree() {
         register,
         handleSubmit,
         reset,
-        getValues,
         formState: { isValid, errors },
     } = useForm({
         mode: 'all',
@@ -125,33 +126,39 @@ function CategoryTree() {
         }
 
         if (selectedChoice === 'add') {
-            if (selectedCategory?.parent === null || selectedCategory?.id === 'root') {
-                const newCategory = {
-                    name: getValues('cat'),
+            if (selectedCategory?.id === 'root') {
+                const newMainCategory = {
+                    ...data,
                 };
 
-                submit(newCategory, { method: 'post' });
+                submit(newMainCategory, { method: 'post' });
                 reset();
+                return;
             }
 
-            const newCategory = {
+            const newSubCategory = {
                 ...data,
-                name: getValues('cat'),
                 parent: selectedCategory?.id,
             };
 
-            submit(newCategory, { method: 'post' });
+            submit(newSubCategory, { method: 'post' });
             reset();
+            return;
         }
 
         if (selectedChoice === 'mutate') {
+            if (selectedCategory?.id === 'root') {
+                setShowMutateErrorMessage(true);
+                return;
+            }
+
             // parent	integer
             // nullable: true
 
+            setShowMutateErrorMessage(false);
             const mutatedCategory = {
                 ...data,
                 id: selectedCategory?.id,
-                name: getValues('cat'),
                 parent: selectedCategory?.parent,
             };
 
@@ -355,7 +362,7 @@ function CategoryTree() {
                                 )}
 
                                 {selectedChoice === 'mutate' && (
-                                    <>
+                                    <Box>
                                         <TextField
                                             id="input-color"
                                             type="text"
@@ -385,7 +392,7 @@ function CategoryTree() {
                                         />
                                         <Button
                                             type="submit"
-                                            disabled={!isValid}
+                                            disabled={!isValid || showMutateErrorMessage}
                                             fullWidth
                                             sx={{
                                                 '&:hover': {
@@ -395,7 +402,13 @@ function CategoryTree() {
                                         >
                                             Vahvista
                                         </Button>
-                                    </>
+
+                                        {showMutateErrorMessage && (
+                                            <Typography fontSize="14px" color="info.main" marginTop={2}>
+                                                Kategoriarakenteen ylintä osaa ei voi nimetä uudelleen
+                                            </Typography>
+                                        )}
+                                    </Box>
                                 )}
 
                                 {selectedChoice === 'delete' && (

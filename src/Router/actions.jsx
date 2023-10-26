@@ -561,7 +561,7 @@ const categoriesManageAction = async ({ request }) => {
     const id = formData.get('id');
 
     if (request.method === 'POST') {
-        if (formData.get('parent') === 'root') {
+        if (formData.get('parent') === null) {
             const newMainCategory = { name: formData.get('cat'), parent: null };
 
             const response = await categoriesApi.categoriesCreate(newMainCategory);
@@ -585,11 +585,23 @@ const categoriesManageAction = async ({ request }) => {
     if (request.method === 'PUT') {
         const mutatedCategory = { name: formData.get('cat'), parent: formData.get('parent') };
 
-        const response = await categoriesApi.categoriesUpdate(id, mutatedCategory);
+        if (mutatedCategory.parent !== 'null') {
+            const response = await categoriesApi.categoriesUpdate(id, mutatedCategory);
 
-        if (response.status === 200) {
-            return { type: 'categorymutate', status: true };
+            if (response.status === 200) {
+                return { type: 'categorymutate', status: true };
+            }
         }
+
+        if (mutatedCategory.parent === 'null') {
+            const höpöhöpö = { name: formData.get('cat') };
+            const response = await categoriesApi.categoriesUpdate(id, höpöhöpö);
+
+            if (response.status === 200) {
+                return { type: 'categorymutate', status: true };
+            }
+        }
+
         return { type: 'categorymutate', status: false };
     }
 
