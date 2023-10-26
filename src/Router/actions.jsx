@@ -594,8 +594,7 @@ const categoriesManageAction = async ({ request }) => {
         }
 
         if (mutatedCategory.parent === 'null') {
-            const höpöhöpö = { name: formData.get('cat') };
-            const response = await categoriesApi.categoriesUpdate(id, höpöhöpö);
+            const response = await categoriesApi.categoriesUpdate(id, { name: formData.get('cat') });
 
             if (response.status === 200) {
                 return { type: 'categorymutate', status: true };
