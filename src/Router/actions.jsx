@@ -1,5 +1,5 @@
 import { redirect } from 'react-router-dom';
-import apiCall from '../Utils/apiCall';
+
 import {
     bikesApi,
     bulletinsApi,
@@ -553,36 +553,6 @@ const colorsManageAction = async ({ request }) => {
 };
 
 /**
- * creates a new item
- */
-
-// this will be replaced with openapi api call
-const itemCreateAction = async (auth, setAuth, request) => {
-    const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/storage/products/', 'post', formData, {
-        headers: { 'content-type': 'multipart/form-data' },
-    });
-    if (response.status === 201) {
-        return { type: 'createitem', status: true };
-    }
-    return { type: 'createitem', status: false };
-};
-
-/**
- * updates existing item
- */
-
-// this will be replaced with openapi api call
-const itemUpdateAction = async (auth, setAuth, request) => {
-    const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/storage/products/', 'put', formData);
-    if (response.status === 200) {
-        return { type: 'updateitem', status: true };
-    }
-    return { type: 'updateitem', status: false };
-};
-
-/**
  * adds or removes items from shopping cart while in ordering process phase 1
  */
 
@@ -1128,8 +1098,6 @@ export {
     userDeleteAction,
     adminUserAddressEditAction,
     adminUserAddressCreateAction,
-    itemCreateAction,
-    itemUpdateAction,
     cartViewAction,
     bikeOrderAction,
     confirmationAction,
