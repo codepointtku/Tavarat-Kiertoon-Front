@@ -159,6 +159,7 @@ import {
     adminBulletinsLoader,
     productEditLoader,
     addressEditLoader,
+    colorsLoader,
 } from './loaders';
 
 import {
@@ -202,11 +203,13 @@ import {
     userAccountPageAction,
     userAddressCreateAction,
     userAddressEditAction,
+    colorsManageAction,
     searchWatchCreateAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
+import ColorsManage from '../Components/Admin/ColorsManage';
 
 createStore({});
 
@@ -633,6 +636,12 @@ function Routes() {
                                             index: true,
                                             element: <ProductsGrid />,
                                             loader: productListLoader,
+                                        },
+                                        {
+                                            path: 'varit',
+                                            element: <ColorsManage />,
+                                            loader: colorsLoader,
+                                            action: colorsManageAction,
                                         },
                                     ],
                                 },
