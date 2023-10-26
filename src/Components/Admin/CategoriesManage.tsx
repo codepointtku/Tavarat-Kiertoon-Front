@@ -5,12 +5,24 @@ import { useForm } from 'react-hook-form';
 import arrayToTree from 'array-to-tree';
 
 import { TreeView, TreeItem } from '@mui/lab';
-import { Box, Button, Container, Divider, Grid, IconButton, Stack, TextField, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    Container,
+    Divider,
+    Grid,
+    IconButton,
+    Popover,
+    Stack,
+    TextField,
+    Typography,
+} from '@mui/material';
 
 import DeselectIcon from '@mui/icons-material/Deselect';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
@@ -46,6 +58,8 @@ function CategoryTree() {
     const { categories } = useLoaderData() as Awaited<ReturnType<typeof categoriesManageLoader>>;
     const categoryNamesMap = categories.map((category) => category.name);
 
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const openPopover = Boolean(anchorEl);
     const [showDeletePrompt, setShowDeletePrompt] = useState<boolean>(true);
     const [showDeleteErrorMessage, setShowDeleteErrorMessage] = useState<boolean>(false);
     const [showMutateErrorMessage, setShowMutateErrorMessage] = useState<boolean>(false);
@@ -61,6 +75,10 @@ function CategoryTree() {
         setShowDeleteErrorMessage(false);
         setShowMutateErrorMessage(false);
     };
+
+    function handlePopOverOpen(event: React.MouseEvent<HTMLElement>) {
+        setAnchorEl(event.currentTarget);
+    }
 
     const categoryTreeMain = arrayToTree(categories, {
         parentProperty: 'parent',
@@ -244,14 +262,43 @@ function CategoryTree() {
                     >
                         {selectedCategory !== null ? (
                             <Box id="nodeaction-btns-wrapper">
-                                <Stack direction="row" justifyContent="space-between">
-                                    <Typography>
-                                        Valittu: {selectedCategory?.name} / Syvyys: {selectedCategory?.level}
-                                    </Typography>
+                                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                                    <Typography>Valittu: {selectedCategory?.name}</Typography>
                                     {selectedCategory?.level === 0 || selectedCategory?.level === 1 ? (
-                                        <Typography fontSize="14px" color="info.main">
-                                            Tähän kategoriaan ei voi lisätä tuotteita.
-                                        </Typography>
+                                        <>
+                                            <Stack direction="row" alignItems="center">
+                                                <Typography fontSize="14px" color="info.main">
+                                                    Tähän kategoriaan ei voi lisätä tuotteita
+                                                </Typography>
+                                                <IconButton size="small" color="info" onClick={handlePopOverOpen}>
+                                                    <HelpOutlineIcon />
+                                                </IconButton>
+                                            </Stack>
+
+                                            <Popover
+                                                open={openPopover}
+                                                anchorEl={anchorEl}
+                                                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                                                onClose={() => setAnchorEl(null)}
+                                                sx={{ mt: 1 }}
+                                            >
+                                                <Stack
+                                                    justifyContent="center"
+                                                    alignItems="center"
+                                                    sx={{ p: '1rem' }}
+                                                    spacing={1}
+                                                >
+                                                    <Typography variant="body2">Oletko banaani?</Typography>
+                                                    <Button
+                                                        size="small"
+                                                        variant="outlined"
+                                                        onClick={() => setAnchorEl(null)}
+                                                    >
+                                                        Oon
+                                                    </Button>
+                                                </Stack>
+                                            </Popover>
+                                        </>
                                     ) : null}
                                 </Stack>
                                 <Stack direction="row" spacing={4} my="1rem" sx={{ justifyContent: 'center' }}>
