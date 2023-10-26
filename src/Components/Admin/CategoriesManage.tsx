@@ -177,7 +177,7 @@ function CategoryTree() {
             const mutatedCategory = {
                 ...data,
                 id: selectedCategory?.id,
-                parent: selectedCategory?.parent,
+                parent: selectedCategory?.parent, // it is possible to move a category with this value. UI for inputting this value does not exist in this code.
             };
 
             submit(mutatedCategory, { method: 'put' });
