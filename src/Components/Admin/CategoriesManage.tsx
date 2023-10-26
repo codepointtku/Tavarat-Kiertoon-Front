@@ -284,17 +284,33 @@ function CategoryTree() {
                                             >
                                                 <Stack
                                                     justifyContent="center"
-                                                    alignItems="center"
-                                                    sx={{ p: '1rem' }}
+                                                    sx={{ p: '1rem', maxWidth: '300px' }}
                                                     spacing={1}
                                                 >
-                                                    <Typography variant="body2">Oletko banaani?</Typography>
+                                                    <Typography variant="body2">
+                                                        Kategoriarakenteella on 3-tasoinen syvyys.
+                                                    </Typography>
+                                                    <Typography variant="body2">
+                                                        Tuotteet ovat tarkoitettu lajiteltavaksi alimpaan tasoon.
+                                                    </Typography>
+                                                    <Typography variant="body2">
+                                                        Tuotteiden lisäys muihin, kuin alimpaan tasoon on estetty.
+                                                    </Typography>
+                                                    <Divider />
+                                                    <Typography variant="body2">
+                                                        Kategoria, millä ei ole järjestelmän odottamaa syvyyttä näyttää
+                                                        kaupan puolella kaikki tuotteet.
+                                                    </Typography>
+                                                    <Typography variant="body2">
+                                                        Selkeän toiminnan varmistamiseksi tulee huolehtia odotetun
+                                                        rakenteen ylläpidosta.
+                                                    </Typography>
                                                     <Button
                                                         size="small"
                                                         variant="outlined"
                                                         onClick={() => setAnchorEl(null)}
                                                     >
-                                                        Oon
+                                                        Sulje
                                                     </Button>
                                                 </Stack>
                                             </Popover>
