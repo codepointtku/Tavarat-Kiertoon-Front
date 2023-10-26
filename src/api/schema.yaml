@@ -512,7 +512,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BikeRentalSchemaResponse'
+                $ref: '#/components/schemas/BikeRentalDepth'
           description: ''
     put:
       operationId: bikes_rental_update
@@ -1921,18 +1921,6 @@ paths:
         description: Which field to use when ordering the results.
         schema:
           type: string
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      - name: page_size
-        required: false
-        in: query
-        description: Number of results to return per page.
-        schema:
-          type: integer
       - in: query
         name: status
         schema:
@@ -1965,7 +1953,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedOrderDetailResponseList'
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderDetailResponse'
           description: ''
   /pictures/:
     get:
@@ -2403,14 +2393,10 @@ paths:
         explode: true
         style: form
       - in: query
-        name: search
-        schema:
-          type: string
-        description: Barcode search
-      - in: query
         name: shelf_id
         schema:
           type: string
+          nullable: true
       - in: query
         name: storage
         schema:
@@ -4140,6 +4126,52 @@ components:
       - end_date
       - id
       - start_date
+    BikeRentalDepth:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        bike_stock:
+          type: array
+          items:
+            $ref: '#/components/schemas/BikeStockDetail'
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/UserBikeRental'
+          readOnly: true
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        state:
+          $ref: '#/components/schemas/BikeRentalEnum'
+        delivery_address:
+          type: string
+          maxLength: 255
+        pickup:
+          type: boolean
+        contact_name:
+          type: string
+          maxLength: 255
+        contact_phone_number:
+          type: string
+          maxLength: 255
+        extra_info:
+          type: string
+          maxLength: 255
+      required:
+      - bike_stock
+      - contact_name
+      - contact_phone_number
+      - delivery_address
+      - end_date
+      - id
+      - start_date
+      - user
     BikeRentalEnum:
       enum:
       - WAITING
@@ -4313,21 +4345,23 @@ components:
           allOf:
           - $ref: '#/components/schemas/Color'
           readOnly: true
+        picture:
+          allOf:
+          - $ref: '#/components/schemas/Picture'
+          readOnly: true
         name:
           type: string
           maxLength: 255
         description:
           type: string
           maxLength: 255
-        picture:
-          type: integer
-          nullable: true
       required:
       - brand
       - color
       - description
       - id
       - name
+      - picture
       - size
       - type
     BikeStockDetail:
@@ -4344,6 +4378,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/Storage'
           readOnly: true
+        color:
+          allOf:
+          - $ref: '#/components/schemas/Color'
+          readOnly: true
         package_only:
           type: boolean
         number:
@@ -4358,11 +4396,9 @@ components:
           readOnly: true
         state:
           $ref: '#/components/schemas/BikeStateEnum'
-        color:
-          type: integer
-          nullable: true
       required:
       - bike
+      - color
       - created_at
       - frame_number
       - id
@@ -5154,26 +5190,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ContactFormResponse'
-    PaginatedOrderDetailResponseList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrderDetailResponse'
     PaginatedOrderResponseList:
       type: object
       properties:
@@ -5435,6 +5451,7 @@ components:
           format: date-time
         shelf_id:
           type: string
+          nullable: true
           maxLength: 255
         barcode:
           type: string
@@ -5530,6 +5547,7 @@ components:
           format: date-time
         shelf_id:
           type: string
+          nullable: true
           maxLength: 255
         barcode:
           type: string
@@ -5568,6 +5586,7 @@ components:
           format: date-time
         shelf_id:
           type: string
+          nullable: true
           maxLength: 255
         barcode:
           type: string
@@ -5599,6 +5618,7 @@ components:
           readOnly: true
         shelf_id:
           type: string
+          nullable: true
           maxLength: 255
         barcode:
           type: string
@@ -5683,6 +5703,9 @@ components:
           items:
             $ref: '#/components/schemas/ProductItemStorage'
           readOnly: true
+        category_name:
+          type: string
+          readOnly: true
         name:
           type: string
           maxLength: 255
@@ -5710,6 +5733,7 @@ components:
             type: integer
       required:
       - category
+      - category_name
       - colors
       - free_description
       - id
@@ -5739,7 +5763,14 @@ components:
           readOnly: true
         new_pictures:
           type: array
-          items: {}
+          items:
+            type: integer
+        old_pictures:
+          type: array
+          items:
+            type: integer
+        shelf_id:
+          type: string
         name:
           type: string
           maxLength: 255
@@ -5757,10 +5788,6 @@ components:
         category:
           type: integer
           nullable: true
-        pictures:
-          type: array
-          items:
-            type: integer
         colors:
           type: array
           items:
@@ -5775,9 +5802,6 @@ components:
         id:
           type: integer
           readOnly: true
-        new_pictures:
-          type: array
-          items: {}
         name:
           type: string
           maxLength: 255
@@ -6077,6 +6101,38 @@ components:
           maxLength: 100
       required:
       - id
+    UserBikeRental:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        last_login:
+          type: string
+          format: date-time
+          nullable: true
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          maxLength: 255
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 255
+        username:
+          type: string
+          maxLength: 255
+      required:
+      - email
+      - first_name
+      - id
+      - last_name
+      - username
     UserCreate:
       type: object
       description: Serializer for users, in specific format for user creation
