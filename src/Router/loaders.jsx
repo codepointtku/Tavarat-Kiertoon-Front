@@ -296,7 +296,7 @@ const bikeRentalLoader = async (request, auth, setAuth) => {
     const url = new URL(request.url);
 
     const { data } = await bikesApi.bikesRentalList(
-        null,
+        url.searchParams.get('jarjesta') || null,
         url.searchParams.get('sivu') || 1,
         url.searchParams.get('sivukoko') || 25,
         null 

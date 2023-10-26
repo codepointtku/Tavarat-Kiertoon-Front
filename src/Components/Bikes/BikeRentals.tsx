@@ -8,16 +8,15 @@ import {
     TableBody,
     Typography,
     Box,
-    IconButton,
+    Button,
     TextField,
     MenuItem,
 } from '@mui/material';
 import { useLoaderData } from 'react-router';
 import StyledTableCell from '../StyledTableCell';
-import { GridDeleteIcon } from '@mui/x-data-grid';
-import { useState } from 'react';
 import type { bikeRentalLoader } from '../../Router/loaders';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, createSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import Pagination from '../Pagination';
 
 // interface Rental {
@@ -43,11 +42,31 @@ function getYearAndMonth(dateString: string) {
 }
 
 export default function BikeRentals() {
-
     const { results, count } = useLoaderData() as Awaited<ReturnType<typeof bikeRentalLoader>>;
-    const navigate = useNavigate()
+    const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
 
-    console.log(results)
+    console.log(results);
+
+    function handleOrderingChange(fieldName: string) {
+        console.log(fieldName);
+        setSearchParams((prevParams) => {
+            if (searchParams.get('jarjesta') === fieldName) {
+                return createSearchParams({
+                    ...Object.fromEntries(prevParams.entries()),
+                    jarjesta: `-${fieldName}`,
+                });
+            }
+            return createSearchParams({
+                ...Object.fromEntries(prevParams.entries()),
+                jarjesta: fieldName,
+            });
+        });
+    }
+
+    // function handleFilterChange(filters: )
+
+    console.log('ORDERING PARAM', searchParams.get('jarjesta'));
 
     const statusTranslate = (value: string) => {
         if (value === 'WAITING') {
@@ -61,25 +80,66 @@ export default function BikeRentals() {
         }
     };
 
-    if(results?.length === 0) {
-        return <Typography variant="h6" margin="auto">ei tilauksia</Typography>
+    if (results?.length === 0) {
+        return (
+            <Typography variant="h6" margin="auto">
+                ei tilauksia
+            </Typography>
+        );
     }
 
     return (
         <Box width="100%">
-            <Typography variant="h3" align="center" color="primary.main" width="100%" sx={{margin: "0 0 1rem 0"}}>
-                Tilaukset{' '}
+            <Typography variant="h3" align="center" color="primary.main" width="100%" sx={{ margin: '0 0 1rem 0' }}>
+                Tilaukset
             </Typography>
             <TableContainer component={Paper} sx={{ padding: '2rem' }}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell align="right">Alkaa</StyledTableCell>
-                            <StyledTableCell align="right">Päättyy</StyledTableCell>
-                            <StyledTableCell align="right">Tila</StyledTableCell>
+                            <StyledTableCell>
+                                <Button
+                                    onClick={() => handleOrderingChange('id')}
+                                    variant="outlined"
+                                    color="inherit"
+                                    fullWidth
+                                >
+                                    Tilaus
+                                </Button>
+                            </StyledTableCell>
+                            <StyledTableCell>
+                                <Button
+                                    onClick={() => handleOrderingChange('start_date')}
+                                    variant="outlined"
+                                    color="inherit"
+                                    fullWidth
+                                >
+                                    Alkaa
+                                </Button>
+                            </StyledTableCell>
+                            <StyledTableCell>
+                                <Button
+                                    onClick={() => handleOrderingChange('end_date')}
+                                    variant="outlined"
+                                    color="inherit"
+                                    fullWidth
+                                >
+                                    Päättyy
+                                </Button>
+                            </StyledTableCell>
+                            <StyledTableCell>
+                                <Button
+                                    onClick={() => handleOrderingChange('state')}
+                                    variant="outlined"
+                                    color="inherit"
+                                    fullWidth
+                                >
+                                    Tila
+                                </Button>
+                            </StyledTableCell>
                             <StyledTableCell align="right">Toimitusosoite</StyledTableCell>
                             <StyledTableCell align="right">Nouto</StyledTableCell>
-                            <StyledTableCell align="right">Tilaaja</StyledTableCell>
+                            <StyledTableCell align="right">Vastaanottaja</StyledTableCell>
                             <StyledTableCell align="right">Puh</StyledTableCell>
                         </TableRow>
                     </TableHead>
@@ -91,6 +151,7 @@ export default function BikeRentals() {
                                 hover
                                 onClick={() => navigate(`/pyorat/pyoravarasto/pyoratilaukset/${rental.id}`)}
                             >
+                                <TableCell align="left">{rental.id}</TableCell>
                                 <TableCell align="right">{getYearAndMonth(rental.start_date)}</TableCell>
                                 <TableCell align="right">{getYearAndMonth(rental.end_date)}</TableCell>
                                 <TableCell align="right">{statusTranslate(rental.state)}</TableCell>
@@ -107,6 +168,5 @@ export default function BikeRentals() {
                 <Pagination count={count} itemsText="Tilauksia" />
             </Box>
         </Box>
-        
     );
 }
