@@ -53,11 +53,12 @@ function ContactsAndDelivery() {
     const maxDate = new Date().setDate(currentDate.getDate() + 64);
     const hd = new Holidays('FI');
     const holidaysCurrentYear = hd.getHolidays();
-    const holidaysNextYear = hd.getHolidays((new Date().getFullYear() + 1));
+    const holidaysNextYear = hd.getHolidays(new Date().getFullYear() + 1);
 
     function disableDate(date: Date) {
-        const dateIsHoliday = (holidaysCurrentYear.some((holiday) => String(holiday.start) === String(date))
-            || holidaysNextYear.some((holiday) => String(holiday.start) === String(date)))
+        const dateIsHoliday =
+            holidaysCurrentYear.some((holiday) => String(holiday.start) === String(date)) ||
+            holidaysNextYear.some((holiday) => String(holiday.start) === String(date));
         const disabledDatesMessages = [
             {
                 value: date >= new Date(maxDate),
@@ -107,7 +108,7 @@ function ContactsAndDelivery() {
     );
 
     const [showAddressList, setShowAddressList] = useState(false);
-
+    const [collect, setCollect] = useState(false);
     const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
         Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
             ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryRequired
@@ -201,10 +202,11 @@ function ContactsAndDelivery() {
     }
 
     const onDeliveryMethodFalse = () => {
-        setShowAddressList(!showAddressList);
-        setSelectedAddress('');
+        setCollect(true);
     };
-
+    const onDeliveryMethodTrue = () => {
+        setCollect(false);
+    };
     const navigate = useNavigate();
 
     const onSubmit = (data: CartFormData) => {
@@ -219,7 +221,7 @@ function ContactsAndDelivery() {
 
     return (
         <>
-            {showAddressList && selectedAddress === '' && (
+            {!collect && showAddressList && selectedAddress === '' && (
                 <Toaster text="Valitse tai kirjoita toimitusosoite, ole hyvä!" />
             )}
 
@@ -333,7 +335,9 @@ function ContactsAndDelivery() {
                             inputProps={{ required: false }}
                             required
                         >
-                            <MenuItem value="true">Kuljetus</MenuItem>
+                            <MenuItem value="true" onClick={onDeliveryMethodTrue}>
+                                Kuljetus
+                            </MenuItem>
                             <MenuItem value="false" onClick={onDeliveryMethodFalse}>
                                 Nouto
                             </MenuItem>
@@ -354,6 +358,7 @@ function ContactsAndDelivery() {
                                     error={!!errors.deliveryAddress}
                                     helperText={errors.deliveryAddress?.message?.toString() || ''}
                                     required
+                                    disabled={collect}
                                 />
 
                                 <TextField
@@ -368,6 +373,7 @@ function ContactsAndDelivery() {
                                     error={!!errors.zip_code}
                                     helperText={errors.zip_code?.message?.toString() || ''}
                                     required
+                                    disabled={collect}
                                 />
 
                                 <TextField
@@ -382,6 +388,7 @@ function ContactsAndDelivery() {
                                     error={!!errors.deliveryAddress}
                                     helperText={errors.deliveryAddress?.message?.toString() || ''}
                                     required
+                                    disabled={collect}
                                 />
                             </>
                         )}
@@ -477,7 +484,7 @@ function ContactsAndDelivery() {
                     forwardText="Seuraava"
                     actions={actions}
                     formData={getValues()}
-                    disableForwardBtn={showAddressList && selectedAddress === ''}
+                    disableForwardBtn={!collect && showAddressList && selectedAddress === ''}
                 />
             </form>
         </>
