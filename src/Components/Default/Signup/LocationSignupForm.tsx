@@ -108,6 +108,7 @@ function LocationForm() {
                             placeholder="Käyttäjätunnus yhteiskäyttöön"
                             {...register('username', {
                                 required: { value: true, message: 'Tunnus on pakollinen' },
+                                maxLength: { value: 50, message: 'Maksimipituus' },
                             })}
                             error={!!formErrors.username}
                             helperText={formErrors.username?.message?.toString() || ' '}
@@ -132,6 +133,7 @@ function LocationForm() {
                                 placeholder="Tilin vastuuhenkilön etunimi"
                                 {...register('firstname', {
                                     required: { value: true, message: 'Etunimi on pakollinen' },
+                                    maxLength: { value: 50, message: 'Maksimipituus' },
                                 })}
                                 error={!!formErrors.firstname}
                                 helperText={formErrors.firstname?.message?.toString() || ' '}
@@ -148,6 +150,7 @@ function LocationForm() {
                                 placeholder="Tilin vastuuhenkilön sukunimi"
                                 {...register('lastname', {
                                     required: { value: true, message: 'Sukunimi on pakollinen' },
+                                    maxLength: { value: 50, message: 'Maksimipituus' },
                                 })}
                                 error={!!formErrors.lastname}
                                 helperText={formErrors.lastname?.message?.toString() || ' '}
@@ -173,6 +176,7 @@ function LocationForm() {
                             {...register('email', {
                                 required: { value: true, message: 'Sähköpostiosoite on pakollinen' },
                                 minLength: { value: 5, message: 'Sähköpostiosoitteen on oltava vähintään 5 merkkiä' },
+                                maxLength: { value: 50, message: 'Maksimipituus' },
                                 pattern: {
                                     value: /.+@turku.fi$|.+@edu.turku.fi$/,
                                     message: 'Sähköpostin on oltava muotoa @turku.fi tai @edu.turku.fi',
@@ -226,6 +230,7 @@ function LocationForm() {
                             placeholder="Toimipaikan katuosoite"
                             {...register('address', {
                                 required: { value: true, message: 'Osoite on pakollinen' },
+                                maxLength: { value: 50, message: 'Maksimipituus' },
                             })}
                             error={!!formErrors.address}
                             helperText={formErrors.address?.message?.toString() || ' '}
@@ -269,6 +274,7 @@ function LocationForm() {
                                 placeholder="Turku"
                                 {...register('town', {
                                     required: { value: true, message: 'Kaupunki on pakollinen' },
+                                    maxLength: { value: 50, message: 'Maksimipituus' },
                                 })}
                                 error={!!formErrors.town}
                                 helperText={formErrors.town?.message?.toString() || ' '}

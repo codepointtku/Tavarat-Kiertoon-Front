@@ -109,6 +109,7 @@ function UserForm() {
                             {...register('email', {
                                 required: { value: true, message: 'Sähköpostiosoite on pakollinen' },
                                 minLength: { value: 5, message: 'Sähköpostiosoitteen on oltava vähintään 5 merkkiä' },
+                                maxLength: { value: 50, message: 'Maksimipituus' },
                                 pattern: {
                                     value: /.+@turku.fi$|.+@edu.turku.fi$/,
                                     message: 'Sähköpostin on oltava muotoa @turku.fi tai @edu.turku.fi',
@@ -139,6 +140,7 @@ function UserForm() {
                                 placeholder="Tilin omistajan etunimi"
                                 {...register('firstname', {
                                     required: { value: true, message: 'Etunimi on pakollinen' },
+                                    maxLength: { value: 50, message: 'Maksimipituus' },
                                 })}
                                 error={!!formErrors.firstname}
                                 helperText={formErrors.firstname?.message?.toString() || ' '}
@@ -155,6 +157,7 @@ function UserForm() {
                                 placeholder="Tilin omistajan sukunimi"
                                 {...register('lastname', {
                                     required: { value: true, message: 'Sukunimi on pakollinen' },
+                                    maxLength: { value: 50, message: 'Maksimipituus' },
                                 })}
                                 error={!!formErrors.lastname}
                                 helperText={formErrors.lastname?.message?.toString() || ' '}
@@ -207,6 +210,7 @@ function UserForm() {
                                 placeholder="Tavaran vastaanotto-osoite"
                                 {...register('address', {
                                     required: { value: true, message: 'Osoite on pakollinen' },
+                                    maxLength: { value: 50, message: 'Maksimipituus' },
                                 })}
                                 error={!!formErrors.address}
                                 helperText={formErrors.address?.message?.toString() || ' '}
@@ -250,6 +254,7 @@ function UserForm() {
                             placeholder="Turku"
                             {...register('town', {
                                 required: { value: true, message: 'Kaupunki on pakollinen' },
+                                maxLength: { value: 50, message: 'Maksimipituus' },
                             })}
                             error={!!formErrors.town}
                             helperText={formErrors.town?.message?.toString() || ' '}
@@ -267,6 +272,7 @@ function UserForm() {
                             {...register('password', {
                                 required: { value: true, message: 'Salasana on pakollinen' },
                                 minLength: { value: 2, message: 'Salasanan on oltava vähintään 2 merkkiä' },
+                                maxLength: { value: 50, message: 'Maksimipituus' },
                             })}
                             error={!!formErrors.password}
                             helperText={formErrors.password?.message?.toString() || ' '}
@@ -297,6 +303,7 @@ function UserForm() {
                             {...register('passwordCheck', {
                                 required: { value: true, message: 'Salasana on pakollinen' },
                                 minLength: { value: 2, message: 'Salasanan on oltava vähintään 2 merkkiä' },
+                                maxLength: { value: 50, message: 'Maksimipituus' },
                                 validate: (val: string) => {
                                     if (watch('password') !== val) {
                                         return 'Salasanat eivät täsmää';
