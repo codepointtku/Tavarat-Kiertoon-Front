@@ -4,6 +4,7 @@ import {
     bikesApi,
     bulletinsApi,
     colorsApi,
+    categoriesApi,
     contactFormsApi,
     // contactsApi,
     ordersApi,
@@ -587,6 +588,72 @@ const colorsManageAction = async ({ request }) => {
     }
 
     return { type: 'colorsmanageaction', status: false };
+};
+
+const categoriesManageAction = async ({ request }) => {
+    // const placeholder = 'hodor';
+    // return placeholder;
+
+    const formData = await request.formData();
+    const id = formData.get('id');
+
+    if (request.method === 'POST') {
+        if (formData.get('parent') === null) {
+            const newMainCategory = { name: formData.get('cat'), parent: null };
+
+            const response = await categoriesApi.categoriesCreate(newMainCategory);
+
+            if (response.status === 201) {
+                return { type: 'categorycreate', status: true };
+            }
+            return { type: 'categorycreate', status: false };
+        }
+
+        const newCategory = { name: formData.get('cat'), parent: formData.get('parent') };
+
+        const response = await categoriesApi.categoriesCreate(newCategory);
+
+        if (response.status === 201) {
+            return { type: 'categorycreate', status: true };
+        }
+        return { type: 'categorycreate', status: false };
+    }
+
+    if (request.method === 'PUT') {
+        const mutatedCategory = { name: formData.get('cat'), parent: formData.get('parent') };
+
+        if (mutatedCategory.parent !== 'null') {
+            const response = await categoriesApi.categoriesUpdate(id, mutatedCategory);
+
+            if (response.status === 200) {
+                return { type: 'categorymutate', status: true };
+            }
+        }
+
+        if (mutatedCategory.parent === 'null') {
+            const response = await categoriesApi.categoriesUpdate(id, { name: formData.get('cat') });
+
+            if (response.status === 200) {
+                return { type: 'categorymutate', status: true };
+            }
+        }
+
+        return { type: 'categorymutate', status: false };
+    }
+
+    if (request.method === 'DELETE') {
+        try {
+            const response = await categoriesApi.categoriesDestroy(id);
+
+            if (response.status === 204) {
+                return { type: 'categorydelete', status: true };
+            }
+        } catch (error) {
+            return { type: 'categorydelete', status: false };
+        }
+    }
+
+    return { type: 'categorymanage', status: false };
 };
 
 /**
@@ -1193,5 +1260,6 @@ export {
     userAddressEditAction,
     userAddressCreateAction,
     colorsManageAction,
+    categoriesManageAction,
     searchWatchCreateAction,
 };
