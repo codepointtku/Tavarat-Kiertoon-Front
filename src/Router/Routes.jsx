@@ -47,6 +47,8 @@ import OrdersGrid from '../Components/Admin/OrdersGrid';
 import AdminOrderEmailList from '../Components/Admin/AdminOrderEmailList';
 
 import ProductsGrid from '../Components/Admin/ProductsGrid';
+import ColorsManage from '../Components/Admin/ColorsManage';
+import CategoriesManage from '../Components/Admin/CategoriesManage';
 
 import UsersGrid from '../Components/Admin/UsersGrid';
 import UserEdit from '../Components/Admin/UserEdit';
@@ -158,6 +160,7 @@ import {
     adminBulletinsLoader,
     productEditLoader,
     addressEditLoader,
+    categoriesManageLoader,
     colorsLoader,
 } from './loaders';
 
@@ -201,13 +204,13 @@ import {
     userAccountPageAction,
     userAddressCreateAction,
     userAddressEditAction,
-    colorsManageAction,
     searchWatchCreateAction,
+    categoriesManageAction,
+    colorsManageAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
-import ColorsManage from '../Components/Admin/ColorsManage';
 
 createStore({});
 
@@ -639,6 +642,12 @@ function Routes() {
                                             element: <ColorsManage />,
                                             loader: colorsLoader,
                                             action: colorsManageAction,
+                                        },
+                                        {
+                                            path: 'kategoriat',
+                                            element: <CategoriesManage />,
+                                            loader: categoriesManageLoader,
+                                            action: categoriesManageAction,
                                         },
                                     ],
                                 },

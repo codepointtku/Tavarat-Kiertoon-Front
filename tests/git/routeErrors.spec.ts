@@ -280,6 +280,13 @@ test.describe('admin product color managing', () => {
     });
 });
 
+test.describe('admin product categories managing', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/admin/tuotteet/kategoriat');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
 // users
 test.describe('admin users list', () => {
     test('no errors', async ({ page }) => {
@@ -492,8 +499,7 @@ test.describe('user order history', () => {
 test.describe('user search watch', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/tili/hakuvahti');
-        console.log(page)
+        console.log(page);
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
 });
-
