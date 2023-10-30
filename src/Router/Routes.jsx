@@ -426,7 +426,7 @@ function Routes() {
                                 {
                                     path: 'tili',
                                     element: (
-                                        <HasRole role="user_group" fallback={<Navigate to="/kirjaudu" />}>
+                                        <HasRole role="user_group" fallback={<Navigate to="/kirjaudu" replace />}>
                                             <UserAccountPage />
                                         </HasRole>
                                     ),
