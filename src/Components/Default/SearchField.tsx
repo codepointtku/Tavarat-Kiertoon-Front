@@ -199,8 +199,8 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
                     id="search-text-input-field"
                     {...(register('search'),
                     {
-                        minLength: { value: 1, message: 'Tyhjä haku' },
-                        maxLength: { value: 80, message: 'Maksimipituus' },
+                        minLength: { value: 1 },
+                        maxLength: { value: 80 },
                     })}
                     onFocus={() => !isDirty && treeSelectedState.setCategoryTreeSelected(false)}
                     autoFocus
@@ -217,7 +217,6 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
             <Button id="search-button" type="submit" sx={{ p: '1rem 2rem 1rem 2rem' }}>
                 Hae
             </Button>
-            {/* {formStateErrors.search?.message && <Typography>{formStateErrors.search.message}</Typography>} */}
         </Box>
     );
 }
