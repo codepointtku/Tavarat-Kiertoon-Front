@@ -299,7 +299,7 @@ const bikeRentalLoader = async (request, auth, setAuth) => {
         url.searchParams.get('jarjesta') || null,
         url.searchParams.get('sivu') || 1,
         url.searchParams.get('sivukoko') || 25,
-        null 
+        url.searchParams.getAll('suodata') || null 
     );
     console.log('bikerentalLoader', data);
     return data;
