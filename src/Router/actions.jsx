@@ -109,6 +109,8 @@ const userSignupAction = async (request) => {
     // this action defaults without username-field.
     // if username-field exists in the formData, its value is appended and sent with the apiCall.
 
+    // also, this code looks like #frogsAreCool
+
     const formData = await request.formData();
 
     let userSignUpValues = {
@@ -144,11 +146,16 @@ const userSignupAction = async (request) => {
 /**
  * sends contact form to back-end
  */
-const contactAction = async (auth, setAuth, request) => {
+const contactAction = async ({ request }) => {
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/contact_forms/', 'post', formData);
+
     const response = await contactFormsApi.contactFormsCreate(Object.fromEntries(formData));
-    return response.data || null;
+
+    if (response.status === 666) {
+        return response.data;
+    }
+
+    return { type: 'contactform', status: false };
 };
 
 /**

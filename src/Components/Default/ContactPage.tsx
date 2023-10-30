@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Form, useSubmit } from 'react-router-dom';
+import { Form, useActionData, useSubmit } from 'react-router-dom';
 
 import { Container, TextField, Button, FormControl, InputLabel, Select, MenuItem, Grid } from '@mui/material';
 
@@ -10,11 +9,19 @@ import AlertBox from '../AlertBox';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
 
+import type { contactAction } from '../../Router/actions';
+
 function ContactForm() {
-    const { register, handleSubmit, watch } = useForm();
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof contactAction>>;
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors: formStateErrors, isSubmitting },
+    } = useForm();
+
     const submit = useSubmit();
-    const [success, setSuccess] = useState(false);
-    const [isSubmitting] = useState(false);
 
     const subject = watch('subject');
 
@@ -23,8 +30,6 @@ function ContactForm() {
             method: 'post',
             action: '/otayhteytta',
         });
-        //change to use useActionData
-        setSuccess(true);
     };
 
     return (
@@ -44,23 +49,30 @@ function ContactForm() {
                 }}
             >
                 <TextField
-                    {...register('name')}
+                    {...register('name', {
+                        required: { value: true, message: 'Elämä on pakollinen' },
+                        minLength: { value: 1, message: 'Jee' },
+                        maxLength: { value: 50, message: 'jöö' },
+                    })}
                     sx={{ mt: 2 }}
-                    label="Nimesi"
+                    label="Nimi"
                     placeholder="Nimi"
                     fullWidth
-                    inputProps={{ title: 'Etu- ja sukunimi', minLength: '2', maxLength: '50' }}
                     required
                 />
 
                 <TextField
-                    {...register('email')}
+                    {...register('email', {
+                        required: { value: true, message: 'Verojen maksu on pakollinen' },
+                        minLength: { value: 1, message: 'Jee' },
+                        maxLength: { value: 50, message: 'jöö just joo' },
+                    })}
                     sx={{ mt: 2 }}
                     label="Sähköpostisi"
                     fullWidth
                     inputProps={{
-                        title: 'vaatii @turku.fi päätteen (tai @edu.turku.fi)',
                         pattern: '.+@turku\\.fi$|.+@edu\\.turku\\.fi$',
+                        title: 'vaatii @turku.fi päätteen (tai @edu.turku.fi)',
                     }}
                     required
                     placeholder="@turku.fi"
@@ -71,7 +83,9 @@ function ContactForm() {
                         <FormControl fullWidth required sx={{ mt: 2 }}>
                             <InputLabel>Viestin aihe</InputLabel>
                             <Select
-                                {...register('subject')}
+                                {...register('subject', {
+                                    required: { value: true, message: 'No valkkaa ees joku' },
+                                })}
                                 labelId="select-label"
                                 defaultValue=""
                                 label="Viestin aihe"
@@ -86,10 +100,11 @@ function ContactForm() {
                     <Grid item xs={12}>
                         {subject === 'Tilaukset' && (
                             <TextField
-                                {...register('order_id')}
+                                {...register('order_id', {
+                                    pattern: { value: /^[0-9]+$/, message: 'Sisällön tulee koostua vain numeroista' },
+                                })}
                                 sx={{ mt: 2 }}
                                 label="Tilausnumero"
-                                placeholder="1234"
                                 required
                                 type="number"
                             />
@@ -98,13 +113,15 @@ function ContactForm() {
                 </Grid>
 
                 <TextField
-                    {...register('message')}
+                    {...register('message', {
+                        required: { value: true, message: 'Syötä viesti' },
+                        maxLength: { value: 9999, message: 'Maksimipituus' },
+                    })}
                     sx={{ mt: 2 }}
                     placeholder="Viesti"
                     label="Viesti"
                     required
                     multiline
-                    inputProps={{ minLength: '5' }}
                     fullWidth
                     rows={6}
                 />
@@ -118,25 +135,28 @@ function ContactForm() {
                 >
                     Lähetä viesti
                 </Button>
-                {success && (
-                    <AlertBox text="Lähetetty! Kiitos viestistäsi!" timer={3000} status="success" redirectUrl="/" />
-                )}
             </FormControl>
+
+            {responseStatus.status && (
+                <AlertBox text="Lähetetty! Kiitos viestistäsi!" timer={3000} status="success" redirectUrl="/" />
+            )}
         </Container>
     );
 }
 
 function ContactPage() {
     return (
-        <Container maxWidth="lg">
-            <HeroHeader Icon={<MailIcon />} />
-            <HeroText
-                title="Ota yhteyttä"
-                text="Tällä lomakkeella voit lähettää terveisiä, risuja ja ruusuja, tai selvittää tilaukseenne liittyviä
-                    mahdollisia kysymyksiä."
-            />
-            <ContactForm />
-        </Container>
+        <>
+            <Container maxWidth="lg">
+                <HeroHeader Icon={<MailIcon />} />
+                <HeroText
+                    title="Ota yhteyttä"
+                    text="Tällä lomakkeella voit lähettää terveisiä, risuja ja ruusuja, tai selvittää tilaukseenne liittyviä
+                mahdollisia kysymyksiä."
+                />
+                <ContactForm />
+            </Container>
+        </>
     );
 }
 
