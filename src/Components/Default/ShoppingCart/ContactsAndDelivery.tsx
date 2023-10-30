@@ -366,6 +366,7 @@ function ContactsAndDelivery() {
                                         required: { value: true, message: 'Tämä kenttä on täytettävä' },
                                         minLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
                                         maxLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
+                                        pattern: { value: /^[0-9]+$/, message: 'Postinumero koostuu vain numeroista' },
                                     })}
                                     inputProps={{ required: false }}
                                     error={!!errors.zip_code}

@@ -132,6 +132,7 @@ function StorageEdit() {
                                     required: { value: true, message: 'Postinumero on pakollinen' },
                                     minLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
                                     maxLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
+                                    pattern: { value: /^[0-9]+$/, message: 'Postinumero koostuu vain numeroista' },
                                 })}
                                 inputProps={{ required: false }}
                                 required
