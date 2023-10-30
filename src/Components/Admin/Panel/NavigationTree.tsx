@@ -42,6 +42,7 @@ import DomainIcon from '@mui/icons-material/Domain';
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import MailIcon from '@mui/icons-material/Mail';
 // import MarkEmailUnreadIcon from '@mui/icons-material/MarkEmailUnread';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 
 import Tooltip from '../../Tooltip';
@@ -57,6 +58,11 @@ const tilaukset = [
 
 const tuotteet = [
     { icon: <ManageSearchIcon />, label: 'Tarkastele', to: '/admin/tuotteet' },
+    {
+        icon: <AccountTreeIcon />,
+        label: 'Kategoriat',
+        to: '/admin/tuotteet/kategoriat',
+    },
     { icon: <ColorLensIcon />, label: 'Värit', to: '/admin/tuotteet/varit' },
 ];
 
