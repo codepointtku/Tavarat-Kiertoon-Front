@@ -264,6 +264,43 @@ const addProductAction = async (auth, setAuth, request) => {
     return { type: 'createProduct', status: false };
 };
 
+const editProductAction = async (auth, setAuth, request, params) => {
+    const formData = await request.formData();
+    // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+    console.log('formData actionissa :', formData);
+    console.log(formData.getAll('old_pictures[]'));
+    console.log('get colors', formData.get('colors[]'));
+    console.log('getAll colors', formData.getAll('colors[]'));
+
+    const formDataWithProductItem = {
+        barcode: formData.get('barcode'),
+        available: formData.get('available'),
+        storage: formData.get('storages'),
+        shelf_id: formData.get('shelf_id'),
+        amount: formData.get('amount'),
+        name: formData.get('name'),
+        free_description: formData.get('free_description'),
+        measurements: formData.get('measurements'),
+        weight: formData.get('weight'),
+        price: formData.get('price'),
+        category: formData.get('category'),
+        colors: formData.getAll('colors[]'),
+        // kuvan lisäys ei toimi bäkissä
+        old_pictures: formData.getAll('old_pictures[]'),
+        new_pictures: formData.getAll('pictures[]'),
+    };
+    console.log(formDataWithProductItem);
+
+    const response = await productsApi.productsUpdate(params.id, formDataWithProductItem, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    console.log('response actionissa :', response);
+    if (response.status === 200) {
+        return { type: 'editProduct', status: true };
+    }
+    return { type: 'editProduct', status: false };
+};
+
 /*
  * Creates a new storage
  */
@@ -1188,6 +1225,7 @@ export {
     storageCreateAction,
     storageEditAction,
     addProductAction,
+    editProductAction,
     storageDeleteAction,
     productsTransferAction,
     createBulletinAction,

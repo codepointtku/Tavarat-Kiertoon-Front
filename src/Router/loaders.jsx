@@ -118,6 +118,14 @@ const productEditLoader = async ({ params }) => {
     return { storages, colors, categories, product };
 };
 
+const productAddLoader = async () => {
+    const [{ data: storages }, { data: colors }, { data: categories }] = await Promise.all([
+        storagesApi.storagesList(),
+        colorsApi.colorsList(),
+        categoriesApi.categoriesList(),
+    ]);
+    return { storages, colors, categories };
+};
 /**
  * Get all orders.
  */
@@ -154,10 +162,10 @@ const emailRecipientsLoader = async () => {
 const storageProductsLoader = async ({ request }) => {
     const url = new URL(request.url);
 
-    const [{ data: storages }, { data: colors }, { data: categories }, { data: products }] = await Promise.all([
-        storagesApi.storagesList(),
-        colorsApi.colorsList(),
-        categoriesApi.categoriesList(),
+    const [/* { data: storages }, { data: colors }, { data: categories }, */ { data: products }] = await Promise.all([
+        //storagesApi.storagesList(),
+        //colorsApi.colorsList(),
+        //categoriesApi.categoriesList(),
         storagesApi.storagesProductsList(
             // barcode should support partial search
             url.searchParams.get('viivakoodi'),
@@ -169,7 +177,7 @@ const storageProductsLoader = async ({ request }) => {
         ),
     ]);
 
-    return { storages, colors, categories, products };
+    return { /* storages, colors, categories, */ products };
 };
 
 /**
@@ -555,6 +563,7 @@ export {
     productListLoader,
     productDetailsLoader,
     productEditLoader,
+    productAddLoader,
     productTransferLoader,
     ordersListLoader,
     orderViewLoader,
