@@ -116,6 +116,10 @@ function AddressEdit() {
                                     value: 1,
                                     message: 'Osoitteen kaupunki on vaadittu',
                                 },
+                                pattern: {
+                                    value: /^[a-zA-ZåÅäÄöÖ]{4,}$|^[a-zA-ZåÅäÄöÖ]{4,}-[a-zA-ZåÅäÄöÖ]{4,}$/,
+                                    message: 'Kenttä voi sisältää vain aakkosia',
+                                },
                             })}
                             inputProps={{ required: false }}
                             required
