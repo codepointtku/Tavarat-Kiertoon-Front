@@ -210,7 +210,7 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
                     </IconButton>
                 ) : null}
             </Search>
-            <Button id="search-button" type="submit" sx={{ p: '1rem 2rem 1rem 2rem' }} disabled={!isValid}>
+            <Button id="search-button" type="submit" sx={{ p: '1rem 2rem 1rem 2rem' }} disabled={!isValid || !isDirty}>
                 Hae
             </Button>
         </Box>
