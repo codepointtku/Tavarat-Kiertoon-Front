@@ -30,7 +30,7 @@ import AlertBox from '../AlertBox';
 import DeleteBikeRentalModal from './DeleteBikeRentalModal';
 import type { bikeRentalViewLoader } from '../../Router/loaders';
 import type { bikeOrderEditAction } from '../../Router/actions';
-import type { BikeRentalEnum, BikeStockDetail } from '../../api';
+import type { BikeStockDetail } from '../../api';
 
 export default function BikeRentalView() {
     const rental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalViewLoader>>;
@@ -64,7 +64,7 @@ export default function BikeRentalView() {
         },
     });
 
-    const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleStatusChange = (event: any) => {
         const status = event.target.value
         setValue('state', status);
     };
@@ -168,7 +168,7 @@ export default function BikeRentalView() {
                                         fullWidth
                                         inputProps={{ required: false }}
                                         required
-                                        onChange={(event) => handleStatusChange(event)}
+                                        onChange={(event: any) => handleStatusChange(event)}
                                     >
                                         {currentRentalStatus?.map((status) => (
                                             <MenuItem key={status} value={status}>
