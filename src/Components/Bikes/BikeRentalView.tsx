@@ -15,14 +15,11 @@ import {
     TableRow,
     TextField,
     Box,
-    Collapse,
     Button,
-    Stack,
     Container,
     Grid,
     Paper,
     Typography,
-    Checkbox,
     MenuItem,
 } from '@mui/material';
 
@@ -310,7 +307,6 @@ export default function BikeRentalView() {
                                     </TableCell>
                                 </TableRow>
                             ))}
-                            {/* </Stack> */}
                         </TableBody>
                     </Table>
                 </Box>
