@@ -194,10 +194,10 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
             sx={{ display: 'flex', justifyContent: 'center' }}
         >
             <Search id="search-wrapper">
-                <SearchIcon sx={{ fontSize: 30, color: 'primary.main', margin: '0 1rem 0 1rem' }}/>
+                <SearchIcon sx={{ fontSize: 30, color: 'primary.main', margin: '0 1rem 0 1rem' }} />
                 <InputBase
-                    id="search-text-input-field"  
-                    {...register('search', {maxLength: 5})}
+                    id="search-text-input-field"
+                    {...register('search', { maxLength: 40 })}
                     onFocus={() => !isDirty && treeSelectedState.setCategoryTreeSelected(false)}
                     autoFocus
                     placeholder="Etsi tuotteita…"
