@@ -139,6 +139,7 @@ import {
     userAddressCreateLoader,
     usersListLoader,
     storageProductsLoader,
+    productAddLoader,
     userInfoLoader,
     searchWatchLoader,
     shoppingCartLoader,
@@ -169,6 +170,7 @@ import {
     contactAction,
     orderEditAction,
     addProductAction,
+    editProductAction,
     orderDeleteAction,
     storageCreateAction,
     storageEditAction,
@@ -522,7 +524,7 @@ function Routes() {
                                 {
                                     path: 'tuotteet/luo',
                                     element: <AddNewItem />,
-                                    loader: storageProductsLoader,
+                                    loader: productAddLoader,
                                     action: async ({ request }) => addProductAction(auth, setAuth, request),
                                 },
                                 {
@@ -534,7 +536,8 @@ function Routes() {
                                     path: 'tuotteet/:id/muokkaa',
                                     element: <EditProduct />,
                                     loader: productEditLoader,
-                                    // action: async ({ request, params }) => editProductAction(auth, setAuth, request, params),
+                                    action: async ({ request, params }) =>
+                                        editProductAction(auth, setAuth, request, params),
                                 },
                                 {
                                     path: 'koodinlukija',
