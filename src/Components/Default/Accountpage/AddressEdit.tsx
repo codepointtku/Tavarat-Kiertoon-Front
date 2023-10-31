@@ -117,7 +117,7 @@ function AddressEdit() {
                                     message: 'Osoitteen kaupunki on vaadittu',
                                 },
                                 pattern: {
-                                    value: /^[a-zA-ZåÅäÄöÖ]{4,}$|^[a-zA-ZåÅäÄöÖ]{4,}-[a-zA-ZåÅäÄöÖ]{4,}$/,
+                                    value: /^[a-zA-ZåÅäÄöÖ]+$|^[a-zA-ZåÅäÄöÖ]+-[a-zA-ZåÅäÄöÖ]+$/,
                                     message: 'Kenttä voi sisältää vain aakkosia',
                                 },
                             })}

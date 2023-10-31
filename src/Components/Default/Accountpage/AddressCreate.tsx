@@ -86,7 +86,7 @@ function AddressCreate() {
                                     message: 'Kaupungin nimi on liian pitkä',
                                 },
                                 pattern: {
-                                    value: /^[a-zA-ZåÅäÄöÖ]{4,}$|^[a-zA-ZåÅäÄöÖ]{4,}-[a-zA-ZåÅäÄöÖ]{4,}$/,
+                                    value: /^[a-zA-ZåÅäÄöÖ]+$|^[a-zA-ZåÅäÄöÖ]+-[a-zA-ZåÅäÄöÖ]+$/,
                                     message: 'Kenttä voi sisältää vain aakkosia',
                                 },
                             })}

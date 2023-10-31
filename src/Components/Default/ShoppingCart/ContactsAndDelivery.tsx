@@ -384,7 +384,7 @@ function ContactsAndDelivery() {
                                         required: { value: true, message: 'Tämä kenttä on täytettävä' },
                                         maxLength: { value: 40, message: 'Sisältö on liian pitkä' },
                                         pattern: {
-                                            value: /^[a-zA-ZåÅäÄöÖ]{4,}$|^[a-zA-ZåÅäÄöÖ]{4,}-[a-zA-ZåÅäÄöÖ]{4,}$/,
+                                            value: /^[a-zA-ZåÅäÄöÖ]+$|^[a-zA-ZåÅäÄöÖ]+-[a-zA-ZåÅäÄöÖ]+$/,
                                             message: 'Kenttä voi sisältää vain aakkosia',
                                         },
                                     })}

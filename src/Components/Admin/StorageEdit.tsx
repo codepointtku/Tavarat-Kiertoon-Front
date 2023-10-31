@@ -161,7 +161,7 @@ function StorageEdit() {
                                         message: 'Maksimipituus 50 merkkiä',
                                     },
                                     pattern: {
-                                        value: /^[a-zA-ZåÅäÄöÖ]{4,}$|^[a-zA-ZåÅäÄöÖ]{4,}-[a-zA-ZåÅäÄöÖ]{4,}$/,
+                                        value: /^[a-zA-ZåÅäÄöÖ]+$|^[a-zA-ZåÅäÄöÖ]+-[a-zA-ZåÅäÄöÖ]+$/,
                                         message: 'Kenttä voi sisältää vain aakkosia',
                                     },
                                 })}
