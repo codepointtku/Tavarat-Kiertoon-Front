@@ -33,7 +33,7 @@ import Barcode from 'react-barcode';
 import TypographyTitle from '../TypographyTitle';
 import AlertBox from '../AlertBox';
 
-import type { rootLoader, storageProductsLoader } from '../../Router/loaders';
+import type { rootLoader, productAddLoader } from '../../Router/loaders';
 import type { addProductAction } from '../../Router/actions';
 
 type PicUpload = {
@@ -45,7 +45,7 @@ function AddNewItem() {
     const [qrScanOpen, setQrScanOpen] = useState(false);
     const [fileList, setFilelist] = useState<PicUpload[]>([]);
     const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
-    const { storages, colors } = useLoaderData() as Awaited<ReturnType<typeof storageProductsLoader>>;
+    const { storages, colors } = useLoaderData() as Awaited<ReturnType<typeof productAddLoader>>;
     const submit = useSubmit();
     const actionData = useActionData() as Awaited<ReturnType<typeof addProductAction>>;
     const navigation = useNavigation();
@@ -136,7 +136,6 @@ function AddNewItem() {
         Object.values(fileList).forEach((pic: PicUpload) => formData.append('pictures[]', pic.file));
         submit(formData, {
             method: 'post',
-            action: '/varasto/tuotteet/luo/',
             encType: 'multipart/form-data',
         });
     };
@@ -473,10 +472,10 @@ function AddNewItem() {
                                 validate: {
                                     amount: (value) => {
                                         // TODO / known issue: validation shows error if user adds 4 or more pics at the same time
-                                        if (value.length + fileList.length > 6) {
+                                        if (fileList.length > 6) {
                                             return 'Kuvia voi olla enintään 6';
                                         }
-                                        if (value.length + fileList.length < 1) {
+                                        if (fileList.length < 1) {
                                             return 'Tuotteella on oltava vähintään yksi kuva';
                                         }
 

@@ -30,7 +30,7 @@ export type StorageProductsLoaderType = Awaited<ReturnType<typeof storageProduct
 
 function StorageProductsTable() {
     const [searchParams, setSearchParams] = useSearchParams();
-    const { categories, products } = useLoaderData() as StorageProductsLoaderType;
+    const { products } = useLoaderData() as StorageProductsLoaderType;
     const { register, handleSubmit } = useForm({
         defaultValues: { searchString: searchParams.get('viivakoodi') },
     });
@@ -46,7 +46,6 @@ function StorageProductsTable() {
             });
         });
     };
-
     return (
         <>
             <TableContainer component={Box} sx={{ mt: '3rem' }}>
@@ -83,6 +82,7 @@ function StorageProductsTable() {
                             <StyledTableCell align="right">Määrä</StyledTableCell>
                             <StyledTableCell align="right">Varasto</StyledTableCell>
                             {/* TODO: add storage filter option */}
+                            <StyledTableCell align="left">Hylly/Paikka</StyledTableCell>
                             <StyledTableCell align="right">Kategoria</StyledTableCell>
                             <StyledTableCell align="right">Viimeksi muokattu</StyledTableCell>
                             {/* <StyledTableCell align="right">Varastopaikka</StyledTableCell> */}
@@ -126,8 +126,9 @@ function StorageProductsTable() {
                                         {/* TODO: show multiple storages for products */}
                                         {product.product_items[0].storage.name}
                                     </StyledTableCell>
+                                    <StyledTableCell align="left">{product.product_items[0]?.shelf_id}</StyledTableCell>
                                     <StyledTableCell align="right">
-                                        {product.category ? categories[product.category]?.name : ''}
+                                        {product.category_name ? product.category_name : ''}
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
                                         {/* TODO: show most recent modified date of product_items. backend change needed? */}

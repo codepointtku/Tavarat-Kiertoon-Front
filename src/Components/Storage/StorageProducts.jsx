@@ -55,7 +55,7 @@ function StorageProducts() {
                     />
                 </Box>
             </Modal>
-            <Grid container spacing={4} sx={{ margin: 2 }} justifyContent={'space-evenly'}>
+            <Grid container spacing={4} sx={{ marginTop: 2, marginBottom: 2 }} justifyContent={'space-evenly'}>
                 <StyledGrid
                     item
                     component={Link}
