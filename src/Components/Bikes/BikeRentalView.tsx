@@ -30,7 +30,7 @@ import AlertBox from '../AlertBox';
 import DeleteBikeRentalModal from './DeleteBikeRentalModal';
 import type { bikeRentalViewLoader } from '../../Router/loaders';
 import type { bikeOrderEditAction } from '../../Router/actions';
-import type { BikeRentalEnum } from '../../api';
+import type { BikeRentalEnum, BikeStockDetail } from '../../api';
 
 export default function BikeRentalView() {
     const rental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalViewLoader>>;
@@ -47,7 +47,7 @@ export default function BikeRentalView() {
         submit(data, { method: 'put', action: `/pyorat/pyoravarasto/pyoratilaukset/${rental.id}` });
     };
 
-    const rentalBikeStock = rental?.bike_stock.map((item) => item.id);
+    const rentalBikeStock = rental.bike_stock.map((item) => item.id);
 
     const { formState, handleSubmit, register, watch, setValue } = useForm({
         defaultValues: {
@@ -59,24 +59,29 @@ export default function BikeRentalView() {
             contact: rental?.contact_name,
             contactPhoneNumber: rental?.contact_phone_number,
             extraInfo: rental?.extra_info,
-            user: rental?.user.id,
+            user: rental?.user?.id,
             bikeStock: JSON.stringify(rentalBikeStock),
         },
     });
 
-    const { errors } = formState;
-
-    const handleStatusChange = (status: BikeRentalEnum) => {
+    const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const status = event.target.value
         setValue('state', status);
     };
 
     const bikeModels = rental?.bike_stock.map((item) => item.bike.id);
 
-    const bikeModelData = bikeModels
+    console.log(bikeModels);
+
+    const bikeModelData: (BikeStockDetail | undefined)[] = bikeModels
         .filter((item, index) => bikeModels.indexOf(item) === index)
         .map((bikeId: number) => rental?.bike_stock.find((item) => item.bike.id === bikeId));
 
     console.log('UNIIKIT', bikeModelData);
+
+    // const bikeModelData = rental?.bike_stock.map((item) => item.bike.id)
+    // .filter((item, index) => bikeModels.indexOf(item) === index)
+    // .map((bikeId: number) => rental?.bike_stock.find((item) => item.bike.id === bikeId));
 
     // Parse Date objects from backend data string
     const dateParse = (value: string) => {
@@ -163,7 +168,7 @@ export default function BikeRentalView() {
                                         fullWidth
                                         inputProps={{ required: false }}
                                         required
-                                        onChange={(event) => handleStatusChange(event.target.value)}
+                                        onChange={(event) => handleStatusChange(event)}
                                     >
                                         {currentRentalStatus?.map((status) => (
                                             <MenuItem key={status} value={status}>
@@ -252,17 +257,17 @@ export default function BikeRentalView() {
                         </TableHead>
                         <TableBody id="bike-rental-bikes-content" sx={{ backgroundColor: 'grey.100' }}>
                             {bikeModelData.map((item) => (
-                                <TableRow key={item.bike.id}>
+                                <TableRow key={item?.bike.id}>
                                     <TableCell
                                         align="center"
                                         width="20%"
                                         sx={{ borderBottom: 0, fontWeight: 'bold', fontSize: '16px' }}
                                     >
                                         <img
-                                            src={`${window.location.protocol}//${window.location.hostname}:8000/media/${item.bike.picture.picture_address}`}
+                                            src={`${window.location.protocol}//${window.location.hostname}:8000/media/${item?.bike.picture.picture_address}`}
                                             alt="bike-model"
                                         />
-                                        <Typography textAlign="center">{item.bike.name}</Typography>
+                                        <Typography textAlign="center">{item?.bike.name}</Typography>
                                     </TableCell>
                                     <TableCell
                                         width="10%"
@@ -270,7 +275,7 @@ export default function BikeRentalView() {
                                     >
                                         {'x '}{' '}
                                         {
-                                            rental?.bike_stock.filter((bikeItem) => bikeItem.bike.id === item.bike.id)
+                                            rental?.bike_stock.filter((bikeItem) => bikeItem.bike.id === item?.bike.id)
                                                 .length
                                         }
                                     </TableCell>
@@ -291,7 +296,7 @@ export default function BikeRentalView() {
                                             </TableHead>
                                             <TableBody>
                                                 {rental?.bike_stock
-                                                    .filter((bikeItem) => bikeItem.bike.id === item.bike.id)
+                                                    .filter((bikeItem) => bikeItem.bike.id === item?.bike.id)
                                                     .map((filteredItem) => (
                                                         <TableRow key={filteredItem.id}>
                                                             <TableCell sx={{ borderLeftColor: 'grey.300' }}>
