@@ -101,12 +101,12 @@ function ContactForm() {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid id="amihere" item xs={12}>
+                    <Grid item xs={12}>
                         {subject === 'Tilaukset' && (
                             <TextField
                                 label="Tilausnumero"
                                 {...register('order_id', {
-                                    maxLength: { value: 5, message: 'Tilausnumero on 5 merkkiä' },
+                                    maxLength: { value: 20, message: 'Maksimipituus' },
                                     pattern: { value: /^[0-9]+$/, message: 'Sisällön tulee koostua vain numeroista' },
                                 })}
                                 error={!!formStateErrors.email}
