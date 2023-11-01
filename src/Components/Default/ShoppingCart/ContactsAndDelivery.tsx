@@ -284,7 +284,8 @@ function ContactsAndDelivery() {
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}
                             {...register('recipient', {
-                                // recipient === user.firstname + empty string + user.lastname, which are both hard capped @ 50 marks @ signup forms
+                                // recipient with autofill: user.firstname + a string of one character (space, blank) + user.lastname,
+                                // which are both hard capped @ 50 characters @ signup forms
                                 maxLength: { value: 101, message: 'Sisältö on liian pitkä' },
                             })}
                             error={!!errors.recipient}
