@@ -109,7 +109,7 @@ function ContactForm() {
                                     maxLength: { value: 20, message: 'Maksimipituus' },
                                     pattern: { value: /^[0-9]+$/, message: 'Sisällön tulee koostua vain numeroista' },
                                 })}
-                                error={!!formStateErrors.email}
+                                error={!!formStateErrors.order_id}
                                 helperText={formStateErrors.order_id?.message?.toString() || ' '}
                                 required
                                 inputProps={{ required: false }}
