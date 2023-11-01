@@ -134,7 +134,7 @@ export default function BikeRentals() {
                                 sx={{ ':hover': { opacity: '80%', cursor: 'pointer' } }}
                                 align="left"
                                 width="10%"
-                                onClick={() => handleOrderingChange('id')}
+                                onClick={() => handleOrderingChange('state')}
                             >
                                 <Stack direction="row" alignItems="center" gap={1}>
                                     <Typography variant="inherit">Tila</Typography>
@@ -145,7 +145,7 @@ export default function BikeRentals() {
                                 sx={{ ':hover': { opacity: '80%', cursor: 'pointer' } }}
                                 align="left"
                                 width="10%"
-                                onClick={() => handleOrderingChange('id')}
+                                onClick={() => handleOrderingChange('start_date')}
                             >
                                 <Stack direction="row" alignItems="center" gap={1}>
                                     <Typography variant="inherit">Alkaa</Typography>
@@ -156,7 +156,7 @@ export default function BikeRentals() {
                                 sx={{ ':hover': { opacity: '80%', cursor: 'pointer' } }}
                                 align="left"
                                 width="10%"
-                                onClick={() => handleOrderingChange('id')}
+                                onClick={() => handleOrderingChange('end_date')}
                             >
                                 <Stack direction="row" alignItems="center" gap={1}>
                                     <Typography variant="inherit">Päättyy</Typography>
