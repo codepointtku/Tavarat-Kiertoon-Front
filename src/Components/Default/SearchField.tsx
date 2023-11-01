@@ -48,7 +48,7 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
         watch,
         reset,
         setValue,
-        formState: { isDirty, errors: formStateErrors },
+        formState: { isDirty },
     } = useForm<SearchInputValue>({ defaultValues: { search: '' } });
     const [searchParams, setSearchParams] = useSearchParams();
     let searchInput = '';
@@ -200,7 +200,7 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
                     {...(register('search'),
                     {
                         minLength: { value: 1 },
-                        maxLength: { value: 80 },
+                        maxLength: { value: 40 },
                     })}
                     onFocus={() => !isDirty && treeSelectedState.setCategoryTreeSelected(false)}
                     autoFocus
