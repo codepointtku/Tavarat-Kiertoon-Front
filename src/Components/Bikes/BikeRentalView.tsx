@@ -49,7 +49,7 @@ export default function BikeRentalView() {
 
     const rentalBikeStock = rental.bike_stock.map((item) => item.id);
 
-    const { formState, handleSubmit, register, watch, setValue } = useForm({
+    const { handleSubmit, register, watch } = useForm({
         defaultValues: {
             startDate: rental?.start_date,
             endDate: rental?.end_date,
@@ -64,11 +64,6 @@ export default function BikeRentalView() {
         },
     });
 
-    const handleStatusChange = (event: any) => {
-        const status = event.target.value
-        setValue('state', status);
-    };
-
     const bikeModels = rental?.bike_stock.map((item) => item.bike.id);
 
     console.log(bikeModels);
@@ -78,10 +73,6 @@ export default function BikeRentalView() {
         .map((bikeId: number) => rental?.bike_stock.find((item) => item.bike.id === bikeId));
 
     console.log('UNIIKIT', bikeModelData);
-
-    // const bikeModelData = rental?.bike_stock.map((item) => item.bike.id)
-    // .filter((item, index) => bikeModels.indexOf(item) === index)
-    // .map((bikeId: number) => rental?.bike_stock.find((item) => item.bike.id === bikeId));
 
     // Parse Date objects from backend data string
     const dateParse = (value: string) => {
@@ -168,7 +159,6 @@ export default function BikeRentalView() {
                                         fullWidth
                                         inputProps={{ required: false }}
                                         required
-                                        onChange={(event: any) => handleStatusChange(event)}
                                     >
                                         {currentRentalStatus?.map((status) => (
                                             <MenuItem key={status} value={status}>
