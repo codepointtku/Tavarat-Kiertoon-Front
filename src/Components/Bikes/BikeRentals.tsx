@@ -87,14 +87,6 @@ export default function BikeRentals() {
         }
     };
 
-    if (results?.length === 0) {
-        return (
-            <Typography variant="h6" margin="auto">
-                ei tilauksia
-            </Typography>
-        );
-    }
-
     return (
         <Box width="100%">
             <Typography variant="h3" align="center" color="primary.main" width="100%" sx={{ margin: '0 0 1rem 0' }}>
