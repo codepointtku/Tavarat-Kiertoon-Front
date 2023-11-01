@@ -36,14 +36,11 @@ export default function BikeRentalView() {
     const rental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalViewLoader>>;
     const response = useActionData() as Awaited<ReturnType<typeof bikeOrderEditAction>>;
     const currentRentalStatus = ['WAITING', 'ACTIVE', 'FINISHED'];
-    console.log(rental);
 
     const [renderDeleteBikeRentalModal, setRenderDeleteBikeRentalModal] = useState(false);
 
     const submit = useSubmit();
     const onSubmit = (data: any) => {
-        console.log('data', data);
-        console.log('products', data.bikeStock);
         submit(data, { method: 'put', action: `/pyorat/pyoravarasto/pyoratilaukset/${rental.id}` });
     };
 
@@ -66,13 +63,10 @@ export default function BikeRentalView() {
 
     const bikeModels = rental?.bike_stock.map((item) => item.bike.id);
 
-    console.log(bikeModels);
 
     const bikeModelData: (BikeStockDetail | undefined)[] = bikeModels
         .filter((item, index) => bikeModels.indexOf(item) === index)
         .map((bikeId: number) => rental?.bike_stock.find((item) => item.bike.id === bikeId));
-
-    console.log('UNIIKIT', bikeModelData);
 
     // Parse Date objects from backend data string
     const dateParse = (value: string) => {
@@ -92,7 +86,6 @@ export default function BikeRentalView() {
             return 'Päättynyt';
         }
     };
-    console.log('ASDASD', response);
 
     return (
         <>

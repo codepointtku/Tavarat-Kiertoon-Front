@@ -51,7 +51,6 @@ export default function BikeRentals() {
     }, [currentStatusChoices, setSearchParams]);
 
     function handleOrderingChange(fieldName: string) {
-        console.log(fieldName);
         setSearchParams((prevParams) => {
             if (searchParams.get('jarjesta') === fieldName) {
                 return createSearchParams({
@@ -197,6 +196,11 @@ export default function BikeRentals() {
                         ))}
                     </TableBody>
                 </Table>
+                {results?.length === 0 &&
+                            <Typography variant="h6" align="center" paddingTop="1rem">
+                                Valituilla suodattimilla ei löytynyt tilauksia
+                            </Typography>
+                }
             </TableContainer>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Pagination count={count} itemsText="Tilauksia" />

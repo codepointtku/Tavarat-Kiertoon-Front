@@ -942,7 +942,6 @@ const modifyBikePacketAction = async (request, params) => {
  */
 const deleteBikeOrderAction = async (auth, setAuth, params) => {
     const response = await bikesApi.bikesRentalDestroy(params.id);
-    console.log(response)
     return redirect('/pyorat/pyoravarasto/pyoratilaukset');
 };
 

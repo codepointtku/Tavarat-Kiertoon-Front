@@ -321,7 +321,6 @@ const bikeRentalLoader = async (request, auth, setAuth) => {
         url.searchParams.get('sivukoko') || 25,
         url.searchParams.getAll('suodata') || null 
     );
-    console.log('bikerentalLoader', data);
     return data;
 };
 
@@ -330,7 +329,6 @@ const bikeRentalLoader = async (request, auth, setAuth) => {
  */
 const bikeRentalViewLoader = async ({ params }) => {
     const response = await bikesApi.bikesRentalRetrieve(params.id);
-    console.log("bikerentalLoaderasdsasdasdsadsa", response)
     return response.data;
 };
 
