@@ -19,7 +19,7 @@ function ContactForm() {
         handleSubmit,
         watch,
         formState: { errors: formStateErrors, isSubmitting },
-    } = useForm();
+    } = useForm({ mode: 'onTouched' });
 
     const submit = useSubmit();
 
@@ -107,11 +107,14 @@ function ContactForm() {
                         {subject === 'Tilaukset' && (
                             <TextField
                                 label="Tilausnumero"
-                                type="number"
                                 {...register('order_id', {
+                                    maxLength: { value: 5, message: 'Tilausnumero on 5 merkkiä' },
                                     pattern: { value: /^[0-9]+$/, message: 'Sisällön tulee koostua vain numeroista' },
                                 })}
+                                error={!!formStateErrors.email}
+                                helperText={formStateErrors.order_id?.message?.toString() || ' '}
                                 required
+                                inputProps={{ required: false }}
                             />
                         )}
                     </Grid>

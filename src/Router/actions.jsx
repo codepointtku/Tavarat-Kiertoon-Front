@@ -151,8 +151,8 @@ const contactAction = async ({ request }) => {
 
     const response = await contactFormsApi.contactFormsCreate(Object.fromEntries(formData));
 
-    if (response.status === 666) {
-        return response.data;
+    if (response.status === 201) {
+        return { type: 'contactform', status: true };
     }
 
     return { type: 'contactform', status: false };
