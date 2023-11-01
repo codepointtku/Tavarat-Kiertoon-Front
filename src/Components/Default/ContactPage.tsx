@@ -12,8 +12,6 @@ import HeroText from '../HeroText';
 import type { contactAction } from '../../Router/actions';
 
 function ContactForm() {
-    const responseStatus = useActionData() as Awaited<ReturnType<typeof contactAction>>;
-
     const {
         register,
         handleSubmit,
@@ -84,7 +82,7 @@ function ContactForm() {
 
                 <Grid container>
                     <Grid item xs={12}>
-                        <FormControl fullWidth required sx={{ mb: 2 }}>
+                        <FormControl fullWidth required sx={{ mb: 3 }}>
                             <InputLabel>Viestin aihe</InputLabel>
                             <Select
                                 label="Viestin aihe"
@@ -139,17 +137,19 @@ function ContactForm() {
                     Lähetä viesti
                 </Button>
             </FormControl>
-
-            {responseStatus?.status && (
-                <AlertBox text="Lähetetty! Kiitos viestistäsi!" timer={3000} status="success" redirectUrl="/" />
-            )}
         </Container>
     );
 }
 
 function ContactPage() {
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof contactAction>>;
+
     return (
         <>
+            {responseStatus?.status && (
+                <AlertBox text="Lähetetty! Kiitos viestistäsi!" timer={3000} status="success" redirectUrl="/" />
+            )}
+
             <Container
                 maxWidth="lg"
                 sx={{
