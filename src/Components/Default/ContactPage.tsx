@@ -25,7 +25,7 @@ function ContactForm() {
 
     const subject = watch('subject');
 
-    const onSubmit = (formData) => {
+    const onSubmit = (formData: any) => {
         submit(formData, {
             method: 'post',
             action: '/otayhteytta',
@@ -49,46 +49,54 @@ function ContactForm() {
                 }}
             >
                 <TextField
-                    {...register('name', {
-                        required: { value: true, message: 'Elämä on pakollinen' },
-                        minLength: { value: 1, message: 'Jee' },
-                        maxLength: { value: 50, message: 'jöö' },
-                    })}
-                    sx={{ mt: 2 }}
                     label="Nimi"
                     placeholder="Nimi"
-                    fullWidth
+                    {...register('name', {
+                        required: { value: true, message: 'Syötä nimi' },
+                        maxLength: { value: 50, message: 'Maksimipituus' },
+                    })}
+                    error={!!formStateErrors.name}
+                    helperText={formStateErrors.name?.message?.toString() || ' '}
                     required
+                    // to get rid of the browser default message
+                    inputProps={{ required: false }}
+                    fullWidth
+                    // sx={{ mt: 2 }}
                 />
 
                 <TextField
+                    label="Sähköposti"
+                    placeholder="Sähköpostiosoite"
                     {...register('email', {
-                        required: { value: true, message: 'Verojen maksu on pakollinen' },
-                        minLength: { value: 1, message: 'Jee' },
-                        maxLength: { value: 50, message: 'jöö just joo' },
+                        required: { value: true, message: 'Sähköpostiosoite on pakollinen' },
+                        minLength: { value: 5, message: 'Sähköpostiosoitteen on oltava vähintään 5 merkkiä' },
+                        maxLength: { value: 50, message: 'Maksimipituus' },
+                        pattern: {
+                            value: /.+@turku.fi$|.+@edu.turku.fi$/,
+                            message: 'Sähköpostin on oltava muotoa @turku.fi tai @edu.turku.fi',
+                        },
                     })}
-                    sx={{ mt: 2 }}
-                    label="Sähköpostisi"
-                    fullWidth
-                    inputProps={{
-                        pattern: '.+@turku\\.fi$|.+@edu\\.turku\\.fi$',
-                        title: 'vaatii @turku.fi päätteen (tai @edu.turku.fi)',
-                    }}
+                    error={!!formStateErrors.email}
+                    helperText={formStateErrors.email?.message?.toString() || ' '}
                     required
-                    placeholder="@turku.fi"
+                    inputProps={{ required: false }}
+                    fullWidth
+                    // sx={{ mt: 2 }}
                 />
 
                 <Grid container>
                     <Grid item xs={12}>
-                        <FormControl fullWidth required sx={{ mt: 2 }}>
+                        <FormControl fullWidth required /*sx={{ mt: 2 }}*/>
                             <InputLabel>Viestin aihe</InputLabel>
                             <Select
+                                label="Viestin aihe"
                                 {...register('subject', {
-                                    required: { value: true, message: 'No valkkaa ees joku' },
+                                    required: { value: true, message: 'Valitse aihe' },
                                 })}
+                                error={!!formStateErrors.subject}
                                 labelId="select-label"
                                 defaultValue=""
-                                label="Viestin aihe"
+                                inputProps={{ required: false }}
                             >
                                 <MenuItem value="Yleinen palaute">Yleinen palaute</MenuItem>
                                 <MenuItem value="Tilaukset">Tilaukset</MenuItem>
@@ -97,33 +105,36 @@ function ContactForm() {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid id="amihere" item xs={12}>
                         {subject === 'Tilaukset' && (
                             <TextField
+                                label="Tilausnumero"
+                                type="number"
                                 {...register('order_id', {
                                     pattern: { value: /^[0-9]+$/, message: 'Sisällön tulee koostua vain numeroista' },
                                 })}
-                                sx={{ mt: 2 }}
-                                label="Tilausnumero"
+                                // sx={{ mt: 2 }}
                                 required
-                                type="number"
                             />
                         )}
                     </Grid>
                 </Grid>
 
                 <TextField
+                    label="Viesti"
+                    placeholder="Viesti"
                     {...register('message', {
                         required: { value: true, message: 'Syötä viesti' },
                         maxLength: { value: 9999, message: 'Maksimipituus' },
                     })}
-                    sx={{ mt: 2 }}
-                    placeholder="Viesti"
-                    label="Viesti"
+                    error={!!formStateErrors.message}
+                    helperText={formStateErrors.message?.message?.toString() || ' '}
                     required
+                    inputProps={{ required: false }}
                     multiline
-                    fullWidth
                     rows={6}
+                    fullWidth
+                    // sx={{ mt: 2 }}
                 />
                 <Button
                     disabled={isSubmitting}
@@ -137,7 +148,7 @@ function ContactForm() {
                 </Button>
             </FormControl>
 
-            {responseStatus.status && (
+            {responseStatus?.status && (
                 <AlertBox text="Lähetetty! Kiitos viestistäsi!" timer={3000} status="success" redirectUrl="/" />
             )}
         </Container>
