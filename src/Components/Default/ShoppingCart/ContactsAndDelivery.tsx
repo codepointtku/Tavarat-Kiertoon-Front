@@ -284,11 +284,13 @@ function ContactsAndDelivery() {
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}
                             {...register('recipient', {
-                                maxLength: { value: 50, message: 'Sisältö on liian pitkä' },
+                                // recipient === user.firstname + empty string + user.lastname, which are both hard capped @ 50 marks @ signup forms
+                                maxLength: { value: 101, message: 'Sisältö on liian pitkä' },
                             })}
                             error={!!errors.recipient}
                             helperText={errors.recipient?.message?.toString() || ' '}
                             required
+                            inputProps={{ required: false }}
                         />
 
                         <TextField
