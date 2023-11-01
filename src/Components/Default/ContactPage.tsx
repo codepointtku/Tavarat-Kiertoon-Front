@@ -93,7 +93,7 @@ function ContactForm() {
                                 })}
                                 error={!!formStateErrors.subject}
                                 labelId="select-label"
-                                defaultValue=""
+                                defaultValue="Yleinen palaute"
                                 inputProps={{ required: false }}
                             >
                                 <MenuItem value="Yleinen palaute">Yleinen palaute</MenuItem>
