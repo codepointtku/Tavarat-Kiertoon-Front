@@ -61,7 +61,6 @@ function ContactForm() {
                     // to get rid of the browser default message
                     inputProps={{ required: false }}
                     fullWidth
-                    // sx={{ mt: 2 }}
                 />
 
                 <TextField
@@ -81,12 +80,11 @@ function ContactForm() {
                     required
                     inputProps={{ required: false }}
                     fullWidth
-                    // sx={{ mt: 2 }}
                 />
 
                 <Grid container>
                     <Grid item xs={12}>
-                        <FormControl fullWidth required /*sx={{ mt: 2 }}*/>
+                        <FormControl fullWidth required sx={{ mb: 2 }}>
                             <InputLabel>Viestin aihe</InputLabel>
                             <Select
                                 label="Viestin aihe"
@@ -113,7 +111,6 @@ function ContactForm() {
                                 {...register('order_id', {
                                     pattern: { value: /^[0-9]+$/, message: 'Sisällön tulee koostua vain numeroista' },
                                 })}
-                                // sx={{ mt: 2 }}
                                 required
                             />
                         )}
@@ -134,16 +131,8 @@ function ContactForm() {
                     multiline
                     rows={6}
                     fullWidth
-                    // sx={{ mt: 2 }}
                 />
-                <Button
-                    disabled={isSubmitting}
-                    type="submit"
-                    sx={{
-                        mt: 2,
-                        mb: 2,
-                    }}
-                >
+                <Button disabled={isSubmitting} type="submit">
                     Lähetä viesti
                 </Button>
             </FormControl>
@@ -158,7 +147,12 @@ function ContactForm() {
 function ContactPage() {
     return (
         <>
-            <Container maxWidth="lg">
+            <Container
+                maxWidth="lg"
+                sx={{
+                    mb: 2,
+                }}
+            >
                 <HeroHeader Icon={<MailIcon />} />
                 <HeroText
                     title="Ota yhteyttä"
