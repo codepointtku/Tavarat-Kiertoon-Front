@@ -15,14 +15,6 @@ import {
     usersApi,
 } from '../api';
 
-const adminLogOut = async ({ request }) => {
-    if (request.method === 'POST') {
-        await usersApi.usersLogoutCreate();
-        return { type: 'logout', status: true };
-    }
-    return { type: 'logout', status: false };
-};
-
 /**
  * logins or logouts user, adds a product to shopping cart and deletes product from shopping cart
  */
@@ -227,6 +219,14 @@ const orderEditAction = async ({ request, params }) => {
 //
 //
 // admin bing bings
+
+const adminLogOut = async ({ request }) => {
+    if (request.method === 'POST') {
+        await usersApi.usersLogoutCreate();
+        return { type: 'logout', status: true };
+    }
+    return { type: 'logout', status: false };
+};
 
 const orderDeleteAction = async ({ params }) => {
     await ordersApi.ordersDestroy(params.id);
