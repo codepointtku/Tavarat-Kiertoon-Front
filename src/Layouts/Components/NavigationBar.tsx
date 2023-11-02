@@ -2,14 +2,13 @@ import { Link } from 'react-router-dom';
 
 import { Box, Button, ButtonGroup } from '@mui/material';
 
-import HasRole from '../../Utils/HasRole';
+// import HasRole from '../../Utils/HasRole';
 
 function LinkBar() {
     return (
         <Box id="navbuttons-wrapper" sx={{ borderBottom: '1px solid #009bd8' }}>
             <ButtonGroup
                 variant="text"
-                id="navbuttons"
                 aria-label="navigation link buttons"
                 sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
             >
@@ -41,13 +40,18 @@ function NavigationBar() {
             sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                width: '100%',
                 mb: '1rem',
             }}
         >
             <LinkBar />
+        </Box>
+    );
+}
 
-            <HasRole role={'storage_group'}>
+export default NavigationBar;
+
+{
+    /* <HasRole role={'storage_group'}>
                 <Button component={Link} to="/varasto" variant="outlined">
                     Varastonäkymä
                 </Button>
@@ -61,9 +65,5 @@ function NavigationBar() {
                 <Button component={Link} to="/admin">
                     Ylläpito
                 </Button>
-            </HasRole>
-        </Box>
-    );
+            </HasRole> */
 }
-
-export default NavigationBar;
