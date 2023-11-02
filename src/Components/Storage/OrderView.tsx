@@ -97,9 +97,15 @@ function OrderView({ isAdmin }: Props) {
                                     Tilaaja:
                                 </TableCell>
                                 <TableCell width="30%">
-                                    <MuiLink component={Link} to={`/admin/kayttajat/${order.user.id}`}>
-                                        {order.user.first_name} {order.user.last_name}
-                                    </MuiLink>
+                                    {isAdmin ? (
+                                        <MuiLink component={Link} to={`/admin/kayttajat/${order.user.id}`}>
+                                            {order.user.first_name} {order.user.last_name}
+                                        </MuiLink>
+                                    ) : (
+                                        <span>
+                                            {order.user.first_name} {order.user.last_name}
+                                        </span>
+                                    )}
                                 </TableCell>
                                 <TableCell width="20%" sx={{ fontWeight: 'bold' }}>
                                     Tilaus tehty:
