@@ -70,18 +70,35 @@ function OrderView({ isAdmin }: Props) {
                     sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                 >
                     <Grid item xs={3} justifyContent="flex-start">
-                        <Tooltip title="Palaa tilaukset-listaukseen">
-                            <Button
-                                id="cancel-btn"
-                                size="small"
-                                variant="outlined"
-                                component={Link}
-                                to="/admin/tilaukset/"
-                                startIcon={<ArrowBackIcon />}
-                            >
-                                Takaisin
-                            </Button>
-                        </Tooltip>
+                        {/* to do.. */}
+                        <HasRole role="admin_group">
+                            <Tooltip title="Palaa tilaukset-listaukseen">
+                                <Button
+                                    id="cancel-btn"
+                                    size="small"
+                                    variant="outlined"
+                                    component={Link}
+                                    to="/admin/tilaukset/"
+                                    startIcon={<ArrowBackIcon />}
+                                >
+                                    Takaisin
+                                </Button>
+                            </Tooltip>
+                        </HasRole>
+                        <HasRole role="admin_group">
+                            <Tooltip title="Palaa tilaukset-listaukseen">
+                                <Button
+                                    id="cancel-btn"
+                                    size="small"
+                                    variant="outlined"
+                                    component={Link}
+                                    to="/varasto"
+                                    startIcon={<ArrowBackIcon />}
+                                >
+                                    Takaisin
+                                </Button>
+                            </Tooltip>
+                        </HasRole>
                     </Grid>
                     <Grid item xs={6}>
                         <TypographyTitle text={`Tilaus #${order.id}`} />
