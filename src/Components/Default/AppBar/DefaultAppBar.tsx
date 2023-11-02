@@ -22,6 +22,11 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
+import WarehouseIcon from '@mui/icons-material/Warehouse';
+import SecurityIcon from '@mui/icons-material/Security';
+import PedalBikeIcon from '@mui/icons-material/PedalBike';
+import BuildIcon from '@mui/icons-material/Build';
+
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
@@ -32,6 +37,8 @@ import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
 import { type ShoppingCartAvailableAmountList } from '../../../api';
 import LoginForm from '../../LoginForm';
+import HasRole from '../../../Utils/HasRole';
+import { Link } from 'react-router-dom';
 
 //
 
@@ -220,6 +227,29 @@ function DefaultAppBar() {
             >
                 <Toolbar id="action-iconbtns">
                     <Stack direction="row" spacing={4}>
+                        <HasRole role="bicycle_group">
+                            <Tooltip title="Pyörien vuokraus">
+                                <IconButton onClick={drawerOpen('')} sx={iconHover}>
+                                    <PedalBikeIcon sx={{ fontSize: 36, color: '#fff' }} />
+                                </IconButton>
+                            </Tooltip>
+                        </HasRole>
+
+                        <HasRole role="storage_group">
+                            <Tooltip title="Varasto">
+                                <IconButton onClick={drawerOpen('')} sx={iconHover}>
+                                    <WarehouseIcon sx={{ fontSize: 36, color: '#fff' }} />
+                                </IconButton>
+                            </Tooltip>
+                        </HasRole>
+                        <HasRole role="admin_group">
+                            <Tooltip title="Ylläpito">
+                                <IconButton onClick={drawerOpen('')} sx={iconHover}>
+                                    <SecurityIcon sx={{ fontSize: 36, color: '#fff' }} />
+                                </IconButton>
+                            </Tooltip>
+                        </HasRole>
+
                         {!location.pathname.includes('/ostoskori') && (
                             <Tooltip title="Ostoskori">
                                 <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
@@ -241,6 +271,7 @@ function DefaultAppBar() {
                                 </IconButton>
                             </Tooltip>
                         )}
+
                         <Tooltip title="Käyttäjätili ja kirjautuminen">
                             <IconButton onClick={drawerOpen('account')} sx={iconHover}>
                                 <AccountCircleOutlinedIcon sx={{ fontSize: 36, color: '#fff' }} />

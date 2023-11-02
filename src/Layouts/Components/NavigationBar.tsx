@@ -1,11 +1,8 @@
-import { useEffect } from 'react';
-import { Link, useActionData } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Box, Button, ButtonGroup } from '@mui/material';
 
 import HasRole from '../../Utils/HasRole';
-
-import type { frontPageActions } from '../../Router/actions';
 
 function LinkBar() {
     return (
@@ -36,35 +33,7 @@ function LinkBar() {
     );
 }
 
-function AuthedLinkBar() {
-    return (
-        <Box id="authed-navbuttons-wrapper" sx={{ marginLeft: '1rem' }}>
-            <ButtonGroup
-                variant="outlined"
-                id="authed-navbuttons"
-                aria-label="authed navigation link buttons"
-                sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-            >
-                <HasRole role={'storage_group'}>
-                    <Button component={Link} to="/varasto">
-                        Varastonäkymä
-                    </Button>
-                </HasRole>
-                <HasRole role="admin_group">
-                    <Button component={Link} to="/admin">
-                        Ylläpitäjän näkymä
-                    </Button>
-                </HasRole>
-            </ButtonGroup>
-        </Box>
-    );
-}
-
 function NavigationBar() {
-    const responseStatus = useActionData() as Awaited<ReturnType<typeof frontPageActions>>;
-
-    useEffect(() => {}, [responseStatus]);
-
     return (
         <Box
             id="navbar-container"
@@ -77,8 +46,21 @@ function NavigationBar() {
             }}
         >
             <LinkBar />
-            <HasRole role={'admin_group' || 'storage_group'}>
-                <AuthedLinkBar />
+
+            <HasRole role={'storage_group'}>
+                <Button component={Link} to="/varasto" variant="outlined">
+                    Varastonäkymä
+                </Button>
+            </HasRole>
+            <HasRole role={'bicycle_group'}>
+                <Button component={Link} to="/pyorat/pyoravarasto" variant="outlined">
+                    Pyörävarasto
+                </Button>
+            </HasRole>
+            <HasRole role="admin_group">
+                <Button component={Link} to="/admin">
+                    Ylläpito
+                </Button>
             </HasRole>
         </Box>
     );
