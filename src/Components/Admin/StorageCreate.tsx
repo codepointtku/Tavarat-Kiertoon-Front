@@ -38,7 +38,7 @@ function StorageCreate() {
 
             {responseStatus?.type === 'createstorage' && responseStatus?.status && (
                 <AlertBox
-                    text="Varasto luotu tietokantaan. Uudelleenohjataan..."
+                    text="Varasto luotu tietokantaan."
                     status="success"
                     timer={3000}
                     redirectUrl="/admin/varastot"
