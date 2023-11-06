@@ -132,20 +132,13 @@ function OrderView({ isAdmin }: Props) {
                                 <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottajan puhelinnumero:</TableCell>
                                 <TableCell>{order.recipient_phone_number}</TableCell>
                                 <TableCell>
-                                    <HasRole role="admin_group">
-                                        <Button
-                                            component={Link}
-                                            to={`/admin/tilaukset/${order.id}/muokkaa`}
-                                            // leaving this here incase storage needs to have the ability to edit orders
-                                            // to={
-                                            //     isAdmin
-                                            //         ? `/admin/tilaukset/${order.id}/muokkaa`
-                                            //         : `/varasto/tilaukset/${order.id}/muokkaa`
-                                            // }
-                                        >
+                                    {isAdmin ? (
+                                        <Button component={Link} to={`/admin/tilaukset/${order.id}/muokkaa`}>
                                             Muokkaa tilausta
                                         </Button>
-                                    </HasRole>
+                                    ) : (
+                                        'placeholder'
+                                    )}
                                 </TableCell>
                                 <TableCell>
                                     <Button
