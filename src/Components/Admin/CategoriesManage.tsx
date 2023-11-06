@@ -139,7 +139,7 @@ function CategoryTree() {
     const submit = useSubmit();
 
     const onSubmit = (data: any) => {
-        if (selectedChoice === null || selectedChoice === undefined) {
+        if (!selectedChoice) {
             return null;
         }
 
