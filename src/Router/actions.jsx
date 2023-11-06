@@ -596,10 +596,14 @@ const categoriesManageAction = async ({ request }) => {
 
     const formData = await request.formData();
     const id = formData.get('id');
+    const categoryName = formData.get('cat');
 
     if (request.method === 'POST') {
         if (formData.get('parent') === null) {
-            const newMainCategory = { name: formData.get('cat'), parent: null };
+            const newMainCategory = {
+                name: categoryName.charAt(0).toUpperCase() + categoryName.slice(1),
+                parent: null,
+            };
 
             const response = await categoriesApi.categoriesCreate(newMainCategory);
 
@@ -609,7 +613,10 @@ const categoriesManageAction = async ({ request }) => {
             return { type: 'categorycreate', status: false };
         }
 
-        const newCategory = { name: formData.get('cat'), parent: formData.get('parent') };
+        const newCategory = {
+            name: categoryName.charAt(0).toUpperCase() + categoryName.slice(1),
+            parent: formData.get('parent'),
+        };
 
         const response = await categoriesApi.categoriesCreate(newCategory);
 
