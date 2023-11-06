@@ -156,7 +156,7 @@ const contactAction = async (auth, setAuth, request) => {
  */
 const orderEditAction = async ({ request, params }) => {
     const formData = await request.formData();
-
+    console.log(formData.get('orderId'));
     const submission = {
         id: formData.get('orderId'),
         recipient: formData.get('recipient'),
@@ -165,6 +165,23 @@ const orderEditAction = async ({ request, params }) => {
         status: formData.get('status'),
         order_info: formData.get('orderInfo'),
         product_items: JSON.parse(formData.get('productItems')),
+    };
+
+    const response = await ordersApi.ordersUpdate(params.id, submission);
+
+    if (response.status === 202) {
+        return { type: 'orderupdate', status: true };
+    }
+    return { type: 'orderupdate', status: false };
+};
+const orderEditStatusAction = async ({ request, params }) => {
+    const formData = await request.formData();
+    const submission = {
+        id: formData.get('orderId'),
+        recipient: formData.get('recipient'),
+        recipient_phone_number: formData.get('recipient_phone_number'),
+        delivery_address: formData.get('deliveryAddress'),
+        status: formData.get('status'),
     };
 
     const response = await ordersApi.ordersUpdate(params.id, submission);
@@ -1221,6 +1238,7 @@ export {
     frontPageActions,
     contactAction,
     orderEditAction,
+    orderEditStatusAction,
     orderDeleteAction,
     storageCreateAction,
     storageEditAction,

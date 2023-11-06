@@ -169,6 +169,7 @@ import {
     userSignupAction,
     contactAction,
     orderEditAction,
+    orderEditStatusAction,
     addProductAction,
     editProductAction,
     orderDeleteAction,
@@ -512,6 +513,7 @@ function Routes() {
                                             element: <OrderView isAdmin={false} />,
                                             errorElement: <div>varasto orderview kössähdys</div>,
                                             loader: orderViewLoader,
+                                            action: orderEditStatusAction,
                                         },
                                     ],
                                 },
@@ -606,6 +608,7 @@ function Routes() {
                                                     element: <OrderView isAdmin />,
                                                     errorElement: <OrderViewError />,
                                                     loader: orderViewLoader,
+                                                    action: orderEditStatusAction,
                                                 },
                                                 {
                                                     path: 'muokkaa',

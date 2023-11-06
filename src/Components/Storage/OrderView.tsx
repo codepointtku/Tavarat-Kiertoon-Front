@@ -1,5 +1,7 @@
-import { useState, Fragment } from 'react';
-import { useLoaderData, Link } from 'react-router-dom';
+import { useState, Fragment, useContext } from 'react';
+import { useLoaderData, Link, useFetcher, useSubmit } from 'react-router-dom';
+import { usePDF } from '@react-pdf/renderer';
+import PDFDocument from './PDFCreator';
 
 import {
     Table,
@@ -15,11 +17,12 @@ import {
     Container,
     Grid,
     Link as MuiLink,
+    TextField,
+    MenuItem,
 } from '@mui/material';
 
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import StyledTableRow from '../StyledTableRow';
 import StyledTableCell from '../StyledTableCell';
@@ -28,21 +31,28 @@ import Tooltip from '../Tooltip';
 import HasRole from '../../Utils/HasRole';
 
 import type { orderViewLoader } from '../../Router/loaders';
+import BackButton from '../BackButton';
+import AuthContext from '../../Context/AuthContext';
+import { FieldValues, useForm } from 'react-hook-form';
+import { ProductItemResponse } from '../../api';
 
 export type OrderViewLoaderType = Awaited<ReturnType<typeof orderViewLoader>>;
 
 interface Props {
     isAdmin: boolean;
 }
-
+type FormValues = {
+    status: OrderViewLoaderType['status'];
+};
 function OrderView({ isAdmin }: Props) {
     const order = useLoaderData() as OrderViewLoaderType;
+    const { auth } = useContext(AuthContext);
     // state to control product info collapse field
     const [isOpen, setIsOpen] = useState<number>();
-
+    const currentStatus = ['Waiting', 'Processing', 'Finished'];
     // array with an array for each unique product_item.product.id and all products with that id
     const productRenderItems: OrderViewLoaderType['product_items'][] = [];
-    order.product_items.forEach((productItem) => {
+    order.product_items.forEach((productItem: ProductItemResponse) => {
         // check if array already contains an item.product.id array
         const productIndex = productRenderItems.findIndex((index) => index[0]?.product.id === productItem.product.id);
         if (productIndex < 0) {
@@ -61,6 +71,38 @@ function OrderView({ isAdmin }: Props) {
         return dateString;
     };
 
+    const {
+        control,
+        handleSubmit,
+        register,
+        watch,
+        formState: { isSubmitting, isSubmitSuccessful },
+    } = useForm<FormValues>({
+        mode: 'onTouched',
+        defaultValues: {
+            status: order.status,
+        },
+    });
+    const submit = useSubmit();
+    //const [instance] = usePDF({ document: <PDFDocument order={order} /> });
+
+    const fetcher = useFetcher();
+    const onSubmit = async (data: FieldValues) => {
+        console.log(data.status);
+        await submit(
+            {
+                status: data.status,
+                orderId: order.id.toString(),
+                deliveryAddress: order.delivery_address,
+                recipient: order.recipient,
+                recipient_phone_number: order.recipient_phone_number,
+            },
+            {
+                method: 'put',
+            }
+        );
+    };
+
     return (
         <Container maxWidth="xl">
             <Stack id="order-info-container-main-stack" sx={{ padding: '1rem 0 1rem 0' }}>
@@ -70,18 +112,7 @@ function OrderView({ isAdmin }: Props) {
                     sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                 >
                     <Grid item xs={3} justifyContent="flex-start">
-                        <Tooltip title="Palaa tilaukset-listaukseen">
-                            <Button
-                                id="cancel-btn"
-                                size="small"
-                                variant="outlined"
-                                component={Link}
-                                to="/admin/tilaukset/"
-                                startIcon={<ArrowBackIcon />}
-                            >
-                                Takaisin
-                            </Button>
-                        </Tooltip>
+                        <BackButton />
                     </Grid>
                     <Grid item xs={6}>
                         <TypographyTitle text={`Tilaus #${order.id}`} />
@@ -120,7 +151,57 @@ function OrderView({ isAdmin }: Props) {
                                 <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottaja:</TableCell>
                                 <TableCell>{order.recipient}</TableCell>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Tilauksen tila:</TableCell>
-                                <TableCell>{order.status}</TableCell>
+                                <TableCell>
+                                    {auth['admin_group'] ? (
+                                        <Container
+                                            maxWidth="xs"
+                                            component={fetcher.Form}
+                                            onSubmit={handleSubmit(onSubmit)}
+                                        >
+                                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                <TextField
+                                                    id="order-status-select"
+                                                    select
+                                                    {...register('status', {
+                                                        required: {
+                                                            value: true,
+                                                            message: 'Valitse tila',
+                                                        },
+                                                    })}
+                                                    value={watch('status')}
+                                                    required
+                                                    inputProps={{ required: false }}
+                                                    sx={{ marginBottom: '-1rem' }}
+                                                >
+                                                    {currentStatus?.map((status) => {
+                                                        return (
+                                                            <MenuItem
+                                                                id="order-status-item"
+                                                                className="order-status-select-item"
+                                                                key={status}
+                                                                value={status}
+                                                            >
+                                                                {status}
+                                                            </MenuItem>
+                                                        );
+                                                    })}
+                                                </TextField>
+                                                <Button
+                                                    id="submit-btn"
+                                                    type="submit"
+                                                    disabled={isSubmitting}
+                                                    sx={{
+                                                        marginBottom: '-1rem',
+                                                    }}
+                                                >
+                                                    Tallenna muutokset
+                                                </Button>
+                                            </Box>
+                                        </Container>
+                                    ) : (
+                                        order.status
+                                    )}
+                                </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottajan puhelinnumero:</TableCell>
@@ -142,18 +223,22 @@ function OrderView({ isAdmin }: Props) {
                                     </HasRole>
                                 </TableCell>
                                 <TableCell>
-                                    <Button
-                                        color="error"
-                                        to={`/varasto/pdf/${order.id}`}
-                                        component={Link}
-                                        sx={{
-                                            '&:hover': {
-                                                backgroundColor: 'success.dark',
-                                            },
-                                        }}
-                                    >
-                                        {isAdmin ? 'Luo PDF' : 'Tulosta'}
-                                    </Button>
+                                    <HasRole role="admin_group">
+                                        <Button
+                                            color="error"
+                                            to={`/varasto/pdf/${order.id}`}
+                                            //to={instance.url}
+                                            //target="_blank"
+                                            component={Link}
+                                            sx={{
+                                                '&:hover': {
+                                                    backgroundColor: 'success.dark',
+                                                },
+                                            }}
+                                        >
+                                            Tulosta ja ota käsittelyyn
+                                        </Button>
+                                    </HasRole>
                                 </TableCell>
                             </TableRow>
                             <TableRow>
