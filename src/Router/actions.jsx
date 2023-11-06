@@ -546,9 +546,12 @@ const adminEmailRecipientsAction = async ({ request }) => {
 
 const colorsManageAction = async ({ request }) => {
     const formData = await request.formData();
+    const color = formData.get('color');
 
     if (request.method === 'POST') {
-        const response = await colorsApi.colorsCreate({ name: formData.get('color') });
+        const response = await colorsApi.colorsCreate({
+            name: color.charAt(0).toUpperCase() + color.slice(1),
+        });
 
         if (response.status === 201) {
             return { type: 'colorcreate', status: true };
