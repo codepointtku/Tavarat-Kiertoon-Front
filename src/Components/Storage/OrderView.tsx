@@ -88,7 +88,10 @@ function OrderView({ isAdmin }: Props) {
 
     const fetcher = useFetcher();
     const onSubmit = async (data: FieldValues) => {
-        console.log(data.status);
+        const productItemlist = [];
+        for (const [index, item] of productRenderItems.entries()) {
+            productItemlist.push(item[0].id);
+        }
         await submit(
             {
                 status: data.status,
@@ -96,6 +99,7 @@ function OrderView({ isAdmin }: Props) {
                 deliveryAddress: order.delivery_address,
                 recipient: order.recipient,
                 recipient_phone_number: order.recipient_phone_number,
+                productItems: JSON.stringify(productItemlist),
             },
             {
                 method: 'put',

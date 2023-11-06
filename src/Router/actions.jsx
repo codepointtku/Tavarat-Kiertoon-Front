@@ -182,6 +182,7 @@ const orderEditStatusAction = async ({ request, params }) => {
         recipient_phone_number: formData.get('recipient_phone_number'),
         delivery_address: formData.get('deliveryAddress'),
         status: formData.get('status'),
+        product_items: JSON.parse(formData.get('productItems')),
     };
 
     const response = await ordersApi.ordersUpdate(params.id, submission);
