@@ -74,6 +74,12 @@ function BaseBoundary() {
                 <Button component={Link} to="/" sx={{ margin: '1rem 0 0 0' }}>
                     Tavarat Kiertoon etusivulle
                 </Button>
+                <Typography variant="body2" sx={{ margin: '1rem 0 0 0' }}>
+                    Kokeile päivittää sivu, jos virhe toistuu.
+                </Typography>
+                <Button onClick={() => window.location.reload()} sx={{ margin: '1rem 0 0 0' }}>
+                    Päivitä
+                </Button>
             </Alert>
         </Box>
     );
