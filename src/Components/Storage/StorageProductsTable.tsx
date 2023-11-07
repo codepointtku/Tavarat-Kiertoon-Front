@@ -38,6 +38,7 @@ import StyledTableCell from '../StyledTableCell';
 import StyledTableRow from '../StyledTableRow';
 
 import { type storageProductsLoader } from '../../Router/loaders';
+import { type ProductStorageResponse } from '../../api';
 
 interface Search {
     searchString: string | null;
@@ -46,7 +47,7 @@ interface Search {
 export type StorageProductsLoaderType = Awaited<ReturnType<typeof storageProductsLoader>>;
 
 //  // custom hook type for accessing the context value, recommended by react-router-dom docs
-// type ContextType = number;
+type ContextType = { product: ProductStorageResponse | null };
 
 function StorageProductsTable() {
     // state to control product info collapse field:
@@ -151,12 +152,20 @@ function StorageProductsTable() {
                                         <StyledTableCell>
                                             <Button
                                                 component={Link}
-                                                to={`/varasto/tuotteet/${product.id}/muokkaa`}
+                                                to={
+                                                    isOpen === index
+                                                        ? `/varasto/tuotteet/`
+                                                        : `/varasto/tuotteet/${product.id}/palauta`
+                                                }
+                                                onClick={() => {
+                                                    isOpen === index ? setIsOpen(undefined) : setIsOpen(index);
+                                                }}
+                                                aria-label="expand row"
                                                 variant="outlined"
                                                 color="primary"
                                                 sx={{ paddingRight: 6, paddingLeft: 6 }}
                                             >
-                                                Muokkaa
+                                                {isOpen === index ? 'Sulje' : 'Toiminnot'}
                                             </Button>
                                         </StyledTableCell>
                                         <StyledTableCell align="right">
@@ -165,18 +174,26 @@ function StorageProductsTable() {
                                         </StyledTableCell>
                                         <StyledTableCell align="right">
                                             {/* TODO: only show add button if there is a search or barcode search in searchParams? */}
-                                            <IconButton
+                                            {/* <IconButton
                                                 color="primary"
                                                 aria-label="expand row"
                                                 onClick={() => {
                                                     isOpen === index ? setIsOpen(undefined) : setIsOpen(index);
                                                 }}
-                                            >
-                                                {product.product_items?.length}
-                                                {'  '}
-                                                {/* TODO: Add/return products (to same storage) logic */}
-                                                <AddCircle />
-                                            </IconButton>
+                                            > */}
+                                            {
+                                                // count product_items with status 'varastossa'
+                                                product.product_items?.reduce(
+                                                    (count, item) => count + (item.available ? 1 : 0),
+                                                    0
+                                                )
+                                            }
+                                            {/* // Todo show only those that are not status retired? backend? */}
+                                            {`/${product.product_items?.length}`}
+                                            {'  '}
+                                            {/* TODO: Add/return products (to same storage) logic */}
+                                            {/* <AddCircle />
+                                            </IconButton> */}
                                         </StyledTableCell>
                                         <StyledTableCell align="right">
                                             {/* TODO: show multiple storages for products */}
@@ -208,14 +225,15 @@ function StorageProductsTable() {
                                         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                                             {/* TODO: Outlet for product info, picture and return items to storage / new item functionality, when search is active */}
                                             <Collapse in={isOpen === index} timeout="auto" unmountOnExit>
+                                                {/* <Collapse in={id ? product.id === +id : false} timeout="auto" unmountOnExit> // too slow */}
                                                 <Box
                                                     id="product-detail-indent-box"
                                                     sx={{ margin: '0.4rem 1rem -0.1rem 1rem' }}
                                                 >
                                                     {/* custom typings for accessing the context value, recommended by
                                                     react-router-dom docs: */}
-                                                    {/* <Outlet context={product.id satisfies ContextType} /> */}
-                                                    <Outlet context={product.id} />
+                                                    <Outlet context={{ product } satisfies ContextType} />
+                                                    {/* <Outlet context={product} /> */}
                                                 </Box>
                                             </Collapse>
                                         </TableCell>
@@ -231,9 +249,9 @@ function StorageProductsTable() {
     );
 }
 
-//  // custom hook for accessing the context value, recommended by react-router-dom docs
-// export function useProduct() {
-//     return useOutletContext<ContextType>();
-// }
+// custom hook for accessing the context value, recommended by react-router-dom docs
+export function useProduct() {
+    return useOutletContext<ContextType>();
+}
 
 export default StorageProductsTable;
