@@ -98,12 +98,20 @@ const productListLoader = async ({ request }) => {
 };
 
 /**
- * Get one product (with product_items)
+ * Get one product (with product_items), and products in same category for similar products carousel
  */
 const productDetailsLoader = async ({ params }) => {
     const { data: product } = await productsApi.productsRetrieve(params.id);
     const { data: products } = await productsApi.productsList(product.category);
     return { product, products };
+};
+
+/**
+ * Get one product (with product_items)
+ */
+const storageProductDetailsLoader = async ({ params }) => {
+    const { data: product } = await productsApi.productsRetrieve(params.id);
+    return product;
 };
 
 /**
@@ -120,10 +128,26 @@ const productEditLoader = async ({ params }) => {
 };
 
 /**
+ * Get amount of products possible to return to storage (those that have been ordered but not yet returned)
+ */
+const productItemsReturnLoader = async ({ params }) => {
+    const { data: product } = await productsApi.productsRetrieve(params.id);
+    const { data: amount } = await productsApi.productsReturnList(params.id);
+    // const { data: amount } = await productsApi.productsReturnRetrieve(params.id); // change to this when backend is fixed
+    return { product, amount };
+};
+
+/**
  * Get all orders.
  */
-const ordersListLoader = async () => {
-    const { data } = await ordersApi.ordersList();
+const ordersListLoader = async ({ request }) => {
+    const url = new URL(request.url);
+    const { data } = await ordersApi.ordersList(
+        null,
+        url.searchParams.get('sivu'),
+        url.searchParams.get('sivukoko'),
+        url.searchParams.get('tila')
+    );
 
     return data;
 };
@@ -542,6 +566,8 @@ export {
     rootLoader,
     productListLoader,
     productDetailsLoader,
+    storageProductDetailsLoader,
+    productItemsReturnLoader,
     productEditLoader,
     productTransferLoader,
     ordersListLoader,
