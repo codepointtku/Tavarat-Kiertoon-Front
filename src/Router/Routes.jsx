@@ -47,6 +47,8 @@ import OrdersGrid from '../Components/Admin/OrdersGrid';
 import AdminOrderEmailList from '../Components/Admin/AdminOrderEmailList';
 
 import ProductsGrid from '../Components/Admin/ProductsGrid';
+import ColorsManage from '../Components/Admin/ColorsManage';
+import CategoriesManage from '../Components/Admin/CategoriesManage';
 
 import UsersGrid from '../Components/Admin/UsersGrid';
 import UserEdit from '../Components/Admin/UserEdit';
@@ -137,6 +139,7 @@ import {
     userAddressCreateLoader,
     usersListLoader,
     storageProductsLoader,
+    productAddLoader,
     userInfoLoader,
     searchWatchLoader,
     shoppingCartLoader,
@@ -160,6 +163,8 @@ import {
     addressEditLoader,
     storageProductDetailsLoader,
     productItemsReturnLoader,
+    categoriesManageLoader,
+    colorsLoader,
 } from './loaders';
 
 import {
@@ -167,6 +172,7 @@ import {
     contactAction,
     orderEditAction,
     addProductAction,
+    editProductAction,
     orderDeleteAction,
     storageCreateAction,
     storageEditAction,
@@ -204,6 +210,8 @@ import {
     userAddressEditAction,
     searchWatchCreateAction,
     returnProductsAction,
+    categoriesManageAction,
+    colorsManageAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
@@ -529,7 +537,7 @@ function Routes() {
                                 {
                                     path: 'tuotteet/luo',
                                     element: <AddNewItem />,
-                                    loader: storageProductsLoader,
+                                    loader: productAddLoader,
                                     action: async ({ request }) => addProductAction(auth, setAuth, request),
                                 },
                                 {
@@ -541,7 +549,8 @@ function Routes() {
                                     path: 'tuotteet/:id/muokkaa',
                                     element: <EditProduct />,
                                     loader: productEditLoader,
-                                    // action: async ({ request, params }) => editProductAction(auth, setAuth, request, params),
+                                    action: async ({ request, params }) =>
+                                        editProductAction(auth, setAuth, request, params),
                                 },
                                 {
                                     path: 'koodinlukija',
@@ -643,6 +652,18 @@ function Routes() {
                                             index: true,
                                             element: <ProductsGrid />,
                                             loader: productListLoader,
+                                        },
+                                        {
+                                            path: 'varit',
+                                            element: <ColorsManage />,
+                                            loader: colorsLoader,
+                                            action: colorsManageAction,
+                                        },
+                                        {
+                                            path: 'kategoriat',
+                                            element: <CategoriesManage />,
+                                            loader: categoriesManageLoader,
+                                            action: categoriesManageAction,
                                         },
                                     ],
                                 },

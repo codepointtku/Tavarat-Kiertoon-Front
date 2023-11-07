@@ -3,6 +3,8 @@ import apiCall from '../Utils/apiCall';
 import {
     bikesApi,
     bulletinsApi,
+    colorsApi,
+    categoriesApi,
     contactFormsApi,
     // contactsApi,
     ordersApi,
@@ -133,7 +135,7 @@ const userSignupAction = async (request) => {
             return { type: 'create', status: false, message: response.data.message };
         }
     } catch (error) {
-        return { type: 'create', status: false, message: request.responseText };
+        return { type: 'create', status: false, message: request.responseText, data: error.response.data };
     }
 
     return { type: 'create', status: false, r: 'returnauksien returnaus' };
@@ -260,6 +262,43 @@ const addProductAction = async (auth, setAuth, request) => {
         return { type: 'createProduct', status: true };
     }
     return { type: 'createProduct', status: false };
+};
+
+const editProductAction = async (auth, setAuth, request, params) => {
+    const formData = await request.formData();
+    // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
+    console.log('formData actionissa :', formData);
+    console.log(formData.getAll('old_pictures[]'));
+    console.log('get colors', formData.get('colors[]'));
+    console.log('getAll colors', formData.getAll('colors[]'));
+
+    const formDataWithProductItem = {
+        barcode: formData.get('barcode'),
+        available: formData.get('available'),
+        storage: formData.get('storages'),
+        shelf_id: formData.get('shelf_id'),
+        amount: formData.get('amount'),
+        name: formData.get('name'),
+        free_description: formData.get('free_description'),
+        measurements: formData.get('measurements'),
+        weight: formData.get('weight'),
+        price: formData.get('price'),
+        category: formData.get('category'),
+        colors: formData.getAll('colors[]'),
+        // kuvan lisäys ei toimi bäkissä
+        old_pictures: formData.getAll('old_pictures[]'),
+        new_pictures: formData.getAll('pictures[]'),
+    };
+    console.log(formDataWithProductItem);
+
+    const response = await productsApi.productsUpdate(params.id, formDataWithProductItem, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    console.log('response actionissa :', response);
+    if (response.status === 200) {
+        return { type: 'editProduct', status: true };
+    }
+    return { type: 'editProduct', status: false };
 };
 
 /*
@@ -529,6 +568,118 @@ const adminEmailRecipientsAction = async ({ request }) => {
     }
 
     return { type: 'emailrecipient', status: false };
+};
+
+const colorsManageAction = async ({ request }) => {
+    const formData = await request.formData();
+
+    if (request.method === 'POST') {
+        const response = await colorsApi.colorsCreate({ name: formData.get('color') });
+
+        if (response.status === 201) {
+            return { type: 'colorcreate', status: true };
+        }
+
+        return { type: 'colorcreate', status: false };
+    }
+
+    if (request.method === 'DELETE') {
+        try {
+            const response = await colorsApi.colorsDestroy(formData.get('id'));
+
+            if (response.status === 204) {
+                return { type: 'colordelete', status: true };
+            }
+        } catch (error) {
+            if (error.response.status === 405) {
+                return { type: 'colordelete', status: false };
+            }
+
+            return { type: 'colorsmanageaction', status: false };
+        }
+    }
+
+    if (request.method === 'PUT') {
+        const newColorName = {
+            name: formData.get('name'),
+        };
+
+        const response = await colorsApi.colorsUpdate(formData.get('id'), newColorName);
+
+        if (response.status === 200) {
+            return { type: 'colorupdate', status: true };
+        }
+
+        return { type: 'colorupdate', status: false };
+    }
+
+    return { type: 'colorsmanageaction', status: false };
+};
+
+const categoriesManageAction = async ({ request }) => {
+    // const placeholder = 'hodor';
+    // return placeholder;
+
+    const formData = await request.formData();
+    const id = formData.get('id');
+
+    if (request.method === 'POST') {
+        if (formData.get('parent') === null) {
+            const newMainCategory = { name: formData.get('cat'), parent: null };
+
+            const response = await categoriesApi.categoriesCreate(newMainCategory);
+
+            if (response.status === 201) {
+                return { type: 'categorycreate', status: true };
+            }
+            return { type: 'categorycreate', status: false };
+        }
+
+        const newCategory = { name: formData.get('cat'), parent: formData.get('parent') };
+
+        const response = await categoriesApi.categoriesCreate(newCategory);
+
+        if (response.status === 201) {
+            return { type: 'categorycreate', status: true };
+        }
+        return { type: 'categorycreate', status: false };
+    }
+
+    if (request.method === 'PUT') {
+        const mutatedCategory = { name: formData.get('cat'), parent: formData.get('parent') };
+
+        if (mutatedCategory.parent !== 'null') {
+            const response = await categoriesApi.categoriesUpdate(id, mutatedCategory);
+
+            if (response.status === 200) {
+                return { type: 'categorymutate', status: true };
+            }
+        }
+
+        if (mutatedCategory.parent === 'null') {
+            const response = await categoriesApi.categoriesUpdate(id, { name: formData.get('cat') });
+
+            if (response.status === 200) {
+                return { type: 'categorymutate', status: true };
+            }
+        }
+
+        return { type: 'categorymutate', status: false };
+    }
+
+    if (request.method === 'DELETE') {
+        try {
+            const response = await categoriesApi.categoriesDestroy(id);
+
+            if (response.status === 204) {
+                return { type: 'categorydelete', status: true };
+            }
+        } catch (error) {
+            return { type: 'categorydelete', status: false };
+        }
+    }
+
+    return { type: 'categorymanage', status: false };
 };
 
 /**
@@ -1101,6 +1252,7 @@ export {
     storageEditAction,
     addProductAction,
     returnProductsAction,
+    editProductAction,
     storageDeleteAction,
     productsTransferAction,
     createBulletinAction,
@@ -1134,5 +1286,7 @@ export {
     deletePacketAction,
     userAddressEditAction,
     userAddressCreateAction,
+    colorsManageAction,
+    categoriesManageAction,
     searchWatchCreateAction,
 };

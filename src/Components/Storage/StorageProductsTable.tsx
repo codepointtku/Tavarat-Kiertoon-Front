@@ -53,7 +53,7 @@ function StorageProductsTable() {
     // state to control product info collapse field:
     const [isOpen, setIsOpen] = useState<number>();
     const [searchParams, setSearchParams] = useSearchParams();
-    const { categories, products } = useLoaderData() as StorageProductsLoaderType;
+    const { products } = useLoaderData() as StorageProductsLoaderType;
     const { register, handleSubmit } = useForm({
         defaultValues: { searchString: searchParams.get('viivakoodi') },
     });
@@ -69,7 +69,6 @@ function StorageProductsTable() {
             });
         });
     };
-
     return (
         <>
             <TableContainer component={Box} sx={{ mt: '3rem' }}>

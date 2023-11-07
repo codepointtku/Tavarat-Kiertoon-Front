@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useSubmit, Form, useActionData } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
@@ -47,10 +47,12 @@ function LocationForm() {
         register,
         handleSubmit: createHandleSubmit,
         watch,
-        formState: { isSubmitSuccessful, errors: formErrors },
+        setError,
+        formState: { errors: formErrors },
     } = useForm({ mode: 'all' });
     const submit = useSubmit();
 
+    const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
     const responseStatus = useActionData() as Awaited<ReturnType<typeof userSignupAction>>;
 
     const [showPassword, setShowPassword] = useState(false);
@@ -62,11 +64,20 @@ function LocationForm() {
             method: 'post',
             action: '/rekisteroidy/toimipaikka',
         });
+        setIsSubmitSuccessful(true);
     });
+    useEffect(() => {
+        if (responseStatus?.data) {
+            setIsSubmitSuccessful(responseStatus?.status);
 
+            if (responseStatus?.data?.username) {
+                setError('username', { type: 'custom', message: 'Tämä tunnus on jo varattu' });
+            }
+        }
+    }, [responseStatus]);
     return (
         <>
-            {responseStatus?.type === 'create' && responseStatus?.status === false && (
+            {isSubmitSuccessful === false && responseStatus?.status === false && (
                 <AlertBox text="Tunnuksen luominen epäonnistui" status="error" />
             )}
 

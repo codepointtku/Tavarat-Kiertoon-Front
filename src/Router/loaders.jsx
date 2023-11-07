@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { redirect } from 'react-router-dom';
 
 import {
@@ -127,6 +126,14 @@ const productEditLoader = async ({ params }) => {
     return { storages, colors, categories, product };
 };
 
+const productAddLoader = async () => {
+    const [{ data: storages }, { data: colors }, { data: categories }] = await Promise.all([
+        storagesApi.storagesList(),
+        colorsApi.colorsList(),
+        categoriesApi.categoriesList(),
+    ]);
+    return { storages, colors, categories };
+};
 /**
  * Get amount of products possible to return to storage (those that have been ordered but not yet returned)
  */
@@ -179,10 +186,10 @@ const emailRecipientsLoader = async () => {
 const storageProductsLoader = async ({ request }) => {
     const url = new URL(request.url);
 
-    const [{ data: storages }, { data: colors }, { data: categories }, { data: products }] = await Promise.all([
-        storagesApi.storagesList(),
-        colorsApi.colorsList(),
-        categoriesApi.categoriesList(),
+    const [/* { data: storages }, { data: colors }, { data: categories }, */ { data: products }] = await Promise.all([
+        //storagesApi.storagesList(),
+        //colorsApi.colorsList(),
+        //categoriesApi.categoriesList(),
         storagesApi.storagesProductsList(
             // barcode should support partial search
             url.searchParams.get('viivakoodi'),
@@ -194,7 +201,7 @@ const storageProductsLoader = async ({ request }) => {
         ),
     ]);
 
-    return { storages, colors, categories, products };
+    return { /* storages, colors, categories, */ products };
 };
 
 /**
@@ -288,6 +295,19 @@ const searchWatchLoader = async () => {
     } catch {
         return null;
     }
+};
+
+const colorsLoader = async ({ params }) => {
+    const { data: colors } = await colorsApi.colorsList();
+    return { colors };
+};
+
+const categoriesManageLoader = async () => {
+    const [{ data: categories }, { data: categoryTree }] = await Promise.all([
+        categoriesApi.categoriesList(),
+        categoriesApi.categoriesTreeRetrieve(),
+    ]);
+    return { categories, categoryTree };
 };
 
 /**
@@ -569,6 +589,7 @@ export {
     storageProductDetailsLoader,
     productItemsReturnLoader,
     productEditLoader,
+    productAddLoader,
     productTransferLoader,
     ordersListLoader,
     orderViewLoader,
@@ -600,4 +621,6 @@ export {
     adminBulletinLoader,
     createBulletinLoader,
     addressEditLoader,
+    colorsLoader,
+    categoriesManageLoader,
 };
