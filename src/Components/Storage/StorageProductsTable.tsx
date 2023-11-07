@@ -157,6 +157,7 @@ function StorageProductsTable() {
                                                         ? `/varasto/tuotteet/`
                                                         : `/varasto/tuotteet/${product.id}/palauta`
                                                 }
+                                                replace
                                                 onClick={() => {
                                                     isOpen === index ? setIsOpen(undefined) : setIsOpen(index);
                                                 }}
