@@ -163,6 +163,7 @@ import {
     addressEditLoader,
     categoriesManageLoader,
     colorsLoader,
+    gigaLoader,
 } from './loaders';
 
 import {
@@ -566,7 +567,6 @@ function Routes() {
                             element: (
                                 <HasRole role="admin_group" fallback={<Navigate to="/kirjaudu" />}>
                                     <ThemeProvider theme={adminTheme}>
-                                        {/* TODO ohjaa kirjaudu sivulle */}
                                         <AdminLayout />
                                     </ThemeProvider>
                                 </HasRole>
@@ -583,6 +583,7 @@ function Routes() {
                                 {
                                     index: true,
                                     element: <Overview />,
+                                    loader: gigaLoader,
                                 },
                                 {
                                     path: 'tilastot',
