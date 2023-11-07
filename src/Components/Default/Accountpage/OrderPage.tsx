@@ -19,8 +19,10 @@ interface ProductItem {
 }
 
 function OrderPage() {
+    // location.state is unrealiable?
     const { state } = useLocation();
     const productRenderItems: ProductItem[][] = [];
+    //TODO: memoize this?
     state?.orderInfo?.product_items?.forEach((productItem: ProductItem) => {
         // check if array already contains an item.product.id array
         const productIndex = productRenderItems.findIndex((index) => index[0]?.product.id === productItem.product.id);
