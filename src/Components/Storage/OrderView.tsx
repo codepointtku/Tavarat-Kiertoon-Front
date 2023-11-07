@@ -1,5 +1,5 @@
 import { useState, Fragment, useContext } from 'react';
-import { useLoaderData, Link, useFetcher, useSubmit } from 'react-router-dom';
+import { useLoaderData, Link, useFetcher, useSubmit, useNavigate } from 'react-router-dom';
 import { usePDF } from '@react-pdf/renderer';
 import PDFDocument from './PDFCreator';
 
@@ -49,6 +49,7 @@ function OrderView({ isAdmin }: Props) {
     const { auth } = useContext(AuthContext);
     // state to control product info collapse field
     const [isOpen, setIsOpen] = useState<number>();
+    const navigate = useNavigate();
     const currentStatus = ['Waiting', 'Processing', 'Finished'];
     // array with an array for each unique product_item.product.id and all products with that id
     const productRenderItems: OrderViewLoaderType['product_items'][] = [];
@@ -106,7 +107,26 @@ function OrderView({ isAdmin }: Props) {
             }
         );
     };
-
+    const printPDF = async (data: FieldValues) => {
+        const productItemlist = [];
+        for (const [index, item] of productRenderItems.entries()) {
+            productItemlist.push(item[0].id);
+        }
+        await submit(
+            {
+                status: 'Processing',
+                orderId: order.id.toString(),
+                deliveryAddress: order.delivery_address,
+                recipient: order.recipient,
+                recipient_phone_number: order.recipient_phone_number,
+                productItems: JSON.stringify(productItemlist),
+            },
+            {
+                method: 'put',
+            }
+        );
+        navigate(`/varasto/pdf/${order.id}`);
+    };
     return (
         <Container maxWidth="xl">
             <Stack id="order-info-container-main-stack" sx={{ padding: '1rem 0 1rem 0' }}>
@@ -228,20 +248,28 @@ function OrderView({ isAdmin }: Props) {
                                 </TableCell>
                                 <TableCell>
                                     <HasRole role="admin_group">
-                                        <Button
-                                            color="error"
-                                            to={`/varasto/pdf/${order.id}`}
-                                            //to={instance.url}
-                                            //target="_blank"
-                                            component={Link}
-                                            sx={{
-                                                '&:hover': {
-                                                    backgroundColor: 'success.dark',
-                                                },
-                                            }}
+                                        <Container
+                                            maxWidth="xs"
+                                            component={fetcher.Form}
+                                            onSubmit={handleSubmit(printPDF)}
                                         >
-                                            Tulosta ja ota käsittelyyn
-                                        </Button>
+                                            <Button
+                                                color="error"
+                                                //to={`/varasto/pdf/${order.id}`}
+                                                //to={instance.url}
+                                                //target="_blank"
+                                                //component={Link}
+                                                id="pdf-print"
+                                                type="submit"
+                                                sx={{
+                                                    '&:hover': {
+                                                        backgroundColor: 'success.dark',
+                                                    },
+                                                }}
+                                            >
+                                                Tulosta ja ota käsittelyyn
+                                            </Button>
+                                        </Container>
                                     </HasRole>
                                 </TableCell>
                             </TableRow>
