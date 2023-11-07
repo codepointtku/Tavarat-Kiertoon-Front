@@ -1,40 +1,66 @@
-import { Form, useOutletContext, useSubmit } from 'react-router-dom';
-import { Box, Button, TextField } from '@mui/material';
-import StyledTableRow from '../StyledTableRow';
-// import { useProduct } from './StorageProductsTable';
-import { useForm } from 'react-hook-form';
-
-// interface Props {
-//     id: number;
-// }
+import { useLoaderData } from 'react-router-dom';
+import { Button, Grid, ImageList, Typography } from '@mui/material';
+import { type productItemsReturnLoader } from '../../Router/loaders';
+import { Link } from 'react-router-dom';
+import ProductsReturnForm from './ProductsReturnForm';
+import { useState } from 'react';
 
 function ProductsReturn() {
-    //  // custom hook for accessing the context value, recommended by react-router-dom docs:
-    // const id = useProduct();
-    const id: number = useOutletContext();
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
-    const submit = useSubmit();
-    // submit id and returning amount
-    // show picture for visual confirmation
-    // show shelf info, storage name? "add to same storage/shelf as other products, or create new product" ?
-
-    const onSubmit = () => {
-        console.log('submitting');
-    };
+    const [picId, setPicId] = useState(0);
+    const { product } = useLoaderData() as Awaited<ReturnType<typeof productItemsReturnLoader>>;
 
     return (
-        <Box>
-            ProductsReturn: {id}
-            <Form method="post" onSubmit={handleSubmit(onSubmit)}>
-                <input hidden name="addId" type="number" value={id} readOnly />
-                <TextField {...register('amount')} type="number" />
-                <Button type="submit">Vahvista</Button>
-            </Form>
-        </Box>
+        <Grid container sx={{ paddingY: '1rem' }}>
+            <Grid item xs={12} md={6}>
+                <img
+                    src={`${window.location.protocol}//${window.location.hostname}:8000/media/${product?.pictures[picId]?.picture_address}`}
+                    alt="product"
+                    height={600}
+                />
+                <ImageList cols={6} rowHeight={164}>
+                    {product?.pictures.map((picture, index) => (
+                        <img
+                            key={picture.id}
+                            src={`${window.location.protocol}//${window.location.hostname}:8000/media/${picture.picture_address}`}
+                            alt="product"
+                            height={164}
+                            onClick={() => setPicId(index)}
+                        />
+                    ))}
+                </ImageList>
+            </Grid>
+            <Grid container spacing={2} item xs={12} md={6}>
+                <Grid item xs={12} md={6}>
+                    <ProductsReturnForm />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Typography variant="h6">{product?.name}</Typography>
+                    <Typography variant="subtitle1">Viivakoodi: {product?.product_items[0]?.barcode}</Typography>
+                    <Typography variant="body2">
+                        Varasto: {product?.product_items[0]?.storage.name} {product?.product_items[0]?.shelf_id}
+                    </Typography>
+                    <Button
+                        component={Link}
+                        to={`/varasto/tuotteet/${product.id}/muokkaa`}
+                        variant="outlined"
+                        color="primary"
+                        sx={{ marginY: 2 }}
+                    >
+                        Muokkaa tuotteen tietoja
+                    </Button>
+                    {/* <Typography variant="body2">
+                            Kategoria:
+                            {product.category ? categories[product?.category]?.name : ''}
+                        </Typography> */}
+                    <Typography variant="body2">Kuvaus: {product?.free_description}</Typography>
+                    {/* TODO: show all values / states of items? (possible backend change: needed info could come from products/id/return endpoint?) */}
+                    {/* <Typography variant="body2">Hinta: {product?.price} €</Typography> */}
+                    {/* <Typography variant="body2">Mitat: {product?.measurements}</Typography> */}
+                    {/* <Typography variant="body2">Paino: {product?.weight}</Typography> */}
+                    {/* <Typography variant="body2">Värit: {product?.colors}</Typography> */}
+                </Grid>
+            </Grid>
+        </Grid>
     );
 }
 
