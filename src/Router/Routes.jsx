@@ -158,6 +158,8 @@ import {
     adminBulletinsLoader,
     productEditLoader,
     addressEditLoader,
+    storageProductDetailsLoader,
+    productItemsReturnLoader,
 } from './loaders';
 
 import {
@@ -514,12 +516,13 @@ function Routes() {
                                     id: 'storageProducts',
                                     element: <StorageProducts />,
                                     loader: storageProductsLoader,
-                                    action: returnProductsAction,
                                     children: [
                                         {
-                                            index: true,
+                                            path: ':id/palauta',
                                             element: <ProductsReturn />,
                                             errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
+                                            loader: productItemsReturnLoader,
+                                            action: returnProductsAction,
                                         },
                                     ],
                                 },
