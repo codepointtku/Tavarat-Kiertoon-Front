@@ -265,18 +265,22 @@ const addProductAction = async (auth, setAuth, request) => {
 /*
  * Returns products to storage
  */
-const returnProductsAction = async ({ request }) => {
+const returnProductsAction = async ({ request, params }) => {
     console.log('return of the product action');
     const formData = await request.formData();
     const formDataObj = Object.fromEntries(formData);
-    formData.get('addAmount');
-    console.log(formDataObj.addAmount, formDataObj.addId);
+    formData.get('amount');
+    console.log(formDataObj.amount, formDataObj.addId);
     // todo add id
-    console.log(typeof formDataObj.addAmount, typeof formDataObj.addId);
+    console.log(typeof formDataObj.amount, typeof formDataObj.addId);
 
-    const response = await productsApi.productsReturnCreate(parseInt(formData.get('addId')), {
-        amount: parseInt(formData.get('addAmount')),
-    });
+    const response = await productsApi.productsReturnCreate(
+        // parseInt(formData.get('addId')),
+        params.id,
+        {
+            amount: parseInt(formData.get('amount')),
+        }
+    );
 
     if (response.status === 201) {
         return { type: 'returnProduct', status: true };
