@@ -89,10 +89,10 @@ function OrderView({ isAdmin }: Props) {
 
     const fetcher = useFetcher();
     const onSubmit = async (data: FieldValues) => {
-        const productItemlist = [];
-        for (const [index, item] of productRenderItems.entries()) {
+        const productItemlist: number[] = [];
+        productRenderItems.map((item) => {
             productItemlist.push(item[0].id);
-        }
+        });
         await submit(
             {
                 status: data.status,
@@ -108,10 +108,10 @@ function OrderView({ isAdmin }: Props) {
         );
     };
     const printPDF = async (data: FieldValues) => {
-        const productItemlist = [];
-        for (const [index, item] of productRenderItems.entries()) {
+        const productItemlist: number[] = [];
+        productRenderItems.map((item) => {
             productItemlist.push(item[0].id);
-        }
+        });
         await submit(
             {
                 status: 'Processing',
