@@ -144,7 +144,8 @@ function NavigationTree() {
     // tilaukset
     const ordersListItems = (
         <Box
-            component={Link}
+            onClick={() => setOpen((open) => ({ ...open, ordersNavList: !open.ordersNavList }))}
+            component={Link} //Warning: validateDOMNesting(...): <a> cannot appear as a descendant of <a>.
             // component={open?.ordersNavList ? Box : Link} // Alternate: only work as link when closed. UX unconsistent?
             to={'/admin/tilaukset'}
             sx={{
