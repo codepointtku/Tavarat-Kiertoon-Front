@@ -1,5 +1,5 @@
 import { Alert, AlertTitle, Box, Button, Typography } from '@mui/material';
-import { useLocation, useNavigate, useRouteError, Link } from 'react-router-dom';
+import { useLocation, useNavigate, Navigate, useRouteError, Link } from 'react-router-dom';
 
 const errorType = (err) => {
     console.log('BaseBoundary err:', err);
@@ -37,7 +37,6 @@ function BaseBoundary() {
     const handleGoBack = () => {
         navigate(-1);
     };
-
     const errorTypes = {
         badrequest: (
             <Typography variant="h6">
@@ -62,7 +61,9 @@ function BaseBoundary() {
         ),
         else: <Typography variant="h6">Tuntematon virhe {location.pathname}</Typography>,
     };
-
+    if (error?.status === 401 || error?.response?.status === 401) {
+        return <Navigate to="kirjaudu" />;
+    }
     return (
         <Box>
             <Alert severity="success">

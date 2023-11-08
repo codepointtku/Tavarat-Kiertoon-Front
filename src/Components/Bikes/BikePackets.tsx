@@ -19,8 +19,8 @@ export default function BikePackets() {
     const { packet } = useLoaderData() as Awaited<ReturnType<typeof bikesPacketLoader>>;
 
     return (
-        <Box sx={{ height: '100%', width: '100%', padding: '2rem' }}>
-            <Typography variant="h3" align="center" color="primary.main" mb="2rem" width="100%">
+        <Box sx={{ height: '100%', width: '100%' }}>
+            <Typography variant="h3" align="center" color="primary.main" mb="1rem" width="100%">
                 Pyöräpaketit
             </Typography>
             <TableContainer component={Paper} sx={{ padding: '2rem' }}>

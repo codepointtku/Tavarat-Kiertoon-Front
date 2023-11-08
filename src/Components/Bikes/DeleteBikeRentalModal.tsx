@@ -1,24 +1,24 @@
 import { Box, Button, Modal } from '@mui/material';
 import { Form } from 'react-router-dom';
 
-// interface for "Delete Bike Packet" Modal
-interface DeleteBikePacketModalInterface {
+// interface for "Delete Bike Rental" Modal
+interface DeleteBikeRentalModalInterface {
     renderModal: boolean;
     setRenderModal: React.Dispatch<React.SetStateAction<boolean>>;
-    packetId: number;
+    rentalId: number;
 }
 
 /**
- * Delete the selected bike packet from database
+ * Delete the selected bike rental from database
  *
  * @param renderModal boolean : determine if modal is on or off
  * @param setRenderModal function : setState callback to set renderModal state
- * @param packetId number : id of the bike packet to be deleted
+ * @param rentalId number : id of the bike rental to be deleted
  * @returns
  */
-function DeleteBikePacketModal({ renderModal, setRenderModal, packetId }: DeleteBikePacketModalInterface) {
+function DeleteBikeRentalModal({ renderModal, setRenderModal, rentalId }: DeleteBikeRentalModalInterface) {
     return (
-        <Modal open={renderModal} aria-labelledby="Delete Bike Packet Successful">
+        <Modal open={renderModal} aria-labelledby="Delete Bike Rental Successful">
             <Box
                 sx={{
                     position: 'absolute',
@@ -33,7 +33,7 @@ function DeleteBikePacketModal({ renderModal, setRenderModal, packetId }: Delete
                 }}
                 textAlign="center"
             >
-                <h3>Oletko varma että haluat poistaa tämän paketin?</h3>
+                <h3>Oletko varma että haluat poistaa tämän tilauksen?</h3>
                 <Box
                     display="flex"
                     flexDirection="row"
@@ -41,7 +41,7 @@ function DeleteBikePacketModal({ renderModal, setRenderModal, packetId }: Delete
                     paddingTop="2em"
                     component={Form}
                     method={'delete'}
-                    action={`/pyorat/pyoravarasto/muokkaapaketti/${packetId}/poista`}
+                    action={`/pyorat/pyoravarasto/pyoratilaukset/${rentalId}/poista`}
                 >
                     <Button onClick={() => setRenderModal(false)}>Peruuta</Button>
                     <Button color="error" type="submit">
@@ -53,4 +53,4 @@ function DeleteBikePacketModal({ renderModal, setRenderModal, packetId }: Delete
     );
 }
 
-export default DeleteBikePacketModal;
+export default DeleteBikeRentalModal;
