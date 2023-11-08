@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import { Stack, Typography } from '@mui/material';
@@ -17,6 +18,7 @@ import {
 import { Line } from 'react-chartjs-2';
 
 import type { gigaLoader } from '../../../../Router/loaders';
+import { getDay } from 'date-fns';
 
 // import type { ChartData, ChartOptions } from 'chart.js';
 
@@ -40,7 +42,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 //     },
 // };
 
-function getDayz() {
+async function getDayz() {
     const now = new Date();
     const totalDaysInCurrentMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
 
@@ -55,16 +57,23 @@ function getDayz() {
 function LineChartti() {
     const { ordersList } = useLoaderData() as Awaited<ReturnType<typeof gigaLoader>>;
 
+    const [jee, setJee] = useState<string[]>([]);
+
+    useEffect(() => {
+        async function fetchDayz() {
+            const dayz = await getDayz();
+            setJee(dayz);
+        }
+
+        fetchDayz();
+    }, []);
+
     const creationDatetMillisekunteina = ordersList.results?.map(
         (order) => new Date(order.creation_date).getTime() /*.toLocaleDateString('fi-FI')*/
     );
 
-    const splitDays = getDayz();
-
-    console.log(splitDays);
-
     const data = {
-        // splitDays,
+        jee,
         datasets: [
             {
                 fill: true,
