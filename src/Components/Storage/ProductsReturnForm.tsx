@@ -1,12 +1,14 @@
-import { useLoaderData, useNavigation } from 'react-router';
+import { useLoaderData, useNavigation, useActionData } from 'react-router';
 import { type productItemsReturnLoader } from '../../Router/loaders';
 import { useForm, type FieldValues } from 'react-hook-form';
 import { Form, useSubmit } from 'react-router-dom';
 import { Button, TextField, Typography } from '@mui/material';
+import { returnProductsAction } from '../../Router/actions';
+import AlertBox from '../AlertBox';
 
 function ProductsReturnForm() {
     const { amount } = useLoaderData() as Awaited<ReturnType<typeof productItemsReturnLoader>>;
-    // const { categories } = useRouteLoaderData('storageProducts') as Awaited<ReturnType<typeof storageProductsLoader>>;
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof returnProductsAction>>;
     const navigation = useNavigation();
     //  // custom hook for accessing the context value and getting nice typings, recommended by react-router-dom docs:
     // const { product } = useProduct();
@@ -24,10 +26,6 @@ function ProductsReturnForm() {
     //     category,
 
     // } = product;
-    // console.log(name, free_description, amount, measurements, weight, colors, product_items, pictures, price, category);
-    // console.log(product);
-    console.log('amount', amount);
-
     const {
         register,
         handleSubmit,
@@ -35,7 +33,6 @@ function ProductsReturnForm() {
         reset,
     } = useForm({ mode: 'onTouched' });
     const submit = useSubmit();
-    // show shelf info, storage name? "add to same storage/shelf as other products, or create new product" ?
 
     const onSubmit = (formData: FieldValues) => {
         // const {id} = product
@@ -46,16 +43,19 @@ function ProductsReturnForm() {
 
     return (
         <>
+            {responseStatus?.type === 'returnProduct' && !responseStatus?.status && (
+                <AlertBox text="Palautus epäonnistui" status="error" timer={5000} />
+            )}
+            {responseStatus?.type === 'returnProduct' && responseStatus?.status && (
+                <AlertBox text="Palautus onnistui" status="success" timer={2000} />
+            )}
             <Typography variant="subtitle1">Palautettavissa: {amount.amount || '0'} kpl</Typography>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     {...register('amount', {
                         required: { value: true, message: 'Syötä määrä' },
                         min: { value: 1, message: 'Vähintään 1 kpl' },
-                        // TODO: show only those that are not in shopping cart, retired, or in storage?
-
                         max: { value: amount.amount, message: `Palautettavissa ${amount.amount} kpl` },
-                        // valueAsNumber: true,
                         disabled: navigation.state === 'loading' || navigation.state === 'submitting',
                     })}
                     type="number"
