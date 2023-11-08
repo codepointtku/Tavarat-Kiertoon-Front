@@ -4,6 +4,7 @@ import {
     Form,
     Link,
     useLoaderData,
+    useRouteLoaderData,
     useSearchParams,
     createSearchParams,
     Outlet,
@@ -37,7 +38,7 @@ import Pagination from '../Pagination';
 import StyledTableCell from '../StyledTableCell';
 import StyledTableRow from '../StyledTableRow';
 
-import { type storageProductsLoader } from '../../Router/loaders';
+import type { rootLoader, storageProductsLoader } from '../../Router/loaders';
 import { type ProductStorageResponse } from '../../api';
 
 interface Search {
@@ -54,6 +55,7 @@ function StorageProductsTable() {
     const [isOpen, setIsOpen] = useState<number>();
     const [searchParams, setSearchParams] = useSearchParams();
     const { products } = useLoaderData() as StorageProductsLoaderType;
+    const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const { register, handleSubmit } = useForm({
         defaultValues: { searchString: searchParams.get('viivakoodi') },
     });
@@ -203,7 +205,7 @@ function StorageProductsTable() {
                                             {product.product_items[0]?.shelf_id}
                                         </StyledTableCell>
                                         <StyledTableCell align="right">
-                                            {product.category ? categories[product?.category]?.name : ''}
+                                            {categories ? product.category && categories[product?.category]?.name : ''}
                                         </StyledTableCell>
                                         <StyledTableCell align="right">
                                             {/* TODO: show most recent modified date of product_items. backend change needed? */}
