@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { useLoaderData } from 'react-router';
-import { Link } from 'react-router-dom';
+import { useLoaderData, useNavigation } from 'react-router';
+import { Link, useSearchParams } from 'react-router-dom';
 
-import { Stack, Button } from '@mui/material';
+import { Stack, Button, Table, TablePagination } from '@mui/material';
 
 import {
     DataGrid,
@@ -18,10 +18,25 @@ import {
 import TypographyTitle from '../TypographyTitle';
 
 import type { GridColDef } from '@mui/x-data-grid';
-import type { productListLoader } from '../../Router/loaders';
+import type { adminProductsLoader } from '../../Router/loaders';
+import Pagination from '../Pagination';
 
 function ProductsGrid() {
-    const { count, /* next, previous, */ results } = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
+    const { count, /* next, previous, */ results } = useLoaderData() as Awaited<ReturnType<typeof adminProductsLoader>>;
+    const [searchParams, setSearchParams] = useSearchParams();
+    const pageSize = parseInt(searchParams.get('sivukoko') || '25');
+    const pageCount = Math.ceil(count! / pageSize);
+    const [rowCountState, setRowCountState] = React.useState(pageCount);
+    const navigation = useNavigation();
+
+    React.useEffect(() => {
+        setRowCountState((prevRowCountState) => (pageCount !== undefined ? pageCount : prevRowCountState));
+    }, [pageCount, setRowCountState]);
+
+    // const [paginationModel, setPaginationModel] = React.useState({
+    //     pageSize: 25,
+    //     page: 0,
+    // });
 
     // UPD: BE has new endpoint @ storagesApi (/storages/products). It contains more information than this productApi (/products).
 
@@ -55,10 +70,6 @@ function ProductsGrid() {
     //   ]
     // }
 
-    const pageSize = 10; // page_size @ BE: 10
-    const pageCount = Math.ceil(count! / pageSize);
-
-    const [rowCountState, setRowCountState] = React.useState(pageCount);
     React.useEffect(() => {
         setRowCountState((prevRowCountState) => (pageCount !== undefined ? pageCount : prevRowCountState));
     }, [pageCount, setRowCountState]);
@@ -267,17 +278,27 @@ function ProductsGrid() {
                     rowCount={rowCountState}
                     rows={results}
                     columns={columns}
+                    // initialState={{
+                    //     // ...data.initialState,
+                    //     pagination: { paginationModel: { pageSize: 10 } },
+                    // }}
+                    // pageSizeOptions={[25, 50, 100]}
+                    // paginationModel={paginationModel}
+                    // onPaginationModelChange={setPaginationModel}
                     slots={{
-                        toolbar: () => {
-                            return (
-                                <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
-                                    <GridToolbarQuickFilter />
-                                    <GridToolbarFilterButton />
-                                    <GridToolbarColumnsButton />
-                                    <GridToolbarDensitySelector />
-                                    <GridToolbarExport />
-                                </GridToolbarContainer>
-                            );
+                        // toolbar: () => {
+                        //     return (
+                        //         <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
+                        //             <GridToolbarQuickFilter />
+                        //             <GridToolbarFilterButton />
+                        //             <GridToolbarColumnsButton />
+                        //             <GridToolbarDensitySelector />
+                        //             <GridToolbarExport />
+                        //         </GridToolbarContainer>
+                        //     );
+                        // },
+                        pagination: () => {
+                            return <Pagination count={count} itemsText="Tilausta" />;
                         },
                     }}
                     // checkboxSelection
