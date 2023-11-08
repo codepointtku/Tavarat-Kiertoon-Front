@@ -1,4 +1,4 @@
-import { useLoaderData, useParams, useRouteLoaderData, Link, useLocation } from 'react-router-dom';
+import { useLoaderData, useParams, useRouteLoaderData, Link, useLocation, Outlet } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { type SimilarProductCarouselProps } from './SimilarProductsCarousel';
 
@@ -165,15 +165,29 @@ function ProductDetails() {
                                                     />
                                                 )}
                                                 {(auth.storage_group || auth.admin_group) && (
-                                                    <Button
-                                                        component={Link}
-                                                        to={`/varasto/tuotteet/${productId}/muokkaa`}
-                                                        size="large"
-                                                        color="primary"
-                                                        sx={{ marginY: 2 }}
-                                                    >
-                                                        Muokkaa tuotetta
-                                                    </Button>
+                                                    <>
+                                                        <Button
+                                                            component={Link}
+                                                            to={`/varasto/tuotteet/${productId}/muokkaa`}
+                                                            size="large"
+                                                            color="primary"
+                                                            sx={{ marginY: 2 }}
+                                                        >
+                                                            Muokkaa tuotetta
+                                                        </Button>
+                                                        <Button
+                                                            component={Link}
+                                                            to={`/varasto/tuotteet/${productId}/palauta`}
+                                                            replace
+                                                            size="large"
+                                                            color="primary"
+                                                            sx={{ marginY: 2 }}
+                                                        >
+                                                            Palauta tuotteita varastoon
+                                                        </Button>
+                                                        {/* Show return products to storage form */}
+                                                        <Outlet />
+                                                    </>
                                                 )}
                                             </Grid>
                                         </CardActions>
