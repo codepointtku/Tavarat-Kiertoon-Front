@@ -112,7 +112,7 @@ function ContactForm() {
                                 error={!!formStateErrors.order_id}
                                 helperText={
                                     formStateErrors.order_id?.message?.toString() ||
-                                    'Löydät tilauksesi numeron saamastasi vahvistus-sähköpostiviestistä. Yleisesti tilauksiin liittyvissä asioissa voit jättää tämän kentän tyhjäksi.'
+                                    'Löydät tilauksesi numeron saamastasi vahvistus-sähköpostiviestistä. Tilauksiin yleisesti liittyvissä asioissa voit jättää tämän kentän tyhjäksi.'
                                 }
                                 inputProps={{ required: false }}
                                 fullWidth
