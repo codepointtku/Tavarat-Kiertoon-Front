@@ -154,7 +154,7 @@ const contactAction = async ({ request }) => {
         email: formData.get('email'),
         subject: formData.get('subject'),
         message: formData.get('message'),
-        order_id: formData.get('order_id') === '' ? null : formData.get('order_id'),
+        order_id: formData.get('order_id') === '' || isNaN(formData.get('order_id')) ? null : formData.get('order_id'),
     };
 
     const response = await contactFormsApi.contactFormsCreate(newContactForm);
