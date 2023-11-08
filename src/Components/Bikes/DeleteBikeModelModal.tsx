@@ -1,7 +1,7 @@
 import { Box, Button, Modal } from '@mui/material';
 import { Form } from 'react-router-dom';
 
-// interface for "Delete Bike" Modal
+// interface for "Delete Bike Model" Modal
 interface DeleteBikeModelModalInterface {
     renderModal: boolean;
     setRenderModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,7 +18,7 @@ interface DeleteBikeModelModalInterface {
  */
 function DeleteBikeModelModal({ renderModal, setRenderModal, modelId }: DeleteBikeModelModalInterface) {
     return (
-        <Modal open={renderModal} aria-labelledby="Delete Bike Model Succesfull">
+        <Modal open={renderModal} aria-labelledby="Delete Bike Model Successful">
             <Box
                 sx={{
                     position: 'absolute',

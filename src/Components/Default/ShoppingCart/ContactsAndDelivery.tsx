@@ -102,7 +102,8 @@ function ContactsAndDelivery() {
     const dateErrorObj = JSON.parse(sessionStorage.getItem('dateErrorObj') as string);
 
     const [fetchDate, setFetchDate] = useState(
-        Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
+        sessionStorage.getItem('__LSM__') !== null &&
+            Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
             ? parse(JSON.parse(String(sessionStorage.getItem('__LSM__'))).fetchDate, 'd.M.yyyy', new Date())
             : currentDate
     );
@@ -110,13 +111,15 @@ function ContactsAndDelivery() {
     const [showAddressList, setShowAddressList] = useState(false);
     const [collect, setCollect] = useState(false);
     const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
-        Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
+        sessionStorage.getItem('__LSM__') !== null &&
+            Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
             ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryRequired
             : 'true'
     );
 
     const [selectedAddress, setSelectedAddress] = useState(
-        Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
+        sessionStorage.getItem('__LSM__') !== null &&
+            Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
             ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryAddress
             : ''
     );
@@ -414,7 +417,7 @@ function ContactsAndDelivery() {
                                                 required: 'Noutoa ei voi valita tilauspäiväksi.',
                                                 validate: (dateString) => {
                                                     const date = parse(String(dateString), 'd.M.yyyy', new Date());
-                                                    return !disableDate(date);
+                                                    return disableDate(date);
                                                 },
                                                 pattern: {
                                                     value: /^([1-9]|0[1-9]|[12][0-9]|3[01])[-.]([1-9]|0[1-9]|1[012])[-.](19|20)\d\d$/,

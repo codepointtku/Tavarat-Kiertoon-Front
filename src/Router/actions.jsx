@@ -796,6 +796,31 @@ const bikeOrderAction = async (auth, setAuth, request) => {
 };
 
 /**
+ * edits order data
+ */
+const bikeOrderEditAction = async ({ request, params }) => {
+    const formData = await request.formData();
+
+    const submission = {
+        id: formData.get('rentalId'),
+        start_date: formData.get('startDate'),
+        end_date: formData.get('endDate'),
+        state: formData.get('state'),
+        delivery_address: formData.get('deliveryAddress'),
+        pickup: formData.get('pickup'),
+        contact_name: formData.get('contact'),
+        contact_phone_number: formData.get('contactPhoneNumber'),
+        extra_info: formData.get('extraInfo'),
+        user: formData.get('user'),
+        bike_stock: JSON.parse(formData.get('bikeStock'))
+    };
+
+    const response = await bikesApi.bikesRentalUpdate(params.id, submission);
+
+    return response
+};
+
+/**
  * modifyBikeAction
  *
  * @param {*} auth
@@ -913,6 +938,18 @@ const modifyBikePacketAction = async (request, params) => {
     await bikesApi.bikesPackagesUpdate(params.id, submission);
     await updateBikesStockPacketOnlyFlag();
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+};
+
+/**
+ * Delete a single bikeOrder
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} params
+ * @returns
+ */
+const deleteBikeOrderAction = async (auth, setAuth, params) => {
+    const response = await bikesApi.bikesRentalDestroy(params.id);
+    return redirect('/pyorat/pyoravarasto/pyoratilaukset');
 };
 
 /**
@@ -1224,6 +1261,7 @@ const searchWatchCreateAction = async ({ request }) => {
 };
 
 export {
+    deleteBikeOrderAction,
     userSignupAction,
     frontPageActions,
     contactAction,
@@ -1244,6 +1282,7 @@ export {
     itemUpdateAction,
     cartViewAction,
     bikeOrderAction,
+    bikeOrderEditAction,
     confirmationAction,
     resetEmailAction,
     resetPasswordAction,
