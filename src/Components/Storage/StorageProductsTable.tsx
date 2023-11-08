@@ -59,7 +59,6 @@ function StorageProductsTable() {
     const { register, handleSubmit } = useForm({
         defaultValues: { searchString: searchParams.get('viivakoodi') },
     });
-
     const handleBarcodeSearch = (formData: Search) => {
         setSearchParams((prevParams) => {
             return createSearchParams({
@@ -111,7 +110,8 @@ function StorageProductsTable() {
                                     <SearchIcon></SearchIcon>
                                 </TableSortLabel>
                             </StyledTableCell>
-                            <StyledTableCell align="right">Määrä</StyledTableCell>
+                            {/* // TODO change description after filtering added? */}
+                            <StyledTableCell align="right">Määrä tilattavissa / Järjestelmässä</StyledTableCell>
                             <StyledTableCell align="right">Varasto</StyledTableCell>
                             {/* TODO: add storage filter option */}
                             <StyledTableCell align="left">Hylly/Paikka</StyledTableCell>
@@ -156,7 +156,7 @@ function StorageProductsTable() {
                                                 to={
                                                     isOpen === index
                                                         ? `/varasto/tuotteet/`
-                                                        : `/varasto/tuotteet/${product.id}/palauta`
+                                                        : `/varasto/tuotteet/${product.id}/toiminnot`
                                                 }
                                                 replace
                                                 onClick={() => {

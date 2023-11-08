@@ -217,6 +217,7 @@ import {
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
 import ProductsReturn from '../Components/Storage/ProductsReturn';
+import ProductsReturnForm from '../Components/Storage/ProductsReturnForm';
 
 createStore({});
 
@@ -526,7 +527,7 @@ function Routes() {
                                     loader: storageProductsLoader,
                                     children: [
                                         {
-                                            path: ':id/palauta',
+                                            path: ':id/toiminnot',
                                             element: <ProductsReturn />,
                                             errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
                                             loader: productItemsReturnLoader,
@@ -544,6 +545,15 @@ function Routes() {
                                     path: 'tuotteet/:id',
                                     element: <ProductDetails />,
                                     loader: productDetailsLoader,
+                                    children: [
+                                        {
+                                            path: 'palauta',
+                                            element: <ProductsReturnForm />,
+                                            errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
+                                            loader: productItemsReturnLoader,
+                                            action: returnProductsAction,
+                                        },
+                                    ],
                                 },
                                 {
                                     path: 'tuotteet/:id/muokkaa',
