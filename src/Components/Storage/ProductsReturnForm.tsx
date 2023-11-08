@@ -7,7 +7,7 @@ import { returnProductsAction } from '../../Router/actions';
 import AlertBox from '../AlertBox';
 
 function ProductsReturnForm() {
-    const { amount } = useLoaderData() as Awaited<ReturnType<typeof productItemsReturnLoader>>;
+    const { amountData } = useLoaderData() as Awaited<ReturnType<typeof productItemsReturnLoader>>;
     const responseStatus = useActionData() as Awaited<ReturnType<typeof returnProductsAction>>;
     const navigation = useNavigation();
     //  // custom hook for accessing the context value and getting nice typings, recommended by react-router-dom docs:
@@ -43,19 +43,19 @@ function ProductsReturnForm() {
 
     return (
         <>
-            {responseStatus?.type === 'returnProduct' && !responseStatus?.status && (
+            {/* {responseStatus?.type === 'returnProduct' && !responseStatus?.status && (
                 <AlertBox text="Palautus epäonnistui" status="error" timer={5000} />
             )}
             {responseStatus?.type === 'returnProduct' && responseStatus?.status && (
                 <AlertBox text="Palautus onnistui" status="success" timer={2000} />
-            )}
-            <Typography variant="subtitle1">Palautettavissa: {amount.amount || '0'} kpl</Typography>
+            )} */}
+            <Typography variant="subtitle1">Palautettavissa: {amountData[0].amount || '0'} kpl</Typography>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     {...register('amount', {
                         required: { value: true, message: 'Syötä määrä' },
                         min: { value: 1, message: 'Vähintään 1 kpl' },
-                        max: { value: amount.amount, message: `Palautettavissa ${amount.amount} kpl` },
+                        max: { value: amountData[0].amount, message: `Palautettavissa ${amountData[0].amount} kpl` },
                         disabled: navigation.state === 'loading' || navigation.state === 'submitting',
                     })}
                     type="number"

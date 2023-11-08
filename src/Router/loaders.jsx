@@ -139,9 +139,9 @@ const productAddLoader = async () => {
  */
 const productItemsReturnLoader = async ({ params }) => {
     const { data: product } = await productsApi.productsRetrieve(params.id);
-    const { data: amount } = await productsApi.productsReturnList(params.id);
+    const { data: amountData } = await productsApi.productsReturnList(params.id);
     // const { data: amount } = await productsApi.productsReturnRetrieve(params.id); // change to this when backend is fixed
-    return { product, amount };
+    return { product, amountData };
 };
 
 /**
