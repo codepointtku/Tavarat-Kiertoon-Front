@@ -159,6 +159,7 @@ import {
     productEditLoader,
     addressEditLoader,
     colorsLoader,
+    adminProductsLoader,
 } from './loaders';
 
 import {
@@ -635,7 +636,7 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <ProductsGrid />,
-                                            loader: productListLoader,
+                                            loader: adminProductsLoader,
                                         },
                                         {
                                             path: 'varit',

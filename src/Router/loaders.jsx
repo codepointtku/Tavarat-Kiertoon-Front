@@ -67,8 +67,8 @@ const shoppingCartLoader = async () => {
 };
 
 /**
- * Get all products / get products based on category id || search string
- * Note: storage has it's own productListLoader with additional data (storageProductsLoader)
+ * Get all available (and in cart) products / get products based on category id || search string
+ * Note: storage have their own productlist loaders with additional data (storageProductsLoader, adminProductsLoader)
  */
 const productListLoader = async ({ request }) => {
     const url = new URL(request.url);
@@ -80,6 +80,25 @@ const productListLoader = async ({ request }) => {
         url.searchParams.get('sivu'),
         url.searchParams.get('sivukoko') || 25,
         url.searchParams.get('haku')
+    );
+    return data;
+};
+
+/**
+ * Get all products not just the ones in storage/available
+ */
+const adminProductsLoader = async ({ request }) => {
+    const url = new URL(request.url);
+
+    const { data } = await storagesApi.storagesProductsList(
+        // barcode should support partial search
+        url.searchParams.get('viivakoodi'),
+        url.searchParams.getAll('kategoria'),
+        null,
+        url.searchParams.get('sivu'),
+        url.searchParams.get('sivukoko') || 25,
+        url.searchParams.getAll('varasto'), // alternatively: varasto could be a param, storages/id/products
+        { params: { all: true } }
     );
     return data;
 };
@@ -162,7 +181,8 @@ const storageProductsLoader = async ({ request }) => {
             url.searchParams.get('kategoria'),
             null,
             url.searchParams.get('sivu'),
-            url.searchParams.get('sivukoko')
+            undefined,
+            { params: { all: true } }
             // url.searchParams.get('varasto') // alternatively: varasto could be a param, storages/id/products
         ),
     ]);
@@ -568,6 +588,7 @@ export {
     shoppingProcessLoader,
     adminLoader,
     adminInboxLoader,
+    adminProductsLoader,
     emailRecipientsLoader,
     modifyBikePacketLoader,
     bikeNewModelLoader,
