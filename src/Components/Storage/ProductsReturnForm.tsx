@@ -43,19 +43,19 @@ function ProductsReturnForm() {
 
     return (
         <>
-            {/* {responseStatus?.type === 'returnProduct' && !responseStatus?.status && (
+            {responseStatus?.type === 'returnProduct' && responseStatus?.status === false && (
                 <AlertBox text="Palautus epäonnistui" status="error" timer={5000} />
             )}
-            {responseStatus?.type === 'returnProduct' && responseStatus?.status && (
+            {responseStatus?.type === 'returnProduct' && responseStatus?.status === true && (
                 <AlertBox text="Palautus onnistui" status="success" timer={2000} />
-            )} */}
-            <Typography variant="subtitle1">Palautettavissa: {amountData[0].amount || '0'} kpl</Typography>
+            )}
+            <Typography variant="subtitle1">Palautettavissa: {amountData[0]?.amount || '0'} kpl</Typography>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     {...register('amount', {
                         required: { value: true, message: 'Syötä määrä' },
                         min: { value: 1, message: 'Vähintään 1 kpl' },
-                        max: { value: amountData[0].amount, message: `Palautettavissa ${amountData[0].amount} kpl` },
+                        max: { value: amountData[0]?.amount, message: `Palautettavissa ${amountData[0]?.amount} kpl` },
                         disabled: navigation.state === 'loading' || navigation.state === 'submitting',
                     })}
                     type="number"
