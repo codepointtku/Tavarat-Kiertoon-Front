@@ -311,6 +311,27 @@ const bikesListLoader = async (auth, setAuth) => {
     return { loaderData, colors };
 };
 
+// bike rental list
+const bikeRentalLoader = async (request, auth, setAuth) => {
+    const url = new URL(request.url);
+
+    const { data } = await bikesApi.bikesRentalList(
+        url.searchParams.get('jarjesta') || null,
+        url.searchParams.get('sivu') || 1,
+        url.searchParams.get('sivukoko') || 25,
+        url.searchParams.getAll('suodata') || null 
+    );
+    return data;
+};
+
+/**
+ * Get one order
+ */
+const bikeRentalViewLoader = async ({ params }) => {
+    const response = await bikesApi.bikesRentalRetrieve(params.id);
+    return response.data;
+};
+
 /**
  * Get all bikepackets and models
  *
@@ -590,6 +611,8 @@ export {
     emailRecipientsLoader,
     modifyBikePacketLoader,
     bikeNewModelLoader,
+    bikeRentalLoader,
+    bikeRentalViewLoader,
     createBikePacketLoader,
     adminBulletinsLoader,
     adminBulletinLoader,

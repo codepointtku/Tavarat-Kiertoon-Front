@@ -118,12 +118,15 @@ import Bikes from '../Components/Bikes/Bikes';
 import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
+import BikeRentalView from '../Components/Bikes/BikeRentalView';
 import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 import BikeModels from '../Components/Bikes/BikeModels';
 import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
 
 import {
+    bikeRentalLoader,
+    bikeRentalViewLoader,
     bikesPacketLoader,
     orderEditLoader,
     ordersListLoader,
@@ -166,6 +169,7 @@ import {
 } from './loaders';
 
 import {
+    deleteBikeOrderAction,
     userSignupAction,
     contactAction,
     orderEditAction,
@@ -184,6 +188,7 @@ import {
     cartViewAction,
     createBulletinAction,
     bikeOrderAction,
+    bikeOrderEditAction,
     confirmationAction,
     resetEmailAction,
     resetPasswordAction,
@@ -801,14 +806,33 @@ function Routes() {
                                         },
                                         {
                                             path: 'pyoratilaukset',
-                                            element: <BikeRentals />,
+                                            element: <Outlet />,
+                                            children: [
+                                                {
+                                                    index: true,
+                                                    loader: async ({request}) => bikeRentalLoader(request, auth, setAuth),
+                                                    element: <BikeRentals />,
+                                                },
+                                                {
+                                                    path: ':id',
+                                                    element: <BikeRentalView />,
+                                                    loader: bikeRentalViewLoader,
+                                                    action: bikeOrderEditAction,
+                                                    children: [
+                                                        {
+                                                            path: 'poista',
+                                                            action: async ({ params }) =>
+                                                                deleteBikeOrderAction(auth, setAuth, params),
+                                                        },
+                                                    ],
+                                                },
+                                            ]
                                         },
                                         {
                                             path: 'pyorapaketit',
                                             loader: async () => bikesPacketLoader(auth, setAuth),
                                             element: <BikePackets />,
                                         },
-
                                         {
                                             path: 'muokkaapaketti',
                                             element: <Outlet />,
