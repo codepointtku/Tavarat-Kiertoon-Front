@@ -71,14 +71,9 @@ function BaseBoundary() {
                 <Button onClick={handleGoBack} sx={{ margin: '1rem 1rem 0 0' }}>
                     Takaisin
                 </Button>
-                <Button component={Link} to="/" sx={{ margin: '1rem 0 0 0' }}>
+                {/* // reloadDocument uses browsers navigation, this is to clear some rare error states */}
+                <Button component={Link} to="/" reloadDocument sx={{ margin: '1rem 0 0 0' }}>
                     Tavarat Kiertoon etusivulle
-                </Button>
-                <Typography variant="body2" sx={{ margin: '1rem 0 0 0' }}>
-                    Kokeile päivittää sivu, jos virhe toistuu.
-                </Typography>
-                <Button onClick={() => window.location.reload()} sx={{ margin: '1rem 0 0 0' }}>
-                    Päivitä
                 </Button>
             </Alert>
         </Box>
