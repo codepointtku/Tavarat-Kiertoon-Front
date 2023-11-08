@@ -196,7 +196,9 @@ const storageProductsLoader = async ({ request }) => {
             url.searchParams.get('kategoria'),
             null,
             url.searchParams.get('sivu'),
-            url.searchParams.get('sivukoko')
+            url.searchParams.get('sivukoko'),
+            undefined,
+            { params: { all: true } }
             // url.searchParams.get('varasto') // alternatively: varasto could be a param, storages/id/products
         ),
     ]);
