@@ -13,8 +13,12 @@ function Pagination({ count, itemsText }: { count?: number; itemsText?: string }
         // return back to top of page
         // window.scrollTo(0, 0);
         setSearchParams((prevParams) => {
+            // console.log('prevParams', prevParams.getAll('kategoria'));
             return createSearchParams({
                 ...Object.fromEntries(prevParams.entries()),
+                // get colors and categories separately, because prevParams.entries() returns only the last value(?) if multiple params with same key
+                varit: prevParams.getAll('varit'),
+                kategoria: prevParams.getAll('kategoria'),
                 sivu: (newPage + 1).toString(),
                 sivukoko: rowsPerPage.toString(),
             });
@@ -28,6 +32,9 @@ function Pagination({ count, itemsText }: { count?: number; itemsText?: string }
         setSearchParams((prevParams) => {
             return createSearchParams({
                 ...Object.fromEntries(prevParams.entries()),
+                // get colors and categories separately, because prevParams.entries() returns only the last value(?) if multiple params with same key
+                varit: prevParams.getAll('varit'),
+                kategoria: prevParams.getAll('kategoria'),
                 sivu: '1',
                 sivukoko: newRowsPerPage.toString(),
             });
@@ -58,7 +65,9 @@ function Pagination({ count, itemsText }: { count?: number; itemsText?: string }
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 rowsPerPageOptions={[10, 25, 50, 100]}
                 labelRowsPerPage={itemsText ? `${itemsText} per sivu` : 'per sivu'}
-                labelDisplayedRows={({ from, to, count }) => `${from}-${to} / ${count}`}
+                labelDisplayedRows={({ from, to, count }: { from: number; to: number; count: number }) =>
+                    `${from}-${to} / ${count}`
+                }
             />
         </Box>
     );
