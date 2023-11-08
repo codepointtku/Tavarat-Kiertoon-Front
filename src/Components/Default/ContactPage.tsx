@@ -110,9 +110,12 @@ function ContactForm() {
                                     pattern: { value: /^[0-9]+$/, message: 'Sisällön tulee koostua vain numeroista' },
                                 })}
                                 error={!!formStateErrors.order_id}
-                                helperText={formStateErrors.order_id?.message?.toString() || ' '}
-                                required
+                                helperText={
+                                    formStateErrors.order_id?.message?.toString() ||
+                                    'Löydät tilauksesi numeron saamastasi vahvistus-sähköpostiviestistä. Yleisesti tilauksiin liittyvissä asioissa voit jättää tämän kentän tyhjäksi.'
+                                }
                                 inputProps={{ required: false }}
+                                fullWidth
                             />
                         )}
                     </Grid>
