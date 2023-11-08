@@ -295,6 +295,31 @@ function OrdersGrid() {
                     // showColumnVerticalBorder
                     // showCellVerticalBorder
                     loading={navigation.state === 'loading'}
+                    // //The DataGrid can only filter the rows according to one criterion at the time. (pro plan supports more)
+                    // filterMode="server"
+                    // // base functions for filtering and sorting:
+                    // onFilterModelChange={(model) => {
+                    //     // execute if no other event has been executed in the last 500ms
+                    //     const timeout = setTimeout(() => {}, 2000);
+                    //     clearTimeout(timeout);
+
+                    //     setSearchParams((prevParams) => {
+                    //         return createSearchParams({
+                    //             ...Object.fromEntries(prevParams.entries()),
+                    //             haku: JSON.stringify(model.quickFilterValues),
+                    //             suodatin: JSON.stringify(model.items),
+                    //         });
+                    //     });
+                    // }}
+                    // sortingMode="server"
+                    // onSortModelChange={(model) => {
+                    //     setSearchParams((prevParams) => {
+                    //         return createSearchParams({
+                    //             ...Object.fromEntries(prevParams.entries()),
+                    //             jarjestys: JSON.stringify(model),
+                    //         });
+                    //     });
+                    // }}
                 />
             </div>
         );
