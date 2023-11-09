@@ -317,10 +317,17 @@ test.describe('bike-packet-add-new', () => {
     });
 });
 // bike orders tests
-test.describe('bike-orders', () => {
+test.describe('bike-rental-list', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/pyorat/pyoravarasto/pyoratilaukset');
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/pyoratilaukset')).not.toBeVisible();
+    });
+});
+
+test.describe('bike-rental-detail', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/pyorat/pyoravarasto/pyoratilaukset/1');
+        await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/pyoratilaukset/1')).not.toBeVisible();
     });
 });
 
