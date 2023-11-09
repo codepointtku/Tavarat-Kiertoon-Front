@@ -4,7 +4,7 @@ import SummaryOrders from './SummaryOrders';
 
 function Summary() {
     return (
-        <Stack direction="row">
+        <Stack direction="row" flex={1}>
             <SummaryOrders />
         </Stack>
     );

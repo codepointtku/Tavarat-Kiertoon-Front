@@ -1,27 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
-import { Stack, Typography } from '@mui/material';
-
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Filler,
-    Legend,
-} from 'chart.js';
-
-import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import type { ChartData, ChartOptions } from 'chart.js';
 
 import type { gigaLoader } from '../../../../Router/loaders';
+import { Box } from '@mui/material';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-async function getDayz() {
+interface BarProps {
+    options: ChartOptions<'bar'>;
+    // data: ChartData<'bar'>;
+}
+
+async function getDays() {
     const now = new Date();
     const totalDaysInCurrentMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
 
@@ -33,88 +27,99 @@ async function getDayz() {
     return splitDays;
 }
 
-function LineChartti() {
+function OrderAmountsChart() {
     const { ordersList } = useLoaderData() as Awaited<ReturnType<typeof gigaLoader>>;
-
-    // console.log(ordersList.results);
 
     const [daysInCurrentMonth, setDaysInCurrentMonth] = useState<string[]>([]);
 
     useEffect(() => {
-        async function fetchDayz() {
-            const dayz = await getDayz();
-            setDaysInCurrentMonth(dayz);
+        async function fetchDays() {
+            const days = await getDays();
+            setDaysInCurrentMonth(days);
         }
 
-        fetchDayz();
+        fetchDays();
     }, []);
 
     const currentDate = new Date();
+    // Using toISOString() instead of .getMonth() & getDate() because getMonth and getDate() returns a single digit if month =< 10.
+    // ISO format returns double digits (for example february is 02) which matches the dateformat @ backend/db.
     const currentMonth = currentDate.toISOString().slice(5, 7);
     const currentDay = currentDate.toISOString().slice(8, 10);
-    console.log(currentMonth);
-    console.log(currentDay);
 
-    // const creationDatetMillisekunteina = ordersList.results?.map((order) => new Date(order.creation_date).getTime());
     const ordersCreationDates = ordersList.results?.map((order) =>
-        new Date(order.creation_date).toISOString().slice(0, 10)
+        new Date(order.creation_date!).toISOString().slice(0, 10)
     );
 
-    console.log(ordersCreationDates);
-
-    // const creationDatet = ordersList.results?.map((order) => order.creation_date.slice(0, 10));
-    // console.log(creationDatet);
-
-    const currentMonthOrders = ordersCreationDates?.filter((order) => order.slice(5, 7) === currentMonth);
-    // console.log('curry orders:', currentMonthOrders);
-
-    // const curryOrdersAsTime = currentMonthOrders?.map((orderDate) => new Date(orderDate).getTime());
-    // console.log('curryOrdersAsTime:', curryOrdersAsTime);
+    const currentMonthOrders = ordersCreationDates?.filter((orderDate) => orderDate.slice(5, 7) === currentMonth);
 
     const orderAmounts = new Array(Number(currentDay)).fill(0);
     currentMonthOrders?.forEach((order) => {
         orderAmounts[Number(order.slice(8, 10)) - 1] += 1;
     });
-    console.log(orderAmounts);
 
     if (daysInCurrentMonth.length === 0) {
         return null;
     }
 
+    const options: ChartOptions<'bar'> = {
+        responsive: true,
+        // scales: {
+        //     x: {
+        //         grid: {
+        //             display: true,
+        //         },
+        //         beginAtZero: false,
+        //         ticks: {
+        //             color: '#000',
+        //         },
+        //     },
+        //     y: {
+        //         grid: {
+        //             display: true,
+        //         },
+        //         beginAtZero: true,
+        //         ticks: {
+        //             color: '#000',
+        //         },
+        //     },
+        // },
+        plugins: {
+            legend: {
+                position: 'top' as const,
+            },
+            title: {
+                display: false,
+                text: 'Kuluvan kuukauden tilausmäärät',
+            },
+        },
+    };
+
     return (
-        <Line
-            data={{
-                labels: daysInCurrentMonth,
-                datasets: [
-                    {
-                        // fill: true,
-                        label: 'Kuluvan kuukauden tilausmäärät',
-                        data: orderAmounts,
-                        // data: curryOrdersAsTime,
-                        borderColor: 'rgb(53, 162, 235)',
-                        backgroundColor: 'rgba(53, 162, 235, 0.5)',
-                    },
-                    {
-                        // fill: true,
-                        label: 'Jeesus',
-                        data: [1, 2, 43, 45, 6, 7, 54, 3, 3],
-                        // data: curryOrdersAsTime,
-                        borderColor: 'rgb(0, 62, 135)',
-                        backgroundColor: 'rgba(53, 162, 235, 0.5)',
-                    },
-                ],
-            }}
-        />
+        <Box sx={{ width: '80vw' }}>
+            <Bar
+                fallbackContent={<div>vituix man</div>}
+                options={options}
+                data={{
+                    labels: daysInCurrentMonth,
+                    datasets: [
+                        {
+                            label: 'Kuluvan kuukauden tilausmäärät',
+                            data: orderAmounts,
+                            // borderColor: 'rgb(53, 162, 235)',
+                            borderColor: '#000',
+                            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                            barThickness: 'flex',
+                        },
+                    ],
+                }}
+            />
+        </Box>
     );
 }
 
 function SummaryOrders() {
-    return (
-        <Stack alignItems="center" flex={1}>
-            {/* <Typography variant="subtitle2">Kuluvan kuukauden tilausmäärät</Typography> */}
-            <LineChartti />
-        </Stack>
-    );
+    return <OrderAmountsChart />;
 }
 
 export default SummaryOrders;

@@ -6,7 +6,7 @@ import Summary from './Summary';
 function Overview() {
     return (
         <Stack id="overview-stack" flex={1}>
-            <News />
+            {/* <News /> */}
             <Summary />
         </Stack>
     );

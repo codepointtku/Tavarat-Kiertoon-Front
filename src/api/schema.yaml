@@ -4939,7 +4939,6 @@ components:
         creation_date:
           type: string
           format: date-time
-          readOnly: true
         user:
           type: integer
           nullable: true
@@ -4948,7 +4947,6 @@ components:
           items:
             type: integer
       required:
-      - creation_date
       - delivery_address
       - id
       - product_items
@@ -4991,9 +4989,7 @@ components:
         creation_date:
           type: string
           format: date-time
-          readOnly: true
       required:
-      - creation_date
       - delivery_address
       - delivery_date
       - id
@@ -5043,9 +5039,7 @@ components:
         creation_date:
           type: string
           format: date-time
-          readOnly: true
       required:
-      - creation_date
       - delivery_address
       - id
       - recipient
@@ -5078,7 +5072,6 @@ components:
         creation_date:
           type: string
           format: date-time
-          readOnly: true
         user:
           type: integer
           nullable: true
@@ -5087,7 +5080,6 @@ components:
           items:
             type: integer
       required:
-      - creation_date
       - delivery_address
       - delivery_date
       - id
@@ -5135,13 +5127,11 @@ components:
         creation_date:
           type: string
           format: date-time
-          readOnly: true
         product_items:
           type: array
           items:
             type: integer
       required:
-      - creation_date
       - delivery_address
       - delivery_date
       - id
