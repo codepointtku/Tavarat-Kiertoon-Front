@@ -61,7 +61,7 @@ function AddressEdit() {
         <>
             {responseStatus?.type === 'addressmodified' && responseStatus?.status && (
                 <AlertBox
-                    text="Osoitteen tietoja muokattu onnistuneesti. Uudelleenohjataan takaisin tilisivulle..."
+                    text="Osoitteen tietoja muokattu onnistuneesti"
                     status="success"
                     timer={3000}
                     redirectUrl="/tili"

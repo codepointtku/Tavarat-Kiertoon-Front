@@ -45,12 +45,7 @@ function BulletinPostEdit() {
             )}
 
             {responseStatus?.type === 'bulletinedit' && responseStatus?.status && (
-                <AlertBox
-                    text="Tiedote muokattu. Uudelleenohjataan..."
-                    status="success"
-                    timer={3000}
-                    redirectUrl="/admin/tiedotteet"
-                />
+                <AlertBox text="Tiedote muokattu" status="success" timer={3000} redirectUrl="/admin/tiedotteet" />
             )}
 
             <Container maxWidth="lg">
