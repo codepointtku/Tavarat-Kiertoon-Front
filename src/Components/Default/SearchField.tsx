@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { Form, useSearchParams, useRouteLoaderData, createSearchParams } from 'react-router-dom';
 
-import { Box, Button, IconButton, InputBase } from '@mui/material';
+import { Box, Button, IconButton, InputBase, Typography } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 import type { rootLoader } from '../../Router/loaders';
 
@@ -197,7 +197,11 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
                 <SearchIcon sx={{ fontSize: 30, color: 'primary.main', margin: '0 1rem 0 1rem' }} />
                 <InputBase
                     id="search-text-input-field"
-                    {...register('search')}
+                    {...(register('search'),
+                    {
+                        minLength: { value: 1 },
+                        maxLength: { value: 40 },
+                    })}
                     onFocus={() => !isDirty && treeSelectedState.setCategoryTreeSelected(false)}
                     autoFocus
                     placeholder="Etsi tuotteita…"

@@ -132,15 +132,10 @@ function UserAddressEdit() {
                                 label="Postinumero"
                                 placeholder="Postinumero"
                                 {...register('zip_code', {
-                                    required: {
-                                        value: true,
-                                        message: 'Postinumero ei voi olla tyhjä',
-                                    },
-                                    maxLength: { value: 5, message: 'Postinumero on liian pitkä' },
-                                    minLength: {
-                                        value: 5,
-                                        message: 'Osoitteen postinumero on vaadittu',
-                                    },
+                                    required: { value: true, message: 'Postinumero on pakollinen' },
+                                    minLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
+                                    maxLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
+                                    pattern: { value: /^[0-9]+$/, message: 'Postinumero koostuu vain numeroista' },
                                 })}
                                 inputProps={{ required: false }}
                                 required
