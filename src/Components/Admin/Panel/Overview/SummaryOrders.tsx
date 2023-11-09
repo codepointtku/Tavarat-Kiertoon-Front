@@ -38,55 +38,68 @@ function LineChartti() {
 
     // console.log(ordersList.results);
 
-    const [jee, setJee] = useState<string[]>([]);
+    const [daysInCurrentMonth, setDaysInCurrentMonth] = useState<string[]>([]);
 
     useEffect(() => {
         async function fetchDayz() {
             const dayz = await getDayz();
-            setJee(dayz);
+            setDaysInCurrentMonth(dayz);
         }
 
         fetchDayz();
     }, []);
 
-    // const currentMonth = (new Date().getMonth() + 1).toString();
-    const currentMonth = new Date().toISOString().slice(0, 7);
-    // console.log(currentMonth);
+    const currentDate = new Date();
+    const currentMonth = currentDate.toISOString().slice(5, 7);
+    const currentDay = currentDate.toISOString().slice(8, 10);
+    console.log(currentMonth);
+    console.log(currentDay);
 
     // const creationDatetMillisekunteina = ordersList.results?.map((order) => new Date(order.creation_date).getTime());
     const ordersCreationDates = ordersList.results?.map((order) =>
         new Date(order.creation_date).toISOString().slice(0, 10)
     );
 
-    // console.log(ordersCreationDates);
+    console.log(ordersCreationDates);
 
     // const creationDatet = ordersList.results?.map((order) => order.creation_date.slice(0, 10));
     // console.log(creationDatet);
 
-    const currentMonthOrders = ordersCreationDates?.filter((order) => order.includes(currentMonth));
+    const currentMonthOrders = ordersCreationDates?.filter((order) => order.slice(5, 7) === currentMonth);
     // console.log('curry orders:', currentMonthOrders);
 
-    const curryOrdersAsTime = currentMonthOrders?.map((orderDate) => new Date(orderDate).getTime());
+    // const curryOrdersAsTime = currentMonthOrders?.map((orderDate) => new Date(orderDate).getTime());
     // console.log('curryOrdersAsTime:', curryOrdersAsTime);
 
-    if (jee.length === 0) {
+    const orderAmounts = new Array(Number(currentDay)).fill(0);
+    currentMonthOrders?.forEach((order) => {
+        orderAmounts[Number(order.slice(8, 10)) - 1] += 1;
+    });
+    console.log(orderAmounts);
+
+    if (daysInCurrentMonth.length === 0) {
         return null;
     }
-
-    // console.log('jee ennen returnia', jee);
-    // console.log('data ennen returnia', creationDatetMillisekunteina);
 
     return (
         <Line
             data={{
-                labels: jee,
+                labels: daysInCurrentMonth,
                 datasets: [
                     {
-                        fill: true,
+                        // fill: true,
                         label: 'Kuluvan kuukauden tilausmäärät',
-                        // data: [2, 4, 54, 6, 7, 5, 3, 2],
-                        data: curryOrdersAsTime,
+                        data: orderAmounts,
+                        // data: curryOrdersAsTime,
                         borderColor: 'rgb(53, 162, 235)',
+                        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                    },
+                    {
+                        // fill: true,
+                        label: 'Jeesus',
+                        data: [1, 2, 43, 45, 6, 7, 54, 3, 3],
+                        // data: curryOrdersAsTime,
+                        borderColor: 'rgb(0, 62, 135)',
                         backgroundColor: 'rgba(53, 162, 235, 0.5)',
                     },
                 ],
