@@ -312,6 +312,15 @@ const categoriesManageLoader = async () => {
     return { categories, categoryTree };
 };
 
+const gigaLoader = async () => {
+    const [{ data: ordersList }, { data: usersLogs }] = await Promise.all([
+        ordersApi.ordersList(),
+        usersApi.usersLogList(),
+    ]);
+
+    return { ordersList, usersLogs };
+};
+
 /**
  * Get lists of bikes and packets for front page
  *
@@ -648,4 +657,5 @@ export {
     addressEditLoader,
     colorsLoader,
     categoriesManageLoader,
+    gigaLoader,
 };

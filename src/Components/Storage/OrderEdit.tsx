@@ -281,7 +281,7 @@ function OrderEdit() {
 
             {actionData?.type === 'orderupdate' && actionData?.status && (
                 <AlertBox
-                    text="Tilausta muokattu onnistuneesti"
+                    text="Tilausta muokattu onnistuneesti."
                     status="success"
                     timer={3000}
                     redirectUrl={`/admin/tilaukset/${orderData.id}`}

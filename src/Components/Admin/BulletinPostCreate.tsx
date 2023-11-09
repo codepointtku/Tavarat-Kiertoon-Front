@@ -46,12 +46,7 @@ function BulletinPostCreate() {
             )}
 
             {responseStatus?.type === 'bulletincreate' && responseStatus?.status && (
-                <AlertBox
-                    text="Tiedote lisätty onnistuneesti"
-                    status="success"
-                    timer={3000}
-                    redirectUrl="/admin/tiedotteet"
-                />
+                <AlertBox text="Tiedote lisätty." status="success" timer={3000} redirectUrl="/admin/tiedotteet" />
             )}
 
             <Container maxWidth="lg">

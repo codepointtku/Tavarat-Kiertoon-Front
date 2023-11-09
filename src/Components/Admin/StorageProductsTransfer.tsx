@@ -84,7 +84,7 @@ function StorageProductsTransfer() {
 
             {responseStatus?.type === 'productstransfer' && responseStatus?.status && (
                 <AlertBox
-                    text="Varaston tuotteet siirretty onnistuneesti"
+                    text="Varaston tuotteet siirretty onnistuneesti."
                     status="success"
                     timer={3000}
                     redirectUrl={`/admin/varastot/${storageInfo.id}`}

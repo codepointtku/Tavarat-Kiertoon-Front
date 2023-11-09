@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 import {
@@ -25,17 +25,16 @@ import VerticalAlignCenterIcon from '@mui/icons-material/VerticalAlignCenter';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 // import MarkChatReadIcon from '@mui/icons-material/MarkChatRead';
 import LogoutIcon from '@mui/icons-material/Logout';
-
 import People from '@mui/icons-material/People';
-// import Public from '@mui/icons-material/Public'; // a globe
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-// import PostAddIcon from '@mui/icons-material/PostAdd';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+// import PostAddIcon from '@mui/icons-material/PostAdd';
+// import Public from '@mui/icons-material/Public'; // a globe
 // import EditIcon from '@mui/icons-material/Edit'; // a pen
 // import NotesIcon from '@mui/icons-material/Notes'; // three vertical lines
 // import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch'; // a sheet with magnifying glass
-import WarehouseIcon from '@mui/icons-material/Warehouse';
 // import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd'; // three horizontal lines and a plus sign
+import WarehouseIcon from '@mui/icons-material/Warehouse';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import DomainIcon from '@mui/icons-material/Domain';
@@ -99,13 +98,15 @@ const NavStyles = styled(List)<{ component?: React.ElementType }>({
 
 // main
 function NavigationTree() {
+    const navigoiTonne = useNavigate();
+
     const [open, setOpen] = React.useState({
         ordersNavList: false,
         productsNavList: false,
         usersNavList: false,
         storagesNavList: false,
         bulletinsNavList: false,
-        messagingNavList: false,
+        messagingNavList: false, // // messages nowadays (read only)
     });
 
     // ux functions
@@ -145,6 +146,70 @@ function NavigationTree() {
         setAnchorEl(null);
     };
 
+    // sort of hard coded, (not very scalable, but a base) functionality for demoing titles as links:
+    const handleListTitleClick = (title: string) => {
+        // jos ei auki -> avaa vetolaatikko ja toimi linkkinä
+        // jos auki -> sulje vetolaatikko
+
+        // --> aiheuttaa ränkyttäessä routtaamista uudelleen&uudelleen määritettyyn sivuun
+        // --> aiheuttaa ehkä tahatonta siirtymistä määritettyyn sivuun
+        // --> listakomponentin tila palautuu defaulttiin
+
+        switch (title) {
+            case 'orders':
+                if (open.ordersNavList) {
+                    setOpen((open) => ({ ...open, ordersNavList: !open.ordersNavList }));
+                } else {
+                    // console.log('refreshing page...');
+                    setOpen((open) => ({ ...open, ordersNavList: !open.ordersNavList }));
+                    navigoiTonne('/admin/tilaukset');
+                }
+                break;
+            case 'products':
+                if (open.productsNavList) {
+                    setOpen((open) => ({ ...open, productsNavList: !open.productsNavList }));
+                } else {
+                    setOpen((open) => ({ ...open, productsNavList: !open.productsNavList }));
+                    navigoiTonne('/admin/tuotteet');
+                }
+                break;
+            case 'users':
+                if (open.usersNavList) {
+                    setOpen((open) => ({ ...open, usersNavList: !open.usersNavList }));
+                } else {
+                    setOpen((open) => ({ ...open, usersNavList: !open.usersNavList }));
+                    navigoiTonne('/admin/kayttajat');
+                }
+                break;
+            case 'storages':
+                if (open.storagesNavList) {
+                    setOpen((open) => ({ ...open, storagesNavList: !open.storagesNavList }));
+                } else {
+                    setOpen((open) => ({ ...open, storagesNavList: !open.storagesNavList }));
+                    navigoiTonne('/admin/varastot');
+                }
+                break;
+            case 'bulletins':
+                if (open.bulletinsNavList) {
+                    setOpen((open) => ({ ...open, bulletinsNavList: !open.bulletinsNavList }));
+                } else {
+                    setOpen((open) => ({ ...open, bulletinsNavList: !open.bulletinsNavList }));
+                    navigoiTonne('/admin/tiedotteet');
+                }
+                break;
+            case 'messaging':
+                if (open.messagingNavList) {
+                    setOpen((open) => ({ ...open, messagingNavList: !open.messagingNavList }));
+                } else {
+                    setOpen((open) => ({ ...open, messagingNavList: !open.messagingNavList }));
+                    navigoiTonne('/admin/viestit');
+                }
+                break;
+            default:
+                break;
+        }
+    };
+
     // navigation accordion list items (links):
 
     // tilaukset
@@ -157,7 +222,8 @@ function NavigationTree() {
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpen((open) => ({ ...open, ordersNavList: !open.ordersNavList }))}
+                // onClick={() => setOpen((open) => ({ ...open, ordersNavList: !open.ordersNavList }))}
+                onClick={() => handleListTitleClick('orders')}
                 sx={{
                     px: 3,
                     pt: 2.5,
@@ -218,7 +284,8 @@ function NavigationTree() {
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpen((open) => ({ ...open, productsNavList: !open.productsNavList }))}
+                // onClick={() => setOpen((open) => ({ ...open, productsNavList: !open.productsNavList }))}
+                onClick={() => handleListTitleClick('products')}
                 sx={{
                     px: 3,
                     pt: 2.5,
@@ -279,7 +346,8 @@ function NavigationTree() {
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpen((open) => ({ ...open, usersNavList: !open.usersNavList }))}
+                // onClick={() => setOpen((open) => ({ ...open, usersNavList: !open.usersNavList }))}
+                onClick={() => handleListTitleClick('users')}
                 sx={{
                     px: 3,
                     pt: 2.5,
@@ -340,7 +408,8 @@ function NavigationTree() {
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpen((open) => ({ ...open, storagesNavList: !open.storagesNavList }))}
+                // onClick={() => setOpen((open) => ({ ...open, storagesNavList: !open.storagesNavList }))}
+                onClick={() => handleListTitleClick('storages')}
                 sx={{
                     px: 3,
                     pt: 2.5,
@@ -401,7 +470,8 @@ function NavigationTree() {
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpen((open) => ({ ...open, bulletinsNavList: !open.bulletinsNavList }))}
+                // onClick={() => setOpen((open) => ({ ...open, bulletinsNavList: !open.bulletinsNavList }))}
+                onClick={() => handleListTitleClick('bulletins')}
                 sx={{
                     px: 3,
                     pt: 2.5,
@@ -462,7 +532,8 @@ function NavigationTree() {
         >
             <ListItemButton
                 alignItems="flex-start"
-                onClick={() => setOpen((open) => ({ ...open, messagingNavList: !open.messagingNavList }))}
+                // onClick={() => setOpen((open) => ({ ...open, messagingNavList: !open.messagingNavList }))}
+                onClick={() => handleListTitleClick('messaging')}
                 sx={{
                     px: 3,
                     pt: 2.5,
