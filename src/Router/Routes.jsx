@@ -384,7 +384,7 @@ function Routes() {
                                 {
                                     path: 'otayhteytta',
                                     element: <ContactPage />,
-                                    action: async ({ request }) => contactAction(auth, setAuth, request),
+                                    action: contactAction,
                                 },
                                 // this should probably be /tili child:
                                 {
