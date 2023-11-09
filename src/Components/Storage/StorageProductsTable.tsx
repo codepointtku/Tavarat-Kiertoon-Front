@@ -155,8 +155,10 @@ function StorageProductsTable() {
                                                 component={Link}
                                                 to={
                                                     isOpen === index
-                                                        ? `/varasto/tuotteet/`
-                                                        : `/varasto/tuotteet/${product.id}/toiminnot`
+                                                        ? `/varasto/tuotteet/?${searchParams.toString()}`
+                                                        : `/varasto/tuotteet/${
+                                                              product.id
+                                                          }/toiminnot?${searchParams.toString()}`
                                                 }
                                                 replace
                                                 onClick={() => {
