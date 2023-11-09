@@ -66,6 +66,7 @@ function useAxiosInterceptAuthAPICalls() {
     }, [auth, setAuth]);
 }
 
+// Refreshes the login token every 2 minutes
 function useRefreshInterval() {
     const { auth } = useContext(AuthContext);
 

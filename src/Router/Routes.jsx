@@ -164,6 +164,8 @@ import {
     adminBulletinsLoader,
     productEditLoader,
     addressEditLoader,
+    storageProductDetailsLoader,
+    productItemsReturnLoader,
     categoriesManageLoader,
     colorsLoader,
     gigaLoader,
@@ -213,12 +215,15 @@ import {
     userAddressCreateAction,
     userAddressEditAction,
     searchWatchCreateAction,
+    returnProductsAction,
     categoriesManageAction,
     colorsManageAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
+import ProductsReturn from '../Components/Storage/ProductsReturn';
+import ProductsReturnForm from '../Components/Storage/ProductsReturnForm';
 
 createStore({});
 
@@ -526,6 +531,15 @@ function Routes() {
                                     id: 'storageProducts',
                                     element: <StorageProducts />,
                                     loader: storageProductsLoader,
+                                    children: [
+                                        {
+                                            path: ':id/toiminnot',
+                                            element: <ProductsReturn />,
+                                            errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
+                                            loader: productItemsReturnLoader,
+                                            action: returnProductsAction,
+                                        },
+                                    ],
                                 },
                                 {
                                     path: 'tuotteet/luo',
@@ -537,6 +551,15 @@ function Routes() {
                                     path: 'tuotteet/:id',
                                     element: <ProductDetails />,
                                     loader: productDetailsLoader,
+                                    children: [
+                                        {
+                                            path: 'palauta',
+                                            element: <ProductsReturnForm />,
+                                            errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
+                                            loader: productItemsReturnLoader,
+                                            action: returnProductsAction,
+                                        },
+                                    ],
                                 },
                                 {
                                     path: 'tuotteet/:id/muokkaa',

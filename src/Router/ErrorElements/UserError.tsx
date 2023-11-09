@@ -30,7 +30,6 @@ function UserError() {
             <HeroText
                 title="Hmmm..."
                 subtitle="Käyttäjä-datan käsittelyssä tapahtui virhe"
-                subtext="Lisää tekstiä, palataan asiaan joskus ja jouluna."
                 subtext2="Voit kokeilla sivun uudelleenlataamista."
                 footer={<HeroFooter />}
             />

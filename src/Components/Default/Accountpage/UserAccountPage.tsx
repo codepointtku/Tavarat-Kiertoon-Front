@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
 import { Grid, Tabs, Tab, Container } from '@mui/material';
 
@@ -9,18 +9,20 @@ import ManageSearchIcon from '@mui/icons-material/ManageSearch'; // spying glass
 import ImageSearch from '@mui/icons-material/ImageSearch';
 
 function UserAccountPage() {
-    const url = window.location.href;
+    // fixattava
+    // const url = window.location.href;
+    let { pathname } = useLocation();
     const [value, setValue] = useState(initializeValue);
 
     function initializeValue() {
         switch (true) {
-            case url.endsWith('tili'):
+            case pathname.endsWith('tili'):
                 return 'userInfo';
-            case url.includes('tilaukset'):
+            case pathname.includes('tilaukset'):
                 return 'activeOrders';
-            case url.includes('tilaushistoria'):
+            case pathname.includes('tilaushistoria'):
                 return 'orderHistory';
-            case url.includes('hakuvahti'):
+            case pathname.includes('hakuvahti'):
                 return 'searchWatch';
             default:
                 return 'userInfo';

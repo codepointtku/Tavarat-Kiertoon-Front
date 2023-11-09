@@ -317,6 +317,32 @@ const editProductAction = async (auth, setAuth, request, params) => {
 };
 
 /*
+ * Returns products to storage
+ */
+const returnProductsAction = async ({ request, params }) => {
+    console.log('return of the product action');
+    const formData = await request.formData();
+    const formDataObj = Object.fromEntries(formData);
+    formData.get('amount');
+    console.log(formDataObj.amount, formDataObj.addId);
+    // todo add id
+    console.log(typeof formDataObj.amount, typeof formDataObj.addId);
+
+    const response = await productsApi.productsReturnCreate(
+        // parseInt(formData.get('addId')),
+        params.id,
+        {
+            amount: parseInt(formData.get('amount')),
+        }
+    );
+
+    if (response.status === 200) {
+        return { type: 'returnProduct', status: true };
+    }
+    return { type: 'returnProduct', status: false };
+};
+
+/*
  * Creates a new storage
  */
 const storageCreateAction = async ({ request }) => {
@@ -1288,6 +1314,7 @@ export {
     storageCreateAction,
     storageEditAction,
     addProductAction,
+    returnProductsAction,
     editProductAction,
     storageDeleteAction,
     productsTransferAction,
