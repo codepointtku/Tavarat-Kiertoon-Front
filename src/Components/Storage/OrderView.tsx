@@ -57,7 +57,7 @@ function OrderView({ isAdmin }: Props) {
     // Parse Date objects from backend data string
     const dateParse = (value: string) => {
         const date = new Date(value);
-        const dateString = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+        const dateString = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
         return dateString;
     };
 
