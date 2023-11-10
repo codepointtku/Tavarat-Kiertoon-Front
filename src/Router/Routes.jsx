@@ -118,12 +118,15 @@ import Bikes from '../Components/Bikes/Bikes';
 import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
+import BikeRentalView from '../Components/Bikes/BikeRentalView';
 import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 import BikeModels from '../Components/Bikes/BikeModels';
 import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
 
 import {
+    bikeRentalLoader,
+    bikeRentalViewLoader,
     bikesPacketLoader,
     orderEditLoader,
     ordersListLoader,
@@ -161,11 +164,15 @@ import {
     adminBulletinsLoader,
     productEditLoader,
     addressEditLoader,
+    storageProductDetailsLoader,
+    productItemsReturnLoader,
     categoriesManageLoader,
     colorsLoader,
+    gigaLoader,
 } from './loaders';
 
 import {
+    deleteBikeOrderAction,
     userSignupAction,
     contactAction,
     orderEditAction,
@@ -185,6 +192,7 @@ import {
     cartViewAction,
     createBulletinAction,
     bikeOrderAction,
+    bikeOrderEditAction,
     confirmationAction,
     resetEmailAction,
     resetPasswordAction,
@@ -208,12 +216,15 @@ import {
     userAddressCreateAction,
     userAddressEditAction,
     searchWatchCreateAction,
+    returnProductsAction,
     categoriesManageAction,
     colorsManageAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
+import ProductsReturn from '../Components/Storage/ProductsReturn';
+import ProductsReturnForm from '../Components/Storage/ProductsReturnForm';
 
 createStore({});
 
@@ -380,7 +391,7 @@ function Routes() {
                                 {
                                     path: 'otayhteytta',
                                     element: <ContactPage />,
-                                    action: async ({ request }) => contactAction(auth, setAuth, request),
+                                    action: contactAction,
                                 },
                                 // this should probably be /tili child:
                                 {
@@ -522,6 +533,15 @@ function Routes() {
                                     id: 'storageProducts',
                                     element: <StorageProducts />,
                                     loader: storageProductsLoader,
+                                    children: [
+                                        {
+                                            path: ':id/toiminnot',
+                                            element: <ProductsReturn />,
+                                            errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
+                                            loader: productItemsReturnLoader,
+                                            action: returnProductsAction,
+                                        },
+                                    ],
                                 },
                                 {
                                     path: 'tuotteet/luo',
@@ -533,6 +553,15 @@ function Routes() {
                                     path: 'tuotteet/:id',
                                     element: <ProductDetails />,
                                     loader: productDetailsLoader,
+                                    children: [
+                                        {
+                                            path: 'palauta',
+                                            element: <ProductsReturnForm />,
+                                            errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
+                                            loader: productItemsReturnLoader,
+                                            action: returnProductsAction,
+                                        },
+                                    ],
                                 },
                                 {
                                     path: 'tuotteet/:id/muokkaa',
@@ -568,7 +597,6 @@ function Routes() {
                             element: (
                                 <HasRole role="admin_group" fallback={<Navigate to="/kirjaudu" />}>
                                     <ThemeProvider theme={adminTheme}>
-                                        {/* TODO ohjaa kirjaudu sivulle */}
                                         <AdminLayout />
                                     </ThemeProvider>
                                 </HasRole>
@@ -585,6 +613,7 @@ function Routes() {
                                 {
                                     index: true,
                                     element: <Overview />,
+                                    loader: gigaLoader,
                                 },
                                 {
                                     path: 'tilastot',
@@ -804,14 +833,33 @@ function Routes() {
                                         },
                                         {
                                             path: 'pyoratilaukset',
-                                            element: <BikeRentals />,
+                                            element: <Outlet />,
+                                            children: [
+                                                {
+                                                    index: true,
+                                                    loader: async ({request}) => bikeRentalLoader(request, auth, setAuth),
+                                                    element: <BikeRentals />,
+                                                },
+                                                {
+                                                    path: ':id',
+                                                    element: <BikeRentalView />,
+                                                    loader: bikeRentalViewLoader,
+                                                    action: bikeOrderEditAction,
+                                                    children: [
+                                                        {
+                                                            path: 'poista',
+                                                            action: async ({ params }) =>
+                                                                deleteBikeOrderAction(auth, setAuth, params),
+                                                        },
+                                                    ],
+                                                },
+                                            ]
                                         },
                                         {
                                             path: 'pyorapaketit',
                                             loader: async () => bikesPacketLoader(auth, setAuth),
                                             element: <BikePackets />,
                                         },
-
                                         {
                                             path: 'muokkaapaketti',
                                             element: <Outlet />,

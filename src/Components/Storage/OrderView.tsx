@@ -68,7 +68,7 @@ function OrderView({ isAdmin }: Props) {
     // Parse Date objects from backend data string
     const dateParse = (value: string) => {
         const date = new Date(value);
-        const dateString = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+        const dateString = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
         return dateString;
     };
 
@@ -152,9 +152,15 @@ function OrderView({ isAdmin }: Props) {
                                     Tilaaja:
                                 </TableCell>
                                 <TableCell width="30%">
-                                    <MuiLink component={Link} to={`/admin/kayttajat/${order.user.id}`}>
-                                        {order.user.first_name} {order.user.last_name}
-                                    </MuiLink>
+                                    {isAdmin ? (
+                                        <MuiLink component={Link} to={`/admin/kayttajat/${order.user.id}`}>
+                                            {order.user.first_name} {order.user.last_name}
+                                        </MuiLink>
+                                    ) : (
+                                        <span>
+                                            {order.user.first_name} {order.user.last_name}
+                                        </span>
+                                    )}
                                 </TableCell>
                                 <TableCell width="20%" sx={{ fontWeight: 'bold' }}>
                                     Tilaus tehty:
@@ -231,20 +237,13 @@ function OrderView({ isAdmin }: Props) {
                                 <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottajan puhelinnumero:</TableCell>
                                 <TableCell>{order.recipient_phone_number}</TableCell>
                                 <TableCell>
-                                    <HasRole role="admin_group">
-                                        <Button
-                                            component={Link}
-                                            to={`/admin/tilaukset/${order.id}/muokkaa`}
-                                            // leaving this here incase storage needs to have the ability to edit orders
-                                            // to={
-                                            //     isAdmin
-                                            //         ? `/admin/tilaukset/${order.id}/muokkaa`
-                                            //         : `/varasto/tilaukset/${order.id}/muokkaa`
-                                            // }
-                                        >
+                                    {isAdmin ? (
+                                        <Button component={Link} to={`/admin/tilaukset/${order.id}/muokkaa`}>
                                             Muokkaa tilausta
                                         </Button>
-                                    </HasRole>
+                                    ) : (
+                                        'placeholder'
+                                    )}
                                 </TableCell>
                                 <TableCell>
                                     <HasRole role="admin_group">

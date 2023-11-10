@@ -2237,7 +2237,7 @@ paths:
           description: No response body
   /products/{id}/add/:
     get:
-      operationId: products_add_list
+      operationId: products_add_retrieve
       description: View for adding product items to an existing product
       parameters:
       - in: path
@@ -2254,13 +2254,7 @@ paths:
       - CustomJWTAuthentication: []
       responses:
         '200':
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ReturnAddProductItems'
-          description: ''
+          description: No response body
     post:
       operationId: products_add_create
       description: View for adding product items to an existing product
@@ -2291,11 +2285,7 @@ paths:
       - CustomJWTAuthentication: []
       responses:
         '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ReturnAddProductItems'
-          description: ''
+          description: No response body
   /products/{id}/return/:
     get:
       operationId: products_return_list
@@ -2352,11 +2342,7 @@ paths:
       - CustomJWTAuthentication: []
       responses:
         '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ReturnAddProductItems'
-          description: ''
+          description: No response body
   /products/items/:
     get:
       operationId: products_items_list
@@ -3979,9 +3965,6 @@ components:
         size:
           type: integer
           nullable: true
-        color:
-          type: integer
-          nullable: true
         picture:
           type: integer
           nullable: true
@@ -4010,15 +3993,11 @@ components:
         size:
           type: integer
           nullable: true
-        color:
-          type: integer
-          nullable: true
         picture:
           type: integer
           nullable: true
       required:
       - brand
-      - color
       - description
       - id
       - name
@@ -4316,13 +4295,13 @@ components:
           type: integer
         storage:
           type: integer
+          nullable: true
       required:
       - bike
       - created_at
       - frame_number
       - id
       - number
-      - storage
     BikeStockDepth:
       type: object
       properties:
@@ -4435,6 +4414,7 @@ components:
           nullable: true
         storage:
           type: integer
+          nullable: true
       required:
       - bike
       - created_at
@@ -4471,6 +4451,7 @@ components:
           type: integer
         storage:
           type: integer
+          nullable: true
       required:
       - bike
       - created_at
@@ -5771,6 +5752,10 @@ components:
             type: integer
         shelf_id:
           type: string
+        storage:
+          type: integer
+        barcode:
+          type: integer
         name:
           type: string
           maxLength: 255

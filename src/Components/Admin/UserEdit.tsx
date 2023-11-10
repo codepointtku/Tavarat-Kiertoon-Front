@@ -98,7 +98,7 @@ function UserEdit() {
 
             {actionData?.type === 'userdataupdate' && actionData?.status && (
                 <AlertBox
-                    text="Käyttäjätiedot tallennettu onnistuneesti. Uudelleenohjataan..."
+                    text="Käyttäjätiedot tallennettu onnistuneesti."
                     status="success"
                     timer={3000}
                     redirectUrl="/admin/kayttajat"
@@ -207,17 +207,12 @@ function UserEdit() {
                                         label="Puhelinnumero"
                                         placeholder="Käyttäjän puhelinnumero, muodossa 0401234567"
                                         {...register('phone_number', {
-                                            required: {
-                                                value: true,
-                                                message: 'Käyttäjän puhelinnumero ei voi olla tyhjä',
-                                            },
-                                            maxLength: {
-                                                value: 15,
-                                                message: 'Puhelinnumero on enintään 15 merkkiä pitkä',
-                                            },
-                                            minLength: {
-                                                value: 7,
-                                                message: 'Puhelinnumero on vähintään 7 merkkiä pitkä',
+                                            required: { value: true, message: 'Puhelinnumero on pakollinen' },
+                                            minLength: { value: 7, message: 'Vähintään 7 merkkiä' },
+                                            maxLength: { value: 15, message: 'Enintään 15 merkkiä' },
+                                            pattern: {
+                                                value: /^[0-9]+$/,
+                                                message: 'Sisällön tulee koostua vain numeroista',
                                             },
                                         })}
                                         inputProps={{ required: false }}

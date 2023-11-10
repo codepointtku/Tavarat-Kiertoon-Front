@@ -174,16 +174,10 @@ function UserAccountInfo() {
                             id="phone_number"
                             label="Puhelinnumero"
                             {...register('phone_number', {
-                                required: {
-                                    value: true,
-                                    message: 'Käyttäjän puhelinnumero ei voi olla tyhjä',
-                                },
-                                minLength: {
-                                    value: 7,
-                                    message: 'Puhelinnumero on vähintään 7 merkkiä pitkä',
-                                },
-                                maxLength: { value: 15, message: 'Puhelinnumero on enintään 15 merkkiä pitkä' },
-                                pattern: { value: /^\d+$/, message: 'Sisällön täytyy koostua vain numeroista' },
+                                required: { value: true, message: 'Puhelinnumero on pakollinen' },
+                                minLength: { value: 7, message: 'Vähintään 7 merkkiä' },
+                                maxLength: { value: 15, message: 'Enintään 15 merkkiä' },
+                                pattern: { value: /^[0-9]+$/, message: 'Sisällön tulee koostua vain numeroista' },
                             })}
                             inputProps={{ required: false }}
                             required

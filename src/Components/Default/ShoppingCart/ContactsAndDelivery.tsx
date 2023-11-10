@@ -102,7 +102,8 @@ function ContactsAndDelivery() {
     const dateErrorObj = JSON.parse(sessionStorage.getItem('dateErrorObj') as string);
 
     const [fetchDate, setFetchDate] = useState(
-        Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
+        sessionStorage.getItem('__LSM__') !== null &&
+            Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
             ? parse(JSON.parse(String(sessionStorage.getItem('__LSM__'))).fetchDate, 'd.M.yyyy', new Date())
             : currentDate
     );
@@ -110,13 +111,15 @@ function ContactsAndDelivery() {
     const [showAddressList, setShowAddressList] = useState(false);
     const [collect, setCollect] = useState(false);
     const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
-        Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
+        sessionStorage.getItem('__LSM__') !== null &&
+            Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
             ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryRequired
             : 'true'
     );
 
     const [selectedAddress, setSelectedAddress] = useState(
-        Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
+        sessionStorage.getItem('__LSM__') !== null &&
+            Object.keys(JSON.parse(String(sessionStorage.getItem('__LSM__')))).length !== 0
             ? JSON.parse(String(sessionStorage.getItem('__LSM__'))).deliveryAddress
             : ''
     );
@@ -284,11 +287,14 @@ function ContactsAndDelivery() {
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}
                             {...register('recipient', {
-                                maxLength: { value: 50, message: 'Sisältö on liian pitkä' },
+                                // recipient with autofill: user.firstname + a string of one character (space, blank) + user.lastname,
+                                // which are both hard capped @ 50 characters @ signup forms
+                                maxLength: { value: 101, message: 'Sisältö on liian pitkä' },
                             })}
                             error={!!errors.recipient}
                             helperText={errors.recipient?.message?.toString() || ' '}
                             required
+                            inputProps={{ required: false }}
                         />
 
                         <TextField
@@ -297,9 +303,10 @@ function ContactsAndDelivery() {
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}
                             {...register('recipient_phone_number', {
-                                required: 'Tämä kenttä on täytettävä',
-                                pattern: { value: /^[0-9]+$/, message: 'Sisällön täytyy koostua vain numeroista' },
-                                maxLength: { value: 11, message: 'Numerosarja on liian pitkä' },
+                                required: { value: true, message: 'Puhelinnumero on pakollinen' },
+                                minLength: { value: 7, message: 'Vähintään 7 merkkiä' },
+                                maxLength: { value: 15, message: 'Enintään 15 merkkiä' },
+                                pattern: { value: /^[0-9]+$/, message: 'Sisällön tulee koostua vain numeroista' },
                             })}
                             error={!!errors.recipient_phone_number}
                             helperText={errors.recipient_phone_number?.message?.toString() || ' '}
@@ -367,7 +374,9 @@ function ContactsAndDelivery() {
                                     variant="outlined"
                                     {...register('zip_code', {
                                         required: { value: true, message: 'Tämä kenttä on täytettävä' },
-                                        maxLength: { value: 5, message: 'Sisältö on liian pitkä' },
+                                        minLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
+                                        maxLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
+                                        pattern: { value: /^[0-9]+$/, message: 'Postinumero koostuu vain numeroista' },
                                     })}
                                     inputProps={{ required: false }}
                                     error={!!errors.zip_code}
@@ -408,7 +417,7 @@ function ContactsAndDelivery() {
                                                 required: 'Noutoa ei voi valita tilauspäiväksi.',
                                                 validate: (dateString) => {
                                                     const date = parse(String(dateString), 'd.M.yyyy', new Date());
-                                                    return !disableDate(date);
+                                                    return disableDate(date);
                                                 },
                                                 pattern: {
                                                     value: /^([1-9]|0[1-9]|[12][0-9]|3[01])[-.]([1-9]|0[1-9]|1[012])[-.](19|20)\d\d$/,

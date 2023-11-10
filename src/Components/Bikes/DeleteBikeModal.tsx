@@ -18,7 +18,7 @@ interface DeleteBikeModalInterface {
  */
 function DeleteBikeModal({ renderModal, setRenderModal, bikeId }: DeleteBikeModalInterface) {
     return (
-        <Modal open={renderModal} aria-labelledby="Delete Bike Succesfull">
+        <Modal open={renderModal} aria-labelledby="Delete Bike Successful">
             <Box
                 sx={{
                     position: 'absolute',

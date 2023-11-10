@@ -1,18 +1,14 @@
-import { useEffect } from 'react';
-import { Link, useActionData } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Box, Button, ButtonGroup } from '@mui/material';
 
-import HasRole from '../../Utils/HasRole';
-
-import type { frontPageActions } from '../../Router/actions';
+// import HasRole from '../../Utils/HasRole';
 
 function LinkBar() {
     return (
         <Box id="navbuttons-wrapper" sx={{ borderBottom: '1px solid #009bd8' }}>
             <ButtonGroup
                 variant="text"
-                id="navbuttons"
                 aria-label="navigation link buttons"
                 sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
             >
@@ -36,35 +32,7 @@ function LinkBar() {
     );
 }
 
-function AuthedLinkBar() {
-    return (
-        <Box id="authed-navbuttons-wrapper" sx={{ marginLeft: '1rem' }}>
-            <ButtonGroup
-                variant="outlined"
-                id="authed-navbuttons"
-                aria-label="authed navigation link buttons"
-                sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-            >
-                <HasRole role={'storage_group'}>
-                    <Button component={Link} to="/varasto">
-                        Varastonäkymä
-                    </Button>
-                </HasRole>
-                <HasRole role="admin_group">
-                    <Button component={Link} to="/admin">
-                        Ylläpitäjän näkymä
-                    </Button>
-                </HasRole>
-            </ButtonGroup>
-        </Box>
-    );
-}
-
 function NavigationBar() {
-    const responseStatus = useActionData() as Awaited<ReturnType<typeof frontPageActions>>;
-
-    useEffect(() => {}, [responseStatus]);
-
     return (
         <Box
             id="navbar-container"
@@ -72,16 +40,30 @@ function NavigationBar() {
             sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                width: '100%',
                 mb: '1rem',
             }}
         >
             <LinkBar />
-            <HasRole role={'admin_group' || 'storage_group'}>
-                <AuthedLinkBar />
-            </HasRole>
         </Box>
     );
 }
 
 export default NavigationBar;
+
+{
+    /* <HasRole role={'storage_group'}>
+                <Button component={Link} to="/varasto" variant="outlined">
+                    Varastonäkymä
+                </Button>
+            </HasRole>
+            <HasRole role={'bicycle_group'}>
+                <Button component={Link} to="/pyorat/pyoravarasto" variant="outlined">
+                    Pyörävarasto
+                </Button>
+            </HasRole>
+            <HasRole role="admin_group">
+                <Button component={Link} to="/admin">
+                    Ylläpito
+                </Button>
+            </HasRole> */
+}
