@@ -49,10 +49,12 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
     }, [product?.available]);
 
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
+        <>
             {isNotLoggedIn && (
                 <AlertBox text="Kirjautuminen vaaditaan ostoskorin käyttöön" status="warning" timer={10000} />
             )}
+
+            {/* <Box sx={{ display: 'flex', alignItems: 'center' }}> */}
             {cart?.product_items?.some((product_item) => product_item?.product.id === groupId) ? (
                 <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
             ) : (
@@ -68,7 +70,8 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
                     </Button>
                 </form>
             )}
-        </Box>
+            {/* </Box> */}
+        </>
     );
 }
 

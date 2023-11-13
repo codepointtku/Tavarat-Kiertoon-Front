@@ -1,6 +1,6 @@
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 
-import { Box, Divider, Grid, Typography } from '@mui/material';
+import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
 import type { productListLoader } from '../../Router/loaders';
 import TypographyHeading from '../TypographyHeading';
 import ProductCard from './ProductCard';
@@ -59,11 +59,11 @@ function ProductList() {
     const { results, count } = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
 
     return (
-        <>
+        <Stack>
             {results?.length ? (
-                <Grid container spacing={2}>
+                <Grid container spacing={1} gap={2}>
                     {results.map((product: any) => (
-                        <Grid item key={product.id} xs={13} sm={7} md={5} lg={4} xl={3}>
+                        <Grid item key={product.id} xs={12} sm={6} md={2}>
                             <ProductCard
                                 id={product.id}
                                 groupId={product.id}
@@ -86,7 +86,7 @@ function ProductList() {
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Pagination count={count} itemsText="Tuotteita" />
             </Box>
-        </>
+        </Stack>
     );
 }
 
