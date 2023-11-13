@@ -810,6 +810,292 @@ paths:
       responses:
         '204':
           description: No response body
+  /bikes/trailermodels/:
+    get:
+      operationId: bikes_trailermodels_list
+      tags:
+      - bikes
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BikeTrailerModel'
+          description: ''
+    post:
+      operationId: bikes_trailermodels_create
+      tags:
+      - bikes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BikeTrailerModel'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BikeTrailerModel'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BikeTrailerModel'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BikeTrailerModel'
+          description: ''
+  /bikes/trailermodels/{id}/:
+    get:
+      operationId: bikes_trailermodels_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - bikes
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BikeTrailerModel'
+          description: ''
+    put:
+      operationId: bikes_trailermodels_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - bikes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BikeTrailerModel'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BikeTrailerModel'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BikeTrailerModel'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BikeTrailerModel'
+          description: ''
+    patch:
+      operationId: bikes_trailermodels_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - bikes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBikeTrailerModel'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBikeTrailerModel'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBikeTrailerModel'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BikeTrailerModel'
+          description: ''
+    delete:
+      operationId: bikes_trailermodels_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - bikes
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /bikes/trailers/:
+    get:
+      operationId: bikes_trailers_list
+      tags:
+      - bikes
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BikeTrailer'
+          description: ''
+    post:
+      operationId: bikes_trailers_create
+      tags:
+      - bikes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BikeTrailer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BikeTrailer'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BikeTrailer'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BikeTrailer'
+          description: ''
+  /bikes/trailers/{id}/:
+    get:
+      operationId: bikes_trailers_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - bikes
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BikeTrailer'
+          description: ''
+    put:
+      operationId: bikes_trailers_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - bikes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BikeTrailer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BikeTrailer'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BikeTrailer'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BikeTrailer'
+          description: ''
+    patch:
+      operationId: bikes_trailers_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - bikes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBikeTrailer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBikeTrailer'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBikeTrailer'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BikeTrailer'
+          description: ''
+    delete:
+      operationId: bikes_trailers_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - bikes
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
   /bikes/type/:
     get:
       operationId: bikes_type_list
@@ -4079,8 +4365,6 @@ components:
         delivery_address:
           type: string
           maxLength: 255
-        pickup:
-          type: boolean
         contact_name:
           type: string
           maxLength: 255
@@ -4091,6 +4375,9 @@ components:
           type: string
           maxLength: 255
         user:
+          type: integer
+          nullable: true
+        bike_trailer:
           type: integer
           nullable: true
         bike_stock:
@@ -4131,8 +4418,6 @@ components:
         delivery_address:
           type: string
           maxLength: 255
-        pickup:
-          type: boolean
         contact_name:
           type: string
           maxLength: 255
@@ -4142,6 +4427,9 @@ components:
         extra_info:
           type: string
           maxLength: 255
+        bike_trailer:
+          type: integer
+          nullable: true
       required:
       - bike_stock
       - contact_name
@@ -4180,8 +4468,6 @@ components:
         delivery_address:
           type: string
           maxLength: 255
-        pickup:
-          type: boolean
         contact_name:
           type: string
           maxLength: 255
@@ -4191,6 +4477,9 @@ components:
         extra_info:
           type: string
           maxLength: 255
+        bike_trailer:
+          type: integer
+          nullable: true
       required:
       - bike_stock
       - contact_name
@@ -4216,8 +4505,6 @@ components:
         delivery_address:
           type: string
           maxLength: 255
-        pickup:
-          type: boolean
         contact_name:
           type: string
           maxLength: 255
@@ -4228,6 +4515,9 @@ components:
           type: string
           maxLength: 255
         user:
+          type: integer
+          nullable: true
+        bike_trailer:
           type: integer
           nullable: true
         bike_stock:
@@ -4242,7 +4532,6 @@ components:
       - end_date
       - extra_info
       - id
-      - pickup
       - start_date
       - state
       - user
@@ -4293,9 +4582,6 @@ components:
           nullable: true
         bike:
           type: integer
-        storage:
-          type: integer
-          nullable: true
       required:
       - bike
       - created_at
@@ -4353,10 +4639,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/BikeStockDepth'
           readOnly: true
-        storage:
-          allOf:
-          - $ref: '#/components/schemas/Storage'
-          readOnly: true
         color:
           allOf:
           - $ref: '#/components/schemas/Color'
@@ -4384,7 +4666,6 @@ components:
       - number
       - package_only
       - state
-      - storage
     BikeStockList:
       type: object
       properties:
@@ -4412,9 +4693,6 @@ components:
         color:
           type: integer
           nullable: true
-        storage:
-          type: integer
-          nullable: true
       required:
       - bike
       - created_at
@@ -4423,7 +4701,6 @@ components:
       - number
       - package_only
       - state
-      - storage
     BikeStockSchemaCreateUpdate:
       type: object
       properties:
@@ -4449,9 +4726,6 @@ components:
           nullable: true
         bike:
           type: integer
-        storage:
-          type: integer
-          nullable: true
       required:
       - bike
       - created_at
@@ -4460,7 +4734,37 @@ components:
       - number
       - package_only
       - state
-      - storage
+    BikeTrailer:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        register_number:
+          type: string
+          maxLength: 255
+        trailer_type:
+          type: integer
+          nullable: true
+      required:
+      - id
+      - register_number
+    BikeTrailerModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 255
+      required:
+      - description
+      - id
+      - name
     BikeType:
       type: object
       properties:
@@ -5291,6 +5595,30 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserLogResponseSchema'
+    PatchedBikeTrailer:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        register_number:
+          type: string
+          maxLength: 255
+        trailer_type:
+          type: integer
+          nullable: true
+    PatchedBikeTrailerModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 255
     Picture:
       type: object
       properties:

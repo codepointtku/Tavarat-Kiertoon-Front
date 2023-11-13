@@ -52,7 +52,6 @@ export default function BikeRentalView() {
             endDate: rental?.end_date,
             state: rental?.state,
             deliveryAddress: rental?.delivery_address,
-            pickup: rental?.pickup,
             contact: rental?.contact_name,
             contactPhoneNumber: rental?.contact_phone_number,
             extraInfo: rental?.extra_info,
@@ -193,8 +192,6 @@ export default function BikeRentalView() {
                             <TableRow>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottaja:</TableCell>
                                 <TableCell>{rental.contact_name}</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Nouto:</TableCell>
-                                <TableCell>{rental.pickup ? 'Kyllä' : 'Ei'}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottajan puhelinnumero:</TableCell>

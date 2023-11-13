@@ -158,20 +158,6 @@ export default function BikeConfirmation({
                             />
                         )}
                     />
-                    <Controller
-                        name="pickup"
-                        control={control}
-                        render={({ field: { onChange, onBlur, value } }) => (
-                            <FormGroup>
-                                <Box>
-                                    <FormControlLabel
-                                        control={<Checkbox checked={value} onChange={onChange} onBlur={onBlur} />}
-                                        label="Tulen noutamaan itse"
-                                    />
-                                </Box>
-                            </FormGroup>
-                        )}
-                    />
                 </Stack>
                 <Stack flexDirection="row" gap={2}>
                     <Controller

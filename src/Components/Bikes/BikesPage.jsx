@@ -41,7 +41,6 @@ export default function BikesPage() {
             contactPersonName: '',
             contactPersonPhoneNumber: '',
             deliveryAddress: '',
-            pickup: false,
             storageType: null,
             extraInfo: '',
         },

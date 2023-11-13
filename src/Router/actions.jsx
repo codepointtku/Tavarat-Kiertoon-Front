@@ -834,7 +834,6 @@ const bikeOrderAction = async (auth, setAuth, request) => {
         end_date: formData.get('endDateTime'),
         bike_stock: JSON.parse(formData.get('selectedBikes')),
         extra_info: formData.get('extraInfo'),
-        pickup: formData.get('pickup'),
     });
     return response.data || null;
 };
@@ -851,7 +850,6 @@ const bikeOrderEditAction = async ({ request, params }) => {
         end_date: formData.get('endDate'),
         state: formData.get('state'),
         delivery_address: formData.get('deliveryAddress'),
-        pickup: formData.get('pickup'),
         contact_name: formData.get('contact'),
         contact_phone_number: formData.get('contactPhoneNumber'),
         extra_info: formData.get('extraInfo'),
