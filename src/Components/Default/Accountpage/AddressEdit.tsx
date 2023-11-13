@@ -61,7 +61,7 @@ function AddressEdit() {
         <>
             {responseStatus?.type === 'addressmodified' && responseStatus?.status && (
                 <AlertBox
-                    text="Osoitteen tietoja muokattu onnistuneesti. Uudelleenohjataan takaisin tilisivulle..."
+                    text="Osoitteen tietoja muokattu onnistuneesti."
                     status="success"
                     timer={3000}
                     redirectUrl="/tili"
@@ -135,15 +135,10 @@ function AddressEdit() {
                             label="Postinumero"
                             placeholder="Postinumero"
                             {...register('zip_code', {
-                                required: {
-                                    value: true,
-                                    message: 'Postinumero ei voi olla tyhjä',
-                                },
+                                required: { value: true, message: 'Postinumero on pakollinen' },
+                                minLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
                                 maxLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
-                                minLength: {
-                                    value: 5,
-                                    message: 'Postinumero on 5 merkkiä',
-                                },
+                                pattern: { value: /^[0-9]+$/, message: 'Postinumero koostuu vain numeroista' },
                             })}
                             inputProps={{ required: false }}
                             required

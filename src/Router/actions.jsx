@@ -15,14 +15,6 @@ import {
     usersApi,
 } from '../api';
 
-const adminLogOut = async ({ request }) => {
-    if (request.method === 'POST') {
-        await usersApi.usersLogoutCreate();
-        return { type: 'logout', status: true };
-    }
-    return { type: 'logout', status: false };
-};
-
 /**
  * logins or logouts user, adds a product to shopping cart and deletes product from shopping cart
  */
@@ -109,6 +101,8 @@ const userSignupAction = async (request) => {
     // this action defaults without username-field.
     // if username-field exists in the formData, its value is appended and sent with the apiCall.
 
+    // also, this code looks like #frogsAreCool
+
     const formData = await request.formData();
 
     let userSignUpValues = {
@@ -144,11 +138,24 @@ const userSignupAction = async (request) => {
 /**
  * sends contact form to back-end
  */
-const contactAction = async (auth, setAuth, request) => {
+const contactAction = async ({ request }) => {
     const formData = await request.formData();
-    // const response = await apiCall(auth, setAuth, '/contact_forms/', 'post', formData);
-    const response = await contactFormsApi.contactFormsCreate(Object.fromEntries(formData));
-    return response.data || null;
+
+    const newContactForm = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        subject: formData.get('subject'),
+        message: formData.get('message'),
+        order_id: formData.get('order_id') === '' || isNaN(formData.get('order_id')) ? null : formData.get('order_id'),
+    };
+
+    const response = await contactFormsApi.contactFormsCreate(newContactForm);
+
+    if (response.status === 201) {
+        return { type: 'contactform', status: true };
+    }
+
+    return { type: 'contactform', status: false };
 };
 
 /**
@@ -228,6 +235,14 @@ const orderEditAction = async ({ request, params }) => {
 //
 // admin bing bings
 
+const adminLogOut = async ({ request }) => {
+    if (request.method === 'POST') {
+        await usersApi.usersLogoutCreate();
+        return { type: 'logout', status: true };
+    }
+    return { type: 'logout', status: false };
+};
+
 const orderDeleteAction = async ({ params }) => {
     await ordersApi.ordersDestroy(params.id);
     return redirect('/admin/tilaukset');
@@ -299,6 +314,32 @@ const editProductAction = async (auth, setAuth, request, params) => {
         return { type: 'editProduct', status: true };
     }
     return { type: 'editProduct', status: false };
+};
+
+/*
+ * Returns products to storage
+ */
+const returnProductsAction = async ({ request, params }) => {
+    console.log('return of the product action');
+    const formData = await request.formData();
+    const formDataObj = Object.fromEntries(formData);
+    formData.get('amount');
+    console.log(formDataObj.amount, formDataObj.addId);
+    // todo add id
+    console.log(typeof formDataObj.amount, typeof formDataObj.addId);
+
+    const response = await productsApi.productsReturnCreate(
+        // parseInt(formData.get('addId')),
+        params.id,
+        {
+            amount: parseInt(formData.get('amount')),
+        }
+    );
+
+    if (response.status === 200) {
+        return { type: 'returnProduct', status: true };
+    }
+    return { type: 'returnProduct', status: false };
 };
 
 /*
@@ -546,9 +587,12 @@ const adminEmailRecipientsAction = async ({ request }) => {
 
 const colorsManageAction = async ({ request }) => {
     const formData = await request.formData();
+    const color = formData.get('color');
 
     if (request.method === 'POST') {
-        const response = await colorsApi.colorsCreate({ name: formData.get('color') });
+        const response = await colorsApi.colorsCreate({
+            name: color.charAt(0).toUpperCase() + color.slice(1),
+        });
 
         if (response.status === 201) {
             return { type: 'colorcreate', status: true };
@@ -596,10 +640,14 @@ const categoriesManageAction = async ({ request }) => {
 
     const formData = await request.formData();
     const id = formData.get('id');
+    const categoryName = formData.get('cat');
 
     if (request.method === 'POST') {
         if (formData.get('parent') === null) {
-            const newMainCategory = { name: formData.get('cat'), parent: null };
+            const newMainCategory = {
+                name: categoryName.charAt(0).toUpperCase() + categoryName.slice(1),
+                parent: null,
+            };
 
             const response = await categoriesApi.categoriesCreate(newMainCategory);
 
@@ -609,7 +657,10 @@ const categoriesManageAction = async ({ request }) => {
             return { type: 'categorycreate', status: false };
         }
 
-        const newCategory = { name: formData.get('cat'), parent: formData.get('parent') };
+        const newCategory = {
+            name: categoryName.charAt(0).toUpperCase() + categoryName.slice(1),
+            parent: formData.get('parent'),
+        };
 
         const response = await categoriesApi.categoriesCreate(newCategory);
 
@@ -789,6 +840,31 @@ const bikeOrderAction = async (auth, setAuth, request) => {
 };
 
 /**
+ * edits order data
+ */
+const bikeOrderEditAction = async ({ request, params }) => {
+    const formData = await request.formData();
+
+    const submission = {
+        id: formData.get('rentalId'),
+        start_date: formData.get('startDate'),
+        end_date: formData.get('endDate'),
+        state: formData.get('state'),
+        delivery_address: formData.get('deliveryAddress'),
+        pickup: formData.get('pickup'),
+        contact_name: formData.get('contact'),
+        contact_phone_number: formData.get('contactPhoneNumber'),
+        extra_info: formData.get('extraInfo'),
+        user: formData.get('user'),
+        bike_stock: JSON.parse(formData.get('bikeStock')),
+    };
+
+    const response = await bikesApi.bikesRentalUpdate(params.id, submission);
+
+    return response;
+};
+
+/**
  * modifyBikeAction
  *
  * @param {*} auth
@@ -906,6 +982,18 @@ const modifyBikePacketAction = async (request, params) => {
     await bikesApi.bikesPackagesUpdate(params.id, submission);
     await updateBikesStockPacketOnlyFlag();
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+};
+
+/**
+ * Delete a single bikeOrder
+ * @param {*} auth
+ * @param {*} setAuth
+ * @param {*} params
+ * @returns
+ */
+const deleteBikeOrderAction = async (auth, setAuth, params) => {
+    const response = await bikesApi.bikesRentalDestroy(params.id);
+    return redirect('/pyorat/pyoravarasto/pyoratilaukset');
 };
 
 /**
@@ -1217,6 +1305,7 @@ const searchWatchCreateAction = async ({ request }) => {
 };
 
 export {
+    deleteBikeOrderAction,
     userSignupAction,
     frontPageActions,
     contactAction,
@@ -1225,6 +1314,7 @@ export {
     storageCreateAction,
     storageEditAction,
     addProductAction,
+    returnProductsAction,
     editProductAction,
     storageDeleteAction,
     productsTransferAction,
@@ -1237,6 +1327,7 @@ export {
     itemUpdateAction,
     cartViewAction,
     bikeOrderAction,
+    bikeOrderEditAction,
     confirmationAction,
     resetEmailAction,
     resetPasswordAction,

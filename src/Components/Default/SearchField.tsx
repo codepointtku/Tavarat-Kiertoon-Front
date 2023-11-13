@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { Form, useSearchParams, useRouteLoaderData, createSearchParams } from 'react-router-dom';
 
-import { Box, Button, IconButton, InputBase } from '@mui/material';
+import { Box, Button, IconButton, InputBase, Typography } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 import type { rootLoader } from '../../Router/loaders';
 

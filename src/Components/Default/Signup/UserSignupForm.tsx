@@ -42,6 +42,11 @@ function ModalFooter() {
 }
 
 function UserForm() {
+    const responseStatus = useActionData() as Awaited<ReturnType<typeof userSignupAction>>;
+
+    const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+
     const {
         register,
         handleSubmit: createHandleSubmit,
@@ -49,12 +54,8 @@ function UserForm() {
         setError,
         formState: { errors: formErrors },
     } = useForm({ mode: 'onTouched' });
-    const submit = useSubmit();
-    const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
-    const responseStatus = useActionData() as Awaited<ReturnType<typeof userSignupAction>>;
 
-    const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data) => {
         const formData = { ...data };
@@ -65,15 +66,19 @@ function UserForm() {
         });
         setIsSubmitSuccessful(true);
     });
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
     useEffect(() => {
         if (responseStatus?.data) {
             setIsSubmitSuccessful(responseStatus?.status);
 
             if (responseStatus?.data?.username) {
-                setError('email', { type: 'custom', message: 'Tämä tunnus on jo varattu' });
+                setError('email', { type: 'custom', message: 'Tämä tunnus on varattu' });
             }
         }
     }, [responseStatus]);
+
     return (
         <>
             {isSubmitSuccessful === false && responseStatus?.status === false && (
@@ -100,10 +105,11 @@ function UserForm() {
                             id="input-email"
                             type="text"
                             label="Sähköpostiosoite"
-                            placeholder="sinä@turku.fi"
+                            placeholder="etunimi.sukunimi@turku.fi"
                             {...register('email', {
                                 required: { value: true, message: 'Sähköpostiosoite on pakollinen' },
                                 minLength: { value: 5, message: 'Sähköpostiosoitteen on oltava vähintään 5 merkkiä' },
+                                maxLength: { value: 50, message: 'Maksimipituus' },
                                 pattern: {
                                     value: /^[\w\-\.åÅäÄöÖ]+@(edu\.)?turku\.fi$/,
                                     message: 'Sähköpostin on oltava muotoa @turku.fi tai @edu.turku.fi',
@@ -134,6 +140,7 @@ function UserForm() {
                                 placeholder="Tilin omistajan etunimi"
                                 {...register('firstname', {
                                     required: { value: true, message: 'Etunimi on pakollinen' },
+                                    maxLength: { value: 50, message: 'Maksimipituus' },
                                 })}
                                 error={!!formErrors.firstname}
                                 helperText={formErrors.firstname?.message?.toString() || ' '}
@@ -150,6 +157,7 @@ function UserForm() {
                                 placeholder="Tilin omistajan sukunimi"
                                 {...register('lastname', {
                                     required: { value: true, message: 'Sukunimi on pakollinen' },
+                                    maxLength: { value: 50, message: 'Maksimipituus' },
                                 })}
                                 error={!!formErrors.lastname}
                                 helperText={formErrors.lastname?.message?.toString() || ' '}
@@ -171,11 +179,12 @@ function UserForm() {
                             id="input-phonenumber"
                             type="text"
                             label="Puhelinnumero"
-                            placeholder="010 1231234"
+                            placeholder="Sisältäen vain numeroita"
                             {...register('phonenumber', {
                                 required: { value: true, message: 'Puhelinnumero on pakollinen' },
-                                minLength: { value: 7, message: 'Puhelinnumeron on vähintään 7 merkkiä' },
-                                maxLength: { value: 15, message: 'Puhelinnumero on enintään 15 merkkiä' },
+                                minLength: { value: 7, message: 'Vähintään 7 merkkiä' },
+                                maxLength: { value: 15, message: 'Enintään 15 merkkiä' },
+                                pattern: { value: /^[0-9]+$/, message: 'Sisällön tulee koostua vain numeroista' },
                             })}
                             error={!!formErrors.phonenumber}
                             helperText={formErrors.phonenumber?.message?.toString() || ' '}
@@ -201,6 +210,7 @@ function UserForm() {
                                 placeholder="Tavaran vastaanotto-osoite"
                                 {...register('address', {
                                     required: { value: true, message: 'Osoite on pakollinen' },
+                                    maxLength: { value: 50, message: 'Maksimipituus' },
                                 })}
                                 error={!!formErrors.address}
                                 helperText={formErrors.address?.message?.toString() || ' '}
@@ -218,6 +228,8 @@ function UserForm() {
                                 {...register('zipcode', {
                                     required: { value: true, message: 'Postinumero on pakollinen' },
                                     minLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
+                                    maxLength: { value: 5, message: 'Postinumero on 5 merkkiä' },
+                                    pattern: { value: /^[0-9]+$/, message: 'Postinumero koostuu vain numeroista' },
                                 })}
                                 error={!!formErrors.zipcode}
                                 helperText={formErrors.zipcode?.message?.toString() || ' '}
@@ -242,6 +254,7 @@ function UserForm() {
                             placeholder="Turku"
                             {...register('town', {
                                 required: { value: true, message: 'Kaupunki on pakollinen' },
+                                maxLength: { value: 50, message: 'Maksimipituus' },
                             })}
                             error={!!formErrors.town}
                             helperText={formErrors.town?.message?.toString() || ' '}
@@ -259,6 +272,7 @@ function UserForm() {
                             {...register('password', {
                                 required: { value: true, message: 'Salasana on pakollinen' },
                                 minLength: { value: 2, message: 'Salasanan on oltava vähintään 2 merkkiä' },
+                                maxLength: { value: 50, message: 'Maksimipituus' },
                             })}
                             error={!!formErrors.password}
                             helperText={formErrors.password?.message?.toString() || ' '}
@@ -289,6 +303,7 @@ function UserForm() {
                             {...register('passwordCheck', {
                                 required: { value: true, message: 'Salasana on pakollinen' },
                                 minLength: { value: 2, message: 'Salasanan on oltava vähintään 2 merkkiä' },
+                                maxLength: { value: 50, message: 'Maksimipituus' },
                                 validate: (val: string) => {
                                     if (watch('password') !== val) {
                                         return 'Salasanat eivät täsmää';
