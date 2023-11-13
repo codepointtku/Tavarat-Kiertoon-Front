@@ -27,7 +27,6 @@ export interface BikeInterface {
     package_only: boolean;
     state: string; // "AVAILABLE" | "MAINTENANCE" | "RENTED" | "RETIRED"
     color: number;
-    storage: StorageInterface;
 }
 
 export interface BikeModelInterface {
@@ -41,13 +40,6 @@ export interface BikeModelInterface {
     picture: { id: number; picture_address: string };
 }
 
-export interface StorageInterface {
-    address: string;
-    id: number;
-    in_use: boolean;
-    name: string;
-}
-
 export interface SubmitDataInterface {
     bike: number;
     created_at: string;
@@ -56,7 +48,6 @@ export interface SubmitDataInterface {
     number: string;
     package_only: boolean;
     state: string; // "AVAILABLE" | "MAINTENANCE" | "RENTED" | "RETIRED"
-    storage: number;
 }
 
 export interface ColorInterface {

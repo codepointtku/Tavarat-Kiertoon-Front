@@ -421,13 +421,12 @@ const createBikePacketLoader = async (auth, setAuth, params) => {
  * @returns
  */
 const modifyBikeLoader = async (auth, setAuth, params) => {
-    const [{ data: bikeData }, { data: bikeModelsData }, { data: storagesData }, { data: colors }] = await Promise.all([
+    const [{ data: bikeData }, { data: bikeModelsData }, { data: colors }] = await Promise.all([
         bikesApi.bikesStockRetrieve(params.id),
         bikesApi.bikesModelsList(),
-        storagesApi.storagesList(),
         colorsApi.colorsList(),
     ]);
-    return { bikeData, bikeModelsData, storagesData, colors };
+    return { bikeData, bikeModelsData, colors };
 };
 
 /**
@@ -435,9 +434,8 @@ const modifyBikeLoader = async (auth, setAuth, params) => {
  * @returns
  */
 const createNewBikeLoader = async (auth, setAuth) => {
-    const [{ data: bikeModelsData }, { data: storagesData }, { data: colors }] = await Promise.all([
+    const [{ data: bikeModelsData }, { data: colors }] = await Promise.all([
         bikesApi.bikesModelsList(),
-        storagesApi.storagesList(),
         colorsApi.colorsList(),
     ]);
     // Empty bike to show in the page before information is added
@@ -447,9 +445,8 @@ const createNewBikeLoader = async (auth, setAuth) => {
         number: '',
         package_only: false,
         state: 'AVAILABLE',
-        storage: '',
     };
-    return { bikeData, bikeModelsData, storagesData, colors };
+    return { bikeData, bikeModelsData, colors };
 };
 
 /**

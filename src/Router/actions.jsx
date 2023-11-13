@@ -879,7 +879,6 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
         color: data.get('bikeColorIdSelect'),
         frame_number: data.get('bikeFrameNumberTextField'),
         number: data.get('bikeNumberTextField'),
-        storage: data.get('bikeStorageIdSelect'),
         state: data.get('bikeStatusSelect'),
         package_only: packageOnly === null ? false : packageOnly, // from checkbox value seems to be 'on' or null
     };
@@ -898,7 +897,6 @@ const createNewBikeAction = async (auth, setAuth, request) => {
         color: data.get('bikeColorIdSelect'),
         frame_number: data.get('bikeFrameNumberTextField'),
         number: data.get('bikeNumberTextField'),
-        storage: data.get('bikeStorageIdSelect'),
         state: data.get('bikeStatusSelect'),
         package_only: packageOnly === null ? false : packageOnly, // from checkbox value seems to be 'on' or null
     };
