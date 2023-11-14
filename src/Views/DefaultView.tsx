@@ -23,7 +23,7 @@ function DefaultView() {
                 <SearchField treeSelectedState={{ categoryTreeSelected, setCategoryTreeSelected }} />
 
                 {/* <Stack direction="row" gap={4}> */}
-                <Grid container justifyContent="center" alignItems="flex-start">
+                <Grid container justifyContent="center" alignItems="flex-start" spacing={2}>
                     <Grid item /* sx={{ border: '1px solid blue' }} */ xs={12} sm={3} md={2}>
                         <CategoryTree treeSelectedState={{ categoryTreeSelected, setCategoryTreeSelected }} />
                     </Grid>

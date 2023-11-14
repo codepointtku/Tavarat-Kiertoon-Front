@@ -61,9 +61,24 @@ function ProductList() {
     return (
         <Stack>
             {results?.length ? (
-                <Grid container spacing={1} gap={1} justifyContent="space-evenly" flexWrap="wrap">
+                <Grid
+                    container
+                    spacing={2}
+                    gap={1}
+                    justifyContent="space-around"
+                    sx={{ outline: '1px solid green', padding: '1rem' }}
+                >
                     {results.map((product: any) => (
-                        <Grid item key={product.id} xs={12} sm={6} md={2}>
+                        <Grid
+                            item
+                            key={product.id}
+                            xs={12} // 0px
+                            sm={3} // 600px
+                            md={3} // 900px
+                            lg={2} // 1200px
+                            xl={2} // 1536
+                            sx={{ outline: '1px solid red', minWidth: 'max-content' }}
+                        >
                             <ProductCard
                                 id={product.id}
                                 groupId={product.id}
