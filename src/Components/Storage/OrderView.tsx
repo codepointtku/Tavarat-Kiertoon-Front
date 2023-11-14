@@ -33,18 +33,15 @@ import HasRole from '../../Utils/HasRole';
 import type { orderViewLoader } from '../../Router/loaders';
 import BackButton from '../BackButton';
 import AuthContext from '../../Context/AuthContext';
-import { FieldValues, useForm } from 'react-hook-form';
-import { ProductItemResponse } from '../../api';
+import { type FieldValues, useForm } from 'react-hook-form';
+import { type ProductItemResponse } from '../../api';
 
 export type OrderViewLoaderType = Awaited<ReturnType<typeof orderViewLoader>>;
 
-interface Props {
-    isAdmin: boolean;
-}
 type FormValues = {
     status: OrderViewLoaderType['status'];
 };
-function OrderView({ isAdmin }: Props) {
+function OrderView() {
     const order = useLoaderData() as OrderViewLoaderType;
     const { auth } = useContext(AuthContext);
     // state to control product info collapse field
@@ -152,7 +149,7 @@ function OrderView({ isAdmin }: Props) {
                                     Tilaaja:
                                 </TableCell>
                                 <TableCell width="30%">
-                                    {isAdmin ? (
+                                    {auth['admin_group'] ? (
                                         <MuiLink component={Link} to={`/admin/kayttajat/${order.user.id}`}>
                                             {order.user.first_name} {order.user.last_name}
                                         </MuiLink>
@@ -237,13 +234,11 @@ function OrderView({ isAdmin }: Props) {
                                 <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottajan puhelinnumero:</TableCell>
                                 <TableCell>{order.recipient_phone_number}</TableCell>
                                 <TableCell>
-                                    {isAdmin ? (
+                                    <HasRole role="admin_group">
                                         <Button component={Link} to={`/admin/tilaukset/${order.id}/muokkaa`}>
                                             Muokkaa tilausta
                                         </Button>
-                                    ) : (
-                                        'placeholder'
-                                    )}
+                                    </HasRole>
                                 </TableCell>
                                 <TableCell>
                                     <HasRole role="admin_group">

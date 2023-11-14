@@ -521,7 +521,7 @@ function Routes() {
                                         },
                                         {
                                             path: ':id',
-                                            element: <OrderView isAdmin={false} />,
+                                            element: <OrderView />,
                                             errorElement: <div>varasto orderview kössähdys</div>,
                                             loader: orderViewLoader,
                                             action: orderEditStatusAction,
@@ -634,7 +634,7 @@ function Routes() {
                                             children: [
                                                 {
                                                     index: true,
-                                                    element: <OrderView isAdmin />,
+                                                    element: <OrderView />,
                                                     errorElement: <OrderViewError />,
                                                     loader: orderViewLoader,
                                                     action: orderEditStatusAction,
@@ -837,7 +837,8 @@ function Routes() {
                                             children: [
                                                 {
                                                     index: true,
-                                                    loader: async ({request}) => bikeRentalLoader(request, auth, setAuth),
+                                                    loader: async ({ request }) =>
+                                                        bikeRentalLoader(request, auth, setAuth),
                                                     element: <BikeRentals />,
                                                 },
                                                 {
@@ -853,7 +854,7 @@ function Routes() {
                                                         },
                                                     ],
                                                 },
-                                            ]
+                                            ],
                                         },
                                         {
                                             path: 'pyorapaketit',
