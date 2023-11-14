@@ -61,7 +61,7 @@ function ProductList() {
     return (
         <Stack>
             {results?.length ? (
-                <Grid container spacing={1} gap={1} justifyContent="space-evenly">
+                <Grid container spacing={1} gap={1} justifyContent="space-evenly" flexWrap="wrap">
                     {results.map((product: any) => (
                         <Grid item key={product.id} xs={12} sm={6} md={2}>
                             <ProductCard

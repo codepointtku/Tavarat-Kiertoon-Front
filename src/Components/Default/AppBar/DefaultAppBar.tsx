@@ -230,7 +230,7 @@ function DefaultAppBar() {
                     <Stack direction="row" spacing={4}>
                         <HasRole role="bicycle_group">
                             <Tooltip title="Pyörien vuokraus">
-                                <IconButton onClick={drawerOpen('')} sx={iconHover} href="/pyorat">
+                                <IconButton component={Link} to="/pyorat" onClick={drawerOpen('')} sx={iconHover}>
                                     <PedalBikeIcon sx={{ fontSize: 36, color: '#fff' }} />
                                 </IconButton>
                             </Tooltip>
@@ -238,11 +238,7 @@ function DefaultAppBar() {
 
                         <HasRole role="storage_group">
                             <Tooltip title="Varasto">
-                                <IconButton
-                                    // onClick={drawerOpen('')}
-                                    sx={iconHover}
-                                    onClick={() => window.location.replace('/varasto')}
-                                >
+                                <IconButton component={Link} to="/varasto" onClick={drawerOpen('')} sx={iconHover}>
                                     <WarehouseIcon sx={{ fontSize: 36, color: '#fff' }} />
                                 </IconButton>
                             </Tooltip>
