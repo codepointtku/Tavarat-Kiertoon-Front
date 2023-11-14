@@ -331,13 +331,13 @@ function DefaultAppBar() {
                                     />
                                 );
                             })}
-                            {unconfirmedChangesCartProducts.length > 0 && (
-                                <Alert severity="warning">
-                                    <Typography variant="body2" sx={{ color: 'error.main' }}>
+                            {/* {unconfirmedChangesCartProducts.length > 0 && (
+                                <Alert severity="info">
+                                    <Typography variant="body2" textAlign="center" sx={{ color: 'error.main' }}>
                                         Vahvista muutokset korissa jatkaaksesi tilaamaan
                                     </Typography>
                                 </Alert>
-                            )}
+                            )} */}
                         </List>
                         <Grid container sx={{ display: 'flex', justifyContent: 'center' }}>
                             <Grid item xs={2} />

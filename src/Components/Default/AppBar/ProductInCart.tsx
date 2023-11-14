@@ -31,7 +31,9 @@ interface Props {
 function ProductInCart({ name, id, count, maxCount, amountChangeState }: Props) {
     const fetcher = useFetcher();
     const [changeAmount, setChangeAmount] = useState(true);
+
     const [amountN, setAmountN] = useState(count);
+
     const [selectedAmount, setSelectedAmount] = useState(count);
     const { unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts } = amountChangeState;
 
@@ -88,6 +90,13 @@ function ProductInCart({ name, id, count, maxCount, amountChangeState }: Props) 
         }
     };
 
+    const hoverFx = {
+        '&:hover': {
+            // backgroundColor: 'success.dark',
+            animation: 'none',
+        },
+    };
+
     return (
         <ListItem key={id} sx={{ height: 50 }}>
             <Grid container alignItems="center">
@@ -124,6 +133,27 @@ function ProductInCart({ name, id, count, maxCount, amountChangeState }: Props) 
                             aria-label="add more of same item to shopping cart"
                             onClick={() => handleSubmit('add')}
                             disabled={changeAmount}
+                            fullWidth
+                            sx={[
+                                hoverFx,
+                                !changeAmount
+                                    ? {
+                                          animation: 'blinker 1s linear infinite alternate',
+                                          opacity: 1,
+                                          '@keyframes blinker': {
+                                              '10%': {
+                                                  opacity: 1,
+                                              },
+                                              '50%': {
+                                                  opacity: 0.5,
+                                              },
+                                              '100%': {
+                                                  opacity: 0,
+                                              },
+                                          },
+                                      }
+                                    : null,
+                            ]}
                         >
                             {amountN === 0 ? (
                                 <Typography variant="inherit">Poista korista</Typography>
