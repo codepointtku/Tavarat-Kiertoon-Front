@@ -33,7 +33,7 @@ function BaseLayout() {
             <main>
                 <Box
                     id="main-layout-column-box"
-                    sx={{ display: 'flex', flex: 1, flexDirection: 'column', margin: '0 2rem 0 2rem' }}
+                    sx={{ display: 'flex', flex: 1, /* flexDirection: 'column' ,*/ margin: '0 2rem 1rem 2rem' }}
                 >
                     <Outlet />
                 </Box>

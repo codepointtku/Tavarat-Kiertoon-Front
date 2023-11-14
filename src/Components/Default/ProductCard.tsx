@@ -1,4 +1,7 @@
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import Carousel from 'react-material-ui-carousel';
+
 import {
     Box,
     Button,
@@ -8,16 +11,17 @@ import {
     CardContent,
     CardMedia,
     Typography,
-    Tooltip,
     Grid,
+    Link as MuiLink,
+    Stack,
     type ButtonPropsSizeOverrides,
 } from '@mui/material';
-import { type OverridableStringUnion } from '@material-ui/types';
-import Carousel from 'react-material-ui-carousel';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-import { Link } from 'react-router-dom';
+// import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { type OverridableStringUnion } from '@material-ui/types';
+
 import AddToCartButton from './AddToCartButton';
+import Tooltip from '../Tooltip';
 
 interface Props {
     productName: string;
@@ -51,7 +55,7 @@ function ProductCard({
 
     function handleHover(event: React.MouseEvent) {
         if (event.type === 'mouseenter') {
-            setDelayHandler(setTimeout(() => setOpenInfo(true), 500));
+            setDelayHandler(setTimeout(() => setOpenInfo(true), 200));
         } else if (event.type === 'mouseleave') {
             setOpenInfo(false);
             delayHandler && clearTimeout(delayHandler);
@@ -62,11 +66,11 @@ function ProductCard({
         // <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Card
             sx={{
-                width: 200,
-                minHeight: 360,
+                width: 230,
+                // height: 400,
                 transition: 'transform 0.1s ease-in-out',
                 '&:hover': {
-                    transform: 'scale(1.1)',
+                    transform: 'scale(1.04)',
                 },
             }}
         >
@@ -144,14 +148,34 @@ function ProductCard({
                     onMouseLeave={(MouseEvent) => handleHover(MouseEvent)}
                     container
                 >
-                    <Typography variant="h6" fontWeight="fontWeightLight" lineHeight="1" textOverflow="ellipsis">
-                        {productName}
-                    </Typography>
-                    {/* <Tooltip title="tilattavissa" placement="bottom" arrow>
-                        <Typography variant="subtitle1" fontWeight="400" lineHeight="1" sx={{ mt: 0.5 }}>
-                            {count} kpl
-                        </Typography>
-                    </Tooltip> */}
+                    <Grid container alignItems="center">
+                        <Grid item xs={10}>
+                            <Typography
+                                fontWeight="fontWeightThin"
+                                whiteSpace="nowrap"
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                            >
+                                <MuiLink
+                                    component={Link}
+                                    to={`/tuotteet/${id}`}
+                                    underline="none"
+                                    variant="h6"
+                                    fontWeight="fontWeightThin"
+                                    color="#000"
+                                >
+                                    {productName}
+                                </MuiLink>
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Tooltip title="tilattavissa">
+                                <Typography variant="body2" fontWeight="fontWeigthThin">
+                                    {count} kpl
+                                </Typography>
+                            </Tooltip>
+                        </Grid>
+                    </Grid>
                 </CardContent>
             </CardActionArea>
             <Box

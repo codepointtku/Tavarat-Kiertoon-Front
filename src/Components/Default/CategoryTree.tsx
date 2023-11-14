@@ -81,22 +81,22 @@ function CategoryTree({ treeSelectedState }: TreeSelectedProps) {
             key={nodes.id}
             nodeId={String(nodes.id)}
             label={
-                <Typography variant="body1" sx={{ padding: 1 }}>
-                    {nodes.name}
-                </Typography>
-                // <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 0.2 }}>
-                //     <Typography variant="body1" sx={{ flexGrow: 1 }}>
-                //         {nodes.name}
-                //     </Typography>
-                //     <Typography
-                //         variant="caption"
-                //         color="primary.main"
-                //         fontSize="fontSizeSmall"
-                //         fontWeight="fontWeightThin"
-                //     >
-                //         {nodes.product_count}
-                //     </Typography>
-                // </Box>
+                // <Typography variant="body1" sx={{ padding: 1 }}>
+                //     {nodes.name}
+                // </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 0.8 }}>
+                    <Typography variant="body1" sx={{ flexGrow: 1 }}>
+                        {nodes.name}
+                    </Typography>
+                    <Typography
+                        variant="caption"
+                        color="primary.main"
+                        fontSize="fontSizeSmall"
+                        fontWeight="fontWeightThin"
+                    >
+                        {nodes.product_count}
+                    </Typography>
+                </Box>
             }
             onClick={() => handleClick(nodes.id)}
             expandIcon={<ArrowRightOutlinedIcon />}

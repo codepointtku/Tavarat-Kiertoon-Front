@@ -22,11 +22,16 @@ function DefaultView() {
             <Stack id="front-page-main-block" alignItems="center" gap={2}>
                 <SearchField treeSelectedState={{ categoryTreeSelected, setCategoryTreeSelected }} />
 
-                <Stack direction="row" gap={4}>
-                    <CategoryTree treeSelectedState={{ categoryTreeSelected, setCategoryTreeSelected }} />
-
-                    <ProductList />
-                </Stack>
+                {/* <Stack direction="row" gap={4}> */}
+                <Grid container justifyContent="center" alignItems="flex-start">
+                    <Grid item /* sx={{ border: '1px solid blue' }} */ xs={12} sm={3} md={2}>
+                        <CategoryTree treeSelectedState={{ categoryTreeSelected, setCategoryTreeSelected }} />
+                    </Grid>
+                    <Grid item /*sx={{ border: '1px solid red' }} */ xs={12} sm={9} md={10}>
+                        <ProductList />
+                    </Grid>
+                </Grid>
+                {/* </Stack> */}
             </Stack>
         </>
     );
