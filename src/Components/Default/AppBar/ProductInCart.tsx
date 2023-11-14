@@ -92,7 +92,6 @@ function ProductInCart({ name, id, count, maxCount, amountChangeState }: Props) 
 
     const hoverFx = {
         '&:hover': {
-            // backgroundColor: 'success.dark',
             animation: 'none',
         },
     };
@@ -141,14 +140,14 @@ function ProductInCart({ name, id, count, maxCount, amountChangeState }: Props) 
                                           animation: 'blinker 1s linear infinite alternate',
                                           opacity: 1,
                                           '@keyframes blinker': {
-                                              '10%': {
+                                              '0%': {
                                                   opacity: 1,
                                               },
                                               '50%': {
                                                   opacity: 0.5,
                                               },
                                               '100%': {
-                                                  opacity: 0,
+                                                  opacity: 0.3,
                                               },
                                           },
                                       }
