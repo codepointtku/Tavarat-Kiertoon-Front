@@ -192,6 +192,8 @@ export default function BikeRentalView() {
                             <TableRow>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottaja:</TableCell>
                                 <TableCell>{rental.contact_name}</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Peräkärry:</TableCell>
+                                <TableCell>{rental.bike_trailer ? 'Kyllä' : 'Ei'}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottajan puhelinnumero:</TableCell>

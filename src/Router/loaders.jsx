@@ -449,6 +449,12 @@ const createNewBikeLoader = async (auth, setAuth) => {
     return { bikeData, bikeModelsData, colors };
 };
 
+// Get all bike trailers
+const bikeTrailersLoader = async (auth, setAuth) => {
+    const { data } = await bikesApi.bikesTrailersList();
+    // console.log(data)
+    return data;
+};
 /**
  * Get ALL Bike Models
  *
@@ -655,4 +661,5 @@ export {
     colorsLoader,
     categoriesManageLoader,
     gigaLoader,
+    bikeTrailersLoader,
 };
