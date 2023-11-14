@@ -35,6 +35,7 @@ import AlertBox from '../AlertBox';
 
 import type { rootLoader, productAddLoader } from '../../Router/loaders';
 import type { addProductAction } from '../../Router/actions';
+import { getValue } from '@testing-library/user-event/dist/utils';
 
 type PicUpload = {
     file: File;
@@ -102,7 +103,6 @@ function AddNewItem() {
     };
     const RemoveImage = (id: number) => {
         setFilelist((prevFileList) => prevFileList.filter((file, index) => index !== id));
-        setValue('pictures', []);
     };
     const handlePictureChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const pictureFileList = getValues('pictures');
