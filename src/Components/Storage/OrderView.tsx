@@ -322,7 +322,7 @@ function OrderView() {
                                                         },
                                                     }}
                                                 >
-                                                    Tulosta ja ota käsittelyyn
+                                                    Tulosta {order.status === 'Waiting' && 'ja ota käsittelyyn'}
                                                 </Button>
                                             </Container>
                                         </HasRole>
