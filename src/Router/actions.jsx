@@ -1039,6 +1039,26 @@ const deletePacketAction = async (params) => {
 };
 
 /**
+ * Delete existing bike trailer or create a new bike trailer
+ */
+const deleteCreateBikeTrailerAction = async ({request}) => {
+    console.log(request)
+
+    const formData = await request.formData();
+    if (request.method === 'DELETE') {
+        const response = await bikesApi.bikesTrailersDestroy(formData.get('id'));
+        return response;
+    } else if (request.method === 'POST') {
+        const response = await bikesApi.bikesTrailersCreate({
+            register_number: formData.get('register_number'),
+        });
+        return response;
+    }
+
+    return null;
+};
+
+/**
  * Delete a single bike model
  */
 const deleteBikeModelAction = async (auth, setAuth, params) => {
@@ -1349,4 +1369,5 @@ export {
     colorsManageAction,
     categoriesManageAction,
     searchWatchCreateAction,
+    deleteCreateBikeTrailerAction,
 };

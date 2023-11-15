@@ -220,6 +220,7 @@ import {
     returnProductsAction,
     categoriesManageAction,
     colorsManageAction,
+    deleteCreateBikeTrailerAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
@@ -858,6 +859,7 @@ function Routes() {
                                         {
                                             path: 'perakarryt',
                                             loader: async () => bikeTrailersLoader(auth, setAuth),
+                                            action: deleteCreateBikeTrailerAction,
                                             element: <BikeTrailers />,
                                         },
                                         {
