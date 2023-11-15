@@ -115,7 +115,7 @@ function OrderView() {
         );
     };
     const printPDF = async (data: FieldValues) => {
-        if (order.status !== 'Waiting') {
+        if (order.status === 'Waiting') {
             // if order is not waiting, change status to processing, else don't change status, only navigate to pdf view
             const productItemlist: number[] = [];
             productRenderItems.map((item) => {
