@@ -29,7 +29,7 @@ function Ordering() {
             </Typography>
             <Typography gutterBottom>
                 Tilataksesi tuotteita sinun tulee{' '}
-                <MuiLink component={Link} to="/signup">
+                <MuiLink component={Link} to="/rekisteroidy">
                     {' '}
                     rekisteröityä järjestelmään
                 </MuiLink>
