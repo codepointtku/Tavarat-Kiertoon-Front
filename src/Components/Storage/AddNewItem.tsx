@@ -35,7 +35,6 @@ import AlertBox from '../AlertBox';
 
 import type { rootLoader, productAddLoader } from '../../Router/loaders';
 import type { addProductAction } from '../../Router/actions';
-import { getValue } from '@testing-library/user-event/dist/utils';
 
 type PicUpload = {
     file: File;
