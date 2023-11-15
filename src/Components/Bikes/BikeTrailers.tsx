@@ -15,6 +15,7 @@ import {
     Box,
     Button,
     Container,
+    TextField,
 } from '@mui/material';
 
 import DeleteBikeTrailerModal from './DeleteBikeTrailerModal';
@@ -30,11 +31,13 @@ export default function BikeTrailers() {
     const submit = useSubmit();
     const onSubmit = (data: any) => {
         submit(data, { method: 'post', action: '/pyorat/pyoravarasto/perakarryt' });
+        reset({ register_number: '', trailer_type: 1 });
     };
 
-    const { handleSubmit, register, watch } = useForm({
+    const { handleSubmit, register, watch, reset, formState: { isDirty, isValid, errors, isSubmitting }, } = useForm({
         defaultValues: {
             register_number: '',
+            trailer_type: 1,
         },
     });
 
@@ -47,6 +50,28 @@ export default function BikeTrailers() {
                 Peräkärryt
             </Typography>
             <Container maxWidth="xl" component={Paper}>
+                <Box component={Form} onSubmit={handleSubmit(onSubmit)}>
+                    <TextField
+                            id="register-number"
+                            type="text"
+                            label="Rekisterinumero"
+                            error={!!errors.register_number}
+                            {...register('register_number', {
+                            required: {
+                                value: true,
+                                message: 'Rekisterinumero puuttuu',
+                            },
+                            }
+                            )}
+                    >
+                    </TextField>
+                    <Button
+                        type="submit"
+                        disabled={!isDirty || !isValid || isSubmitting}
+                    >
+                        Lisää peräkärry
+                    </Button>
+                </Box>
                 <TableContainer sx={{ padding: '2rem' }} component={Form}
                         onSubmit={handleSubmit(onSubmit)}>
                     <Box width="20%"></Box>

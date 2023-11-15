@@ -1051,6 +1051,7 @@ const deleteCreateBikeTrailerAction = async ({request}) => {
     } else if (request.method === 'POST') {
         const response = await bikesApi.bikesTrailersCreate({
             register_number: formData.get('register_number'),
+            trailer_type: formData.get('trailer_type')
         });
         return response;
     }
