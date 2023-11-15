@@ -16,6 +16,7 @@ import {
     Card,
     CardContent,
     CardActions,
+    MenuItem,
 } from '@mui/material';
 
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -71,12 +72,13 @@ function UserEdit() {
 
     const handleSubmit = createHandleSubmit((data) => {
         // console.log('%c Submitissa menevä tieto', 'color: blue', data);
+        console.log(data.group);
         submit(
             {
                 first_name: data.first_name,
                 last_name: data.last_name,
                 phone_number: data.phone_number!,
-                groups: data.groups.toString(),
+                group: data.group,
             },
             {
                 method: 'put',
@@ -274,34 +276,23 @@ function UserEdit() {
                                 <Box id="user-edition-checkboxes-wrapper">
                                     <TypographyHeading text="Käyttäjän käyttöoikeudet" />
                                     <Stack id="usergroups-checkboxes-stack-column" margin={'1rem 0 0 0'}>
-                                        {/* Checkboxes, mapped: */}
-                                        {userAuthGroups.map((group) => (
-                                            <FormControlLabel
-                                                key={group.id}
-                                                control={
-                                                    <Checkbox
-                                                        {...register('groups')}
-                                                        value={String(group.id)}
-                                                        defaultChecked={userInfo.groups.some(
-                                                            ({ id }) => group.id === id
-                                                        )}
-                                                        sx={{
-                                                            '&.Mui-checked': {
-                                                                color: 'success.dark',
-                                                            },
-                                                        }}
-                                                    />
-                                                }
-                                                label={groupNames[group.name as keyof typeof groupNames]}
-                                                sx={{
-                                                    margin: 0,
-                                                    borderBottom: '1px solid #e0e0e0',
-                                                    '&:hover': {
-                                                        color: 'success.dark',
-                                                    },
-                                                }}
-                                            />
-                                        ))}
+                                        <TextField
+                                            select
+                                            defaultValue={''}
+                                            required
+                                            {...register('group', {
+                                                required: {
+                                                    value: true,
+                                                    message: 'Käyttäjälle on valittava käyttöoikeus',
+                                                },
+                                            })}
+                                        >
+                                            {userAuthGroups.map((group) => (
+                                                <MenuItem key={group.id} value={group.name}>
+                                                    {group.name}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
                                     </Stack>
                                 </Box>
                             </Grid>

@@ -4725,18 +4725,16 @@ components:
         * `Handled` - Handled
     GroupEnum:
       enum:
-      - user_group
       - admin_group
       - storage_group
-      - bicycle_group
-      - bicycle_admin_group
+      - user_group
+      - deactive
       type: string
       description: |-
-        * `user_group` - user_group
-        * `admin_group` - admin_group
-        * `storage_group` - storage_group
-        * `bicycle_group` - bicycle_group
-        * `bicycle_admin_group` - bicycle_admin_group
+        * `admin_group` - Admin
+        * `storage_group` - Storage
+        * `user_group` - User
+        * `deactive` - Deactive
     GroupName:
       type: object
       description: Serializer for Groups
@@ -6134,6 +6132,8 @@ components:
         username:
           type: string
           maxLength: 255
+        group:
+          $ref: '#/components/schemas/GroupEnum'
       required:
       - email
       - first_name
@@ -6251,6 +6251,8 @@ components:
         username:
           type: string
           maxLength: 255
+        group:
+          $ref: '#/components/schemas/GroupEnum'
         is_active:
           type: boolean
           description: Designates whether this user should be treated as active. Unselect
