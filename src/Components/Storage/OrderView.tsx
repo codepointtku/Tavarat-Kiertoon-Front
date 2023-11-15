@@ -1,5 +1,13 @@
 import { useState, Fragment, useContext } from 'react';
-import { useLoaderData, Link, useFetcher, useSubmit, useNavigate } from 'react-router-dom';
+import {
+    useLoaderData,
+    Link,
+    useFetcher,
+    useSubmit,
+    useNavigate,
+    useNavigation,
+    useActionData,
+} from 'react-router-dom';
 import { usePDF } from '@react-pdf/renderer';
 import PDFDocument from './PDFCreator';
 
@@ -33,8 +41,10 @@ import HasRole from '../../Utils/HasRole';
 import type { orderViewLoader } from '../../Router/loaders';
 import BackButton from '../BackButton';
 import AuthContext from '../../Context/AuthContext';
+import AlertBox from '../AlertBox';
 import { type FieldValues, useForm } from 'react-hook-form';
 import { type ProductItemResponse } from '../../api';
+import { type orderEditStatusAction } from '../../Router/actions';
 
 export type OrderViewLoaderType = Awaited<ReturnType<typeof orderViewLoader>>;
 
@@ -43,10 +53,12 @@ type FormValues = {
 };
 function OrderView() {
     const order = useLoaderData() as OrderViewLoaderType;
+    const response = useActionData() as Awaited<ReturnType<typeof orderEditStatusAction>>;
     const { auth } = useContext(AuthContext);
     // state to control product info collapse field
     const [isOpen, setIsOpen] = useState<number>();
     const navigate = useNavigate();
+    const navigation = useNavigation();
     const currentStatus = ['Waiting', 'Processing', 'Finished'];
     // array with an array for each unique product_item.product.id and all products with that id
     const productRenderItems: OrderViewLoaderType['product_items'][] = [];
@@ -70,11 +82,9 @@ function OrderView() {
     };
 
     const {
-        control,
         handleSubmit,
         register,
-        watch,
-        formState: { isSubmitting, isSubmitSuccessful },
+        formState: { isSubmitting, isSubmitSuccessful, defaultValues, isDirty, submitCount },
     } = useForm<FormValues>({
         mode: 'onTouched',
         defaultValues: {
@@ -105,24 +115,42 @@ function OrderView() {
         );
     };
     const printPDF = async (data: FieldValues) => {
-        const productItemlist: number[] = [];
-        productRenderItems.map((item) => {
-            productItemlist.push(item[0].id);
-        });
-        await submit(
-            {
-                status: 'Processing',
-                orderId: order.id.toString(),
-                deliveryAddress: order.delivery_address,
-                recipient: order.recipient,
-                recipient_phone_number: order.recipient_phone_number,
-                productItems: JSON.stringify(productItemlist),
-            },
-            {
-                method: 'put',
-            }
-        );
+        if (order.status !== 'Waiting') {
+            // if order is not waiting, change status to processing, else don't change status, only navigate to pdf view
+            const productItemlist: number[] = [];
+            productRenderItems.map((item) => {
+                productItemlist.push(item[0].id);
+            });
+            await submit(
+                {
+                    status: 'Processing',
+                    orderId: order.id.toString(),
+                    deliveryAddress: order.delivery_address,
+                    recipient: order.recipient,
+                    recipient_phone_number: order.recipient_phone_number,
+                    productItems: JSON.stringify(productItemlist),
+                },
+                {
+                    method: 'put',
+                }
+            );
+        }
+
         navigate(`/varasto/pdf/${order.id}`);
+    };
+
+    const orderStatusTranslate = (value: string) => {
+        if (value === 'Waiting') {
+            return 'Odottaa käsittelyä';
+        }
+        if (value === 'Processing') {
+            return 'Käsittelyssä';
+        }
+        if (value === 'Finished') {
+            return 'Toimitettu';
+        } else {
+            return value;
+        }
     };
     return (
         <Container maxWidth="xl">
@@ -185,20 +213,29 @@ function OrderView() {
                                             component={fetcher.Form}
                                             onSubmit={handleSubmit(onSubmit)}
                                         >
-                                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    justifyContent: 'flex-start',
+                                                }}
+                                            >
                                                 <TextField
                                                     id="order-status-select"
                                                     select
+                                                    size="small"
                                                     {...register('status', {
                                                         required: {
                                                             value: true,
                                                             message: 'Valitse tila',
                                                         },
                                                     })}
-                                                    value={watch('status')}
+                                                    // value={watch('status')}
+                                                    defaultValue={defaultValues?.status || ''}
                                                     required
                                                     inputProps={{ required: false }}
-                                                    sx={{ marginBottom: '-1rem' }}
+                                                    sx={{
+                                                        width: '50%',
+                                                    }}
                                                 >
                                                     {currentStatus?.map((status) => {
                                                         return (
@@ -208,7 +245,7 @@ function OrderView() {
                                                                 key={status}
                                                                 value={status}
                                                             >
-                                                                {status}
+                                                                {orderStatusTranslate(status)}
                                                             </MenuItem>
                                                         );
                                                     })}
@@ -218,10 +255,27 @@ function OrderView() {
                                                     type="submit"
                                                     disabled={isSubmitting}
                                                     sx={{
-                                                        marginBottom: '-1rem',
+                                                        marginLeft: '1rem',
+                                                        display: isDirty || submitCount > 0 ? 'flex' : 'none',
+                                                        // // animation for blinking button when unconfirmed changes. not used atm, but could be used for this or other buttons.
+                                                        // animation: isDirty
+                                                        //     ? 'blinker 1s linear infinite alternate'
+                                                        //     : '',
+                                                        // opacity: 1,
+                                                        // '@keyframes blinker': {
+                                                        //     '0%': {
+                                                        //         opacity: 1,
+                                                        //     },
+                                                        //     '50%': {
+                                                        //         opacity: 0.5,
+                                                        //     },
+                                                        //     '100%': {
+                                                        //         opacity: 0,
+                                                        //     },
+                                                        // },
                                                     }}
                                                 >
-                                                    Tallenna muutokset
+                                                    Tallenna
                                                 </Button>
                                             </Box>
                                         </Container>
