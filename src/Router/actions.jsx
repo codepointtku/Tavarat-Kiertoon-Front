@@ -15,14 +15,6 @@ import {
     usersApi,
 } from '../api';
 
-const adminLogOut = async ({ request }) => {
-    if (request.method === 'POST') {
-        await usersApi.usersLogoutCreate();
-        return { type: 'logout', status: true };
-    }
-    return { type: 'logout', status: false };
-};
-
 /**
  * logins or logouts user, adds a product to shopping cart and deletes product from shopping cart
  */
@@ -243,6 +235,14 @@ const orderEditAction = async ({ request, params }) => {
 //
 // admin bing bings
 
+const adminLogOut = async ({ request }) => {
+    if (request.method === 'POST') {
+        await usersApi.usersLogoutCreate();
+        return { type: 'logout', status: true };
+    }
+    return { type: 'logout', status: false };
+};
+
 const orderDeleteAction = async ({ params }) => {
     await ordersApi.ordersDestroy(params.id);
     return redirect('/admin/tilaukset');
@@ -314,6 +314,32 @@ const editProductAction = async (auth, setAuth, request, params) => {
         return { type: 'editProduct', status: true };
     }
     return { type: 'editProduct', status: false };
+};
+
+/*
+ * Returns products to storage
+ */
+const returnProductsAction = async ({ request, params }) => {
+    console.log('return of the product action');
+    const formData = await request.formData();
+    const formDataObj = Object.fromEntries(formData);
+    formData.get('amount');
+    console.log(formDataObj.amount, formDataObj.addId);
+    // todo add id
+    console.log(typeof formDataObj.amount, typeof formDataObj.addId);
+
+    const response = await productsApi.productsReturnCreate(
+        // parseInt(formData.get('addId')),
+        params.id,
+        {
+            amount: parseInt(formData.get('amount')),
+        }
+    );
+
+    if (response.status === 200) {
+        return { type: 'returnProduct', status: true };
+    }
+    return { type: 'returnProduct', status: false };
 };
 
 /*
@@ -561,9 +587,12 @@ const adminEmailRecipientsAction = async ({ request }) => {
 
 const colorsManageAction = async ({ request }) => {
     const formData = await request.formData();
+    const color = formData.get('color');
 
     if (request.method === 'POST') {
-        const response = await colorsApi.colorsCreate({ name: formData.get('color') });
+        const response = await colorsApi.colorsCreate({
+            name: color.charAt(0).toUpperCase() + color.slice(1),
+        });
 
         if (response.status === 201) {
             return { type: 'colorcreate', status: true };
@@ -611,10 +640,14 @@ const categoriesManageAction = async ({ request }) => {
 
     const formData = await request.formData();
     const id = formData.get('id');
+    const categoryName = formData.get('cat');
 
     if (request.method === 'POST') {
         if (formData.get('parent') === null) {
-            const newMainCategory = { name: formData.get('cat'), parent: null };
+            const newMainCategory = {
+                name: categoryName.charAt(0).toUpperCase() + categoryName.slice(1),
+                parent: null,
+            };
 
             const response = await categoriesApi.categoriesCreate(newMainCategory);
 
@@ -624,7 +657,10 @@ const categoriesManageAction = async ({ request }) => {
             return { type: 'categorycreate', status: false };
         }
 
-        const newCategory = { name: formData.get('cat'), parent: formData.get('parent') };
+        const newCategory = {
+            name: categoryName.charAt(0).toUpperCase() + categoryName.slice(1),
+            parent: formData.get('parent'),
+        };
 
         const response = await categoriesApi.categoriesCreate(newCategory);
 
@@ -1278,6 +1314,7 @@ export {
     storageCreateAction,
     storageEditAction,
     addProductAction,
+    returnProductsAction,
     editProductAction,
     storageDeleteAction,
     productsTransferAction,

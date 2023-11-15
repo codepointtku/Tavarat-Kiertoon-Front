@@ -52,7 +52,7 @@ function ErrorBoundary() {
                     <Button onClick={handleGoBack} sx={{ margin: '1em' }}>
                         Takaisin
                     </Button>
-                    <Button component={Link} to="/" sx={{ margin: '1em' }}>
+                    <Button component={Link} reloadDocument to="/" sx={{ margin: '1em' }}>
                         Takaisin etusivulle
                     </Button>
                 </Box>

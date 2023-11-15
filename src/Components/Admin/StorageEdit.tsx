@@ -57,7 +57,7 @@ function StorageEdit() {
 
             {responseStatus?.type === 'updatestorage' && responseStatus?.status && (
                 <AlertBox
-                    text="Varaston tiedot päivitetty. Uudelleenohjataan..."
+                    text="Varaston tiedot päivitetty."
                     status="success"
                     timer={3000}
                     redirectUrl="/admin/varastot"
@@ -154,6 +154,10 @@ function StorageEdit() {
                                     maxLength: {
                                         value: 50,
                                         message: 'Maksimipituus 50 merkkiä',
+                                    },
+                                    pattern: {
+                                        value: /^[a-zA-ZåÅäÄöÖ]+$|^[a-zA-ZåÅäÄöÖ]+-[a-zA-ZåÅäÄöÖ]+$/,
+                                        message: 'Kenttä voi sisältää vain aakkosia',
                                     },
                                 })}
                                 inputProps={{ required: false }}

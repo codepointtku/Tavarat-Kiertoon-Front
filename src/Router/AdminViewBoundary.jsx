@@ -72,7 +72,7 @@ function AdminViewBoundary() {
                 <Button onClick={handleGoBack} sx={{ margin: '1rem 1rem 0 0' }}>
                     Takaisin
                 </Button>
-                <Button component={Link} to="/" sx={{ margin: '1rem 0 0 0' }}>
+                <Button component={Link} reloadDocument to="/" sx={{ margin: '1rem 0 0 0' }}>
                     Tavarat Kiertoon etusivulle
                 </Button>
             </Alert>

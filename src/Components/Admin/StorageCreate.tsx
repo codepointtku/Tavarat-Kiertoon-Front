@@ -38,7 +38,7 @@ function StorageCreate() {
 
             {responseStatus?.type === 'createstorage' && responseStatus?.status && (
                 <AlertBox
-                    text="Varasto luotu tietokantaan. Uudelleenohjataan..."
+                    text="Varasto luotu tietokantaan."
                     status="success"
                     timer={3000}
                     redirectUrl="/admin/varastot"
@@ -131,6 +131,10 @@ function StorageCreate() {
                                     maxLength: {
                                         value: 50,
                                         message: 'Maksimipituus 50 merkkiä',
+                                    },
+                                    pattern: {
+                                        value: /^[a-zA-ZåÅäÄöÖ]+$|^[a-zA-ZåÅäÄöÖ]+-[a-zA-ZåÅäÄöÖ]+$/,
+                                        message: 'Kenttä voi sisältää vain aakkosia',
                                     },
                                 })}
                                 inputProps={{ required: false }}

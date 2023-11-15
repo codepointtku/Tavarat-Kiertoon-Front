@@ -61,7 +61,7 @@ function AddressEdit() {
         <>
             {responseStatus?.type === 'addressmodified' && responseStatus?.status && (
                 <AlertBox
-                    text="Osoitteen tietoja muokattu onnistuneesti. Uudelleenohjataan takaisin tilisivulle..."
+                    text="Osoitteen tietoja muokattu onnistuneesti."
                     status="success"
                     timer={3000}
                     redirectUrl="/tili"
@@ -115,6 +115,10 @@ function AddressEdit() {
                                 minLength: {
                                     value: 1,
                                     message: 'Osoitteen kaupunki on vaadittu',
+                                },
+                                pattern: {
+                                    value: /^[a-zA-ZåÅäÄöÖ]+$|^[a-zA-ZåÅäÄöÖ]+-[a-zA-ZåÅäÄöÖ]+$/,
+                                    message: 'Kenttä voi sisältää vain aakkosia',
                                 },
                             })}
                             inputProps={{ required: false }}

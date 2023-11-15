@@ -333,7 +333,7 @@ function ContactsAndDelivery() {
                             label="Toimitustapa"
                             variant="outlined"
                             value={selectedDeliveryMethod}
-                            onChange={(SelectChangeEvent) => {
+                            onChange={(SelectChangeEvent: React.ChangeEvent<HTMLInputElement>) => {
                                 setSelectedDeliveryMethod(SelectChangeEvent.target.value);
                             }}
                             select
@@ -391,11 +391,15 @@ function ContactsAndDelivery() {
                                     variant="outlined"
                                     {...register('city', {
                                         required: { value: true, message: 'Tämä kenttä on täytettävä' },
-                                        maxLength: { value: 80, message: 'Sisältö on liian pitkä' },
+                                        maxLength: { value: 40, message: 'Sisältö on liian pitkä' },
+                                        pattern: {
+                                            value: /^[a-zA-ZåÅäÄöÖ]+$|^[a-zA-ZåÅäÄöÖ]+-[a-zA-ZåÅäÄöÖ]+$/,
+                                            message: 'Kenttä voi sisältää vain aakkosia',
+                                        },
                                     })}
                                     inputProps={{ required: false }}
-                                    error={!!errors.deliveryAddress}
-                                    helperText={errors.deliveryAddress?.message?.toString() || ''}
+                                    error={!!errors.city}
+                                    helperText={errors.city?.message?.toString() || ''}
                                     required
                                     disabled={collect}
                                 />
