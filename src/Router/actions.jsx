@@ -195,9 +195,9 @@ const orderEditStatusAction = async ({ request, params }) => {
     const response = await ordersApi.ordersUpdate(params.id, submission);
 
     if (response.status === 202) {
-        return { type: 'orderupdate', status: true };
+        return { type: 'orderstatusupdate', status: true };
     }
-    return { type: 'orderupdate', status: false };
+    return { type: 'orderstatusupdate', status: false };
 };
 
 // return redirect(`/varasto/tilaukset/${params.id}`);
