@@ -153,273 +153,291 @@ function OrderView() {
         }
     };
     return (
-        <Container maxWidth="xl">
-            <Stack id="order-info-container-main-stack" sx={{ padding: '1rem 0 1rem 0' }}>
-                <Grid
-                    id="header-grid-container"
-                    container
-                    sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                >
-                    <Grid item xs={3} justifyContent="flex-start">
-                        <BackButton />
+        <>
+            {response?.type === 'orderstatusupdate' && response?.status === false && (
+                <AlertBox text="Tilan muuttaminen epäonnistui" status="error" timer={5000} />
+            )}
+            {response?.status !== false && navigation.state === 'idle' && isSubmitSuccessful && (
+                <AlertBox text="Tila päivitetty" status="success" timer={2000} />
+            )}
+            <Container maxWidth="xl">
+                <Stack id="order-info-container-main-stack" sx={{ padding: '1rem 0 1rem 0' }}>
+                    <Grid
+                        id="header-grid-container"
+                        container
+                        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                    >
+                        <Grid item xs={3} justifyContent="flex-start">
+                            <BackButton />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TypographyTitle text={`Tilaus #${order.id}`} />
+                        </Grid>
+                        <Grid item xs={3} />
                     </Grid>
-                    <Grid item xs={6}>
-                        <TypographyTitle text={`Tilaus #${order.id}`} />
-                    </Grid>
-                    <Grid item xs={3} />
-                </Grid>
 
-                <Box id="order-info-main-wrapper" sx={{ margin: '2rem 0 1rem 0' }}>
-                    <Table id="order-info-table">
-                        <TableBody>
-                            <TableRow>
-                                <TableCell width="20%" sx={{ fontWeight: 'bold' }}>
-                                    Tilaaja:
-                                </TableCell>
-                                <TableCell width="30%">
-                                    {auth['admin_group'] ? (
-                                        <MuiLink component={Link} to={`/admin/kayttajat/${order.user.id}`}>
-                                            {order.user.first_name} {order.user.last_name}
-                                        </MuiLink>
+                    <Box id="order-info-main-wrapper" sx={{ margin: '2rem 0 1rem 0' }}>
+                        <Table id="order-info-table">
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell width="20%" sx={{ fontWeight: 'bold' }}>
+                                        Tilaaja:
+                                    </TableCell>
+                                    <TableCell width="30%">
+                                        {auth['admin_group'] ? (
+                                            <MuiLink component={Link} to={`/admin/kayttajat/${order.user.id}`}>
+                                                {order.user.first_name} {order.user.last_name}
+                                            </MuiLink>
+                                        ) : (
+                                            <span>
+                                                {order.user.first_name} {order.user.last_name}
+                                            </span>
+                                        )}
+                                    </TableCell>
+                                    <TableCell width="20%" sx={{ fontWeight: 'bold' }}>
+                                        Tilaus tehty:
+                                    </TableCell>
+                                    <TableCell width="30%">{dateParse(order?.creation_date as string)}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Tilauksen toimitusosoite:</TableCell>
+                                    <TableCell>{order.delivery_address}</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Toivottu toimitusaika:</TableCell>
+                                    {order.delivery_date ? (
+                                        <TableCell>{dateParse(order?.delivery_date as string)}</TableCell>
                                     ) : (
-                                        <span>
-                                            {order.user.first_name} {order.user.last_name}
-                                        </span>
+                                        <TableCell>-</TableCell>
                                     )}
-                                </TableCell>
-                                <TableCell width="20%" sx={{ fontWeight: 'bold' }}>
-                                    Tilaus tehty:
-                                </TableCell>
-                                <TableCell width="30%">{dateParse(order?.creation_date as string)}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Tilauksen toimitusosoite:</TableCell>
-                                <TableCell>{order.delivery_address}</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Toivottu toimitusaika:</TableCell>
-                                {order.delivery_date ? (
-                                    <TableCell>{dateParse(order?.delivery_date as string)}</TableCell>
-                                ) : (
-                                    <TableCell>-</TableCell>
-                                )}
-                            </TableRow>
-                            <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottaja:</TableCell>
-                                <TableCell>{order.recipient}</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Tilauksen tila:</TableCell>
-                                <TableCell>
-                                    {auth['admin_group'] ? (
-                                        <Container
-                                            maxWidth="xs"
-                                            component={fetcher.Form}
-                                            onSubmit={handleSubmit(onSubmit)}
-                                        >
-                                            <Box
-                                                sx={{
-                                                    display: 'flex',
-                                                    justifyContent: 'flex-start',
-                                                }}
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottaja:</TableCell>
+                                    <TableCell>{order.recipient}</TableCell>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Tilauksen tila:</TableCell>
+                                    <TableCell>
+                                        {auth['admin_group'] ? (
+                                            <Container
+                                                maxWidth="xs"
+                                                component={fetcher.Form}
+                                                onSubmit={handleSubmit(onSubmit)}
                                             >
-                                                <TextField
-                                                    id="order-status-select"
-                                                    select
-                                                    size="small"
-                                                    {...register('status', {
-                                                        required: {
-                                                            value: true,
-                                                            message: 'Valitse tila',
-                                                        },
-                                                    })}
-                                                    // value={watch('status')}
-                                                    defaultValue={defaultValues?.status || ''}
-                                                    required
-                                                    inputProps={{ required: false }}
+                                                <Box
                                                     sx={{
-                                                        width: '50%',
+                                                        display: 'flex',
+                                                        justifyContent: 'flex-start',
                                                     }}
                                                 >
-                                                    {currentStatus?.map((status) => {
-                                                        return (
-                                                            <MenuItem
-                                                                id="order-status-item"
-                                                                className="order-status-select-item"
-                                                                key={status}
-                                                                value={status}
-                                                            >
-                                                                {orderStatusTranslate(status)}
-                                                            </MenuItem>
-                                                        );
-                                                    })}
-                                                </TextField>
-                                                <Button
-                                                    id="submit-btn"
-                                                    type="submit"
-                                                    disabled={isSubmitting}
-                                                    sx={{
-                                                        marginLeft: '1rem',
-                                                        display: isDirty || submitCount > 0 ? 'flex' : 'none',
-                                                        // // animation for blinking button when unconfirmed changes. not used atm, but could be used for this or other buttons.
-                                                        // animation: isDirty
-                                                        //     ? 'blinker 1s linear infinite alternate'
-                                                        //     : '',
-                                                        // opacity: 1,
-                                                        // '@keyframes blinker': {
-                                                        //     '0%': {
-                                                        //         opacity: 1,
-                                                        //     },
-                                                        //     '50%': {
-                                                        //         opacity: 0.5,
-                                                        //     },
-                                                        //     '100%': {
-                                                        //         opacity: 0,
-                                                        //     },
-                                                        // },
-                                                    }}
-                                                >
-                                                    Tallenna
-                                                </Button>
-                                            </Box>
-                                        </Container>
-                                    ) : (
-                                        order.status
-                                    )}
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottajan puhelinnumero:</TableCell>
-                                <TableCell>{order.recipient_phone_number}</TableCell>
-                                <TableCell>
-                                    <HasRole role="admin_group">
-                                        <Button component={Link} to={`/admin/tilaukset/${order.id}/muokkaa`}>
-                                            Muokkaa tilausta
-                                        </Button>
-                                    </HasRole>
-                                </TableCell>
-                                <TableCell>
-                                    <HasRole role="admin_group">
-                                        <Container
-                                            maxWidth="xs"
-                                            component={fetcher.Form}
-                                            onSubmit={handleSubmit(printPDF)}
-                                        >
-                                            <Button
-                                                color="error"
-                                                //to={`/varasto/pdf/${order.id}`}
-                                                //to={instance.url}
-                                                //target="_blank"
-                                                //component={Link}
-                                                id="pdf-print"
-                                                type="submit"
-                                                sx={{
-                                                    '&:hover': {
-                                                        backgroundColor: 'success.dark',
-                                                    },
-                                                }}
-                                            >
-                                                Tulosta ja ota käsittelyyn
+                                                    <TextField
+                                                        id="order-status-select"
+                                                        select
+                                                        size="small"
+                                                        {...register('status', {
+                                                            required: {
+                                                                value: true,
+                                                                message: 'Valitse tila',
+                                                            },
+                                                        })}
+                                                        // value={watch('status')}
+                                                        defaultValue={defaultValues?.status || ''}
+                                                        required
+                                                        inputProps={{ required: false }}
+                                                        sx={{
+                                                            width: '50%',
+                                                        }}
+                                                    >
+                                                        {currentStatus?.map((status) => {
+                                                            return (
+                                                                <MenuItem
+                                                                    id="order-status-item"
+                                                                    className="order-status-select-item"
+                                                                    key={status}
+                                                                    value={status}
+                                                                >
+                                                                    {orderStatusTranslate(status)}
+                                                                </MenuItem>
+                                                            );
+                                                        })}
+                                                    </TextField>
+                                                    <Button
+                                                        id="submit-btn"
+                                                        type="submit"
+                                                        disabled={isSubmitting}
+                                                        sx={{
+                                                            marginLeft: '1rem',
+                                                            display: isDirty || submitCount > 0 ? 'flex' : 'none',
+                                                            // // animation for blinking button when unconfirmed changes. not used atm, but could be used for this or other buttons.
+                                                            // animation: isDirty
+                                                            //     ? 'blinker 1s linear infinite alternate'
+                                                            //     : '',
+                                                            // opacity: 1,
+                                                            // '@keyframes blinker': {
+                                                            //     '0%': {
+                                                            //         opacity: 1,
+                                                            //     },
+                                                            //     '50%': {
+                                                            //         opacity: 0.5,
+                                                            //     },
+                                                            //     '100%': {
+                                                            //         opacity: 0,
+                                                            //     },
+                                                            // },
+                                                        }}
+                                                    >
+                                                        Tallenna
+                                                    </Button>
+                                                </Box>
+                                            </Container>
+                                        ) : (
+                                            order.status
+                                        )}
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottajan puhelinnumero:</TableCell>
+                                    <TableCell>{order.recipient_phone_number}</TableCell>
+                                    <TableCell>
+                                        <HasRole role="admin_group">
+                                            <Button component={Link} to={`/admin/tilaukset/${order.id}/muokkaa`}>
+                                                Muokkaa tilausta
                                             </Button>
-                                        </Container>
-                                    </HasRole>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Lisätiedot:</TableCell>
-                                <TableCell colSpan={3} sx={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
-                                    {order.order_info}
-                                </TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-
-                    <Table id="orders-products-table" aria-label="collapsible table" sx={{ margin: '1rem 0 1rem 0' }}>
-                        <TableHead>
-                            <TableRow>
-                                <StyledTableCell>Tuotteet:</StyledTableCell>
-                                <StyledTableCell>Viivakoodi</StyledTableCell>
-                                <StyledTableCell>Tuotenimi</StyledTableCell>
-                                <StyledTableCell>Kappalemäärä</StyledTableCell>
-                                <StyledTableCell>Tuotetunniste</StyledTableCell>
-                                <StyledTableCell>Varasto</StyledTableCell>
-                            </TableRow>
-                        </TableHead>
-
-                        <TableBody id="orders-products-tablebody">
-                            {productRenderItems?.map((itemArray, index) => (
-                                <Fragment key={itemArray[0].id}>
-                                    <StyledTableRow>
-                                        <TableCell>
-                                            <IconButton
-                                                aria-label="expand row"
-                                                size="small"
-                                                onClick={() => {
-                                                    isOpen === index ? setIsOpen(undefined) : setIsOpen(index);
-                                                }}
+                                        </HasRole>
+                                    </TableCell>
+                                    <TableCell>
+                                        <HasRole role="admin_group">
+                                            <Container
+                                                maxWidth="xs"
+                                                component={fetcher.Form}
+                                                onSubmit={handleSubmit(printPDF)}
                                             >
-                                                {isOpen === index ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                                            </IconButton>
-                                        </TableCell>
-                                        <TableCell>{itemArray[0].barcode}</TableCell>
-                                        <TableCell component="th" scope="row">
-                                            <Tooltip title={itemArray[0].product.free_description}>
-                                                <Box
-                                                    component={Link}
-                                                    // to do: link to = adminview | storageview product editview, not defaults
-                                                    to={`/tuotteet/${itemArray[0].product.id}`}
+                                                <Button
+                                                    color="error"
+                                                    //to={`/varasto/pdf/${order.id}`}
+                                                    //to={instance.url}
+                                                    //target="_blank"
+                                                    //component={Link}
+                                                    id="pdf-print"
+                                                    type="submit"
+                                                    sx={{
+                                                        '&:hover': {
+                                                            backgroundColor: 'success.dark',
+                                                        },
+                                                    }}
                                                 >
-                                                    {itemArray[0].product.name}
-                                                </Box>
-                                            </Tooltip>
-                                        </TableCell>
-                                        <TableCell>{itemArray.length}</TableCell>
-                                        <TableCell>{itemArray[0].product.id}</TableCell>
-                                        {/* todo: show some symbol[!] if there are multiple storages for these products? */}
-                                        <TableCell>{itemArray[0].storage.name}</TableCell>
-                                    </StyledTableRow>
-                                    <TableRow>
-                                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                                            <Collapse in={isOpen === index} timeout="auto" unmountOnExit>
-                                                <Box
-                                                    id="product-detail-indent-box"
-                                                    sx={{ margin: '0.4rem 1rem -0.1rem 1rem' }}
+                                                    Tulosta ja ota käsittelyyn
+                                                </Button>
+                                            </Container>
+                                        </HasRole>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>Lisätiedot:</TableCell>
+                                    <TableCell colSpan={3} sx={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
+                                        {order.order_info}
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+
+                        <Table
+                            id="orders-products-table"
+                            aria-label="collapsible table"
+                            sx={{ margin: '1rem 0 1rem 0' }}
+                        >
+                            <TableHead>
+                                <TableRow>
+                                    <StyledTableCell>Tuotteet:</StyledTableCell>
+                                    <StyledTableCell>Viivakoodi</StyledTableCell>
+                                    <StyledTableCell>Tuotenimi</StyledTableCell>
+                                    <StyledTableCell>Kappalemäärä</StyledTableCell>
+                                    <StyledTableCell>Tuotetunniste</StyledTableCell>
+                                    <StyledTableCell>Varasto</StyledTableCell>
+                                </TableRow>
+                            </TableHead>
+
+                            <TableBody id="orders-products-tablebody">
+                                {productRenderItems?.map((itemArray, index) => (
+                                    <Fragment key={itemArray[0].id}>
+                                        <StyledTableRow>
+                                            <TableCell>
+                                                <IconButton
+                                                    aria-label="expand row"
+                                                    size="small"
+                                                    onClick={() => {
+                                                        isOpen === index ? setIsOpen(undefined) : setIsOpen(index);
+                                                    }}
                                                 >
-                                                    <Table size="small">
-                                                        <TableHead>
-                                                            <TableRow>
-                                                                <TableCell align="right">Mitat</TableCell>
-                                                                <TableCell align="right">Paino</TableCell>
-                                                                <TableCell align="right">
-                                                                    Yksittäisen tuotteen tunnistenumero
-                                                                </TableCell>
-                                                                {/* Todo: add storage, to show product_items in multiple storages? */}
-                                                                {/* <TableCell align="right">Varasto</TableCell> */}
-                                                                <TableCell align="right">Hyllynumero</TableCell>
-                                                            </TableRow>
-                                                        </TableHead>
-                                                        <TableBody>
-                                                            {itemArray.map((item) => (
-                                                                <TableRow key={item.id}>
+                                                    {isOpen === index ? (
+                                                        <KeyboardArrowUpIcon />
+                                                    ) : (
+                                                        <KeyboardArrowDownIcon />
+                                                    )}
+                                                </IconButton>
+                                            </TableCell>
+                                            <TableCell>{itemArray[0].barcode}</TableCell>
+                                            <TableCell component="th" scope="row">
+                                                <Tooltip title={itemArray[0].product.free_description}>
+                                                    <Box
+                                                        component={Link}
+                                                        // to do: link to = adminview | storageview product editview, not defaults
+                                                        to={`/tuotteet/${itemArray[0].product.id}`}
+                                                    >
+                                                        {itemArray[0].product.name}
+                                                    </Box>
+                                                </Tooltip>
+                                            </TableCell>
+                                            <TableCell>{itemArray.length}</TableCell>
+                                            <TableCell>{itemArray[0].product.id}</TableCell>
+                                            {/* todo: show some symbol[!] if there are multiple storages for these products? */}
+                                            <TableCell>{itemArray[0].storage.name}</TableCell>
+                                        </StyledTableRow>
+                                        <TableRow>
+                                            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                                                <Collapse in={isOpen === index} timeout="auto" unmountOnExit>
+                                                    <Box
+                                                        id="product-detail-indent-box"
+                                                        sx={{ margin: '0.4rem 1rem -0.1rem 1rem' }}
+                                                    >
+                                                        <Table size="small">
+                                                            <TableHead>
+                                                                <TableRow>
+                                                                    <TableCell align="right">Mitat</TableCell>
+                                                                    <TableCell align="right">Paino</TableCell>
                                                                     <TableCell align="right">
-                                                                        {item.product.measurements}
+                                                                        Yksittäisen tuotteen tunnistenumero
                                                                     </TableCell>
-                                                                    <TableCell align="right">
-                                                                        {item.product.weight}
-                                                                    </TableCell>
-                                                                    <TableCell align="right">{item.id}</TableCell>
-                                                                    <TableCell align="right">{item.shelf_id}</TableCell>
+                                                                    {/* Todo: add storage, to show product_items in multiple storages? */}
+                                                                    {/* <TableCell align="right">Varasto</TableCell> */}
+                                                                    <TableCell align="right">Hyllynumero</TableCell>
                                                                 </TableRow>
-                                                            ))}
-                                                        </TableBody>
-                                                    </Table>
-                                                </Box>
-                                            </Collapse>
-                                        </TableCell>
-                                    </TableRow>
-                                </Fragment>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </Box>
-            </Stack>
-        </Container>
+                                                            </TableHead>
+                                                            <TableBody>
+                                                                {itemArray.map((item) => (
+                                                                    <TableRow key={item.id}>
+                                                                        <TableCell align="right">
+                                                                            {item.product.measurements}
+                                                                        </TableCell>
+                                                                        <TableCell align="right">
+                                                                            {item.product.weight}
+                                                                        </TableCell>
+                                                                        <TableCell align="right">{item.id}</TableCell>
+                                                                        <TableCell align="right">
+                                                                            {item.shelf_id}
+                                                                        </TableCell>
+                                                                    </TableRow>
+                                                                ))}
+                                                            </TableBody>
+                                                        </Table>
+                                                    </Box>
+                                                </Collapse>
+                                            </TableCell>
+                                        </TableRow>
+                                    </Fragment>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </Box>
+                </Stack>
+            </Container>
+        </>
     );
 }
 
