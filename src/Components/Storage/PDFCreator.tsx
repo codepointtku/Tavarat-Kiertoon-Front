@@ -217,7 +217,7 @@ function PDFDocument({ order }: { order: PDFOrderType }) {
                 <Text>Tavarat Kiertoon</Text>
             </View>
             <View style={{ flex: 1, alignItems: 'center' }}>
-                <Text>Tilausnumero: {order.id}</Text>
+                <Text style={{ fontSize: 18 }}>Tilausnumero: {order.id}</Text>
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
                 <Text>
