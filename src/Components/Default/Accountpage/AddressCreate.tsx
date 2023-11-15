@@ -85,6 +85,10 @@ function AddressCreate() {
                                     value: 50,
                                     message: 'Kaupungin nimi on liian pitkä',
                                 },
+                                pattern: {
+                                    value: /^[a-zA-ZåÅäÄöÖ]+$|^[a-zA-ZåÅäÄöÖ]+-[a-zA-ZåÅäÄöÖ]+$/,
+                                    message: 'Kenttä voi sisältää vain aakkosia',
+                                },
                             })}
                             inputProps={{ required: false }}
                             required
