@@ -459,13 +459,11 @@ const userEditAction = async ({ request, params }) => {
         const userPermissionsUpdateResponse = await usersApi.usersGroupsUpdate(params.userid, selectedAuthGroup);
 
         const userInfoUpdateResponse = await usersApi.usersUpdate(params.userid, userInfo);
-        console.log(userPermissionsUpdateResponse.status);
 
         if (userInfoUpdateResponse.status === 200 && userPermissionsUpdateResponse.status === 200) {
             return { type: 'userdataupdate', status: true };
         }
     } catch (err) {
-        console.log(err);
         return { type: 'userdataupdate', status: false, responseMsg: err.response.data };
     }
 };

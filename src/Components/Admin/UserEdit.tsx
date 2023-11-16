@@ -45,7 +45,6 @@ const groupNames = {
 function UserEdit() {
     const { userInfo, userAuthGroups } = useLoaderData() as Awaited<ReturnType<typeof userEditLoader>>;
     const actionData = useActionData() as Awaited<ReturnType<typeof userEditAction>>;
-    console.log(userInfo);
 
     const creationDateInfo = [];
     const creationDate = new Date(userInfo.creation_date);
@@ -69,12 +68,9 @@ function UserEdit() {
             // groups: userInfo.groups.map((group) => group.id),
         },
     });
-
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data) => {
-        // console.log('%c Submitissa menevä tieto', 'color: blue', data);
-        console.log(data.group);
         submit(
             {
                 first_name: data.first_name,
