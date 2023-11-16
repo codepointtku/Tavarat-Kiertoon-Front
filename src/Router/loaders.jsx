@@ -264,7 +264,7 @@ const userEditLoader = async ({ params }) => {
         usersApi.usersRetrieve(params.userid),
         usersApi.usersGroupsList(),
     ]);
-
+    userAuthGroups.push({ id: 0, name: 'deactive' });
     return { userInfo, userAuthGroups };
 };
 
@@ -354,7 +354,7 @@ const bikeRentalLoader = async (request, auth, setAuth) => {
         url.searchParams.get('jarjesta') || null,
         url.searchParams.get('sivu') || 1,
         url.searchParams.get('sivukoko') || 25,
-        url.searchParams.getAll('suodata') || null 
+        url.searchParams.getAll('suodata') || null
     );
     return data;
 };

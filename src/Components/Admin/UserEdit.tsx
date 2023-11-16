@@ -39,13 +39,13 @@ const groupNames = {
     user_group: 'Käyttäjä',
     admin_group: 'Ylläpitäjä',
     storage_group: 'Varastotyöntekijä',
-    bicycle_group: 'Pyöräkäyttäjä',
-    bicycle_admin_group: 'Pyöräylläpitäjä',
+    deactive: 'Epäaktiivinen',
 };
 
 function UserEdit() {
     const { userInfo, userAuthGroups } = useLoaderData() as Awaited<ReturnType<typeof userEditLoader>>;
     const actionData = useActionData() as Awaited<ReturnType<typeof userEditAction>>;
+    console.log(userInfo);
 
     const creationDateInfo = [];
     const creationDate = new Date(userInfo.creation_date);
@@ -280,7 +280,7 @@ function UserEdit() {
                                     <Stack id="usergroups-checkboxes-stack-column" margin={'1rem 0 0 0'}>
                                         <TextField
                                             select
-                                            defaultValue={getValues('group') || ''}
+                                            defaultValue={userInfo.group}
                                             required
                                             {...register('group', {
                                                 required: {
@@ -289,11 +289,13 @@ function UserEdit() {
                                                 },
                                             })}
                                         >
-                                            {userAuthGroups.map((group) => (
-                                                <MenuItem key={group.id} value={group.name}>
-                                                    {groupNames[group.name as keyof typeof groupNames]}
-                                                </MenuItem>
-                                            ))}
+                                            {userAuthGroups
+                                                .filter((group) => !group.name.includes('bicycle'))
+                                                .map((group) => (
+                                                    <MenuItem key={group.id} value={group.name}>
+                                                        {groupNames[group.name as keyof typeof groupNames]}
+                                                    </MenuItem>
+                                                ))}
                                         </TextField>
                                     </Stack>
                                 </Box>
