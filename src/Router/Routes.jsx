@@ -703,6 +703,7 @@ function Routes() {
                                             errorElement: <UserError />,
                                             loader: userEditLoader,
                                             action: userEditAction,
+                                            shouldRevalidate: () => false,
                                         },
                                         {
                                             path: ':userid/poista',
