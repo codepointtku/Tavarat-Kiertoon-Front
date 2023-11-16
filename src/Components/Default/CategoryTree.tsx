@@ -109,8 +109,6 @@ function CategoryTree({ treeSelectedState }: TreeSelectedProps) {
         <Box
             sx={{
                 display: 'flex',
-                // justifyContent: 'center',
-                outline: '1px solid blue',
                 width: 260,
             }}
         >

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Grid, Box, Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 
 import SearchField from '../Components/Default/SearchField';
 import CategoryTree from '../Components/Default/CategoryTree';
@@ -21,15 +21,7 @@ function DefaultView() {
 
             <Stack id="front-page-main-block" alignItems="center" gap={2}>
                 <SearchField treeSelectedState={{ categoryTreeSelected, setCategoryTreeSelected }} />
-
-                {/* <Stack
-                    direction="row"
-                    alignItems="flex-start"
-                    gap={2}
-                    minWidth="100%"
-                    sx={{ border: '3px solid #222' }}
-                > */}
-                <Grid container justifyContent="flex-start" alignItems="flex-start" sx={{ outline: '1px solid pink' }}>
+                <Grid container justifyContent="flex-start" alignItems="flex-start">
                     <Grid item xs={12} sm={'auto'}>
                         <CategoryTree treeSelectedState={{ categoryTreeSelected, setCategoryTreeSelected }} />
                     </Grid>
@@ -37,7 +29,6 @@ function DefaultView() {
                         <ProductList />
                     </Grid>
                 </Grid>
-                {/* </Stack> */}
             </Stack>
         </>
     );

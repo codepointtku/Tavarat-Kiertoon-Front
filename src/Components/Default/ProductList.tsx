@@ -61,7 +61,7 @@ function ProductList() {
     return (
         <Stack>
             {results?.length ? (
-                <Grid container sx={{ outline: '2px solid lightgreen' }} justifyContent="space-evenly">
+                <Grid container rowSpacing={1} justifyContent="space-evenly">
                     {results.map((product: any) => (
                         <Grid
                             item
@@ -72,7 +72,6 @@ function ProductList() {
                             lg={3}
                             xl={2}
                             sx={{
-                                // border: '3px dotted cyan',
                                 minWidth: 'max-content',
                                 display: 'flex',
                                 justifyContent: 'center',
