@@ -189,13 +189,14 @@ function ProductCard({
                     <Stack direction="row" gap={2}>
                         <Tooltip title="Tuotetiedot">
                             <IconButton
-                                // variant="outlined"
-
+                                sx={{
+                                    '&.MuiButtonBase-root:hover': {
+                                        backgroundColor: 'transparent',
+                                    },
+                                }}
                                 component={Link}
                                 to={`/tuotteet/${id}`}
                                 size="small"
-                                // onMouseEnter={(MouseEvent) => handleHover(MouseEvent)}
-                                // onMouseLeave={(MouseEvent) => handleHover(MouseEvent)}
                             >
                                 <InfoOutlinedIcon fontSize="large" color="primary" />
                             </IconButton>
