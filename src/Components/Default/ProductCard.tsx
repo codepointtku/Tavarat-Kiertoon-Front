@@ -66,7 +66,7 @@ function ProductCard({
         // <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Card
             sx={{
-                width: 210,
+                width: 276,
                 height: 500,
                 transition: 'transform 0.1s ease-in-out',
                 '&:hover': {
