@@ -48,7 +48,7 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
         watch,
         reset,
         setValue,
-        formState: { isDirty },
+        formState: { isDirty, isValid },
     } = useForm<SearchInputValue>({ defaultValues: { search: '' } });
     const [searchParams, setSearchParams] = useSearchParams();
     let searchInput = '';
@@ -197,11 +197,7 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
                 <SearchIcon sx={{ fontSize: 30, color: 'primary.main', margin: '0 1rem 0 1rem' }} />
                 <InputBase
                     id="search-text-input-field"
-                    {...(register('search'),
-                    {
-                        minLength: { value: 1 },
-                        maxLength: { value: 40 },
-                    })}
+                    {...register('search', { maxLength: 40 })}
                     onFocus={() => !isDirty && treeSelectedState.setCategoryTreeSelected(false)}
                     // autoFocus
                     placeholder="Etsi tuotteita…"
@@ -214,7 +210,7 @@ function SearchField({ treeSelectedState }: TreeSelectedProps) {
                     </IconButton>
                 ) : null}
             </Search>
-            <Button id="search-button" type="submit" sx={{ p: '1rem 2rem 1rem 2rem' }}>
+            <Button id="search-button" type="submit" sx={{ p: '1rem 2rem 1rem 2rem' }} disabled={!isValid || !isDirty}>
                 Hae
             </Button>
         </Stack>

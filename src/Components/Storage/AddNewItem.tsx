@@ -102,7 +102,6 @@ function AddNewItem() {
     };
     const RemoveImage = (id: number) => {
         setFilelist((prevFileList) => prevFileList.filter((file, index) => index !== id));
-        setValue('pictures', []);
     };
     const handlePictureChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const pictureFileList = getValues('pictures');

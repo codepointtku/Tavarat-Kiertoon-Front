@@ -176,6 +176,7 @@ import {
     userSignupAction,
     contactAction,
     orderEditAction,
+    orderEditStatusAction,
     addProductAction,
     editProductAction,
     orderDeleteAction,
@@ -439,7 +440,7 @@ function Routes() {
                                 {
                                     path: 'tili',
                                     element: (
-                                        <HasRole role="user_group" fallback={<Navigate to="/kirjaudu" />}>
+                                        <HasRole role="user_group" fallback={<Navigate to="/kirjaudu" replace />}>
                                             <UserAccountPage />
                                         </HasRole>
                                     ),
@@ -520,9 +521,10 @@ function Routes() {
                                         },
                                         {
                                             path: ':id',
-                                            element: <OrderView isAdmin={false} />,
+                                            element: <OrderView />,
                                             errorElement: <div>varasto orderview kössähdys</div>,
                                             loader: orderViewLoader,
+                                            action: orderEditStatusAction,
                                         },
                                     ],
                                 },
@@ -632,9 +634,10 @@ function Routes() {
                                             children: [
                                                 {
                                                     index: true,
-                                                    element: <OrderView isAdmin />,
+                                                    element: <OrderView />,
                                                     errorElement: <OrderViewError />,
                                                     loader: orderViewLoader,
+                                                    action: orderEditStatusAction,
                                                 },
                                                 {
                                                     path: 'muokkaa',
@@ -834,7 +837,8 @@ function Routes() {
                                             children: [
                                                 {
                                                     index: true,
-                                                    loader: async ({request}) => bikeRentalLoader(request, auth, setAuth),
+                                                    loader: async ({ request }) =>
+                                                        bikeRentalLoader(request, auth, setAuth),
                                                     element: <BikeRentals />,
                                                 },
                                                 {
@@ -850,7 +854,7 @@ function Routes() {
                                                         },
                                                     ],
                                                 },
-                                            ]
+                                            ],
                                         },
                                         {
                                             path: 'pyorapaketit',

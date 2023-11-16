@@ -155,6 +155,10 @@ function StorageEdit() {
                                         value: 50,
                                         message: 'Maksimipituus 50 merkkiä',
                                     },
+                                    pattern: {
+                                        value: /^[a-zA-ZåÅäÄöÖ]+$|^[a-zA-ZåÅäÄöÖ]+-[a-zA-ZåÅäÄöÖ]+$/,
+                                        message: 'Kenttä voi sisältää vain aakkosia',
+                                    },
                                 })}
                                 inputProps={{ required: false }}
                                 required
