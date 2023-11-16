@@ -92,7 +92,7 @@ function OrderView() {
         },
     });
     const submit = useSubmit();
-    //const [instance] = usePDF({ document: <PDFDocument order={order} /> });
+    const [instance] = usePDF({ document: <PDFDocument order={order} /> });
 
     const fetcher = useFetcher();
     const onSubmit = async (data: FieldValues) => {
@@ -135,8 +135,13 @@ function OrderView() {
                 }
             );
         }
-
-        navigate(`/varasto/pdf/${order.id}`);
+        const iframe = window.frames
+            ? window.frames['pdf_view' as keyof typeof window.frames]
+            : document.getElementById('pdf_view');
+        const iframeWindow = iframe.contentWindow || iframe;
+        iframe.focus();
+        iframeWindow.print();
+        //navigate(`/varasto/pdf/${order.id}`);
     };
 
     const orderStatusTranslate = (value: string) => {
@@ -434,6 +439,9 @@ function OrderView() {
                                 ))}
                             </TableBody>
                         </Table>
+                        {instance.url ? (
+                            <iframe id="pdf_view" src={instance.url} title="pdf_view" hidden></iframe>
+                        ) : null}
                     </Box>
                 </Stack>
             </Container>
