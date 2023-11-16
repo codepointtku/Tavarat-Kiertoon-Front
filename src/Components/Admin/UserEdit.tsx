@@ -39,7 +39,8 @@ const groupNames = {
     user_group: 'Käyttäjä',
     admin_group: 'Ylläpitäjä',
     storage_group: 'Varastotyöntekijä',
-    bicycle_group: 'Pyörävaltuutettu',
+    bicycle_group: 'Pyöräkäyttäjä',
+    bicycle_admin_group: 'Pyöräylläpitäjä',
 };
 
 function UserEdit() {
@@ -58,6 +59,7 @@ function UserEdit() {
 
     const {
         register,
+        getValues,
         handleSubmit: createHandleSubmit,
         formState: { errors: formStateErrors, isDirty, dirtyFields, isValid },
     } = useForm({
@@ -78,7 +80,7 @@ function UserEdit() {
                 first_name: data.first_name,
                 last_name: data.last_name,
                 phone_number: data.phone_number!,
-                group: data.group,
+                group: data.group!,
             },
             {
                 method: 'put',
@@ -278,7 +280,7 @@ function UserEdit() {
                                     <Stack id="usergroups-checkboxes-stack-column" margin={'1rem 0 0 0'}>
                                         <TextField
                                             select
-                                            defaultValue={''}
+                                            defaultValue={getValues('group') || ''}
                                             required
                                             {...register('group', {
                                                 required: {
@@ -289,7 +291,7 @@ function UserEdit() {
                                         >
                                             {userAuthGroups.map((group) => (
                                                 <MenuItem key={group.id} value={group.name}>
-                                                    {group.name}
+                                                    {groupNames[group.name as keyof typeof groupNames]}
                                                 </MenuItem>
                                             ))}
                                         </TextField>
