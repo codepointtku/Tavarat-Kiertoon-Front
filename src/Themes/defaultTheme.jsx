@@ -62,10 +62,10 @@ const defaultTheme = createTheme({
     breakpoints: {
         values: {
             xs: 0,
-            sm: 600,
-            md: 900,
-            lg: 1200,
-            xl: 1536,
+            sm: 534,
+            md: 744,
+            lg: 954,
+            xl: 1164,
         },
     },
     props: {

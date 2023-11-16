@@ -4,7 +4,7 @@ import Carousel from 'react-material-ui-carousel';
 
 import {
     Box,
-    Button,
+    IconButton,
     Card,
     CardActionArea,
     CardActions,
@@ -17,7 +17,7 @@ import {
     type ButtonPropsSizeOverrides,
 } from '@mui/material';
 
-// import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { type OverridableStringUnion } from '@material-ui/types';
 
 import AddToCartButton from './AddToCartButton';
@@ -66,11 +66,11 @@ function ProductCard({
         // <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Card
             sx={{
-                width: 230,
-                // height: 400,
+                width: 210,
+                height: 500,
                 transition: 'transform 0.1s ease-in-out',
                 '&:hover': {
-                    transform: 'scale(1.04)',
+                    transform: 'scale(1.02)',
                 },
             }}
         >
@@ -181,29 +181,37 @@ function ProductCard({
             <Box
                 sx={{
                     display: 'flex',
-                    // flexDirection: 'row',
-                    // gap: '0.2rem',
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}
             >
                 <CardActions>
-                    {/* <Button
-                        variant="outlined"
-                        component={Link}
-                        to={`/tuotteet/${id}`}
-                        size="small"
-                        onMouseEnter={(MouseEvent) => handleHover(MouseEvent)}
-                        onMouseLeave={(MouseEvent) => handleHover(MouseEvent)}
-                    >
-                        <InfoOutlinedIcon fontSize="small" />
-                    </Button> */}
-                    <AddToCartButton
-                        size={'small' as OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides>}
-                        id={id as number & string}
-                        groupId={groupId}
-                        count={count}
-                    />
+                    <Stack direction="row" gap={2}>
+                        <Tooltip title="Tuotetiedot">
+                            <IconButton
+                                // variant="outlined"
+
+                                component={Link}
+                                to={`/tuotteet/${id}`}
+                                size="small"
+                                // onMouseEnter={(MouseEvent) => handleHover(MouseEvent)}
+                                // onMouseLeave={(MouseEvent) => handleHover(MouseEvent)}
+                            >
+                                <InfoOutlinedIcon fontSize="large" color="primary" />
+                            </IconButton>
+                        </Tooltip>
+                        <AddToCartButton
+                            size={
+                                'small' as OverridableStringUnion<
+                                    'small' | 'medium' | 'large',
+                                    ButtonPropsSizeOverrides
+                                >
+                            }
+                            id={id as number & string}
+                            groupId={groupId}
+                            count={count}
+                        />
+                    </Stack>
                 </CardActions>
             </Box>
         </Card>

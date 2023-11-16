@@ -8,7 +8,7 @@ function Header() {
         <header>
             <Box id="header-container" sx={{ backgroundColor: 'primary.main', padding: '1rem' }}>
                 <Grid container flexDirection="row">
-                    <Grid item xs={12} md={2}>
+                    <Grid item xs={2}>
                         <Link to="/">
                             <img
                                 src={logo}
@@ -18,7 +18,7 @@ function Header() {
                         </Link>
                     </Grid>
 
-                    <Grid item xs={12} md={10}>
+                    <Grid item xs={10}>
                         <Box sx={{ display: 'flex', minHeight: '100%', alignItems: 'center', pl: '2rem' }}>
                             <MuiLink
                                 component={Link}
