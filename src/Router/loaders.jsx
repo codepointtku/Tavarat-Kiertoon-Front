@@ -354,7 +354,7 @@ const bikeRentalLoader = async (request, auth, setAuth) => {
         url.searchParams.get('jarjesta') || null,
         url.searchParams.get('sivu') || 1,
         url.searchParams.get('sivukoko') || 25,
-        url.searchParams.getAll('suodata') || null 
+        url.searchParams.getAll('suodata') || null
     );
     return data;
 };
@@ -558,7 +558,7 @@ const adminInboxLoader = async ({ request }) => {
     // const status = statusMap[searchParams.get('tila')] || null;
 
     // const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null, status);
-    const { data: messages } = await contactFormsApi.contactFormsList(null, null, null, 'Not read');
+    const { data: messages } = await contactFormsApi.contactFormsList();
 
     return messages;
 };
