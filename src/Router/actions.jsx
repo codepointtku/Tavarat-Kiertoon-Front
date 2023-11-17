@@ -451,8 +451,6 @@ const userEditAction = async ({ request, params }) => {
         phone_number: formData.get('phone_number'),
     };
 
-    // if formdata.get('groups') comes in as an empty array, keep it as an empty array.
-    // else get the values, split by comma (this creates an array), map the values and typecast them as numbers.
     const selectedAuthGroup = { group: formData.get('group') };
 
     try {

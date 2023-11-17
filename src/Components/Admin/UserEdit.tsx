@@ -6,8 +6,6 @@ import { useForm } from 'react-hook-form';
 import {
     Box,
     Button,
-    Checkbox,
-    FormControlLabel,
     Stack,
     TextField,
     Typography,
@@ -58,14 +56,12 @@ function UserEdit() {
 
     const {
         register,
-        getValues,
         handleSubmit: createHandleSubmit,
         formState: { errors: formStateErrors, isDirty, dirtyFields, isValid },
     } = useForm({
         mode: 'all',
         defaultValues: {
             ...userInfo,
-            // groups: userInfo.groups.map((group) => group.id),
         },
     });
     const submit = useSubmit();
