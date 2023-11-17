@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Box, Grid, Link as MuiLink } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 
 import logo from '../../Assets/Turku_vaaka_300ppi_viiva_white.png';
 
@@ -8,7 +8,7 @@ function Header() {
         <header>
             <Box id="header-container" sx={{ backgroundColor: 'primary.main', padding: '1rem' }}>
                 <Grid container flexDirection="row">
-                    <Grid item xs={2}>
+                    <Grid item xs={12} md={2}>
                         <Link to="/">
                             <img
                                 src={logo}
@@ -18,18 +18,13 @@ function Header() {
                         </Link>
                     </Grid>
 
-                    <Grid item xs={10}>
+                    <Grid item xs={12} md={10}>
                         <Box sx={{ display: 'flex', minHeight: '100%', alignItems: 'center', pl: '2rem' }}>
-                            <MuiLink
-                                component={Link}
-                                to={'/'}
-                                underline="none"
-                                variant="h4"
-                                color="primary.contrastText"
-                                sx={{ cursor: 'pointer' }}
-                            >
-                                Tavarat Kiertoon
-                            </MuiLink>
+                            <Link to="/" style={{ textDecoration: 'none' }}>
+                                <Typography variant="h4" color="primary.contrastText">
+                                    Tavarat Kiertoon
+                                </Typography>
+                            </Link>
                         </Box>
                     </Grid>
                 </Grid>
