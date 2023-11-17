@@ -47,11 +47,7 @@ function MessageCard({ subject, date, message, id, currentStatus, name, email }:
                         <Tooltip title="Avaa viesti sähköposti-sovellukseen">
                             <Button
                                 variant="outlined"
-                                onClick={() => {
-                                    if (currentStatus === 'Not read') {
-                                        handleSubmit('Read');
-                                    }
-                                }}
+                                onClick={() => currentStatus === 'Not read' && handleSubmit('Read')}
                             >
                                 <Link href={mailtoLink}>Vastaa</Link>
                             </Button>
