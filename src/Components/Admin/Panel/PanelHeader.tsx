@@ -160,9 +160,11 @@ function PanelHeader() {
                     }}
                 >
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography variant="h4" color="primary.contrastText">
-                            Tavarat Kiertoon
-                        </Typography>
+                        <Link to="/" style={{ textDecoration: 'none' }}>
+                            <Typography variant="h4" color="primary.contrastText">
+                                Tavarat Kiertoon
+                            </Typography>
+                        </Link>
                     </Box>
                 </Grid>
 
