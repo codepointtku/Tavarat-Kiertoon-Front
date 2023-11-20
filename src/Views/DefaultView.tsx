@@ -27,7 +27,7 @@ function DefaultView() {
                     alignItems="flex-start"
                     columns={{ xs: 1, sm: 2, md: 4, lg: 5, xl: 6 }}
                 >
-                    <Grid item xs={1} sm={'auto'} xl={1}>
+                    <Grid item xs={1} sm={'auto'} xl={1} mb={1}>
                         <CategoryTree treeSelectedState={{ categoryTreeSelected, setCategoryTreeSelected }} />
                     </Grid>
                     <Grid item xs={1} sm={true} xl={5}>
