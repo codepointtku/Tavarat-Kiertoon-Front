@@ -7,8 +7,8 @@ function Header() {
     return (
         <header>
             <Box id="header-container" sx={{ backgroundColor: 'primary.main', padding: '1rem' }}>
-                <Grid container flexDirection="row">
-                    <Grid item xs={12} md={2}>
+                <Grid container flexDirection="row" spacing={2}>
+                    <Grid item>
                         <Link to="/">
                             <img
                                 src={logo}
@@ -18,8 +18,8 @@ function Header() {
                         </Link>
                     </Grid>
 
-                    <Grid item xs={12} md={10}>
-                        <Box sx={{ display: 'flex', minHeight: '100%', alignItems: 'center', pl: '2rem' }}>
+                    <Grid item>
+                        <Box sx={{ display: 'flex', minHeight: '100%', alignItems: 'center' }}>
                             <Link to="/" style={{ textDecoration: 'none' }}>
                                 <Typography variant="h4" color="primary.contrastText">
                                     Tavarat Kiertoon
