@@ -1,6 +1,6 @@
+import { useContext } from 'react';
 import { useLoaderData, useActionData } from 'react-router';
 import { Form, useSubmit, Link } from 'react-router-dom';
-
 import { useForm } from 'react-hook-form';
 
 import {
@@ -28,10 +28,12 @@ import AlertBox from '../AlertBox';
 import TypographyHeading from '../TypographyHeading';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
+import Tooltip from '../Tooltip';
+
+import AuthContext from '../../Context/AuthContext';
 
 import type { userEditAction } from '../../Router/actions';
 import type { userEditLoader } from '../../Router/loaders';
-import Tooltip from '../Tooltip';
 
 const groupNames = {
     user_group: 'Käyttäjä',
@@ -43,6 +45,8 @@ const groupNames = {
 function UserEdit() {
     const { userInfo, userAuthGroups } = useLoaderData() as Awaited<ReturnType<typeof userEditLoader>>;
     const actionData = useActionData() as Awaited<ReturnType<typeof userEditAction>>;
+
+    const { auth } = useContext(AuthContext);
 
     const creationDateInfo = [];
     const creationDate = new Date(userInfo.creation_date);
@@ -329,6 +333,7 @@ function UserEdit() {
                                         color="error"
                                         component={Link}
                                         to={`/admin/kayttajat/${userInfo.id}/poista/`}
+                                        disabled={auth.username === userInfo.username}
                                         endIcon={<DeleteForeverIcon />}
                                         sx={{ margin: '2rem 0 1rem 0' }}
                                     >
