@@ -467,8 +467,12 @@ const userEditAction = async ({ request, params }) => {
 };
 
 const userDeleteAction = async ({ params }) => {
-    await usersApi.usersDestroy(params.userid);
-    return redirect('/admin/kayttajat');
+    try {
+        await usersApi.usersDestroy(params.userid);
+        return redirect('/admin/kayttajat');
+    } catch (err) {
+        return { type: 'userdelete', status: false };
+    }
 };
 
 const adminUserAddressEditAction = async ({ request, params }) => {
