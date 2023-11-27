@@ -20,7 +20,7 @@ interface RecipientProps {
     id: string;
 }
 
-interface RecipientEmailList {
+interface RecipientsEmails {
     recipientsEmails: string[];
 }
 
@@ -74,7 +74,7 @@ function EmailRecipient({ email, id }: RecipientProps) {
     );
 }
 
-function AddRecipient({ recipientsEmails }: RecipientEmailList) {
+function AddRecipient({ recipientsEmails }: RecipientsEmails) {
     const {
         register,
         reset,
