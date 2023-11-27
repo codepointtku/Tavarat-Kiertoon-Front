@@ -50,6 +50,7 @@ function AdminAppBar() {
     const onClickLogOut = () => {
         submit(null, {
             method: 'post',
+            action: '/',
         });
     };
 
