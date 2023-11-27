@@ -30,21 +30,19 @@ function EmailRecipients() {
     const recipientsEmails = emailRecipients.map((r) => r.email);
 
     return (
-        <>
-            <Box>
-                {emailRecipients.length === 0 ? (
-                    <Typography marginTop={'1rem'} marginBottom={'2rem'}>
-                        Ei lisättyjä osoitteita
-                    </Typography>
-                ) : (
-                    emailRecipients.map((recipient) => (
-                        <EmailRecipient key={recipient.id} email={recipient.email} id={recipient.id.toString()} />
-                    ))
-                )}
-                <Divider sx={{ margin: '1rem 0 2rem 0' }} />
-                <AddRecipient recipientsEmails={recipientsEmails} />
-            </Box>
-        </>
+        <Box>
+            {emailRecipients.length === 0 ? (
+                <Typography marginTop={'1rem'} marginBottom={'2rem'}>
+                    Ei lisättyjä osoitteita
+                </Typography>
+            ) : (
+                emailRecipients.map((recipient) => (
+                    <EmailRecipient key={recipient.id} email={recipient.email} id={recipient.id.toString()} />
+                ))
+            )}
+            <Divider sx={{ margin: '1rem 0 2rem 0' }} />
+            <AddRecipient recipientsEmails={recipientsEmails} />
+        </Box>
     );
 }
 
