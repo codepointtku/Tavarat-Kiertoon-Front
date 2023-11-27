@@ -16,7 +16,6 @@ import {
     Button,
     Container,
     TextField,
-    MenuItem,
 } from '@mui/material';
 
 import DeleteBikeTrailerModal from './DeleteBikeTrailerModal';
@@ -38,18 +37,18 @@ export default function BikeTrailers() {
     const {
         handleSubmit,
         register,
-        watch,
         reset,
         formState: { isDirty, isValid, errors, isSubmitting },
     } = useForm({
+        mode: 'all',
         defaultValues: {
             register_number: '',
         },
     });
 
-    const handleRegisterNumber = (e) => {
-        const reg = new RegExp("[A-Z]")
-    }
+    // const handleRegisterNumber = (e) => {
+    //     const reg = new RegExp('[A-Z]');
+    // };
 
     console.log(deleteModalItem);
 
@@ -62,26 +61,40 @@ export default function BikeTrailers() {
             <Container maxWidth="xl" component={Paper}>
                 <Box
                     component={Form}
-                    sx={{ alignItems: 'center', display: 'flex', flexDirection: 'row' }}
+                    sx={{ alignItems: 'center', display: 'flex', flexDirection: 'row', width: '480px' }}
                     onSubmit={handleSubmit(onSubmit)}
                 >
                     <TextField
                         id="register-number"
                         type="text"
                         label="Rekisterinumero"
+                        fullWidth
                         error={!!errors.register_number}
+                        helperText={errors.register_number?.message?.toString()}
                         {...register('register_number', {
                             required: {
                                 value: true,
                                 message: 'Rekisterinumero puuttuu',
                             },
+                            pattern: {
+                                value: /([A-ZÅÄÖ]+-[0-9]+$)/,
+                                message: 'Kirjaimet, viiva, numerot (esim EWD-143)',
+                            },
+                            maxLength: {
+                                value: 7,
+                                message: 'Maksimipituus ylitetty',
+                            },
                         })}
                     ></TextField>
-                    <Button type="submit" sx={{ marginLeft: '1rem' }} disabled={!isDirty || !isValid || isSubmitting}>
+                    <Button
+                        type="submit"
+                        sx={{ marginLeft: '1rem', width: '180px' }}
+                        disabled={!isDirty || !isValid || isSubmitting}
+                    >
                         Lisää peräkärry
                     </Button>
                 </Box>
-                <TableContainer sx={{ padding: '2rem' }} component={Form} onSubmit={handleSubmit(onSubmit)}>
+                <TableContainer sx={{ margin: '1rem 0' }} component={Form} onSubmit={handleSubmit(onSubmit)}>
                     <Box width="20%"></Box>
                     <Table sx={{ minWidth: 700 }} aria-label="customized table">
                         <TableHead>
