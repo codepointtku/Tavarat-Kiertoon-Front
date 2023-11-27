@@ -21,15 +21,12 @@ import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import MailIcon from '@mui/icons-material/Mail';
 
 import Tooltip from '../../Tooltip';
-import AlertBox from '../../AlertBox';
 
 import type { adminLoader } from '../../../Router/loaders';
-import type { adminLogOut } from '../../../Router/actions';
 
 import logo from '../../../Assets/Turku_vaaka_300ppi_viiva_white.png';
 
 function AdminAppBar() {
-    const responseStatus = useActionData() as Awaited<ReturnType<typeof adminLogOut>>;
     const [avatarDropDownMenu, setAvatarDropDownMenu] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const { messages } = useRouteLoaderData('admin') as Awaited<ReturnType<typeof adminLoader>>;
@@ -56,17 +53,6 @@ function AdminAppBar() {
 
     return (
         <>
-            {responseStatus?.type === 'logout' && responseStatus?.status === true && (
-                <AlertBox text="Kirjauduttu ulos" status="success" redirectUrl="/" timer={4000} />
-            )}
-
-            {responseStatus?.type === 'logout' && responseStatus?.status === false && (
-                <AlertBox
-                    text="Uloskirjautumisessa jokin ongelma, yritä uudelleen. Voit vaihtoehtoisesti tyhjentää selaimen välimuistin."
-                    status="error"
-                />
-            )}
-
             <AppBar
                 id="admin-panel-appbar"
                 position="static"

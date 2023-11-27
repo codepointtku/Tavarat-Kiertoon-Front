@@ -199,7 +199,7 @@ import {
     modifyBikeAction,
     createNewBikeAction,
     activationAction,
-    adminLogOut,
+    logOutAction,
     modifyBikePacketAction,
     deleteBikeAction,
     adminInboxAction,
@@ -367,7 +367,7 @@ function Routes() {
                                 {
                                     path: '/kirjaudu',
                                     element: <LoginPage />,
-                                    action: adminLogOut,
+                                    action: logOutAction,
                                 },
                                 {
                                     path: 'rekisteroidy',
@@ -609,7 +609,6 @@ function Routes() {
                             //     </ThemeProvider>
                             // ),
                             loader: adminLoader,
-                            action: adminLogOut,
                             children: [
                                 {
                                     index: true,

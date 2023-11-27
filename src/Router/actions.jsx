@@ -253,7 +253,7 @@ const orderEditStatusAction = async ({ request, params }) => {
 //
 // admin bing bings
 
-const adminLogOut = async ({ request }) => {
+const logOutAction = async ({ request }) => {
     if (request.method === 'POST') {
         await usersApi.usersLogoutCreate();
         return { type: 'logout', status: true };
@@ -1350,7 +1350,7 @@ export {
     activationAction,
     modifyBikeModelAction,
     deleteBikeAction,
-    adminLogOut,
+    logOutAction,
     modifyBikePacketAction,
     adminInboxAction,
     adminEmailRecipientsAction,
