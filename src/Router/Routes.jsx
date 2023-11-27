@@ -367,6 +367,7 @@ function Routes() {
                                 {
                                     path: '/kirjaudu',
                                     element: <LoginPage />,
+                                    action: adminLogOut,
                                 },
                                 {
                                     path: 'rekisteroidy',
