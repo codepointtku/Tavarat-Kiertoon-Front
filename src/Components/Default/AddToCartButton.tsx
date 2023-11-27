@@ -1,14 +1,20 @@
-import { useState, useContext, useEffect } from 'react';
+import { useContext } from 'react';
+// import { useState, useEffect } from 'react';
+
 import { useForm } from 'react-hook-form';
 import { useRouteLoaderData, useSearchParams, useFetcher } from 'react-router-dom';
-import { type OverridableStringUnion } from '@material-ui/types';
-import { Box, Button, IconButton, type ButtonPropsSizeOverrides } from '@mui/material';
+
+import { /*Button,*/ IconButton } from '@mui/material';
 
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
+
 import AddMoreToCart from '../AddMoreToCart';
-import type { shoppingCartLoader } from '../../Router/loaders';
+
 import AuthContext from '../../Context/AuthContext';
-import AlertBox from '../AlertBox';
+
+import type { shoppingCartLoader } from '../../Router/loaders';
+import type { OverridableStringUnion } from '@material-ui/types';
+import type { ButtonPropsSizeOverrides } from '@mui/material';
 
 interface Props {
     size: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides> | undefined;
@@ -17,12 +23,13 @@ interface Props {
     count?: number;
 }
 
-function AddToCartButton({ size, id, groupId, count }: Props) {
+function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
+    const { cart, products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const { auth } = useContext(AuthContext);
     const { username } = auth;
-    const { cart, products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
-    const [addedToCart, setAddedToCart] = useState(false);
-    const [isNotLoggedIn, setIsNotLoggedIn] = useState(false);
+
+    // const [addedToCart, setAddedToCart] = useState(false);
+    // const [isNotLoggedIn, setIsNotLoggedIn] = useState(false);
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
     const fetcher = useFetcher();
@@ -38,23 +45,19 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
                     action: '/?' + searchParams.toString(),
                 }
             );
-            setAddedToCart(true);
-        } else {
-            setIsNotLoggedIn((isNotLoggedIn) => !isNotLoggedIn);
+            // setAddedToCart(true);
         }
+        // else {
+        //     setIsNotLoggedIn((isNotLoggedIn) => !isNotLoggedIn);
+        // }
     };
 
-    useEffect(() => {
-        setAddedToCart(false);
-    }, [product?.available]);
+    // useEffect(() => {
+    //     setAddedToCart(false);
+    // }, [product?.available]);
 
     return (
         <>
-            {isNotLoggedIn && (
-                <AlertBox text="Kirjautuminen vaaditaan ostoskorin käyttöön" status="warning" timer={10000} />
-            )}
-
-            {/* <Box sx={{ display: 'flex', alignItems: 'center' }}> */}
             {cart?.product_items?.some((product_item) => product_item?.product.id === groupId) ? (
                 <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
             ) : (
@@ -73,7 +76,6 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
                     </IconButton>
                 </form>
             )}
-            {/* </Box> */}
         </>
     );
 }
