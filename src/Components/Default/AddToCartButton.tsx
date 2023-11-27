@@ -58,11 +58,13 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
 
     return (
         <>
-            {cart?.product_items?.some((product_item) => product_item?.product.id === groupId) ? (
-                <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
-            ) : (
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    {/* <Button
+            {username ? (
+                <>
+                    {cart?.product_items?.some((product_item) => product_item?.product.id === groupId) ? (
+                        <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
+                    ) : (
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            {/* <Button
                         size={size}
                         aria-label="add to shopping cart"
                         startIcon={<AddShoppingCartOutlinedIcon />}
@@ -71,10 +73,14 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
                     >
                         Lisää koriin
                     </Button> */}
-                    <IconButton type="submit" color="primary">
-                        <AddShoppingCartOutlinedIcon fontSize={'large'} />
-                    </IconButton>
-                </form>
+                            <IconButton type="submit" color="primary">
+                                <AddShoppingCartOutlinedIcon fontSize={'large'} />
+                            </IconButton>
+                        </form>
+                    )}
+                </>
+            ) : (
+                'kirjaudu sisää'
             )}
         </>
     );
