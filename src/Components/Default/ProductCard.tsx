@@ -63,7 +63,6 @@ function ProductCard({
     }
 
     return (
-        // <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Card
             sx={{
                 width: 276,
@@ -216,7 +215,6 @@ function ProductCard({
                 </CardActions>
             </Box>
         </Card>
-        // </Box>
     );
 }
 
