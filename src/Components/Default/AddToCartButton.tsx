@@ -2,7 +2,7 @@ import { useContext } from 'react';
 // import { useState, useEffect } from 'react';
 
 import { useForm } from 'react-hook-form';
-import { useRouteLoaderData, useSearchParams, useFetcher } from 'react-router-dom';
+import { useRouteLoaderData, useSearchParams, useFetcher, Link } from 'react-router-dom';
 
 import { /*Button,*/ IconButton } from '@mui/material';
 
@@ -80,7 +80,9 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
                     )}
                 </>
             ) : (
-                'kirjaudu sisää'
+                <IconButton color="primary" component={Link} to={'/kirjaudu'}>
+                    <AddShoppingCartOutlinedIcon fontSize={'large'} />
+                </IconButton>
             )}
         </>
     );
