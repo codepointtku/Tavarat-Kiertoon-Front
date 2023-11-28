@@ -264,7 +264,7 @@ const userEditLoader = async ({ params }) => {
         usersApi.usersRetrieve(params.userid),
         usersApi.usersGroupsList(),
     ]);
-
+    userAuthGroups.push({ id: 0, name: 'deactive' });
     return { userInfo, userAuthGroups };
 };
 
