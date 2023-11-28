@@ -558,7 +558,7 @@ const adminInboxLoader = async ({ request }) => {
     // const status = statusMap[searchParams.get('tila')] || null;
 
     // const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null, status);
-    const { data: messages } = await contactFormsApi.contactFormsList(null, null, null, 'Not read');
+    const { data: messages } = await contactFormsApi.contactFormsList();
 
     return messages;
 };
