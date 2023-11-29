@@ -30,6 +30,38 @@ import BikeConfirmation from './BikeConfirmation';
 import BikeThankYouModal from './BikeThankYouModal';
 import isValidBikeAmount, { bikePackageUnavailable } from './isValidBikeAmount';
 
+function trailerDates(startDate, endDate, trailer) {
+    console.log(trailer, "TÄÄÄÄÄÄ")
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const date = new Date(start.getTime());
+    const dates = [];
+    while (date <= end) {
+        const year = date.getFullYear();
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // add 1 since getMonth() returns 0-indexed months
+        dates.push(date.toLocaleDateString('FI-fi'));
+        date.setDate(date.getDate() + 1);
+    }
+    let availableTrailers = 0 
+    dates.forEach((iterableDate) => { if (iterableDate in trailer.unavailable)
+        console.log(iterableDate, "asd")
+        if (trailer.unavailable[iterableDate] < trailer.max_available) {
+            console.log(trailer.max_available)
+            console.log(trailer.unavailable[iterableDate])
+            availableTrailers = trailer.id
+        } else {
+            availableTrailers = 0
+        }
+    })
+    if (availableTrailers === 1)
+    console.log(availableTrailers, "JOS NOLLA NIIN EI VOI VARATA, JOS YKSI NIIN VOI")
+    console.log(trailer.unavailable)
+    console.log(dates)
+    console.log(Object.keys(trailer.unavailable));
+    return availableTrailers;
+}
+
 export default function BikesPage() {
     const { control, watch, handleSubmit, reset, getValues } = useForm({
         defaultValues: {
@@ -41,7 +73,7 @@ export default function BikesPage() {
             contactPersonName: '',
             contactPersonPhoneNumber: '',
             deliveryAddress: '',
-            storageType: null,
+            storageType: 0,
             extraInfo: '',
         },
     });
@@ -54,6 +86,10 @@ export default function BikesPage() {
     const loaderData = useLoaderData();
     const minDate = parseISO(loaderData.date_info.available_from);
     const maxDate = parseISO(loaderData.date_info.available_to);
+    const trailers = [...loaderData.trailers];
+    console.log(trailers)
+    const trailerAvailability = trailerDates(getValues('startDate'), getValues('endDate'), trailers[0])
+    console.log(trailerAvailability, "TRAILERAVAILABILITY")
     const bikes = [
         // The bike package id and bike id would have possibility for overlap since they're both just incrementing from 0
         ...loaderData.packages.map((bikePackage) => ({
@@ -133,8 +169,8 @@ export default function BikesPage() {
                         onChange={(_, option) => onChange(option)}
                         onBlur={onBlur}
                     >
-                        <FormControlLabel value="inside" control={<Radio />} label="Sisällä" />
-                        <FormControlLabel value="outside" control={<Radio />} label="Kärryssä" />
+                        <FormControlLabel value={0} control={<Radio />} label="Sisällä" />
+                        <FormControlLabel value={trailers[0].id} control={<Radio />} label="Kärryssä" disabled={trailerAvailability == 0} />
                     </RadioGroup>
                 </FormControl>
             )}
@@ -167,6 +203,8 @@ export default function BikesPage() {
         setIsThankYouModalVisible(true);
     };
 
+    console.log(getValues('startDate'));
+    console.log(getValues('endDate'));
     return (
         <Container component={Form} onSubmit={handleSubmit(onSubmit)} sx={{ mb: 6 }} ref={containerRef}>
             <Typography variant="h3" align="center" color="primary.main" my={3}>

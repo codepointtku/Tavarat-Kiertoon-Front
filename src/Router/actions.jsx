@@ -826,16 +826,31 @@ const confirmationAction = async ({ request }) => {
  */
 const bikeOrderAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await bikesApi.bikesRentalCreate({
-        contact_name: formData.get('contactPersonName'),
-        contact_phone_number: formData.get('contactPersonPhoneNumber'),
-        delivery_address: formData.get('deliveryAddress'),
-        start_date: formData.get('startDateTime'),
-        end_date: formData.get('endDateTime'),
-        bike_stock: JSON.parse(formData.get('selectedBikes')),
-        extra_info: formData.get('extraInfo'),
-    });
-    return response.data || null;
+    console.log(formData.get('bike_trailer'))
+    if (formData.get('storageType') === 0) {
+        const response = await bikesApi.bikesRentalCreate({
+            contact_name: formData.get('contactPersonName'),
+            contact_phone_number: formData.get('contactPersonPhoneNumber'),
+            delivery_address: formData.get('deliveryAddress'),
+            start_date: formData.get('startDateTime'),
+            end_date: formData.get('endDateTime'),
+            bike_stock: JSON.parse(formData.get('selectedBikes')),
+            extra_info: formData.get('extraInfo'),
+        });
+        return response.data || null;
+    } else {
+        const response = await bikesApi.bikesRentalCreate({
+            contact_name: formData.get('contactPersonName'),
+            contact_phone_number: formData.get('contactPersonPhoneNumber'),
+            delivery_address: formData.get('deliveryAddress'),
+            start_date: formData.get('startDateTime'),
+            end_date: formData.get('endDateTime'),
+            bike_stock: JSON.parse(formData.get('selectedBikes')),
+            extra_info: formData.get('extraInfo'),
+            bike_trailer: formData.get('storageType')
+        });
+        return response.data || null;
+    }
 };
 
 /**
