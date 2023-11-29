@@ -229,8 +229,8 @@ function ProductDetails() {
                                                     {', '}
                                                 </Typography>
                                                 <Typography variant="body2" color="text.secondary">
-                                                    Hylly/paikka:
-                                                    {product.product_items[0]?.shelf_id || ' ei hyllypaikkaa'}
+                                                    Varastopaikka:
+                                                    {product.product_items[0]?.shelf_id || ' ei varastopaikkaa'}
                                                     {/* Support for multiple shelves, if that feature is implemented: */}
                                                     {/* {product.product_items
                                                         .map((item) => item.shelf_id)

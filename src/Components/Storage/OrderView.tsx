@@ -406,7 +406,7 @@ function OrderView() {
                                                                     </TableCell>
                                                                     {/* Todo: add storage, to show product_items in multiple storages? */}
                                                                     {/* <TableCell align="right">Varasto</TableCell> */}
-                                                                    <TableCell align="right">Hyllynumero</TableCell>
+                                                                    <TableCell align="right">Varastopaikka</TableCell>
                                                                 </TableRow>
                                                             </TableHead>
                                                             <TableBody>

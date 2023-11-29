@@ -255,7 +255,7 @@ function AddNewItem() {
                         fullWidth
                         id="shelf_id"
                         type="text"
-                        label="Hyllypaikka"
+                        label="Varastopaikka"
                         placeholder="Esim. Tuolikulma 1"
                         multiline
                         {...register('shelf_id', {
