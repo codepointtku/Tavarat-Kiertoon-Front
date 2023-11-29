@@ -1,5 +1,5 @@
-import { useLoaderData } from 'react-router-dom';
-import { Button, Grid, ImageList, Typography } from '@mui/material';
+import { useLoaderData, useNavigation } from 'react-router-dom';
+import { Button, Grid, ImageList, Typography, Box } from '@mui/material';
 import { type productItemsReturnLoader } from '../../Router/loaders';
 import { Link } from 'react-router-dom';
 import ProductsReturnForm from './ProductsReturnForm';
@@ -8,15 +8,26 @@ import { useState } from 'react';
 function ProductsReturn() {
     const [picId, setPicId] = useState(0);
     const { product } = useLoaderData() as Awaited<ReturnType<typeof productItemsReturnLoader>>;
+    const navigation = useNavigation();
 
     return (
-        <Grid container sx={{ paddingY: '1rem' }}>
-            <Grid item xs={12} md={6}>
-                <img
-                    src={`${window.location.protocol}//${window.location.hostname}:8000/media/${product?.pictures[picId]?.picture_address}`}
-                    alt="product"
-                    height={600}
-                />
+        <Grid
+            container
+            sx={{
+                paddingY: '1rem',
+                // filter: navigation.state === 'loading' ? 'blur(8px)' : 'none', // blur all content during loading
+            }}
+        >
+            <Grid item xs={12} md={6} height={800}>
+                <Box>
+                    <img
+                        src={`${window.location.protocol}//${window.location.hostname}:8000/media/${product?.pictures[picId]?.picture_address}`}
+                        alt="product"
+                        height={600}
+                        width="90%"
+                        style={{ objectFit: 'contain' }}
+                    />
+                </Box>
                 <ImageList cols={6} rowHeight={164}>
                     {product?.pictures.map((picture, index) => (
                         <img
