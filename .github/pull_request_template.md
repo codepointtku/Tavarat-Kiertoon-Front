@@ -4,9 +4,9 @@ Please include a clear and concise description of changes, and/or which issues w
 
 **Trello card**
 
-[Trello Card #Number](Link to Trello card)
+[Trello Card #Number] (Link to Trello card)
 Example:
-[Trello #1](https://trello.com/c/HkSBwqaW)
+[Trello #1] (https://trello.com/c/HkSBwqaW)
 
 <!---
 Remove the examples and this section within the <! --- > tags before creating the pull request. If there is no Trello card for this pull request, remove that whole section as well.
