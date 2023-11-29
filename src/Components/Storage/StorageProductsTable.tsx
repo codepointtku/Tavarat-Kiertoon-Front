@@ -55,7 +55,7 @@ function StorageProductsTable() {
     const [isOpen, setIsOpen] = useState<number>();
     const [searchParams, setSearchParams] = useSearchParams();
     const { products } = useLoaderData() as StorageProductsLoaderType;
-    const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
+    // const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const { register, handleSubmit } = useForm({
         defaultValues: { searchString: searchParams.get('viivakoodi') },
     });
@@ -114,10 +114,9 @@ function StorageProductsTable() {
                             <StyledTableCell align="right">Määrä tilattavissa / Järjestelmässä</StyledTableCell>
                             <StyledTableCell align="right">Varasto</StyledTableCell>
                             {/* TODO: add storage filter option */}
-                            <StyledTableCell align="left">Hylly/Paikka</StyledTableCell>
-                            <StyledTableCell align="right">Kategoria</StyledTableCell>
+                            <StyledTableCell align="left">Varastopaikka</StyledTableCell>
+                            {/* <StyledTableCell align="right">Kategoria</StyledTableCell> */}
                             <StyledTableCell align="right">Viimeksi muokattu</StyledTableCell>
-                            {/* <StyledTableCell align="right">Varastopaikka</StyledTableCell> */}
                         </TableRow>
                     </TableHead>
                     {/* todo: näytä nollasaldoiset tuotteet -ruksi */}
@@ -206,9 +205,9 @@ function StorageProductsTable() {
                                         <StyledTableCell align="left">
                                             {product.product_items[0]?.shelf_id}
                                         </StyledTableCell>
-                                        <StyledTableCell align="right">
+                                        {/* <StyledTableCell align="right">
                                             {categories ? product.category && categories[product?.category]?.name : ''}
-                                        </StyledTableCell>
+                                        </StyledTableCell> */}
                                         <StyledTableCell align="right">
                                             {/* TODO: show most recent modified date of product_items. backend change needed? */}
                                             {new Date(product?.product_items[0]?.modified_date).toLocaleDateString(
