@@ -295,8 +295,7 @@ export default function BikesPage() {
                                                         onClick={() => setIsIntroVisible(false)}
                                                         disabled={
                                                             !watch('startDate') ||
-                                                            !watch('endDate') ||
-                                                            !watch('storageType')
+                                                            !watch('endDate')
                                                         }
                                                     >
                                                         Seuraava
@@ -550,8 +549,7 @@ export default function BikesPage() {
                                                                     ) ||
                                                                     !Object.keys(watch('selectedBikes')).length ||
                                                                     !watch('startDate') ||
-                                                                    !watch('endDate') ||
-                                                                    !watch('storageType')
+                                                                    !watch('endDate')
                                                                 }
                                                             >
                                                                 Vahvistus
