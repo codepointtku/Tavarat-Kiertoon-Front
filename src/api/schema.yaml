@@ -1380,17 +1380,14 @@ paths:
         schema:
           type: string
           enum:
-          - Handled
           - Not read
           - Read
         description: |-
           * `Not read` - Not Read
           * `Read` - Read
-          * `Handled` - Handled
 
           * `Not read` - Not Read
           * `Read` - Read
-          * `Handled` - Handled
       tags:
       - contact_forms
       security:
@@ -4717,12 +4714,10 @@ components:
       enum:
       - Not read
       - Read
-      - Handled
       type: string
       description: |-
         * `Not read` - Not Read
         * `Read` - Read
-        * `Handled` - Handled
     GroupEnum:
       enum:
       - admin_group

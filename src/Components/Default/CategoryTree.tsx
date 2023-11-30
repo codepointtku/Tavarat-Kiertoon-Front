@@ -81,7 +81,7 @@ function CategoryTree({ treeSelectedState }: TreeSelectedProps) {
             key={nodes.id}
             nodeId={String(nodes.id)}
             label={
-                <Box sx={{ display: 'flex', alignItems: 'center', p: 0.8 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 0.8 }}>
                     <Typography variant="body1" sx={{ flexGrow: 1 }}>
                         {nodes.name}
                     </Typography>
@@ -106,12 +106,17 @@ function CategoryTree({ treeSelectedState }: TreeSelectedProps) {
     );
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box
+            sx={{
+                display: 'flex',
+                width: 260,
+            }}
+        >
             <TreeView
                 aria-label="product category tree view"
                 defaultExpanded={['root', ...expandedCategories]}
                 selected={categoryParams}
-                sx={{ flexGrow: 1, maxWidth: 320, overflowY: 'auto' }}
+                sx={{ flexGrow: 1, overflowY: 'auto' }}
             >
                 {renderTree(fullTree)}
             </TreeView>

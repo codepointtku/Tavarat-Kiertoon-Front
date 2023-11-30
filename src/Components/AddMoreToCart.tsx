@@ -88,7 +88,7 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess, amountCha
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Box sx={{ display: inOrderingProcess ? 'inline-flex' : 'block' }}>
+            <Box sx={{ display: inOrderingProcess ? 'hidden' : 'block' }}>
                 <Box
                     sx={{
                         backgroundColor: 'primary.main',
@@ -138,11 +138,12 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess, amountCha
                     </IconButton>
                 </Box>
                 <Button
+                    id="jaakkomartin"
                     size={size}
                     color={amountN === 0 ? 'error' : 'primary'}
                     sx={{
-                        mt: !inOrderingProcess ? 1 / 2 : 0,
-                        ml: inOrderingProcess ? 2 : 0,
+                        mt: !inOrderingProcess ? 0.5 : 0,
+                        // ml: !inOrderingProcess ? 2 : 0,
                         width: '7rem',
                     }}
                     aria-label="add more of same item to shopping cart"
