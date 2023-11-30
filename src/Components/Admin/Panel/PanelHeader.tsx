@@ -31,6 +31,8 @@ function AdminAppBar() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const { messages } = useRouteLoaderData('admin') as Awaited<ReturnType<typeof adminLoader>>;
 
+    const unReadMessages = messages?.results?.filter((message) => message.status === 'Not read').length;
+
     const handleClickAvatarDropDownMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAvatarDropDownMenu(!avatarDropDownMenu);
         setAnchorEl(event.currentTarget);
@@ -74,7 +76,7 @@ function AdminAppBar() {
                         <Box id="mail" sx={{ margin: '0 1rem 0 1rem' }}>
                             <Tooltip title="Uudet viestit">
                                 <IconButton component={Link} to="/admin/viestit">
-                                    <Badge badgeContent={messages.count} color="error">
+                                    <Badge badgeContent={unReadMessages} color="error">
                                         <MailIcon sx={{ color: 'primary.contrastText' }} />
                                     </Badge>
                                 </IconButton>
