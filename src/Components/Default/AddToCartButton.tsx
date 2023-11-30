@@ -15,6 +15,7 @@ import AuthContext from '../../Context/AuthContext';
 import type { shoppingCartLoader } from '../../Router/loaders';
 import type { OverridableStringUnion } from '@material-ui/types';
 import type { ButtonPropsSizeOverrides } from '@mui/material';
+import Tooltip from '../Tooltip';
 
 interface Props {
     size: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides> | undefined;
@@ -80,9 +81,11 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
                     )}
                 </>
             ) : (
-                <IconButton color="primary" component={Link} to={'/kirjaudu'}>
-                    <AddShoppingCartOutlinedIcon fontSize={'large'} />
-                </IconButton>
+                <Tooltip title="Kirjaudu sisään käyttääksesi ostoskoria">
+                    <IconButton color="primary" component={Link} to={'/kirjaudu'}>
+                        <AddShoppingCartOutlinedIcon fontSize={'large'} />
+                    </IconButton>
+                </Tooltip>
             )}
         </>
     );
