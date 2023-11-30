@@ -92,14 +92,15 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
         ref.current = 0;
     }, [product?.available]);
 
-    console.log('yksittäisen "AddToCartButton":n pre-return');
+    // console.log('yksittäisen "AddToCartButton":n pre-return');
 
     return (
         <>
             {username ? (
                 <>
                     {cart?.product_items?.some((product_item) => product_item?.product.id === groupId) ? (
-                        <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
+                        // <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
+                        'lisätty!'
                     ) : (
                         <>
                             {ref.current === 1 ? (

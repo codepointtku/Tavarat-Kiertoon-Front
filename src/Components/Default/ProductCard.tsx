@@ -62,6 +62,8 @@ function ProductCard({
         }
     }
 
+    console.log('tuotekortin pre-return');
+
     return (
         <Card
             sx={{

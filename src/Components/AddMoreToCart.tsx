@@ -43,7 +43,6 @@ function AddMoreToCart({ count, maxCount, id, size, inOrderingProcess, amountCha
     }, [addedToCart]);
 
     useEffect(() => {
-        console.log('addMOar effectissä');
         setAmountN(count ?? 1);
         setSelectedAmount(count ?? 1);
         amountN === count && setAddedToCart(true);

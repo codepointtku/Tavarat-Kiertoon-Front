@@ -58,6 +58,8 @@ function NoSearchResults() {
 function ProductList() {
     const { results, count } = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
 
+    console.log('%c product list rendering...', 'color: blue;');
+
     return (
         <Stack>
             {results?.length ? (
