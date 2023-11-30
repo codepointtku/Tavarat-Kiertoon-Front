@@ -175,7 +175,7 @@ export default function BikesPage() {
                     >
                         <FormControlLabel value={0} control={<Radio />} label="Sisällä" />
                         <FormControlLabel
-                            value={trailerAvailability}
+                            value={trailers[0].id}
                             control={<Radio />}
                             label="Kärryssä"
                             disabled={trailerAvailability === 0}
