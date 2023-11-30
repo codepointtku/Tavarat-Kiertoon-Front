@@ -19,7 +19,7 @@ import {
     Typography,
 } from '@mui/material';
 import { parseISO, setHours, setMinutes } from 'date-fns';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Form, useLoaderData, useSearchParams, useSubmit } from 'react-router-dom';
 import { TransitionGroup } from 'react-transition-group';
@@ -87,6 +87,7 @@ export default function BikesPage() {
     const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
     const [isIntroVisible, setIsIntroVisible] = useState(true);
     const [isThankYouModalVisible, setIsThankYouModalVisible] = useState(false);
+    const [trailerValue, setTrailerValue] = useState(0);
     const containerRef = useRef(null);
 
     const loaderData = useLoaderData();
@@ -94,6 +95,12 @@ export default function BikesPage() {
     const maxDate = parseISO(loaderData.date_info.available_to);
     const trailers = [...loaderData.trailers];
     const trailerAvailability = trailerDates(getValues('startDate'), getValues('endDate'), trailers[0]);
+    useEffect(() => {
+        if (trailerAvailability === 0) {
+            setTrailerValue(0);
+        }
+    }, [trailerAvailability]);
+ 
     const bikes = [
         // The bike package id and bike id would have possibility for overlap since they're both just incrementing from 0
         ...loaderData.packages.map((bikePackage) => ({
@@ -169,8 +176,8 @@ export default function BikesPage() {
                         row
                         aria-labelledby="storage-label"
                         name="storage"
-                        value={value}
-                        onChange={(_, option) => onChange(option)}
+                        onChange={(_, option) => onChange(option) && setTrailerValue(_.target.value)}
+                        value={trailerValue}
                         onBlur={onBlur}
                     >
                         <FormControlLabel value={0} control={<Radio />} label="Sisällä" />
