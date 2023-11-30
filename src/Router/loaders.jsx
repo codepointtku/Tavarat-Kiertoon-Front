@@ -36,13 +36,11 @@ const rootLoader = async () => {
  * Get shoppingCart for logged in user
  */
 const shoppingCartLoader = async () => {
-    // TODO: why not combine these into one call?
-    const { data: cart } = await shoppingCartApi.shoppingCartRetrieve();
-    const { data: amountList } = await shoppingCartApi.shoppingCartAvailableAmountList();
-    // console.log('@shoppingCartLoader, cart.product_items:', cart?.product_items);
-    // console.log('@shoppingCartLoader, cart:', cart);
+    const [{ data: cart }, { data: amountList }] = await Promise.all([
+        await shoppingCartApi.shoppingCartRetrieve(),
+        await shoppingCartApi.shoppingCartAvailableAmountList(),
+    ]);
 
-    // /* eslint-disable no-shadow */
     // // // auth check for future
     // // if (auth.user_group === true){...}
 

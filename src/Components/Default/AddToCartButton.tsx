@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { useEffect } from 'react';
 
 import { useForm } from 'react-hook-form';
@@ -51,40 +51,48 @@ function AddingToCart() {
 }
 
 function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
-    const { cart, products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
+    const { cart, products: productsInShoppingCart } = useRouteLoaderData('frontPage') as Awaited<
+        ReturnType<typeof shoppingCartLoader>
+    >;
     const { auth } = useContext(AuthContext);
     const { username } = auth;
 
-    const [isAddedToCart, setIsAddedToCart] = useState(false);
+    const ref = useRef(0);
 
     const [searchParams] = useSearchParams();
-    const { handleSubmit } = useForm();
     const fetcher = useFetcher();
 
-    const product = products?.find((product_item: { product: { id: number } }) => product_item.product.id == id);
+    const {
+        handleSubmit,
+        // formState: { isSubmitting, isSubmitSuccessful },
+    } = useForm();
 
-    const onSubmit = async () => {
-        if (username) {
-            setIsAddedToCart(true);
-            fetcher.submit(
-                { id },
-                {
-                    method: 'put',
-                    action: '/?' + searchParams.toString(),
-                }
-            );
-            return;
-        }
+    const product = productsInShoppingCart?.find(
+        (product_item: { product: { id: number } }) => product_item.product.id == id
+    );
+
+    const onSubmit = () => {
+        console.log('submitissa');
+
+        fetcher.submit(
+            { id },
+            {
+                method: 'put',
+                action: '/?' + searchParams.toString(),
+            }
+        );
+
+        ref.current = 1;
+
         return;
     };
 
-    // this useEffect is responsible for deciding which action button is being rendered.
-    // problem: heavy af - say there are 25 products per page. Now you have 25 useEffects checking for products availability.
-    //  now say there are 100 products per page: that's 100 useEffects
-
     useEffect(() => {
-        setIsAddedToCart(false);
+        console.log('"AddToCartButton":n useEffectissä');
+        ref.current = 0;
     }, [product?.available]);
+
+    console.log('yksittäisen "AddToCartButton":n pre-return');
 
     return (
         <>
@@ -94,11 +102,11 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
                         <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
                     ) : (
                         <>
-                            {isAddedToCart ? (
+                            {ref.current === 1 ? (
                                 <AddingToCart />
                             ) : (
                                 <form onSubmit={handleSubmit(onSubmit)}>
-                                    <IconButton type="submit" color="primary" disabled={isAddedToCart}>
+                                    <IconButton type="submit" color="primary" disabled={ref.current === 1}>
                                         <AddShoppingCartOutlinedIcon fontSize={'large'} />
                                     </IconButton>
                                 </form>
