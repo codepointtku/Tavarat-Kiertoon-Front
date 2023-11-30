@@ -4407,6 +4407,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/UserBikeRental'
           readOnly: true
+        bike_trailer:
+          allOf:
+          - $ref: '#/components/schemas/BikeTrailer'
+          readOnly: true
         start_date:
           type: string
           format: date-time
@@ -4427,11 +4431,9 @@ components:
         extra_info:
           type: string
           maxLength: 255
-        bike_trailer:
-          type: integer
-          nullable: true
       required:
       - bike_stock
+      - bike_trailer
       - contact_name
       - contact_phone_number
       - delivery_address
