@@ -54,6 +54,7 @@ interface CartProduct {
 
 const drawerHead = '6rem';
 const drawerWidth = 490;
+const appBarBackgroundColor = 'rgba(0, 155, 216, 0.55)';
 
 const iconHover = {
     '&:hover .MuiSvgIcon-root': {
@@ -63,7 +64,21 @@ const iconHover = {
 
 const toolBarHover = {
     '&:hover .MuiPaper-root': {
-        backgroundColor: 'primary.main',
+        animationName: 'fade-in',
+        animationDuration: '0.3s',
+        animationIterationCount: 1,
+        animationFillMode: 'forwards',
+        // opacity: 1,
+        '@keyframes fade-in': {
+            '0%': {
+                // opacity: 0,
+                backgroundColor: appBarBackgroundColor,
+            },
+            '100%': {
+                // opacity: 1,
+                backgroundColor: 'primary.main',
+            },
+        },
     },
 };
 
@@ -180,7 +195,7 @@ function DefaultAppBar() {
             <AppBar
                 id="appbar"
                 sx={{
-                    backgroundColor: 'rgba(0, 155, 216, 0.55)',
+                    backgroundColor: appBarBackgroundColor,
                     zIndex: 1250,
                     width: 'min-content',
                     minHeight: drawerHead,
