@@ -1,5 +1,5 @@
-import { useState, useContext, /* useEffect, */ type ReactNode } from 'react';
-import { useLoaderData, useNavigate, useLocation, useFetcher } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { useLoaderData, useNavigate, useLocation, useFetcher, Link } from 'react-router-dom';
 
 import {
     AppBar,
@@ -11,39 +11,61 @@ import {
     Badge,
     Drawer as MuiDrawer,
     List,
-    // ListItem,
-    // ListItemText,
     Typography,
     Popover,
     Grid,
-    type Theme,
     ListItem,
     ListItemText,
-    Alert,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import WarehouseIcon from '@mui/icons-material/Warehouse';
 import SecurityIcon from '@mui/icons-material/Security';
 import PedalBikeIcon from '@mui/icons-material/PedalBike';
-import BuildIcon from '@mui/icons-material/Build';
-
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 import AuthContext from '../../../Context/AuthContext';
+import HasRole from '../../../Utils/HasRole';
+
 import ProductInCart from './ProductInCart';
 import CloseDrawerButton from './CloseDrawerButton';
-import type { shoppingCartLoader } from '../../../Router/loaders';
 import Tooltip from '../../Tooltip';
-import { type ShoppingCartAvailableAmountList } from '../../../api';
 import LoginForm from '../../LoginForm';
-import HasRole from '../../../Utils/HasRole';
-import { Link } from 'react-router-dom';
+
+import type { ReactNode } from 'react';
+import type { BadgeProps } from '@mui/material/Badge';
+import type { shoppingCartLoader } from '../../../Router/loaders';
+import type { ShoppingCartAvailableAmountList } from '../../../api';
 
 //
 
+interface DrawerProps {
+    currentOpenDrawer: string;
+    name: string;
+    onClose: () => void;
+    children: ReactNode;
+}
+
+interface CartProduct {
+    count: number;
+    product: { name: string; id: number & string };
+}
+
 const drawerHead = '6rem';
+const drawerWidth = 490;
+
+const iconHover = {
+    '&:hover .MuiSvgIcon-root': {
+        color: 'primary.dark',
+    },
+};
+
+const toolBarHover = {
+    '&:hover .MuiPaper-root': {
+        backgroundColor: 'primary.main',
+    },
+};
 
 function DrawerHeader() {
     return (
@@ -60,20 +82,6 @@ function DrawerHeader() {
         />
     );
 }
-
-interface DrawerProps {
-    currentOpenDrawer: string;
-    name: string;
-    onClose: () => void;
-    children: ReactNode;
-}
-
-interface StyledBadgeIF {
-    // isanimated: number;
-    theme?: Theme;
-}
-
-const drawerWidth = 490;
 
 function Drawer({ currentOpenDrawer, name, onClose, children }: DrawerProps) {
     const handleClose = () => {
@@ -103,73 +111,29 @@ function Drawer({ currentOpenDrawer, name, onClose, children }: DrawerProps) {
     );
 }
 
-const StyledBadge = styled(Badge)(({ theme }: StyledBadgeIF) => ({
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
     '& .MuiBadge-badge': {
         color: theme?.palette.primary.contrastText,
         right: -8,
         border: `0.1rem solid ${theme?.palette.background.paper}`,
         backgroundColor: theme?.palette.error.main,
-        // animationName: isanimated ? 'idle' : 'badgePulse',
-        // animationDuration: '0.6s',
-        // animationTimingFunction: 'ease-in-out',
     },
-    // '@keyframes badgePulse': {
-    //     // from: {
-    //     //     backgroundColor: theme?.palette.error.main,
-    //     // },
-    //     // to: {
-    //     //     backgroundColor: theme?.palette.success.main,
-    //     // },
-    //     //
-    //     '0%': { backgroundColor: theme?.palette.error.main },
-    //     '50%': { backgroundColor: theme?.palette.success.main },
-    //     '100%': { backgroundColor: theme?.palette.error.main },
-    // },
-    // '@keyframes idle': { '100%': {} },
 }));
 
-const iconHover = {
-    '&:hover .MuiSvgIcon-root': {
-        color: 'primary.dark',
-    },
-};
-
-const toolBarHover = {
-    '&:hover .MuiPaper-root': {
-        backgroundColor: 'primary.main',
-    },
-};
-
-// interface SubmitFunction {
-//     (SubmitTarget: string, options: { method: string; action: string }): any;
-// }
-
-interface CartProduct {
-    count: number;
-    product: { name: string; id: number & string };
-}
-
 function DefaultAppBar() {
+    const { cart, products, amountList } = useLoaderData() as Awaited<ReturnType<typeof shoppingCartLoader>>;
+
     const { auth } = useContext(AuthContext);
     const fetcher = useFetcher();
-    const [notLoggedIn, setNotLoggedIn] = useState(false);
-    const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
     const navigate = useNavigate();
-    const { cart, products, amountList } = useLoaderData() as Awaited<ReturnType<typeof shoppingCartLoader>>;
-    // const [productsLength, setProductsLength] = useState(cart?.product_items?.length);
+    const location = useLocation();
+
+    const [currentOpenDrawer, setCurrentOpenDrawer] = useState('');
+    const [notLoggedIn, setNotLoggedIn] = useState(false);
     const [cartEmpty, setCartEmpty] = useState(false);
+    const [unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts] = useState(initializeCartProducts());
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const openPopover = Boolean(anchorEl);
-    const location = useLocation();
-    const [unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts] = useState(initializeCartProducts());
-
-    // useEffect(() => {
-    //     if (cart?.product_items?.length !== productsLength) {
-    //         setTimeout(() => {
-    //             setProductsLength(cart?.product_items?.length);
-    //         }, 3000);
-    //     }
-    // }, [cart?.product_items?.length, productsLength]);
 
     function initializeCartProducts() {
         const productArr = [] as object[];
@@ -257,7 +221,6 @@ function DefaultAppBar() {
                                 <IconButton onClick={drawerOpen('shoppingCart')} sx={iconHover}>
                                     {auth.username ? (
                                         <StyledBadge
-                                            // isanimated={productsLength === cart?.product_items?.length ? 1 : 0}
                                             badgeContent={cart?.product_items?.length}
                                             sx={{ color: 'primary.contrastText' }}
                                             anchorOrigin={{
@@ -327,13 +290,6 @@ function DefaultAppBar() {
                                     />
                                 );
                             })}
-                            {/* {unconfirmedChangesCartProducts.length > 0 && (
-                                <Alert severity="info">
-                                    <Typography variant="body2" textAlign="center" sx={{ color: 'error.main' }}>
-                                        Vahvista muutokset korissa jatkaaksesi tilaamaan
-                                    </Typography>
-                                </Alert>
-                            )} */}
                         </List>
                         <Grid container sx={{ display: 'flex', justifyContent: 'center' }}>
                             <Grid item xs={2} />
@@ -344,7 +300,6 @@ function DefaultAppBar() {
                                             onClick={() => navigateToCart()}
                                             variant="contained"
                                             fullWidth
-                                            // endIcon={<ShoppingCartCheckoutIcon />}
                                             sx={{
                                                 '&:hover': {
                                                     backgroundColor: 'success.dark',
@@ -364,7 +319,6 @@ function DefaultAppBar() {
                                     </ListItem>
                                 </List>
 
-                                {/* ///// */}
                                 {cart?.product_items?.length > 0 && (
                                     <ListItem sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                         <Button
@@ -372,7 +326,6 @@ function DefaultAppBar() {
                                             variant="outlined"
                                             color="error"
                                             fullWidth
-                                            // startIcon={<DeleteIcon />}
                                             onClick={handlePopOverOpen}
                                         >
                                             Tyhjennä kori
