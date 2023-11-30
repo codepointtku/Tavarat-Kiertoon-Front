@@ -253,7 +253,7 @@ const orderEditStatusAction = async ({ request, params }) => {
 //
 // admin bing bings
 
-const adminLogOut = async ({ request }) => {
+const logOutAction = async ({ request }) => {
     if (request.method === 'POST') {
         await usersApi.usersLogoutCreate();
         return { type: 'logout', status: true };
@@ -467,8 +467,12 @@ const userEditAction = async ({ request, params }) => {
 };
 
 const userDeleteAction = async ({ params }) => {
-    await usersApi.usersDestroy(params.userid);
-    return redirect('/admin/kayttajat');
+    try {
+        await usersApi.usersDestroy(params.userid);
+        return redirect('/admin/kayttajat');
+    } catch (err) {
+        return { type: 'userdelete', status: false };
+    }
 };
 
 const adminUserAddressEditAction = async ({ request, params }) => {
@@ -1346,7 +1350,7 @@ export {
     activationAction,
     modifyBikeModelAction,
     deleteBikeAction,
-    adminLogOut,
+    logOutAction,
     modifyBikePacketAction,
     adminInboxAction,
     adminEmailRecipientsAction,
