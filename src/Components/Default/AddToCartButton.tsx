@@ -1,27 +1,51 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 // import { useState, useEffect } from 'react';
 
 import { useForm } from 'react-hook-form';
 import { useRouteLoaderData, useSearchParams, useFetcher, Link } from 'react-router-dom';
 
-import { /*Button,*/ IconButton } from '@mui/material';
+import { Box, CircularProgress, IconButton, Typography } from '@mui/material';
 
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 
 import AddMoreToCart from '../AddMoreToCart';
+import Tooltip from '../Tooltip';
 
 import AuthContext from '../../Context/AuthContext';
 
 import type { shoppingCartLoader } from '../../Router/loaders';
 import type { OverridableStringUnion } from '@material-ui/types';
 import type { ButtonPropsSizeOverrides } from '@mui/material';
-import Tooltip from '../Tooltip';
 
 interface Props {
     size: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides> | undefined;
     id: number & string;
     groupId: number;
     count?: number;
+}
+
+function AddingToCart() {
+    // "disableShrink" -prop helps out on under heavy CPU loads.
+    // this dev-machine is under heavy load because it's running backend with Docker.
+    // the animations behaviour should be tested when one is loading only FE @ browser,
+    // and the backend is on the server.
+    // Incase the processing speed is fine in real life situation, slash out the prop for smoother animation.
+
+    return (
+        <Box
+            sx={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            {/* <Typography variant="body2">Lisätään koriin...</Typography> */}
+            <CircularProgress size={28} disableShrink />
+        </Box>
+    );
 }
 
 function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
@@ -31,6 +55,8 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
 
     // const [addedToCart, setAddedToCart] = useState(false);
     // const [isNotLoggedIn, setIsNotLoggedIn] = useState(false);
+    const [isClicked, setIsClicked] = useState(false);
+
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
     const fetcher = useFetcher();
@@ -39,6 +65,7 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
 
     const onSubmit = async () => {
         if (username) {
+            setIsClicked(true);
             fetcher.submit(
                 { id },
                 {
@@ -49,7 +76,7 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
             // setAddedToCart(true);
         }
         // else {
-        //     setIsNotLoggedIn((isNotLoggedIn) => !isNotLoggedIn);
+        // setIsClicked((isClicked) => !isClicked);
         // }
     };
 
@@ -64,20 +91,17 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
                     {cart?.product_items?.some((product_item) => product_item?.product.id === groupId) ? (
                         <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
                     ) : (
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            {/* <Button
-                        size={size}
-                        aria-label="add to shopping cart"
-                        startIcon={<AddShoppingCartOutlinedIcon />}
-                        type="submit"
-                        disabled={addedToCart}
-                    >
-                        Lisää koriin
-                    </Button> */}
-                            <IconButton type="submit" color="primary">
-                                <AddShoppingCartOutlinedIcon fontSize={'large'} />
-                            </IconButton>
-                        </form>
+                        <>
+                            {isClicked ? (
+                                <AddingToCart />
+                            ) : (
+                                <form onSubmit={handleSubmit(onSubmit)}>
+                                    <IconButton type="submit" color="primary" disabled={isClicked}>
+                                        <AddShoppingCartOutlinedIcon fontSize={'large'} />
+                                    </IconButton>
+                                </form>
+                            )}
+                        </>
                     )}
                 </>
             ) : (
