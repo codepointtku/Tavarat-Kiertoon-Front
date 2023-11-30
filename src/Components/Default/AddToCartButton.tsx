@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-// import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { useForm } from 'react-hook-form';
 import { useRouteLoaderData, useSearchParams, useFetcher, Link } from 'react-router-dom';
@@ -37,12 +37,14 @@ function AddingToCart() {
                 width: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 1,
+                gap: 2,
                 justifyContent: 'center',
                 alignItems: 'center',
+                // hack padding to reduce "product information"-IconButton jumping
+                padding: '0rem 0.28rem',
             }}
         >
-            {/* <Typography variant="body2">Lisätään koriin...</Typography> */}
+            <Typography variant="body2">Lisätään koriin...</Typography>
             <CircularProgress size={28} disableShrink />
         </Box>
     );
@@ -53,9 +55,7 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
     const { auth } = useContext(AuthContext);
     const { username } = auth;
 
-    // const [addedToCart, setAddedToCart] = useState(false);
-    // const [isNotLoggedIn, setIsNotLoggedIn] = useState(false);
-    const [isClicked, setIsClicked] = useState(false);
+    const [isAddedToCart, setIsAddedToCart] = useState(false);
 
     const [searchParams] = useSearchParams();
     const { handleSubmit } = useForm();
@@ -65,7 +65,7 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
 
     const onSubmit = async () => {
         if (username) {
-            setIsClicked(true);
+            setIsAddedToCart(true);
             fetcher.submit(
                 { id },
                 {
@@ -73,16 +73,18 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
                     action: '/?' + searchParams.toString(),
                 }
             );
-            // setAddedToCart(true);
+            return;
         }
-        // else {
-        // setIsClicked((isClicked) => !isClicked);
-        // }
+        return;
     };
 
-    // useEffect(() => {
-    //     setAddedToCart(false);
-    // }, [product?.available]);
+    // this useEffect is responsible for deciding which action button is being rendered.
+    // problem: heavy af - say there are 25 products per page. Now you have 25 useEffects checking for products availability.
+    //  now say there are 100 products per page: that's 100 useEffects
+
+    useEffect(() => {
+        setIsAddedToCart(false);
+    }, [product?.available]);
 
     return (
         <>
@@ -92,11 +94,11 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
                         <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
                     ) : (
                         <>
-                            {isClicked ? (
+                            {isAddedToCart ? (
                                 <AddingToCart />
                             ) : (
                                 <form onSubmit={handleSubmit(onSubmit)}>
-                                    <IconButton type="submit" color="primary" disabled={isClicked}>
+                                    <IconButton type="submit" color="primary" disabled={isAddedToCart}>
                                         <AddShoppingCartOutlinedIcon fontSize={'large'} />
                                     </IconButton>
                                 </form>
