@@ -70,7 +70,7 @@ export default function BikeTrailers() {
                         label="Rekisterinumero"
                         fullWidth
                         error={!!errors.register_number}
-                        helperText={errors.register_number?.message?.toString()}
+                        helperText={errors.register_number?.message?.toString() || " "}
                         {...register('register_number', {
                             required: {
                                 value: true,
@@ -94,7 +94,7 @@ export default function BikeTrailers() {
                         Lisää peräkärry
                     </Button>
                 </Box>
-                <TableContainer sx={{ margin: '1rem 0' }} component={Form} onSubmit={handleSubmit(onSubmit)}>
+                <TableContainer component={Form} onSubmit={handleSubmit(onSubmit)}>
                     <Box width="20%"></Box>
                     <Table sx={{ minWidth: 700 }} aria-label="customized table">
                         <TableHead>
