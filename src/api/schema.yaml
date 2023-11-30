@@ -4459,6 +4459,8 @@ components:
           type: object
           additionalProperties:
             type: integer
+        bike_trailer:
+          type: integer
         start_date:
           type: string
           format: date-time
@@ -4477,9 +4479,6 @@ components:
         extra_info:
           type: string
           maxLength: 255
-        bike_trailer:
-          type: integer
-          nullable: true
       required:
       - bike_stock
       - contact_name

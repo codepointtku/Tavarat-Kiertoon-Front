@@ -826,7 +826,6 @@ const confirmationAction = async ({ request }) => {
  */
 const bikeOrderAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    console.log(formData.get('bike_trailer'))
     if (formData.get('storageType') === 0) {
         const response = await bikesApi.bikesRentalCreate({
             contact_name: formData.get('contactPersonName'),
