@@ -3345,6 +3345,63 @@ paths:
       responses:
         '204':
           description: No response body
+  /users/{id}/bike_groups/:
+    get:
+      operationId: users_bike_groups_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - jwtAuth: []
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupPermissionsResponse'
+          description: ''
+    put:
+      operationId: users_bike_groups_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BikeGroupPermissionsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BikeGroupPermissionsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BikeGroupPermissionsRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - jwtAuth: []
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupPermissionsResponse'
+          description: ''
   /users/{id}/groups/:
     get:
       operationId: users_groups_retrieve
@@ -3900,6 +3957,23 @@ components:
       required:
       - id
       - name
+    BikeGroupEnum:
+      enum:
+      - bicycle_admin_group
+      - bicycle_group
+      - remove_bicycle_group
+      type: string
+      description: |-
+        * `bicycle_admin_group` - bicycle_admin_group
+        * `bicycle_group` - bicycle_group
+        * `remove_bicycle_group` - remove_bicycle_group
+    BikeGroupPermissionsRequest:
+      type: object
+      properties:
+        bike_group:
+          $ref: '#/components/schemas/BikeGroupEnum'
+      required:
+      - bike_group
     BikeModel:
       type: object
       properties:

@@ -122,6 +122,35 @@ export default function BikesHomePage() {
                     </Typography>
                 </Paper>
             </Box>
+            <Box display="flex" justifyContent="space-between" mt="2rem">
+                <Paper
+                    component={Link}
+                    to="pyorapaketit"
+                    sx={{
+                        textDecoration: 'none',
+                        marginRight: '1rem',
+                        flex: '1',
+                        mx: '1rem',
+                        padding: '2rem',
+                        cursor: 'pointer',
+                        transition: 'transform 0.2s ease-in-out',
+                        '&:hover': {
+                            transform: 'scale(1.1)',
+                        },
+                        backgroundColor: '#FFFFFF', // Add this line to change the background color to pure white
+                    }}
+                >
+                    <Box display="flex" alignItems="center">
+                        <ViewListIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
+                        <Typography variant="h5" color="primary.main">
+                            Pyöräoikeudet
+                        </Typography>
+                    </Box>
+                    <Typography variant="body1" mt="1rem" color="primary.main">
+                        Käyttäjien pyöräoikeuksien muokkaus.
+                    </Typography>
+                </Paper>
+            </Box>
         </Box>
     );
 }
