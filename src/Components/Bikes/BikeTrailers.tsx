@@ -58,7 +58,7 @@ export default function BikeTrailers() {
             <Typography variant="h3" align="center" color="primary.main" width="100%" sx={{ margin: '0 0 1rem 0' }}>
                 Peräkärryt
             </Typography>
-            <Container maxWidth="xl" component={Paper}>
+            <Container maxWidth="xl" component={Paper} sx={{ padding: '2rem' }}>
                 <Box
                     component={Form}
                     sx={{ alignItems: 'center', display: 'flex', flexDirection: 'row', width: '480px' }}
@@ -70,7 +70,7 @@ export default function BikeTrailers() {
                         label="Rekisterinumero"
                         fullWidth
                         error={!!errors.register_number}
-                        helperText={errors.register_number?.message?.toString() || " "}
+                        helperText={errors.register_number?.message?.toString() || ' '}
                         {...register('register_number', {
                             required: {
                                 value: true,

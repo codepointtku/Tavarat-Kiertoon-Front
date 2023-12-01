@@ -46,21 +46,23 @@ function trailerDates(startDate, endDate, trailer) {
     let stickyZeroAvailable = 0;
     if (dates[0] == '1.1.1970') {
         availableTrailers = 0;
-    } else if (trailer.max_available >= 1 && Object.keys(trailer.unavailable).length === 0) {
-        availableTrailers = trailer.id;
+    } else if (trailer?.max_available >= 1 && Object.keys(trailer?.unavailable).length === 0) {
+        availableTrailers = trailer?.id;
     } else {
-        dates.forEach((iterableDate) => {
-            if (iterableDate in trailer.unavailable) {
-                if (trailer.unavailable[iterableDate] < trailer.max_available) {
-                    availableTrailers = trailer.id;
+        if (trailer?.unavailable) {
+            dates.forEach((iterableDate) => {
+                if (iterableDate in trailer?.unavailable) {
+                    if (trailer?.unavailable[iterableDate] < trailer?.max_available) {
+                        availableTrailers = trailer?.id;
+                    } else {
+                        availableTrailers = 0;
+                        stickyZeroAvailable = 1;
+                    }
                 } else {
-                    availableTrailers = 0;
-                    stickyZeroAvailable = 1;
+                    availableTrailers = trailer?.id;
                 }
-            } else {
-                availableTrailers = trailer.id;
-            }
-        });
+            });
+        }
     }
     if (stickyZeroAvailable == 1) {
         availableTrailers = 0;
@@ -170,7 +172,7 @@ export default function BikesPage() {
                     <FormLabel id="storage-label">Säilytystapa</FormLabel>
                     <Typography variant="caption">
                         Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä, tuomme ne
-                        lukittavassa kärryssä. Huom. Kärryä ei voi valita jos niitä ei ole saatavilla haluttuna ajankohtana.
+                        lukittavassa kärryssä. Huom. Peräkärryyn mahtuu noin kymmenen pyörää (yksi paketti), kärryä ei voi valita jos niitä ei ole saatavilla haluttuna ajankohtana.
                     </Typography>
                     <RadioGroup
                         row
@@ -182,7 +184,7 @@ export default function BikesPage() {
                     >
                         <FormControlLabel value={0} control={<Radio />} label="Sisällä" />
                         <FormControlLabel
-                            value={trailers[0].id}
+                            value={trailers[0]?.id}
                             control={<Radio />}
                             label="Kärryssä"
                             disabled={trailerAvailability === 0}
