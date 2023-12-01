@@ -159,9 +159,22 @@ export default function BikeRentalView() {
                                         ))}
                                     </TextField>
                                 </TableCell>
-                                <TableCell width="20%">
+                                <TableCell width="10%">
                                     <Button id="submit-button" type="submit">
                                         Päivitä tila
+                                    </Button>
+                                </TableCell>
+                                <TableCell width="10%">
+                                    <Button
+                                        color="info"
+                                        onClick={window.print}
+                                        sx={{
+                                            '&:hover': {
+                                                backgroundColor: 'success.dark',
+                                            },
+                                        }}
+                                    >
+                                        {'Tulosta'}
                                     </Button>
                                 </TableCell>
                                 <TableCell align="right">
@@ -193,7 +206,9 @@ export default function BikeRentalView() {
                                 <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottaja:</TableCell>
                                 <TableCell>{rental.contact_name}</TableCell>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Peräkärry:</TableCell>
-                                <TableCell>{rental.bike_trailer ? rental.bike_trailer.register_number : 'Ei'}</TableCell>
+                                <TableCell>
+                                    {rental.bike_trailer ? rental.bike_trailer.register_number : 'Ei'}
+                                </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Vastaanottajan puhelinnumero:</TableCell>
