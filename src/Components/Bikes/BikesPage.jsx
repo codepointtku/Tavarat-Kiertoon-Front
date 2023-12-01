@@ -170,7 +170,7 @@ export default function BikesPage() {
                     <FormLabel id="storage-label">Säilytystapa</FormLabel>
                     <Typography variant="caption">
                         Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä, tuomme ne
-                        lukittavassa kärryssä. Huom. kärryn valitseminen voi rajoittaa saatavuutta.
+                        lukittavassa kärryssä. Huom. Kärryä ei voi valita jos niitä ei ole saatavilla haluttuna ajankohtana.
                     </Typography>
                     <RadioGroup
                         row
