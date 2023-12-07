@@ -13,7 +13,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import type { BikeInterface, BikeModelInterface, StorageInterface, ColorInterface } from './Bikes';
+import type { BikeInterface, BikeModelInterface, ColorInterface } from './Bikes';
 import { Form, Link, useSubmit } from 'react-router-dom';
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
