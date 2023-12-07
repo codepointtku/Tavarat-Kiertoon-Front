@@ -4604,10 +4604,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/BikeSize'
           readOnly: true
-        color:
-          allOf:
-          - $ref: '#/components/schemas/Color'
-          readOnly: true
         picture:
           allOf:
           - $ref: '#/components/schemas/Picture'
@@ -4620,7 +4616,6 @@ components:
           maxLength: 255
       required:
       - brand
-      - color
       - description
       - id
       - name
