@@ -13,7 +13,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import type { BikeInterface, BikeModelInterface, ColorInterface } from './Bikes';
+import type { BikeModelInterface, ColorInterface } from './Bikes';
 import { Form, Link, useSubmit } from 'react-router-dom';
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
@@ -22,6 +22,17 @@ import { type FieldValues, useForm } from 'react-hook-form';
 
 interface ModifyBikePageInterface {
     createNewBike: boolean;
+}
+
+interface ModifyBikeInterface {
+    bike: BikeModelInterface;
+    created_at: string;
+    frame_number: string;
+    id: number;
+    number: string;
+    package_only: boolean;
+    state: string; // "AVAILABLE" | "MAINTENANCE" | "RENTED" | "RETIRED"
+    color: ColorInterface;
 }
 
 /**
@@ -41,7 +52,7 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
 
     // get loader data
     const { bikeData, bikeModelsData, colors } = useLoaderData() as {
-        bikeData: BikeInterface;
+        bikeData: ModifyBikeInterface;
         bikeModelsData: BikeModelInterface[];
         colors: ColorInterface[];
     };
