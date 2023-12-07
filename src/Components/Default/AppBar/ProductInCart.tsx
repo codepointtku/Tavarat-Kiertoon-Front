@@ -1,9 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useFetcher, Link } from 'react-router-dom';
-import { ListItem, ListItemButton, ListItemText, IconButton, Input, Button, Typography } from '@mui/material';
+import {
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    IconButton,
+    Input,
+    Button,
+    Typography,
+    Grid,
+    Stack,
+} from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import CheckIcon from '@mui/icons-material/Check';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface Props {
     name: string;
@@ -19,7 +31,9 @@ interface Props {
 function ProductInCart({ name, id, count, maxCount, amountChangeState }: Props) {
     const fetcher = useFetcher();
     const [changeAmount, setChangeAmount] = useState(true);
+
     const [amountN, setAmountN] = useState(count);
+
     const [selectedAmount, setSelectedAmount] = useState(count);
     const { unconfirmedChangesCartProducts, setUnconfirmedChangesCartProducts } = amountChangeState;
 
@@ -76,42 +90,88 @@ function ProductInCart({ name, id, count, maxCount, amountChangeState }: Props) 
         }
     };
 
+    const hoverFx = {
+        '&:hover': {
+            animation: 'none',
+        },
+    };
+
     return (
         <ListItem key={id} sx={{ height: 50 }}>
-            <ListItemButton component={Link} to={`/tuotteet/${id}`}>
-                <ListItemText primary={name} />
-            </ListItemButton>
-            <IconButton onClick={() => handleClick('remove')} disabled={amountN === 0}>
-                <RemoveIcon />
-            </IconButton>
-            <Input
-                inputProps={{
-                    style: { width: 30, textAlign: 'center', border: '0.5px solid gray', borderRadius: '0.25rem' },
-                }}
-                value={amountN}
-                onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
-                disableUnderline
-            />
-            <IconButton onClick={() => handleClick('add')} disabled={amountN === maxCount + selectedAmount}>
-                <AddIcon />
-            </IconButton>
-            <Button
-                color={amountN === 0 ? 'error' : 'primary'}
-                size="small"
-                sx={{
-                    ml: 2,
-                    width: '7rem',
-                }}
-                aria-label="add more of same item to shopping cart"
-                onClick={() => handleSubmit('add')}
-                disabled={changeAmount}
-            >
-                {amountN === 0 ? (
-                    <Typography variant="inherit">Poista korista</Typography>
-                ) : (
-                    <Typography variant="inherit">Muuta määrää</Typography>
-                )}
-            </Button>
+            <Grid container alignItems="center">
+                <Grid item xs={6}>
+                    <ListItemButton component={Link} to={`/tuotteet/${id}`}>
+                        <ListItemText primary={name} />
+                    </ListItemButton>
+                </Grid>
+
+                <Grid item xs={6}>
+                    <Stack direction="row" justifyContent="flex-end">
+                        <IconButton onClick={() => handleClick('remove')} disabled={amountN === 0}>
+                            <RemoveIcon />
+                        </IconButton>
+                        <Input
+                            inputProps={{
+                                style: {
+                                    width: 30,
+                                    textAlign: 'center',
+                                    border: '0.5px solid gray',
+                                    borderRadius: '0.25rem',
+                                },
+                            }}
+                            value={amountN}
+                            onChange={(SelectChangeEvent) => handleChange(SelectChangeEvent)}
+                            disableUnderline
+                        />
+                        <IconButton onClick={() => handleClick('add')} disabled={amountN === maxCount + selectedAmount}>
+                            <AddIcon />
+                        </IconButton>
+                        <Button
+                            color={amountN === 0 ? 'error' : 'primary'}
+                            size="small"
+                            aria-label="add more of same item to shopping cart"
+                            onClick={() => handleSubmit('add')}
+                            disabled={changeAmount}
+                            fullWidth
+                            sx={[
+                                hoverFx,
+                                !changeAmount
+                                    ? {
+                                          animation: 'blinker 1s linear infinite alternate',
+                                          opacity: 1,
+                                          '@keyframes blinker': {
+                                              '0%': {
+                                                  opacity: 1,
+                                              },
+                                              '50%': {
+                                                  opacity: 0.5,
+                                              },
+                                              '100%': {
+                                                  opacity: 0.3,
+                                              },
+                                          },
+                                      }
+                                    : null,
+                            ]}
+                        >
+                            {amountN === 0 ? (
+                                <Typography variant="inherit">Poista korista</Typography>
+                            ) : (
+                                <Typography variant="inherit">Muuta määrää</Typography>
+                            )}
+                        </Button>
+                        {/* {amountN === 0 ? (
+                            <IconButton>
+                                <CheckIcon />
+                            </IconButton>
+                        ) : (
+                            <IconButton>
+                                <DeleteIcon />
+                            </IconButton>
+                        )} */}
+                    </Stack>
+                </Grid>
+            </Grid>
         </ListItem>
     );
 }

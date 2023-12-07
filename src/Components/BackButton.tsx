@@ -6,8 +6,14 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Tooltip from './Tooltip';
 
 const IconButtonLink = IconButton as typeof IconButton | typeof Link;
+interface LinkProps {
+    to?: number | string;
+}
 
-function BackButton() {
+const defaultProps: LinkProps = {
+    to: -1,
+};
+const BackButton = (prop: LinkProps) => {
     const iconHover = {
         '&:hover .MuiAvatar-root': {
             backgroundColor: 'primary.dark',
@@ -19,7 +25,7 @@ function BackButton() {
             <IconButtonLink
                 id="back-btn-iconbtn-link"
                 component={Link}
-                to={-1 as unknown as string}
+                to={prop.to as unknown as string}
                 sx={[iconHover, { p: '0' }]}
             >
                 <Avatar
@@ -34,6 +40,6 @@ function BackButton() {
             </IconButtonLink>
         </Tooltip>
     );
-}
-
+};
+BackButton.defaultProps = defaultProps;
 export default BackButton;

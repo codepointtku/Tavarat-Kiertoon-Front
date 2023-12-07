@@ -1666,17 +1666,14 @@ paths:
         schema:
           type: string
           enum:
-          - Handled
           - Not read
           - Read
         description: |-
           * `Not read` - Not Read
           * `Read` - Read
-          * `Handled` - Handled
 
           * `Not read` - Not Read
           * `Read` - Read
-          * `Handled` - Handled
       tags:
       - contact_forms
       security:
@@ -3634,9 +3631,9 @@ paths:
       responses:
         '204':
           description: No response body
-  /users/{id}/groups/permission/:
+  /users/{id}/groups/:
     get:
-      operationId: users_groups_permission_retrieve
+      operationId: users_groups_retrieve
       description: |-
         Update users permissions, should be only allowed to admins, on testing phase allowing fo users
         id = user id whose permission will be updated as id/pk parameter in url
@@ -3659,10 +3656,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GroupPermissionsResponseSchema'
+                $ref: '#/components/schemas/GroupPermissionsResponse'
           description: ''
     put:
-      operationId: users_groups_permission_update
+      operationId: users_groups_update
       description: |-
         Update users permissions, should be only allowed to admins, on testing phase allowing fo users
         id = user id whose permission will be updated as id/pk parameter in url
@@ -3679,13 +3676,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GroupPermissionsResponseSchema'
+              $ref: '#/components/schemas/GroupPermissionsRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/GroupPermissionsResponseSchema'
+              $ref: '#/components/schemas/GroupPermissionsRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/GroupPermissionsResponseSchema'
+              $ref: '#/components/schemas/GroupPermissionsRequest'
         required: true
       security:
       - cookieAuth: []
@@ -3697,7 +3694,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GroupPermissionsResponseSchema'
+                $ref: '#/components/schemas/GroupPermissionsResponse'
           description: ''
   /users/activate/:
     post:
@@ -5022,12 +5019,22 @@ components:
       enum:
       - Not read
       - Read
-      - Handled
       type: string
       description: |-
         * `Not read` - Not Read
         * `Read` - Read
-        * `Handled` - Handled
+    GroupEnum:
+      enum:
+      - admin_group
+      - storage_group
+      - user_group
+      - deactive
+      type: string
+      description: |-
+        * `admin_group` - Admin
+        * `storage_group` - Storage
+        * `user_group` - User
+        * `deactive` - Deactive
     GroupName:
       type: object
       description: Serializer for Groups
@@ -5041,7 +5048,15 @@ components:
       required:
       - id
       - name
-    GroupPermissionsResponseSchema:
+    GroupPermissionsRequest:
+      type: object
+      description: FOR SCHEMA
+      properties:
+        group:
+          $ref: '#/components/schemas/GroupEnum'
+      required:
+      - group
+    GroupPermissionsResponse:
       type: object
       description: FOR SCHEMA
       properties:
@@ -6441,6 +6456,8 @@ components:
         username:
           type: string
           maxLength: 255
+        group:
+          $ref: '#/components/schemas/GroupEnum'
       required:
       - email
       - first_name
@@ -6558,6 +6575,8 @@ components:
         username:
           type: string
           maxLength: 255
+        group:
+          $ref: '#/components/schemas/GroupEnum'
         is_active:
           type: boolean
           description: Designates whether this user should be treated as active. Unselect

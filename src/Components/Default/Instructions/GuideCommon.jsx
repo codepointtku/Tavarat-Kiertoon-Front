@@ -167,7 +167,7 @@ function FAQAccordions() {
                     <AccordionDetails>
                         <Typography>
                             Kuljetus on aina ilmainen.{' '}
-                            <MuiLink component={Link} to="/ohjeet/devi/tilaus" underline="hover">
+                            <MuiLink component={Link} to="/ohjeet/tilaus/kuljetus" underline="hover">
                                 Tilaus
                             </MuiLink>{' '}
                             -välilehdeltä löytyy lisää tietoa myös kuljetuksesta.
@@ -187,7 +187,7 @@ function FAQAccordions() {
                     <AccordionDetails>
                         <Typography>
                             Tuotteiden kuljetuksesta vastaa Turun työkeskus. Lisätietoa kuljetuksesta löydät{' '}
-                            <MuiLink component={Link} to="/ohjeet/devi/tilaus">
+                            <MuiLink component={Link} to="/ohjeet/tilaus/kuljetus">
                                 Tilaus
                             </MuiLink>
                             -välilehdeltä.

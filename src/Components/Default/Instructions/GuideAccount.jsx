@@ -108,7 +108,7 @@ function LocationAccountHelp() {
                 Toimipaikkatilin luominen
             </Typography>
             <Typography gutterBottom>Tilin luonti on kaksi-vaiheinen.</Typography>
-            <MuiLink component={Link} to="/signup/location">
+            <MuiLink component={Link} to="/rekisteroidy/toimipaikka">
                 Avaa rekisteröinti-lomake
             </MuiLink>
             <Typography gutterBottom>

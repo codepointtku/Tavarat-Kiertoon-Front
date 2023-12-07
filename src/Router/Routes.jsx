@@ -178,6 +178,7 @@ import {
     userSignupAction,
     contactAction,
     orderEditAction,
+    orderEditStatusAction,
     addProductAction,
     editProductAction,
     orderDeleteAction,
@@ -200,7 +201,7 @@ import {
     modifyBikeAction,
     createNewBikeAction,
     activationAction,
-    adminLogOut,
+    logOutAction,
     modifyBikePacketAction,
     deleteBikeAction,
     adminInboxAction,
@@ -369,6 +370,7 @@ function Routes() {
                                 {
                                     path: '/kirjaudu',
                                     element: <LoginPage />,
+                                    action: logOutAction,
                                 },
                                 {
                                     path: 'rekisteroidy',
@@ -442,7 +444,7 @@ function Routes() {
                                 {
                                     path: 'tili',
                                     element: (
-                                        <HasRole role="user_group" fallback={<Navigate to="/kirjaudu" />}>
+                                        <HasRole role="user_group" fallback={<Navigate to="/kirjaudu" replace />}>
                                             <UserAccountPage />
                                         </HasRole>
                                     ),
@@ -523,9 +525,10 @@ function Routes() {
                                         },
                                         {
                                             path: ':id',
-                                            element: <OrderView isAdmin={false} />,
+                                            element: <OrderView />,
                                             errorElement: <div>varasto orderview kössähdys</div>,
                                             loader: orderViewLoader,
+                                            action: orderEditStatusAction,
                                         },
                                     ],
                                 },
@@ -609,7 +612,6 @@ function Routes() {
                             //     </ThemeProvider>
                             // ),
                             loader: adminLoader,
-                            action: adminLogOut,
                             children: [
                                 {
                                     index: true,
@@ -635,9 +637,10 @@ function Routes() {
                                             children: [
                                                 {
                                                     index: true,
-                                                    element: <OrderView isAdmin />,
+                                                    element: <OrderView />,
                                                     errorElement: <OrderViewError />,
                                                     loader: orderViewLoader,
+                                                    action: orderEditStatusAction,
                                                 },
                                                 {
                                                     path: 'muokkaa',
@@ -703,6 +706,7 @@ function Routes() {
                                             errorElement: <UserError />,
                                             loader: userEditLoader,
                                             action: userEditAction,
+                                            shouldRevalidate: () => false,
                                         },
                                         {
                                             path: ':userid/poista',

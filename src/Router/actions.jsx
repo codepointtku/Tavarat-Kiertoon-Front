@@ -163,7 +163,7 @@ const contactAction = async ({ request }) => {
  */
 const orderEditAction = async ({ request, params }) => {
     const formData = await request.formData();
-
+    console.log(formData.get('orderId'));
     const submission = {
         id: formData.get('orderId'),
         recipient: formData.get('recipient'),
@@ -180,6 +180,24 @@ const orderEditAction = async ({ request, params }) => {
         return { type: 'orderupdate', status: true };
     }
     return { type: 'orderupdate', status: false };
+};
+const orderEditStatusAction = async ({ request, params }) => {
+    const formData = await request.formData();
+    const submission = {
+        id: formData.get('orderId'),
+        recipient: formData.get('recipient'),
+        recipient_phone_number: formData.get('recipient_phone_number'),
+        delivery_address: formData.get('deliveryAddress'),
+        status: formData.get('status'),
+        product_items: JSON.parse(formData.get('productItems')),
+    };
+
+    const response = await ordersApi.ordersUpdate(params.id, submission);
+
+    if (response.status === 202) {
+        return { type: 'orderstatusupdate', status: true };
+    }
+    return { type: 'orderstatusupdate', status: false };
 };
 
 // return redirect(`/varasto/tilaukset/${params.id}`);
@@ -235,7 +253,7 @@ const orderEditAction = async ({ request, params }) => {
 //
 // admin bing bings
 
-const adminLogOut = async ({ request }) => {
+const logOutAction = async ({ request }) => {
     if (request.method === 'POST') {
         await usersApi.usersLogoutCreate();
         return { type: 'logout', status: true };
@@ -433,20 +451,10 @@ const userEditAction = async ({ request, params }) => {
         phone_number: formData.get('phone_number'),
     };
 
-    // if formdata.get('groups') comes in as an empty array, keep it as an empty array.
-    // else get the values, split by comma (this creates an array), map the values and typecast them as numbers.
-    let selectedAuthGroups =
-        formData.get('groups') === ''
-            ? []
-            : formData
-                  .get('groups')
-                  .split(',')
-                  .map((group) => Number(group));
+    const selectedAuthGroup = { group: formData.get('group') };
 
     try {
-        const userPermissionsUpdateResponse = await usersApi.usersGroupsPermissionUpdate(params.userid, {
-            groups: selectedAuthGroups,
-        });
+        const userPermissionsUpdateResponse = await usersApi.usersGroupsUpdate(params.userid, selectedAuthGroup);
 
         const userInfoUpdateResponse = await usersApi.usersUpdate(params.userid, userInfo);
 
@@ -459,8 +467,12 @@ const userEditAction = async ({ request, params }) => {
 };
 
 const userDeleteAction = async ({ params }) => {
-    await usersApi.usersDestroy(params.userid);
-    return redirect('/admin/kayttajat');
+    try {
+        await usersApi.usersDestroy(params.userid);
+        return redirect('/admin/kayttajat');
+    } catch (err) {
+        return { type: 'userdelete', status: false };
+    }
 };
 
 const adminUserAddressEditAction = async ({ request, params }) => {
@@ -1341,6 +1353,7 @@ export {
     frontPageActions,
     contactAction,
     orderEditAction,
+    orderEditStatusAction,
     orderDeleteAction,
     storageCreateAction,
     storageEditAction,
@@ -1368,7 +1381,7 @@ export {
     activationAction,
     modifyBikeModelAction,
     deleteBikeAction,
-    adminLogOut,
+    logOutAction,
     modifyBikePacketAction,
     adminInboxAction,
     adminEmailRecipientsAction,
