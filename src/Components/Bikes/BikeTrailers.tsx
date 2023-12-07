@@ -34,6 +34,11 @@ export default function BikeTrailers() {
         reset({ register_number: '' });
     };
 
+    let trailerList: string[] = [];
+    data.forEach((entry) => {
+        trailerList.push(entry.register_number);
+    });
+
     const {
         handleSubmit,
         register,
@@ -46,13 +51,6 @@ export default function BikeTrailers() {
         },
     });
 
-    // const handleRegisterNumber = (e) => {
-    //     const reg = new RegExp('[A-Z]');
-    // };
-
-    console.log(deleteModalItem);
-
-    console.log(data);
     return (
         <Box width="100%">
             <Typography variant="h3" align="center" color="primary.main" width="100%" sx={{ margin: '0 0 1rem 0' }}>
@@ -84,6 +82,7 @@ export default function BikeTrailers() {
                                 value: 7,
                                 message: 'Maksimipituus ylitetty',
                             },
+                            validate: value => trailerList.includes(value) === false || 'Rekisterinumero löytyy jo järjestelmästä'
                         })}
                     ></TextField>
                     <Button
