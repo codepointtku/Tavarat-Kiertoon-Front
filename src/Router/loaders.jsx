@@ -613,7 +613,18 @@ const userInfoLoader = async (request) => {
     return { userInfo, userOrders };
 };
 
+const bikeUserLoader = async () => {
+    try {
+        const { data } = await usersApi.usersBikeUsersList();
+        console.log(data);
+        return data;
+    } catch {
+        return null;
+    }
+};
+
 export {
+    bikeUserLoader,
     bikesPacketLoader,
     rootLoader,
     productListLoader,

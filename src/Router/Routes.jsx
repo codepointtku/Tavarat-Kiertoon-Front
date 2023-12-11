@@ -123,8 +123,11 @@ import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 import BikeModels from '../Components/Bikes/BikeModels';
 import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
+import BikeUsers from '../Components/Bikes/BikeUsers';
+import BikeUserEdit from '../Components/Bikes/BikeUserEdit';
 
 import {
+    bikeUserLoader,
     bikeRentalLoader,
     bikeRentalViewLoader,
     bikesPacketLoader,
@@ -960,6 +963,15 @@ function Routes() {
                                             loader: async ({ params }) => bikeNewModelLoader(auth, setAuth, params),
                                             action: async ({ request, params }) =>
                                                 createBikeModelAction(auth, setAuth, request, params),
+                                        },
+                                        {
+                                            path: 'kayttajat',
+                                            element: <BikeUsers />,
+                                            loader: bikeUserLoader,
+                                        },
+                                        {
+                                            path: 'kayttajat/:id',
+                                            element: <BikeUserEdit />,
                                         },
                                     ],
                                 },

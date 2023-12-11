@@ -3596,6 +3596,23 @@ paths:
       responses:
         '204':
           description: No response body
+  /users/bike_users/:
+    get:
+      operationId: users_bike_users_list
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BikeUser'
+          description: ''
   /users/create/:
     post:
       operationId: users_create_create
@@ -4544,6 +4561,39 @@ components:
       required:
       - id
       - name
+    BikeUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        username:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          maxLength: 255
+        is_active:
+          type: boolean
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupName'
+      required:
+      - email
+      - first_name
+      - groups
+      - id
+      - last_name
+      - username
     Bulletin:
       type: object
       properties:

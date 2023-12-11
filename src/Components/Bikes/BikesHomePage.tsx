@@ -125,7 +125,7 @@ export default function BikesHomePage() {
             <Box display="flex" justifyContent="space-between" mt="2rem">
                 <Paper
                     component={Link}
-                    to="pyorapaketit"
+                    to="kayttajat"
                     sx={{
                         textDecoration: 'none',
                         marginRight: '1rem',
