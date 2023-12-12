@@ -838,17 +838,30 @@ const confirmationAction = async ({ request }) => {
  */
 const bikeOrderAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await bikesApi.bikesRentalCreate({
-        contact_name: formData.get('contactPersonName'),
-        contact_phone_number: formData.get('contactPersonPhoneNumber'),
-        delivery_address: formData.get('deliveryAddress'),
-        start_date: formData.get('startDateTime'),
-        end_date: formData.get('endDateTime'),
-        bike_stock: JSON.parse(formData.get('selectedBikes')),
-        extra_info: formData.get('extraInfo'),
-        pickup: formData.get('pickup'),
-    });
-    return response.data || null;
+    if (formData.get('storageType') === 0) {
+        const response = await bikesApi.bikesRentalCreate({
+            contact_name: formData.get('contactPersonName'),
+            contact_phone_number: formData.get('contactPersonPhoneNumber'),
+            delivery_address: formData.get('deliveryAddress'),
+            start_date: formData.get('startDateTime'),
+            end_date: formData.get('endDateTime'),
+            bike_stock: JSON.parse(formData.get('selectedBikes')),
+            extra_info: formData.get('extraInfo'),
+        });
+        return response.data || null;
+    } else {
+        const response = await bikesApi.bikesRentalCreate({
+            contact_name: formData.get('contactPersonName'),
+            contact_phone_number: formData.get('contactPersonPhoneNumber'),
+            delivery_address: formData.get('deliveryAddress'),
+            start_date: formData.get('startDateTime'),
+            end_date: formData.get('endDateTime'),
+            bike_stock: JSON.parse(formData.get('selectedBikes')),
+            extra_info: formData.get('extraInfo'),
+            bike_trailer: formData.get('storageType')
+        });
+        return response.data || null;
+    }
 };
 
 /**
@@ -863,7 +876,6 @@ const bikeOrderEditAction = async ({ request, params }) => {
         end_date: formData.get('endDate'),
         state: formData.get('state'),
         delivery_address: formData.get('deliveryAddress'),
-        pickup: formData.get('pickup'),
         contact_name: formData.get('contact'),
         contact_phone_number: formData.get('contactPhoneNumber'),
         extra_info: formData.get('extraInfo'),
@@ -893,7 +905,6 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
         color: data.get('bikeColorIdSelect'),
         frame_number: data.get('bikeFrameNumberTextField'),
         number: data.get('bikeNumberTextField'),
-        storage: data.get('bikeStorageIdSelect'),
         state: data.get('bikeStatusSelect'),
         package_only: packageOnly === null ? false : packageOnly, // from checkbox value seems to be 'on' or null
     };
@@ -912,7 +923,6 @@ const createNewBikeAction = async (auth, setAuth, request) => {
         color: data.get('bikeColorIdSelect'),
         frame_number: data.get('bikeFrameNumberTextField'),
         number: data.get('bikeNumberTextField'),
-        storage: data.get('bikeStorageIdSelect'),
         state: data.get('bikeStatusSelect'),
         package_only: packageOnly === null ? false : packageOnly, // from checkbox value seems to be 'on' or null
     };
@@ -1052,6 +1062,27 @@ const deletePacketAction = async (params) => {
     await updateBikesStockPacketOnlyFlag();
 
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+};
+
+/**
+ * Delete existing bike trailer or create a new bike trailer
+ */
+const deleteCreateBikeTrailerAction = async ({request}) => {
+    console.log(request)
+
+    const formData = await request.formData();
+    if (request.method === 'DELETE') {
+        const response = await bikesApi.bikesTrailersDestroy(formData.get('id'));
+        return response;
+    } else if (request.method === 'POST') {
+        const response = await bikesApi.bikesTrailersCreate({
+            register_number: formData.get('register_number'),
+            trailer_type: formData.get('trailer_type')
+        });
+        return response;
+    }
+
+    return null;
 };
 
 /**
@@ -1366,4 +1397,5 @@ export {
     colorsManageAction,
     categoriesManageAction,
     searchWatchCreateAction,
+    deleteCreateBikeTrailerAction,
 };

@@ -2,10 +2,13 @@ import { Link } from 'react-router-dom';
 
 import { Box, Button, ButtonGroup } from '@mui/material';
 import BikeScooterIcon from '@mui/icons-material/BikeScooter';
+import PedalBikeIcon from '@mui/icons-material/PedalBike';
 import ListIcon from '@mui/icons-material/List';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import HomeIcon from '@mui/icons-material/Home';
+import RvHookupIcon from '@mui/icons-material/RvHookup';
+import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 // import PedalBikeIcon from '@mui/icons-material/PedalBike';
 // import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
 // import MailOutlineIcon from '@mui/icons-material/MailOutline';
@@ -22,23 +25,27 @@ function BikeLinkBar() {
             >
                 <Button component={Link} to="">
                     <HomeIcon sx={{ marginRight: '5px' }} />
-                    Etusivu 
+                    Etusivu
                 </Button>
                 <Button component={Link} to="pyoralista">
-                    <ListIcon sx={{ marginRight: '5px' }} />
+                    <DirectionsBikeIcon sx={{ marginRight: '5px' }} />
                     Kaikki pyörät
                 </Button>
                 <Button component={Link} to="pyoramallit">
-                    <BikeScooterIcon sx={{ marginRight: '5px' }} />
+                    <PedalBikeIcon sx={{ marginRight: '5px' }} />
                     Pyörämallit
+                </Button>
+                <Button component={Link} to="pyorapaketit">
+                    <BikeScooterIcon sx={{ marginRight: '5px' }} />
+                    Pyöräpaketit
+                </Button>
+                <Button component={Link} to="perakarryt">
+                    <RvHookupIcon sx={{ marginRight: '5px' }} />
+                    Peräkärryt
                 </Button>
                 <Button component={Link} to="pyoratilaukset">
                     <ScheduleIcon sx={{ marginRight: '5px' }} />
                     Pyörätilaukset
-                </Button>
-                <Button component={Link} to="pyorapaketit">
-                    <ViewListIcon sx={{ marginRight: '5px' }} />
-                    Pyöräpaketit
                 </Button>
             </ButtonGroup>
         </Box>

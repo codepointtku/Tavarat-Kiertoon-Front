@@ -165,9 +165,6 @@ export default function BikeRentals() {
                             <StyledTableCell align="left" width="20%">
                                 Toimitusosoite
                             </StyledTableCell>
-                            <StyledTableCell align="center" width="10%">
-                                Nouto
-                            </StyledTableCell>
                             <StyledTableCell align="left" width="15%">
                                 Vastaanottaja
                             </StyledTableCell>
@@ -189,7 +186,7 @@ export default function BikeRentals() {
                                 <TableCell align="left">{getYearAndMonth(rental.start_date)}</TableCell>
                                 <TableCell align="left">{getYearAndMonth(rental.end_date)}</TableCell>
                                 <TableCell align="left">{rental.delivery_address}</TableCell>
-                                <TableCell align="center">{rental.pickup ? 'Kyllä' : 'Ei'}</TableCell>
+                                {/* <TableCell align="center">{rental.pickup ? 'Kyllä' : 'Ei'}</TableCell> */}
                                 <TableCell align="left">{rental.contact_name}</TableCell>
                                 <TableCell align="left">{rental.contact_phone_number}</TableCell>
                             </TableRow>
