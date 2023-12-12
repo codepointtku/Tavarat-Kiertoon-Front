@@ -14,17 +14,17 @@ import {
 import StyledTableCell from '../StyledTableCell'; // used in Table Header
 import CheckIcon from '@mui/icons-material/Check';
 
-const bikePermissions = (groups) => {
-    const groupNames = groups.map((group) => group.name);
-    console.log(groupNames);
-    if (groupNames.includes('bicycle_admin_group')) {
-        return 'Pyöräylläpitäjä';
-    } else if (groupNames.includes('bicycle_group')) {
-        return 'Pyörätilaaja';
-    } else {
-        return 'Ei pyöräoikeuksia';
-    }
-};
+// const bikePermissions = (groups) => {
+//     const groupNames = groups.map((group) => group.name);
+//     console.log(groupNames);
+//     if (groupNames.includes('bicycle_admin_group')) {
+//         return 'Pyöräylläpitäjä';
+//     } else if (groupNames.includes('bicycle_group')) {
+//         return 'Pyörätilaaja';
+//     } else {
+//         return 'Ei pyöräoikeuksia';
+//     }
+// };
 
 export default function BikeUsers() {
     const userArray = useLoaderData();
@@ -54,7 +54,6 @@ export default function BikeUsers() {
                     <TableBody>
                         {userArray?.map((user, index) => {
                             console.log(user);
-                            console.log(bikePermissions(user.groups));
                             return (
                                 <TableRow
                                     key={user.username}
@@ -64,7 +63,7 @@ export default function BikeUsers() {
                                     <TableCell align="right">{user.first_name}</TableCell>
                                     <TableCell align="right">{user.last_name}</TableCell>
                                     <TableCell align="right">{user.is_active ? <CheckIcon /> : ''}</TableCell>
-                                    <TableCell align="right">{bikePermissions(user.groups)}</TableCell>
+                                    <TableCell align="right">{user.bike_group}</TableCell>
                                     <TableCell align="right">
                                         <Button to={user.id.toString()} component={Link} variant="outlined">
                                             Muokkaa

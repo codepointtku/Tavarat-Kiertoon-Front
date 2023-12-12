@@ -3366,7 +3366,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GroupPermissionsResponse'
+                $ref: '#/components/schemas/BikeUser'
           description: ''
     put:
       operationId: users_bike_groups_update
@@ -3400,7 +3400,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GroupPermissionsResponse'
+                $ref: '#/components/schemas/BikeUser'
           description: ''
   /users/{id}/groups/:
     get:
