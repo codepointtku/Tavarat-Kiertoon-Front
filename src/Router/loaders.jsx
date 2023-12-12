@@ -623,7 +623,17 @@ const bikeUserLoader = async () => {
     }
 };
 
+const bikeUserEditLoader = async ({ params }) => {
+    try {
+        const { data } = await usersApi.usersBikeGroupsRetrieve(params.id);
+        return data;
+    } catch {
+        return null;
+    }
+};
+
 export {
+    bikeUserEditLoader,
     bikeUserLoader,
     bikesPacketLoader,
     rootLoader,

@@ -172,9 +172,11 @@ import {
     categoriesManageLoader,
     colorsLoader,
     gigaLoader,
+    bikeUserEditLoader,
 } from './loaders';
 
 import {
+    bikeUserEditAction,
     deleteBikeOrderAction,
     userSignupAction,
     contactAction,
@@ -972,6 +974,8 @@ function Routes() {
                                         {
                                             path: 'kayttajat/:id',
                                             element: <BikeUserEdit />,
+                                            loader: bikeUserEditLoader,
+                                            action: bikeUserEditAction,
                                         },
                                     ],
                                 },

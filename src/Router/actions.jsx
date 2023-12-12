@@ -1316,7 +1316,14 @@ const searchWatchCreateAction = async ({ request }) => {
     return null;
 };
 
+const bikeUserEditAction = async ({ request }) => {
+    const formData = await request.formData();
+    const response = await usersApi.usersBikeGroupsUpdate(formData.get('bike_group'));
+    return response;
+};
+
 export {
+    bikeUserEditAction,
     deleteBikeOrderAction,
     userSignupAction,
     frontPageActions,
