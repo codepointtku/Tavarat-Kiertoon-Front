@@ -33,10 +33,7 @@ function ProductsRetireForm() {
             {responseStatus?.type === 'retireProduct' && responseStatus?.status === true && (
                 <AlertBox text="Toiminto onnistui" status="success" timer={2000} />
             )}
-            <Typography variant="subtitle1">Poista kaatopaikalle menevät tuotteet</Typography>
-            <Typography variant="subtitle1">
-                Tuotteet poistuvat pysyvästi. Tämä toiminto on vain ylläpitäjän käytettävissä.
-            </Typography>
+            <Typography variant="subtitle1">Poista tuotteita pysyvästi</Typography>
             {/* <Typography variant="subtitle1">Poistettavissa: {product.amount || '0'} kpl</Typography> */}
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <TextField

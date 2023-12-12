@@ -169,7 +169,12 @@ function ProductDetails() {
                                                     <>
                                                         <Button
                                                             component={Link}
-                                                            to={`/varasto/tuotteet/${productId}/muokkaa`}
+                                                            to={
+                                                                location.pathname.includes('admin')
+                                                                    ? `/admin/tuotteet/${productId}/muokkaa`
+                                                                    : `/varasto/tuotteet/${productId}/muokkaa`
+                                                                // `/varasto/tuotteet/${productId}/muokkaa`
+                                                            }
                                                             size="large"
                                                             color="primary"
                                                             sx={{ marginY: 2 }}
@@ -178,7 +183,11 @@ function ProductDetails() {
                                                         </Button>
                                                         <Button
                                                             component={Link}
-                                                            to={`/varasto/tuotteet/${productId}/palauta`}
+                                                            to={
+                                                                location.pathname.includes('admin')
+                                                                    ? `/admin/tuotteet/${productId}/palauta`
+                                                                    : `/varasto/tuotteet/${productId}/palauta`
+                                                            }
                                                             replace
                                                             size="large"
                                                             color="primary"
@@ -191,7 +200,12 @@ function ProductDetails() {
                                                             <Button
                                                                 component={Link}
                                                                 variant="outlined"
-                                                                to={`/varasto/tuotteet/${productId}/poista`}
+                                                                to={
+                                                                    location.pathname.includes('admin')
+                                                                        ? `/admin/tuotteet/${productId}/poista`
+                                                                        : `/varasto/tuotteet/${productId}/poista`
+                                                                    // `/varasto/tuotteet/${productId}/poista`
+                                                                }
                                                                 replace
                                                                 size="large"
                                                                 color="error"
@@ -322,7 +336,7 @@ function ProductDetails() {
                                             )}
                                     </Box>
                                 ))}
-                            {location.pathname.includes('varasto') && (
+                            {location.pathname.includes('admin') && (
                                 // list of product_items, with their storage and barcode, and logs
                                 <Paper variant="outlined" sx={{ p: 5 }} color="primary">
                                     <Typography variant="h5" color="primary">
