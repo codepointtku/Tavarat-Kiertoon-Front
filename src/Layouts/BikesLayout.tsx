@@ -32,10 +32,12 @@ export interface BikeInterface {
     size: string;
     type: string;
     unavailable: { [key: string]: number };
+    picture: string;
+
 }
 // bikePackage
 export interface BikePackageInterface {
-    bikes: { amount: number; bike: number }[];
+    bikes: { amount: number; bike: number;}[];
     // bikes: bikeInterface[];
     brand: string | null;
     color: string | null;

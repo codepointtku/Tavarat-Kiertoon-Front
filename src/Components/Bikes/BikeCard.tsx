@@ -8,6 +8,7 @@ import {
     CardActions,
     CardContent,
     CardMedia,
+    Container,
     IconButton,
     Modal,
     Stack,
@@ -59,15 +60,52 @@ export default function BikeCard({
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    border: isPackage ? '5px double' : 'none',
-                    borderRadius: '10%',
+                    border: isPackage ? '1px double' : 'none',
+                    borderRadius: '2%',
                     borderColor: 'rgba(0, 98, 174, 0.2)',
                     fontWeight: 'bold',
                     color: '#0062ae',
                 }}
             >
                 {isPackage ? 'Paketti' : ''}
-                <CardMedia component="img" alt="kuva" image="/bike.jpg" height="180px" sx={{ objectFit: 'contain' }} />
+                {isPackage ? (
+                    <Container sx={{ display: 'flex', flexDirection: 'row'}}>
+                        <CardMedia
+                            component="img"
+                            alt="kuva"
+                            image={`${window.location.protocol}//${
+                                window.location.hostname
+                            }:8000/media/${bike.picture.slice(0, bike.picture.indexOf('&'))}`}
+                            height="90px"
+                            sx={{ objectFit: 'contain' }}
+                        />
+                        <CardMedia
+                            component="img"
+                            alt="kuva"
+                            image={`${window.location.protocol}//${
+                                window.location.hostname
+                            }:8000/media/${bike.picture.slice(bike.picture.indexOf('&')+1)}`}
+                            height="90px"
+                            width="180px"
+                            sx={{ objectFit: 'contain' }}
+                        />
+                    </Container>
+                ) : (
+                    <CardMedia
+                        component="img"
+                        alt="kuva"
+                        image={`${window.location.protocol}//${window.location.hostname}:8000/media/${bike.picture}`}
+                        height="180px"
+                        sx={{ objectFit: 'contain' }}
+                    />
+                )}
+                {/* <CardMedia
+                    component="img"
+                    alt="kuva"
+                    image={`${window.location.protocol}//${window.location.hostname}:8000/media/${bike.picture}`}
+                    height="180px"
+                    sx={{ objectFit: 'contain' }}
+                /> */}
             </div>
             <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Typography variant="h6">{bike.name}</Typography>
