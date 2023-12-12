@@ -123,6 +123,7 @@ import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
 import BikeRentalView from '../Components/Bikes/BikeRentalView';
+import BikeTrailers from '../Components/Bikes/BikeTrailers';
 import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 import BikeModels from '../Components/Bikes/BikeModels';
 import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
@@ -173,6 +174,7 @@ import {
     categoriesManageLoader,
     colorsLoader,
     gigaLoader,
+    bikeTrailersLoader,
 } from './loaders';
 
 import {
@@ -223,6 +225,7 @@ import {
     returnProductsAction,
     categoriesManageAction,
     colorsManageAction,
+    deleteCreateBikeTrailerAction,
     retireProductsAction,
 } from './actions';
 
@@ -894,6 +897,12 @@ function Routes() {
                                                     ],
                                                 },
                                             ],
+                                        },
+                                        {
+                                            path: 'perakarryt',
+                                            loader: async () => bikeTrailersLoader(auth, setAuth),
+                                            action: deleteCreateBikeTrailerAction,
+                                            element: <BikeTrailers />,
                                         },
                                         {
                                             path: 'pyorapaketit',
