@@ -171,8 +171,8 @@ export default function BikesPage() {
                 <FormControl required sx={{ maxWidth: 560 }}>
                     <FormLabel id="storage-label">Säilytystapa</FormLabel>
                     <Typography variant="caption">
-                        Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä, tuomme ne
-                        lukittavassa kärryssä. Huom. Peräkärryyn mahtuu noin kymmenen pyörää (yksi paketti), kärryä ei voi valita jos niitä ei ole saatavilla haluttuna ajankohtana.
+                        Kuomulliseen peräkärryyn mahtuu kerrallaan säilytykseen n. 7—10
+                        pyörää (yksi paketti). Peräkärryä ei voi valita jos niitä ei ole saatavilla haluttuna ajankohtana.
                     </Typography>
                     <RadioGroup
                         row
@@ -186,7 +186,7 @@ export default function BikesPage() {
                         <FormControlLabel
                             value={trailers[0]?.id}
                             control={<Radio />}
-                            label="Kärryssä"
+                            label="Peräkärryssä"
                             disabled={trailerAvailability === 0}
                         />
                     </RadioGroup>
@@ -224,7 +224,7 @@ export default function BikesPage() {
     return (
         <Container component={Form} onSubmit={handleSubmit(onSubmit)} sx={{ mb: 6 }} ref={containerRef}>
             <Typography variant="h3" align="center" color="primary.main" my={3}>
-                Polkupyörien vuokraus
+                Polkupyörien lainaus
             </Typography>
             <hr />
             <TransitionGroup>
@@ -295,10 +295,7 @@ export default function BikesPage() {
                                                     <Button
                                                         color="success"
                                                         onClick={() => setIsIntroVisible(false)}
-                                                        disabled={
-                                                            !watch('startDate') ||
-                                                            !watch('endDate')
-                                                        }
+                                                        disabled={!watch('startDate') || !watch('endDate')}
                                                     >
                                                         Seuraava
                                                     </Button>
@@ -310,8 +307,12 @@ export default function BikesPage() {
                                     <Fade key="main-page-main">
                                         <Stack gap={2} flexDirection="row" justifyContent="space-between">
                                             <Box sx={{ flex: 1 }}>
-                                                <Typography my={2} variant="h6">
-                                                    Valitse vuokraukseen haluamasi pyörät
+                                                <Typography my={2} variant="h7">
+                                                    Valitse haluamasi pyörät ja/tai varusteet alta. Jokaisen pyörän
+                                                    mukana tulee myös pyöräilykypärä sekä etu- ja takavalot. Huom! 20-
+                                                    ja 24-tuumaisiin pyöriin vaihdetaan talvikaudeksi nastarenkaat
+                                                    (marras-maaliskuu). Pyöristä voidaan myös pyydettäessä poistaa
+                                                    polkimet (tasapainoharjoittelu).
                                                 </Typography>
                                                 <Box mb={2} mt={1}>
                                                     <Stack my={1} flexDirection="row" justifyContent="space-between">
