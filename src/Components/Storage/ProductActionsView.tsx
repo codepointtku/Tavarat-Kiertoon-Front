@@ -4,8 +4,9 @@ import { type productItemsReturnLoader } from '../../Router/loaders';
 import { Link } from 'react-router-dom';
 import ProductsReturnForm from './ProductsReturnForm';
 import { useState } from 'react';
+import HasRole from '../../Utils/HasRole';
 
-function ProductsReturn() {
+function ProductActionsView() {
     const [picId, setPicId] = useState(0);
     const { product } = useLoaderData() as Awaited<ReturnType<typeof productItemsReturnLoader>>;
 
@@ -68,10 +69,21 @@ function ProductsReturn() {
                     {/* <Typography variant="body2">Mitat: {product?.measurements}</Typography> */}
                     {/* <Typography variant="body2">Paino: {product?.weight}</Typography> */}
                     {/* <Typography variant="body2">Värit: {product?.colors}</Typography> */}
+                    <HasRole role={'admin_group'}>
+                        <Button
+                            component={Link}
+                            to={`/varasto/tuotteet/${product.id}/poista`}
+                            variant="outlined"
+                            color="error"
+                            sx={{ marginY: 2 }}
+                        >
+                            Poista tuotteita varastosta
+                        </Button>
+                    </HasRole>
                 </Grid>
             </Grid>
         </Grid>
     );
 }
 
-export default ProductsReturn;
+export default ProductActionsView;
