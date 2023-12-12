@@ -483,6 +483,14 @@ test.describe('bike-rental-detail', () => {
     });
 });
 
+// bike trailers tests
+test.describe('bike-trailers-list', () => {
+    test('no errors', async ({ page }) => {
+        await page.goto('/pyorat/pyoravarasto/perakarryt');
+        await expect(page.getByText(`${testText}`)).not.toBeVisible();
+    });
+});
+
 test.describe('user', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/tili');

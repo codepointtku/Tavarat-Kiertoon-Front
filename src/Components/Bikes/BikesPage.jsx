@@ -19,7 +19,7 @@ import {
     Typography,
 } from '@mui/material';
 import { parseISO, setHours, setMinutes } from 'date-fns';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Form, useLoaderData, useSearchParams, useSubmit } from 'react-router-dom';
 import { TransitionGroup } from 'react-transition-group';
@@ -29,6 +29,46 @@ import BikeCard from './BikeCard';
 import BikeConfirmation from './BikeConfirmation';
 import BikeThankYouModal from './BikeThankYouModal';
 import isValidBikeAmount, { bikePackageUnavailable } from './isValidBikeAmount';
+
+function trailerDates(startDate, endDate, trailer) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const date = new Date(start.getTime());
+    const dates = [];
+    while (date <= end) {
+        const year = date.getFullYear();
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // add 1 since getMonth() returns 0-indexed months
+        dates.push(date.toLocaleDateString('FI-fi'));
+        date.setDate(date.getDate() + 1);
+    }
+    let availableTrailers = 0;
+    let stickyZeroAvailable = 0;
+    if (dates[0] == '1.1.1970') {
+        availableTrailers = 0;
+    } else if (trailer?.max_available >= 1 && Object.keys(trailer?.unavailable).length === 0) {
+        availableTrailers = trailer?.id;
+    } else {
+        if (trailer?.unavailable) {
+            dates.forEach((iterableDate) => {
+                if (iterableDate in trailer?.unavailable) {
+                    if (trailer?.unavailable[iterableDate] < trailer?.max_available) {
+                        availableTrailers = trailer?.id;
+                    } else {
+                        availableTrailers = 0;
+                        stickyZeroAvailable = 1;
+                    }
+                } else {
+                    availableTrailers = trailer?.id;
+                }
+            });
+        }
+    }
+    if (stickyZeroAvailable == 1) {
+        availableTrailers = 0;
+    }
+    return availableTrailers;
+}
 
 export default function BikesPage() {
     const { control, watch, handleSubmit, reset, getValues } = useForm({
@@ -41,8 +81,7 @@ export default function BikesPage() {
             contactPersonName: '',
             contactPersonPhoneNumber: '',
             deliveryAddress: '',
-            pickup: false,
-            storageType: null,
+            storageType: 0,
             extraInfo: '',
         },
     });
@@ -50,11 +89,20 @@ export default function BikesPage() {
     const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
     const [isIntroVisible, setIsIntroVisible] = useState(true);
     const [isThankYouModalVisible, setIsThankYouModalVisible] = useState(false);
+    const [trailerValue, setTrailerValue] = useState(0);
     const containerRef = useRef(null);
 
     const loaderData = useLoaderData();
     const minDate = parseISO(loaderData.date_info.available_from);
     const maxDate = parseISO(loaderData.date_info.available_to);
+    const trailers = [...loaderData.trailers];
+    const trailerAvailability = trailerDates(getValues('startDate'), getValues('endDate'), trailers[0]);
+    useEffect(() => {
+        if (trailerAvailability === 0) {
+            setTrailerValue(0);
+        }
+    }, [trailerAvailability]);
+ 
     const bikes = [
         // The bike package id and bike id would have possibility for overlap since they're both just incrementing from 0
         ...loaderData.packages.map((bikePackage) => ({
@@ -123,19 +171,24 @@ export default function BikesPage() {
                 <FormControl required sx={{ maxWidth: 560 }}>
                     <FormLabel id="storage-label">Säilytystapa</FormLabel>
                     <Typography variant="caption">
-                        Jos pidät pyörät sisällä, tuomme ne pakettiautolla. Jos et voi pitää pyöriä sisällä, tuomme ne
-                        lukittavassa kärryssä. Huom. kärryn valitseminen voi rajoittaa saatavuutta.
+                        Kuomulliseen peräkärryyn mahtuu kerrallaan säilytykseen n. 7—10
+                        pyörää (yksi paketti). Peräkärryä ei voi valita jos niitä ei ole saatavilla haluttuna ajankohtana.
                     </Typography>
                     <RadioGroup
                         row
                         aria-labelledby="storage-label"
                         name="storage"
-                        value={value}
-                        onChange={(_, option) => onChange(option)}
+                        onChange={(_, option) => onChange(option) && setTrailerValue(_.target.value)}
+                        value={trailerValue}
                         onBlur={onBlur}
                     >
-                        <FormControlLabel value="inside" control={<Radio />} label="Sisällä" />
-                        <FormControlLabel value="outside" control={<Radio />} label="Kärryssä" />
+                        <FormControlLabel value={0} control={<Radio />} label="Sisällä" />
+                        <FormControlLabel
+                            value={trailers[0]?.id}
+                            control={<Radio />}
+                            label="Peräkärryssä"
+                            disabled={trailerAvailability === 0}
+                        />
                     </RadioGroup>
                 </FormControl>
             )}
@@ -171,7 +224,7 @@ export default function BikesPage() {
     return (
         <Container component={Form} onSubmit={handleSubmit(onSubmit)} sx={{ mb: 6 }} ref={containerRef}>
             <Typography variant="h3" align="center" color="primary.main" my={3}>
-                Polkupyörien vuokraus
+                Polkupyörien lainaus
             </Typography>
             <hr />
             <TransitionGroup>
@@ -242,11 +295,7 @@ export default function BikesPage() {
                                                     <Button
                                                         color="success"
                                                         onClick={() => setIsIntroVisible(false)}
-                                                        disabled={
-                                                            !watch('startDate') ||
-                                                            !watch('endDate') ||
-                                                            !watch('storageType')
-                                                        }
+                                                        disabled={!watch('startDate') || !watch('endDate')}
                                                     >
                                                         Seuraava
                                                     </Button>
@@ -258,8 +307,12 @@ export default function BikesPage() {
                                     <Fade key="main-page-main">
                                         <Stack gap={2} flexDirection="row" justifyContent="space-between">
                                             <Box sx={{ flex: 1 }}>
-                                                <Typography my={2} variant="h6">
-                                                    Valitse vuokraukseen haluamasi pyörät
+                                                <Typography my={2} variant="h7">
+                                                    Valitse haluamasi pyörät ja/tai varusteet alta. Jokaisen pyörän
+                                                    mukana tulee myös pyöräilykypärä sekä etu- ja takavalot. Huom! 20-
+                                                    ja 24-tuumaisiin pyöriin vaihdetaan talvikaudeksi nastarenkaat
+                                                    (marras-maaliskuu). Pyöristä voidaan myös pyydettäessä poistaa
+                                                    polkimet (tasapainoharjoittelu).
                                                 </Typography>
                                                 <Box mb={2} mt={1}>
                                                     <Stack my={1} flexDirection="row" justifyContent="space-between">
@@ -499,8 +552,7 @@ export default function BikesPage() {
                                                                     ) ||
                                                                     !Object.keys(watch('selectedBikes')).length ||
                                                                     !watch('startDate') ||
-                                                                    !watch('endDate') ||
-                                                                    !watch('storageType')
+                                                                    !watch('endDate')
                                                                 }
                                                             >
                                                                 Vahvistus
