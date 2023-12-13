@@ -3631,6 +3631,63 @@ paths:
       responses:
         '204':
           description: No response body
+  /users/{id}/bike_groups/:
+    get:
+      operationId: users_bike_groups_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - jwtAuth: []
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BikeUser'
+          description: ''
+    put:
+      operationId: users_bike_groups_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BikeGroupPermissionsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BikeGroupPermissionsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BikeGroupPermissionsRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - jwtAuth: []
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BikeUser'
+          description: ''
   /users/{id}/groups/:
     get:
       operationId: users_groups_retrieve
@@ -3825,6 +3882,23 @@ paths:
       responses:
         '204':
           description: No response body
+  /users/bike_users/:
+    get:
+      operationId: users_bike_users_list
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BikeUser'
+          description: ''
   /users/create/:
     post:
       operationId: users_create_create
@@ -4186,6 +4260,23 @@ components:
       required:
       - id
       - name
+    BikeGroupEnum:
+      enum:
+      - bicycle_admin_group
+      - bicycle_group
+      - remove_bicycle_group
+      type: string
+      description: |-
+        * `bicycle_admin_group` - bicycle_admin_group
+        * `bicycle_group` - bicycle_group
+        * `remove_bicycle_group` - remove_bicycle_group
+    BikeGroupPermissionsRequest:
+      type: object
+      properties:
+        bike_group:
+          $ref: '#/components/schemas/BikeGroupEnum'
+      required:
+      - bike_group
     BikeModel:
       type: object
       properties:
@@ -4770,6 +4861,39 @@ components:
       required:
       - id
       - name
+    BikeUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        username:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          maxLength: 255
+        is_active:
+          type: boolean
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupName'
+      required:
+      - email
+      - first_name
+      - groups
+      - id
+      - last_name
+      - username
     Bulletin:
       type: object
       properties:

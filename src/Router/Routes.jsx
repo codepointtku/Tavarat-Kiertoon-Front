@@ -119,13 +119,16 @@ import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
 import BikeRentalView from '../Components/Bikes/BikeRentalView';
-import BikeTrailers from '../Components/Bikes/BikeTrailers'
+import BikeTrailers from '../Components/Bikes/BikeTrailers';
 import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 import BikeModels from '../Components/Bikes/BikeModels';
 import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
+import BikeUsers from '../Components/Bikes/BikeUsers';
+import BikeUserEdit from '../Components/Bikes/BikeUserEdit';
 
 import {
+    bikeUserLoader,
     bikeRentalLoader,
     bikeRentalViewLoader,
     bikesPacketLoader,
@@ -171,9 +174,11 @@ import {
     colorsLoader,
     gigaLoader,
     bikeTrailersLoader,
+    bikeUserEditLoader,
 } from './loaders';
 
 import {
+    bikeUserEditAction,
     deleteBikeOrderAction,
     userSignupAction,
     contactAction,
@@ -969,6 +974,17 @@ function Routes() {
                                             loader: async ({ params }) => bikeNewModelLoader(auth, setAuth, params),
                                             action: async ({ request, params }) =>
                                                 createBikeModelAction(auth, setAuth, request, params),
+                                        },
+                                        {
+                                            path: 'kayttajat',
+                                            element: <BikeUsers />,
+                                            loader: bikeUserLoader,
+                                        },
+                                        {
+                                            path: 'kayttajat/:id',
+                                            element: <BikeUserEdit />,
+                                            loader: bikeUserEditLoader,
+                                            action: bikeUserEditAction,
                                         },
                                     ],
                                 },
