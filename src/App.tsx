@@ -7,7 +7,7 @@ import defaultTheme from './Themes/defaultTheme';
 import Routes from './Router/Routes';
 import AuthContext from './Context/AuthContext';
 
-export const roles = ['user_group', 'storage_group', 'admin_group', 'bicycle_group'] as const;
+export const roles = ['user_group', 'storage_group', 'admin_group', 'bicycle_group', 'bicycle_admin_group'] as const;
 
 export type Roles = typeof roles;
 export type Role = Roles[number];

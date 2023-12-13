@@ -19,6 +19,7 @@ import {
     type Theme,
     ListItem,
     ListItemText,
+    Alert,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -229,7 +230,7 @@ function DefaultAppBar() {
                     <Stack direction="row" spacing={4}>
                         <HasRole role="bicycle_group">
                             <Tooltip title="Pyörien vuokraus">
-                                <IconButton onClick={drawerOpen('')} sx={iconHover} href="/pyorat">
+                                <IconButton component={Link} to="/pyorat" onClick={drawerOpen('')} sx={iconHover}>
                                     <PedalBikeIcon sx={{ fontSize: 36, color: '#fff' }} />
                                 </IconButton>
                             </Tooltip>
@@ -237,11 +238,7 @@ function DefaultAppBar() {
 
                         <HasRole role="storage_group">
                             <Tooltip title="Varasto">
-                                <IconButton
-                                    // onClick={drawerOpen('')}
-                                    sx={iconHover}
-                                    onClick={() => window.location.replace('/varasto')}
-                                >
+                                <IconButton component={Link} to="/varasto" onClick={drawerOpen('')} sx={iconHover}>
                                     <WarehouseIcon sx={{ fontSize: 36, color: '#fff' }} />
                                 </IconButton>
                             </Tooltip>
@@ -330,14 +327,15 @@ function DefaultAppBar() {
                                     />
                                 );
                             })}
-                            {/* <ListItem>
-                            <Typography variant="body2" sx={{ color: 'error.main', fontWeight: 'bold' }}>
-                                Vahvista muutokset ostoskorissa jatkaaksesi kassalle.
-                            </Typography>
-                        </ListItem> */}
+                            {/* {unconfirmedChangesCartProducts.length > 0 && (
+                                <Alert severity="info">
+                                    <Typography variant="body2" textAlign="center" sx={{ color: 'error.main' }}>
+                                        Vahvista muutokset korissa jatkaaksesi tilaamaan
+                                    </Typography>
+                                </Alert>
+                            )} */}
                         </List>
-                        {/* <Divider /> */}
-                        <Grid container sx={{ display: 'flex', justifyContent: 'center', marginBottom: '6rem' }}>
+                        <Grid container sx={{ display: 'flex', justifyContent: 'center' }}>
                             <Grid item xs={2} />
                             <Grid item xs={8}>
                                 <List>
@@ -355,7 +353,11 @@ function DefaultAppBar() {
                                             disabled={unconfirmedChangesCartProducts.length > 0}
                                         >
                                             <ListItemText
-                                                primary="Tilaamaan"
+                                                primary={
+                                                    unconfirmedChangesCartProducts.length > 0
+                                                        ? 'Vahvistamattomia muutoksia'
+                                                        : 'Tilaamaan'
+                                                }
                                                 primaryTypographyProps={{ fontWeight: 'bold' }}
                                             />
                                         </Button>
@@ -374,10 +376,6 @@ function DefaultAppBar() {
                                             onClick={handlePopOverOpen}
                                         >
                                             Tyhjennä kori
-                                            {/* <ListItemText
-                                        primary="Tyhjennä ostoskori"
-                                        primaryTypographyProps={{ fontWeight: 'bold' }}
-                                    /> */}
                                         </Button>
                                         <Popover
                                             open={openPopover}

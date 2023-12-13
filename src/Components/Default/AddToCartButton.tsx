@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouteLoaderData, useSearchParams, useFetcher } from 'react-router-dom';
 import { type OverridableStringUnion } from '@material-ui/types';
-import { Box, Button, type ButtonPropsSizeOverrides } from '@mui/material';
+import { Box, Button, IconButton, type ButtonPropsSizeOverrides } from '@mui/material';
 
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import AddMoreToCart from '../AddMoreToCart';
@@ -49,15 +49,17 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
     }, [product?.available]);
 
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
+        <>
             {isNotLoggedIn && (
                 <AlertBox text="Kirjautuminen vaaditaan ostoskorin käyttöön" status="warning" timer={10000} />
             )}
+
+            {/* <Box sx={{ display: 'flex', alignItems: 'center' }}> */}
             {cart?.product_items?.some((product_item) => product_item?.product.id === groupId) ? (
                 <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
             ) : (
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <Button
+                    {/* <Button
                         size={size}
                         aria-label="add to shopping cart"
                         startIcon={<AddShoppingCartOutlinedIcon />}
@@ -65,10 +67,14 @@ function AddToCartButton({ size, id, groupId, count }: Props) {
                         disabled={addedToCart}
                     >
                         Lisää koriin
-                    </Button>
+                    </Button> */}
+                    <IconButton type="submit" color="primary">
+                        <AddShoppingCartOutlinedIcon fontSize={'large'} />
+                    </IconButton>
                 </form>
             )}
-        </Box>
+            {/* </Box> */}
+        </>
     );
 }
 

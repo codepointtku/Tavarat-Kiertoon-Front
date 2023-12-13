@@ -1,8 +1,11 @@
 import { Box, Paper, Typography } from '@mui/material';
+import BikeScooterIcon from '@mui/icons-material/BikeScooter';
 import PedalBikeIcon from '@mui/icons-material/PedalBike';
 import ListIcon from '@mui/icons-material/List';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import ViewListIcon from '@mui/icons-material/ViewList';
+import RvHookupIcon from '@mui/icons-material/RvHookup';
+import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import { Link } from 'react-router-dom';
 
 export default function BikesHomePage() {
@@ -11,6 +14,35 @@ export default function BikesHomePage() {
             <Typography variant="h3" align="center" color="primary.main" mt="2rem" mb="1rem">
                 Polkupyörien vuokraus
             </Typography>
+
+                <Box display="flex" alignSelf="center" justifyContent="space-between" mt="2rem">
+                    <Paper
+                        component={Link}
+                        to="pyoratilaukset"
+                        sx={{
+                            textDecoration: 'none',
+                            flex: '1',
+                            mx: '1rem',
+                            padding: '2rem',
+                            cursor: 'pointer',
+                            transition: 'transform 0.2s ease-in-out',
+                            '&:hover': {
+                                transform: 'scale(1.1)',
+                            },
+                            backgroundColor: '#ffffff', // Add this line to change the background color to pure white
+                        }}
+                    >
+                        <Box display="flex" alignItems="center">
+                            <ScheduleIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
+                            <Typography variant="h5" color="primary.main">
+                                Pyörätilaukset
+                            </Typography>
+                        </Box>
+                        <Typography variant="body1" mt="1rem" color="primary.main">
+                            Pyörien varaukset ja toimitukset.
+                        </Typography>
+                    </Paper>
+                </Box>
 
             <Box display="flex" justifyContent="space-between" mt="2rem">
                 <Paper
@@ -30,7 +62,7 @@ export default function BikesHomePage() {
                     }}
                 >
                     <Box display="flex" alignItems="center">
-                        <ListIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
+                        <DirectionsBikeIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
                         <Typography variant="h5" color="primary.main">
                             Kaikki Polkupyörät
                         </Typography>
@@ -56,7 +88,7 @@ export default function BikesHomePage() {
                     }}
                 >
                     <Box display="flex" alignItems="center">
-                        <PedalBikeIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
+                        <BikeScooterIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
                         <Typography variant="h5" color="primary.main">
                             Pyörien mallit
                         </Typography>
@@ -68,32 +100,6 @@ export default function BikesHomePage() {
             </Box>
 
             <Box display="flex" justifyContent="space-between" mt="2rem">
-                <Paper
-                    component={Link}
-                    to="pyoratilaukset"
-                    sx={{
-                        textDecoration: 'none',
-                        flex: '1',
-                        mx: '1rem',
-                        padding: '2rem',
-                        cursor: 'pointer',
-                        transition: 'transform 0.2s ease-in-out',
-                        '&:hover': {
-                            transform: 'scale(1.1)',
-                        },
-                        backgroundColor: '#ffffff', // Add this line to change the background color to pure white
-                    }}
-                >
-                    <Box display="flex" alignItems="center">
-                        <ScheduleIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
-                        <Typography variant="h5" color="primary.main">
-                            Pyörätilaukset
-                        </Typography>
-                    </Box>
-                    <Typography variant="body1" mt="1rem" color="primary.main">
-                        Pyörien varaukset ja toimitukset.
-                    </Typography>
-                </Paper>
                 <Paper
                     component={Link}
                     to="pyorapaketit"
@@ -112,13 +118,40 @@ export default function BikesHomePage() {
                     }}
                 >
                     <Box display="flex" alignItems="center">
-                        <ViewListIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
+                        <BikeScooterIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
                         <Typography variant="h5" color="primary.main">
                             Pyöräpaketit
                         </Typography>
                     </Box>
                     <Typography variant="body1" mt="1rem" color="primary.main">
                         Pyöräpakettien muokkaus.
+                    </Typography>
+                </Paper>
+                <Paper
+                    component={Link}
+                    to="perakarryt"
+                    sx={{
+                        textDecoration: 'none',
+                        marginRight: '1rem',
+                        flex: '1',
+                        mx: '1rem',
+                        padding: '2rem',
+                        cursor: 'pointer',
+                        transition: 'transform 0.2s ease-in-out',
+                        '&:hover': {
+                            transform: 'scale(1.1)',
+                        },
+                        backgroundColor: '#FFFFFF', // Add this line to change the background color to pure white
+                    }}
+                >
+                    <Box display="flex" alignItems="center">
+                        <RvHookupIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
+                        <Typography variant="h5" color="primary.main">
+                            Peräkärryt
+                        </Typography>
+                    </Box>
+                    <Typography variant="body1" mt="1rem" color="primary.main">
+                        Kaikki saatavilla olevat peräkärryt
                     </Typography>
                 </Paper>
             </Box>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Grid, Box } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 
 import SearchField from '../Components/Default/SearchField';
 import CategoryTree from '../Components/Default/CategoryTree';
@@ -12,21 +12,30 @@ import AlertBox from '../Components/AlertBox';
 function DefaultView() {
     const [categoryTreeSelected, setCategoryTreeSelected] = useState(false);
     const { state: responseStatus } = useLocation();
+
     return (
-        <Box id="front-page-main-block">
+        <>
             {responseStatus?.type === 'orderCreated' && responseStatus?.status === true && (
                 <AlertBox text="Kiitos tilauksestasi!" status="success" timer={10000} />
             )}
-            <SearchField treeSelectedState={{ categoryTreeSelected, setCategoryTreeSelected }} />
-            <Grid id="front-page-grid" container mt={2} mb={2}>
-                <Grid id="category-tree" item xs={12} sm={4} md={3} lg={2} xl={2}>
-                    <CategoryTree treeSelectedState={{ categoryTreeSelected, setCategoryTreeSelected }} />
+
+            <Stack id="front-page-main-block" alignItems="center" gap={2}>
+                <SearchField treeSelectedState={{ categoryTreeSelected, setCategoryTreeSelected }} />
+                <Grid
+                    container
+                    justifyContent="flex-start"
+                    alignItems="flex-start"
+                    columns={{ xs: 1, sm: 2, md: 4, lg: 5, xl: 6 }}
+                >
+                    <Grid item xs={1} sm={'auto'} xl={1} mb={1}>
+                        <CategoryTree treeSelectedState={{ categoryTreeSelected, setCategoryTreeSelected }} />
+                    </Grid>
+                    <Grid item xs={1} sm={true} xl={5}>
+                        <ProductList />
+                    </Grid>
                 </Grid>
-                <Grid id="product-list" item xs={12} sm={8} md={9} lg={10} xl={10}>
-                    <ProductList />
-                </Grid>
-            </Grid>
-        </Box>
+            </Stack>
+        </>
     );
 }
 

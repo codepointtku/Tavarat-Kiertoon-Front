@@ -52,7 +52,7 @@ import { ListItemButtonLink } from '../../MUILinkComponents';
 // list item links data (mapped out variables)
 const tilaukset = [
     { icon: <AutoStoriesIcon />, label: 'Tarkastele', to: '/admin/tilaukset' },
-    { icon: <ImportExportIcon />, label: 'Lähetyslista', to: '/admin/tilaukset/sahkopostilista' },
+    { icon: <ImportExportIcon />, label: 'Sähköpostilista', to: '/admin/tilaukset/sahkopostilista' },
 ];
 
 const tuotteet = [
@@ -146,15 +146,7 @@ function NavigationTree() {
         setAnchorEl(null);
     };
 
-    // sort of hard coded, (not very scalable, but a base) functionality for demoing titles as links:
     const handleListTitleClick = (title: string) => {
-        // jos ei auki -> avaa vetolaatikko ja toimi linkkinä
-        // jos auki -> sulje vetolaatikko
-
-        // --> aiheuttaa ränkyttäessä routtaamista uudelleen&uudelleen määritettyyn sivuun
-        // --> aiheuttaa ehkä tahatonta siirtymistä määritettyyn sivuun
-        // --> listakomponentin tila palautuu defaulttiin
-
         switch (title) {
             case 'orders':
                 if (open.ordersNavList) {

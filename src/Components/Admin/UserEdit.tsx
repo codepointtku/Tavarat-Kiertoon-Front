@@ -1,13 +1,11 @@
+import { useContext } from 'react';
 import { useLoaderData, useActionData } from 'react-router';
 import { Form, useSubmit, Link } from 'react-router-dom';
-
 import { useForm } from 'react-hook-form';
 
 import {
     Box,
     Button,
-    Checkbox,
-    FormControlLabel,
     Stack,
     TextField,
     Typography,
@@ -16,6 +14,7 @@ import {
     Card,
     CardContent,
     CardActions,
+    MenuItem,
 } from '@mui/material';
 
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -29,21 +28,25 @@ import AlertBox from '../AlertBox';
 import TypographyHeading from '../TypographyHeading';
 import HeroHeader from '../HeroHeader';
 import HeroText from '../HeroText';
+import Tooltip from '../Tooltip';
+
+import AuthContext from '../../Context/AuthContext';
 
 import type { userEditAction } from '../../Router/actions';
 import type { userEditLoader } from '../../Router/loaders';
-import Tooltip from '../Tooltip';
 
 const groupNames = {
     user_group: 'Käyttäjä',
     admin_group: 'Ylläpitäjä',
     storage_group: 'Varastotyöntekijä',
-    bicycle_group: 'Pyörävaltuutettu',
+    deactive: 'Epäaktiivinen',
 };
 
 function UserEdit() {
     const { userInfo, userAuthGroups } = useLoaderData() as Awaited<ReturnType<typeof userEditLoader>>;
     const actionData = useActionData() as Awaited<ReturnType<typeof userEditAction>>;
+
+    const { auth } = useContext(AuthContext);
 
     const creationDateInfo = [];
     const creationDate = new Date(userInfo.creation_date);
@@ -63,20 +66,17 @@ function UserEdit() {
         mode: 'all',
         defaultValues: {
             ...userInfo,
-            // groups: userInfo.groups.map((group) => group.id),
         },
     });
-
     const submit = useSubmit();
 
     const handleSubmit = createHandleSubmit((data) => {
-        // console.log('%c Submitissa menevä tieto', 'color: blue', data);
         submit(
             {
                 first_name: data.first_name,
                 last_name: data.last_name,
                 phone_number: data.phone_number!,
-                groups: data.groups.toString(),
+                group: data.group!,
             },
             {
                 method: 'put',
@@ -274,34 +274,25 @@ function UserEdit() {
                                 <Box id="user-edition-checkboxes-wrapper">
                                     <TypographyHeading text="Käyttäjän käyttöoikeudet" />
                                     <Stack id="usergroups-checkboxes-stack-column" margin={'1rem 0 0 0'}>
-                                        {/* Checkboxes, mapped: */}
-                                        {userAuthGroups.map((group) => (
-                                            <FormControlLabel
-                                                key={group.id}
-                                                control={
-                                                    <Checkbox
-                                                        {...register('groups')}
-                                                        value={String(group.id)}
-                                                        defaultChecked={userInfo.groups.some(
-                                                            ({ id }) => group.id === id
-                                                        )}
-                                                        sx={{
-                                                            '&.Mui-checked': {
-                                                                color: 'success.dark',
-                                                            },
-                                                        }}
-                                                    />
-                                                }
-                                                label={groupNames[group.name as keyof typeof groupNames]}
-                                                sx={{
-                                                    margin: 0,
-                                                    borderBottom: '1px solid #e0e0e0',
-                                                    '&:hover': {
-                                                        color: 'success.dark',
-                                                    },
-                                                }}
-                                            />
-                                        ))}
+                                        <TextField
+                                            select
+                                            defaultValue={userInfo.group}
+                                            required
+                                            {...register('group', {
+                                                required: {
+                                                    value: true,
+                                                    message: 'Käyttäjälle on valittava käyttöoikeus',
+                                                },
+                                            })}
+                                        >
+                                            {userAuthGroups
+                                                .filter((group) => !group.name.includes('bicycle'))
+                                                .map((group) => (
+                                                    <MenuItem key={group.id} value={group.name}>
+                                                        {groupNames[group.name as keyof typeof groupNames]}
+                                                    </MenuItem>
+                                                ))}
+                                        </TextField>
                                     </Stack>
                                 </Box>
                             </Grid>
@@ -342,6 +333,7 @@ function UserEdit() {
                                         color="error"
                                         component={Link}
                                         to={`/admin/kayttajat/${userInfo.id}/poista/`}
+                                        disabled={auth.username === userInfo.username}
                                         endIcon={<DeleteForeverIcon />}
                                         sx={{ margin: '2rem 0 1rem 0' }}
                                     >
