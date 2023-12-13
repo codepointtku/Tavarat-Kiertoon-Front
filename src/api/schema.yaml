@@ -4264,12 +4264,12 @@ components:
       enum:
       - bicycle_admin_group
       - bicycle_group
-      - remove_bicycle_group
+      - no_bicycle_group
       type: string
       description: |-
         * `bicycle_admin_group` - bicycle_admin_group
         * `bicycle_group` - bicycle_group
-        * `remove_bicycle_group` - remove_bicycle_group
+        * `no_bicycle_group` - no_bicycle_group
     BikeGroupPermissionsRequest:
       type: object
       properties:
@@ -4883,14 +4883,13 @@ components:
           type: boolean
           description: Designates whether this user should be treated as active. Unselect
             this instead of deleting accounts.
-        groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/GroupName'
+        bike_group:
+          type: string
+          readOnly: true
       required:
+      - bike_group
       - email
       - first_name
-      - groups
       - id
       - last_name
       - username

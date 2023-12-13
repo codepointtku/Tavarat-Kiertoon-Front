@@ -627,12 +627,12 @@ const bikeUserLoader = async () => {
 };
 
 const bikeUserEditLoader = async ({ params }) => {
-    try {
-        const { data } = await usersApi.usersBikeGroupsRetrieve(params.id);
-        return data;
-    } catch {
-        return null;
-    }
+    const [{ data: bikeUserInfo }, { data: userAuthGroups }] = await Promise.all([
+        usersApi.usersBikeGroupsRetrieve(params.id),
+        usersApi.usersGroupsList(),
+    ]);
+    userAuthGroups.push({ id: 0, name: 'no_bicycle_group' });
+    return { bikeUserInfo, userAuthGroups };
 };
 
 export {

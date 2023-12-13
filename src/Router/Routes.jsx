@@ -985,6 +985,7 @@ function Routes() {
                                             element: <BikeUserEdit />,
                                             loader: bikeUserEditLoader,
                                             action: bikeUserEditAction,
+                                            shouldRevalidate: () => false,
                                         },
                                     ],
                                 },
