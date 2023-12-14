@@ -1,4 +1,4 @@
-import { useLoaderData, Link, useSearchParams, Form } from 'react-router-dom';
+import { useLoaderData, Link, useSearchParams, Form, createSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
     Box,
@@ -30,13 +30,13 @@ export default function BikeUsers() {
     const [searchParams, setSearchParams] = useSearchParams();
     console.log(userArray);
     const { register, handleSubmit } = useForm({
-        defaultValues: { searchString: searchParams.get('viivakoodi') },
+        defaultValues: { searchString: searchParams.get('suodata') },
     });
     const handleEmailSearch = (formData) => {
         setSearchParams((prevParams) => {
             return createSearchParams({
                 ...Object.fromEntries(prevParams.entries()),
-                viivakoodi: formData.searchString,
+                suodata: formData.searchString,
                 sivu: '1',
             });
         });
@@ -66,11 +66,6 @@ export default function BikeUsers() {
                     Hae
                 </Button>
             </Form>
-            <Box width="100%" textAlign="right" marginBottom="1em" marginTop="-2em" marginRight="2em">
-                <Button component={Link} to="/pyorat/pyoravarasto/lisaa">
-                    Lisää uusi pyörä
-                </Button>
-            </Box>
             <TableContainer component={Paper} sx={{ padding: '2rem' }}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
