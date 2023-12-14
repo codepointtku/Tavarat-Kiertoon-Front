@@ -35,6 +35,7 @@ function useAxiosInterceptAuthAPICalls() {
                         storage_group: false,
                         admin_group: false,
                         bicycle_group: false,
+                        bicycle_admin_group: false,
                         username: false,
                     });
                     // use different axios instance to avoid infinite loop
