@@ -9,6 +9,7 @@ import {
     CardContent,
     CardMedia,
     Container,
+    Grid,
     IconButton,
     Modal,
     Stack,
@@ -69,7 +70,7 @@ export default function BikeCard({
             >
                 {isPackage ? 'Paketti' : ''}
                 {isPackage ? (
-                    <Container sx={{ display: 'flex', flexDirection: 'row'}}>
+                    <Grid container>
                         <CardMedia
                             component="img"
                             alt="kuva"
@@ -86,10 +87,9 @@ export default function BikeCard({
                                 window.location.hostname
                             }:8000/media/${bike.picture.slice(bike.picture.indexOf('&')+1)}`}
                             height="90px"
-                            width="180px"
                             sx={{ objectFit: 'contain' }}
                         />
-                    </Container>
+                    </Grid>
                 ) : (
                     <CardMedia
                         component="img"
