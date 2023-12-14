@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import StyledTableCell from '../StyledTableCell'; // used in Table Header
 import CheckIcon from '@mui/icons-material/Check';
+import Pagination from '../Pagination';
 
 export const bikeGroupNames = {
     bicycle_admin_group: 'Pyöräylläpitäjä',
@@ -21,7 +22,8 @@ export const bikeGroupNames = {
 };
 
 export default function BikeUsers() {
-    const userArray = useLoaderData();
+    const { count, results: userArray } = useLoaderData();
+    console.log(userArray);
 
     return (
         <>
@@ -38,8 +40,10 @@ export default function BikeUsers() {
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
                         <TableRow>
+                            <StyledTableCell align="right">Sähköposti</StyledTableCell>
                             <StyledTableCell align="right">Etunimi</StyledTableCell>
                             <StyledTableCell align="right">Sukunimi</StyledTableCell>
+                            <StyledTableCell align="right">Puhelinnumero</StyledTableCell>
                             <StyledTableCell align="right">Aktiivinen</StyledTableCell>
                             <StyledTableCell align="right">Käyttöoikeudet</StyledTableCell>
                             <StyledTableCell align="right">Muokkaa</StyledTableCell>
@@ -53,8 +57,10 @@ export default function BikeUsers() {
                                     sx={{ background: index % 2 ? 'rgba(199, 215, 235, 0.1)' : 'white' }}
                                     hover
                                 >
+                                    <TableCell align="right">{user.email}</TableCell>
                                     <TableCell align="right">{user.first_name}</TableCell>
                                     <TableCell align="right">{user.last_name}</TableCell>
+                                    <TableCell align="right">{user.phone_number}</TableCell>
                                     <TableCell align="right">{user.is_active ? <CheckIcon /> : ''}</TableCell>
                                     <TableCell align="right">{bikeGroupNames[user.bike_group]}</TableCell>
                                     <TableCell align="right">
@@ -68,6 +74,7 @@ export default function BikeUsers() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Pagination count={count} itemsText="Käyttäjiä" />
         </>
     );
 }

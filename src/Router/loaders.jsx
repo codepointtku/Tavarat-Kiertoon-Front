@@ -616,10 +616,16 @@ const userInfoLoader = async (request) => {
     return { userInfo, userOrders };
 };
 
-const bikeUserLoader = async () => {
+const bikeUserLoader = async ({ request }) => {
     try {
-        const { data } = await usersApi.usersBikeUsersList();
-        console.log(data);
+        const url = new URL(request.url);
+        console.log(url);
+        const { data } = await usersApi.usersBikeUsersList(
+            // url.searchParams.get('jarjesta') || null,
+            url.searchParams.get('sivu') || 1,
+            url.searchParams.get('sivukoko') || 25
+            // url.searchParams.getAll('suodata') || null
+        );
         return data;
     } catch {
         return null;
