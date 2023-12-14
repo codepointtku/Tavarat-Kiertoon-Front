@@ -356,9 +356,9 @@ function ProductDetails() {
                                                 }}
                                             >
                                                 <Grid item>
-                                                    {/* <Typography variant="body2" color="text.secondary">
+                                                    <Typography variant="body2" color="text.secondary">
                                                         Yksittäisen tuotteen id järjestelmässä: {item?.id}
-                                                    </Typography> */}
+                                                    </Typography>
                                                     <Typography variant="body2" color="text.secondary">
                                                         Varasto: {item?.storage.name}
                                                     </Typography>
