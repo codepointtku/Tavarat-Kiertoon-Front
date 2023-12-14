@@ -5886,7 +5886,6 @@ components:
       - Came back to circulation
       - Modified at storage
       - Gifted away
-      - Removed from circulation
       type: string
       description: |-
         * `Created` - Create
@@ -5899,7 +5898,6 @@ components:
         * `Came back to circulation` - Circulation
         * `Modified at storage` - Modify
         * `Gifted away` - Gift
-        * `Removed from circulation` - Retired
     ProductItemResponse:
       type: object
       properties:

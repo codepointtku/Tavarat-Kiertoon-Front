@@ -31,7 +31,12 @@ function ProductsRetireForm() {
                 <AlertBox text="Toiminto epäonnistui" status="error" timer={5000} />
             )}
             {responseStatus?.type === 'retireProduct' && responseStatus?.status === true && (
-                <AlertBox text="Toiminto onnistui" status="success" timer={2000} />
+                <AlertBox
+                    text="Toiminto onnistui"
+                    status="success"
+                    redirectUrl={location.pathname.includes('admin') ? '/admin/tuotteet/' : '/varasto/tuotteet/'}
+                    timer={2000}
+                />
             )}
             <Typography variant="subtitle1">Poista tuotteita pysyvästi</Typography>
             {/* <Typography variant="subtitle1">Poistettavissa: {product.amount || '0'} kpl</Typography> */}
