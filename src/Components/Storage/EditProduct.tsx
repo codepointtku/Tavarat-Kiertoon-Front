@@ -187,13 +187,13 @@ function EditProduct() {
             {actionData?.status === true && (
                 <AlertBox
                     status="success"
-                    text="Tuotteen luonti onnistui"
+                    text="Tuotteen muokkaaminen onnistui"
                     redirectUrl={location.pathname.includes('admin') ? '/admin/tuotteet/' : '/varasto/tuotteet/'}
                     timer={1000}
                 />
             )}
             {actionData?.status === false && (
-                <AlertBox status="error" text="Tuotteen luonti epäonnistui" timer={3000} />
+                <AlertBox status="error" text="Tuotteen muokkaaminen epäonnistui" timer={3000} />
             )}
             <Modal
                 component={Box}
