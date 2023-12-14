@@ -707,6 +707,12 @@ function Routes() {
                                             ],
                                         },
                                         {
+                                            path: 'luo',
+                                            element: <AddNewItem />,
+                                            loader: productAddLoader,
+                                            action: async ({ request }) => addProductAction(auth, setAuth, request),
+                                        },
+                                        {
                                             path: ':id/muokkaa',
                                             element: <EditProduct />,
                                             loader: productEditLoader,
