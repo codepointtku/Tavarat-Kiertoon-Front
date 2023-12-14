@@ -1,4 +1,5 @@
-import { useLoaderData, Link } from 'react-router-dom';
+import { useLoaderData, Link, useSearchParams, Form } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import {
     Box,
     Button,
@@ -10,9 +11,12 @@ import {
     TableHead,
     TableRow,
     Typography,
+    TextField,
+    IconButton,
 } from '@mui/material';
 import StyledTableCell from '../StyledTableCell'; // used in Table Header
 import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
 import Pagination from '../Pagination';
 
 export const bikeGroupNames = {
@@ -23,14 +27,45 @@ export const bikeGroupNames = {
 
 export default function BikeUsers() {
     const { count, results: userArray } = useLoaderData();
+    const [searchParams, setSearchParams] = useSearchParams();
     console.log(userArray);
-
+    const { register, handleSubmit } = useForm({
+        defaultValues: { searchString: searchParams.get('viivakoodi') },
+    });
+    const handleEmailSearch = (formData) => {
+        setSearchParams((prevParams) => {
+            return createSearchParams({
+                ...Object.fromEntries(prevParams.entries()),
+                viivakoodi: formData.searchString,
+                sivu: '1',
+            });
+        });
+    };
     return (
         <>
             <Typography variant="h3" align="center" color="primary.main" width="100%">
                 Käyttäjät
             </Typography>
-
+            <Form onSubmit={handleSubmit(handleEmailSearch)}>
+                <TextField
+                    type="search"
+                    {...register('searchString')}
+                    placeholder="Sähköpostihaku"
+                    sx={{ backgroundColor: 'white' }}
+                    size="medium"
+                >
+                    <IconButton children={<ClearIcon />} />
+                </TextField>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    sx={{ marginLeft: 1, padding: 1.5 }}
+                >
+                    Hae
+                </Button>
+            </Form>
             <Box width="100%" textAlign="right" marginBottom="1em" marginTop="-2em" marginRight="2em">
                 <Button component={Link} to="/pyorat/pyoravarasto/lisaa">
                     Lisää uusi pyörä
