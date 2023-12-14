@@ -19,6 +19,7 @@ function App() {
         admin_group: false,
         username: false,
         bicycle_group: false,
+        bicycle_admin_group: false,
     });
 
     const authorized = useMemo(() => ({ auth, setAuth }), [auth, setAuth]);
