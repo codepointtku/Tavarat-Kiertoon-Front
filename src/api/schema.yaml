@@ -4114,6 +4114,9 @@ components:
       properties:
         id:
           type: integer
+        picture:
+          type: string
+          readOnly: true
         amount:
           type: integer
           maximum: 2147483647
@@ -4123,6 +4126,7 @@ components:
       required:
       - amount
       - bike
+      - picture
     BikeAmountList:
       type: object
       properties:
