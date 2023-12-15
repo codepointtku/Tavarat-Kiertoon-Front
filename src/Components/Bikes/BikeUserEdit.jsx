@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { Form, useSubmit, useLoaderData, useActionData, Link } from 'react-router-dom';
 import { bikeGroupNames } from './BikeUsers';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import HeroText from '../HeroText';
 import { Box, TextField, MenuItem, Button, Stack, Tooltip } from '@mui/material';
 import AlertBox from '../AlertBox';
 
@@ -32,7 +33,7 @@ export default function () {
     });
 
     return (
-        <>
+        <Box display="flex" flexDirection="column" maxWidth="800px" mx="auto">
             {actionData?.status === 403 && (
                 <AlertBox text="Ylläpitäjä ei voi muokata omia käyttöoikeuksiaan" status="warning" />
             )}
@@ -45,56 +46,61 @@ export default function () {
                     redirectUrl="/pyorat/pyoravarasto/kayttajat"
                 />
             )}
-            <Box component={Form} onSubmit={handleSubmit}>
-                <TextField
-                    select
-                    defaultValue={bikeUserInfo.bike_group}
-                    required
-                    {...register('bike_group', {
-                        required: {
-                            value: true,
-                            message: 'Käyttäjälle on valittava käyttöoikeus',
-                        },
-                    })}
-                >
-                    {userAuthGroups
-                        .filter((group) => group.name.includes('bicycle'))
-                        .map((group) => (
-                            <MenuItem key={group.id} value={group.name}>
-                                {bikeGroupNames[group.name]}
-                            </MenuItem>
-                        ))}
-                </TextField>
+            <Box item>
                 <Stack>
-                    <Button
-                        id="save-changes-btn"
-                        type="submit"
-                        sx={{
-                            margin: '4rem 0 1rem 0',
-                            '&:hover': {
-                                backgroundColor: 'success.dark',
-                            },
-                        }}
-                        disabled={!isDirty || !isValid}
-                    >
-                        Tallenna muutokset
-                    </Button>
-                    <Stack direction="row" justifyContent="space-between">
-                        <Tooltip title="Takaisin käyttäjät-listaukseen">
-                            <Button
-                                id="cancel-btn"
-                                size="small"
-                                component={Link}
-                                to="/pyorat/pyoravarasto/kayttajat"
-                                startIcon={<ArrowBackIcon />}
-                                sx={{ margin: '2rem 0 1rem 0' }}
+                    <HeroText title={`Käyttäjä ${bikeUserInfo.email}`} />
+                    <Box component={Form} onSubmit={handleSubmit}>
+                        <Stack>
+                            <TextField
+                                select
+                                defaultValue={bikeUserInfo.bike_group}
+                                required
+                                {...register('bike_group', {
+                                    required: {
+                                        value: true,
+                                        message: 'Käyttäjälle on valittava käyttöoikeus',
+                                    },
+                                })}
                             >
-                                Poistu tallentamatta
+                                {userAuthGroups
+                                    .filter((group) => group.name.includes('bicycle'))
+                                    .map((group) => (
+                                        <MenuItem key={group.id} value={group.name}>
+                                            {bikeGroupNames[group.name]}
+                                        </MenuItem>
+                                    ))}
+                            </TextField>
+                            <Button
+                                id="save-changes-btn"
+                                type="submit"
+                                sx={{
+                                    margin: '1rem 0 1rem 0',
+                                    '&:hover': {
+                                        backgroundColor: 'success.dark',
+                                    },
+                                }}
+                                disabled={!isDirty || !isValid}
+                            >
+                                Tallenna muutokset
                             </Button>
-                        </Tooltip>
-                    </Stack>
+                            {/* <Stack direction="row" justifyContent="space-between"> */}
+                            <Tooltip title="Takaisin käyttäjät-listaukseen">
+                                <Button
+                                    id="cancel-btn"
+                                    // size="small"
+                                    component={Link}
+                                    to="/pyorat/pyoravarasto/kayttajat"
+                                    startIcon={<ArrowBackIcon />}
+                                    // sx={{ margin: '2rem 0 1rem 0' }}
+                                >
+                                    Poistu tallentamatta
+                                </Button>
+                            </Tooltip>
+                            {/* </Stack> */}
+                        </Stack>
+                    </Box>
                 </Stack>
             </Box>
-        </>
+        </Box>
     );
 }
