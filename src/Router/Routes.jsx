@@ -39,6 +39,10 @@ import StorageProducts from '../Components/Storage/StorageProducts';
 import AddNewItem from '../Components/Storage/AddNewItem';
 import EditProduct from '../Components/Storage/EditProduct';
 
+import ProductsReturn from '../Components/Storage/ProductActionsView';
+import ProductsReturnForm from '../Components/Storage/ProductsReturnForm';
+import ProductsRetireForm from '../Components/Admin/ProductsRetireForm';
+
 // admin
 import Overview from '../Components/Admin/Panel/Overview/Overview';
 import Stats from '../Components/Admin/Stats/Stats';
@@ -119,7 +123,7 @@ import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
 import BikeRentalView from '../Components/Bikes/BikeRentalView';
-import BikeTrailers from '../Components/Bikes/BikeTrailers'
+import BikeTrailers from '../Components/Bikes/BikeTrailers';
 import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 import BikeModels from '../Components/Bikes/BikeModels';
 import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
@@ -222,12 +226,11 @@ import {
     categoriesManageAction,
     colorsManageAction,
     deleteCreateBikeTrailerAction,
+    retireProductsAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
-import ProductsReturn from '../Components/Storage/ProductsReturn';
-import ProductsReturnForm from '../Components/Storage/ProductsReturnForm';
 
 createStore({});
 
@@ -565,6 +568,13 @@ function Routes() {
                                             loader: productItemsReturnLoader,
                                             action: returnProductsAction,
                                         },
+                                        {
+                                            path: 'poista',
+                                            element: <ProductsRetireForm />,
+                                            errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
+                                            loader: productItemsReturnLoader,
+                                            action: retireProductsAction,
+                                        },
                                     ],
                                 },
                                 {
@@ -674,6 +684,40 @@ function Routes() {
                                             index: true,
                                             element: <ProductsGrid />,
                                             loader: productListLoader,
+                                        },
+                                        {
+                                            path: ':id',
+                                            element: <ProductDetails />,
+                                            loader: productDetailsLoader,
+                                            children: [
+                                                {
+                                                    path: 'palauta',
+                                                    element: <ProductsReturnForm />,
+                                                    errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
+                                                    loader: productItemsReturnLoader,
+                                                    action: returnProductsAction,
+                                                },
+                                                {
+                                                    path: 'poista',
+                                                    element: <ProductsRetireForm />,
+                                                    errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
+                                                    loader: productItemsReturnLoader,
+                                                    action: retireProductsAction,
+                                                },
+                                            ],
+                                        },
+                                        {
+                                            path: 'luo',
+                                            element: <AddNewItem />,
+                                            loader: productAddLoader,
+                                            action: async ({ request }) => addProductAction(auth, setAuth, request),
+                                        },
+                                        {
+                                            path: ':id/muokkaa',
+                                            element: <EditProduct />,
+                                            loader: productEditLoader,
+                                            action: async ({ request, params }) =>
+                                                editProductAction(auth, setAuth, request, params),
                                         },
                                         {
                                             path: 'varit',
