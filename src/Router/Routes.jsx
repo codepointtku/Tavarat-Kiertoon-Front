@@ -829,7 +829,11 @@ function Routes() {
                                 },
                                 {
                                     path: 'pyoravarasto',
-                                    element: <BikeWarehouse />,
+                                    element: (
+                                        <HasRole role="bicycle_admin_group" fallback={<Navigate to="/kirjaudu" />}>
+                                            <BikeWarehouse />
+                                        </HasRole>
+                                    ),
                                     children: [
                                         {
                                             index: 'true',
