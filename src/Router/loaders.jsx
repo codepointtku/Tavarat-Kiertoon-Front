@@ -622,9 +622,9 @@ const bikeUserLoader = async ({ request }) => {
         console.log(url);
         const { data } = await usersApi.usersBikeUsersList(
             // url.searchParams.get('jarjesta') || null,
+            url.searchParams.get('suodata') || null,
             url.searchParams.get('sivu') || 1,
-            url.searchParams.get('sivukoko') || 25,
-            url.searchParams.get('suodata') || null
+            url.searchParams.get('sivukoko') || 25
         );
         return data;
     } catch {
