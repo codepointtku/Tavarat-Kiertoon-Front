@@ -1349,10 +1349,13 @@ const searchWatchCreateAction = async ({ request }) => {
 
 const bikeUserEditAction = async ({ request, params }) => {
     const formData = await request.formData();
-    const response = await usersApi.usersBikeGroupsUpdate(params.id, { bike_group: formData.get('bike_group') });
-    if (response.status === 200) {
-        console.log(response);
-        return response;
+    try {
+        const response = await usersApi.usersBikeGroupsUpdate(params.id, { bike_group: formData.get('bike_group') });
+        if (response.status === 200) {
+            return response;
+        }
+    } catch (err) {
+        return err.request;
     }
     return response;
 };

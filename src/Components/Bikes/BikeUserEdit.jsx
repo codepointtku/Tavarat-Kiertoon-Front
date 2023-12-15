@@ -33,15 +33,9 @@ export default function () {
 
     return (
         <>
-            {/* {actionData?.type === 'userdataupdate' && actionData?.status === false && (
-                <AlertBox text="Käyttäjätietojen tallennus epäonnistui" status="error" />
+            {actionData?.status === 403 && (
+                <AlertBox text="Ylläpitäjä ei voi muokata omia käyttöoikeuksiaan" status="warning" />
             )}
-
-            {actionData?.type === 'userdataupdate' &&
-                actionData?.status === false &&
-                actionData.responseMsg === 'admins cannot edit their own permissions' && (
-                    <AlertBox text="Ylläpitäjä ei voi muokata omia käyttöoikeuksiaan" status="warning" />
-                )} */}
 
             {actionData?.status === 200 && (
                 <AlertBox
