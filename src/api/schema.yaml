@@ -816,8 +816,10 @@ paths:
       tags:
       - bikes
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
-      - {}
+      - CustomJWTAuthentication: []
       responses:
         '200':
           content:
@@ -844,8 +846,10 @@ paths:
               $ref: '#/components/schemas/BikeTrailerModel'
         required: true
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
-      - {}
+      - CustomJWTAuthentication: []
       responses:
         '201':
           content:
@@ -865,8 +869,10 @@ paths:
       tags:
       - bikes
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
-      - {}
+      - CustomJWTAuthentication: []
       responses:
         '200':
           content:
@@ -897,8 +903,10 @@ paths:
               $ref: '#/components/schemas/BikeTrailerModel'
         required: true
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
-      - {}
+      - CustomJWTAuthentication: []
       responses:
         '200':
           content:
@@ -928,8 +936,10 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedBikeTrailerModel'
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
-      - {}
+      - CustomJWTAuthentication: []
       responses:
         '200':
           content:
@@ -948,8 +958,10 @@ paths:
       tags:
       - bikes
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
-      - {}
+      - CustomJWTAuthentication: []
       responses:
         '204':
           description: No response body
@@ -959,8 +971,10 @@ paths:
       tags:
       - bikes
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
-      - {}
+      - CustomJWTAuthentication: []
       responses:
         '200':
           content:
@@ -987,8 +1001,10 @@ paths:
               $ref: '#/components/schemas/BikeTrailer'
         required: true
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
-      - {}
+      - CustomJWTAuthentication: []
       responses:
         '201':
           content:
@@ -1008,8 +1024,10 @@ paths:
       tags:
       - bikes
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
-      - {}
+      - CustomJWTAuthentication: []
       responses:
         '200':
           content:
@@ -1040,8 +1058,10 @@ paths:
               $ref: '#/components/schemas/BikeTrailer'
         required: true
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
-      - {}
+      - CustomJWTAuthentication: []
       responses:
         '200':
           content:
@@ -1071,8 +1091,10 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedBikeTrailer'
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
-      - {}
+      - CustomJWTAuthentication: []
       responses:
         '200':
           content:
@@ -1091,8 +1113,10 @@ paths:
       tags:
       - bikes
       security:
+      - cookieAuth: []
+      - basicAuth: []
       - jwtAuth: []
-      - {}
+      - CustomJWTAuthentication: []
       responses:
         '204':
           description: No response body
@@ -3947,6 +3971,12 @@ paths:
         name: email
         schema:
           type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
       - name: page
         required: false
         in: query
@@ -5314,6 +5344,8 @@ components:
           type: object
           additionalProperties:
             type: integer
+        picture:
+          type: string
       required:
       - brand
       - color
@@ -5323,6 +5355,7 @@ components:
       - name
       - package_only_count
       - package_only_unavailable
+      - picture
       - size
       - type
       - unavailable
@@ -5365,6 +5398,8 @@ components:
           type: string
         max_available:
           type: integer
+        picture:
+          type: string
       required:
       - bikes
       - brand
@@ -5373,19 +5408,26 @@ components:
       - id
       - max_available
       - name
+      - picture
       - size
       - type
       - unavailable
     MainBikeSchemaPackageBike:
       type: object
       properties:
+        id:
+          type: integer
         bike:
           type: integer
         amount:
           type: integer
+        picture:
+          type: string
       required:
       - amount
       - bike
+      - id
+      - picture
     NewEmail:
       type: object
       description: Serializer for inputting new email address
