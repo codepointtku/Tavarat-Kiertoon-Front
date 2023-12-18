@@ -616,7 +616,35 @@ const userInfoLoader = async (request) => {
     return { userInfo, userOrders };
 };
 
+const bikeUserLoader = async ({ request }) => {
+    try {
+        const url = new URL(request.url);
+        console.log(url);
+        const { data } = await usersApi.usersBikeUsersList(
+            // url.searchParams.get('jarjesta') || null,
+            url.searchParams.get('suodata') || null,
+            null,
+            url.searchParams.get('sivu') || 1,
+            url.searchParams.get('sivukoko') || 25
+        );
+        return data;
+    } catch {
+        return null;
+    }
+};
+
+const bikeUserEditLoader = async ({ params }) => {
+    const [{ data: bikeUserInfo }, { data: userAuthGroups }] = await Promise.all([
+        usersApi.usersBikeGroupsRetrieve(params.id),
+        usersApi.usersGroupsList(),
+    ]);
+    userAuthGroups.push({ id: 0, name: 'no_bicycle_group' });
+    return { bikeUserInfo, userAuthGroups };
+};
+
 export {
+    bikeUserEditLoader,
+    bikeUserLoader,
     bikesPacketLoader,
     rootLoader,
     productListLoader,

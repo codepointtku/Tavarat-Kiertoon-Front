@@ -870,7 +870,7 @@ const bikeOrderAction = async (auth, setAuth, request) => {
             end_date: formData.get('endDateTime'),
             bike_stock: JSON.parse(formData.get('selectedBikes')),
             extra_info: formData.get('extraInfo'),
-            bike_trailer: formData.get('storageType')
+            bike_trailer: formData.get('storageType'),
         });
         return response.data || null;
     }
@@ -1079,8 +1079,8 @@ const deletePacketAction = async (params) => {
 /**
  * Delete existing bike trailer or create a new bike trailer
  */
-const deleteCreateBikeTrailerAction = async ({request}) => {
-    console.log(request)
+const deleteCreateBikeTrailerAction = async ({ request }) => {
+    console.log(request);
 
     const formData = await request.formData();
     if (request.method === 'DELETE') {
@@ -1089,7 +1089,7 @@ const deleteCreateBikeTrailerAction = async ({request}) => {
     } else if (request.method === 'POST') {
         const response = await bikesApi.bikesTrailersCreate({
             register_number: formData.get('register_number'),
-            trailer_type: formData.get('trailer_type')
+            trailer_type: formData.get('trailer_type'),
         });
         return response;
     }
@@ -1359,7 +1359,21 @@ const searchWatchCreateAction = async ({ request }) => {
     return null;
 };
 
+const bikeUserEditAction = async ({ request, params }) => {
+    const formData = await request.formData();
+    try {
+        const response = await usersApi.usersBikeGroupsUpdate(params.id, { bike_group: formData.get('bike_group') });
+        if (response.status === 200) {
+            return response;
+        }
+    } catch (err) {
+        return err.request;
+    }
+    return response;
+};
+
 export {
+    bikeUserEditAction,
     deleteBikeOrderAction,
     userSignupAction,
     frontPageActions,
