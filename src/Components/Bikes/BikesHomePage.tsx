@@ -1,9 +1,7 @@
 import { Box, Paper, Typography } from '@mui/material';
 import BikeScooterIcon from '@mui/icons-material/BikeScooter';
-import PedalBikeIcon from '@mui/icons-material/PedalBike';
-import ListIcon from '@mui/icons-material/List';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-import ViewListIcon from '@mui/icons-material/ViewList';
+import GroupIcon from '@mui/icons-material/Group';
 import RvHookupIcon from '@mui/icons-material/RvHookup';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import { Link } from 'react-router-dom';
@@ -31,7 +29,7 @@ export default function BikesHomePage() {
             <Box display="flex" justifyContent="space-between" mt="2rem">
                 <Paper component={Link} to="kayttajat" sx={paperStyle}>
                     <Box display="flex" alignItems="center">
-                        <ViewListIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
+                        <GroupIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
                         <Typography variant="h5" color="primary.main">
                             Pyöräoikeudet
                         </Typography>
