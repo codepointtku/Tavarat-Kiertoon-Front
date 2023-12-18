@@ -338,13 +338,9 @@ const editProductAction = async (auth, setAuth, request, params) => {
  * Returns products to storage
  */
 const returnProductsAction = async ({ request, params }) => {
-    console.log('return of the product action');
     const formData = await request.formData();
-    const formDataObj = Object.fromEntries(formData);
     formData.get('amount');
-    console.log(formDataObj.amount, formDataObj.addId);
-    // todo add id
-    console.log(typeof formDataObj.amount, typeof formDataObj.addId);
+    // console.log(formDataObj.amount, formDataObj.addId);
 
     const response = await productsApi.productsReturnCreate(
         // parseInt(formData.get('addId')),
@@ -358,6 +354,22 @@ const returnProductsAction = async ({ request, params }) => {
         return { type: 'returnProduct', status: true };
     }
     return { type: 'returnProduct', status: false };
+};
+
+/*
+ * Retire products from storage
+ */
+const retireProductsAction = async ({ request, params }) => {
+    const formData = await request.formData();
+
+    const response = await productsApi.productsRetireCreate(params.id, {
+        amount: parseInt(formData.get('amount')),
+    });
+
+    if (response.status === 200) {
+        return { type: 'retireProduct', status: true };
+    }
+    return { type: 'retireProduct', status: false };
 };
 
 /*
@@ -1373,6 +1385,7 @@ export {
     storageEditAction,
     addProductAction,
     returnProductsAction,
+    retireProductsAction,
     editProductAction,
     storageDeleteAction,
     productsTransferAction,

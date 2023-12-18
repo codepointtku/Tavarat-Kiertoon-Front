@@ -3,7 +3,7 @@ import { type productItemsReturnLoader } from '../../Router/loaders';
 import { useForm, type FieldValues } from 'react-hook-form';
 import { Form, useSubmit } from 'react-router-dom';
 import { Button, TextField, Typography } from '@mui/material';
-import { returnProductsAction } from '../../Router/actions';
+import { type returnProductsAction } from '../../Router/actions';
 import AlertBox from '../AlertBox';
 
 function ProductsReturnForm() {

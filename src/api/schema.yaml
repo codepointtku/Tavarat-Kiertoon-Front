@@ -2569,6 +2569,63 @@ paths:
       responses:
         '201':
           description: No response body
+  /products/{id}/retire/:
+    get:
+      operationId: products_retire_list
+      description: View for retiring product items from circulation
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - products
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - jwtAuth: []
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReturnAddProductItems'
+          description: ''
+    post:
+      operationId: products_retire_create
+      description: View for retiring product items from circulation
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReturnAddProductItems'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReturnAddProductItems'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReturnAddProductItems'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - jwtAuth: []
+      - CustomJWTAuthentication: []
+      responses:
+        '201':
+          description: No response body
   /products/{id}/return/:
     get:
       operationId: products_return_list
