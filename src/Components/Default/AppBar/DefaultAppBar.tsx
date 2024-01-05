@@ -22,6 +22,9 @@ import { styled } from '@mui/material/styles';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
 import SecurityIcon from '@mui/icons-material/Security';
 import PedalBikeIcon from '@mui/icons-material/PedalBike';
+import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
+import BuildIcon from '@mui/icons-material/Build';
+
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
@@ -210,6 +213,19 @@ function DefaultAppBar() {
                         <HasRole role="bicycle_group">
                             <Tooltip title="Pyörien vuokraus">
                                 <IconButton component={Link} to="/pyorat" onClick={drawerOpen('')} sx={iconHover}>
+                                    <DirectionsBikeIcon sx={{ fontSize: 36, color: '#fff' }} />
+                                </IconButton>
+                            </Tooltip>
+                        </HasRole>
+
+                        <HasRole role="bicycle_admin_group">
+                            <Tooltip title="Pyörävarasto">
+                                <IconButton
+                                    component={Link}
+                                    to="/pyorat/pyoravarasto"
+                                    onClick={drawerOpen('')}
+                                    sx={iconHover}
+                                >
                                     <PedalBikeIcon sx={{ fontSize: 36, color: '#fff' }} />
                                 </IconButton>
                             </Tooltip>

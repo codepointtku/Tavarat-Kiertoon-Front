@@ -145,7 +145,7 @@ function AddNewItem() {
                 <AlertBox
                     status="success"
                     text="Tuotteen luonti onnistui"
-                    redirectUrl="/varasto/tuotteet/"
+                    redirectUrl={location.pathname.includes('admin') ? '/admin/tuotteet/' : '/varasto/tuotteet/'}
                     timer={1000}
                 />
             )}

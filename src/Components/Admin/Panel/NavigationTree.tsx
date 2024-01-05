@@ -57,6 +57,7 @@ const tilaukset = [
 
 const tuotteet = [
     { icon: <ManageSearchIcon />, label: 'Tarkastele', to: '/admin/tuotteet' },
+    { icon: <LibraryAddIcon />, label: 'Luo uusi', to: '/admin/tuotteet/luo' },
     {
         icon: <AccountTreeIcon />,
         label: 'Kategoriat',

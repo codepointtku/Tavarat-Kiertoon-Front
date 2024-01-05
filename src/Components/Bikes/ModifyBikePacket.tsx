@@ -115,7 +115,7 @@ export default function ModifyBikePacket({ createNewPacket }: CreateNewPacketInt
         register,
         watch,
         setValue,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = useForm<FormValues>({
         defaultValues: {
             packetDescription: createNewPacket ? '' : (packet.description as string),
@@ -204,7 +204,7 @@ export default function ModifyBikePacket({ createNewPacket }: CreateNewPacketInt
                              * Package name and description
                              */}
                             <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>Nimi:</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Nimi:</TableCell>
                                 <TableCell>
                                     <TextField
                                         // multiline
@@ -258,7 +258,7 @@ export default function ModifyBikePacket({ createNewPacket }: CreateNewPacketInt
                              */}
                             {fields.map((field, index) => (
                                 <TableRow key={field.id}>
-                                    <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>
                                         <input
                                             type="hidden"
                                             {...register(`bikes.${index}.bike`, { required: 'Valitse pyörä' })}
@@ -316,9 +316,7 @@ export default function ModifyBikePacket({ createNewPacket }: CreateNewPacketInt
                              * Description
                              */}
                             <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat', border: '0' }}>
-                                    Kuvaus:
-                                </TableCell>
+                                <TableCell sx={{ fontWeight: 'bold', border: '0' }}>Kuvaus:</TableCell>
                                 <TableCell colSpan={3} sx={{ border: '0' }}>
                                     <TextField
                                         rows={2}
@@ -353,7 +351,7 @@ export default function ModifyBikePacket({ createNewPacket }: CreateNewPacketInt
                                 Poista tämä paketti
                             </Button>
                         )}
-                        <Button type="submit" sx={{ padding: '1rem' }}>
+                        <Button type="submit" sx={{ padding: '1rem' }} disabled={ isSubmitting }>
                             Tallenna muutokset ja palaa listaan
                         </Button>
                     </Box>
