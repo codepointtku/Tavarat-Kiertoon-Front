@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouteLoaderData, useSearchParams, useFetcher, Link } from 'react-router-dom';
 
-import { Box, CircularProgress, IconButton, Typography } from '@mui/material';
+import { Box, CircularProgress, IconButton } from '@mui/material';
 
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 
@@ -44,7 +44,6 @@ function AddingToCart() {
                 padding: '0rem 0.28rem',
             }}
         >
-            <Typography variant="body2">Lisätään koriin...</Typography>
             <CircularProgress size={28} disableShrink />
         </Box>
     );
@@ -72,8 +71,6 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
     );
 
     const onSubmit = () => {
-        console.log('submitissa');
-
         fetcher.submit(
             { id },
             {
@@ -88,19 +85,16 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
     };
 
     useEffect(() => {
-        console.log('"AddToCartButton":n useEffectissä');
+        // console.log('"AddToCartButton":n useEffectissä');
         ref.current = 0;
     }, [product?.available]);
-
-    // console.log('yksittäisen "AddToCartButton":n pre-return');
 
     return (
         <>
             {username ? (
                 <>
                     {cart?.product_items?.some((product_item) => product_item?.product.id === groupId) ? (
-                        // <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
-                        'lisätty!'
+                        <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
                     ) : (
                         <>
                             {ref.current === 1 ? (
