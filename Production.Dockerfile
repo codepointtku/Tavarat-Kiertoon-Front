@@ -20,8 +20,8 @@ RUN npm run build
 FROM nginx:1.25.3-alpine3.18
 
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
-#COPY /etc/ssl /etc/ssl
-COPY --from=build /usr/src/app/ssl /etc/ssl
+COPY /etc/ssl /etc/ssl
+#COPY --from=build /usr/src/app/ssl /etc/ssl
 
 # Remove the default NGINX configuration (if any) and copy custom NGINX config
 RUN rm /etc/nginx/conf.d/default.conf
@@ -30,8 +30,6 @@ COPY nginx/default.conf.tpl /etc/nginx/default.conf.tpl
 
 # Expose port 80 for incoming traffic
 EXPOSE 80
-
-#RUN envsubst < /etc/nginx/default.conf.tpl > /etc/nginx/conf.d/default.conf
 
 # Start NGINX when the container runs
 #CMD ["nginx", "-g", "daemon off;"]
