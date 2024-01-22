@@ -13,6 +13,8 @@ COPY package.json package-lock.json* ./
 RUN npm ci && npm cache clean --force
 
 COPY . .
+# Install dependencies and build the React app
+RUN npm install
 RUN npm run build
 EXPOSE 3000
 
