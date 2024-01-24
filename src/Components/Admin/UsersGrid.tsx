@@ -30,13 +30,23 @@ function UsersGrid() {
     React.useEffect(() => {
         setRowCountState((prevRowCountState) => (pageCount !== undefined ? pageCount : prevRowCountState));
     }, [pageCount, setRowCountState]);
-
+    const groupNames: { [key: string]: string } = {
+        user_group: 'Käyttäjä',
+        admin_group: 'Ylläpitäjä',
+        storage_group: 'Varastotyöntekijä',
+        deactive: 'Epäaktiivinen',
+    };
     const columns: GridColDef[] = [
         { field: 'email', headerName: 'Sähköposti', flex: 1 },
         { field: 'username', headerName: 'Käyttäjänimi', flex: 1 },
         { field: 'first_name', headerName: 'Etunimi' },
         { field: 'last_name', headerName: 'Sukunimi' },
         { field: 'phone_number', headerName: 'Puhelinnumero', flex: 1 },
+        {
+            field: 'group',
+            headerName: 'Oikeudet',
+            valueGetter: (params: GridValueGetterParams) => groupNames[params.row.group],
+        },
         {
             field: 'is_active',
             headerName: 'Tila',
