@@ -36,7 +36,6 @@ function AddingToCart() {
             sx={{
                 width: '100%',
                 display: 'flex',
-                flexDirection: 'column',
                 gap: 2,
                 justifyContent: 'center',
                 alignItems: 'center',
