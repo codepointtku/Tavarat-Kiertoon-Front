@@ -1,11 +1,9 @@
-import { useContext, useRef, useState } from 'react';
-import { useEffect } from 'react';
-
-import { useForm } from 'react-hook-form';
+import { useContext, useRef, useEffect } from 'react';
 import { useRouteLoaderData, useSearchParams, useFetcher, Link } from 'react-router-dom';
 
-import { Box, CircularProgress, IconButton } from '@mui/material';
+import { useForm } from 'react-hook-form';
 
+import { Box, CircularProgress, IconButton } from '@mui/material';
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 
 import AddMoreToCart from '../AddMoreToCart';
@@ -13,9 +11,9 @@ import Tooltip from '../Tooltip';
 
 import AuthContext from '../../Context/AuthContext';
 
-import type { shoppingCartLoader } from '../../Router/loaders';
 import type { OverridableStringUnion } from '@material-ui/types';
 import type { ButtonPropsSizeOverrides } from '@mui/material';
+import type { shoppingCartLoader } from '../../Router/loaders';
 
 interface Props {
     size: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides> | undefined;
@@ -84,7 +82,6 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
     };
 
     useEffect(() => {
-        // console.log('"AddToCartButton":n useEffectissä');
         ref.current = 0;
     }, [product?.available]);
 
