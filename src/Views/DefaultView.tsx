@@ -13,8 +13,6 @@ function DefaultView() {
     const [categoryTreeSelected, setCategoryTreeSelected] = useState(false);
     const { state: responseStatus } = useLocation();
 
-    console.log('%c default view rendering...', 'color: red;');
-
     return (
         <>
             {responseStatus?.type === 'orderCreated' && responseStatus?.status === true && (
