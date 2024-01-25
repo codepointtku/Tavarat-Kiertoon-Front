@@ -66,7 +66,7 @@ function ProductCard({
         <Card
             sx={{
                 width: 276,
-                height: 500,
+                height: 480,
                 transition: 'transform 0.1s ease-in-out',
                 '&:hover': {
                     transform: 'scale(1.02)',
