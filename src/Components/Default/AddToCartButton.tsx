@@ -97,9 +97,11 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
                                 <AddingToCart />
                             ) : (
                                 <form onSubmit={handleSubmit(onSubmit)}>
-                                    <IconButton type="submit" color="primary" disabled={ref.current === 1}>
-                                        <AddShoppingCartOutlinedIcon fontSize={'large'} />
-                                    </IconButton>
+                                    <Tooltip title="Lisää koriin">
+                                        <IconButton type="submit" color="primary" disabled={ref.current === 1}>
+                                            <AddShoppingCartOutlinedIcon fontSize={'large'} />
+                                        </IconButton>
+                                    </Tooltip>
                                 </form>
                             )}
                         </>
