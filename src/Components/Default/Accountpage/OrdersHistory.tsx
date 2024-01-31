@@ -33,7 +33,7 @@ function OrdersHistory() {
     //     }
     // };
 
-    const filteredOrders = userOrders?.results
+    const filteredOrders = userOrders
         ?.filter((order: any) => order.status === 'Finished')
         .map((order: any) => <OrderCard key={order.id} orderInfo={order} />);
 
