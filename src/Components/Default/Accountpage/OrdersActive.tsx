@@ -15,10 +15,9 @@ function OrdersActive() {
     const { userOrders } = useRouteLoaderData('account') as Awaited<ReturnType<typeof userInfoLoader>>;
     // const orderCards = userOrders?.results?.map((order) => <OrderCard key={order.id} orderInfo={order} />);
 
-    const filteredOrders = userOrders?.results
+    const filteredOrders = userOrders
         ?.filter((order: any) => order.status === 'Waiting' || order.status === 'Processing')
         .map((order: any) => <OrderCard key={order.id} orderInfo={order} />);
-
     // useEffect(() => {
     //     switch (filter.status) {
     //         case 'waiting':
