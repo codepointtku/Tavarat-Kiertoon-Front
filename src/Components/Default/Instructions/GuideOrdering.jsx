@@ -51,8 +51,35 @@ function Ordering() {
             <Typography variant="h5" color="primary.main">
                 Tuotteiden tilaaminen
             </Typography>
-            <Typography gutterBottom>Lisää ohje steppejä.</Typography>
-            <Typography gutterBottom>Lisää tekstiä</Typography>
+            <Typography gutterBottom>
+                Tavarat kiertoon -sivustolla tuotteiden tilaaminen on rajattu ainoastaan hankintaoikeudet omaaville
+                henkilöille.
+            </Typography>
+            <Typography gutterBottom>
+                Tuotteita saa tilata ainoastaan yksikön käyttöön. Tavarat kiertoon järjestelmästä tilattuja tuotteita ei
+                saa ottaa työntekijän yksityiskäyttöön.
+            </Typography>
+            <Typography gutterBottom>
+                Sivuilla olevat tuotteet ovat käytettyjä ja ne luovutetaan uudelleen käyttöön siinä kunnossa kuin ne
+                ovat.
+            </Typography>
+            <Typography gutterBottom>
+                Mahdollisia terveyshaittoja aiheuttavilla vierasaineilla kontaminoituneita tuotteiden lisääminen
+                järjestelmään on kielletty
+            </Typography>
+            <Typography gutterBottom>
+                Kaikki järjestelmässä olevat tuotteet ovat Turun kaupungin omaisuutta. Niitä ei tule ottaa omaan
+                yksityiskäyttöön tai lahjoittaa eteenpäin omatoimisesti. Tuotteiden hävittämisessä ja muussa käytöstä
+                poistossa on noudatettava Turun kaupungin yhtenäistä ohjeistusta.
+            </Typography>
+            <Typography gutterBottom>
+                Järjestelmään lisättävistä tai sieltä tilattavista tuotteista ei peritä maksua.
+            </Typography>
+            <Typography gutterBottom>Haemme yksiköistä kalusteet ilmaiseksi järjestelmään laitettavaksi</Typography>
+            <Typography gutterBottom>
+                Mikäli yksiköstä poistetaan jätteeksi päätyvää irtaimistoa, jätteenkäsittelymaksu peritään voimassa
+                olevan alueellisen käsittelymaksun mukaisesti poistavalta yksiköltä.
+            </Typography>
         </>
     );
 }
