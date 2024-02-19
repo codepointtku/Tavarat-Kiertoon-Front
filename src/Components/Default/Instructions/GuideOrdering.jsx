@@ -14,6 +14,18 @@ import HeroText from '../../HeroText';
 function Ordering() {
     return (
         <>
+            <Typography>
+                Alta löydät ohjeet tuotteiden tilaamiseen sekä tietoa kuljetuksesta. Jos etsimääsi tietoa ei löydy tästä
+                tai{' '}
+                <MuiLink component={Link} to="/ohjeet">
+                    Ohje{' '}
+                </MuiLink>
+                -sivulta, voit olla meihin yhteydessä{' '}
+                <MuiLink component={Link} to="/otayhteytta">
+                    täältä{' '}
+                </MuiLink>
+            </Typography>
+
             <Typography variant="h5" color="primary.main" gutterBottom>
                 Tuotteiden hakeminen ja lisääminen koriin
             </Typography>
@@ -51,8 +63,38 @@ function Ordering() {
             <Typography variant="h5" color="primary.main">
                 Tuotteiden tilaaminen
             </Typography>
-            <Typography gutterBottom>Lisää ohje steppejä.</Typography>
-            <Typography gutterBottom>Lisää tekstiä</Typography>
+            <Typography gutterBottom>
+                Voit hakea tavaroita tuotteet -sivun yläreunassa olevan hakutoiminnon avulla mm. tuotenimik-keen,
+                materiaalin tai värin perusteella. Voit myös yhdistellä eri hakusanoja mielesi mukaan.
+            </Typography>
+            <Typography gutterBottom>
+                Voit tilata tuotteita vain, jos olet rekisteröitynyt järjestelmään. Selailu- ja hakutoiminnot ovat
+                avoi-mia kaikille ja ne toimivat ilman rekisteröitymistä
+            </Typography>
+            <Typography gutterBottom>
+                Lisää tuote ostoskoriin klikkaamalla tuotekortilla olevaa ”lisää koriin” -painiketta tai tuotteen
+                yksi-tyiskohtaisempaa näkymää.
+            </Typography>
+            <Typography gutterBottom>
+                Ostoskorissa näet kaikki valitsemasi tuotteet, voit vielä tarkistaa ne ja muokata ostoskorisi sisältöä.
+            </Typography>
+            <Typography gutterBottom>
+                Pääset jatkamaan tilauksen tekemistä klikkaamalla painiketta ”Kassalle.” Tavarat kiertoon
+                -järjestelmästä tilatuista tuotteista ei peritä maksua.
+            </Typography>
+            <Typography gutterBottom>Täytä tilauksen toimitustiedot huolellisesti.</Typography>
+            <Typography gutterBottom>
+                Valitse haluatko tuotteellesi kuljetuksen Työpisteeltä vai noudatko tilauksen itse.
+            </Typography>
+            <Typography gutterBottom>Vahvista tilaus</Typography>
+            <Typography gutterBottom>
+                Lähetettyäsi tilauksen saat automaattisen tilausvahvistuksen sähköpostitse, kun olemme vas-taanottaneet
+                tilauksesi. Tilausvahvistuksesta voit vielä tarkastaa tilauksesi tiedot
+            </Typography>
+            <Typography gutterBottom>
+                Mikäli haluat sopia kuljetuksesta tarkemmin voit ottaa yhteyttä Työpisteeseen sähköpostitse
+                tyopistekierratys@turku.fi.
+            </Typography>
         </>
     );
 }
@@ -63,20 +105,37 @@ function Shipping() {
             <Typography variant="h5" color="primary.main" gutterBottom>
                 Tilaaminen
             </Typography>
-            <Typography gutterBottom>Ohjeita</Typography>
-            <Typography gutterBottom variant="body2">
-                Ohjeita
+            <Typography gutterBottom>
+                Voit hakea tavaroita tuotteet -sivun yläreunassa olevan hakutoiminnon avulla mm. tuotenimik-keen,
+                materiaalin tai värin perusteella. Voit myös yhdistellä eri hakusanoja mielesi mukaan.
             </Typography>
-            <Typography gutterBottom>Ohjeita</Typography>
-            <Typography gutterBottom variant="body2">
-                Ohjeita
+            <Typography gutterBottom>
+                Voit tilata tuotteita vain, jos olet rekisteröitynyt järjestelmään. Selailu- ja hakutoiminnot ovat
+                avoi-mia kaikille ja ne toimivat ilman rekisteröitymistä
             </Typography>
-            <Typography variant="subtitle2" gutterBottom>
-                Ohjeita
+            <Typography gutterBottom>
+                Lisää tuote ostoskoriin klikkaamalla tuotekortilla olevaa ”lisää koriin” -painiketta tai tuotteen
+                yksi-tyiskohtaisempaa näkymää.
             </Typography>
-            <Typography gutterBottom>Mitäs sit?</Typography>
-            <Typography gutterBottom variant="body2">
-                Toimitusjohtajamme tuovat sinulle suklaata ja kukkia, kun varastomiehet toimittavat jakkarasi perille.
+            <Typography gutterBottom>
+                Ostoskorissa näet kaikki valitsemasi tuotteet, voit vielä tarkistaa ne ja muokata ostoskorisi sisältöä.
+            </Typography>
+            <Typography gutterBottom>
+                Pääset jatkamaan tilauksen tekemistä klikkaamalla painiketta ”Kassalle.” Tavarat kiertoon
+                -järjestelmästä tilatuista tuotteista ei peritä maksua.
+            </Typography>
+            <Typography gutterBottom>Täytä tilauksen toimitustiedot huolellisesti.</Typography>
+            <Typography gutterBottom>
+                Valitse haluatko tuotteellesi kuljetuksen Työpisteeltä vai noudatko tilauksen itse.
+            </Typography>
+            <Typography gutterBottom>Vahvista tilaus</Typography>
+            <Typography gutterBottom>
+                Lähetettyäsi tilauksen saat automaattisen tilausvahvistuksen sähköpostitse, kun olemme vas-taanottaneet
+                tilauksesi. Tilausvahvistuksesta voit vielä tarkastaa tilauksesi tiedot
+            </Typography>
+            <Typography gutterBottom>
+                Mikäli haluat sopia kuljetuksesta tarkemmin voit ottaa yhteyttä Työpisteeseen sähköpostitse
+                tyopistekierratys@turku.fi.
             </Typography>
         </>
     );

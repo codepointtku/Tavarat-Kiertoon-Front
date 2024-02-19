@@ -70,13 +70,13 @@ function FAQAccordions() {
                         id="panel2a-header"
                     >
                         <Typography gutterBottom align="center" color="primary.main">
-                            Koska tilatut tuotteet toimitetaan?
+                            Mikä on tuotteiden toimitusaika?
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography>
-                            Tuotteiden toimitusaika riippuu toimitusjonon pituudesta. Tuotteet pyritään toimittamaan
-                            kahden viikon kuluessa, mutta ruuhkaisina aikoina toimituksessa voi mennä pidempään.
+                            Tuotteiden toimitusaika riippuu tilausten määrästä. Tuotteet pyritään toimittamaan kahden
+                            viikon kuluessa tilauksesta, mutta ruuhkaisina aikoina toimitus voi kestää pidempään.
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
@@ -88,13 +88,13 @@ function FAQAccordions() {
                         id="panel1a-header"
                     >
                         <Typography gutterBottom align="center" color="primary.main">
-                            Kuka saa tilata tuotteita järjestelmästä?
+                            Kuka saa tilata tuotteita?
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography>
-                            Tilataksesi tuotteita sinun tulee rekisteröityä järjestelmään. Rekisteröityminen on sallittu
-                            vain hankintaoikeudet omaaville henkilöille.
+                            Jotta voit tilata tuotteita sinun tulee rekisteröityä järjestelmään. Rekisteröityminen on
+                            sallittua vain henkilöille joilla on tuotteiden hankintaoikeudet.
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
@@ -111,7 +111,7 @@ function FAQAccordions() {
                     <AccordionDetails>
                         <Typography>
                             Kuljetuksen tilaa tuotteen tilaaja. Tilauksen yhteydessä valitaan kuljetusmuodoksi joko
-                            Työkeskuksen kuljetus, nouto varastosta tai sisäinen posti (Vain askartelumateriaalit).
+                            Työpisteen kuljetus tai nouto varastosta.
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
@@ -122,13 +122,13 @@ function FAQAccordions() {
                         id="panel1a-header"
                     >
                         <Typography gutterBottom align="center" color="primary.main">
-                            Maksaako tuotteiden tilaaminen järjestelmästä?
+                            Maksaako tuotteiden tilaaminen?
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography>
-                            Mistään tuotteista ei peritä maksua järjestelmässä. Kuljetuksesta ei peritä maksua.
-                            Kalustekierron kuljetuksia hoitaa Turun Työkeskus.
+                            Mistään tuotteesta tai kuljetuksesta ei peritä maksua. Kalustekierron kuljetukset hoitaa
+                            Turun Työpisteen tuotanto.
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
@@ -144,11 +144,7 @@ function FAQAccordions() {
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography>
-                            Tuotteiden sijaintitiedot löytyvät tuotetiedoista. Lisätietoa varastoista et löydä{' '}
-                            <Link to=" " underline="hover">
-                                varastot
-                            </Link>{' '}
-                            -sivulta, koska sellaista ei ole olemassa enää.
+                            Tuotteiden sijaintitiedot löytyvät tuotetiedoista. Varastot -sivu on poistunut käytöstä.
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
@@ -170,7 +166,7 @@ function FAQAccordions() {
                             <MuiLink component={Link} to="/ohjeet/tilaus/kuljetus" underline="hover">
                                 Tilaus
                             </MuiLink>{' '}
-                            -välilehdeltä löytyy lisää tietoa myös kuljetuksesta.
+                            -välilehdeltä löytyy lisää tietoa kuljetuksista.
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
@@ -186,7 +182,7 @@ function FAQAccordions() {
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography>
-                            Tuotteiden kuljetuksesta vastaa Turun työkeskus. Lisätietoa kuljetuksesta löydät{' '}
+                            Tuotteiden kuljetuksesta vastaa Turun Työpiste. Lisätietoa kuljetuksesta löydät{' '}
                             <MuiLink component={Link} to="/ohjeet/tilaus/kuljetus">
                                 Tilaus
                             </MuiLink>
@@ -201,14 +197,14 @@ function FAQAccordions() {
                         id="panel1a-header"
                     >
                         <Typography gutterBottom align="center" color="primary.main">
-                            Miten tilaan tuotteita järjestelmästä?
+                            Miten tilaan tuotteita?
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography>
                             Etsi tarvitsemasi tuote ja lisää se ostoskoriin. Kun olet lisännyt kaikki haluamasi tuotteet
                             mene omaan ostoskoriisi sivuston yläpalkista löytyvästä painikkeesta ja siirry kassalle.
-                            Täytä kaikki pyydetyt kentät ja vahvista tilaus. Tilaamasi tuotteet toimitetaan antamaasi
+                            Täytä kaikki tarvittavat kentät ja vahvista tilaus. Tilaamasi tuotteet toimitetaan antamaasi
                             toimitusosoitteeseen.
                         </Typography>
                     </AccordionDetails>
@@ -220,7 +216,7 @@ function FAQAccordions() {
                         id="panel1a-header"
                     >
                         <Typography gutterBottom align="center" color="primary.main">
-                            Miten voin etsiä tarvitsemaani tuotetta?
+                            Miten löydän tarvitsemani tuotteen?
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
@@ -229,7 +225,7 @@ function FAQAccordions() {
                             <MuiLink component={Link} to="/">
                                 Etusivulta,{' '}
                             </MuiLink>
-                            vasemmasta sivupalkista löytyvien kategorioiden avulla tai suoralla sanahaulla.
+                            vasemmasta sivupalkista löytyvästä valikosta tai suoralla sanahaulla.
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
@@ -240,14 +236,14 @@ function FAQAccordions() {
                         id="panel1a-header"
                     >
                         <Typography gutterBottom align="center" color="primary.main">
-                            Saako tuotteita mennä katsomaan paikan päälle?
+                            Saako tuotteita tulla katsomaan paikan päälle?
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography>
                             Ensisijaisesti tuotteet tilataan sivustolta löytyvien tietojen perusteella. Sivustolle
-                            pyritään tuomaan kaikki tarpeelliset tiedot tuotetta koskien. Mikäli tuotetiedot ovat
-                            puutteelliset, niistä voi antaa palautetta tai esittää lisätiedusteluja{' '}
+                            pyritään lisäämään kaikki tarpeelliset tiedot tuotteesta. Mikäli tiedot ovat puutteelliset,
+                            siitä voi antaa palautetta tai pyytää lisätietoja{' '}
                             <MuiLink component={Link} to="/otayhteytta">
                                 yhteydenotto-lomakkeen
                             </MuiLink>{' '}
@@ -262,14 +258,13 @@ function FAQAccordions() {
                         id="panel1a-header"
                     >
                         <Typography gutterBottom align="center" color="primary.main">
-                            Ovatko järjestelmän tuotteet puhtaita ja ehjiä?
+                            Ovatko tuotteet puhtaita ja ehjiä?
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography>
-                            Järjestelmään lisätyt tuotteet ovat aina käyttökelpoisia ja puhtaita. Likaisia tai
-                            rikkinäisiä tuotteita ei lisätä järjestelmään. Tuotteen tarkempi kuntoluokitus mainitaan
-                            tarvittaessa tuotetiedoissa.
+                            Kaikki tuotteet ovat toimivia ja puhtaita. Likaisia tai rikkinäisiä tuotteita ei lisätä
+                            järjestelmään. Tarvittaessa tuotteen tarkka kuntoluokitus mainitaan tuotetiedoissa.
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
