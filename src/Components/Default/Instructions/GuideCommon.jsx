@@ -58,8 +58,8 @@ function FAQAccordions() {
                             <MuiLink component={Link} to="/otayhteytta">
                                 yhteydenotto-lomakkeen
                             </MuiLink>{' '}
-                            kautta. Kuljetusta koskevissa kysymyksissä voit olla yhteydessä suoraan työkeskukseen{' '}
-                            <MuiLink href="mailto: tyokeskus.kierratys@turku.fi">tyokeskus.kierratys@turku.fi</MuiLink>
+                            kautta. Kuljetusta koskevissa kysymyksissä voit olla yhteydessä suoraan Työpisteeseen{' '}
+                            <MuiLink href="mailto: tyopistekierratys@turku.fi">tyopistekierratys@turku.fi</MuiLink>
                         </Typography>
                     </AccordionDetails>
                 </Accordion>

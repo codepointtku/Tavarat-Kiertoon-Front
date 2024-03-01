@@ -271,8 +271,8 @@ function UserForm() {
                             placeholder="Kirjoita salasana"
                             {...register('password', {
                                 required: { value: true, message: 'Salasana on pakollinen' },
-                                minLength: { value: 2, message: 'Salasanan on oltava vähintään 2 merkkiä' },
-                                maxLength: { value: 50, message: 'Maksimipituus' },
+                                minLength: { value: 16, message: 'Salasanan on oltava vähintään 16 merkkiä' },
+                                maxLength: { value: 150, message: 'Maksimipituus' },
                             })}
                             error={!!formErrors.password}
                             helperText={formErrors.password?.message?.toString() || ' '}
@@ -302,8 +302,8 @@ function UserForm() {
                             placeholder="Kirjoita salasana uudelleen"
                             {...register('passwordCheck', {
                                 required: { value: true, message: 'Salasana on pakollinen' },
-                                minLength: { value: 2, message: 'Salasanan on oltava vähintään 2 merkkiä' },
-                                maxLength: { value: 50, message: 'Maksimipituus' },
+                                minLength: { value: 16, message: 'Salasanan on oltava vähintään 16 merkkiä' },
+                                maxLength: { value: 150, message: 'Maksimipituus' },
                                 validate: (val: string) => {
                                     if (watch('password') !== val) {
                                         return 'Salasanat eivät täsmää';
@@ -340,6 +340,10 @@ function UserSignupForm() {
         <Container maxWidth="md">
             <HeroHeader Icon={<VpnKeyIcon />} />
             <HeroText title="Luo uusi käyttäjätili" />
+            <Typography gutterBottom>
+                Tavarat kiertoon -sivustolla tuotteiden tilaaminen on rajattu ainoastaan hankintaoikeudet omaaville
+                henkilöille.
+            </Typography>
             <UserForm />
         </Container>
     );
