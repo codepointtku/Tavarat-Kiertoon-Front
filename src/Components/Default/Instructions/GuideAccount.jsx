@@ -60,7 +60,7 @@ function UserAccountHelp() {
     return (
         <>
             <Typography variant="subtitle2" align="center" mb={2}>
-                Käyttäjätili on henkilökohtainen hankintatili Tavarat Kiertoon-järjestelmässä.
+                Käyttäjätili on henkilökohtainen hankintatili Tavarat Kiertoon järjestelmässä.
             </Typography>
             {/* <Typography variant="subtitle2" align="center" mb={2}>
                 Käyttäjätilillä tarkoitetaan henkilökohtaista hankintatiliä Tavarat Kiertoon-järjestelmässä.
@@ -69,12 +69,12 @@ function UserAccountHelp() {
                 Käyttäjätilin luominen
             </Typography>
             <MuiLink component={Link} to="/rekisteroidy/kayttaja">
-                Avaa rekisteröinti-lomake
+                Avaa rekisteröintilomake
             </MuiLink>
             <Typography gutterBottom>Syötä ensimmäiseen kenttään sähköpostiosoitteesi.</Typography>
             <Typography gutterBottom>Jatkossa kirjaudut tällä sähköpostiosoitteellasi järjestelmään.</Typography>
             <Typography gutterBottom>
-                Täytä henkilötietosi ja keksi itsellesi sala-sana. Paina lopuksi ”rekisteröidy” -painiketta
+                Täytä henkilötietosi ja keksi itsellesi salasana. Paina lopuksi ”rekisteröidy” -painiketta
             </Typography>
 
             <Typography variant="h5" color="primary.main" gutterBottom>
@@ -82,8 +82,8 @@ function UserAccountHelp() {
             </Typography>
             <Typography>
                 Hallintapaneeli oikeassa ylälaidassa sisältää tiliin liittyvät toiminnot. Käyttäjä -ikonia klikkaamalla
-                avau-tuvasta ikkunasta pääset kirjautumaan sisälle ja muokkaamaan tietojasi tai luomaan uuden
-                käyttäjäti-lin.
+                avautuvasta ikkunasta pääset kirjautumaan sisälle ja muokkaamaan tietojasi tai luomaan uuden
+                käyttäjätilin.
             </Typography>
         </>
     );
@@ -100,7 +100,7 @@ function LocationAccountHelp() {
             </Typography>
             <Typography gutterBottom>Tilin luonti on kaksi-vaiheinen.</Typography>
             <MuiLink component={Link} to="/rekisteroidy/toimipaikka">
-                Avaa rekisteröinti-lomake
+                Avaa rekisteröintilomake
             </MuiLink>
             <Typography gutterBottom>
                 Syötä ensimmäiseen kenttään käyttäjätunnus esim. ”KanakadunPäiväkoti”, käyttäjätunnus ei saa sisältää
@@ -113,7 +113,7 @@ function LocationAccountHelp() {
             </Typography>
             <Typography gutterBottom>
                 Vastuuhenkilö kirjautuu tilille jatkossa sähköpostisoitteellaan ja toimipaikkatilin muut käyttäjät
-                käyttäjä-tunnuksellaan
+                käyttäjätunnuksellaan
             </Typography>
         </>
     );
@@ -151,12 +151,12 @@ function SearchWatchHelp() {
                 lähettää ilmoituksen sähköpostiisi kun uusi tuoli lisätään valikoimaan.
             </Typography>
             <Typography>
-                Jos hakuvahdiksi asetetaan punainen tuoli, saat ilmoituksen sähköpostiisi vain silloin kun valikoi-maan
+                Jos hakuvahdiksi asetetaan punainen tuoli, saat ilmoituksen sähköpostiisi vain silloin kun valikoimaan
                 lisätty tuoli on punainen.
             </Typography>
             <Typography>
-                Voit asettaa useamman hakuvahdin. Jokainen hakusana rajaa hakua entistä tarkemmaksi koska jo-kaisen
-                sanan täytyy löytyä järjestelmässä olevasta tuotteesta.
+                Voit asettaa useamman hakuvahdin. Jokainen hakusana rajaa hakua entistä tarkemmaksi koska jokaisen sanan
+                täytyy löytyä järjestelmässä olevasta tuotteesta.
             </Typography>
         </>
     );
