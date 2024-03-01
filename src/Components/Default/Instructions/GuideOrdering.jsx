@@ -36,7 +36,7 @@ function Ordering() {
                 </MuiLink>
                 vasemmasta sivupalkista löytyvien kategorioiden avulla, tai hakukenttään kirjoittamalla sanahaulla.
             </Typography>
-            <Typography variant="body2" gutterBottom>
+            <Typography gutterBottom>
                 Tuotteen yksityiskohtaisemmat tiedot ja lisäkuvat löytyvät tuotekorttia napauttamalla.
             </Typography>
             <Typography gutterBottom>
@@ -57,23 +57,23 @@ function Ordering() {
                 Kun olet löytänyt tarvitsemasi tuotteet, ja lisännyt ne ostoskoriisi, mene omaan ostoskoriisi sivuston
                 yläpalkista löytyvästä Ostoskori <ShoppingCartOutlinedIcon fontSize="24" /> -painikkeesta.
             </Typography>
-            <Typography variant="body2" gutterBottom>
+            <Typography gutterBottom>
                 Voit tarkastella ja muokata korisi sisältöä. Kun olet valmis, napauta "Siirry kassalle".
             </Typography>
             <Typography variant="h5" color="primary.main">
                 Tuotteiden tilaaminen
             </Typography>
             <Typography gutterBottom>
-                Voit hakea tavaroita tuotteet -sivun yläreunassa olevan hakutoiminnon avulla mm. tuotenimik-keen,
+                Voit hakea tavaroita tuotteet -sivun yläreunassa olevan hakutoiminnon avulla mm. tuotenimikkeen,
                 materiaalin tai värin perusteella. Voit myös yhdistellä eri hakusanoja mielesi mukaan.
             </Typography>
             <Typography gutterBottom>
                 Voit tilata tuotteita vain, jos olet rekisteröitynyt järjestelmään. Selailu- ja hakutoiminnot ovat
-                avoi-mia kaikille ja ne toimivat ilman rekisteröitymistä
+                avoimia kaikille ja ne toimivat ilman rekisteröitymistä
             </Typography>
             <Typography gutterBottom>
                 Lisää tuote ostoskoriin klikkaamalla tuotekortilla olevaa ”lisää koriin” -painiketta tai tuotteen
-                yksi-tyiskohtaisempaa näkymää.
+                yksityiskohtaisempaa näkymää.
             </Typography>
             <Typography gutterBottom>
                 Ostoskorissa näet kaikki valitsemasi tuotteet, voit vielä tarkistaa ne ja muokata ostoskorisi sisältöä.
@@ -88,12 +88,12 @@ function Ordering() {
             </Typography>
             <Typography gutterBottom>Vahvista tilaus</Typography>
             <Typography gutterBottom>
-                Lähetettyäsi tilauksen saat automaattisen tilausvahvistuksen sähköpostitse, kun olemme vas-taanottaneet
+                Lähetettyäsi tilauksen saat automaattisen tilausvahvistuksen sähköpostitse, kun olemme vastaanottaneet
                 tilauksesi. Tilausvahvistuksesta voit vielä tarkastaa tilauksesi tiedot
             </Typography>
             <Typography gutterBottom>
-                Mikäli haluat sopia kuljetuksesta tarkemmin voit ottaa yhteyttä Työpisteeseen sähköpostitse
-                tyopistekierratys@turku.fi.
+                Mikäli haluat sopia kuljetuksesta tarkemmin voit ottaa yhteyttä Työpisteeseen sähköpostitse{' '}
+                <MuiLink href="mailto: tyopistekierratys@turku.fi">tyopistekierratys@turku.fi</MuiLink>
             </Typography>
         </>
     );
@@ -106,16 +106,16 @@ function Shipping() {
                 Tilaaminen
             </Typography>
             <Typography gutterBottom>
-                Voit hakea tavaroita tuotteet -sivun yläreunassa olevan hakutoiminnon avulla mm. tuotenimik-keen,
+                Voit hakea tavaroita tuotteet -sivun yläreunassa olevan hakutoiminnon avulla mm. tuotenimikkeen,
                 materiaalin tai värin perusteella. Voit myös yhdistellä eri hakusanoja mielesi mukaan.
             </Typography>
             <Typography gutterBottom>
                 Voit tilata tuotteita vain, jos olet rekisteröitynyt järjestelmään. Selailu- ja hakutoiminnot ovat
-                avoi-mia kaikille ja ne toimivat ilman rekisteröitymistä
+                avoimia kaikille ja ne toimivat ilman rekisteröitymistä
             </Typography>
             <Typography gutterBottom>
                 Lisää tuote ostoskoriin klikkaamalla tuotekortilla olevaa ”lisää koriin” -painiketta tai tuotteen
-                yksi-tyiskohtaisempaa näkymää.
+                yksityiskohtaisempaa näkymää.
             </Typography>
             <Typography gutterBottom>
                 Ostoskorissa näet kaikki valitsemasi tuotteet, voit vielä tarkistaa ne ja muokata ostoskorisi sisältöä.
@@ -130,12 +130,12 @@ function Shipping() {
             </Typography>
             <Typography gutterBottom>Vahvista tilaus</Typography>
             <Typography gutterBottom>
-                Lähetettyäsi tilauksen saat automaattisen tilausvahvistuksen sähköpostitse, kun olemme vas-taanottaneet
+                Lähetettyäsi tilauksen saat automaattisen tilausvahvistuksen sähköpostitse, kun olemme vastaanottaneet
                 tilauksesi. Tilausvahvistuksesta voit vielä tarkastaa tilauksesi tiedot
             </Typography>
             <Typography gutterBottom>
-                Mikäli haluat sopia kuljetuksesta tarkemmin voit ottaa yhteyttä Työpisteeseen sähköpostitse
-                tyopistekierratys@turku.fi.
+                Mikäli haluat sopia kuljetuksesta tarkemmin voit ottaa yhteyttä Työpisteeseen sähköpostitse{' '}
+                <MuiLink href="mailto: tyopistekierratys@turku.fi">tyopistekierratys@turku.fi</MuiLink>
             </Typography>
         </>
     );
