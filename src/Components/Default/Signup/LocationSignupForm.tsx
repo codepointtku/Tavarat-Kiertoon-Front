@@ -299,8 +299,8 @@ function LocationForm() {
                             placeholder="Kirjoita salasana"
                             {...register('password', {
                                 required: { value: true, message: 'Salasana on pakollinen' },
-                                minLength: { value: 2, message: 'Salasanan on oltava vähintään 2 merkkiä' },
-                                maxLength: { value: 50, message: 'Maksimipituus' },
+                                minLength: { value: 16, message: 'Salasanan on oltava vähintään 16 merkkiä' },
+                                maxLength: { value: 150, message: 'Maksimipituus' },
                             })}
                             error={!!formErrors.password}
                             helperText={formErrors.password?.message?.toString() || ' '}
@@ -330,8 +330,8 @@ function LocationForm() {
                             placeholder="Kirjoita salasana uudelleen"
                             {...register('passwordCheck', {
                                 required: { value: true, message: 'Salasana on pakollinen' },
-                                minLength: { value: 2, message: 'Salasanan on oltava vähintään 2 merkkiä' },
-                                maxLength: { value: 50, message: 'Maksimipituus' },
+                                minLength: { value: 16, message: 'Salasanan on oltava vähintään 16 merkkiä' },
+                                maxLength: { value: 150, message: 'Maksimipituus' },
                                 validate: (val: string) => {
                                     if (watch('password') !== val) {
                                         return 'Salasanat eivät täsmää';

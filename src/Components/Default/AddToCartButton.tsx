@@ -1,14 +1,19 @@
-import { useState, useContext, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { useRouteLoaderData, useSearchParams, useFetcher } from 'react-router-dom';
-import { type OverridableStringUnion } from '@material-ui/types';
-import { Box, Button, IconButton, type ButtonPropsSizeOverrides } from '@mui/material';
+import { useContext, useRef, useEffect } from 'react';
+import { useRouteLoaderData, useSearchParams, useFetcher, Link } from 'react-router-dom';
 
+import { useForm } from 'react-hook-form';
+
+import { Box, CircularProgress, IconButton } from '@mui/material';
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
+
 import AddMoreToCart from '../AddMoreToCart';
-import type { shoppingCartLoader } from '../../Router/loaders';
+import Tooltip from '../Tooltip';
+
 import AuthContext from '../../Context/AuthContext';
-import AlertBox from '../AlertBox';
+
+import type { OverridableStringUnion } from '@material-ui/types';
+import type { ButtonPropsSizeOverrides } from '@mui/material';
+import type { shoppingCartLoader } from '../../Router/loaders';
 
 interface Props {
     size: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides> | undefined;
@@ -17,63 +22,98 @@ interface Props {
     count?: number;
 }
 
-function AddToCartButton({ size, id, groupId, count }: Props) {
+function AddingToCart() {
+    // "disableShrink" -prop helps out on under heavy CPU loads.
+    // this dev-machine is under heavy load because it's running backend with Docker.
+    // the animations behaviour should be tested when one is loading only FE @ browser,
+    // and the backend is on the server.
+    // Incase the processing speed is fine in real life situation, slash out the prop for smoother animation.
+
+    return (
+        <Box
+            sx={{
+                width: '100%',
+                display: 'flex',
+                gap: 2,
+                justifyContent: 'center',
+                alignItems: 'center',
+                // hack padding to reduce "product information"-IconButton jumping
+                padding: '0rem 0.28rem',
+            }}
+        >
+            <CircularProgress size={28} disableShrink />
+        </Box>
+    );
+}
+
+function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
+    const { cart, products: productsInShoppingCart } = useRouteLoaderData('frontPage') as Awaited<
+        ReturnType<typeof shoppingCartLoader>
+    >;
     const { auth } = useContext(AuthContext);
     const { username } = auth;
-    const { cart, products } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
-    const [addedToCart, setAddedToCart] = useState(false);
-    const [isNotLoggedIn, setIsNotLoggedIn] = useState(false);
+
+    const ref = useRef(0);
+
     const [searchParams] = useSearchParams();
-    const { handleSubmit } = useForm();
     const fetcher = useFetcher();
 
-    const product = products?.find((product_item: { product: { id: number } }) => product_item.product.id == id);
+    const {
+        handleSubmit,
+        // formState: { isSubmitting, isSubmitSuccessful },
+    } = useForm();
 
-    const onSubmit = async () => {
-        if (username) {
-            fetcher.submit(
-                { id },
-                {
-                    method: 'put',
-                    action: '/?' + searchParams.toString(),
-                }
-            );
-            setAddedToCart(true);
-        } else {
-            setIsNotLoggedIn((isNotLoggedIn) => !isNotLoggedIn);
-        }
+    const product = productsInShoppingCart?.find(
+        (product_item: { product: { id: number } }) => product_item.product.id == id
+    );
+
+    const onSubmit = () => {
+        fetcher.submit(
+            { id },
+            {
+                method: 'put',
+                action: '/?' + searchParams.toString(),
+            }
+        );
+
+        ref.current = 1;
+
+        return;
     };
 
     useEffect(() => {
-        setAddedToCart(false);
+        ref.current = 0;
     }, [product?.available]);
 
     return (
         <>
-            {isNotLoggedIn && (
-                <AlertBox text="Kirjautuminen vaaditaan ostoskorin käyttöön" status="warning" timer={10000} />
-            )}
-
-            {/* <Box sx={{ display: 'flex', alignItems: 'center' }}> */}
-            {cart?.product_items?.some((product_item) => product_item?.product.id === groupId) ? (
-                <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
+            {username ? (
+                <>
+                    {cart?.product_items?.some((product_item) => product_item?.product.id === groupId) ? (
+                        <AddMoreToCart id={id} maxCount={product?.product?.amount} size={size} count={product.count} />
+                    ) : (
+                        <>
+                            {ref.current === 1 ? (
+                                <AddingToCart />
+                            ) : (
+                                <form onSubmit={handleSubmit(onSubmit)}>
+                                    <Tooltip title="Lisää koriin">
+                                        <IconButton type="submit" color="primary" disabled={ref.current === 1}>
+                                            <AddShoppingCartOutlinedIcon fontSize={'large'} />
+                                        </IconButton>
+                                    </Tooltip>
+                                </form>
+                            )}
+                        </>
+                    )}
+                </>
             ) : (
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    {/* <Button
-                        size={size}
-                        aria-label="add to shopping cart"
-                        startIcon={<AddShoppingCartOutlinedIcon />}
-                        type="submit"
-                        disabled={addedToCart}
-                    >
-                        Lisää koriin
-                    </Button> */}
-                    <IconButton type="submit" color="primary">
+                <Tooltip title="Kirjaudu sisään käyttääksesi ostoskoria">
+                    <IconButton color="primary" component={Link} to={'/kirjaudu'}>
                         <AddShoppingCartOutlinedIcon fontSize={'large'} />
                     </IconButton>
-                </form>
+                </Tooltip>
             )}
-            {/* </Box> */}
         </>
     );
 }
