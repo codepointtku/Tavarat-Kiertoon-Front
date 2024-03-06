@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+    tavarat-kiertoon:
+        container_name: tavarat-kiertoon-front
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: ./Production.Dockerfile
+        ports:
+            - '80:80'
+            - '443:443'
+        networks:
+            - tavaratnet
+        env_file: .env.production.local
+        volumes:
+            - /etc/ssl:/etc/ssl
+
+        command: /bin/sh -c "envsubst < /etc/nginx/default.conf.tpl > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+
+networks:
+    tavaratnet:
+        driver: bridge
