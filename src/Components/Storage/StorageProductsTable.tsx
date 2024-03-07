@@ -38,7 +38,7 @@ import Pagination from '../Pagination';
 import StyledTableCell from '../StyledTableCell';
 import StyledTableRow from '../StyledTableRow';
 
-import type { rootLoader, storageProductsLoader } from '../../Router/loaders';
+import type { storageProductsLoader } from '../../Router/loaders';
 import { type ProductStorageResponse } from '../../api';
 
 interface Search {
@@ -55,7 +55,6 @@ function StorageProductsTable() {
     const [isOpen, setIsOpen] = useState<number>();
     const [searchParams, setSearchParams] = useSearchParams();
     const { products } = useLoaderData() as StorageProductsLoaderType;
-    const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const { register, handleSubmit } = useForm({
         defaultValues: { searchString: searchParams.get('viivakoodi') },
     });
