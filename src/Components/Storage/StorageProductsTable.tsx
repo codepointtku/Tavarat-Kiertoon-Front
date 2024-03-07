@@ -206,9 +206,7 @@ function StorageProductsTable() {
                                         <StyledTableCell align="left">
                                             {product.product_items[0]?.shelf_id}
                                         </StyledTableCell>
-                                        <StyledTableCell align="right">
-                                            {categories ? product.category && categories[product?.category]?.name : ''}
-                                        </StyledTableCell>
+                                        <StyledTableCell align="right">{product.category_name}</StyledTableCell>
                                         <StyledTableCell align="right">
                                             {/* TODO: show most recent modified date of product_items. backend change needed? */}
                                             {new Date(product?.product_items[0]?.modified_date).toLocaleDateString(
