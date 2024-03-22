@@ -90,7 +90,7 @@ function ProductList() {
                                 freeDescription={product.free_description}
                                 categoryName={product.category_name}
                                 storageName={product.storage_name}
-                                colorName={product.color_name}
+                                colors={product.colors}
                                 measurements={product.measurements}
                                 weight={product.weight}
                                 count={product.amount}
