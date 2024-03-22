@@ -30,7 +30,11 @@ interface Props {
     freeDescription: string;
     categoryName: string;
     storageName: string;
-    colorName: string;
+    colors: {
+        id: number;
+        name: string;
+        default: boolean;
+    }[];
     measurements: string;
     weight: number;
     count: number;
@@ -45,7 +49,7 @@ function ProductCard({
     freeDescription,
     categoryName,
     storageName,
-    colorName,
+    colors,
     measurements,
     weight,
     count,
@@ -61,7 +65,6 @@ function ProductCard({
             delayHandler && clearTimeout(delayHandler);
         }
     }
-
     return (
         <Card
             sx={{
@@ -120,7 +123,10 @@ function ProductCard({
                                         </Grid>
                                         <Grid item>
                                             <Typography variant="body2" fontWeight="fontWeightMediumBold">
-                                                Väri: {colorName}
+                                                Väri:{' '}
+                                                {colors.map((color) => {
+                                                    return `${color.name}, `;
+                                                })}
                                             </Typography>
                                         </Grid>
                                         <Grid item>
