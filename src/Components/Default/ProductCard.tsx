@@ -116,11 +116,11 @@ function ProductCard({
                                                 Kategoria: {categoryName}
                                             </Typography>
                                         </Grid>
-                                        <Grid item>
+                                        {/* <Grid item>
                                             <Typography variant="body2" fontWeight="fontWeightMediumBold">
                                                 Varastosijainti: {storageName}
                                             </Typography>
-                                        </Grid>
+                                        </Grid> */}
                                         <Grid item>
                                             <Typography variant="body2" fontWeight="fontWeightMediumBold">
                                                 Väri:{' '}
