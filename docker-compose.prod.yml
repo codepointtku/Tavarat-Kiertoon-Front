@@ -12,10 +12,10 @@ services:
         networks:
             - tavaratnet
         env_file: .env.production.local
-        volumes:
-            - /etc/ssl:/etc/ssl
+        #volumes:
+        #    - /etc/ssl:/etc/ssl
 
-        command: /bin/sh -c "envsubst < /etc/nginx/default.conf.tpl > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+        command: /bin/sh -c "export DOMAIN SSL_CERT SSL_KEY && envsubst '$$DOMAIN $$SSL_CERT $$SSL_KEY' < /etc/nginx/default.conf.tpl > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
 
 networks:
     tavaratnet:
