@@ -1,7 +1,7 @@
 server {
     listen 80;
     server_name ${DOMAIN};
-    return 301 https://${DOMAIN};
+    return 301 https://$host$request_uri;
 }
 
 server {
@@ -21,9 +21,10 @@ server {
 
     # Additional SSL settings if needed...
     location / {
-        root   /usr/share/nginx/html;
+        root /usr/share/nginx/html;
 
-        index  index.html;
+        index index.html;
+        try_files $uri /index.html;
     }
 }
 
