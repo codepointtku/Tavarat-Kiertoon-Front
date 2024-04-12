@@ -1,6 +1,6 @@
 import { Typography, Box, Link } from '@mui/material';
 
-import AgricultureIcon from '@mui/icons-material/Agriculture';
+import TableBarIcon from '@mui/icons-material/TableBar';
 
 import Container from '@mui/material/Container';
 import HeroHeader from '../HeroHeader';
@@ -37,7 +37,7 @@ function ContentText() {
 function BackgroundInfo() {
     return (
         <Container maxWidth="lg">
-            <HeroHeader Icon={<AgricultureIcon />} />
+            <HeroHeader Icon={<TableBarIcon />} />
             <HeroText
                 title="Tavarat Kiertoon tausta"
                 text="Ohessa lyhyt historiikki mistä, miksi ja miten ja mikä juttu."
