@@ -20,9 +20,9 @@ function SignupHelp() {
             <Typography>
                 Tavarat kiertoon -sivustolla pääset tarkastelemaan kaupungin käytettävissä olevaa kalustoa. Tuotteita
                 saa tilata ainoastaan oman yksikön käyttöön ja niiden tilaamiseen on oltava hankintaoikeudet.
-                Hankintaoikeu-den omaava henkilö pääsee rekisteröitymään järjestelmään. Tuotteet ovat käytettyjä ja ne
+                Hankintaoikeuden omaava henkilö pääsee rekisteröitymään järjestelmään. Tuotteet ovat käytettyjä ja ne
                 luovutetaan uudelleen käyttöön siinä kunnossa kuin ne ovat. Kaikki järjestelmän tuotteet ovat Turun
-                kaupungin omai-suutta eikä niitä tule ottaa yksityiseen käyttöön tai lahjoittaa omatoimisesti eteenpäin.
+                kaupungin omaisuutta eikä niitä tule ottaa yksityiseen käyttöön tai lahjoittaa omatoimisesti eteenpäin.
             </Typography>
             {/* <Typography variant="h5" color="primary.main" gutterBottom>
                 Tilin hallinta

@@ -132,22 +132,6 @@ function FAQAccordions() {
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
-                <Accordion expanded={expanded === 'panel6'} onChange={handleChange('panel6')}>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                    >
-                        <Typography gutterBottom color="primary.main">
-                            Missä tuotteet ovat?
-                        </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Typography>
-                            Tuotteiden sijaintitiedot löytyvät tuotetiedoista. Varastot -sivu on poistunut käytöstä.
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
             </Grid>
             <Grid item xs>
                 <Accordion expanded={expanded === 'panel7'} onChange={handleChange('panel7')}>
