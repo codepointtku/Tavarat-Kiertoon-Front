@@ -102,7 +102,7 @@ export default function BikesPage() {
             setTrailerValue(0);
         }
     }, [trailerAvailability]);
- 
+
     const bikes = [
         // The bike package id and bike id would have possibility for overlap since they're both just incrementing from 0
         ...loaderData.packages.map((bikePackage) => ({
@@ -171,8 +171,8 @@ export default function BikesPage() {
                 <FormControl required sx={{ maxWidth: 560 }}>
                     <FormLabel id="storage-label">Säilytystapa</FormLabel>
                     <Typography variant="caption">
-                        Kuomulliseen peräkärryyn mahtuu kerrallaan säilytykseen n. 7—10
-                        pyörää (yksi paketti). Peräkärryä ei voi valita jos niitä ei ole saatavilla haluttuna ajankohtana.
+                        Kuomullinen peräkärry. Peräkärryyn mahtuu kerrallaan säilytykseen n. 7—10 pyörää, riippuen
+                        pyörien koosta. Peräkärryä ei voi valita jos niitä ei ole saatavilla haluttuna ajankohtana.
                     </Typography>
                     <RadioGroup
                         row

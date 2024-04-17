@@ -224,12 +224,29 @@ export default function BikeConfirmation({
                                 </Typography>
                                 <Typography component="li">
                                     Lasten pyörät ovat käsijarrullisia. Ennen pyörän käyttöönottoa varmista ryhmän
-                                    kanssa seuraavat asiat: - Kokeillaan yhdessä jarruja (taluta pyörää ja jarruta).
-                                    Opetellaan käyttämään joko molempia käsijarruja yhtä aikaa tai pelkästään
-                                    takajarrua. Testatkaa, kumpi on takajarru. - Varmista, että kaikilla on kypärä
-                                    turvallisesti päässä: Kypärä peittää otsan, kypärä ei heilu päässä. - Hämärän aikaan
-                                    pyöräillessä muista käyttää sekä etu- että takavaloa, jotka ovat lakisääteiset
-                                    varusteet pyörässä.
+                                    kanssa seuraavat asiat:{' '}
+                                    <Typography component="ul">
+                                        - Kokeillaan yhdessä jarruja (taluta pyörää ja jarruta). Opetellaan käyttämään
+                                        joko molempia käsijarruja yhtä aikaa tai pelkästään takajarrua
+                                        (oikeanpuoleinen). Testatkaa yhdessä, kumpi on takajarru ja kokeilkaa taluttaen
+                                        näiden jarrujen eroavaisuuksia.
+                                    </Typography>
+                                    <Typography component="ul">
+                                        - “Jaloista vauhti, käsistä jarru”. Käsijarrulliset pyörät helpottavat ja
+                                        tekevät pyöräilyn opettelusta turvallisempaa.
+                                    </Typography>
+                                    <Typography component="ul">
+                                        - Varmista, että kaikilla on kypärä turvallisesti päässä: Kypärä peittää otsan,
+                                        kypärä ei heilu päässä.
+                                    </Typography>{' '}
+                                    <Typography component="ul">
+                                        - Hämärän aikaan pyöräillessä muista käyttää sekä etu- että takavaloa, jotka
+                                        ovat lakisääteiset varusteet pyörässä.
+                                    </Typography>
+                                    <Typography component="ul">
+                                        - Satula on yleensä sopivalla kohdalla, kun se ylettyy suoliluun harjanteeseen
+                                        pyörän vieressä seisoessa.
+                                    </Typography>
                                 </Typography>
                                 <Typography component="li">
                                     Jos haluat vinkkejä tai materiaalia pyöräilyyn liittyvien erilaisten taitojen
@@ -259,8 +276,8 @@ export default function BikeConfirmation({
                                     käyttöohjeet sekä opastamaan myös muita käyttäjiä tekemään näin.
                                 </Typography>
                                 <Typography component="li">
-                                    Välineitä käyttävällä täytyy olla tiedossaan toimintatavat mahdollisissa
-                                    rikkoutumistilanteissa tai muita ongelmia kohdatessa.
+                                    Kaikilla välineitä käyttävillä aikuisilla täytyy olla tiedossaan nämä vastuut ja
+                                    käyttöehdot.
                                 </Typography>
                             </AccordionDetails>
                         </Accordion>
