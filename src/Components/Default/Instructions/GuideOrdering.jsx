@@ -212,7 +212,7 @@ function GuideOrdering() {
             <HeroHeader Icon={<ShoppingCartCheckoutIcon />} />
             <HeroText title="Tilaaminen & Kuljetus" subtitle="Alla on ohjeet tilaamiseen, sekä tietoa kuljetuksesta." />
             <CustomHeroText />
-            <TitleTabs />
+            {/* <TitleTabs /> */}
         </Container>
     );
 }

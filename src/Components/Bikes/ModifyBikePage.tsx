@@ -14,7 +14,7 @@ import {
     Typography,
 } from '@mui/material';
 import type { BikeModelInterface, ColorInterface } from './Bikes';
-import { Form, Link, useSubmit } from 'react-router-dom';
+import { Form, Link, useSubmit, useNavigation } from 'react-router-dom';
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
 import DeleteBikeModal from './DeleteBikeModal';
@@ -56,10 +56,15 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
         bikeModelsData: BikeModelInterface[];
         colors: ColorInterface[];
     };
-
-    console.log(bikeData)
+    const navigation = useNavigation();
+    const isLoading = navigation.state === 'loading';
     // hook form functions and default values
-    const { formState, handleSubmit, register, watch } = useForm({
+    const {
+        formState: { errors, isSubmitting, isSubmitSuccessful },
+        handleSubmit,
+        register,
+        watch,
+    } = useForm({
         mode: 'onTouched',
         defaultValues: {
             bikeModelIdSelect: createNewBike ? '' : bikeData.bike.id,
@@ -70,9 +75,6 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
             bikePackageOnlyCheckBox: createNewBike ? false : bikeData.package_only,
         },
     });
-
-    // error messages
-    const { errors } = formState;
 
     // possible statuses for a bike
     const currentBikeStatus = ['AVAILABLE', 'MAINTENANCE', 'RENTED', 'RETIRED'];
@@ -338,7 +340,11 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                 Poista tämä pyörä
                             </Button>
                         )}
-                        <Button type="submit" sx={{ padding: '1rem' }}>
+                        <Button
+                            type="submit"
+                            disabled={isLoading || isSubmitting || isSubmitSuccessful}
+                            sx={{ padding: '1rem' }}
+                        >
                             Tallenna muutokset ja palaa listaan
                         </Button>
                     </Box>
