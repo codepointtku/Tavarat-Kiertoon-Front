@@ -30,7 +30,11 @@ interface Props {
     freeDescription: string;
     categoryName: string;
     storageName: string;
-    colorName: string;
+    colors: {
+        id: number;
+        name: string;
+        default: boolean;
+    }[];
     measurements: string;
     weight: number;
     count: number;
@@ -45,7 +49,7 @@ function ProductCard({
     freeDescription,
     categoryName,
     storageName,
-    colorName,
+    colors,
     measurements,
     weight,
     count,
@@ -61,13 +65,11 @@ function ProductCard({
             delayHandler && clearTimeout(delayHandler);
         }
     }
-
     return (
-        // <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Card
             sx={{
                 width: 276,
-                height: 500,
+                height: 480,
                 transition: 'transform 0.1s ease-in-out',
                 '&:hover': {
                     transform: 'scale(1.02)',
@@ -114,14 +116,17 @@ function ProductCard({
                                                 Kategoria: {categoryName}
                                             </Typography>
                                         </Grid>
-                                        <Grid item>
+                                        {/* <Grid item>
                                             <Typography variant="body2" fontWeight="fontWeightMediumBold">
                                                 Varastosijainti: {storageName}
                                             </Typography>
-                                        </Grid>
+                                        </Grid> */}
                                         <Grid item>
                                             <Typography variant="body2" fontWeight="fontWeightMediumBold">
-                                                Väri: {colorName}
+                                                Väri:{' '}
+                                                {colors.map((color) => {
+                                                    return `${color.name}, `;
+                                                })}
                                             </Typography>
                                         </Grid>
                                         <Grid item>
@@ -216,7 +221,6 @@ function ProductCard({
                 </CardActions>
             </Box>
         </Card>
-        // </Box>
     );
 }
 

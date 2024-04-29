@@ -47,7 +47,7 @@ export default function SortByMenu() {
                 <MenuItem
                     onClick={() => {
                         handleClose();
-                        navigate(generatePath(`/varasto/:num/:view?${searchParams}`, { view: 'waiting', num }));
+                        navigate(generatePath(`/varasto/?tila=Waiting`));
                     }}
                 >
                     Waiting
@@ -56,7 +56,7 @@ export default function SortByMenu() {
                 <MenuItem
                     onClick={() => {
                         handleClose();
-                        navigate(generatePath(`/varasto/:num/:view?${searchParams}`, { view: 'delivery', num }));
+                        navigate(generatePath(`/varasto/?tila=Processing`));
                     }}
                 >
                     Delivery
@@ -65,7 +65,7 @@ export default function SortByMenu() {
                 <MenuItem
                     onClick={() => {
                         handleClose();
-                        navigate(generatePath(`/varasto/:num/:view?${searchParams}`, { view: 'finished', num }));
+                        navigate(generatePath(`/varasto/?tila=Finished`));
                     }}
                 >
                     Finished

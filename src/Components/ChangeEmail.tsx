@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
-import { useSubmit, useActionData, Link, Form } from 'react-router-dom';
+import { useSubmit, useActionData, Link, Form, useNavigation } from 'react-router-dom';
 
-import { Container, Typography, Button, Alert, TextField, Stack, Link as MuiLink } from '@mui/material';
+import { Container, Typography, Button, TextField, Stack, Link as MuiLink } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 
 import AlertBox from './AlertBox';
@@ -28,10 +28,12 @@ function ChangeEmail() {
     const submit = useSubmit();
     const responseStatus = useActionData() as { type: string; status: boolean };
 
+    const navigation = useNavigation();
+    const isLoading = navigation.state === 'loading';
     const {
         register,
         handleSubmit,
-        formState: { errors, isSubmitSuccessful, isValid },
+        formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
     } = useForm({ mode: 'all' });
 
     const onSubmit = (data: any) => {
@@ -78,7 +80,9 @@ function ChangeEmail() {
                                 fullWidth
                             />
 
-                            <Button type="submit">Lähetä linkki</Button>
+                            <Button type="submit" disabled={isLoading || isSubmitting || isSubmitSuccessful}>
+                                Lähetä linkki
+                            </Button>
                         </Stack>
                     )}
                     <Button id="back-btn" variant="outlined" size="small" component={Link} to="/tili" sx={{ mt: 2 }}>

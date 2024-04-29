@@ -2,7 +2,7 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { Box, Container, Tabs, Tab, Typography } from '@mui/material';
+import { Box, Container, Tabs, Tab, Typography, Link as MuiLink } from '@mui/material';
 
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import InfoIcon from '@mui/icons-material/Info';
@@ -15,10 +15,17 @@ function BikesHelp() {
     return (
         <>
             <Typography variant="h5" color="primary.main" gutterBottom>
-                Yleistä pyörävuokraamosta
+                Yleistä pyörälainaamosta
             </Typography>
-            <Typography gutterBottom>Voit vuokrata palvelustamme myös polkupyöriä.</Typography>
-            <Typography gutterBottom>Polkupyörille on omat sääntönsä ja ohjeensa.</Typography>
+            <Typography gutterBottom>
+                Turun kaupungin kasvatuksen ja opetuksen yksiköt voivat lainata maksutta käyttöönsä potkupyöriä, lasten
+                polkupyöriä sekä sähköavusteisia muksubusseja, jotka mahdollistavat jopa 8 lapsen samanaikaisen
+                kuljetuksen. Pyöräilytavarat hankittiin osana EU-rahoitteista{' '}
+                <MuiLink href="https://www.turku.fi/asuminen-ja-ymparisto/projektit-ja-hankkeet/muut-kaupunkiymparistoon-liittyvat-projektit-ja-6">
+                    Scale-up-hanketta.
+                </MuiLink>{' '}
+                Työllisyyspalvelut huoltavat ja kuljettavat tuotteet kohteisiin.{' '}
+            </Typography>
         </>
     );
 }

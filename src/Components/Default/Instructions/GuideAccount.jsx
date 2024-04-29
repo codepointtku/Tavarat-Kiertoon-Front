@@ -17,7 +17,14 @@ import HeroText from '../../HeroText';
 function SignupHelp() {
     return (
         <>
-            <Typography variant="h5" color="primary.main" gutterBottom>
+            <Typography>
+                Tavarat kiertoon -sivustolla pääset tarkastelemaan kaupungin käytettävissä olevaa kalustoa. Tuotteita
+                saa tilata ainoastaan oman yksikön käyttöön ja niiden tilaamiseen on oltava hankintaoikeudet.
+                Hankintaoikeuden omaava henkilö pääsee rekisteröitymään järjestelmään. Tuotteet ovat käytettyjä ja ne
+                luovutetaan uudelleen käyttöön siinä kunnossa kuin ne ovat. Kaikki järjestelmän tuotteet ovat Turun
+                kaupungin omaisuutta eikä niitä tule ottaa yksityiseen käyttöön tai lahjoittaa omatoimisesti eteenpäin.
+            </Typography>
+            {/* <Typography variant="h5" color="primary.main" gutterBottom>
                 Tilin hallinta
             </Typography>
             <Typography>
@@ -44,7 +51,7 @@ function SignupHelp() {
             <Typography gutterBottom>
                 "Rekisteröidy"-linkkiä painamalla avautuu uusi sivu, missä eteesi laskeutuu valinta. Otatko sinisen vai
                 punaisen pillerin? Tarkempaa tietoa näistä löytyy napauttamalla ylläolevia linkkejä.
-            </Typography>
+            </Typography> */}
         </>
     );
 }
@@ -53,7 +60,7 @@ function UserAccountHelp() {
     return (
         <>
             <Typography variant="subtitle2" align="center" mb={2}>
-                Käyttäjätili on henkilökohtainen hankintatili Tavarat Kiertoon-järjestelmässä.
+                Käyttäjätili on henkilökohtainen hankintatili Tavarat Kiertoon järjestelmässä.
             </Typography>
             {/* <Typography variant="subtitle2" align="center" mb={2}>
                 Käyttäjätilillä tarkoitetaan henkilökohtaista hankintatiliä Tavarat Kiertoon-järjestelmässä.
@@ -61,38 +68,22 @@ function UserAccountHelp() {
             <Typography variant="h5" color="primary.main" gutterBottom>
                 Käyttäjätilin luominen
             </Typography>
-            <Typography gutterBottom>Tilin luonti on kaksi-vaiheinen.</Typography>
             <MuiLink component={Link} to="/rekisteroidy/kayttaja">
-                Avaa rekisteröinti-lomake
+                Avaa rekisteröintilomake
             </MuiLink>
+            <Typography gutterBottom>Syötä ensimmäiseen kenttään sähköpostiosoitteesi.</Typography>
+            <Typography gutterBottom>Jatkossa kirjaudut tällä sähköpostiosoitteellasi järjestelmään.</Typography>
             <Typography gutterBottom>
-                Syötä ensimmäiseen kenttään @turku.fi -päätteinen työ-sähköpostiosoitteesi.
+                Täytä henkilötietosi ja keksi itsellesi salasana. Paina lopuksi ”rekisteröidy” -painiketta
             </Typography>
-            <Typography gutterBottom variant="body2">
-                Kirjaudut jatkossa tällä sähköpostiosoitteella sisään järjestelmään. Tämä sähköpostiosoite on samalla
-                käyttäjätunnuksesi.
+
+            <Typography variant="h5" color="primary.main" gutterBottom>
+                Tilin hallinta
             </Typography>
-            <Typography gutterBottom>
-                Syötä seuraaviin kenttiin salasanasi, minkä saat iha itte keksiä kuule.
-            </Typography>
-            <Typography gutterBottom variant="body2">
-                Salasanan on oltava 666 merkkiä pitkä, ja siinä on oltava vähintään kyrillisiä kirjaimia, roomalaisia
-                numeroita, sekä se on kirjoitettava oikealta vasemmalle ruotsiksi arabialaisella slangilla.
-            </Typography>
-            <Typography variant="subtitle2" gutterBottom>
-                Kun olet syöttänyt tiedot, napauta lomakkeen päätteenä olevaa "Rekisteröidy"-painiketta.
-            </Typography>
-            <Typography gutterBottom>Mitä tapahtuu seuraavaksi?</Typography>
-            <Typography gutterBottom variant="body2">
-                Lehtopöllömme nappaavat tiedot, ja toimittavat ne Liedon logistiikkakeskukseen odottamaan
-                jatkokäsittelyä. Sieltä ne kulkevat joenvartta pitkin Rieskalähteentien pankkiin, missä maahisemme
-                arvioivat tilisi, ja henkilökohtaisen ihmisarvosi. Konsultoimme ylijumalia joka täydenkuun aikaan ison
-                tammen alla, jonka jälkeen syömme metsästämämme riistan nuotion äärellä. Jos ylipappi antaa vielä
-                siunauksen, saat hyväksyvän vastauksen rekisteröinnillesi. Lähetämme lehtopöllön tuomaan Sinulle kutsun
-                toimistolle, missä mikrosirutamme Sinut. Kun toimenpide on ohi, olet tervetullut tilaamaan palvelustamme
-                tuotteita asteittain. Aluksi saat oikeudet jakkaroihin, ja hyvällä käytöksellä ja puhtaalla
-                rikosrekisterillä tilisi tila kasvaa korkeammalle tasolle vuosisykleittäin. Korkeimmilla tasoilla saat
-                parempia tuotteita, kuten sikarituoleja, ja lyhytjalkaisia sikarituoleja.
+            <Typography>
+                Hallintapaneeli oikeassa ylälaidassa sisältää tiliin liittyvät toiminnot. Käyttäjä -ikonia klikkaamalla
+                avautuvasta ikkunasta pääset kirjautumaan sisälle ja muokkaamaan tietojasi tai luomaan uuden
+                käyttäjätilin.
             </Typography>
         </>
     );
@@ -102,56 +93,27 @@ function LocationAccountHelp() {
     return (
         <>
             <Typography variant="subtitle2" align="center" mb={2}>
-                Toimipaikkatili on yhteinen hankintatili monen eri henkilön kesken Tavarat Kiertoon-järjestelmään.
+                Toimipaikkatili on yhteinen hankintatili monen eri henkilön kesken ja tilillä on oltava vastuuhenkilö.
             </Typography>
             <Typography variant="h5" color="primary.main" gutterBottom>
                 Toimipaikkatilin luominen
             </Typography>
             <Typography gutterBottom>Tilin luonti on kaksi-vaiheinen.</Typography>
             <MuiLink component={Link} to="/rekisteroidy/toimipaikka">
-                Avaa rekisteröinti-lomake
+                Avaa rekisteröintilomake
             </MuiLink>
             <Typography gutterBottom>
-                Syötä ensimmäiseen kenttään käyttäjätunnus; esimerkiksi "KanakadunPäiväkoti" tai
-                "TurunKaupunginHallitus".
+                Syötä ensimmäiseen kenttään käyttäjätunnus esim. ”KanakadunPäiväkoti”, käyttäjätunnus ei saa sisältää
+                välilyöntejä.
             </Typography>
-            <Typography gutterBottom variant="body2">
-                Huomioi, tunnus ei saa sisältää välilyöntejä.
-            </Typography>
+            <Typography gutterBottom>Syötä seuraaviin kenttiin vastuuhenkilön yhteystiedot.</Typography>
             <Typography gutterBottom>
-                Tilillä on oltava vastuuhenkilö. Syötä seuraaviin kenttiin vastuuhenkilön yhteystiedot.
-            </Typography>
-            <Typography gutterBottom variant="body2">
-                Vastuuhenkilö on tilin ensisijainen omistaja. Vastuuhenkilö on vastuussa toimipaikkatilillään tehtävistä
+                Vastuuhenkilö on tilin ensisijainen omistaja ja hän on vastuussa toimipaikkatilillään tehtävistä
                 tilauksista.
             </Typography>
-            <Typography gutterBottom variant="body2">
-                Vastuuhenkilö voi kirjautua jatkossa sähköpostiosoitteellaan sisään järjestelmään.
-            </Typography>
-            <Typography gutterBottom variant="body2">
-                Toimipaikan käyttäjät kirjautuvat jatkossa käyttäjätunnuksella sisään järjestelmään.
-            </Typography>
             <Typography gutterBottom>
-                Syötä seuraaviin kenttiin salasanasi, minkä saat iha itte keksiä kuule.
-            </Typography>
-            <Typography gutterBottom variant="body2">
-                Salasanan on oltava 666 merkkiä pitkä, ja siinä on oltava vähintään kyrillisiä kirjaimia, roomalaisia
-                numeroita, sekä se on kirjoitettava oikealta vasemmalle ruotsiksi arabialaisella slangilla.
-            </Typography>
-            <Typography variant="subtitle2" gutterBottom>
-                Kun olet syöttänyt tiedot, napauta lomakkeen päätteenä olevaa "Rekisteröidy"-painiketta.
-            </Typography>
-            <Typography gutterBottom>Mitä tapahtuu seuraavaksi?</Typography>
-            <Typography gutterBottom variant="body2">
-                Lehtopöllömme nappaavat tiedot, ja toimittavat ne Liedon logistiikkakeskukseen odottamaan
-                jatkokäsittelyä. Sieltä ne kulkevat joenvartta pitkin Rieskalähteentien pankkiin, missä maahisemme
-                arvioivat tilisi, ja henkilökohtaisen ihmisarvosi. Konsultoimme ylijumalia joka täydenkuun aikaan ison
-                tammen alla, jonka jälkeen syömme metsästämämme riistan nuotion äärellä. Jos ylipappi antaa vielä
-                siunauksen, saat hyväksyvän vastauksen rekisteröinnillesi. Lähetämme lehtopöllön tuomaan Sinulle kutsun
-                toimistolle, missä mikrosirutamme Sinut. Kun toimenpide on ohi, olet tervetullut tilaamaan palvelustamme
-                tuotteita asteittain. Aluksi saat oikeudet jakkaroihin, ja hyvällä käytöksellä ja puhtaalla
-                rikosrekisterillä tilisi tila kasvaa korkeammalle tasolle vuosisykleittäin. Korkeimmilla tasoilla saat
-                parempia tuotteita, kuten sikarituoleja, ja lyhytjalkaisia sikarituoleja.
+                Vastuuhenkilö kirjautuu tilille jatkossa sähköpostisoitteellaan ja toimipaikkatilin muut käyttäjät
+                käyttäjätunnuksellaan
             </Typography>
         </>
     );
@@ -164,42 +126,37 @@ function SearchWatchHelp() {
                 Hakuvahdilla saat ilmoituksen sähköpostiin kun uusia tuotteita lisätään järjestelmään.
             </Typography>
             <Typography variant="h5" color="primary.main" gutterBottom>
-                Hakuvahdin hyödyntäminen
+                Hakuvahdin luominen
             </Typography>
-            <MuiLink component={Link} to="/tili/hakuvahti">
-                Hakuvahdin luonti tehdään omalta käyttäjätilisivulta Hakuvahti osiosta.
-            </MuiLink>
+            <Typography>Hakuvahti luodaan käyttäjätilisivulta Hakuvahti osiosta.</Typography>
             <Typography>
-                Käytäjätilisivulle pääsee sivuston oikeasta yläkulmasta painamalla ensin{' '}
-                <AccountCircleOutlinedIcon fontSize="24" /> kuvaketta, sen jälkeen painetaan Käyttäjätili painiketta.
+                Käyttäjätilisivulle pääsee oikeasta yläkulmasta painamalla ensin kuvaketta ja sen jälkeen Käyttäjätili
+                -painiketta.
             </Typography>
-            <Typography gutterBottom>
-                Käyttäjätilisivulta hakuvahti sivulle pääsee painamalla Hakuvahti painiketta käyttäjätilisivun
+            <Typography>
+                Käyttäjätilisivulta hakuvahti sivulle pääsee klikkaamalla Hakuvahti -painiketta käyttäjätilisivun
                 yläpalkista.
             </Typography>
             <Typography variant="h5" color="primary.main" gutterBottom>
-                Hakuvahdin luominen
+                Hakuvahdin hyödyntäminen
             </Typography>
             <Typography>
-                Hakuvahdin voi tehdä itselleen syöttämällä hakusanoja hakuvahtisivun alalaidassa olevaan tekstikenttään.
+                Luomalla itsellesi hakuvahdin saat tiedon järjestelmään lisätyistä uusista tuotteista.
             </Typography>
             <Typography>
-                Sanat syötetään muodossa <b>hakusana hakusana hakusana</b>.
+                Hakuvahdin voi tehdä syöttämällä hakusanoja hakuvahtisivun alalaidassa olevaan kenttään.
             </Typography>
             <Typography>
-                Hakusanoja täytyy olla vähintään yksi ja useampi hakusana samaan hakuvahtiin erotellaan välilyönneillä.
+                Hakusanoja on oltava vähintään yksi, useampi hakusana erotellaan välilyönneillä. Esim. hakuvahti tuoli
+                lähettää ilmoituksen sähköpostiisi kun uusi tuoli lisätään valikoimaan.
             </Typography>
             <Typography>
-                Esimerkiksi hakuvahti <b>tuoli</b> lähettää ilmoituksen sähköpostiisi, jos uusi tuoli lisätään
-                järjestelmään.
+                Jos hakuvahdiksi asetetaan punainen tuoli, saat ilmoituksen sähköpostiisi vain silloin kun valikoimaan
+                lisätty tuoli on punainen.
             </Typography>
             <Typography>
-                Jos hakuvahdiksi asetettaisiin <b>tuoli punainen</b>, ilmoitus sähköpostiin tulee vain silloin ku
-                järjestelmään lisätty tuoli on myös punainen.
-            </Typography>
-            <Typography gutterBottom>
-                Hakuvahteja voi asettaa useamman ja jokainen hakusana yhdessä hakuvahdissa rajaa hakua entisestään,
-                koska jokaisen sanan täytyy löytä järjestelmään lisätystä tuotteesta.
+                Voit asettaa useamman hakuvahdin. Jokainen hakusana rajaa hakua entistä tarkemmaksi koska jokaisen sanan
+                täytyy löytyä järjestelmässä olevasta tuotteesta.
             </Typography>
         </>
     );

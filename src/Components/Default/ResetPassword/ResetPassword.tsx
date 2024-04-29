@@ -59,6 +59,7 @@ function ResetPassword() {
                         <OutlinedInput
                             {...register('new_password', {
                                 required: true,
+                                minLength: { value: 16, message: 'Salasanan on oltava vähintään 16 merkkiä' },
                                 maxLength: 255,
                             })}
                             id="outlined-adornment-password"

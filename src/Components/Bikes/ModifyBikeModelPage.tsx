@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Autocomplete, Box, Button, Card, CardMedia, Grid, TextField, Typography } from '@mui/material';
 import { useLoaderData } from 'react-router';
-import { Form, Link, useSubmit } from 'react-router-dom';
+import { Form, Link, useSubmit, useNavigation } from 'react-router-dom';
 import { type FieldValues, useForm } from 'react-hook-form';
 import DeleteBikeModelModal from './DeleteBikeModelModal';
 
@@ -32,9 +32,15 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
         types: NameIdInterface[];
         sizes: NameIdInterface[];
     };
-
+    const navigation = useNavigation();
+    const isLoading = navigation.state === 'loading';
     // hook form functions and default values
-    const { register, handleSubmit, watch, formState } = useForm({
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors, isSubmitting, isSubmitSuccessful },
+    } = useForm({
         mode: 'onTouched',
         defaultValues: {
             bikeModelBrandName: createNewBikeModel ? '' : (bikeModel.brand.name as string),
@@ -44,9 +50,6 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
             pictures: createNewBikeModel ? '' : (bikeModel.picture.picture_address as string),
         },
     });
-
-    // error messages
-    const { errors } = formState;
 
     // submit the form data
     const submit = useSubmit();
@@ -280,7 +283,11 @@ function ModifyBikeModelPage({ createNewBikeModel }: ModifyBikeModelInterface) {
                         </Button>
                     )}
 
-                    <Button type="submit" sx={{ width: '12rem', padding: '1rem', marginLeft: '3rem' }}>
+                    <Button
+                        type="submit"
+                        disabled={isLoading || isSubmitting || isSubmitSuccessful}
+                        sx={{ width: '12rem', padding: '1rem', marginLeft: '3rem' }}
+                    >
                         Tallenna ja palaa
                     </Button>
                 </Box>

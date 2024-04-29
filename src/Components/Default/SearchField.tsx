@@ -13,7 +13,7 @@ const Search = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     position: 'relative',
-    width: '34ch',
+    // width: '34ch',
     border: '0.1rem solid rgba(0,155,216, 0.4)',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.primary.main, 0.08),
