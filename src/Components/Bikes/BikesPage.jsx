@@ -92,7 +92,7 @@ export default function BikesPage() {
     const [trailerValue, setTrailerValue] = useState(0);
     const containerRef = useRef(null);
 
-    const loaderData = useLoaderData();
+    const { loaderData, colors } = useLoaderData();
     const minDate = parseISO(loaderData.date_info.available_from);
     const maxDate = parseISO(loaderData.date_info.available_to);
     const trailers = [...loaderData.trailers];
@@ -102,7 +102,7 @@ export default function BikesPage() {
             setTrailerValue(0);
         }
     }, [trailerAvailability]);
-
+    console.log(colors);
     const bikes = [
         // The bike package id and bike id would have possibility for overlap since they're both just incrementing from 0
         ...loaderData.packages.map((bikePackage) => ({
@@ -141,11 +141,13 @@ export default function BikesPage() {
 
     bikes.forEach((bike) => {
         if (bike.size !== null) sizeOptionsSet.add(bike.size);
-        if (bike.color !== null) colorOptionsSet.add(bike.color);
         if (bike.brand !== null) brandOptionsSet.add(bike.brand);
         if (bike.type !== null) typeOptionsSet.add(bike.type);
     });
-
+    colors.forEach((color) => {
+        colorOptionsSet.add(color.name);
+    });
+    console.log(colorOptionsSet);
     const handleFilterChange = (filter, newOption) =>
         setSearchParams((prevSearchParams) => {
             if (newOption === null) {
@@ -220,7 +222,6 @@ export default function BikesPage() {
         // Show Thank You modal visible
         setIsThankYouModalVisible(true);
     };
-
     return (
         <Container component={Form} onSubmit={handleSubmit(onSubmit)} sx={{ mb: 6 }} ref={containerRef}>
             <Typography variant="h3" align="center" color="primary.main" my={3}>
