@@ -9,10 +9,19 @@ import Holidays from 'date-holidays';
 import { fi } from 'date-fns/locale';
 import PropTypes from 'prop-types';
 
-export default function BikeCalendar({ onChange, onBlur, startDate, endDate, minDate, maxDate, isStartDate }) {
+export default function BikeCalendar({
+    onChange,
+    onBlur,
+    startDate,
+    endDate,
+    minDate,
+    maxDate,
+    isStartDate,
+    setCalendarError,
+}) {
     const hd = new Holidays('FI');
     const holidaysCurrentYear = hd.getHolidays();
-    const holidaysNextYear = hd.getHolidays((new Date().getFullYear() + 1));
+    const holidaysNextYear = hd.getHolidays(new Date().getFullYear() + 1);
 
     const handleMinDate = () => {
         if (isStartDate) {
@@ -32,15 +41,15 @@ export default function BikeCalendar({ onChange, onBlur, startDate, endDate, min
         // Check for dates that should be disabled in the calendar.
         // Checking holidays of current year and next year(for rarer scenarios), and weekend dates
 
-        const dateIsHoliday = (holidaysCurrentYear.some((holiday) => String(holiday.start) === String(day))
-            || holidaysNextYear.some((holiday) => String(holiday.start) === String(day)))
+        const dateIsHoliday =
+            holidaysCurrentYear.some((holiday) => String(holiday.start) === String(day)) ||
+            holidaysNextYear.some((holiday) => String(holiday.start) === String(day));
         if (isWeekend(day) === true) {
-            return true
+            return true;
         } else if (dateIsHoliday === true) {
-            return true
-        }
-        else {
-            return false
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -63,6 +72,7 @@ export default function BikeCalendar({ onChange, onBlur, startDate, endDate, min
                         </IconButton>
                     </Box>
                 )}
+                onError={(newError) => setCalendarError(newError)}
                 disableMaskedInput
                 shouldDisableDate={(day) => disableDate(day)}
                 minDate={handleMinDate()}
