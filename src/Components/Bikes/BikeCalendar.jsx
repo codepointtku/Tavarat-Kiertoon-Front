@@ -56,11 +56,13 @@ export default function BikeCalendar({
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
             <DatePicker
-                label={isStartDate ? 'Aloituspäivä *' : 'Loppumispäivä *'}
+                label={
+                    isStartDate ? 'Aloituspäivä valitse pvm kalenterista*' : 'Loppumispäivä valitse pvm kalenterista*'
+                }
                 value={isStartDate ? startDate : endDate}
                 onChange={onChange}
                 onBlur={onBlur}
-                inputProps={{ placeholder: 'pv.kk.v' }}
+                inputProps={{ placeholder: 'pv.kk.v', readOnly: true }}
                 renderInput={(params) => (
                     <Box sx={{ position: 'relative', display: 'inline-block', width: 'max-content' }}>
                         <TextField {...params} />
