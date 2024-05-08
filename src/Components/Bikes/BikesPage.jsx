@@ -92,7 +92,9 @@ export default function BikesPage() {
     const [trailerValue, setTrailerValue] = useState(0);
     const containerRef = useRef(null);
 
-    const loaderData = useLoaderData();
+    const [CalendarError, setCalendarError] = useState(null);
+
+    const { loaderData, colors } = useLoaderData();
     const minDate = parseISO(loaderData.date_info.available_from);
     const maxDate = parseISO(loaderData.date_info.available_to);
     const trailers = [...loaderData.trailers];
@@ -102,7 +104,6 @@ export default function BikesPage() {
             setTrailerValue(0);
         }
     }, [trailerAvailability]);
-
     const bikes = [
         // The bike package id and bike id would have possibility for overlap since they're both just incrementing from 0
         ...loaderData.packages.map((bikePackage) => ({
@@ -123,16 +124,21 @@ export default function BikesPage() {
     // ].sort((a, b) => b.max_available - a.max_available);
     const [searchParams, setSearchParams] = useSearchParams();
     const filteredBikes = searchParams.get('filters')
-        ? bikes.filter((bike) =>
-              Object.entries(JSON.parse(searchParams.get('filters'))).every(
-                  ([filterName, filterValue]) => filterValue === bike[filterName]
-              ) && bike.package_only_count
-                  ? bike.max_available > bike.package_only_count
-                  : bike.max_available
-          )
-        : bikes.filter((bike) =>
-              bike.package_only_count ? bike.max_available > bike.package_only_count : bike.max_available
-          );
+        ? bikes.filter((bike) => {
+              if (
+                  Object.entries(JSON.parse(searchParams.get('filters'))).every(
+                      ([filterName, filterValue]) => filterValue === bike[filterName]
+                  ) &&
+                  (bike.package_only_count ? bike.max_available > bike.package_only_count : bike.max_available)
+              ) {
+                  return true;
+              } else {
+                  return false;
+              }
+          })
+        : bikes.filter((bike) => {
+              return bike.package_only_count ? bike.max_available > bike.package_only_count : bike.max_available;
+          });
 
     const sizeOptionsSet = new Set();
     const colorOptionsSet = new Set();
@@ -141,11 +147,12 @@ export default function BikesPage() {
 
     bikes.forEach((bike) => {
         if (bike.size !== null) sizeOptionsSet.add(bike.size);
-        if (bike.color !== null) colorOptionsSet.add(bike.color);
         if (bike.brand !== null) brandOptionsSet.add(bike.brand);
         if (bike.type !== null) typeOptionsSet.add(bike.type);
     });
-
+    colors.forEach((color) => {
+        colorOptionsSet.add(color.name);
+    });
     const handleFilterChange = (filter, newOption) =>
         setSearchParams((prevSearchParams) => {
             if (newOption === null) {
@@ -161,7 +168,6 @@ export default function BikesPage() {
                 }),
             };
         });
-
     const storageTypeForm = (
         <Controller
             name="storageType"
@@ -220,7 +226,6 @@ export default function BikesPage() {
         // Show Thank You modal visible
         setIsThankYouModalVisible(true);
     };
-
     return (
         <Container component={Form} onSubmit={handleSubmit(onSubmit)} sx={{ mb: 6 }} ref={containerRef}>
             <Typography variant="h3" align="center" color="primary.main" my={3}>
@@ -268,6 +273,7 @@ export default function BikesPage() {
                                                                     endDate={watch('endDate')}
                                                                     minDate={minDate}
                                                                     maxDate={maxDate}
+                                                                    setCalendarError={setCalendarError}
                                                                 />
                                                             )}
                                                         />
@@ -284,6 +290,7 @@ export default function BikesPage() {
                                                                     minDate={minDate}
                                                                     maxDate={maxDate}
                                                                     isStartDate={false}
+                                                                    setCalendarError={setCalendarError}
                                                                 />
                                                             )}
                                                         />
@@ -295,7 +302,9 @@ export default function BikesPage() {
                                                     <Button
                                                         color="success"
                                                         onClick={() => setIsIntroVisible(false)}
-                                                        disabled={!watch('startDate') || !watch('endDate')}
+                                                        disabled={
+                                                            !watch('startDate') || !watch('endDate') || CalendarError
+                                                        }
                                                     >
                                                         Seuraava
                                                     </Button>
@@ -469,6 +478,7 @@ export default function BikesPage() {
                                                                         endDate={watch('endDate')}
                                                                         minDate={minDate}
                                                                         maxDate={maxDate}
+                                                                        setCalendarError={setCalendarError}
                                                                     />
                                                                 )}
                                                             />
@@ -485,6 +495,7 @@ export default function BikesPage() {
                                                                         minDate={minDate}
                                                                         maxDate={maxDate}
                                                                         isStartDate={false}
+                                                                        setCalendarError={setCalendarError}
                                                                     />
                                                                 )}
                                                             />
@@ -552,7 +563,8 @@ export default function BikesPage() {
                                                                     ) ||
                                                                     !Object.keys(watch('selectedBikes')).length ||
                                                                     !watch('startDate') ||
-                                                                    !watch('endDate')
+                                                                    !watch('endDate') ||
+                                                                    CalendarError
                                                                 }
                                                             >
                                                                 Vahvistus

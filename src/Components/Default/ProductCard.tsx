@@ -65,6 +65,7 @@ function ProductCard({
             delayHandler && clearTimeout(delayHandler);
         }
     }
+    const colorNames = colors.map((color) => color.name);
     return (
         <Card
             sx={{
@@ -123,10 +124,7 @@ function ProductCard({
                                         </Grid> */}
                                         <Grid item>
                                             <Typography variant="body2" fontWeight="fontWeightMediumBold">
-                                                Väri:{' '}
-                                                {colors.map((color) => {
-                                                    return `${color.name}, `;
-                                                })}
+                                                Väri: {colorNames?.join(', ')}
                                             </Typography>
                                         </Grid>
                                         <Grid item>
@@ -174,7 +172,7 @@ function ProductCard({
                             </Typography>
                         </Grid>
                         <Grid item xs={2}>
-                            <Tooltip title="tilattavissa">
+                            <Tooltip title="Tilattavissa">
                                 <Typography variant="body2" fontWeight="fontWeigthThin">
                                     {count} kpl
                                 </Typography>

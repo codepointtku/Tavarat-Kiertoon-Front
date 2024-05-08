@@ -327,8 +327,9 @@ const gigaLoader = async () => {
  * @returns
  */
 const bikesDefaultLoader = async (auth, setAuth) => {
-    const { data } = await bikesApi.bikesList();
-    return data;
+    //const { data } = await bikesApi.bikesList();
+    const [{ data: loaderData }, { data: colors }] = await Promise.all([bikesApi.bikesList(), colorsApi.colorsList()]);
+    return { loaderData, colors };
 };
 
 /**
@@ -625,6 +626,7 @@ const bikeUserLoader = async ({ request }) => {
             url.searchParams.get('sivu') || 1,
             url.searchParams.get('sivukoko') || 25
         );
+        console.log(data);
         return data;
     } catch {
         return null;
