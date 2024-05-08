@@ -124,16 +124,21 @@ export default function BikesPage() {
     // ].sort((a, b) => b.max_available - a.max_available);
     const [searchParams, setSearchParams] = useSearchParams();
     const filteredBikes = searchParams.get('filters')
-        ? bikes.filter((bike) =>
-              Object.entries(JSON.parse(searchParams.get('filters'))).every(
-                  ([filterName, filterValue]) => filterValue === bike[filterName]
-              ) && bike.package_only_count
-                  ? bike.max_available > bike.package_only_count
-                  : bike.max_available
-          )
-        : bikes.filter((bike) =>
-              bike.package_only_count ? bike.max_available > bike.package_only_count : bike.max_available
-          );
+        ? bikes.filter((bike) => {
+              if (
+                  Object.entries(JSON.parse(searchParams.get('filters'))).every(
+                      ([filterName, filterValue]) => filterValue === bike[filterName]
+                  ) &&
+                  (bike.package_only_count ? bike.max_available > bike.package_only_count : bike.max_available)
+              ) {
+                  return true;
+              } else {
+                  return false;
+              }
+          })
+        : bikes.filter((bike) => {
+              return bike.package_only_count ? bike.max_available > bike.package_only_count : bike.max_available;
+          });
 
     const sizeOptionsSet = new Set();
     const colorOptionsSet = new Set();
