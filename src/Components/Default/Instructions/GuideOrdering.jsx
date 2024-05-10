@@ -14,18 +14,6 @@ import HeroText from '../../HeroText';
 function Ordering() {
     return (
         <>
-            <Typography>
-                Alta löydät ohjeet tuotteiden tilaamiseen sekä tietoa kuljetuksesta. Jos etsimääsi tietoa ei löydy tästä
-                tai{' '}
-                <MuiLink component={Link} to="/ohjeet">
-                    Ohje{' '}
-                </MuiLink>
-                -sivulta, voit olla meihin yhteydessä{' '}
-                <MuiLink component={Link} to="/otayhteytta">
-                    täältä{' '}
-                </MuiLink>
-            </Typography>
-
             <Typography variant="h5" color="primary.main" gutterBottom>
                 Tuotteiden hakeminen ja lisääminen koriin
             </Typography>
@@ -212,7 +200,7 @@ function GuideOrdering() {
             <HeroHeader Icon={<ShoppingCartCheckoutIcon />} />
             <HeroText title="Tilaaminen & Kuljetus" subtitle="Alla on ohjeet tilaamiseen, sekä tietoa kuljetuksesta." />
             <CustomHeroText />
-            {/* <TitleTabs /> */}
+            <TitleTabs />
         </Container>
     );
 }

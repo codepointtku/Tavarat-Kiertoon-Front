@@ -60,7 +60,7 @@ function UserAccountHelp() {
     return (
         <>
             <Typography variant="subtitle2" align="center" mb={2}>
-                Käyttäjätili on henkilökohtainen hankintatili Tavarat Kiertoon järjestelmässä.
+                Käyttäjätili on henkilökohtainen hankintatili Tavarat Kiertoon -järjestelmässä.
             </Typography>
             {/* <Typography variant="subtitle2" align="center" mb={2}>
                 Käyttäjätilillä tarkoitetaan henkilökohtaista hankintatiliä Tavarat Kiertoon-järjestelmässä.
