@@ -55,20 +55,21 @@ function Confirmation() {
             recipient_phone_number,
             orderInfo,
             deliveryRequired /* fetchDate */,
+            fetchDate,
         } = state;
 
         if (deliveryAddress === '') {
             submit(
                 {
                     recipient,
-                    deliveryAddress: 'nouto', // creates a placeholder for backend
+                    deliveryAddress: 'nouto ' + fetchDate, // creates a placeholder for backend
                     zip_code,
                     city,
                     recipient_phone_number,
                     id: id.toString(),
                     orderInfo,
                     deliveryRequired,
-                    // fetchDate,
+                    fetchDate,
                 },
                 { method: 'post', action: '/ostoskori/vaihe3' }
             );
