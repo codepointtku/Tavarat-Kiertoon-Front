@@ -64,16 +64,16 @@ function ProductsGrid() {
     }, [pageCount, setRowCountState]);
 
     const columns: GridColDef[] = [
-        { field: 'name', headerName: 'Tuotenimi', flex: 1 },
+        { field: 'name', headerName: 'Tuotenimi', flex: 2 },
         { field: 'amount', headerName: 'Vapaana', flex: 1 },
         { field: 'total_amount', headerName: 'Järjestelmässä', flex: 1 },
-        { field: 'category', headerName: 'Kategoriatunnus', flex: 1 },
+        // { field: 'category', headerName: 'Kategoriatunnus', flex: 1 },
         { field: 'free_description', headerName: 'Kuvaus', flex: 1 },
         {
             field: 'id',
             headerName: 'Toiminnot',
             renderCell: (params) => (
-                <Button component={Link} to={`/tuotteet/${params.value}`} variant="outlined">
+                <Button component={Link} to={`/admin/tuotteet/${params.value}`} variant="outlined">
                     Avaa
                 </Button>
             ),

@@ -39,6 +39,10 @@ import StorageProducts from '../Components/Storage/StorageProducts';
 import AddNewItem from '../Components/Storage/AddNewItem';
 import EditProduct from '../Components/Storage/EditProduct';
 
+import ProductsReturn from '../Components/Storage/ProductActionsView';
+import ProductsReturnForm from '../Components/Storage/ProductsReturnForm';
+import ProductsRetireForm from '../Components/Admin/ProductsRetireForm';
+
 // admin
 import Overview from '../Components/Admin/Panel/Overview/Overview';
 import Stats from '../Components/Admin/Stats/Stats';
@@ -119,12 +123,16 @@ import BikeWarehouse from '../Components/Bikes/BikeWarehouse';
 import BikePackets from '../Components/Bikes/BikePackets';
 import BikeRentals from '../Components/Bikes/BikeRentals';
 import BikeRentalView from '../Components/Bikes/BikeRentalView';
+import BikeTrailers from '../Components/Bikes/BikeTrailers';
 import ModifyBikePage from '../Components/Bikes/ModifyBikePage';
 import BikeModels from '../Components/Bikes/BikeModels';
 import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
+import BikeUsers from '../Components/Bikes/BikeUsers';
+import BikeUserEdit from '../Components/Bikes/BikeUserEdit';
 
 import {
+    bikeUserLoader,
     bikeRentalLoader,
     bikeRentalViewLoader,
     bikesPacketLoader,
@@ -169,13 +177,17 @@ import {
     categoriesManageLoader,
     colorsLoader,
     gigaLoader,
+    bikeTrailersLoader,
+    bikeUserEditLoader,
 } from './loaders';
 
 import {
+    bikeUserEditAction,
     deleteBikeOrderAction,
     userSignupAction,
     contactAction,
     orderEditAction,
+    orderEditStatusAction,
     addProductAction,
     editProductAction,
     orderDeleteAction,
@@ -198,7 +210,7 @@ import {
     modifyBikeAction,
     createNewBikeAction,
     activationAction,
-    adminLogOut,
+    logOutAction,
     modifyBikePacketAction,
     deleteBikeAction,
     adminInboxAction,
@@ -218,12 +230,12 @@ import {
     returnProductsAction,
     categoriesManageAction,
     colorsManageAction,
+    deleteCreateBikeTrailerAction,
+    retireProductsAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
-import ProductsReturn from '../Components/Storage/ProductsReturn';
-import ProductsReturnForm from '../Components/Storage/ProductsReturnForm';
 
 createStore({});
 
@@ -366,6 +378,7 @@ function Routes() {
                                 {
                                     path: '/kirjaudu',
                                     element: <LoginPage />,
+                                    action: logOutAction,
                                 },
                                 {
                                     path: 'rekisteroidy',
@@ -439,7 +452,7 @@ function Routes() {
                                 {
                                     path: 'tili',
                                     element: (
-                                        <HasRole role="user_group" fallback={<Navigate to="/kirjaudu" />}>
+                                        <HasRole role="user_group" fallback={<Navigate to="/kirjaudu" replace />}>
                                             <UserAccountPage />
                                         </HasRole>
                                     ),
@@ -473,6 +486,10 @@ function Routes() {
                                         {
                                             path: 'tilaushistoria',
                                             element: <OrdersHistory />,
+                                        },
+                                        {
+                                            path: 'tilaushistoria/:id',
+                                            element: <OrderPage />,
                                         },
                                         {
                                             path: 'hakuvahti',
@@ -520,9 +537,10 @@ function Routes() {
                                         },
                                         {
                                             path: ':id',
-                                            element: <OrderView isAdmin={false} />,
+                                            element: <OrderView />,
                                             errorElement: <div>varasto orderview kössähdys</div>,
                                             loader: orderViewLoader,
+                                            action: orderEditStatusAction,
                                         },
                                     ],
                                 },
@@ -558,6 +576,13 @@ function Routes() {
                                             errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
                                             loader: productItemsReturnLoader,
                                             action: returnProductsAction,
+                                        },
+                                        {
+                                            path: 'poista',
+                                            element: <ProductsRetireForm />,
+                                            errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
+                                            loader: productItemsReturnLoader,
+                                            action: retireProductsAction,
                                         },
                                     ],
                                 },
@@ -606,7 +631,6 @@ function Routes() {
                             //     </ThemeProvider>
                             // ),
                             loader: adminLoader,
-                            action: adminLogOut,
                             children: [
                                 {
                                     index: true,
@@ -632,9 +656,10 @@ function Routes() {
                                             children: [
                                                 {
                                                     index: true,
-                                                    element: <OrderView isAdmin />,
+                                                    element: <OrderView />,
                                                     errorElement: <OrderViewError />,
                                                     loader: orderViewLoader,
+                                                    action: orderEditStatusAction,
                                                 },
                                                 {
                                                     path: 'muokkaa',
@@ -670,6 +695,40 @@ function Routes() {
                                             loader: productListLoader,
                                         },
                                         {
+                                            path: ':id',
+                                            element: <ProductDetails />,
+                                            loader: productDetailsLoader,
+                                            children: [
+                                                {
+                                                    path: 'palauta',
+                                                    element: <ProductsReturnForm />,
+                                                    errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
+                                                    loader: productItemsReturnLoader,
+                                                    action: returnProductsAction,
+                                                },
+                                                {
+                                                    path: 'poista',
+                                                    element: <ProductsRetireForm />,
+                                                    errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
+                                                    loader: productItemsReturnLoader,
+                                                    action: retireProductsAction,
+                                                },
+                                            ],
+                                        },
+                                        {
+                                            path: 'luo',
+                                            element: <AddNewItem />,
+                                            loader: productAddLoader,
+                                            action: async ({ request }) => addProductAction(auth, setAuth, request),
+                                        },
+                                        {
+                                            path: ':id/muokkaa',
+                                            element: <EditProduct />,
+                                            loader: productEditLoader,
+                                            action: async ({ request, params }) =>
+                                                editProductAction(auth, setAuth, request, params),
+                                        },
+                                        {
                                             path: 'varit',
                                             element: <ColorsManage />,
                                             loader: colorsLoader,
@@ -700,6 +759,7 @@ function Routes() {
                                             errorElement: <UserError />,
                                             loader: userEditLoader,
                                             action: userEditAction,
+                                            shouldRevalidate: () => false,
                                         },
                                         {
                                             path: ':userid/poista',
@@ -817,7 +877,11 @@ function Routes() {
                                 },
                                 {
                                     path: 'pyoravarasto',
-                                    element: <BikeWarehouse />,
+                                    element: (
+                                        <HasRole role="bicycle_admin_group" fallback={<Navigate to="/kirjaudu" />}>
+                                            <BikeWarehouse />
+                                        </HasRole>
+                                    ),
                                     children: [
                                         {
                                             index: 'true',
@@ -834,7 +898,8 @@ function Routes() {
                                             children: [
                                                 {
                                                     index: true,
-                                                    loader: async ({request}) => bikeRentalLoader(request, auth, setAuth),
+                                                    loader: async ({ request }) =>
+                                                        bikeRentalLoader(request, auth, setAuth),
                                                     element: <BikeRentals />,
                                                 },
                                                 {
@@ -850,7 +915,13 @@ function Routes() {
                                                         },
                                                     ],
                                                 },
-                                            ]
+                                            ],
+                                        },
+                                        {
+                                            path: 'perakarryt',
+                                            loader: async () => bikeTrailersLoader(auth, setAuth),
+                                            action: deleteCreateBikeTrailerAction,
+                                            element: <BikeTrailers />,
                                         },
                                         {
                                             path: 'pyorapaketit',
@@ -955,6 +1026,18 @@ function Routes() {
                                             loader: async ({ params }) => bikeNewModelLoader(auth, setAuth, params),
                                             action: async ({ request, params }) =>
                                                 createBikeModelAction(auth, setAuth, request, params),
+                                        },
+                                        {
+                                            path: 'kayttajat',
+                                            element: <BikeUsers />,
+                                            loader: bikeUserLoader,
+                                        },
+                                        {
+                                            path: 'kayttajat/:id',
+                                            element: <BikeUserEdit />,
+                                            loader: bikeUserEditLoader,
+                                            action: bikeUserEditAction,
+                                            shouldRevalidate: () => false,
                                         },
                                     ],
                                 },

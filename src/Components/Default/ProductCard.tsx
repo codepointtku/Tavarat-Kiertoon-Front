@@ -1,23 +1,27 @@
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import Carousel from 'react-material-ui-carousel';
+
 import {
     Box,
-    Button,
+    IconButton,
     Card,
     CardActionArea,
     CardActions,
     CardContent,
     CardMedia,
     Typography,
-    Tooltip,
     Grid,
+    Link as MuiLink,
+    Stack,
     type ButtonPropsSizeOverrides,
 } from '@mui/material';
-import { type OverridableStringUnion } from '@material-ui/types';
-import Carousel from 'react-material-ui-carousel';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-import { Link } from 'react-router-dom';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { type OverridableStringUnion } from '@material-ui/types';
+
 import AddToCartButton from './AddToCartButton';
+import Tooltip from '../Tooltip';
 
 interface Props {
     productName: string;
@@ -26,7 +30,11 @@ interface Props {
     freeDescription: string;
     categoryName: string;
     storageName: string;
-    colorName: string;
+    colors: {
+        id: number;
+        name: string;
+        default: boolean;
+    }[];
     measurements: string;
     weight: number;
     count: number;
@@ -41,7 +49,7 @@ function ProductCard({
     freeDescription,
     categoryName,
     storageName,
-    colorName,
+    colors,
     measurements,
     weight,
     count,
@@ -51,120 +59,151 @@ function ProductCard({
 
     function handleHover(event: React.MouseEvent) {
         if (event.type === 'mouseenter') {
-            setDelayHandler(setTimeout(() => setOpenInfo(true), 500));
+            setDelayHandler(setTimeout(() => setOpenInfo(true), 200));
         } else if (event.type === 'mouseleave') {
             setOpenInfo(false);
             delayHandler && clearTimeout(delayHandler);
         }
     }
-
+    const colorNames = colors.map((color) => color.name);
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Card sx={{ width: 300, height: 365 }}>
-                <CardActionArea component={Box}>
-                    <Carousel
-                        duration={850}
-                        interval={2000}
-                        autoPlay={false}
-                        indicatorIconButtonProps={{ style: { color: '#bfe6f6' } }}
-                        activeIndicatorIconButtonProps={{ style: { color: '#009bd8' } }}
-                    >
-                        {pictures.map((picture) => (
-                            <Box key={picture.picture_address} component={Link} to={`/tuotteet/${id}`} color="inherit">
-                                <CardMedia
-                                    component={Box}
-                                    sx={{ position: 'relative', alt: 'kuva' }}
-                                    height={200}
-                                    image={`${window.location.protocol}//${window.location.hostname}:8000/media/${picture.picture_address}`}
-                                >
-                                    {openInfo && (
-                                        <Grid
-                                            container
-                                            direction="column"
-                                            sx={{
-                                                position: 'absolute',
-                                                width: '100%',
-                                                height: '100%',
-                                                paddingLeft: 2,
-                                                backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                                                backdropFilter: 'blur(6px)',
-                                            }}
-                                            justifyContent="space-evenly"
-                                        >
-                                            <Grid item>
-                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
-                                                    Kuvaus: {freeDescription}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
-                                                    Kategoria: {categoryName}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
-                                                    Varastosijainti: {storageName}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
-                                                    Väri: {colorName}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
-                                                    Mitat: {measurements}
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Typography variant="body2" fontWeight="fontWeightMediumBold">
-                                                    Paino: {weight}
-                                                </Typography>
-                                            </Grid>
-                                        </Grid>
-                                    )}
-                                </CardMedia>
-                            </Box>
-                        ))}
-                    </Carousel>
-                    <CardContent
-                        component={Grid}
-                        direction="row"
-                        justifyContent="space-between"
-                        onMouseEnter={(MouseEvent) => handleHover(MouseEvent)}
-                        onMouseLeave={(MouseEvent) => handleHover(MouseEvent)}
-                        container
-                    >
-                        <Typography variant="h6" fontWeight="fontWeightLight" lineHeight="1">
-                            {productName}
-                        </Typography>
-                        <Tooltip title="määrä varastossa" placement="bottom" sx={{ color: 'primary.main' }} arrow>
-                            <Typography variant="subtitle1" fontWeight="400" lineHeight="1" sx={{ mt: 0.5 }}>
-                                {count} kpl
-                            </Typography>
-                        </Tooltip>
-                    </CardContent>
-                </CardActionArea>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: '0.2rem',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
+        <Card
+            sx={{
+                width: 276,
+                height: 480,
+                transition: 'transform 0.1s ease-in-out',
+                '&:hover': {
+                    transform: 'scale(1.02)',
+                },
+            }}
+        >
+            <CardActionArea component={Box}>
+                <Carousel
+                    duration={850}
+                    interval={2000}
+                    autoPlay={false}
+                    indicatorIconButtonProps={{ style: { color: '#bfe6f6' } }}
+                    activeIndicatorIconButtonProps={{ style: { color: '#009bd8' } }}
                 >
-                    <CardActions>
-                        <Button
-                            variant="outlined"
-                            component={Link}
-                            to={`/tuotteet/${id}`}
-                            size="small"
-                            onMouseEnter={(MouseEvent) => handleHover(MouseEvent)}
-                            onMouseLeave={(MouseEvent) => handleHover(MouseEvent)}
-                        >
-                            <InfoOutlinedIcon fontSize="small" />
-                        </Button>
+                    {pictures.map((picture) => (
+                        <Box key={picture.picture_address} component={Link} to={`/tuotteet/${id}`} color="inherit">
+                            <CardMedia
+                                component={Box}
+                                sx={{ position: 'relative', alt: 'kuva' }}
+                                height={300}
+                                image={`${window.location.protocol}//${window.location.hostname}:8000/media/${picture.picture_address}`}
+                            >
+                                {openInfo && (
+                                    <Grid
+                                        container
+                                        direction="column"
+                                        sx={{
+                                            position: 'absolute',
+                                            width: '100%',
+                                            height: '100%',
+                                            paddingLeft: 2,
+                                            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                            backdropFilter: 'blur(6px)',
+                                        }}
+                                        justifyContent="space-evenly"
+                                    >
+                                        <Grid item>
+                                            <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                Kuvaus: {freeDescription}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                Kategoria: {categoryName}
+                                            </Typography>
+                                        </Grid>
+                                        {/* <Grid item>
+                                            <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                Varastosijainti: {storageName}
+                                            </Typography>
+                                        </Grid> */}
+                                        <Grid item>
+                                            <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                Väri: {colorNames?.join(', ')}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                Mitat: {measurements}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Typography variant="body2" fontWeight="fontWeightMediumBold">
+                                                Paino: {weight}
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                )}
+                            </CardMedia>
+                        </Box>
+                    ))}
+                </Carousel>
+                <CardContent
+                    component={Grid}
+                    direction="row"
+                    justifyContent="space-between"
+                    onMouseEnter={(MouseEvent) => handleHover(MouseEvent)}
+                    onMouseLeave={(MouseEvent) => handleHover(MouseEvent)}
+                    container
+                >
+                    <Grid container alignItems="center">
+                        <Grid item xs={10}>
+                            <Typography
+                                fontWeight="fontWeightThin"
+                                whiteSpace="nowrap"
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                            >
+                                <MuiLink
+                                    component={Link}
+                                    to={`/tuotteet/${id}`}
+                                    underline="none"
+                                    variant="h6"
+                                    fontWeight="fontWeightThin"
+                                    color="#000"
+                                >
+                                    {productName}
+                                </MuiLink>
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Tooltip title="Tilattavissa">
+                                <Typography variant="body2" fontWeight="fontWeigthThin">
+                                    {count} kpl
+                                </Typography>
+                            </Tooltip>
+                        </Grid>
+                    </Grid>
+                </CardContent>
+            </CardActionArea>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <CardActions>
+                    <Stack direction="row" gap={2}>
+                        <Tooltip title="Tuotetiedot">
+                            <IconButton
+                                sx={{
+                                    '&.MuiButtonBase-root:hover': {
+                                        backgroundColor: 'transparent',
+                                    },
+                                }}
+                                component={Link}
+                                to={`/tuotteet/${id}`}
+                                size="small"
+                            >
+                                <InfoOutlinedIcon fontSize="large" color="primary" />
+                            </IconButton>
+                        </Tooltip>
                         <AddToCartButton
                             size={
                                 'small' as OverridableStringUnion<
@@ -176,10 +215,10 @@ function ProductCard({
                             groupId={groupId}
                             count={count}
                         />
-                    </CardActions>
-                </Box>
-            </Card>
-        </Box>
+                    </Stack>
+                </CardActions>
+            </Box>
+        </Card>
     );
 }
 

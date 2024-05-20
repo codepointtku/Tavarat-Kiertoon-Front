@@ -27,6 +27,7 @@ import type { productDetailsLoader } from '../../Router/loaders';
 import type { rootLoader } from '../../Router/loaders';
 import { type OverridableStringUnion } from '@material-ui/types';
 import Barcode from 'react-barcode';
+import HasRole from '../../Utils/HasRole';
 
 function ProductDetails() {
     const { product, products: productsInSameCategory } = useLoaderData() as Awaited<
@@ -168,16 +169,25 @@ function ProductDetails() {
                                                     <>
                                                         <Button
                                                             component={Link}
-                                                            to={`/varasto/tuotteet/${productId}/muokkaa`}
+                                                            to={
+                                                                location.pathname.includes('admin')
+                                                                    ? `/admin/tuotteet/${productId}/muokkaa`
+                                                                    : `/varasto/tuotteet/${productId}/muokkaa`
+                                                                // `/varasto/tuotteet/${productId}/muokkaa`
+                                                            }
                                                             size="large"
                                                             color="primary"
                                                             sx={{ marginY: 2 }}
                                                         >
-                                                            Muokkaa tuotetta
+                                                            Muokkaa tuotteen tietoja
                                                         </Button>
                                                         <Button
                                                             component={Link}
-                                                            to={`/varasto/tuotteet/${productId}/palauta`}
+                                                            to={
+                                                                location.pathname.includes('admin')
+                                                                    ? `/admin/tuotteet/${productId}/palauta`
+                                                                    : `/varasto/tuotteet/${productId}/palauta`
+                                                            }
                                                             replace
                                                             size="large"
                                                             color="primary"
@@ -186,7 +196,27 @@ function ProductDetails() {
                                                             Palauta tuotteita varastoon
                                                         </Button>
                                                         {/* Show return products to storage form */}
-                                                        <Outlet />
+                                                        <HasRole role={'admin_group'}>
+                                                            <Button
+                                                                component={Link}
+                                                                variant="outlined"
+                                                                to={
+                                                                    location.pathname.includes('admin')
+                                                                        ? `/admin/tuotteet/${productId}/poista`
+                                                                        : `/varasto/tuotteet/${productId}/poista`
+                                                                    // `/varasto/tuotteet/${productId}/poista`
+                                                                }
+                                                                replace
+                                                                size="large"
+                                                                color="error"
+                                                                sx={{ marginY: 2 }}
+                                                            >
+                                                                Poista tuotteita
+                                                            </Button>
+                                                        </HasRole>
+                                                        <Box>
+                                                            <Outlet />
+                                                        </Box>
                                                     </>
                                                 )}
                                             </Grid>
@@ -211,8 +241,8 @@ function ProductDetails() {
 
                                                 <Typography variant="body2" color="text.secondary">
                                                     Varasto:{' '}
-                                                    {product.product_items
-                                                        .map((item) => item.storage.name)
+                                                    {product?.product_items
+                                                        ?.map((item) => item.storage.name)
                                                         .filter((name, index, self) => self.indexOf(name) === index)
                                                         .map((name) => (
                                                             <span key={name}>
@@ -265,9 +295,9 @@ function ProductDetails() {
                                                     // onClick={() => setQrScanOpen(true)}
                                                 >
                                                     {/* // TODO: support multiple barcodes */}
-                                                    {product?.product_items[0].barcode?.length > 0 && (
+                                                    {product?.product_items[0]?.barcode?.length > 0 && (
                                                         <Barcode
-                                                            value={product.product_items[0].barcode}
+                                                            value={product.product_items[0]?.barcode}
                                                             format="CODE39"
                                                             height={64}
                                                             fontSize={14}
@@ -281,32 +311,30 @@ function ProductDetails() {
                             </Grid>
                         </Grid>
                         <>
-                            {!location.pathname.includes('admin') ||
-                                (!location.pathname.includes('varasto') && (
-                                    <Box sx={{ mx: 2 }}>
-                                        {productsInSameCategory.results &&
-                                            productsInSameCategory.results.length > 1 && (
-                                                <>
-                                                    <Typography
-                                                        gutterBottom
-                                                        variant="h5"
-                                                        component="div"
-                                                        color="primary.main"
-                                                        sx={{ mt: '7rem' }}
-                                                    >
-                                                        Samankaltaisia tuotteita
-                                                    </Typography>
-                                                    <SimilarProductsCarousel
-                                                        currentId={Number(productId)}
-                                                        similarProducts={
-                                                            productsInSameCategory as unknown as SimilarProductCarouselProps['similarProducts']
-                                                        }
-                                                    />
-                                                </>
-                                            )}
-                                    </Box>
-                                ))}
-                            {location.pathname.includes('varasto') && (
+                            {!location.pathname.includes('admin') && !location.pathname.includes('varasto') && (
+                                <Box sx={{ mx: 2 }}>
+                                    {productsInSameCategory.results && productsInSameCategory.results.length > 1 && (
+                                        <>
+                                            <Typography
+                                                gutterBottom
+                                                variant="h5"
+                                                component="div"
+                                                color="primary.main"
+                                                sx={{ mt: '7rem' }}
+                                            >
+                                                Samankaltaisia tuotteita
+                                            </Typography>
+                                            <SimilarProductsCarousel
+                                                currentId={Number(productId)}
+                                                similarProducts={
+                                                    productsInSameCategory as unknown as SimilarProductCarouselProps['similarProducts']
+                                                }
+                                            />
+                                        </>
+                                    )}
+                                </Box>
+                            )}
+                            {location.pathname.includes('admin') && (
                                 // list of product_items, with their storage and barcode, and logs
                                 <Paper variant="outlined" sx={{ p: 5 }} color="primary">
                                     <Typography variant="h5" color="primary">

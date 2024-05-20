@@ -17,7 +17,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { Form, useSubmit } from 'react-router-dom';
+import { Form, useSubmit, useNavigation } from 'react-router-dom';
 import { type FieldValues, useFieldArray, useForm } from 'react-hook-form';
 import { useState } from 'react';
 // import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
@@ -107,7 +107,8 @@ export default function ModifyBikePacket({ createNewPacket }: CreateNewPacketInt
     const [, setSelectedModels] = useState<number[]>(models[0] ? [models[0].id] : []);
     const [selectedModel, setSelectedModel] = useState<number>(models[0] ? models[0].id : models[1]?.id || 0);
     const [renderDeleteBikePacket, setRenderDeleteBikePacket] = useState(false);
-
+    const navigation = useNavigation();
+    const isLoading = navigation.state === 'loading';
     // hook form functions
     const {
         handleSubmit,
@@ -115,7 +116,7 @@ export default function ModifyBikePacket({ createNewPacket }: CreateNewPacketInt
         register,
         watch,
         setValue,
-        formState: { errors },
+        formState: { errors, isSubmitting, isSubmitSuccessful },
     } = useForm<FormValues>({
         defaultValues: {
             packetDescription: createNewPacket ? '' : (packet.description as string),
@@ -204,7 +205,7 @@ export default function ModifyBikePacket({ createNewPacket }: CreateNewPacketInt
                              * Package name and description
                              */}
                             <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>Nimi:</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Nimi:</TableCell>
                                 <TableCell>
                                     <TextField
                                         // multiline
@@ -258,7 +259,7 @@ export default function ModifyBikePacket({ createNewPacket }: CreateNewPacketInt
                              */}
                             {fields.map((field, index) => (
                                 <TableRow key={field.id}>
-                                    <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat' }}>
+                                    <TableCell sx={{ fontWeight: 'bold' }}>
                                         <input
                                             type="hidden"
                                             {...register(`bikes.${index}.bike`, { required: 'Valitse pyörä' })}
@@ -316,9 +317,7 @@ export default function ModifyBikePacket({ createNewPacket }: CreateNewPacketInt
                              * Description
                              */}
                             <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold', fontFamily: 'Montserrat', border: '0' }}>
-                                    Kuvaus:
-                                </TableCell>
+                                <TableCell sx={{ fontWeight: 'bold', border: '0' }}>Kuvaus:</TableCell>
                                 <TableCell colSpan={3} sx={{ border: '0' }}>
                                     <TextField
                                         rows={2}
@@ -353,7 +352,11 @@ export default function ModifyBikePacket({ createNewPacket }: CreateNewPacketInt
                                 Poista tämä paketti
                             </Button>
                         )}
-                        <Button type="submit" sx={{ padding: '1rem' }}>
+                        <Button
+                            type="submit"
+                            sx={{ padding: '1rem' }}
+                            disabled={isLoading || isSubmitting || isSubmitSuccessful}
+                        >
                             Tallenna muutokset ja palaa listaan
                         </Button>
                     </Box>

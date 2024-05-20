@@ -59,7 +59,7 @@ function SearchWatch() {
                 ) : (
                     <HeroText
                         title="Tervetuloa hakuvahtiin!"
-                        subtext="Alla olevasta tekstikentästä voi lisätä itsellesi hakuvahdin. Hakuvahti lähettää sinulle sähköpostin, kun hakusanoja vastaava tuote lisätään järjestelmään"
+                        subtext="Alla olevasta tekstikentästä voi lisätä itsellesi hakuvahdin. Hakuvahti lähettää sinulle sähköpostin, kun hakusanoja vastaava tuote lisätään järjestelmään."
                     />
                 )}
             </Stack>
@@ -80,8 +80,12 @@ function SearchWatch() {
                                 value: 3,
                                 message: 'Hakusanan tulee olla vähintään kolme merkkiä pitkä',
                             },
+                            maxLength: {
+                                value: 50,
+                                message: 'Hakuvahti voi olla korkeintaan 50 merkkiä pitkä',
+                            },
                             pattern: {
-                                value: /(^([a-zA-ZåäöÅÄÖ]{3,}\s){1,}[a-zA-ZåäöÅÄÖ]{3,}$)|(^[a-zA-ZåäöÅÄÖ]{3,}$)/,
+                                value: /^([a-zA-ZåäöÅÄÖ\d"]{3,}\s){1,}[a-zA-ZåäöÅÄÖ\d"]{3,}$|^[a-zA-ZåäöÅÄÖ\d"]{3,}$/,
                                 message:
                                     'Hakusanat tulee erottaa toisistaan välilyönneillä ja koostua vähintään kolmesta kirjaimesta',
                             },

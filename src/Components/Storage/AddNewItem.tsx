@@ -102,7 +102,6 @@ function AddNewItem() {
     };
     const RemoveImage = (id: number) => {
         setFilelist((prevFileList) => prevFileList.filter((file, index) => index !== id));
-        setValue('pictures', []);
     };
     const handlePictureChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const pictureFileList = getValues('pictures');
@@ -146,7 +145,7 @@ function AddNewItem() {
                 <AlertBox
                     status="success"
                     text="Tuotteen luonti onnistui"
-                    redirectUrl="/varasto/tuotteet/"
+                    redirectUrl={location.pathname.includes('admin') ? '/admin/tuotteet/' : '/varasto/tuotteet/'}
                     timer={1000}
                 />
             )}

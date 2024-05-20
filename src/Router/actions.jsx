@@ -163,7 +163,7 @@ const contactAction = async ({ request }) => {
  */
 const orderEditAction = async ({ request, params }) => {
     const formData = await request.formData();
-
+    console.log(formData.get('orderId'));
     const submission = {
         id: formData.get('orderId'),
         recipient: formData.get('recipient'),
@@ -180,6 +180,24 @@ const orderEditAction = async ({ request, params }) => {
         return { type: 'orderupdate', status: true };
     }
     return { type: 'orderupdate', status: false };
+};
+const orderEditStatusAction = async ({ request, params }) => {
+    const formData = await request.formData();
+    const submission = {
+        id: formData.get('orderId'),
+        recipient: formData.get('recipient'),
+        recipient_phone_number: formData.get('recipient_phone_number'),
+        delivery_address: formData.get('deliveryAddress'),
+        status: formData.get('status'),
+        product_items: JSON.parse(formData.get('productItems')),
+    };
+
+    const response = await ordersApi.ordersUpdate(params.id, submission);
+
+    if (response.status === 202) {
+        return { type: 'orderstatusupdate', status: true };
+    }
+    return { type: 'orderstatusupdate', status: false };
 };
 
 // return redirect(`/varasto/tilaukset/${params.id}`);
@@ -235,7 +253,7 @@ const orderEditAction = async ({ request, params }) => {
 //
 // admin bing bings
 
-const adminLogOut = async ({ request }) => {
+const logOutAction = async ({ request }) => {
     if (request.method === 'POST') {
         await usersApi.usersLogoutCreate();
         return { type: 'logout', status: true };
@@ -320,13 +338,9 @@ const editProductAction = async (auth, setAuth, request, params) => {
  * Returns products to storage
  */
 const returnProductsAction = async ({ request, params }) => {
-    console.log('return of the product action');
     const formData = await request.formData();
-    const formDataObj = Object.fromEntries(formData);
     formData.get('amount');
-    console.log(formDataObj.amount, formDataObj.addId);
-    // todo add id
-    console.log(typeof formDataObj.amount, typeof formDataObj.addId);
+    // console.log(formDataObj.amount, formDataObj.addId);
 
     const response = await productsApi.productsReturnCreate(
         // parseInt(formData.get('addId')),
@@ -340,6 +354,22 @@ const returnProductsAction = async ({ request, params }) => {
         return { type: 'returnProduct', status: true };
     }
     return { type: 'returnProduct', status: false };
+};
+
+/*
+ * Retire products from storage
+ */
+const retireProductsAction = async ({ request, params }) => {
+    const formData = await request.formData();
+
+    const response = await productsApi.productsRetireCreate(params.id, {
+        amount: parseInt(formData.get('amount')),
+    });
+
+    if (response.status === 200) {
+        return { type: 'retireProduct', status: true };
+    }
+    return { type: 'retireProduct', status: false };
 };
 
 /*
@@ -433,20 +463,10 @@ const userEditAction = async ({ request, params }) => {
         phone_number: formData.get('phone_number'),
     };
 
-    // if formdata.get('groups') comes in as an empty array, keep it as an empty array.
-    // else get the values, split by comma (this creates an array), map the values and typecast them as numbers.
-    let selectedAuthGroups =
-        formData.get('groups') === ''
-            ? []
-            : formData
-                  .get('groups')
-                  .split(',')
-                  .map((group) => Number(group));
+    const selectedAuthGroup = { group: formData.get('group') };
 
     try {
-        const userPermissionsUpdateResponse = await usersApi.usersGroupsPermissionUpdate(params.userid, {
-            groups: selectedAuthGroups,
-        });
+        const userPermissionsUpdateResponse = await usersApi.usersGroupsUpdate(params.userid, selectedAuthGroup);
 
         const userInfoUpdateResponse = await usersApi.usersUpdate(params.userid, userInfo);
 
@@ -459,8 +479,12 @@ const userEditAction = async ({ request, params }) => {
 };
 
 const userDeleteAction = async ({ params }) => {
-    await usersApi.usersDestroy(params.userid);
-    return redirect('/admin/kayttajat');
+    try {
+        await usersApi.usersDestroy(params.userid);
+        return redirect('/admin/kayttajat');
+    } catch (err) {
+        return { type: 'userdelete', status: false };
+    }
 };
 
 const adminUserAddressEditAction = async ({ request, params }) => {
@@ -800,7 +824,7 @@ const confirmationAction = async ({ request }) => {
                 user: Number(formData.get('id')),
                 order_info: formData.get('orderInfo'),
                 delivery_required: formData.get('deliveryRequired'),
-                // delivery_date: formData.get('fetchDate'),
+                pickup_date: formData.get('fetchDate'),
                 // ^ uncomment when date works
                 status: 'Waiting',
             });
@@ -826,17 +850,30 @@ const confirmationAction = async ({ request }) => {
  */
 const bikeOrderAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await bikesApi.bikesRentalCreate({
-        contact_name: formData.get('contactPersonName'),
-        contact_phone_number: formData.get('contactPersonPhoneNumber'),
-        delivery_address: formData.get('deliveryAddress'),
-        start_date: formData.get('startDateTime'),
-        end_date: formData.get('endDateTime'),
-        bike_stock: JSON.parse(formData.get('selectedBikes')),
-        extra_info: formData.get('extraInfo'),
-        pickup: formData.get('pickup'),
-    });
-    return response.data || null;
+    if (formData.get('storageType') === 0) {
+        const response = await bikesApi.bikesRentalCreate({
+            contact_name: formData.get('contactPersonName'),
+            contact_phone_number: formData.get('contactPersonPhoneNumber'),
+            delivery_address: formData.get('deliveryAddress'),
+            start_date: formData.get('startDateTime'),
+            end_date: formData.get('endDateTime'),
+            bike_stock: JSON.parse(formData.get('selectedBikes')),
+            extra_info: formData.get('extraInfo'),
+        });
+        return response.data || null;
+    } else {
+        const response = await bikesApi.bikesRentalCreate({
+            contact_name: formData.get('contactPersonName'),
+            contact_phone_number: formData.get('contactPersonPhoneNumber'),
+            delivery_address: formData.get('deliveryAddress'),
+            start_date: formData.get('startDateTime'),
+            end_date: formData.get('endDateTime'),
+            bike_stock: JSON.parse(formData.get('selectedBikes')),
+            extra_info: formData.get('extraInfo'),
+            bike_trailer: formData.get('storageType'),
+        });
+        return response.data || null;
+    }
 };
 
 /**
@@ -851,7 +888,6 @@ const bikeOrderEditAction = async ({ request, params }) => {
         end_date: formData.get('endDate'),
         state: formData.get('state'),
         delivery_address: formData.get('deliveryAddress'),
-        pickup: formData.get('pickup'),
         contact_name: formData.get('contact'),
         contact_phone_number: formData.get('contactPhoneNumber'),
         extra_info: formData.get('extraInfo'),
@@ -881,7 +917,6 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
         color: data.get('bikeColorIdSelect'),
         frame_number: data.get('bikeFrameNumberTextField'),
         number: data.get('bikeNumberTextField'),
-        storage: data.get('bikeStorageIdSelect'),
         state: data.get('bikeStatusSelect'),
         package_only: packageOnly === null ? false : packageOnly, // from checkbox value seems to be 'on' or null
     };
@@ -900,7 +935,6 @@ const createNewBikeAction = async (auth, setAuth, request) => {
         color: data.get('bikeColorIdSelect'),
         frame_number: data.get('bikeFrameNumberTextField'),
         number: data.get('bikeNumberTextField'),
-        storage: data.get('bikeStorageIdSelect'),
         state: data.get('bikeStatusSelect'),
         package_only: packageOnly === null ? false : packageOnly, // from checkbox value seems to be 'on' or null
     };
@@ -1040,6 +1074,27 @@ const deletePacketAction = async (params) => {
     await updateBikesStockPacketOnlyFlag();
 
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
+};
+
+/**
+ * Delete existing bike trailer or create a new bike trailer
+ */
+const deleteCreateBikeTrailerAction = async ({ request }) => {
+    console.log(request);
+
+    const formData = await request.formData();
+    if (request.method === 'DELETE') {
+        const response = await bikesApi.bikesTrailersDestroy(formData.get('id'));
+        return response;
+    } else if (request.method === 'POST') {
+        const response = await bikesApi.bikesTrailersCreate({
+            register_number: formData.get('register_number'),
+            trailer_type: formData.get('trailer_type'),
+        });
+        return response;
+    }
+
+    return null;
 };
 
 /**
@@ -1304,17 +1359,33 @@ const searchWatchCreateAction = async ({ request }) => {
     return null;
 };
 
+const bikeUserEditAction = async ({ request, params }) => {
+    const formData = await request.formData();
+    try {
+        const response = await usersApi.usersBikeGroupsUpdate(params.id, { bike_group: formData.get('bike_group') });
+        if (response.status === 200) {
+            return response;
+        }
+    } catch (err) {
+        return err.request;
+    }
+    return response;
+};
+
 export {
+    bikeUserEditAction,
     deleteBikeOrderAction,
     userSignupAction,
     frontPageActions,
     contactAction,
     orderEditAction,
+    orderEditStatusAction,
     orderDeleteAction,
     storageCreateAction,
     storageEditAction,
     addProductAction,
     returnProductsAction,
+    retireProductsAction,
     editProductAction,
     storageDeleteAction,
     productsTransferAction,
@@ -1337,7 +1408,7 @@ export {
     activationAction,
     modifyBikeModelAction,
     deleteBikeAction,
-    adminLogOut,
+    logOutAction,
     modifyBikePacketAction,
     adminInboxAction,
     adminEmailRecipientsAction,
@@ -1353,4 +1424,5 @@ export {
     colorsManageAction,
     categoriesManageAction,
     searchWatchCreateAction,
+    deleteCreateBikeTrailerAction,
 };

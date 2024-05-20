@@ -63,7 +63,7 @@ function BikeThankYouModal({
                     <Typography variant="h5" component="h2">
                         Tilaus onnistui
                     </Typography>
-                    <Typography variant="h6">Vuokratut pyörät</Typography>
+                    <Typography variant="h6">Lainatut pyörät</Typography>
                     <List>
                         {/* "formValues.selectedBikes" has bikes in rent order as key:value pairs: key = bike ID, value = amount of bikes in storage. */}
                         {/* "bikes" has all the bikes in the bike database. render the bike types and amounts in the rent order */}
@@ -80,7 +80,7 @@ function BikeThankYouModal({
                             })
                         )}
                     </List>
-                    <Typography variant="h6">Vuokra-aika</Typography>
+                    <Typography variant="h6">Laina-aika</Typography>
                     <List>
                         <ListItem sx={{ my: 0, py: 0 }}>
                             {/* only render dd.mm.yyyy in the thank you msg */}

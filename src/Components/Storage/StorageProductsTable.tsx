@@ -1,14 +1,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useState, Fragment } from 'react';
+import { useState, Fragment, useEffect } from 'react';
 import {
     Form,
     Link,
     useLoaderData,
-    useRouteLoaderData,
     useSearchParams,
     createSearchParams,
     Outlet,
     useOutletContext,
+    useParams,
 } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
@@ -25,20 +25,18 @@ import {
     TableCell,
     Collapse,
     TableSortLabel,
-    Icon,
 } from '@mui/material';
 
 import ClearIcon from '@mui/icons-material/Clear';
 // import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 // import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import AddCircle from '@mui/icons-material/AddCircle';
 import SearchIcon from '@mui/icons-material/Search';
 
 import Pagination from '../Pagination';
 import StyledTableCell from '../StyledTableCell';
 import StyledTableRow from '../StyledTableRow';
 
-import type { rootLoader, storageProductsLoader } from '../../Router/loaders';
+import type { storageProductsLoader } from '../../Router/loaders';
 import { type ProductStorageResponse } from '../../api';
 
 interface Search {
@@ -55,7 +53,6 @@ function StorageProductsTable() {
     const [isOpen, setIsOpen] = useState<number>();
     const [searchParams, setSearchParams] = useSearchParams();
     const { products } = useLoaderData() as StorageProductsLoaderType;
-    const { categories } = useRouteLoaderData('root') as Awaited<ReturnType<typeof rootLoader>>;
     const { register, handleSubmit } = useForm({
         defaultValues: { searchString: searchParams.get('viivakoodi') },
     });
@@ -70,6 +67,10 @@ function StorageProductsTable() {
             });
         });
     };
+    let spotId = useParams();
+    useEffect(() => {
+        setIsOpen(Number(spotId.id));
+    }, [spotId]);
     return (
         <>
             <TableContainer component={Box} sx={{ mt: '3rem' }}>
@@ -154,22 +155,19 @@ function StorageProductsTable() {
                                             <Button
                                                 component={Link}
                                                 to={
-                                                    isOpen === index
+                                                    isOpen === product.id
                                                         ? `/varasto/tuotteet/?${searchParams.toString()}`
                                                         : `/varasto/tuotteet/${
                                                               product.id
                                                           }/toiminnot?${searchParams.toString()}`
                                                 }
                                                 replace
-                                                onClick={() => {
-                                                    isOpen === index ? setIsOpen(undefined) : setIsOpen(index);
-                                                }}
                                                 aria-label="expand row"
                                                 variant="outlined"
                                                 color="primary"
                                                 sx={{ paddingRight: 6, paddingLeft: 6 }}
                                             >
-                                                {isOpen === index ? 'Sulje' : 'Toiminnot'}
+                                                {isOpen === product.id ? 'Sulje' : 'Toiminnot'}
                                             </Button>
                                         </StyledTableCell>
                                         <StyledTableCell align="right">
@@ -206,9 +204,7 @@ function StorageProductsTable() {
                                         <StyledTableCell align="left">
                                             {product.product_items[0]?.shelf_id}
                                         </StyledTableCell>
-                                        <StyledTableCell align="right">
-                                            {categories ? product.category && categories[product?.category]?.name : ''}
-                                        </StyledTableCell>
+                                        <StyledTableCell align="right">{product.category_name}</StyledTableCell>
                                         <StyledTableCell align="right">
                                             {/* TODO: show most recent modified date of product_items. backend change needed? */}
                                             {new Date(product?.product_items[0]?.modified_date).toLocaleDateString(
@@ -228,7 +224,7 @@ function StorageProductsTable() {
                                         {/* TODO: fix styles, table row colors messed up after collapse was added */}
                                         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                                             {/* TODO: Outlet for product info, picture and return items to storage / new item functionality, when search is active */}
-                                            <Collapse in={isOpen === index} timeout="auto" unmountOnExit>
+                                            <Collapse in={isOpen === product.id} timeout="auto" unmountOnExit>
                                                 {/* <Collapse in={id ? product.id === +id : false} timeout="auto" unmountOnExit> // too slow */}
                                                 <Box
                                                     id="product-detail-indent-box"

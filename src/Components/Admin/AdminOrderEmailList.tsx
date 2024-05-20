@@ -20,16 +20,28 @@ interface RecipientProps {
     id: string;
 }
 
+interface RecipientsEmails {
+    recipientsEmails: string[];
+}
+
 function EmailRecipients() {
     const emailRecipients = useLoaderData() as Awaited<ReturnType<typeof emailRecipientsLoader>>;
 
+    const recipientsEmails = emailRecipients.map((r) => r.email);
+
     return (
         <Box>
-            {emailRecipients.map((recipient) => (
-                <Box id="email-recipient-component-container" key={recipient.id}>
-                    <EmailRecipient email={recipient.email} id={recipient.id.toString()} />
-                </Box>
-            ))}
+            {emailRecipients.length === 0 ? (
+                <Typography marginTop={'1rem'} marginBottom={'2rem'}>
+                    Ei lisättyjä osoitteita
+                </Typography>
+            ) : (
+                emailRecipients.map((recipient) => (
+                    <EmailRecipient key={recipient.id} email={recipient.email} id={recipient.id.toString()} />
+                ))
+            )}
+            <Divider sx={{ margin: '1rem 0 2rem 0' }} />
+            <AddRecipient recipientsEmails={recipientsEmails} />
         </Box>
     );
 }
@@ -43,37 +55,31 @@ function EmailRecipient({ email, id }: RecipientProps) {
     };
 
     return (
-        <Box>
-            <Box>
-                <Grid container sx={{ marginLeft: '2rem', padding: '1rem', justifyContent: 'flex-start' }}>
-                    <Grid item xs={6} sx={{ display: 'flex', alignItems: 'stretch' }}>
-                        <Typography
-                            variant="subtitle2"
-                            sx={{ marginRight: '1rem', display: 'flex', alignItems: 'center' }}
-                        >
-                            {email}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Box component={Form} onSubmit={handleSubmit(handleDel)}>
-                            <Button id="bulletin-del-btn" color="error" type="submit" value={id}>
-                                Poista
-                            </Button>
-                        </Box>
-                    </Grid>
-                </Grid>
-            </Box>
-        </Box>
+        <Grid container sx={{ marginLeft: '2rem', padding: '1rem', justifyContent: 'flex-start' }}>
+            <Grid item xs={6} sx={{ display: 'flex', alignItems: 'stretch' }}>
+                <Typography variant="subtitle2" sx={{ display: 'flex', alignItems: 'center' }}>
+                    {email}
+                </Typography>
+            </Grid>
+            <Grid item xs={6}>
+                <Box component={Form} onSubmit={handleSubmit(handleDel)}>
+                    <Button id="bulletin-del-btn" color="error" type="submit" value={id}>
+                        Poista
+                    </Button>
+                </Box>
+            </Grid>
+        </Grid>
     );
 }
 
-function AddRecipient() {
+function AddRecipient({ recipientsEmails }: RecipientsEmails) {
     const {
         register,
         reset,
         handleSubmit: createHandleSubmit,
-        formState: { isSubmitSuccessful, isDirty, errors: formErrors },
-    } = useForm({ mode: 'onTouched' });
+        formState: { isSubmitSuccessful, isDirty, errors: formErrors, isValid },
+    } = useForm({ mode: 'all' });
+
     const submit = useSubmit();
 
     const handleCreate = (data: any) => {
@@ -100,8 +106,13 @@ function AddRecipient() {
                             required: { value: true, message: 'Kirjoita listaan lisättävä sähköpostiosoite' },
                             minLength: { value: 5, message: 'Sähköpostiosoitteen on oltava vähintään 5 merkkiä' },
                             pattern: {
-                                value: /.+@turku.fi$|.+@edu.turku.fi$/,
+                                value: /^[\w\-\.åÅäÄöÖ]+@(edu\.)?turku\.fi$/,
                                 message: 'Sähköpostin on oltava muotoa @turku.fi tai @edu.turku.fi',
+                            },
+                            validate: (val: string) => {
+                                if (recipientsEmails.includes(val)) {
+                                    return 'Sähköposti on jo listalla';
+                                }
                             },
                         })}
                         error={!!formErrors.email}
@@ -109,7 +120,6 @@ function AddRecipient() {
                         disabled={isSubmitSuccessful}
                         required
                         inputProps={{ required: false }}
-                        sx={{ marginRight: '1rem' }}
                         fullWidth
                     />
 
@@ -117,14 +127,14 @@ function AddRecipient() {
                         <Grid item xs={11}>
                             <Button
                                 type="submit"
-                                disabled={isSubmitSuccessful || !isDirty}
+                                disabled={isSubmitSuccessful || !isDirty || !isValid}
                                 sx={{
                                     '&:hover': {
                                         backgroundColor: 'success.dark',
                                     },
                                 }}
                             >
-                                Lisää uusi
+                                Lisää
                             </Button>
                         </Grid>
                         <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -147,14 +157,14 @@ function AdminOrderEmailList() {
     return (
         <>
             {responseStatus?.type === 'emailrecipient' && !responseStatus?.status && (
-                <AlertBox text="Sähköpostin vastaanottajan tallennus epäonnistui." status="error" />
+                <AlertBox text="Sähköpostin vastaanottajan tallennus epäonnistui" status="error" timer={5000} />
             )}
             {responseStatus?.type === 'emailrecipient' && responseStatus?.status && (
-                <AlertBox text="Sähköpostin vastaanottaja tallennettu onnistuneesti" status="success" />
+                <AlertBox text="Sähköpostin vastaanottaja tallennettu" status="success" timer={5000} />
             )}
 
             {responseStatus?.type === 'emailrecipient-del' && responseStatus?.status && (
-                <AlertBox text="Sähköpostin vastaanottaja poistettu listalta" status="success" />
+                <AlertBox text="Sähköpostin vastaanottaja poistettu listalta" status="success" timer={5000} />
             )}
 
             <Container maxWidth="md">
@@ -166,8 +176,6 @@ function AdminOrderEmailList() {
                     />
                     <TypographyHeading text="Vastaanottajat" />
                     <EmailRecipients />
-                    <Divider sx={{ margin: '2rem 0 2rem 0' }} />
-                    <AddRecipient />
                 </Stack>
             </Container>
         </>

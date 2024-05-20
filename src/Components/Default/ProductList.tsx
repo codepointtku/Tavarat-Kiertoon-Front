@@ -1,6 +1,6 @@
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 
-import { Box, Divider, Grid, Typography } from '@mui/material';
+import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
 import type { productListLoader } from '../../Router/loaders';
 import TypographyHeading from '../TypographyHeading';
 import ProductCard from './ProductCard';
@@ -59,11 +59,29 @@ function ProductList() {
     const { results, count } = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
 
     return (
-        <>
+        <Stack>
             {results?.length ? (
-                <Grid container spacing={2}>
+                <Grid
+                    container
+                    rowSpacing={1}
+                    justifyContent="space-evenly"
+                    columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+                >
                     {results.map((product: any) => (
-                        <Grid item key={product.id} xs={13} sm={7} md={5} lg={4} xl={3}>
+                        <Grid
+                            item
+                            key={product.id}
+                            xs={1}
+                            sm={1}
+                            md={1}
+                            lg={1}
+                            xl={1}
+                            sx={{
+                                minWidth: 'max-content',
+                                display: 'flex',
+                                justifyContent: 'center',
+                            }}
+                        >
                             <ProductCard
                                 id={product.id}
                                 groupId={product.id}
@@ -72,7 +90,7 @@ function ProductList() {
                                 freeDescription={product.free_description}
                                 categoryName={product.category_name}
                                 storageName={product.storage_name}
-                                colorName={product.color_name}
+                                colors={product.colors}
                                 measurements={product.measurements}
                                 weight={product.weight}
                                 count={product.amount}
@@ -86,7 +104,7 @@ function ProductList() {
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Pagination count={count} itemsText="Tuotteita" />
             </Box>
-        </>
+        </Stack>
     );
 }
 

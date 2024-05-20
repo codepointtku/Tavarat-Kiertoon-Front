@@ -36,13 +36,11 @@ const rootLoader = async () => {
  * Get shoppingCart for logged in user
  */
 const shoppingCartLoader = async () => {
-    // TODO: why not combine these into one call?
-    const { data: cart } = await shoppingCartApi.shoppingCartRetrieve();
-    const { data: amountList } = await shoppingCartApi.shoppingCartAvailableAmountList();
-    // console.log('@shoppingCartLoader, cart.product_items:', cart?.product_items);
-    // console.log('@shoppingCartLoader, cart:', cart);
+    const [{ data: cart }, { data: amountList }] = await Promise.all([
+        await shoppingCartApi.shoppingCartRetrieve(),
+        await shoppingCartApi.shoppingCartAvailableAmountList(),
+    ]);
 
-    // /* eslint-disable no-shadow */
     // // // auth check for future
     // // if (auth.user_group === true){...}
 
@@ -264,7 +262,7 @@ const userEditLoader = async ({ params }) => {
         usersApi.usersRetrieve(params.userid),
         usersApi.usersGroupsList(),
     ]);
-
+    userAuthGroups.push({ id: 0, name: 'deactive' });
     return { userInfo, userAuthGroups };
 };
 
@@ -329,8 +327,9 @@ const gigaLoader = async () => {
  * @returns
  */
 const bikesDefaultLoader = async (auth, setAuth) => {
-    const { data } = await bikesApi.bikesList();
-    return data;
+    //const { data } = await bikesApi.bikesList();
+    const [{ data: loaderData }, { data: colors }] = await Promise.all([bikesApi.bikesList(), colorsApi.colorsList()]);
+    return { loaderData, colors };
 };
 
 /**
@@ -354,7 +353,7 @@ const bikeRentalLoader = async (request, auth, setAuth) => {
         url.searchParams.get('jarjesta') || null,
         url.searchParams.get('sivu') || 1,
         url.searchParams.get('sivukoko') || 25,
-        url.searchParams.getAll('suodata') || null 
+        url.searchParams.getAll('suodata') || null
     );
     return data;
 };
@@ -421,13 +420,12 @@ const createBikePacketLoader = async (auth, setAuth, params) => {
  * @returns
  */
 const modifyBikeLoader = async (auth, setAuth, params) => {
-    const [{ data: bikeData }, { data: bikeModelsData }, { data: storagesData }, { data: colors }] = await Promise.all([
+    const [{ data: bikeData }, { data: bikeModelsData }, { data: colors }] = await Promise.all([
         bikesApi.bikesStockRetrieve(params.id),
         bikesApi.bikesModelsList(),
-        storagesApi.storagesList(),
         colorsApi.colorsList(),
     ]);
-    return { bikeData, bikeModelsData, storagesData, colors };
+    return { bikeData, bikeModelsData, colors };
 };
 
 /**
@@ -435,9 +433,8 @@ const modifyBikeLoader = async (auth, setAuth, params) => {
  * @returns
  */
 const createNewBikeLoader = async (auth, setAuth) => {
-    const [{ data: bikeModelsData }, { data: storagesData }, { data: colors }] = await Promise.all([
+    const [{ data: bikeModelsData }, { data: colors }] = await Promise.all([
         bikesApi.bikesModelsList(),
-        storagesApi.storagesList(),
         colorsApi.colorsList(),
     ]);
     // Empty bike to show in the page before information is added
@@ -447,11 +444,16 @@ const createNewBikeLoader = async (auth, setAuth) => {
         number: '',
         package_only: false,
         state: 'AVAILABLE',
-        storage: '',
     };
-    return { bikeData, bikeModelsData, storagesData, colors };
+    return { bikeData, bikeModelsData, colors };
 };
 
+// Get all bike trailers
+const bikeTrailersLoader = async (auth, setAuth) => {
+    const { data } = await bikesApi.bikesTrailersList();
+    // console.log(data)
+    return data;
+};
 /**
  * Get ALL Bike Models
  *
@@ -558,7 +560,7 @@ const adminInboxLoader = async ({ request }) => {
     // const status = statusMap[searchParams.get('tila')] || null;
 
     // const { data: messages } = await contactFormsApi.contactFormsList(null, searchParams.get('sivu'), null, status);
-    const { data: messages } = await contactFormsApi.contactFormsList(null, null, null, 'Not read');
+    const { data: messages } = await contactFormsApi.contactFormsList();
 
     return messages;
 };
@@ -613,7 +615,36 @@ const userInfoLoader = async (request) => {
     return { userInfo, userOrders };
 };
 
+const bikeUserLoader = async ({ request }) => {
+    try {
+        const url = new URL(request.url);
+        console.log(url);
+        const { data } = await usersApi.usersBikeUsersList(
+            // url.searchParams.get('jarjesta') || null,
+            url.searchParams.get('suodata') || null,
+            null,
+            url.searchParams.get('sivu') || 1,
+            url.searchParams.get('sivukoko') || 25
+        );
+        console.log(data);
+        return data;
+    } catch {
+        return null;
+    }
+};
+
+const bikeUserEditLoader = async ({ params }) => {
+    const [{ data: bikeUserInfo }, { data: userAuthGroups }] = await Promise.all([
+        usersApi.usersBikeGroupsRetrieve(params.id),
+        usersApi.usersGroupsList(),
+    ]);
+    userAuthGroups.push({ id: 0, name: 'no_bicycle_group' });
+    return { bikeUserInfo, userAuthGroups };
+};
+
 export {
+    bikeUserEditLoader,
+    bikeUserLoader,
     bikesPacketLoader,
     rootLoader,
     productListLoader,
@@ -658,4 +689,5 @@ export {
     colorsLoader,
     categoriesManageLoader,
     gigaLoader,
+    bikeTrailersLoader,
 };

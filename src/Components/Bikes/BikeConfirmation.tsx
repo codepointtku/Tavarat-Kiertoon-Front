@@ -158,20 +158,6 @@ export default function BikeConfirmation({
                             />
                         )}
                     />
-                    <Controller
-                        name="pickup"
-                        control={control}
-                        render={({ field: { onChange, onBlur, value } }) => (
-                            <FormGroup>
-                                <Box>
-                                    <FormControlLabel
-                                        control={<Checkbox checked={value} onChange={onChange} onBlur={onBlur} />}
-                                        label="Tulen noutamaan itse"
-                                    />
-                                </Box>
-                            </FormGroup>
-                        )}
-                    />
                 </Stack>
                 <Stack flexDirection="row" gap={2}>
                     <Controller
@@ -212,7 +198,13 @@ export default function BikeConfirmation({
                     name="extraInfo"
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                        <TextField label="Lisätiedot" onChange={onChange} value={value} onBlur={onBlur} multiline />
+                        <TextField
+                            label="Lisätiedot (esim. pyyntö poistaa polkimet)"
+                            onChange={onChange}
+                            value={value}
+                            onBlur={onBlur}
+                            multiline
+                        />
                     )}
                 />
                 <Stack>
@@ -222,9 +214,43 @@ export default function BikeConfirmation({
                                 <Typography>Opastukset</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                                <Typography>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus
-                                    ex, sit amet blandit leo lobortis eget.
+                                <Typography component="li">
+                                    Ole sovittuna aikana vastassa kuljettajaa, tai sovi, että joku toinen henkilö on
+                                    vastassa.
+                                </Typography>
+                                <Typography component="li">
+                                    Mikäli pyörissä ilmenee huoltotarvetta kesken laina-ajan, soita Antti Pikkuvirta p.
+                                    xxx xxxxx
+                                </Typography>
+                                <Typography component="li">
+                                    Lasten pyörät ovat käsijarrullisia. Ennen pyörän käyttöönottoa varmista ryhmän
+                                    kanssa seuraavat asiat:{' '}
+                                    <Typography component="ul">
+                                        - Kokeillaan yhdessä jarruja (taluta pyörää ja jarruta). Opetellaan käyttämään
+                                        joko molempia käsijarruja yhtä aikaa tai pelkästään takajarrua
+                                        (oikeanpuoleinen). Testatkaa yhdessä, kumpi on takajarru ja kokeilkaa taluttaen
+                                        näiden jarrujen eroavaisuuksia.
+                                    </Typography>
+                                    <Typography component="ul">
+                                        - “Jaloista vauhti, käsistä jarru”. Käsijarrulliset pyörät helpottavat ja
+                                        tekevät pyöräilyn opettelusta turvallisempaa.
+                                    </Typography>
+                                    <Typography component="ul">
+                                        - Varmista, että kaikilla on kypärä turvallisesti päässä: Kypärä peittää otsan,
+                                        kypärä ei heilu päässä.
+                                    </Typography>{' '}
+                                    <Typography component="ul">
+                                        - Hämärän aikaan pyöräillessä muista käyttää sekä etu- että takavaloa, jotka
+                                        ovat lakisääteiset varusteet pyörässä.
+                                    </Typography>
+                                    <Typography component="ul">
+                                        - Satula on yleensä sopivalla kohdalla, kun se ylettyy suoliluun harjanteeseen
+                                        pyörän vieressä seisoessa.
+                                    </Typography>
+                                </Typography>
+                                <Typography component="li">
+                                    Jos haluat vinkkejä tai materiaalia pyöräilyyn liittyvien erilaisten taitojen
+                                    harjoitteluun, voit olla yhteydessä anna-kaisa.montonen@turku.fi
                                 </Typography>
                             </AccordionDetails>
                         </Accordion>
@@ -233,9 +259,25 @@ export default function BikeConfirmation({
                                 <Typography>Käyttöehdot ja vastuut</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                                <Typography>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus
-                                    ex, sit amet blandit leo lobortis eget.
+                                <Typography component="li">
+                                    Vastaanottava koulu/päiväkoti sitoutuu käsittelemään ja säilyttämään pyöriä
+                                    normaalia varovaisuutta noudattaen. Myös kypäriä täytyy käsitellä huolella, eli
+                                    välttää niiden putoamista kovalle alustalle.
+                                </Typography>
+                                <Typography component="li">
+                                    Lainattuja välineitä ei saa jättää valvomatta tai lukitsematta.
+                                </Typography>
+                                <Typography component="li">
+                                    Mikäli pyörä tai muu varuste varastetaan tai rikkoutuu, tulee tästä ilmoittaa
+                                    viipymättä työpisteen työnjohtajalle xxxxxxx
+                                </Typography>
+                                <Typography component="li">
+                                    Muksubussin lainaaja on velvollinen käymään läpi mukana tulevat kuvalliset
+                                    käyttöohjeet sekä opastamaan myös muita käyttäjiä tekemään näin.
+                                </Typography>
+                                <Typography component="li">
+                                    Kaikilla välineitä käyttävillä aikuisilla täytyy olla tiedossaan nämä vastuut ja
+                                    käyttöehdot.
                                 </Typography>
                             </AccordionDetails>
                         </Accordion>

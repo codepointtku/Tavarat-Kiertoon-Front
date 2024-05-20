@@ -17,7 +17,7 @@ function InstructionCard({ topic, subheader, linkURL, icon: Icon, img, imgAlt })
                     title={topic}
                     titleTypographyProps={{ variant: 'h5' }}
                     subheader={subheader}
-                    subheaderTypographyProps={{ variant: 'body1' }}
+                    subheaderTypographyProps={{ variant: 'body1', maxWidth: 205 }}
                 />
                 <CardMedia component="img" height="200" image={img} alt={imgAlt} />
             </CardActionArea>

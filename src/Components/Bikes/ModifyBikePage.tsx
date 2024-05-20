@@ -13,8 +13,8 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import type { BikeInterface, BikeModelInterface, StorageInterface, ColorInterface } from './Bikes';
-import { Form, Link, useSubmit } from 'react-router-dom';
+import type { BikeModelInterface, ColorInterface } from './Bikes';
+import { Form, Link, useSubmit, useNavigation } from 'react-router-dom';
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
 import DeleteBikeModal from './DeleteBikeModal';
@@ -24,13 +24,23 @@ interface ModifyBikePageInterface {
     createNewBike: boolean;
 }
 
+interface ModifyBikeInterface {
+    bike: BikeModelInterface;
+    created_at: string;
+    frame_number: string;
+    id: number;
+    number: string;
+    package_only: boolean;
+    state: string; // "AVAILABLE" | "MAINTENANCE" | "RENTED" | "RETIRED"
+    color: ColorInterface;
+}
+
 /**
  * ModifyBikePage
  * View that allows user to modify bike info or create a new bike.
  * LoaderData:
  * - bikeData : data for current bike
  * - bikeModelsData[] : list of bike models in database
- * - storagesData[] : list of all storage places in database
  * - colors: ColorInterface[] : list of colors for the bike
  *
  * @param createNewBike boolean : true = creates a new bike : false = modifies an existing bike
@@ -41,29 +51,30 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
     const [renderDeleteBikeModal, setRenderDeleteBikeModal] = useState(false);
 
     // get loader data
-    const { bikeData, bikeModelsData, storagesData, colors } = useLoaderData() as {
-        bikeData: BikeInterface;
+    const { bikeData, bikeModelsData, colors } = useLoaderData() as {
+        bikeData: ModifyBikeInterface;
         bikeModelsData: BikeModelInterface[];
-        storagesData: StorageInterface[];
         colors: ColorInterface[];
     };
-
+    const navigation = useNavigation();
+    const isLoading = navigation.state === 'loading';
     // hook form functions and default values
-    const { formState, handleSubmit, register, watch } = useForm({
+    const {
+        formState: { errors, isSubmitting, isSubmitSuccessful },
+        handleSubmit,
+        register,
+        watch,
+    } = useForm({
         mode: 'onTouched',
         defaultValues: {
             bikeModelIdSelect: createNewBike ? '' : bikeData.bike.id,
-            bikeStorageIdSelect: createNewBike ? '' : bikeData.storage.id,
             bikeFrameNumberTextField: createNewBike ? '' : bikeData.frame_number,
             bikeNumberTextField: createNewBike ? '' : bikeData.number,
             bikeStatusSelect: createNewBike ? 'AVAILABLE' : bikeData.state,
-            bikeColorIdSelect: createNewBike ? 1 : bikeData.color,
+            bikeColorIdSelect: createNewBike ? 1 : bikeData.color.id,
             bikePackageOnlyCheckBox: createNewBike ? false : bikeData.package_only,
         },
     });
-
-    // error messages
-    const { errors } = formState;
 
     // possible statuses for a bike
     const currentBikeStatus = ['AVAILABLE', 'MAINTENANCE', 'RENTED', 'RETIRED'];
@@ -311,62 +322,6 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                     </TableRow>
                                 </TableBody>
                             </Table>
-
-                            {/*
-                             * Bike Storage information
-                             */}
-                            <Table aria-label="customized table">
-                                <TableBody>
-                                    <TableRow>
-                                        <TableCell sx={{ fontWeight: 'bold', width: '35%' }}>Varaston nimi:</TableCell>
-                                        <TableCell>
-                                            {
-                                                storagesData.find(
-                                                    (storage) => storage.id === (watch('bikeStorageIdSelect') as number)
-                                                )?.name
-                                            }
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            <TextField
-                                                id="bike-select-storage-id"
-                                                select
-                                                label="Vaihda varasto"
-                                                {...register('bikeStorageIdSelect', {
-                                                    required: 'Pakollinen tieto puuttuu',
-                                                })}
-                                                value={watch('bikeStorageIdSelect')}
-                                                fullWidth
-                                                inputProps={{ required: false }}
-                                                required
-                                                color={errors.bikeStorageIdSelect ? 'error' : 'primary'}
-                                                error={!!errors.bikeStorageIdSelect}
-                                                helperText={errors.bikeStorageIdSelect?.message || ' '}
-                                                sx={{ marginBottom: '-1rem' }}
-                                            >
-                                                {storagesData?.map((storage) => {
-                                                    return (
-                                                        <MenuItem key={storage.id} value={storage.id}>
-                                                            {storage.name}
-                                                        </MenuItem>
-                                                    );
-                                                })}
-                                            </TextField>
-                                            {/*  */}
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell sx={{ fontWeight: 'bold', border: 0 }}>Varaston osoite</TableCell>
-                                        <TableCell sx={{ border: 0 }}>
-                                            {
-                                                storagesData.find(
-                                                    (storage) => storage.id === (watch('bikeStorageIdSelect') as number)
-                                                )?.address
-                                            }
-                                        </TableCell>
-                                        <TableCell sx={{ border: 0 }}></TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
                         </Box>
                     </Box>
                     <Box
@@ -385,7 +340,11 @@ export default function ModifyBikePage({ createNewBike }: ModifyBikePageInterfac
                                 Poista tämä pyörä
                             </Button>
                         )}
-                        <Button type="submit" sx={{ padding: '1rem' }}>
+                        <Button
+                            type="submit"
+                            disabled={isLoading || isSubmitting || isSubmitSuccessful}
+                            sx={{ padding: '1rem' }}
+                        >
                             Tallenna muutokset ja palaa listaan
                         </Button>
                     </Box>
