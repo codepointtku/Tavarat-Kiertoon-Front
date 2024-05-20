@@ -69,8 +69,6 @@ function StorageProductsTable() {
     };
     let spotId = useParams();
     useEffect(() => {
-        console.log(Number(spotId.id));
-        console.log(isOpen);
         setIsOpen(Number(spotId.id));
     }, [spotId]);
     return (
