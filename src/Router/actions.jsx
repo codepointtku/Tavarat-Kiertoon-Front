@@ -824,7 +824,7 @@ const confirmationAction = async ({ request }) => {
                 user: Number(formData.get('id')),
                 order_info: formData.get('orderInfo'),
                 delivery_required: formData.get('deliveryRequired'),
-                // delivery_date: formData.get('fetchDate'),
+                pickup_date: formData.get('fetchDate'),
                 // ^ uncomment when date works
                 status: 'Waiting',
             });

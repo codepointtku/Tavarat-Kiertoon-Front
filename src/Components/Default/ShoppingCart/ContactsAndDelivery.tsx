@@ -289,6 +289,7 @@ function ContactsAndDelivery() {
                             {...register('recipient', {
                                 // recipient with autofill: user.firstname + a string of one character (space, blank) + user.lastname,
                                 // which are both hard capped @ 50 characters @ signup forms
+                                required: { value: true, message: 'Vastaanottajan nimi on pakollinen' },
                                 maxLength: { value: 101, message: 'Sisältö on liian pitkä' },
                             })}
                             error={!!errors.recipient}
@@ -421,7 +422,7 @@ function ContactsAndDelivery() {
                                                 required: 'Noutoa ei voi valita tilauspäiväksi.',
                                                 validate: (dateString) => {
                                                     const date = parse(String(dateString), 'd.M.yyyy', new Date());
-                                                    return disableDate(date);
+                                                    return !disableDate(date);
                                                 },
                                                 pattern: {
                                                     value: /^([1-9]|0[1-9]|[12][0-9]|3[01])[-.]([1-9]|0[1-9]|1[012])[-.](19|20)\d\d$/,
