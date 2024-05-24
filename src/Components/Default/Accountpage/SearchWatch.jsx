@@ -59,7 +59,7 @@ function SearchWatch() {
                 ) : (
                     <HeroText
                         title="Tervetuloa hakuvahtiin!"
-                        subtext="Alla olevasta tekstikentästä voi lisätä itsellesi hakuvahdin. Hakuvahti lähettää sinulle sähköpostin, kun hakusanoja vastaava tuote lisätään järjestelmään"
+                        subtext="Alla olevasta tekstikentästä voi lisätä itsellesi hakuvahdin. Hakuvahti lähettää sinulle sähköpostin, kun hakusanoja vastaava tuote lisätään järjestelmään."
                     />
                 )}
             </Stack>

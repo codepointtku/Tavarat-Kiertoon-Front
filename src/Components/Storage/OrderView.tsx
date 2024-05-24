@@ -98,7 +98,11 @@ function OrderView() {
     const onSubmit = async (data: FieldValues) => {
         const productItemlist: number[] = [];
         productRenderItems.map((item) => {
-            productItemlist.push(item[0].id);
+            item.map((prod) => {
+                productItemlist.push(prod.id);
+                return null;
+            });
+            return null;
         });
         await submit(
             {
@@ -119,7 +123,11 @@ function OrderView() {
             // if order is not waiting, change status to processing, else don't change status, only navigate to pdf view
             const productItemlist: number[] = [];
             productRenderItems.map((item) => {
-                productItemlist.push(item[0].id);
+                item.map((prod) => {
+                    productItemlist.push(prod.id);
+                    return null;
+                });
+                return null;
             });
             await submit(
                 {

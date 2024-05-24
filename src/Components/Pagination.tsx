@@ -13,11 +13,9 @@ function Pagination({ count, itemsText }: { count?: number; itemsText?: string }
         // return back to top of page
         // window.scrollTo(0, 0);
         setSearchParams((prevParams) => {
-            return createSearchParams({
-                ...Object.fromEntries(prevParams.entries()),
-                sivu: (newPage + 1).toString(),
-                sivukoko: rowsPerPage.toString(),
-            });
+            prevParams.set('sivu', (newPage + 1).toString());
+            prevParams.set('sivukoko', rowsPerPage.toString());
+            return createSearchParams(prevParams);
         });
     };
 
@@ -26,11 +24,9 @@ function Pagination({ count, itemsText }: { count?: number; itemsText?: string }
         setRowsPerPage(newRowsPerPage);
         setPage(1);
         setSearchParams((prevParams) => {
-            return createSearchParams({
-                ...Object.fromEntries(prevParams.entries()),
-                sivu: '1',
-                sivukoko: newRowsPerPage.toString(),
-            });
+            prevParams.set('sivu', '1');
+            prevParams.set('sivukoko', newRowsPerPage.toString());
+            return createSearchParams(prevParams);
         });
     };
 

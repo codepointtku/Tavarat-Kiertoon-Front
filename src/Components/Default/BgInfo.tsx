@@ -12,7 +12,7 @@ function ContentText() {
             <Box sx={{ p: 2 }}>
                 <Typography variant="body2">
                     Tavarat kiertoon – kierrätysjärjestelmän taustalla on Turun kaupungin strategian mukainen kestävä
-                    kehitys. Turun kaupungin tavarat kiertoon- järjestelmä on toiminut vuodesta 2015 lähtien. Vuonna
+                    kehitys. Turun kaupungin Tavarat Kiertoon -järjestelmä on toiminut vuodesta 2015 lähtien. Vuonna
                     2015 käyttöön otetun tilausjärjestelmän ohjelmisto vanhenee 2024, jonka vuoksi Turun kaupungin
                     Työpisteen tuotanto aloitti uuden tilausjärjestelmän suunnittelun ja tekemisen vuonna 2023.
                 </Typography>
@@ -21,7 +21,7 @@ function ContentText() {
                 <Typography variant="body2">
                     Tavarat kiertoon- tilausjärjestelmä on tehty kokonaan uusiksi 2024 Työpisteen tuotannon Codepoint-
                     ryhmän toimesta. Irtaimiston kuljetuksesta ja varastoinnista vastaa Turun kaupungin Työpisteen
-                    tuotanto. Tavarat kiertoon- järjestelmän kalusteita hyödyntäen ja ehostaen Turun kaupunki on saanut
+                    tuotanto. Tavarat Kiertoon- järjestelmän kalusteita hyödyntäen ja ehostaen Turun kaupunki on saanut
                     sisustettua mm. uuden Aunelan kirjaston 2020, Vasaramäen kirjaston 2021 ja monia muita kaupungin
                     tiloja.
                 </Typography>

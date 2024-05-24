@@ -488,6 +488,10 @@ function Routes() {
                                             element: <OrdersHistory />,
                                         },
                                         {
+                                            path: 'tilaushistoria/:id',
+                                            element: <OrderPage />,
+                                        },
+                                        {
                                             path: 'hakuvahti',
                                             element: <SearchWatch />,
                                             loader: searchWatchLoader,
