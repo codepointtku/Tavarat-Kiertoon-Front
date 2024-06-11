@@ -1,50 +1,41 @@
-import { useLoaderData, useNavigation, useActionData } from 'react-router';
-import { type productItemsReturnLoader } from '../../Router/loaders';
+import { useNavigation, useNavigate } from 'react-router';
 import { useForm, type FieldValues } from 'react-hook-form';
-import { Form, useSubmit } from 'react-router-dom';
+import { Form } from 'react-router-dom';
 import { Button, TextField, Typography } from '@mui/material';
-import { type returnProductsAction } from '../../Router/actions';
-import AlertBox from '../AlertBox';
 import { useProduct } from './StorageProductsTable';
 import axios from 'axios';
-
-function ProductsReturnForm() {
+import apiCall from '../../Utils/apiCall';
+import { useContext } from 'react';
+import AuthContext from '../../Context/AuthContext';
+import { productsApi } from '../../api';
+function ProductsAddForm() {
     const navigation = useNavigation();
     //  // custom hook for accessing the context value and getting nice typings, recommended by react-router-dom docs:
     const { product } = useProduct();
-    // const {
-    //     name,
-    //     free_description,
-    //     amount,
-    //     measurements,
-    //     weight,
-    //     colors,
-    //     product_items,
-    //     pictures,
-    //     price,
-    //     // category_name,
-    //     category,
 
-    // } = product;
     const {
         register,
         formState: { errors },
         reset,
         getValues,
+        handleSubmit,
     } = useForm({ mode: 'onTouched' });
 
-    const onSubmit = (event) => {
-        event.preventDefault();
+    const { auth, setAuth } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const onSubmit = async () => {
         const { id } = product;
-        const amount = getValues('amount');
-        axios.post(`products/${id}/add/`, { amount: amount });
+        const addamount = getValues('amount');
+        console.log(addamount);
+        productsApi.productsAddCreate(id, { amount: addamount });
+        navigate(`/varasto/tuotteet/${id}/toiminnot`);
         reset();
     };
 
     return (
         <>
             <Typography variant="subtitle1">Lisättävät tuotteet:</Typography>
-            <Form>
+            <Form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     {...register('amount', {
                         required: { value: true, message: 'Syötä määrä' },
@@ -56,7 +47,7 @@ function ProductsReturnForm() {
                     helperText={errors?.amount?.message?.toString() || 'Syötä varastolle lisättävä määrä'}
                 />
                 <Button
-                    onClick={onSubmit}
+                    type="submit"
                     size="large"
                     sx={{ marginLeft: 1, marginY: 0.6 }}
                     disabled={navigation.state === 'loading' || navigation.state === 'submitting'}
@@ -68,4 +59,4 @@ function ProductsReturnForm() {
     );
 }
 
-export default ProductsReturnForm;
+export default ProductsAddForm;
