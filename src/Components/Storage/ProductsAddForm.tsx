@@ -28,8 +28,8 @@ function ProductsAddForm() {
         const addamount = getValues('amount');
         console.log(addamount);
         productsApi.productsAddCreate(id, { amount: addamount });
-        navigate(`/varasto/tuotteet/${id}/toiminnot`);
         reset();
+        navigate(`/varasto/tuotteet/${id}/toiminnot`);
     };
 
     return (
