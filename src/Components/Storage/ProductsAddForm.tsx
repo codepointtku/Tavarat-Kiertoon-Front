@@ -29,7 +29,7 @@ function ProductsAddForm() {
         console.log(addamount);
         productsApi.productsAddCreate(id, { amount: addamount });
         reset();
-        navigate(`/varasto/tuotteet/${id}/toiminnot`);
+        navigate(`/varasto/tuotteet/${id}/toiminnot`, { replace: true });
     };
 
     return (
