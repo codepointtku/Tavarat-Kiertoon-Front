@@ -1,13 +1,12 @@
 import { useNavigation, useNavigate } from 'react-router';
-import { useForm, type FieldValues } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Form } from 'react-router-dom';
 import { Button, TextField, Typography } from '@mui/material';
 import { useProduct } from './StorageProductsTable';
-import axios from 'axios';
-import apiCall from '../../Utils/apiCall';
 import { useContext } from 'react';
 import AuthContext from '../../Context/AuthContext';
 import { productsApi } from '../../api';
+import { type ProductStorageResponse } from '../../api';
 function ProductsAddForm() {
     const navigation = useNavigation();
     //  // custom hook for accessing the context value and getting nice typings, recommended by react-router-dom docs:
@@ -24,7 +23,7 @@ function ProductsAddForm() {
     const { auth, setAuth } = useContext(AuthContext);
     const navigate = useNavigate();
     const onSubmit = async () => {
-        const { id } = product;
+        const { id } = product as ProductStorageResponse;
         const addamount = getValues('amount');
         console.log(addamount);
         productsApi.productsAddCreate(id, { amount: addamount });
