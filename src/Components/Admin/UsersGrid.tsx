@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { useLoaderData } from 'react-router';
 
 import { Link } from 'react-router-dom';
@@ -19,15 +19,34 @@ import TypographyTitle from '../TypographyTitle';
 
 import type { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import type { usersListLoader } from '../../Router/loaders';
+import { UserFullResponseSchema, usersApi } from '../../api';
 
 function UsersGrid() {
-    const { count, next, previous, results } = useLoaderData() as Awaited<ReturnType<typeof usersListLoader>>;
+    //const { count, next, previous, results } = useLoaderData() as Awaited<ReturnType<typeof usersListLoader>>;
 
-    const pageSize = 10; // page_size @ BE: 10
-    const pageCount = Math.ceil(count! / pageSize);
+    const [rowData, setRowData] = useState<UserFullResponseSchema[]>([]);
+    const [pageSize, setPageSize] = useState(25); // page_size @ BE: 10
+    const [totalAmount, setTotalAmount] = useState(0);
+    const [page, setPage] = useState(1);
+    const [paginationModel, setPaginationModel] = useState({
+        page: 1,
+        pageSize: 25,
+    });
 
-    const [rowCountState, setRowCountState] = React.useState(pageCount);
-    React.useEffect(() => {
+    const fetchData = async (page: number, pageSize: number) => {
+        const { data: users } = await usersApi.usersList(undefined, undefined, undefined, page + 1, pageSize);
+        const results = users.results !== undefined ? users.results : [];
+        setRowData(results);
+        setTotalAmount(users.count !== undefined ? users.count : 0);
+    };
+    useEffect(() => {
+        fetchData(paginationModel.page, paginationModel.pageSize);
+    }, []);
+    const pageCount = Math.ceil(totalAmount! / pageSize);
+
+    const [rowCountState, setRowCountState] = useState(pageCount);
+
+    useEffect(() => {
         setRowCountState((prevRowCountState) => (pageCount !== undefined ? pageCount : prevRowCountState));
     }, [pageCount, setRowCountState]);
     const groupNames: { [key: string]: string } = {
@@ -240,23 +259,59 @@ function UsersGrid() {
         aggregationFunctionLabelSize: 'koko',
     };
 
-    if (!results) return null;
-
+    if (!rowData) return null;
     const GridX = () => {
         return (
             <div style={{ height: 500 }}>
                 <DataGrid
                     // paginationMode={'server'}
                     // rowCount={pageCount}
-                    rowCount={rowCountState}
-                    rows={results}
+                    rowCount={totalAmount}
+                    rows={rowData}
                     columns={columns}
+                    sortingMode="server"
+                    filterMode="server"
+                    paginationMode="server"
+                    pagination
+                    paginationModel={paginationModel}
+                    onPaginationModelChange={async (newPaginationModel) => {
+                        // fetch data from server
+                        setPaginationModel(newPaginationModel);
+                        const { data: users } = await usersApi.usersList(
+                            undefined,
+                            undefined,
+                            undefined,
+                            newPaginationModel.page + 1,
+                            newPaginationModel.pageSize
+                        );
+                        setRowData(users.results !== undefined ? users.results : []);
+                    }}
+                    onSortModelChange={async (newSortModel) => {
+                        console.log(newSortModel);
+                    }}
+                    onFilterModelChange={async (newFilterModel) => {
+                        // fetch data from server
+                        console.log(newFilterModel);
+                        setPaginationModel({
+                            page: 1,
+                            pageSize: paginationModel.pageSize,
+                        });
+                        const { data: users } = await usersApi.usersList(
+                            undefined,
+                            undefined,
+                            undefined,
+                            1,
+                            paginationModel.pageSize,
+                            newFilterModel.quickFilterValues ? newFilterModel.quickFilterValues[0] : undefined
+                        );
+                        setRowData(users.results !== undefined ? users.results : []);
+                    }}
                     slots={{
                         toolbar: () => {
                             return (
                                 <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
                                     <GridToolbarQuickFilter />
-                                    <GridToolbarFilterButton />
+                                    {/* <GridToolbarFilterButton /> */}
                                     <GridToolbarColumnsButton />
                                     <GridToolbarDensitySelector />
                                     <GridToolbarExport />
