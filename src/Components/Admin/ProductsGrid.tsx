@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { useLoaderData } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -19,10 +17,34 @@ import TypographyTitle from '../TypographyTitle';
 
 import type { GridColDef } from '@mui/x-data-grid';
 import type { productListLoader } from '../../Router/loaders';
+import { ProductResponse, productsApi } from '../../api';
+import { useEffect, useState } from 'react';
 
 function ProductsGrid() {
     const { count, /* next, previous, */ results } = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
+    const [rowData, setRowData] = useState<ProductResponse[]>([]);
+    const [totalAmount, setTotalAmount] = useState(0);
+    const [paginationModel, setPaginationModel] = useState({
+        page: 0,
+        pageSize: 25,
+    });
 
+    const fetchData = async (page: number, pageSize: number) => {
+        const { data: products } = await productsApi.productsList(
+            undefined,
+            undefined,
+            undefined,
+            paginationModel.page + 1,
+            paginationModel.pageSize,
+            undefined
+        );
+        const results = products.results !== undefined ? products.results : [];
+        setRowData(results);
+        setTotalAmount(products.count !== undefined ? products.count : 0);
+    };
+    useEffect(() => {
+        fetchData(paginationModel.page, paginationModel.pageSize);
+    }, []);
     // UPD: BE has new endpoint @ storagesApi (/storages/products). It contains more information than this productApi (/products).
 
     // productsApi contains:
@@ -54,15 +76,6 @@ function ProductsGrid() {
     //     }
     //   ]
     // }
-
-    const pageSize = 10; // page_size @ BE: 10
-    const pageCount = Math.ceil(count! / pageSize);
-
-    const [rowCountState, setRowCountState] = React.useState(pageCount);
-    React.useEffect(() => {
-        setRowCountState((prevRowCountState) => (pageCount !== undefined ? pageCount : prevRowCountState));
-    }, [pageCount, setRowCountState]);
-
     const columns: GridColDef[] = [
         { field: 'name', headerName: 'Tuotenimi', flex: 2 },
         { field: 'amount', headerName: 'Vapaana', flex: 1 },
@@ -264,15 +277,52 @@ function ProductsGrid() {
                 <DataGrid
                     // paginationMode={'server'}
                     // rowCount={pageCount}
-                    rowCount={rowCountState}
-                    rows={results}
+                    rowCount={totalAmount}
+                    rows={rowData}
                     columns={columns}
+                    sortingMode="server"
+                    filterMode="server"
+                    paginationMode="server"
+                    pagination
+                    paginationModel={paginationModel}
+                    onPaginationModelChange={async (newPaginationModel) => {
+                        // fetch data from server
+                        setPaginationModel(newPaginationModel);
+                        const { data: users } = await productsApi.productsList(
+                            undefined,
+                            undefined,
+                            undefined,
+                            paginationModel.page + 1,
+                            paginationModel.pageSize,
+                            undefined
+                        );
+                        setRowData(users.results !== undefined ? users.results : []);
+                    }}
+                    onSortModelChange={async (newSortModel) => {
+                        console.log(newSortModel);
+                    }}
+                    onFilterModelChange={async (newFilterModel) => {
+                        // fetch data from server
+                        console.log(newFilterModel);
+                        setPaginationModel({
+                            page: 1,
+                            pageSize: paginationModel.pageSize,
+                        });
+                        const { data: users } = await productsApi.productsList(
+                            undefined,
+                            undefined,
+                            undefined,
+                            paginationModel.page + 1,
+                            paginationModel.pageSize,
+                            newFilterModel.quickFilterValues ? newFilterModel.quickFilterValues[0] : undefined
+                        );
+                        setRowData(users.results !== undefined ? users.results : []);
+                    }}
                     slots={{
                         toolbar: () => {
                             return (
                                 <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
                                     <GridToolbarQuickFilter />
-                                    <GridToolbarFilterButton />
                                     <GridToolbarColumnsButton />
                                     <GridToolbarDensitySelector />
                                     <GridToolbarExport />
