@@ -41,6 +41,7 @@ function Pagination({ count, itemsText }: { count?: number; itemsText?: string }
         } else {
             setRowsPerPage(25);
         }
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     }, [location, searchParams]);
 
     return (

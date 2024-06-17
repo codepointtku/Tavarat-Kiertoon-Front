@@ -40,6 +40,7 @@ const labels = [
     'Huhtikuu',
     'Toukokuu',
     'Kesäkuu',
+    'Heinäkuu',
     'Elokuu',
     'Syyskuu',
     'Lokakuu',

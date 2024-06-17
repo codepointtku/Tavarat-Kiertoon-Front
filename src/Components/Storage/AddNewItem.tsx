@@ -287,6 +287,7 @@ function AddNewItem() {
                                     'Viivakoodityypin CODE39 sallitut kirjaimet: Numerot, Englanninkieliset aakkoset, merkit -  .  *  /  +  %  sekä välilyönti',
                             },
                         })}
+                        InputLabelProps={{ shrink: true }}
                         inputProps={{ required: false }}
                         required
                         error={!!errors.barcode}
