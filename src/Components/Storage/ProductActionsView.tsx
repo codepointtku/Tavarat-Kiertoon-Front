@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import ProductsReturnForm from './ProductsReturnForm';
 import { useState } from 'react';
 import HasRole from '../../Utils/HasRole';
+import ProductsAddForm from './ProductsAddForm';
 
 function ProductActionsView() {
     const [picId, setPicId] = useState(0);
@@ -43,6 +44,9 @@ function ProductActionsView() {
             <Grid container spacing={2} item xs={12} md={6}>
                 <Grid item xs={12} md={6}>
                     <ProductsReturnForm />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <ProductsAddForm />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <Typography variant="h6">{product?.name}</Typography>
