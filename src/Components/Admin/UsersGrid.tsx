@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useLoaderData } from 'react-router';
 
 import { Link } from 'react-router-dom';
 
@@ -25,11 +24,9 @@ function UsersGrid() {
     //const { count, next, previous, results } = useLoaderData() as Awaited<ReturnType<typeof usersListLoader>>;
 
     const [rowData, setRowData] = useState<UserFullResponseSchema[]>([]);
-    const [pageSize, setPageSize] = useState(25); // page_size @ BE: 10
     const [totalAmount, setTotalAmount] = useState(0);
-    const [page, setPage] = useState(1);
     const [paginationModel, setPaginationModel] = useState({
-        page: 1,
+        page: 0,
         pageSize: 25,
     });
 
@@ -42,13 +39,7 @@ function UsersGrid() {
     useEffect(() => {
         fetchData(paginationModel.page, paginationModel.pageSize);
     }, []);
-    const pageCount = Math.ceil(totalAmount! / pageSize);
 
-    const [rowCountState, setRowCountState] = useState(pageCount);
-
-    useEffect(() => {
-        setRowCountState((prevRowCountState) => (pageCount !== undefined ? pageCount : prevRowCountState));
-    }, [pageCount, setRowCountState]);
     const groupNames: { [key: string]: string } = {
         user_group: 'Käyttäjä',
         admin_group: 'Ylläpitäjä',
