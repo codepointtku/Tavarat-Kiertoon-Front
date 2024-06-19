@@ -16,16 +16,19 @@ import TypographyTitle from '../TypographyTitle';
 
 import type { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
-import { OrderResponse, ordersApi } from '../../api';
+import { OrderDetailResponse, OrderResponse, ordersApi } from '../../api';
 
 function OrdersGrid() {
-    const [rowData, setRowData] = useState<OrderResponse[]>([]);
+    const [rowData, setRowData] = useState<OrderResponse[] | OrderDetailResponse[]>([]);
     const [totalAmount, setTotalAmount] = useState(0);
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
         pageSize: 25,
     });
-
+    const [filterModel, setFilterModel] = useState<{ items: []; quickFilterValues: any[] | undefined }>({
+        items: [],
+        quickFilterValues: [''],
+    });
     const fetchData = async (page: number, pageSize: number) => {
         const { data: orders } = await await ordersApi.ordersList(
             undefined,
@@ -305,12 +308,13 @@ function OrdersGrid() {
                     paginationMode="server"
                     pagination
                     paginationModel={paginationModel}
+                    filterModel={filterModel}
                     onPaginationModelChange={async (newPaginationModel) => {
                         // fetch data from server
                         setPaginationModel(newPaginationModel);
                         const { data: users } = await ordersApi.ordersList(
                             undefined,
-                            paginationModel.page + 1,
+                            1,
                             paginationModel.pageSize,
                             undefined
                         );
@@ -326,13 +330,13 @@ function OrdersGrid() {
                             page: 1,
                             pageSize: paginationModel.pageSize,
                         });
-                        const { data: users } = await ordersApi.ordersList(
-                            undefined,
-                            1,
-                            paginationModel.pageSize,
-                            newFilterModel.quickFilterValues ? newFilterModel.quickFilterValues[0] : undefined
-                        );
-                        setRowData(users.results !== undefined ? users.results : []);
+                        setFilterModel({ items: [], quickFilterValues: newFilterModel.quickFilterValues });
+                        if (newFilterModel.quickFilterValues && parseInt(newFilterModel.quickFilterValues[0])) {
+                            const { data: users } = await ordersApi.ordersRetrieve(newFilterModel.quickFilterValues[0]);
+                            let user_list = [];
+                            user_list.push(users);
+                            setRowData(user_list);
+                        }
                     }}
                     slots={{
                         toolbar: () => {

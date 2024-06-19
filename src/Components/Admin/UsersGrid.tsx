@@ -29,6 +29,10 @@ function UsersGrid() {
         page: 0,
         pageSize: 25,
     });
+    const [filterModel, setFilterModel] = useState<{ items: []; quickFilterValues: any[] | undefined }>({
+        items: [],
+        quickFilterValues: [''],
+    });
 
     const fetchData = async (page: number, pageSize: number) => {
         const { data: users } = await usersApi.usersList(undefined, undefined, undefined, page + 1, pageSize);
@@ -265,6 +269,7 @@ function UsersGrid() {
                     paginationMode="server"
                     pagination
                     paginationModel={paginationModel}
+                    filterModel={filterModel}
                     onPaginationModelChange={async (newPaginationModel) => {
                         // fetch data from server
                         setPaginationModel(newPaginationModel);
@@ -284,7 +289,7 @@ function UsersGrid() {
                         // fetch data from server
                         console.log(newFilterModel);
                         setPaginationModel({
-                            page: 1,
+                            page: 0,
                             pageSize: paginationModel.pageSize,
                         });
                         const { data: users } = await usersApi.usersList(
@@ -295,6 +300,7 @@ function UsersGrid() {
                             paginationModel.pageSize,
                             newFilterModel.quickFilterValues ? newFilterModel.quickFilterValues[0] : undefined
                         );
+                        setFilterModel({ items: [], quickFilterValues: newFilterModel.quickFilterValues });
                         setRowData(users.results !== undefined ? users.results : []);
                     }}
                     slots={{

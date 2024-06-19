@@ -28,6 +28,10 @@ function ProductsGrid() {
         page: 0,
         pageSize: 25,
     });
+    const [filterModel, setFilterModel] = useState<{ items: []; quickFilterValues: any[] | undefined }>({
+        items: [],
+        quickFilterValues: [''],
+    });
 
     const fetchData = async (page: number, pageSize: number) => {
         const { data: products } = await productsApi.productsList(
@@ -285,6 +289,7 @@ function ProductsGrid() {
                     paginationMode="server"
                     pagination
                     paginationModel={paginationModel}
+                    filterModel={filterModel}
                     onPaginationModelChange={async (newPaginationModel) => {
                         // fetch data from server
                         setPaginationModel(newPaginationModel);
@@ -305,17 +310,18 @@ function ProductsGrid() {
                         // fetch data from server
                         console.log(newFilterModel);
                         setPaginationModel({
-                            page: 1,
+                            page: 0,
                             pageSize: paginationModel.pageSize,
                         });
                         const { data: users } = await productsApi.productsList(
                             undefined,
                             undefined,
                             undefined,
-                            paginationModel.page + 1,
+                            1,
                             paginationModel.pageSize,
                             newFilterModel.quickFilterValues ? newFilterModel.quickFilterValues[0] : undefined
                         );
+                        setFilterModel({ items: [], quickFilterValues: newFilterModel.quickFilterValues });
                         setRowData(users.results !== undefined ? users.results : []);
                     }}
                     slots={{
