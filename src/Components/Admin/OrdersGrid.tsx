@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { Stack, Button } from '@mui/material';
+import { Stack, Button, Box, Select, MenuItem, SelectProps } from '@mui/material';
 
 import {
     DataGrid,
@@ -10,13 +10,27 @@ import {
     GridToolbarExport,
     GridToolbarQuickFilter,
     GridToolbarFilterButton,
+    getGridDefaultColumnTypes,
+    getGridStringOperators,
+    getGridSingleSelectOperators,
+    useGridApiRef,
 } from '@mui/x-data-grid';
 
 import TypographyTitle from '../TypographyTitle';
 
-import type { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
+import type {
+    GridCellParams,
+    GridColDef,
+    GridFilterInputValueProps,
+    GridFilterItem,
+    GridFilterModel,
+    GridFilterOperator,
+    GridRowId,
+    GridValueGetterParams,
+} from '@mui/x-data-grid';
+import { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { OrderDetailResponse, OrderResponse, ordersApi } from '../../api';
+import DataGridCustomFilter from './DataGridCustomFilterPanel';
 
 function OrdersGrid() {
     const [rowData, setRowData] = useState<OrderResponse[] | OrderDetailResponse[]>([]);
@@ -25,26 +39,61 @@ function OrdersGrid() {
         page: 0,
         pageSize: 25,
     });
-    const [filterModel, setFilterModel] = useState<{ items: []; quickFilterValues: any[] | undefined }>({
+    const defaultColumnTypes = getGridDefaultColumnTypes();
+    const apiRef = useGridApiRef();
+    const [filterModel, setFilterModel] = useState<GridFilterModel>({
         items: [],
         quickFilterValues: [''],
     });
-    const fetchData = async (page: number, pageSize: number) => {
-        const { data: orders } = await await ordersApi.ordersList(
-            undefined,
-            paginationModel.page + 1,
-            paginationModel.pageSize,
-            undefined
+
+    const fetchData = async (
+        page = 1,
+        pageSize = 25,
+        id = undefined,
+        orderInfo = undefined,
+        recipient = undefined,
+        recipientPhone = undefined,
+        delivery_address = undefined,
+        ordering = undefined,
+        orderStatus = undefined
+    ) => {
+        const { data: orders } = await ordersApi.ordersList(
+            delivery_address,
+            id,
+            orderInfo,
+            ordering,
+            page,
+            pageSize,
+            recipient,
+            recipientPhone,
+            orderStatus
         );
         const results = orders.results !== undefined ? orders.results : [];
-        console.log(results);
+        console.log('what');
         setRowData(results);
         setTotalAmount(orders.count !== undefined ? orders.count : 0);
+        return { row: results, totalcount: orders.count };
     };
     useEffect(() => {
-        fetchData(paginationModel.page, paginationModel.pageSize);
+        fetchData(paginationModel.page + 1, paginationModel.pageSize);
     }, []);
 
+    const restorePaginationState = () => {
+        // <---------- Step 4
+        const state = apiRef.current.exportState();
+        const restoredState = {
+            ...state,
+            pagination: {
+                ...state.pagination,
+                paginationModel: {
+                    ...state.pagination?.paginationModel,
+                    page: 0, // <-- Set the page to the first page
+                    pageSize: 25, // <-- Specify the pageSize based on the requirements of your grid.
+                },
+            },
+        };
+        apiRef.current.restoreState(restoredState);
+    };
     //     "results": [
     //     {
     //       "id": 0,
@@ -62,6 +111,28 @@ function OrdersGrid() {
     //       ]
     //     }
     //   ]
+    const statusOptions: { value: string; label: string }[] = [
+        { value: 'Waiting', label: 'Odottaa' },
+        { value: 'Processing', label: 'Käsittelyssä' },
+        { value: 'Finished', label: 'Toimitettu' },
+    ];
+    const filterOperators = getGridSingleSelectOperators()
+        .filter((operator) => operator.value === 'is')
+        .map((operator) => {
+            const newOperator = { ...operator };
+            const newGetApplyFilterFn = (filterItem: GridFilterItem, column: GridColDef) => {
+                return (params: GridCellParams): boolean => {
+                    let isOk = true;
+                    filterItem?.value?.forEach((fv: any) => {
+                        const paramval: any = params.value;
+                        isOk = isOk && paramval.includes(fv);
+                    });
+                    return isOk;
+                };
+            };
+            newOperator.getApplyFilterFn = newGetApplyFilterFn;
+            return newOperator;
+        });
 
     const columns: GridColDef[] = [
         {
@@ -72,17 +143,15 @@ function OrdersGrid() {
         {
             field: 'status',
             headerName: 'Tila',
-            valueGetter: (params: GridValueGetterParams) => {
-                if (params.row.status === 'Waiting') {
-                    return 'Odottaa';
-                }
-                if (params.row.status === 'Processing') {
-                    return 'Käsittelyssä';
-                }
-                if (params.row.status === 'Finished') {
-                    return 'Toimitettu';
-                }
-            },
+            type: 'singleSelect',
+            valueOptions: [
+                { value: 'Waiting', label: 'Odottaa' },
+                { value: 'Processing', label: 'Käsittelyssä' },
+                { value: 'Finished', label: 'Toimitettu' },
+            ],
+            valueFormatter: ({ id, value, field, api }) => statusOptions.find((opt) => opt.value === value)?.label,
+
+            filterOperators: filterOperators,
         },
         {
             field: 'delivery_address',
@@ -101,6 +170,7 @@ function OrdersGrid() {
         {
             field: 'delivery_required',
             headerName: 'Toimitus',
+            //exclude_filter: true,
             valueGetter: (params: GridValueGetterParams) =>
                 params.row.delivery_required === true ? 'Kuljetus' : 'Nouto',
         },
@@ -108,6 +178,7 @@ function OrdersGrid() {
         {
             field: 'id',
             headerName: 'Toiminnot',
+            //exclude_filter: true,
             renderCell: (params) => (
                 <Button variant="outlined" component={Link} to={`/admin/tilaukset/${params.value}`}>
                     Avaa
@@ -292,8 +363,31 @@ function OrdersGrid() {
         aggregationFunctionLabelSize: 'koko',
     };
 
-    if (!rowData) return null;
+    const onSubmit = async (formdata: object) => {
+        console.log(formdata);
 
+        fetchData(1, paginationModel.pageSize);
+    };
+    if (!rowData) return null;
+    const DataGridToolBar = () => {
+        return (
+            <GridToolbarContainer>
+                <DataGridCustomFilter columns={columns} localizedTextsMap={localizedTextsMap} onSubmit={onSubmit} />
+            </GridToolbarContainer>
+        );
+    };
+    const Customtoolbar = () => {
+        return (
+            <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
+                <GridToolbarQuickFilter />
+                <GridToolbarFilterButton />
+                <DataGridCustomFilter columns={columns} localizedTextsMap={localizedTextsMap} onSubmit={onSubmit} />
+                <GridToolbarColumnsButton />
+                <GridToolbarDensitySelector />
+                <GridToolbarExport />
+            </GridToolbarContainer>
+        );
+    };
     const GridX = () => {
         return (
             <div style={{ height: 500 }}>
@@ -307,48 +401,95 @@ function OrdersGrid() {
                     filterMode="server"
                     paginationMode="server"
                     pagination
-                    paginationModel={paginationModel}
+                    //paginationModel={paginationModel}
                     filterModel={filterModel}
-                    onPaginationModelChange={async (newPaginationModel) => {
+                    apiRef={apiRef}
+                    onPaginationModelChange={(newPaginationModel, details) => {
                         // fetch data from server
-                        setPaginationModel(newPaginationModel);
-                        const { data: users } = await ordersApi.ordersList(
-                            undefined,
-                            1,
-                            paginationModel.pageSize,
-                            undefined
-                        );
-                        setRowData(users.results !== undefined ? users.results : []);
+                        console.log('guh');
+                        fetchData(newPaginationModel.page + 1, newPaginationModel.pageSize);
                     }}
-                    onSortModelChange={async (newSortModel) => {
+                    onSortModelChange={(newSortModel, details) => {
                         console.log(newSortModel);
                     }}
-                    onFilterModelChange={async (newFilterModel) => {
+                    onFilterModelChange={(newFilterModel, details) => {
                         // fetch data from server
                         console.log(newFilterModel);
-                        setPaginationModel({
-                            page: 1,
-                            pageSize: paginationModel.pageSize,
-                        });
-                        setFilterModel({ items: [], quickFilterValues: newFilterModel.quickFilterValues });
-                        if (newFilterModel.quickFilterValues && parseInt(newFilterModel.quickFilterValues[0])) {
-                            const { data: users } = await ordersApi.ordersRetrieve(newFilterModel.quickFilterValues[0]);
-                            let user_list = [];
-                            user_list.push(users);
-                            setRowData(user_list);
+                        console.log(details);
+
+                        if (
+                            filterModel.items.length > 0 &&
+                            filterModel.items[0].value == newFilterModel.items[0].value
+                        ) {
+                            return setFilterModel(newFilterModel);
                         }
+                        restorePaginationState();
+                        console.log('huh');
+                        if (newFilterModel.items.length > 0) {
+                            switch (newFilterModel.items[0].field) {
+                                case 'ordernumber':
+                                    fetchData(
+                                        paginationModel.page + 1,
+                                        paginationModel.pageSize,
+                                        newFilterModel.items[0].value
+                                    );
+                                    break;
+                                case 'order_info':
+                                    fetchData(
+                                        paginationModel.page + 1,
+                                        paginationModel.pageSize,
+                                        undefined,
+                                        newFilterModel.items[0].value
+                                    );
+                                case 'recipient':
+                                    fetchData(
+                                        paginationModel.page + 1,
+                                        paginationModel.pageSize,
+                                        undefined,
+                                        undefined,
+                                        newFilterModel.items[0].value
+                                    );
+                                case 'recipient_phone_number':
+                                    fetchData(
+                                        paginationModel.page + 1,
+                                        paginationModel.pageSize,
+                                        undefined,
+                                        undefined,
+                                        undefined,
+                                        newFilterModel.items[0].value
+                                    );
+                                case 'delivery_address':
+                                    fetchData(
+                                        paginationModel.page + 1,
+                                        paginationModel.pageSize,
+                                        undefined,
+                                        undefined,
+                                        undefined,
+                                        undefined,
+                                        newFilterModel.items[0].value
+                                    );
+                                case 'status':
+                                    fetchData(
+                                        paginationModel.page + 1,
+                                        paginationModel.pageSize,
+                                        undefined,
+                                        undefined,
+                                        undefined,
+                                        undefined,
+                                        undefined,
+                                        undefined,
+                                        newFilterModel.items[0].value
+                                    );
+                            }
+                        }
+
+                        setFilterModel(newFilterModel);
                     }}
+                    /*slots={{
+                        toolbar: DataGridToolBar,
+                    }}*/
                     slots={{
-                        toolbar: () => {
-                            return (
-                                <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
-                                    <GridToolbarQuickFilter />
-                                    <GridToolbarColumnsButton />
-                                    <GridToolbarDensitySelector />
-                                    <GridToolbarExport />
-                                </GridToolbarContainer>
-                            );
-                        },
+                        toolbar: Customtoolbar,
                     }}
                     localeText={localizedTextsMap}
                     // checkboxSelection
