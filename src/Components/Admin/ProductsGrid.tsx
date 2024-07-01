@@ -19,6 +19,7 @@ import type { GridColDef } from '@mui/x-data-grid';
 import type { productListLoader } from '../../Router/loaders';
 import { ProductResponse, productsApi } from '../../api';
 import { useEffect, useState } from 'react';
+import DataGridCustomFilter from './DataGridCustomFilterPanel';
 
 function ProductsGrid() {
     const { count, /* next, previous, */ results } = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
@@ -89,6 +90,7 @@ function ProductsGrid() {
         {
             field: 'id',
             headerName: 'Toiminnot',
+            filterable: false,
             renderCell: (params) => (
                 <Button component={Link} to={`/admin/tuotteet/${params.value}`} variant="outlined">
                     Avaa
@@ -273,8 +275,26 @@ function ProductsGrid() {
         aggregationFunctionLabelSize: 'koko',
     };
 
-    if (!results) return null;
+    const onSubmit = async (formdata: {
+        filterForm: Array<{ column: string; filter: string; value: string; andor: string | undefined }>;
+    }) => {
+        formdata.filterForm.map((form) => {
+            const column = form.column;
+            const filter = form.filter;
+            const value = form.value;
+            const andor = form.andor;
+            console.log(column);
+            console.log(filter);
+            console.log(value);
+            console.log(andor);
+            if (andor == 'and') {
+                console.log('jippii');
+            }
+        });
+        //fetchData(1, paginationModel.pageSize);
+    };
 
+    if (!results) return null;
     const GridX = () => {
         return (
             <div style={{ height: 500 }}>
@@ -329,6 +349,12 @@ function ProductsGrid() {
                             return (
                                 <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
                                     <GridToolbarQuickFilter />
+                                    {/* <GridToolbarFilterButton /> */}
+                                    <DataGridCustomFilter
+                                        columns={columns}
+                                        localizedTextsMap={localizedTextsMap}
+                                        onSubmit={onSubmit}
+                                    />
                                     <GridToolbarColumnsButton />
                                     <GridToolbarDensitySelector />
                                     <GridToolbarExport />
