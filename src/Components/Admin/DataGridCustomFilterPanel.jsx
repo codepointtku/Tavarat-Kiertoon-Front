@@ -25,7 +25,7 @@ const filterTypes = {
 
 function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveFilter, getValues }) {
     const filtercolumnwatch = useWatch({ control, name: `filterForm.${index}.column` });
-
+    console.log(columns);
     return (
         <Grid container spacing={0}>
             <Grid
@@ -54,15 +54,16 @@ function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveF
                     <Controller
                         name={`filterForm.${index}.andor`}
                         control={control}
+                        defaultValue="and"
                         render={({ field: { onChange, value }, fieldState: { error } }) => (
                             <FormControl variant="standard" sx={{ width: '100%' }}>
-                                <NativeSelect id="filterandor" native onChange={onChange} value={value}>
+                                <NativeSelect id="filterandor" onChange={onChange} value={value}>
                                     <option key={0} value="and">
                                         JA
                                     </option>
-                                    <option key={1} value="or">
+                                    {/* <option key={1} value="or">
                                         TAI
-                                    </option>
+                                    </option> */}
                                 </NativeSelect>
                             </FormControl>
                         )}
@@ -79,8 +80,7 @@ function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveF
                             <InputLabel focused={true}>Sarake</InputLabel>
                             <NativeSelect value={value} onChange={onChange}>
                                 {columns.map((a, index) => {
-                                    console.log(a);
-                                    return a.exclude_filter === true ? null : (
+                                    return a.filterable === false ? null : (
                                         <option key={index} value={a.field}>
                                             {a.headerName}
                                         </option>
@@ -156,7 +156,6 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        console.log(fields.length);
         if (fields.length === 0) {
             append({
                 column: 'ordernumber',
@@ -183,11 +182,12 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
     });
     const addNewFilter = () => {
         append({
-            column: 'ordernumber',
+            column: columns[0].field,
             filter: filterTypes.string[0],
             value: '',
         });
     };
+
     return (
         <>
             <Button

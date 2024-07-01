@@ -170,7 +170,7 @@ function OrdersGrid() {
         {
             field: 'delivery_required',
             headerName: 'Toimitus',
-            //exclude_filter: true,
+            filterable: false,
             valueGetter: (params: GridValueGetterParams) =>
                 params.row.delivery_required === true ? 'Kuljetus' : 'Nouto',
         },
@@ -178,7 +178,7 @@ function OrdersGrid() {
         {
             field: 'id',
             headerName: 'Toiminnot',
-            //exclude_filter: true,
+            filterable: false,
             renderCell: (params) => (
                 <Button variant="outlined" component={Link} to={`/admin/tilaukset/${params.value}`}>
                     Avaa
@@ -363,10 +363,23 @@ function OrdersGrid() {
         aggregationFunctionLabelSize: 'koko',
     };
 
-    const onSubmit = async (formdata: object) => {
-        console.log(formdata);
-
-        fetchData(1, paginationModel.pageSize);
+    const onSubmit = async (formdata: {
+        filterForm: Array<{ column: string; filter: string; value: string; andor: string | undefined }>;
+    }) => {
+        formdata.filterForm.map((form) => {
+            const column = form.column;
+            const filter = form.filter;
+            const value = form.value;
+            const andor = form.andor;
+            console.log(column);
+            console.log(filter);
+            console.log(value);
+            console.log(andor);
+            if (andor == 'and') {
+                console.log('jippii');
+            }
+        });
+        //fetchData(1, paginationModel.pageSize);
     };
     if (!rowData) return null;
     const DataGridToolBar = () => {
@@ -380,7 +393,7 @@ function OrdersGrid() {
         return (
             <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
                 <GridToolbarQuickFilter />
-                <GridToolbarFilterButton />
+                {/* <GridToolbarFilterButton /> */}
                 <DataGridCustomFilter columns={columns} localizedTextsMap={localizedTextsMap} onSubmit={onSubmit} />
                 <GridToolbarColumnsButton />
                 <GridToolbarDensitySelector />
