@@ -23,9 +23,10 @@ const filterTypes = {
     int: ['contains', 'equals', 'less than', 'greater than'],
 };
 
-function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveFilter, getValues }) {
+function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveFilter, getValues, localizedTextsMap }) {
     const filtercolumnwatch = useWatch({ control, name: `filterForm.${index}.column` });
-    console.log(columns);
+    const column = columns.filter((value) => value.field === filtercolumnwatch)[0];
+    console.log(localizedTextsMap);
     return (
         <Grid container spacing={0}>
             <Grid
@@ -59,11 +60,11 @@ function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveF
                             <FormControl variant="standard" sx={{ width: '100%' }}>
                                 <NativeSelect id="filterandor" onChange={onChange} value={value}>
                                     <option key={0} value="and">
-                                        JA
+                                        {localizedTextsMap.filterPanelOperatorAnd}
                                     </option>
-                                    {/* <option key={1} value="or">
-                                        TAI
-                                    </option> */}
+                                    <option key={1} value="or">
+                                        {localizedTextsMap.filterPanelOperatorOr}
+                                    </option>
                                 </NativeSelect>
                             </FormControl>
                         )}
@@ -100,10 +101,17 @@ function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveF
                             <InputLabel>Suodatin</InputLabel>
 
                             <NativeSelect value={value} onChange={onChange}>
-                                {filterTypes.string.map((a, index) => {
+                                {column.filterOperators.map((a, index) => {
+                                    console.log(localizedTextsMap);
                                     return (
-                                        <option key={index} value={a}>
-                                            {a}
+                                        <option key={index} value={a.value}>
+                                            {
+                                                localizedTextsMap[
+                                                    `filterOperator${a.value.charAt(0).toUpperCase()}${a.value.slice(
+                                                        1
+                                                    )}`
+                                                ]
+                                            }
                                         </option>
                                     );
                                 })}
@@ -122,11 +130,8 @@ function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveF
                                 <>
                                     <InputLabel shrink={true}>Arvo</InputLabel>
                                     <NativeSelect value={value} onChange={onChange}>
-                                        {[
-                                            { value: 'Waiting', label: 'Odottaa' },
-                                            { value: 'Processing', label: 'Käsittelyssä' },
-                                            { value: 'Finished', label: 'Toimitettu' },
-                                        ].map((val, index) => {
+                                        {column.valueOptions?.map((val, index) => {
+                                            console.log(val);
                                             return (
                                                 <option key={index} value={val.value}>
                                                     {val.label}
@@ -158,7 +163,7 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
     useEffect(() => {
         if (fields.length === 0) {
             append({
-                column: 'ordernumber',
+                column: columns[0].field,
                 filter: filterTypes.string[0],
                 value: '',
             });
@@ -230,6 +235,7 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
                                                     columns={columns}
                                                     handleRemoveFilter={() => remove(index)}
                                                     getValues={getValues}
+                                                    localizedTextsMap={localizedTextsMap}
                                                     {...{ control, index, field }}
                                                     // handleClickAway={handleClickAway}
                                                 />

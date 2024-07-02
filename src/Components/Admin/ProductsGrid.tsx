@@ -11,19 +11,21 @@ import {
     GridToolbarExport,
     GridToolbarQuickFilter,
     GridToolbarFilterButton,
+    getGridStringOperators,
 } from '@mui/x-data-grid';
 
 import TypographyTitle from '../TypographyTitle';
-
+import { AxiosRequestHeaders } from 'axios';
 import type { GridColDef } from '@mui/x-data-grid';
-import type { productListLoader } from '../../Router/loaders';
-import { ProductResponse, productsApi } from '../../api';
+import type { productListLoader, storageProductsLoader } from '../../Router/loaders';
+import { ProductResponse, ProductStorageResponse, storagesApi } from '../../api';
 import { useEffect, useState } from 'react';
 import DataGridCustomFilter from './DataGridCustomFilterPanel';
 
 function ProductsGrid() {
-    const { count, /* next, previous, */ results } = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
-    const [rowData, setRowData] = useState<ProductResponse[]>([]);
+    const { products } = useLoaderData() as Awaited<ReturnType<typeof storageProductsLoader>>;
+    const { count, /* next, previous, */ results } = products;
+    const [rowData, setRowData] = useState<ProductStorageResponse[]>([]);
     const [totalAmount, setTotalAmount] = useState(0);
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
@@ -35,13 +37,14 @@ function ProductsGrid() {
     });
 
     const fetchData = async (page: number, pageSize: number) => {
-        const { data: products } = await productsApi.productsList(
+        const { data: products } = await storagesApi.storagesProductsList(
             undefined,
             undefined,
             undefined,
             paginationModel.page + 1,
             paginationModel.pageSize,
-            undefined
+            undefined,
+            { params: { all: true } }
         );
         const results = products.results !== undefined ? products.results : [];
         setRowData(results);
@@ -81,12 +84,14 @@ function ProductsGrid() {
     //     }
     //   ]
     // }
+
+    const containFilterOperator = getGridStringOperators().filter((val) => val.value === 'contains');
     const columns: GridColDef[] = [
-        { field: 'name', headerName: 'Tuotenimi', flex: 2 },
-        { field: 'amount', headerName: 'Vapaana', flex: 1 },
-        { field: 'total_amount', headerName: 'Järjestelmässä', flex: 1 },
+        { field: 'name', headerName: 'Tuotenimi', flex: 2, filterOperators: containFilterOperator },
+        { field: 'amount', headerName: 'Vapaana', flex: 1, filterable: false },
+        { field: 'total_amount', headerName: 'Järjestelmässä', flex: 1, filterable: false },
         // { field: 'category', headerName: 'Kategoriatunnus', flex: 1 },
-        { field: 'free_description', headerName: 'Kuvaus', flex: 1 },
+        { field: 'free_description', headerName: 'Kuvaus', flex: 1, filterOperators: containFilterOperator },
         {
             field: 'id',
             headerName: 'Toiminnot',
@@ -313,13 +318,14 @@ function ProductsGrid() {
                     onPaginationModelChange={async (newPaginationModel) => {
                         // fetch data from server
                         setPaginationModel(newPaginationModel);
-                        const { data: users } = await productsApi.productsList(
+                        const { data: users } = await storagesApi.storagesProductsList(
                             undefined,
                             undefined,
                             undefined,
                             paginationModel.page + 1,
                             paginationModel.pageSize,
-                            undefined
+                            undefined,
+                            { params: { all: true } }
                         );
                         setRowData(users.results !== undefined ? users.results : []);
                     }}
@@ -333,16 +339,17 @@ function ProductsGrid() {
                             page: 0,
                             pageSize: paginationModel.pageSize,
                         });
-                        const { data: users } = await productsApi.productsList(
-                            undefined,
+                        const { data: products } = await storagesApi.storagesProductsList(
+                            newFilterModel.quickFilterValues ? newFilterModel.quickFilterValues[0] : undefined,
                             undefined,
                             undefined,
                             1,
                             paginationModel.pageSize,
-                            newFilterModel.quickFilterValues ? newFilterModel.quickFilterValues[0] : undefined
+                            undefined,
+                            { params: { all: true } }
                         );
                         setFilterModel({ items: [], quickFilterValues: newFilterModel.quickFilterValues });
-                        setRowData(users.results !== undefined ? users.results : []);
+                        setRowData(products.results !== undefined ? products.results : []);
                     }}
                     slots={{
                         toolbar: () => {

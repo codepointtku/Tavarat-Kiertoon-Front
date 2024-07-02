@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { Stack, Button, Box, Select, MenuItem, SelectProps } from '@mui/material';
+import { Stack, Button } from '@mui/material';
 
 import {
     DataGrid,
@@ -10,7 +10,6 @@ import {
     GridToolbarExport,
     GridToolbarQuickFilter,
     GridToolbarFilterButton,
-    getGridDefaultColumnTypes,
     getGridStringOperators,
     getGridSingleSelectOperators,
     useGridApiRef,
@@ -21,16 +20,14 @@ import TypographyTitle from '../TypographyTitle';
 import type {
     GridCellParams,
     GridColDef,
-    GridFilterInputValueProps,
     GridFilterItem,
     GridFilterModel,
-    GridFilterOperator,
-    GridRowId,
     GridValueGetterParams,
 } from '@mui/x-data-grid';
-import { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { OrderDetailResponse, OrderResponse, ordersApi } from '../../api';
 import DataGridCustomFilter from './DataGridCustomFilterPanel';
+import DataGridCustomFilterPanel from './DataGridCustomFilterPanel';
 
 function OrdersGrid() {
     const [rowData, setRowData] = useState<OrderResponse[] | OrderDetailResponse[]>([]);
@@ -39,7 +36,6 @@ function OrdersGrid() {
         page: 0,
         pageSize: 25,
     });
-    const defaultColumnTypes = getGridDefaultColumnTypes();
     const apiRef = useGridApiRef();
     const [filterModel, setFilterModel] = useState<GridFilterModel>({
         items: [],
@@ -116,7 +112,7 @@ function OrdersGrid() {
         { value: 'Processing', label: 'Käsittelyssä' },
         { value: 'Finished', label: 'Toimitettu' },
     ];
-    const filterOperators = getGridSingleSelectOperators()
+    const statusFilterOperator = getGridSingleSelectOperators()
         .filter((operator) => operator.value === 'is')
         .map((operator) => {
             const newOperator = { ...operator };
@@ -133,25 +129,24 @@ function OrdersGrid() {
             newOperator.getApplyFilterFn = newGetApplyFilterFn;
             return newOperator;
         });
+    const containFilterOperator = getGridStringOperators().filter((val) => val.value === 'contains');
+    const equalFilterOperator = getGridSingleSelectOperators().filter((operator) => operator.value === 'is');
 
     const columns: GridColDef[] = [
         {
             field: 'ordernumber',
             headerName: 'Tilausnumero',
             valueGetter: (params: GridValueGetterParams) => `${params.row.id || ''}`,
+            filterOperators: equalFilterOperator,
         },
         {
             field: 'status',
             headerName: 'Tila',
             type: 'singleSelect',
-            valueOptions: [
-                { value: 'Waiting', label: 'Odottaa' },
-                { value: 'Processing', label: 'Käsittelyssä' },
-                { value: 'Finished', label: 'Toimitettu' },
-            ],
+            valueOptions: statusOptions,
             valueFormatter: ({ id, value, field, api }) => statusOptions.find((opt) => opt.value === value)?.label,
 
-            filterOperators: filterOperators,
+            filterOperators: statusFilterOperator,
         },
         {
             field: 'delivery_address',
@@ -164,9 +159,15 @@ function OrdersGrid() {
                 }
             },
             flex: 2,
+            filterOperators: containFilterOperator,
         },
-        { field: 'recipient', headerName: 'Vastaanottaja', flex: 1 },
-        { field: 'recipient_phone_number', headerName: 'Puhelinnumero', flex: 1 },
+        { field: 'recipient', headerName: 'Vastaanottaja', flex: 1, filterOperators: containFilterOperator },
+        {
+            field: 'recipient_phone_number',
+            headerName: 'Puhelinnumero',
+            flex: 1,
+            filterOperators: containFilterOperator,
+        },
         {
             field: 'delivery_required',
             headerName: 'Toimitus',
@@ -174,7 +175,7 @@ function OrdersGrid() {
             valueGetter: (params: GridValueGetterParams) =>
                 params.row.delivery_required === true ? 'Kuljetus' : 'Nouto',
         },
-        { field: 'order_info', headerName: 'Lisätiedot', flex: 1 },
+        { field: 'order_info', headerName: 'Lisätiedot', filterOperators: containFilterOperator, flex: 1 },
         {
             field: 'id',
             headerName: 'Toiminnot',
