@@ -367,20 +367,54 @@ function OrdersGrid() {
     const onSubmit = async (formdata: {
         filterForm: Array<{ column: string; filter: string; value: string; andor: string | undefined }>;
     }) => {
+        let id = undefined;
+        let orderInfo = undefined;
+        let recipient = undefined;
+        let recipientPhone = undefined;
+        let delivery_address = undefined;
+        let ordering = undefined;
+        let orderStatus = undefined;
         formdata.filterForm.map((form) => {
             const column = form.column;
             const filter = form.filter;
             const value = form.value;
             const andor = form.andor;
-            console.log(column);
-            console.log(filter);
-            console.log(value);
-            console.log(andor);
+            switch (column) {
+                case 'ordernumber':
+                    id = value;
+                    break;
+                case 'status':
+                    orderStatus = value;
+                    break;
+                case 'delivery_address':
+                    delivery_address = value;
+                    break;
+                case 'recipient':
+                    recipient = value;
+                    break;
+                case 'recipient_phone_number':
+                    recipientPhone = value;
+                    break;
+                case 'order_info':
+                    orderInfo = value;
+                    break;
+            }
+            console.log(column, value);
             if (andor == 'and') {
                 console.log('jippii');
             }
         });
-        //fetchData(1, paginationModel.pageSize);
+        fetchData(
+            1,
+            paginationModel.pageSize,
+            id,
+            orderInfo,
+            recipient,
+            recipientPhone,
+            delivery_address,
+            ordering,
+            orderStatus
+        );
     };
     if (!rowData) return null;
     const DataGridToolBar = () => {
