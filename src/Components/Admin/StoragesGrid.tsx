@@ -25,12 +25,8 @@ function StoragesGrid() {
 
     // const pageSize = 10;
     // const pageCount = Math.ceil(count! / pageSize);
-    const pageCount = 50;
 
-    const [rowCountState, setRowCountState] = React.useState(pageCount);
-    React.useEffect(() => {
-        setRowCountState((prevRowCountState) => (pageCount !== undefined ? pageCount : prevRowCountState));
-    }, [pageCount, setRowCountState]);
+    const [rowCountState, setRowCountState] = React.useState(storages !== undefined ? storages.length : 0);
 
     const columns: GridColDef[] = [
         { field: 'name', headerName: 'Varasto', flex: 1 },
