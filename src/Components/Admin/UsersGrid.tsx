@@ -12,6 +12,8 @@ import {
     GridToolbarExport,
     GridToolbarQuickFilter,
     GridToolbarFilterButton,
+    getGridStringOperators,
+    getGridSingleSelectOperators,
 } from '@mui/x-data-grid';
 
 import TypographyTitle from '../TypographyTitle';
@@ -35,14 +37,34 @@ function UsersGrid() {
         quickFilterValues: [''],
     });
 
-    const fetchData = async (page: number, pageSize: number) => {
-        const { data: users } = await usersApi.usersList(undefined, undefined, undefined, page + 1, pageSize);
+    const fetchData = async (
+        page: number,
+        pageSize: number,
+        email?: string | undefined,
+        firstName?: string | undefined,
+        groups?: number[] | undefined,
+        isActive?: boolean | undefined,
+        lastName?: string | undefined,
+        ordering?: string | undefined,
+        phoneNumber?: string | undefined
+    ) => {
+        const { data: users } = await usersApi.usersList(
+            email,
+            firstName,
+            groups,
+            isActive,
+            lastName,
+            ordering,
+            page,
+            pageSize,
+            phoneNumber
+        );
         const results = users.results !== undefined ? users.results : [];
         setRowData(results);
         setTotalAmount(users.count !== undefined ? users.count : 0);
     };
     useEffect(() => {
-        fetchData(paginationModel.page, paginationModel.pageSize);
+        fetchData(paginationModel.page + 1, paginationModel.pageSize);
     }, []);
 
     const groupNames: { [key: string]: string } = {
@@ -51,22 +73,39 @@ function UsersGrid() {
         storage_group: 'Varastotyöntekijä',
         deactive: 'Epäaktiivinen',
     };
+
+    const containFilterOperator = getGridStringOperators().filter((val) => val.value === 'contains');
+    const equalFilterOperator = getGridSingleSelectOperators().filter((operator) => operator.value === 'is');
+    const activeOptions: { value: string; label: string }[] = [
+        { value: 'true', label: 'Käytössä' },
+        { value: 'false', label: 'Ei käytössä' },
+    ];
+    const groupOptions: { value: string; label: string }[] = [
+        { value: 'user_group', label: 'Käyttäjä' },
+        { value: 'admin_group', label: 'Ylläpitäjä' },
+        { value: 'storage_group', label: 'Varastotyöntekijä' },
+        { value: 'deactive', label: 'Epäaktiivinen' },
+    ];
     const columns: GridColDef[] = [
-        { field: 'email', headerName: 'Sähköposti', flex: 1 },
-        { field: 'username', headerName: 'Käyttäjänimi', flex: 1 },
-        { field: 'first_name', headerName: 'Etunimi' },
-        { field: 'last_name', headerName: 'Sukunimi' },
-        { field: 'phone_number', headerName: 'Puhelinnumero', flex: 1 },
+        { field: 'email', headerName: 'Sähköposti', flex: 1, filterOperators: containFilterOperator },
+        { field: 'username', headerName: 'Käyttäjänimi', flex: 1, filterOperators: containFilterOperator },
+        { field: 'first_name', headerName: 'Etunimi', filterOperators: containFilterOperator },
+        { field: 'last_name', headerName: 'Sukunimi', filterOperators: containFilterOperator },
+        { field: 'phone_number', headerName: 'Puhelinnumero', flex: 1, filterOperators: containFilterOperator },
         {
             field: 'group',
             headerName: 'Oikeudet',
             valueGetter: (params: GridValueGetterParams) => groupNames[params.row.group],
+            filterOperators: equalFilterOperator,
+            valueOptions: groupOptions,
         },
         {
             field: 'is_active',
             headerName: 'Tila',
             valueGetter: (params: GridValueGetterParams) =>
                 params.row.is_active === true ? 'Käytössä' : 'Ei käytössä',
+            valueOptions: activeOptions,
+            filterOperators: equalFilterOperator,
         },
         {
             field: 'id',
@@ -259,20 +298,45 @@ function UsersGrid() {
     const onSubmit = async (formdata: {
         filterForm: Array<{ column: string; filter: string; value: string; andor: string | undefined }>;
     }) => {
+        let groups = undefined;
+        let firstName = undefined;
+        let isActive = undefined;
+        let lastName = undefined;
+        let phoneNumber = undefined;
+        let ordering = undefined;
+        let email = undefined;
+
         formdata.filterForm.map((form) => {
             const column = form.column;
             const filter = form.filter;
             const value = form.value;
             const andor = form.andor;
-            console.log(column);
-            console.log(filter);
-            console.log(value);
-            console.log(andor);
+            switch (column) {
+                case 'email':
+                    email = value;
+                    break;
+                case 'first_name':
+                    firstName = value;
+                    break;
+                case 'first_name':
+                    lastName = value;
+                    break;
+                case 'phone_number':
+                    phoneNumber = value;
+                    break;
+                case 'group':
+                    groups = value;
+                    break;
+                case 'is_active':
+                    isActive = value;
+                    break;
+            }
+            console.log(column, value);
             if (andor == 'and') {
                 console.log('jippii');
             }
         });
-        //fetchData(1, paginationModel.pageSize);
+        fetchData(1, paginationModel.pageSize, email, firstName, groups, isActive, lastName, ordering, phoneNumber);
     };
 
     if (!rowData) return null;
@@ -298,8 +362,12 @@ function UsersGrid() {
                             undefined,
                             undefined,
                             undefined,
+                            undefined,
+                            undefined,
+                            undefined,
                             newPaginationModel.page + 1,
-                            newPaginationModel.pageSize
+                            newPaginationModel.pageSize,
+                            undefined
                         );
                         setRowData(users.results !== undefined ? users.results : []);
                     }}
@@ -314,6 +382,9 @@ function UsersGrid() {
                             pageSize: paginationModel.pageSize,
                         });
                         const { data: users } = await usersApi.usersList(
+                            undefined,
+                            undefined,
+                            undefined,
                             undefined,
                             undefined,
                             undefined,
