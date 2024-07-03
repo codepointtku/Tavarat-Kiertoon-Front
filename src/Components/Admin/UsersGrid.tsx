@@ -19,7 +19,6 @@ import {
 import TypographyTitle from '../TypographyTitle';
 
 import type { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import type { usersListLoader } from '../../Router/loaders';
 import { UserFullResponseSchema, usersApi } from '../../api';
 import DataGridCustomFilter from './DataGridCustomFilterPanel';
 
@@ -318,9 +317,6 @@ function UsersGrid() {
                 case 'first_name':
                     firstName = value;
                     break;
-                case 'first_name':
-                    lastName = value;
-                    break;
                 case 'phone_number':
                     phoneNumber = value;
                     break;
@@ -358,18 +354,7 @@ function UsersGrid() {
                     onPaginationModelChange={async (newPaginationModel) => {
                         // fetch data from server
                         setPaginationModel(newPaginationModel);
-                        const { data: users } = await usersApi.usersList(
-                            undefined,
-                            undefined,
-                            undefined,
-                            undefined,
-                            undefined,
-                            undefined,
-                            newPaginationModel.page + 1,
-                            newPaginationModel.pageSize,
-                            undefined
-                        );
-                        setRowData(users.results !== undefined ? users.results : []);
+                        fetchData(newPaginationModel.page + 1, newPaginationModel.pageSize);
                     }}
                     onSortModelChange={async (newSortModel) => {
                         console.log(newSortModel);
@@ -381,19 +366,13 @@ function UsersGrid() {
                             page: 0,
                             pageSize: paginationModel.pageSize,
                         });
-                        const { data: users } = await usersApi.usersList(
-                            undefined,
-                            undefined,
-                            undefined,
-                            undefined,
-                            undefined,
-                            undefined,
+                        fetchData(
                             1,
                             paginationModel.pageSize,
                             newFilterModel.quickFilterValues ? newFilterModel.quickFilterValues[0] : undefined
                         );
+
                         setFilterModel({ items: [], quickFilterValues: newFilterModel.quickFilterValues });
-                        setRowData(users.results !== undefined ? users.results : []);
                     }}
                     slots={{
                         toolbar: () => {

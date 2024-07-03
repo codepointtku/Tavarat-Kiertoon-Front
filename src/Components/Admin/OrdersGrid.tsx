@@ -27,7 +27,6 @@ import type {
 import { useEffect, useState } from 'react';
 import { OrderDetailResponse, OrderResponse, ordersApi } from '../../api';
 import DataGridCustomFilter from './DataGridCustomFilterPanel';
-import DataGridCustomFilterPanel from './DataGridCustomFilterPanel';
 
 function OrdersGrid() {
     const [rowData, setRowData] = useState<OrderResponse[] | OrderDetailResponse[]>([]);
@@ -473,64 +472,41 @@ function OrdersGrid() {
                         }
                         restorePaginationState();
                         console.log('huh');
+                        let ordernumber = undefined;
+                        let orderInfo = undefined;
+                        let recipient = undefined;
+                        let recipientPhone = undefined;
+                        let deliveryAddress = undefined;
+                        let orderStatus = undefined;
                         if (newFilterModel.items.length > 0) {
                             switch (newFilterModel.items[0].field) {
                                 case 'ordernumber':
-                                    fetchData(
-                                        paginationModel.page + 1,
-                                        paginationModel.pageSize,
-                                        newFilterModel.items[0].value
-                                    );
+                                    ordernumber = newFilterModel.items[0].value;
                                     break;
                                 case 'order_info':
-                                    fetchData(
-                                        paginationModel.page + 1,
-                                        paginationModel.pageSize,
-                                        undefined,
-                                        newFilterModel.items[0].value
-                                    );
+                                    orderInfo = newFilterModel.items[0].value;
                                 case 'recipient':
-                                    fetchData(
-                                        paginationModel.page + 1,
-                                        paginationModel.pageSize,
-                                        undefined,
-                                        undefined,
-                                        newFilterModel.items[0].value
-                                    );
+                                    recipient = newFilterModel.items[0].value;
                                 case 'recipient_phone_number':
-                                    fetchData(
-                                        paginationModel.page + 1,
-                                        paginationModel.pageSize,
-                                        undefined,
-                                        undefined,
-                                        undefined,
-                                        newFilterModel.items[0].value
-                                    );
+                                    recipientPhone = newFilterModel.items[0].value;
                                 case 'delivery_address':
-                                    fetchData(
-                                        paginationModel.page + 1,
-                                        paginationModel.pageSize,
-                                        undefined,
-                                        undefined,
-                                        undefined,
-                                        undefined,
-                                        newFilterModel.items[0].value
-                                    );
+                                    deliveryAddress = newFilterModel.items[0].value;
                                 case 'status':
-                                    fetchData(
-                                        paginationModel.page + 1,
-                                        paginationModel.pageSize,
-                                        undefined,
-                                        undefined,
-                                        undefined,
-                                        undefined,
-                                        undefined,
-                                        undefined,
-                                        newFilterModel.items[0].value
-                                    );
+                                    orderStatus = newFilterModel.items[0].value;
                             }
                         }
 
+                        fetchData(
+                            paginationModel.page + 1,
+                            paginationModel.pageSize,
+                            ordernumber,
+                            orderInfo,
+                            recipient,
+                            recipientPhone,
+                            deliveryAddress,
+                            undefined,
+                            orderStatus
+                        );
                         setFilterModel(newFilterModel);
                     }}
                     /*slots={{

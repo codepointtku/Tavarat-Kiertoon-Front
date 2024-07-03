@@ -1,4 +1,3 @@
-import { useLoaderData } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { Stack, Button } from '@mui/material';
@@ -17,7 +16,6 @@ import {
 
 import TypographyTitle from '../TypographyTitle';
 import type { GridColDef } from '@mui/x-data-grid';
-import type { storageProductsLoader } from '../../Router/loaders';
 import { ProductStorageResponse, storagesApi } from '../../api';
 import { useEffect, useState } from 'react';
 import DataGridCustomFilter from './DataGridCustomFilterPanel';
@@ -347,16 +345,7 @@ function ProductsGrid() {
                     onPaginationModelChange={async (newPaginationModel) => {
                         // fetch data from server
                         setPaginationModel(newPaginationModel);
-                        const { data: users } = await storagesApi.storagesProductsList(
-                            true,
-                            undefined,
-                            undefined,
-                            undefined,
-                            newPaginationModel.page + 1,
-                            newPaginationModel.pageSize,
-                            undefined
-                        );
-                        setRowData(users.results !== undefined ? users.results : []);
+                        fetchData(newPaginationModel.page + 1, newPaginationModel.pageSize);
                     }}
                     onSortModelChange={async (newSortModel) => {
                         console.log(newSortModel);
@@ -368,17 +357,12 @@ function ProductsGrid() {
                             page: 0,
                             pageSize: paginationModel.pageSize,
                         });
-                        const { data: products } = await storagesApi.storagesProductsList(
-                            true,
-                            newFilterModel.quickFilterValues ? newFilterModel.quickFilterValues[0] : undefined,
-                            undefined,
-                            undefined,
+                        fetchData(
                             1,
                             paginationModel.pageSize,
-                            undefined
+                            newFilterModel.quickFilterValues ? newFilterModel.quickFilterValues[0] : undefined
                         );
                         setFilterModel({ items: [], quickFilterValues: newFilterModel.quickFilterValues });
-                        setRowData(products.results !== undefined ? products.results : []);
                     }}
                     slots={{
                         toolbar: () => {
