@@ -25,8 +25,9 @@ const filterTypes = {
 
 function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveFilter, getValues, localizedTextsMap }) {
     const filtercolumnwatch = useWatch({ control, name: `filterForm.${index}.column` });
-    const column = columns.filter((value) => value.field === filtercolumnwatch)[0];
-    console.log(localizedTextsMap);
+    const columnsOptions = columns.filter((value) => value.valueOptions);
+    const column = columnsOptions.filter((value) => value.field === filtercolumnwatch);
+    console.log(columns);
     return (
         <Grid container spacing={0}>
             <Grid
@@ -101,20 +102,21 @@ function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveF
                             <InputLabel>Suodatin</InputLabel>
 
                             <NativeSelect value={value} onChange={onChange}>
-                                {column.filterOperators.map((a, index) => {
-                                    console.log(localizedTextsMap);
-                                    return (
-                                        <option key={index} value={a.value}>
-                                            {
-                                                localizedTextsMap[
-                                                    `filterOperator${a.value.charAt(0).toUpperCase()}${a.value.slice(
-                                                        1
-                                                    )}`
-                                                ]
-                                            }
-                                        </option>
-                                    );
-                                })}
+                                {columns
+                                    .filter((value) => value.field === filtercolumnwatch)[0]
+                                    .filterOperators.map((a, index) => {
+                                        return (
+                                            <option key={index} value={a.value}>
+                                                {
+                                                    localizedTextsMap[
+                                                        `filterOperator${a.value
+                                                            .charAt(0)
+                                                            .toUpperCase()}${a.value.slice(1)}`
+                                                    ]
+                                                }
+                                            </option>
+                                        );
+                                    })}
                             </NativeSelect>
                         </FormControl>
                     )}
@@ -126,12 +128,11 @@ function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveF
                     control={control}
                     render={({ field: { onChange, value }, fieldState: { error } }) => (
                         <FormControl variant="standard" sx={{ width: '100%' }}>
-                            {filtercolumnwatch === 'status' ? (
+                            {column.length > 0 ? (
                                 <>
                                     <InputLabel shrink={true}>Arvo</InputLabel>
                                     <NativeSelect value={value} onChange={onChange}>
-                                        {column.valueOptions?.map((val, index) => {
-                                            console.log(val);
+                                        {column[0].valueOptions?.map((val, index) => {
                                             return (
                                                 <option key={index} value={val.value}>
                                                     {val.label}
