@@ -12,19 +12,19 @@ import {
     GridToolbarQuickFilter,
     GridToolbarFilterButton,
     getGridStringOperators,
+    getGridSingleSelectOperators,
 } from '@mui/x-data-grid';
 
 import TypographyTitle from '../TypographyTitle';
-import { AxiosRequestHeaders } from 'axios';
 import type { GridColDef } from '@mui/x-data-grid';
-import type { productListLoader, storageProductsLoader } from '../../Router/loaders';
-import { ProductResponse, ProductStorageResponse, storagesApi } from '../../api';
+import type { storageProductsLoader } from '../../Router/loaders';
+import { ProductStorageResponse, storagesApi } from '../../api';
 import { useEffect, useState } from 'react';
 import DataGridCustomFilter from './DataGridCustomFilterPanel';
 
 function ProductsGrid() {
-    const { products } = useLoaderData() as Awaited<ReturnType<typeof storageProductsLoader>>;
-    const { count, /* next, previous, */ results } = products;
+    //const { products } = useLoaderData() as Awaited<ReturnType<typeof storageProductsLoader>>;
+    //const { count, /* next, previous, */ results } = products;
     const [rowData, setRowData] = useState<ProductStorageResponse[]>([]);
     const [totalAmount, setTotalAmount] = useState(0);
     const [paginationModel, setPaginationModel] = useState({
@@ -36,22 +36,31 @@ function ProductsGrid() {
         quickFilterValues: [''],
     });
 
-    const fetchData = async (page: number, pageSize: number) => {
+    const fetchData = async (
+        page: number,
+        pageSize: number,
+        barcodeSearch?: string | undefined,
+        category?: number[] | undefined,
+        ordering?: string | undefined,
+        search?: string | undefined,
+        storage?: string | undefined
+    ) => {
         const { data: products } = await storagesApi.storagesProductsList(
-            undefined,
-            undefined,
-            undefined,
-            paginationModel.page + 1,
-            paginationModel.pageSize,
-            undefined,
-            { params: { all: true } }
+            true,
+            barcodeSearch,
+            category,
+            ordering,
+            page,
+            pageSize,
+            search,
+            storage
         );
         const results = products.results !== undefined ? products.results : [];
         setRowData(results);
         setTotalAmount(products.count !== undefined ? products.count : 0);
     };
     useEffect(() => {
-        fetchData(paginationModel.page, paginationModel.pageSize);
+        fetchData(paginationModel.page + 1, paginationModel.pageSize);
     }, []);
     // UPD: BE has new endpoint @ storagesApi (/storages/products). It contains more information than this productApi (/products).
 
@@ -88,6 +97,13 @@ function ProductsGrid() {
     const containFilterOperator = getGridStringOperators().filter((val) => val.value === 'contains');
     const columns: GridColDef[] = [
         { field: 'name', headerName: 'Tuotenimi', flex: 2, filterOperators: containFilterOperator },
+        {
+            field: 'product_items',
+            headerName: 'Viivakoodi',
+            renderCell: (params) => params.value[0].barcode,
+            flex: 1,
+            filterOperators: containFilterOperator,
+        },
         { field: 'amount', headerName: 'Vapaana', flex: 1, filterable: false },
         { field: 'total_amount', headerName: 'Järjestelmässä', flex: 1, filterable: false },
         // { field: 'category', headerName: 'Kategoriatunnus', flex: 1 },
@@ -283,23 +299,36 @@ function ProductsGrid() {
     const onSubmit = async (formdata: {
         filterForm: Array<{ column: string; filter: string; value: string; andor: string | undefined }>;
     }) => {
+        let search = undefined;
+        let barcode = undefined;
+        let storage = undefined;
+        let category = undefined;
         formdata.filterForm.map((form) => {
             const column = form.column;
             const filter = form.filter;
             const value = form.value;
             const andor = form.andor;
-            console.log(column);
-            console.log(filter);
-            console.log(value);
-            console.log(andor);
+
+            switch (column) {
+                case 'name':
+                    search = value;
+                    break;
+                case 'free_description':
+                    search = value;
+                    break;
+                case 'product_items':
+                    barcode = value;
+                    break;
+            }
+            console.log(column, value);
             if (andor == 'and') {
                 console.log('jippii');
             }
         });
-        //fetchData(1, paginationModel.pageSize);
+        fetchData(1, paginationModel.pageSize, barcode, category, undefined, search, storage);
     };
 
-    if (!results) return null;
+    if (!rowData) return null;
     const GridX = () => {
         return (
             <div style={{ height: 500 }}>
@@ -319,13 +348,13 @@ function ProductsGrid() {
                         // fetch data from server
                         setPaginationModel(newPaginationModel);
                         const { data: users } = await storagesApi.storagesProductsList(
+                            true,
                             undefined,
                             undefined,
                             undefined,
-                            paginationModel.page + 1,
-                            paginationModel.pageSize,
-                            undefined,
-                            { params: { all: true } }
+                            newPaginationModel.page + 1,
+                            newPaginationModel.pageSize,
+                            undefined
                         );
                         setRowData(users.results !== undefined ? users.results : []);
                     }}
@@ -340,13 +369,13 @@ function ProductsGrid() {
                             pageSize: paginationModel.pageSize,
                         });
                         const { data: products } = await storagesApi.storagesProductsList(
+                            true,
                             newFilterModel.quickFilterValues ? newFilterModel.quickFilterValues[0] : undefined,
                             undefined,
                             undefined,
                             1,
                             paginationModel.pageSize,
-                            undefined,
-                            { params: { all: true } }
+                            undefined
                         );
                         setFilterModel({ items: [], quickFilterValues: newFilterModel.quickFilterValues });
                         setRowData(products.results !== undefined ? products.results : []);
