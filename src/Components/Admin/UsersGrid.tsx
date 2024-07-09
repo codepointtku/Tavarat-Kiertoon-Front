@@ -87,7 +87,13 @@ function UsersGrid() {
     ];
     const columns: GridColDef[] = [
         { field: 'email', headerName: 'Sähköposti', flex: 1, filterOperators: containFilterOperator },
-        { field: 'username', headerName: 'Käyttäjänimi', flex: 1, filterOperators: containFilterOperator },
+        {
+            field: 'username',
+            headerName: 'Käyttäjänimi',
+            flex: 1,
+            filterOperators: containFilterOperator,
+            filterable: false,
+        },
         { field: 'first_name', headerName: 'Etunimi', filterOperators: containFilterOperator },
         { field: 'last_name', headerName: 'Sukunimi', filterOperators: containFilterOperator },
         { field: 'phone_number', headerName: 'Puhelinnumero', flex: 1, filterOperators: containFilterOperator },
@@ -97,6 +103,7 @@ function UsersGrid() {
             valueGetter: (params: GridValueGetterParams) => groupNames[params.row.group],
             filterOperators: equalFilterOperator,
             valueOptions: groupOptions,
+            filterable: false,
         },
         {
             field: 'is_active',
@@ -316,6 +323,9 @@ function UsersGrid() {
                     break;
                 case 'first_name':
                     firstName = value;
+                    break;
+                case 'last_name':
+                    lastName = value;
                     break;
                 case 'phone_number':
                     phoneNumber = value;
