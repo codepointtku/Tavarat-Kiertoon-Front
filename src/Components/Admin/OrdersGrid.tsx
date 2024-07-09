@@ -67,28 +67,11 @@ function OrdersGrid() {
         console.log('what');
         setRowData(results);
         setTotalAmount(orders.count !== undefined ? orders.count : 0);
-        return { row: results, totalcount: orders.count };
     };
     useEffect(() => {
         fetchData(paginationModel.page + 1, paginationModel.pageSize);
     }, []);
 
-    const restorePaginationState = () => {
-        // <---------- Step 4
-        const state = apiRef.current.exportState();
-        const restoredState = {
-            ...state,
-            pagination: {
-                ...state.pagination,
-                paginationModel: {
-                    ...state.pagination?.paginationModel,
-                    page: 0, // <-- Set the page to the first page
-                    pageSize: 25, // <-- Specify the pageSize based on the requirements of your grid.
-                },
-            },
-        };
-        apiRef.current.restoreState(restoredState);
-    };
     //     "results": [
     //     {
     //       "id": 0,
@@ -448,12 +431,13 @@ function OrdersGrid() {
                     filterMode="server"
                     paginationMode="server"
                     pagination
-                    //paginationModel={paginationModel}
+                    paginationModel={paginationModel}
                     filterModel={filterModel}
                     apiRef={apiRef}
                     onPaginationModelChange={(newPaginationModel, details) => {
                         // fetch data from server
                         console.log('guh');
+                        setPaginationModel(newPaginationModel);
                         fetchData(newPaginationModel.page + 1, newPaginationModel.pageSize);
                     }}
                     onSortModelChange={(newSortModel, details) => {
@@ -470,7 +454,10 @@ function OrdersGrid() {
                         ) {
                             return setFilterModel(newFilterModel);
                         }
-                        restorePaginationState();
+                        setPaginationModel({
+                            page: 0,
+                            pageSize: paginationModel.pageSize,
+                        });
                         console.log('huh');
                         let ordernumber = undefined;
                         let orderInfo = undefined;
