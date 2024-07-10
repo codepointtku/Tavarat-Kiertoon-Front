@@ -45,7 +45,6 @@ function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveF
                         if (len === 1) {
                             setOpen(false);
                         } else {
-                            console.log(index, '---');
                             handleRemoveFilter(index);
                         }
                     }}
@@ -132,6 +131,7 @@ function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveF
                                 <>
                                     <InputLabel shrink={true}>Arvo</InputLabel>
                                     <NativeSelect value={value} onChange={onChange}>
+                                        <option key="-1" value=""></option>
                                         {column[0].valueOptions?.map((val, index) => {
                                             return (
                                                 <option key={index} value={val.value}>
