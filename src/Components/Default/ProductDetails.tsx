@@ -195,6 +195,20 @@ function ProductDetails() {
                                                         >
                                                             Palauta tuotteita varastoon
                                                         </Button>
+                                                        <Button
+                                                            component={Link}
+                                                            to={
+                                                                location.pathname.includes('admin')
+                                                                    ? `/admin/tuotteet/${productId}/lisaa`
+                                                                    : `/varasto/tuotteet/${productId}/lisaa`
+                                                            }
+                                                            replace
+                                                            size="large"
+                                                            color="primary"
+                                                            sx={{ marginY: 2 }}
+                                                        >
+                                                            Lisää tuotteita varastoon
+                                                        </Button>
                                                         {/* Show return products to storage form */}
                                                         <HasRole role={'admin_group'}>
                                                             <Button

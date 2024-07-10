@@ -356,6 +356,16 @@ const returnProductsAction = async ({ request, params }) => {
     return { type: 'returnProduct', status: false };
 };
 
+const increaseProductsAction = async ({ request, params }) => {
+    const formData = await request.formData();
+    formData.get('amount');
+    const response = await productsApi.productsAddCreate(params.id, { amount: formData.get('amount') });
+    if (response.status === 200) {
+        return { type: 'returnProduct', status: true };
+    }
+    return { type: 'returnProduct', status: false };
+};
+
 /*
  * Retire products from storage
  */
@@ -1385,6 +1395,7 @@ export {
     storageEditAction,
     addProductAction,
     returnProductsAction,
+    increaseProductsAction,
     retireProductsAction,
     editProductAction,
     storageDeleteAction,
