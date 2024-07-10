@@ -9,7 +9,7 @@ import {
     GridToolbarDensitySelector,
     GridToolbarExport,
     GridToolbarQuickFilter,
-    GridToolbarFilterButton,
+    /* GridToolbarFilterButton, */
     getGridStringOperators,
     getGridSingleSelectOperators,
     useGridApiRef,
@@ -25,7 +25,7 @@ import type {
     GridValueGetterParams,
 } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
-import { OrderDetailResponse, OrderResponse, ordersApi } from '../../api';
+import { type OrderDetailResponse, type OrderResponse, ordersApi } from '../../api';
 import DataGridCustomFilter from './DataGridCustomFilterPanel';
 
 function OrdersGrid() {
@@ -64,7 +64,7 @@ function OrdersGrid() {
             orderStatus
         );
         const results = orders.results !== undefined ? orders.results : [];
-        console.log('what');
+        console.log('what', results);
         setRowData(results);
         setTotalAmount(orders.count !== undefined ? orders.count : 0);
     };
@@ -385,6 +385,7 @@ function OrdersGrid() {
             if (andor == 'and') {
                 console.log('jippii');
             }
+            return null;
         });
         fetchData(
             1,
@@ -399,13 +400,7 @@ function OrdersGrid() {
         );
     };
     if (!rowData) return null;
-    const DataGridToolBar = () => {
-        return (
-            <GridToolbarContainer>
-                <DataGridCustomFilter columns={columns} localizedTextsMap={localizedTextsMap} onSubmit={onSubmit} />
-            </GridToolbarContainer>
-        );
-    };
+
     const Customtoolbar = () => {
         return (
             <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
@@ -465,6 +460,11 @@ function OrdersGrid() {
                         let recipientPhone = undefined;
                         let deliveryAddress = undefined;
                         let orderStatus = undefined;
+
+                        ordernumber = newFilterModel.quickFilterValues
+                            ? newFilterModel.quickFilterValues[0]
+                            : undefined;
+
                         if (newFilterModel.items.length > 0) {
                             switch (newFilterModel.items[0].field) {
                                 case 'ordernumber':
