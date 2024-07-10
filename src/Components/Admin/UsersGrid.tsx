@@ -11,7 +11,7 @@ import {
     GridToolbarDensitySelector,
     GridToolbarExport,
     GridToolbarQuickFilter,
-    GridToolbarFilterButton,
+    /* GridToolbarFilterButton, */
     getGridStringOperators,
     getGridSingleSelectOperators,
 } from '@mui/x-data-grid';
@@ -19,7 +19,7 @@ import {
 import TypographyTitle from '../TypographyTitle';
 
 import type { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import { UserFullResponseSchema, usersApi } from '../../api';
+import { type UserFullResponseSchema, usersApi } from '../../api';
 import DataGridCustomFilter from './DataGridCustomFilterPanel';
 
 function UsersGrid() {
@@ -112,6 +112,7 @@ function UsersGrid() {
                 params.row.is_active === true ? 'Käytössä' : 'Ei käytössä',
             valueOptions: activeOptions,
             filterOperators: equalFilterOperator,
+            filterable: false,
         },
         {
             field: 'id',
