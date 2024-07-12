@@ -44,9 +44,8 @@ function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveF
                     onClick={() => {
                         if (len === 1) {
                             setOpen(false);
-                        } else {
-                            handleRemoveFilter(index);
                         }
+                        handleRemoveFilter(index);
                     }}
                 >
                     <CloseIcon style={{ fontSize: '20px' }} />
@@ -160,8 +159,15 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
         name: 'filterForm',
     });
     const [open, setOpen] = useState(false);
-
+    const removeField = (id) => {
+        //if all rows are removed submit empty form to fetch all orders/users/products
+        if (id === 0) {
+            onSubmit({ filterForm: [] });
+        }
+        remove(id);
+    };
     useEffect(() => {
+        console.log(fields.length);
         if (fields.length === 0) {
             append({
                 column: columns[0].field,
@@ -234,7 +240,7 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
                                                     setOpen={setOpen}
                                                     field={field}
                                                     columns={columns}
-                                                    handleRemoveFilter={() => remove(index)}
+                                                    handleRemoveFilter={() => removeField(index)}
                                                     getValues={getValues}
                                                     localizedTextsMap={localizedTextsMap}
                                                     {...{ control, index, field }}
