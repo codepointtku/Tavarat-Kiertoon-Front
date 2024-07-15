@@ -20,8 +20,7 @@ import TypographyTitle from '../TypographyTitle';
 
 import type { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { type UserFullResponseSchema, usersApi } from '../../api';
-import DataGridCustomFilter from './DataGridCustomFilterPanel';
-
+import CustomDataGridToolBarPanel from './Panel/CustomDataGridToolBarPanel';
 function UsersGrid() {
     //const { count, next, previous, results } = useLoaderData() as Awaited<ReturnType<typeof usersListLoader>>;
 
@@ -388,18 +387,11 @@ function UsersGrid() {
                     slots={{
                         toolbar: () => {
                             return (
-                                <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
-                                    <GridToolbarQuickFilter />
-                                    {/* <GridToolbarFilterButton /> */}
-                                    <DataGridCustomFilter
-                                        columns={columns}
-                                        localizedTextsMap={localizedTextsMap}
-                                        onSubmit={onSubmit}
-                                    />
-                                    <GridToolbarColumnsButton />
-                                    <GridToolbarDensitySelector />
-                                    <GridToolbarExport />
-                                </GridToolbarContainer>
+                                <CustomDataGridToolBarPanel
+                                    columns={columns}
+                                    localizedTextsMap={localizedTextsMap}
+                                    onSubmit={onSubmit}
+                                />
                             );
                         },
                     }}

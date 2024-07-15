@@ -26,7 +26,8 @@ import type {
 } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { type OrderDetailResponse, type OrderResponse, ordersApi } from '../../api';
-import DataGridCustomFilter from './DataGridCustomFilterPanel';
+import DataGridCustomFilter from './Panel/DataGridCustomFilterPanel';
+import CustomDataGridToolBarPanel from './Panel/CustomDataGridToolBarPanel';
 
 function OrdersGrid() {
     const [rowData, setRowData] = useState<OrderResponse[] | OrderDetailResponse[]>([]);
@@ -356,37 +357,38 @@ function OrdersGrid() {
         let delivery_address = undefined;
         let ordering = undefined;
         let orderStatus = undefined;
-        formdata.filterForm.map((form) => {
-            const column = form.column;
-            const filter = form.filter;
-            const value = form.value;
-            const andor = form.andor;
-            switch (column) {
-                case 'ordernumber':
-                    id = value;
-                    break;
-                case 'status':
-                    orderStatus = value;
-                    break;
-                case 'delivery_address':
-                    delivery_address = value;
-                    break;
-                case 'recipient':
-                    recipient = value;
-                    break;
-                case 'recipient_phone_number':
-                    recipientPhone = value;
-                    break;
-                case 'order_info':
-                    orderInfo = value;
-                    break;
-            }
-            console.log(column, value);
-            if (andor == 'and') {
-                console.log('jippii');
-            }
-            return null;
-        });
+        if (formdata.filterForm)
+            formdata.filterForm.map((form) => {
+                const column = form.column;
+                const filter = form.filter;
+                const value = form.value;
+                const andor = form.andor;
+                switch (column) {
+                    case 'ordernumber':
+                        id = value;
+                        break;
+                    case 'status':
+                        orderStatus = value;
+                        break;
+                    case 'delivery_address':
+                        delivery_address = value;
+                        break;
+                    case 'recipient':
+                        recipient = value;
+                        break;
+                    case 'recipient_phone_number':
+                        recipientPhone = value;
+                        break;
+                    case 'order_info':
+                        orderInfo = value;
+                        break;
+                }
+                console.log(column, value);
+                if (andor == 'and') {
+                    console.log('jippii');
+                }
+                return null;
+            });
         fetchData(
             1,
             paginationModel.pageSize,
@@ -404,7 +406,7 @@ function OrdersGrid() {
     const Customtoolbar = () => {
         return (
             <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
-                <GridToolbarQuickFilter />
+                <GridToolbarQuickFilter debounceMs={750} />
                 {/* <GridToolbarFilterButton /> */}
                 <DataGridCustomFilter columns={columns} localizedTextsMap={localizedTextsMap} onSubmit={onSubmit} />
                 <GridToolbarColumnsButton />
@@ -500,7 +502,15 @@ function OrdersGrid() {
                         toolbar: DataGridToolBar,
                     }}*/
                     slots={{
-                        toolbar: Customtoolbar,
+                        toolbar: () => {
+                            return (
+                                <CustomDataGridToolBarPanel
+                                    columns={columns}
+                                    localizedTextsMap={localizedTextsMap}
+                                    onSubmit={onSubmit}
+                                />
+                            );
+                        },
                     }}
                     localeText={localizedTextsMap}
                     // checkboxSelection

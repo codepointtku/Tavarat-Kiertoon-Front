@@ -18,7 +18,8 @@ import TypographyTitle from '../TypographyTitle';
 import type { GridColDef } from '@mui/x-data-grid';
 import { ProductStorageResponse, storagesApi } from '../../api';
 import { useEffect, useState } from 'react';
-import DataGridCustomFilter from './DataGridCustomFilterPanel';
+import DataGridCustomFilter from './Panel/DataGridCustomFilterPanel';
+import CustomDataGridToolBarPanel from './Panel/CustomDataGridToolBarPanel';
 
 function ProductsGrid() {
     //const { products } = useLoaderData() as Awaited<ReturnType<typeof storageProductsLoader>>;
@@ -367,18 +368,11 @@ function ProductsGrid() {
                     slots={{
                         toolbar: () => {
                             return (
-                                <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
-                                    <GridToolbarQuickFilter />
-                                    {/* <GridToolbarFilterButton /> */}
-                                    <DataGridCustomFilter
-                                        columns={columns}
-                                        localizedTextsMap={localizedTextsMap}
-                                        onSubmit={onSubmit}
-                                    />
-                                    <GridToolbarColumnsButton />
-                                    <GridToolbarDensitySelector />
-                                    <GridToolbarExport />
-                                </GridToolbarContainer>
+                                <CustomDataGridToolBarPanel
+                                    columns={columns}
+                                    localizedTextsMap={localizedTextsMap}
+                                    onSubmit={onSubmit}
+                                />
                             );
                         },
                     }}
