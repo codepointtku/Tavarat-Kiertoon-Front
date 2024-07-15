@@ -23,11 +23,24 @@ const filterTypes = {
     int: ['contains', 'equals', 'less than', 'greater than'],
 };
 
-function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveFilter, getValues, localizedTextsMap }) {
+function FilterRow({
+    len,
+    fields,
+    setOpen,
+    field,
+    control,
+    columns,
+    index,
+    handleRemoveFilter,
+    getValues,
+    localizedTextsMap,
+    onSubmit,
+}) {
     const filtercolumnwatch = useWatch({ control, name: `filterForm.${index}.column` });
     const columnsOptions = columns.filter((value) => value.valueOptions);
     const column = columnsOptions.filter((value) => value.field === filtercolumnwatch);
     console.log(columns);
+    console.log(filtercolumnwatch);
     return (
         <Grid container spacing={0}>
             <Grid
@@ -42,7 +55,9 @@ function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveF
                 <IconButton
                     size="small"
                     onClick={() => {
+                        handleRemoveFilter(index);
                         if (len === 1) {
+                            onSubmit({ filterForm: {} });
                             setOpen(false);
                         }
                         handleRemoveFilter(index);
@@ -61,9 +76,9 @@ function FilterRow({ len, setOpen, field, control, columns, index, handleRemoveF
                                     <option key={0} value="and">
                                         {localizedTextsMap.filterPanelOperatorAnd}
                                     </option>
-                                    <option key={1} value="or">
+                                    {/* <option key={1} value="or">
                                         {localizedTextsMap.filterPanelOperatorOr}
-                                    </option>
+                                    </option> */}
                                 </NativeSelect>
                             </FormControl>
                         )}
@@ -160,12 +175,14 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
     });
     const [open, setOpen] = useState(false);
     const removeField = (id) => {
+        console.log(fields);
         //if all rows are removed submit empty form to fetch all orders/users/products
-        if (id === 0) {
+        if (fields.length <= 1) {
             onSubmit({ filterForm: [] });
         }
         remove(id);
     };
+    let filterableColumns = columns.slice();
     useEffect(() => {
         console.log(fields.length);
         if (fields.length === 0) {
@@ -174,6 +191,7 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
                 filter: filterTypes.string[0],
                 value: '',
             });
+            filterableColumns = filterableColumns.filter((el) => !fields.find((rm) => rm.column === el.field));
         }
     }, [fields]);
 
@@ -193,8 +211,12 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     });
     const addNewFilter = () => {
+        filterableColumns = filterableColumns.filter(
+            (el) => !fields.find((rm) => rm.column === el.field) && el.filterable !== false
+        );
+        console.log('huuuuuuuuuuuuuuh', filterableColumns);
         append({
-            column: columns[0].field,
+            column: filterableColumns[0].field,
             filter: filterTypes.string[0],
             value: '',
         });
@@ -236,11 +258,13 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
                                             <div key={index} style={{ paddingBottom: 5 }}>
                                                 <FilterRow
                                                     len={fields.length}
+                                                    fields={fields}
                                                     control={control}
                                                     setOpen={setOpen}
                                                     field={field}
-                                                    columns={columns}
+                                                    columns={filterableColumns}
                                                     handleRemoveFilter={() => removeField(index)}
+                                                    onSubmit={onSubmit}
                                                     getValues={getValues}
                                                     localizedTextsMap={localizedTextsMap}
                                                     {...{ control, index, field }}
@@ -252,7 +276,18 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
                                 </div>
                                 <div style={{ marginTop: 10, paddingLeft: 40 }}>
                                     <Stack direction="row" spacing={1}>
-                                        <Button size="small" startIcon={<AddIcon />} onClick={addNewFilter}>
+                                        <Button
+                                            size="small"
+                                            startIcon={<AddIcon />}
+                                            onClick={addNewFilter}
+                                            disabled={
+                                                filterableColumns.filter(
+                                                    (el) =>
+                                                        !fields.find((rm) => rm.column === el.field) &&
+                                                        el.filterable !== false
+                                                ).length <= 0
+                                            }
+                                        >
                                             Lisää suodatin
                                         </Button>
                                         <Button size="small" type="submit">
