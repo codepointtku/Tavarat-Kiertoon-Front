@@ -161,7 +161,7 @@ function FilterRow({
     );
 }
 
-const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
+const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit, setFilterModel }) => {
     const { control, handleSubmit, getValues } = useForm();
     const { fields, append, remove } = useFieldArray({
         control,
@@ -169,7 +169,6 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
     });
     const [open, setOpen] = useState(false);
     const removeField = (id) => {
-        console.log(fields);
         //if all rows are removed submit empty form to fetch all orders/users/products
         if (fields.length <= 1) {
             onSubmit({ filterForm: [] });
@@ -178,7 +177,6 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
     };
     let filterableColumns = columns.slice();
     useEffect(() => {
-        console.log(fields.length);
         if (fields.length === 0) {
             append({
                 column: columns[0].field,
@@ -214,6 +212,14 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
             filter: 'contains',
             value: '',
         });
+    };
+    const resetFilter = () => {
+        setFilterModel({
+            items: [],
+            quickFilterValues: [''],
+        });
+
+        onSubmit({ filterForm: [] });
     };
 
     return (
@@ -286,6 +292,9 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
                                         </Button>
                                         <Button size="small" type="submit">
                                             Suodata
+                                        </Button>
+                                        <Button id="resetfilterbutton" size="small" onClick={resetFilter}>
+                                            Resetoi
                                         </Button>
                                     </Stack>
                                 </div>

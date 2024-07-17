@@ -11,12 +11,17 @@ import {
 } from '@mui/x-data-grid';
 import DataGridCustomFilter from './DataGridCustomFilterPanel';
 
-const CustomDataGridToolBarPanel = ({ columns, localizedTextsMap, onSubmit }) => {
+const CustomDataGridToolBarPanel = ({ columns, localizedTextsMap, onSubmit, setFilterModel }) => {
     return (
         <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
             <GridToolbarQuickFilter debounceMs={750} />
             {/* <GridToolbarFilterButton /> */}
-            <DataGridCustomFilter columns={columns} localizedTextsMap={localizedTextsMap} onSubmit={onSubmit} />
+            <DataGridCustomFilter
+                columns={columns}
+                localizedTextsMap={localizedTextsMap}
+                onSubmit={onSubmit}
+                setFilterModel={setFilterModel}
+            />
             <GridToolbarColumnsButton />
             <GridToolbarDensitySelector />
             <GridToolbarExport />

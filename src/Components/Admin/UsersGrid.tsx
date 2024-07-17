@@ -311,37 +311,37 @@ function UsersGrid() {
         let phoneNumber = undefined;
         let ordering = undefined;
         let email = undefined;
-
-        formdata.filterForm.map((form) => {
-            const column = form.column;
-            const filter = form.filter;
-            const value = form.value;
-            const andor = form.andor;
-            switch (column) {
-                case 'email':
-                    email = value;
-                    break;
-                case 'first_name':
-                    firstName = value;
-                    break;
-                case 'last_name':
-                    lastName = value;
-                    break;
-                case 'phone_number':
-                    phoneNumber = value;
-                    break;
-                case 'group':
-                    groups = value;
-                    break;
-                case 'is_active':
-                    isActive = value;
-                    break;
-            }
-            console.log(column, value);
-            if (andor == 'and') {
-                console.log('jippii');
-            }
-        });
+        if (formdata.filterForm.length > 0)
+            formdata.filterForm.map((form) => {
+                const column = form.column;
+                const filter = form.filter;
+                const value = form.value;
+                const andor = form.andor;
+                switch (column) {
+                    case 'email':
+                        email = value;
+                        break;
+                    case 'first_name':
+                        firstName = value;
+                        break;
+                    case 'last_name':
+                        lastName = value;
+                        break;
+                    case 'phone_number':
+                        phoneNumber = value;
+                        break;
+                    case 'group':
+                        groups = value;
+                        break;
+                    case 'is_active':
+                        isActive = value;
+                        break;
+                }
+                console.log(column, value);
+                if (andor == 'and') {
+                    console.log('jippii');
+                }
+            });
         fetchData(1, paginationModel.pageSize, email, firstName, groups, isActive, lastName, ordering, phoneNumber);
     };
 
@@ -391,6 +391,7 @@ function UsersGrid() {
                                     columns={columns}
                                     localizedTextsMap={localizedTextsMap}
                                     onSubmit={onSubmit}
+                                    setFilterModel={setFilterModel}
                                 />
                             );
                         },

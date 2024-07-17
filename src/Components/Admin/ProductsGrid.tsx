@@ -302,28 +302,29 @@ function ProductsGrid() {
         let barcode = undefined;
         let storage = undefined;
         let category = undefined;
-        formdata.filterForm.map((form) => {
-            const column = form.column;
-            const filter = form.filter;
-            const value = form.value;
-            const andor = form.andor;
+        if (formdata.filterForm.length > 0)
+            formdata.filterForm.map((form) => {
+                const column = form.column;
+                const filter = form.filter;
+                const value = form.value;
+                const andor = form.andor;
 
-            switch (column) {
-                case 'name':
-                    search = value;
-                    break;
-                case 'free_description':
-                    search = value;
-                    break;
-                case 'product_items':
-                    barcode = value;
-                    break;
-            }
-            console.log(column, value);
-            if (andor == 'and') {
-                console.log('jippii');
-            }
-        });
+                switch (column) {
+                    case 'name':
+                        search = value;
+                        break;
+                    case 'free_description':
+                        search = value;
+                        break;
+                    case 'product_items':
+                        barcode = value;
+                        break;
+                }
+                console.log(column, value);
+                if (andor == 'and') {
+                    console.log('jippii');
+                }
+            });
         fetchData(1, paginationModel.pageSize, barcode, category, undefined, search, storage);
     };
 
@@ -372,6 +373,7 @@ function ProductsGrid() {
                                     columns={columns}
                                     localizedTextsMap={localizedTextsMap}
                                     onSubmit={onSubmit}
+                                    setFilterModel={setFilterModel}
                                 />
                             );
                         },

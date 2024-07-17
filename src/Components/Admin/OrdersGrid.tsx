@@ -120,7 +120,7 @@ function OrdersGrid() {
             field: 'ordernumber',
             headerName: 'Tilausnumero',
             valueGetter: (params: GridValueGetterParams) => `${params.row.id || ''}`,
-            filterOperators: equalFilterOperator,
+            filterOperators: getGridSingleSelectOperators(),
         },
         {
             field: 'status',
@@ -357,7 +357,7 @@ function OrdersGrid() {
         let delivery_address = undefined;
         let ordering = undefined;
         let orderStatus = undefined;
-        if (formdata.filterForm)
+        if (formdata.filterForm.length > 0)
             formdata.filterForm.map((form) => {
                 const column = form.column;
                 const filter = form.filter;
@@ -400,21 +400,13 @@ function OrdersGrid() {
             ordering,
             orderStatus
         );
+        setFilterModel({
+            items: [],
+            quickFilterValues: [''],
+        });
     };
     if (!rowData) return null;
 
-    const Customtoolbar = () => {
-        return (
-            <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
-                <GridToolbarQuickFilter debounceMs={750} />
-                {/* <GridToolbarFilterButton /> */}
-                <DataGridCustomFilter columns={columns} localizedTextsMap={localizedTextsMap} onSubmit={onSubmit} />
-                <GridToolbarColumnsButton />
-                <GridToolbarDensitySelector />
-                <GridToolbarExport />
-            </GridToolbarContainer>
-        );
-    };
     const GridX = () => {
         return (
             <div style={{ height: 500 }}>
@@ -443,11 +435,12 @@ function OrdersGrid() {
                     onFilterModelChange={(newFilterModel, details) => {
                         // fetch data from server
                         console.log(newFilterModel);
-                        console.log(details);
+                        console.log(filterModel.items);
 
                         if (
                             filterModel.items.length > 0 &&
-                            filterModel.items[0].value == newFilterModel.items[0].value
+                            filterModel.items[0].value == newFilterModel.items[0].value &&
+                            (filterModel.quickFilterValues == undefined || filterModel.quickFilterValues.length <= 0)
                         ) {
                             return setFilterModel(newFilterModel);
                         }
@@ -466,7 +459,7 @@ function OrdersGrid() {
                         ordernumber = newFilterModel.quickFilterValues
                             ? newFilterModel.quickFilterValues[0]
                             : undefined;
-
+                        console.log('aaa', newFilterModel.items.length);
                         if (newFilterModel.items.length > 0) {
                             switch (newFilterModel.items[0].field) {
                                 case 'ordernumber':
@@ -484,7 +477,7 @@ function OrdersGrid() {
                                     orderStatus = newFilterModel.items[0].value;
                             }
                         }
-
+                        console.log('ordernumber:', ordernumber);
                         fetchData(
                             paginationModel.page + 1,
                             paginationModel.pageSize,
@@ -508,6 +501,7 @@ function OrdersGrid() {
                                     columns={columns}
                                     localizedTextsMap={localizedTextsMap}
                                     onSubmit={onSubmit}
+                                    setFilterModel={setFilterModel}
                                 />
                             );
                         },
