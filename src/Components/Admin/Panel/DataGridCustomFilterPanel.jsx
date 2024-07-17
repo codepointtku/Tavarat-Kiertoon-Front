@@ -18,11 +18,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { useWatch } from 'react-hook-form';
 
-const filterTypes = {
-    string: ['contains', 'equals', 'starts with', 'ends with', 'is any of'],
-    int: ['contains', 'equals', 'less than', 'greater than'],
-};
-
 function FilterRow({
     len,
     fields,
@@ -39,8 +34,7 @@ function FilterRow({
     const filtercolumnwatch = useWatch({ control, name: `filterForm.${index}.column` });
     const columnsOptions = columns.filter((value) => value.valueOptions);
     const column = columnsOptions.filter((value) => value.field === filtercolumnwatch);
-    console.log(columns);
-    console.log(filtercolumnwatch);
+
     return (
         <Grid container spacing={0}>
             <Grid
@@ -188,7 +182,7 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
         if (fields.length === 0) {
             append({
                 column: columns[0].field,
-                filter: filterTypes.string[0],
+                filter: 'contains',
                 value: '',
             });
             filterableColumns = filterableColumns.filter((el) => !fields.find((rm) => rm.column === el.field));
@@ -214,10 +208,10 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit }) => {
         filterableColumns = filterableColumns.filter(
             (el) => !fields.find((rm) => rm.column === el.field) && el.filterable !== false
         );
-        console.log('huuuuuuuuuuuuuuh', filterableColumns);
+        console.log(filterableColumns);
         append({
             column: filterableColumns[0].field,
-            filter: filterTypes.string[0],
+            filter: 'contains',
             value: '',
         });
     };

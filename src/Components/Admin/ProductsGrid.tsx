@@ -95,7 +95,6 @@ function ProductsGrid() {
 
     const containFilterOperator = getGridStringOperators().filter((val) => val.value === 'contains');
     const columns: GridColDef[] = [
-        { field: 'name', headerName: 'Tuotenimi', flex: 2, filterOperators: containFilterOperator },
         {
             field: 'product_items',
             headerName: 'Viivakoodi',
@@ -103,6 +102,7 @@ function ProductsGrid() {
             flex: 1,
             filterOperators: containFilterOperator,
         },
+        { field: 'name', headerName: 'Tuotenimi', flex: 2, filterOperators: containFilterOperator },
         { field: 'amount', headerName: 'Vapaana', flex: 1, filterable: false },
         { field: 'total_amount', headerName: 'Järjestelmässä', flex: 1, filterable: false },
         // { field: 'category', headerName: 'Kategoriatunnus', flex: 1 },
