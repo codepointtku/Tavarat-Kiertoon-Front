@@ -120,7 +120,7 @@ function OrdersGrid() {
             field: 'ordernumber',
             headerName: 'Tilausnumero',
             valueGetter: (params: GridValueGetterParams) => `${params.row.id || ''}`,
-            filterOperators: getGridSingleSelectOperators(),
+            filterOperators: equalFilterOperator,
         },
         {
             field: 'status',

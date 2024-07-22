@@ -1944,6 +1944,18 @@ paths:
     get:
       operationId: orders_list
       parameters:
+      - in: query
+        name: delivery_address
+        schema:
+          type: string
+      - in: query
+        name: id
+        schema:
+          type: string
+      - in: query
+        name: order_info
+        schema:
+          type: string
       - name: ordering
         required: false
         in: query
@@ -1963,13 +1975,23 @@ paths:
         schema:
           type: integer
       - in: query
-        name: status
+        name: recipient
         schema:
           type: string
-          enum:
-          - Finished
-          - Processing
-          - Waiting
+      - in: query
+        name: recipient_phone_number
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - Finished
+            - Processing
+            - Waiting
         description: |-
           * `Waiting` - Waiting
           * `Processing` - Processing
@@ -1978,6 +2000,8 @@ paths:
           * `Waiting` - Waiting
           * `Processing` - Processing
           * `Finished` - Finished
+        explode: true
+        style: form
       tags:
       - orders
       security:
@@ -2910,6 +2934,7 @@ paths:
           - br
           - bs
           - ca
+          - ckb
           - cs
           - cy
           - da
@@ -3264,6 +3289,10 @@ paths:
         of ProductItem, Picture and Color
       parameters:
       - in: query
+        name: all
+        schema:
+          type: boolean
+      - in: query
         name: barcode_search
         schema:
           type: string
@@ -3294,6 +3323,11 @@ paths:
         description: Number of results to return per page.
         schema:
           type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search
       - in: query
         name: storage
         schema:
@@ -3594,6 +3628,14 @@ paths:
       description: List all users with all database fields, no POST here
       parameters:
       - in: query
+        name: email
+        schema:
+          type: string
+      - in: query
+        name: first_name
+        schema:
+          type: string
+      - in: query
         name: groups
         schema:
           type: array
@@ -3605,6 +3647,10 @@ paths:
         name: is_active
         schema:
           type: boolean
+      - in: query
+        name: last_name
+        schema:
+          type: string
       - name: ordering
         required: false
         in: query
@@ -3623,6 +3669,10 @@ paths:
         description: Number of results to return per page.
         schema:
           type: integer
+      - in: query
+        name: phone_number
+        schema:
+          type: string
       tags:
       - users
       security:
@@ -5986,6 +6036,13 @@ components:
         total_amount:
           type: integer
           readOnly: true
+        category_name:
+          type: string
+          readOnly: true
+        colors:
+          type: array
+          items:
+            type: integer
         product_items:
           type: array
           items:
@@ -6008,13 +6065,10 @@ components:
         category:
           type: integer
           nullable: true
-        colors:
-          type: array
-          items:
-            type: integer
       required:
       - amount
       - category
+      - category_name
       - colors
       - free_description
       - id
@@ -6246,6 +6300,14 @@ components:
         total_amount:
           type: integer
           readOnly: true
+        category_name:
+          type: string
+          readOnly: true
+        colors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Color'
+          readOnly: true
         name:
           type: string
           maxLength: 255
@@ -6263,13 +6325,10 @@ components:
         category:
           type: integer
           nullable: true
-        colors:
-          type: array
-          items:
-            type: integer
       required:
       - amount
       - category
+      - category_name
       - colors
       - free_description
       - id
@@ -6361,7 +6420,7 @@ components:
         storage:
           type: integer
         barcode:
-          type: integer
+          type: string
         name:
           type: string
           maxLength: 255
