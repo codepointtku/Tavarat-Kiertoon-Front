@@ -4,17 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { Stack, Button } from '@mui/material';
 
-import {
-    DataGrid,
-    GridToolbarContainer,
-    GridToolbarColumnsButton,
-    GridToolbarDensitySelector,
-    GridToolbarExport,
-    GridToolbarQuickFilter,
-    /* GridToolbarFilterButton, */
-    getGridStringOperators,
-    getGridSingleSelectOperators,
-} from '@mui/x-data-grid';
+import { DataGrid, getGridStringOperators, getGridSingleSelectOperators } from '@mui/x-data-grid';
 
 import TypographyTitle from '../TypographyTitle';
 
@@ -344,6 +334,7 @@ function UsersGrid() {
                 if (andor == 'and') {
                     console.log('jippii');
                 }
+                return null;
             });
         fetchData(1, paginationModel.pageSize, email, firstName, groups, isActive, lastName, ordering, phoneNumber);
 

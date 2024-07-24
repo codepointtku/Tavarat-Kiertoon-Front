@@ -2,18 +2,7 @@ import { Link } from 'react-router-dom';
 
 import { Stack, Button } from '@mui/material';
 
-import {
-    DataGrid,
-    GridToolbarContainer,
-    GridToolbarColumnsButton,
-    GridToolbarDensitySelector,
-    GridToolbarExport,
-    GridToolbarQuickFilter,
-    /* GridToolbarFilterButton, */
-    getGridStringOperators,
-    getGridSingleSelectOperators,
-    useGridApiRef,
-} from '@mui/x-data-grid';
+import { DataGrid, getGridStringOperators, getGridSingleSelectOperators, useGridApiRef } from '@mui/x-data-grid';
 
 import TypographyTitle from '../TypographyTitle';
 
@@ -26,7 +15,6 @@ import type {
 } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { type OrderDetailResponse, type OrderResponse, ordersApi } from '../../api';
-import DataGridCustomFilter from './Panel/DataGridCustomFilterPanel';
 import CustomDataGridToolBarPanel from './Panel/CustomDataGridToolBarPanel';
 
 function OrdersGrid() {

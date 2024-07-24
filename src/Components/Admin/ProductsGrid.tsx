@@ -2,23 +2,12 @@ import { Link } from 'react-router-dom';
 
 import { Stack, Button } from '@mui/material';
 
-import {
-    DataGrid,
-    GridToolbarContainer,
-    GridToolbarColumnsButton,
-    GridToolbarDensitySelector,
-    GridToolbarExport,
-    GridToolbarQuickFilter,
-    GridToolbarFilterButton,
-    getGridStringOperators,
-    getGridSingleSelectOperators,
-} from '@mui/x-data-grid';
+import { DataGrid, getGridStringOperators } from '@mui/x-data-grid';
 
 import TypographyTitle from '../TypographyTitle';
 import type { GridColDef, GridFilterModel, GridFilterItem } from '@mui/x-data-grid';
-import { ProductStorageResponse, storagesApi } from '../../api';
+import { type ProductStorageResponse, storagesApi } from '../../api';
 import { useEffect, useState } from 'react';
-import DataGridCustomFilter from './Panel/DataGridCustomFilterPanel';
 import CustomDataGridToolBarPanel from './Panel/CustomDataGridToolBarPanel';
 
 function ProductsGrid() {
@@ -328,6 +317,7 @@ function ProductsGrid() {
                 if (andor == 'and') {
                     console.log('jippii');
                 }
+                return null;
             });
         fetchData(1, paginationModel.pageSize, barcode, category, undefined, search, storage);
         setFilterItems(items);

@@ -5,32 +5,17 @@ import {
     FormControl,
     InputLabel,
     NativeSelect,
-    MenuItem,
     Paper,
     Grid,
     IconButton,
     TextField,
-    ClickAwayListener,
 } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { useWatch } from 'react-hook-form';
+import { useForm, useWatch, useFieldArray, Controller } from 'react-hook-form';
 
-function FilterRow({
-    len,
-    fields,
-    setOpen,
-    field,
-    control,
-    columns,
-    index,
-    handleRemoveFilter,
-    getValues,
-    localizedTextsMap,
-    onSubmit,
-}) {
+function FilterRow({ len, setOpen, control, columns, index, handleRemoveFilter, localizedTextsMap, onSubmit }) {
     const filtercolumnwatch = useWatch({ control, name: `filterForm.${index}.column` });
     const columnsOptions = columns.filter((value) => value.valueOptions);
     const column = columnsOptions.filter((value) => value.field === filtercolumnwatch);
@@ -192,6 +177,7 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit, setFilterI
                     filter: items.operator,
                     value: items.value,
                 });
+                return null;
             });
         }
     }, [fields]);
