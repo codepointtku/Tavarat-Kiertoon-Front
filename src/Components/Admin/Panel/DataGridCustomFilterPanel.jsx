@@ -161,7 +161,7 @@ function FilterRow({
     );
 }
 
-const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit, setFilterModel }) => {
+const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit, setFilterItems, filterItems }) => {
     const { control, handleSubmit, getValues } = useForm();
     const { fields, append, remove } = useFieldArray({
         control,
@@ -173,17 +173,26 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit, setFilterM
         if (fields.length <= 1) {
             onSubmit({ filterForm: [] });
         }
+        console.log(fields);
         remove(id);
     };
+    console.log('JIPPIII', filterItems);
     let filterableColumns = columns.slice();
     useEffect(() => {
-        if (fields.length === 0) {
+        if (filterItems.length === 0 && fields.length === 0) {
             append({
                 column: columns[0].field,
                 filter: 'contains',
                 value: '',
             });
-            filterableColumns = filterableColumns.filter((el) => !fields.find((rm) => rm.column === el.field));
+        } else if (fields.length === 0) {
+            filterItems.map((items) => {
+                append({
+                    column: items.field,
+                    filter: items.operator,
+                    value: items.value,
+                });
+            });
         }
     }, [fields]);
 
@@ -214,10 +223,7 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit, setFilterM
         });
     };
     const resetFilter = () => {
-        setFilterModel({
-            items: [],
-            quickFilterValues: [''],
-        });
+        setFilterItems([]);
 
         onSubmit({ filterForm: [] });
     };

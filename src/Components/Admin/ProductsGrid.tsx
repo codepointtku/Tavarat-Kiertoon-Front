@@ -15,7 +15,7 @@ import {
 } from '@mui/x-data-grid';
 
 import TypographyTitle from '../TypographyTitle';
-import type { GridColDef } from '@mui/x-data-grid';
+import type { GridColDef, GridFilterModel, GridFilterItem } from '@mui/x-data-grid';
 import { ProductStorageResponse, storagesApi } from '../../api';
 import { useEffect, useState } from 'react';
 import DataGridCustomFilter from './Panel/DataGridCustomFilterPanel';
@@ -30,10 +30,12 @@ function ProductsGrid() {
         page: 0,
         pageSize: 25,
     });
-    const [filterModel, setFilterModel] = useState<{ items: []; quickFilterValues: any[] | undefined }>({
+
+    const [quickFilterModel, setQuickFilterModel] = useState<GridFilterModel>({
         items: [],
         quickFilterValues: [''],
     });
+    const [filterItems, setFilterItems] = useState<GridFilterItem[]>([]);
 
     const fetchData = async (
         page: number,
@@ -302,12 +304,14 @@ function ProductsGrid() {
         let barcode = undefined;
         let storage = undefined;
         let category = undefined;
+        let items: GridFilterItem[] = [];
         if (formdata.filterForm.length > 0)
             formdata.filterForm.map((form) => {
                 const column = form.column;
                 const filter = form.filter;
                 const value = form.value;
                 const andor = form.andor;
+                items.push({ field: column, operator: filter, value: value });
 
                 switch (column) {
                     case 'name':
@@ -326,6 +330,7 @@ function ProductsGrid() {
                 }
             });
         fetchData(1, paginationModel.pageSize, barcode, category, undefined, search, storage);
+        setFilterItems(items);
     };
 
     if (!rowData) return null;
@@ -343,7 +348,7 @@ function ProductsGrid() {
                     paginationMode="server"
                     pagination
                     paginationModel={paginationModel}
-                    filterModel={filterModel}
+                    filterModel={quickFilterModel}
                     onPaginationModelChange={async (newPaginationModel) => {
                         // fetch data from server
                         setPaginationModel(newPaginationModel);
@@ -364,7 +369,7 @@ function ProductsGrid() {
                             paginationModel.pageSize,
                             newFilterModel.quickFilterValues ? newFilterModel.quickFilterValues[0] : undefined
                         );
-                        setFilterModel({ items: [], quickFilterValues: newFilterModel.quickFilterValues });
+                        setQuickFilterModel({ items: [], quickFilterValues: newFilterModel.quickFilterValues });
                     }}
                     slots={{
                         toolbar: () => {
@@ -373,7 +378,8 @@ function ProductsGrid() {
                                     columns={columns}
                                     localizedTextsMap={localizedTextsMap}
                                     onSubmit={onSubmit}
-                                    setFilterModel={setFilterModel}
+                                    setFilterItems={setFilterItems}
+                                    filterItems={filterItems}
                                 />
                             );
                         },

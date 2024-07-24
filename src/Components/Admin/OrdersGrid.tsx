@@ -37,10 +37,11 @@ function OrdersGrid() {
         pageSize: 25,
     });
     const apiRef = useGridApiRef();
-    const [filterModel, setFilterModel] = useState<GridFilterModel>({
+    const [quickFilterModel, setQuickFilterModel] = useState<GridFilterModel>({
         items: [],
         quickFilterValues: [''],
     });
+    const [filterItems, setFilterItems] = useState<GridFilterItem[]>([]);
 
     const fetchData = async (
         page = 1,
@@ -357,12 +358,14 @@ function OrdersGrid() {
         let delivery_address = undefined;
         let ordering = undefined;
         let orderStatus = undefined;
+        let items: GridFilterItem[] = [];
         if (formdata.filterForm.length > 0)
             formdata.filterForm.map((form) => {
                 const column = form.column;
                 const filter = form.filter;
                 const value = form.value;
                 const andor = form.andor;
+                items.push({ field: column, operator: filter, value: value });
                 switch (column) {
                     case 'ordernumber':
                         id = value;
@@ -400,10 +403,8 @@ function OrdersGrid() {
             ordering,
             orderStatus
         );
-        setFilterModel({
-            items: [],
-            quickFilterValues: [''],
-        });
+        console.log(items);
+        setFilterItems(items);
     };
     if (!rowData) return null;
 
@@ -421,7 +422,7 @@ function OrdersGrid() {
                     paginationMode="server"
                     pagination
                     paginationModel={paginationModel}
-                    filterModel={filterModel}
+                    filterModel={quickFilterModel}
                     apiRef={apiRef}
                     onPaginationModelChange={(newPaginationModel, details) => {
                         // fetch data from server
@@ -435,61 +436,28 @@ function OrdersGrid() {
                     onFilterModelChange={(newFilterModel, details) => {
                         // fetch data from server
                         console.log(newFilterModel);
-                        console.log(filterModel.items);
-
-                        if (
-                            filterModel.items.length > 0 &&
-                            filterModel.items[0].value == newFilterModel.items[0].value &&
-                            (filterModel.quickFilterValues == undefined || filterModel.quickFilterValues.length <= 0)
-                        ) {
-                            return setFilterModel(newFilterModel);
-                        }
+                        console.log(quickFilterModel.items);
                         setPaginationModel({
                             page: 0,
                             pageSize: paginationModel.pageSize,
                         });
                         console.log('huh');
-                        let ordernumber = undefined;
-                        let orderInfo = undefined;
-                        let recipient = undefined;
-                        let recipientPhone = undefined;
-                        let deliveryAddress = undefined;
-                        let orderStatus = undefined;
-
-                        ordernumber = newFilterModel.quickFilterValues
+                        const ordernumber = newFilterModel.quickFilterValues
                             ? newFilterModel.quickFilterValues[0]
                             : undefined;
-                        console.log('aaa', newFilterModel.items.length);
-                        if (newFilterModel.items.length > 0) {
-                            switch (newFilterModel.items[0].field) {
-                                case 'ordernumber':
-                                    ordernumber = newFilterModel.items[0].value;
-                                    break;
-                                case 'order_info':
-                                    orderInfo = newFilterModel.items[0].value;
-                                case 'recipient':
-                                    recipient = newFilterModel.items[0].value;
-                                case 'recipient_phone_number':
-                                    recipientPhone = newFilterModel.items[0].value;
-                                case 'delivery_address':
-                                    deliveryAddress = newFilterModel.items[0].value;
-                                case 'status':
-                                    orderStatus = newFilterModel.items[0].value;
-                            }
-                        }
                         console.log('ordernumber:', ordernumber);
                         fetchData(
                             paginationModel.page + 1,
                             paginationModel.pageSize,
                             ordernumber,
-                            orderInfo,
-                            recipient,
-                            recipientPhone,
-                            deliveryAddress,
                             undefined,
-                            orderStatus
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined
                         );
-                        setFilterModel(newFilterModel);
+                        setQuickFilterModel(newFilterModel);
                     }}
                     /*slots={{
                         toolbar: DataGridToolBar,
@@ -501,7 +469,8 @@ function OrdersGrid() {
                                     columns={columns}
                                     localizedTextsMap={localizedTextsMap}
                                     onSubmit={onSubmit}
-                                    setFilterModel={setFilterModel}
+                                    setFilterItems={setFilterItems}
+                                    filterItems={filterItems}
                                 />
                             );
                         },

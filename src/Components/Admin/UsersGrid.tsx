@@ -18,7 +18,7 @@ import {
 
 import TypographyTitle from '../TypographyTitle';
 
-import type { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import type { GridColDef, GridFilterModel, GridFilterItem, GridValueGetterParams } from '@mui/x-data-grid';
 import { type UserFullResponseSchema, usersApi } from '../../api';
 import CustomDataGridToolBarPanel from './Panel/CustomDataGridToolBarPanel';
 function UsersGrid() {
@@ -30,10 +30,11 @@ function UsersGrid() {
         page: 0,
         pageSize: 25,
     });
-    const [filterModel, setFilterModel] = useState<{ items: []; quickFilterValues: any[] | undefined }>({
+    const [quickFilterModel, setQuickFilterModel] = useState<GridFilterModel>({
         items: [],
         quickFilterValues: [''],
     });
+    const [filterItems, setFilterItems] = useState<GridFilterItem[]>([]);
 
     const fetchData = async (
         page: number,
@@ -311,12 +312,14 @@ function UsersGrid() {
         let phoneNumber = undefined;
         let ordering = undefined;
         let email = undefined;
+        let items: GridFilterItem[] = [];
         if (formdata.filterForm.length > 0)
             formdata.filterForm.map((form) => {
                 const column = form.column;
                 const filter = form.filter;
                 const value = form.value;
                 const andor = form.andor;
+                items.push({ field: column, operator: filter, value: value });
                 switch (column) {
                     case 'email':
                         email = value;
@@ -343,6 +346,8 @@ function UsersGrid() {
                 }
             });
         fetchData(1, paginationModel.pageSize, email, firstName, groups, isActive, lastName, ordering, phoneNumber);
+
+        setFilterItems(items);
     };
 
     if (!rowData) return null;
@@ -360,7 +365,7 @@ function UsersGrid() {
                     paginationMode="server"
                     pagination
                     paginationModel={paginationModel}
-                    filterModel={filterModel}
+                    filterModel={quickFilterModel}
                     onPaginationModelChange={async (newPaginationModel) => {
                         // fetch data from server
                         setPaginationModel(newPaginationModel);
@@ -382,7 +387,7 @@ function UsersGrid() {
                             newFilterModel.quickFilterValues ? newFilterModel.quickFilterValues[0] : undefined
                         );
 
-                        setFilterModel({ items: [], quickFilterValues: newFilterModel.quickFilterValues });
+                        setQuickFilterModel({ items: [], quickFilterValues: newFilterModel.quickFilterValues });
                     }}
                     slots={{
                         toolbar: () => {
@@ -391,7 +396,8 @@ function UsersGrid() {
                                     columns={columns}
                                     localizedTextsMap={localizedTextsMap}
                                     onSubmit={onSubmit}
-                                    setFilterModel={setFilterModel}
+                                    setFilterItems={setFilterItems}
+                                    filterItems={filterItems}
                                 />
                             );
                         },
