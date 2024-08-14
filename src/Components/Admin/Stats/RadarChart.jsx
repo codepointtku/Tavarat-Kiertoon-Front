@@ -5,6 +5,7 @@ import { Container } from '@mui/material';
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
+//Get data from somewhere else
 export const data = {
     labels: ['Konversio', 'Puuhöylä', 'Varat', 'Säästöt', 'Kierrätetyt', 'Käyttökelvottomat'],
     datasets: [

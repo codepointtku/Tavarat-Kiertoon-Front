@@ -1,5 +1,6 @@
 import { useState, Fragment } from 'react';
 
+import { useLoaderData } from 'react-router-dom';
 import { Divider, Typography, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -9,21 +10,19 @@ function SideAccordions() {
     const handleChange = (panel) => (event, newExpanded) => {
         setExpanded(newExpanded ? panel : false);
     };
+    const statdata = useLoaderData();
+    let years = [];
+    let total = 0;
 
-    const years = [
-        { y: '2023', amount: '123' },
-        { y: '2022', amount: '842' },
-        { y: '2021', amount: '831' },
-        { y: '2020', amount: '556' },
-        { y: '2019', amount: '123' },
-        { y: '2018', amount: '123' },
-    ];
-
-    const categories = [
+    Object.entries(statdata).map(([year, values]) => {
+        years.push({ y: year, amount: values.total });
+        total += values.total;
+    });
+    /* const categories = [
         { prod: 'Hammasharjat', amount: '554' },
         { prod: 'Sandaalit', amount: '887' },
         { prod: 'Sähkölaitteet', amount: '234' },
-    ];
+    ]; */
 
     return (
         <div>
@@ -44,11 +43,11 @@ function SideAccordions() {
                     <Divider sx={{ marginTop: '0.6rem', marginBottom: '0.6rem' }} />
 
                     <Typography color="primary.dark">Yhteensä:</Typography>
-                    <Typography color="success.dark">4321</Typography>
+                    <Typography color="success.dark">{total}</Typography>
                 </AccordionDetails>
             </Accordion>
 
-            <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+            {/* <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
                 <AccordionSummary aria-controls="panel2d-content" id="panel2d-header" expandIcon={<ExpandMoreIcon />}>
                     <Typography>Saatavilla</Typography>
                 </AccordionSummary>
@@ -62,7 +61,7 @@ function SideAccordions() {
                         </Fragment>
                     ))}
                 </AccordionDetails>
-            </Accordion>
+            </Accordion> */}
         </div>
     );
 }

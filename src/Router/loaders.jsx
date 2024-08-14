@@ -172,6 +172,14 @@ const orderEditLoader = async ({ params }) => {
     const { data } = await ordersApi.ordersRetrieve(params.id);
     return data;
 };
+/**
+ * Get yearly order count
+ */
+const OrderStatsLoader = async () => {
+    const { data } = await ordersApi.ordersStatRetrieve();
+    console.log(data);
+    return data;
+};
 
 const emailRecipientsLoader = async () => {
     const { data } = await ordersApi.ordersEmailrecipientsList();
@@ -690,4 +698,5 @@ export {
     categoriesManageLoader,
     gigaLoader,
     bikeTrailersLoader,
+    OrderStatsLoader,
 };
