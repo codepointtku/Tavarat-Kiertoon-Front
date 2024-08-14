@@ -15,6 +15,8 @@ import { faker } from '@faker-js/faker';
 
 import { Container } from '@mui/material';
 
+import { useLoaderData } from 'react-router-dom';
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend);
 
 const titletext = 'Tuotteita kierrätetty';
@@ -61,6 +63,29 @@ export const data = {
 };
 
 function AreaChart() {
+    const statdata = useLoaderData();
+    const data = {
+        labels,
+        datasets: [],
+    };
+
+    const first = Object.keys(statdata).length - 1;
+    const last = Object.keys(statdata).length;
+    Object.entries(statdata)
+        .slice(first, last)
+        .forEach(([year, monthly_value], index) => {
+            let data_month = labels.map(() => 0);
+            Object.entries(monthly_value).forEach(([month, value]) => {
+                data_month[month] = value;
+            });
+            console.log(Math.floor(Math.random() * 256));
+            data.datasets.push({
+                label: year,
+                data: data_month,
+                borderColor: 'rgb(53, 162, 235)',
+                backgroundColor: 'rgba(53, 162, 235, 0.5)',
+            });
+        });
     return (
         <Container maxWidth="lg">
             <Line options={options} data={data} />

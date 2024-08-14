@@ -179,6 +179,7 @@ import {
     gigaLoader,
     bikeTrailersLoader,
     bikeUserEditLoader,
+    OrderStatsLoader,
 } from './loaders';
 
 import {
@@ -344,6 +345,7 @@ function Routes() {
                                 {
                                     path: 'tilastot',
                                     element: <Stats />,
+                                    loader: OrderStatsLoader,
                                 },
                                 {
                                     path: '/ostoskori',
@@ -640,6 +642,7 @@ function Routes() {
                                 {
                                     path: 'tilastot',
                                     element: <Stats />,
+                                    loader: OrderStatsLoader,
                                 },
                                 {
                                     path: 'tilaukset',
