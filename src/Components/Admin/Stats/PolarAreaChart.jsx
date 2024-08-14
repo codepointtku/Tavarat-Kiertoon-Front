@@ -5,6 +5,7 @@ import { Container } from '@mui/material';
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
+//Get data from somewhere else
 export const data = {
     labels: ['Jakkarat', 'Pensselit', 'Partahöylät', 'Pöydät', 'Hammasharjat', 'Televisiot'],
     datasets: [
