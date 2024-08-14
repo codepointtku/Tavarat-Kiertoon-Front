@@ -79,9 +79,14 @@ function ResetPassword() {
                             }
                         />
                         {errors.new_password && (
-                            <Alert severity="error" sx={{ mt: 1 }}>
-                                Virheellinen syöte
-                            </Alert>
+                            <>
+                                <Alert severity="error" sx={{ mt: 1 }}>
+                                    Salasanan on oltava vähintään 16 merkkiä
+                                </Alert>
+                                <Alert severity="error" sx={{ mt: 1 }}>
+                                    Virheellinen syöte
+                                </Alert>
+                            </>
                         )}
                     </FormControl>
                     <FormControl sx={{ mt: 1 }} variant="outlined" fullWidth>
