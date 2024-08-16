@@ -704,7 +704,7 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <ProductsGrid />,
-                                            loader: productListLoader,
+                                            loader: storageProductsLoader,
                                         },
                                         {
                                             path: ':id',

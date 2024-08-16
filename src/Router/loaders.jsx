@@ -198,13 +198,13 @@ const storageProductsLoader = async ({ request }) => {
         //categoriesApi.categoriesList(),
         storagesApi.storagesProductsList(
             // barcode should support partial search
+            true,
             url.searchParams.get('viivakoodi'),
             url.searchParams.get('kategoria'),
             null,
             url.searchParams.get('sivu'),
             url.searchParams.get('sivukoko'),
-            undefined,
-            { params: { all: true } }
+            undefined
             // url.searchParams.get('varasto') // alternatively: varasto could be a param, storages/id/products
         ),
     ]);
