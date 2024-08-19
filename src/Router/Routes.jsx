@@ -41,6 +41,7 @@ import EditProduct from '../Components/Storage/EditProduct';
 
 import ProductsReturn from '../Components/Storage/ProductActionsView';
 import ProductsReturnForm from '../Components/Storage/ProductsReturnForm';
+import ProductsIncreaseForm from '../Components/Storage/ProductsIncreaseForm';
 import ProductsRetireForm from '../Components/Admin/ProductsRetireForm';
 
 // admin
@@ -179,6 +180,7 @@ import {
     gigaLoader,
     bikeTrailersLoader,
     bikeUserEditLoader,
+    OrderStatsLoader,
 } from './loaders';
 
 import {
@@ -228,6 +230,7 @@ import {
     userAddressEditAction,
     searchWatchCreateAction,
     returnProductsAction,
+    increaseProductsAction,
     categoriesManageAction,
     colorsManageAction,
     deleteCreateBikeTrailerAction,
@@ -344,6 +347,7 @@ function Routes() {
                                 {
                                     path: 'tilastot',
                                     element: <Stats />,
+                                    loader: OrderStatsLoader,
                                 },
                                 {
                                     path: '/ostoskori',
@@ -571,10 +575,17 @@ function Routes() {
                                     loader: productDetailsLoader,
                                     children: [
                                         {
+                                            path: 'lisaa',
+                                            element: <ProductsIncreaseForm />,
+                                            errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
+                                            loader: productItemsReturnLoader,
+                                            action: increaseProductsAction,
+                                        },
+                                        {
                                             path: 'palauta',
                                             element: <ProductsReturnForm />,
                                             errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
-                                            loader: productItemsReturnLoader,
+                                            loader: productDetailsLoader,
                                             action: returnProductsAction,
                                         },
                                         {
@@ -640,6 +651,7 @@ function Routes() {
                                 {
                                     path: 'tilastot',
                                     element: <Stats />,
+                                    loader: OrderStatsLoader,
                                 },
                                 {
                                     path: 'tilaukset',
@@ -692,13 +704,20 @@ function Routes() {
                                         {
                                             index: true,
                                             element: <ProductsGrid />,
-                                            loader: productListLoader,
+                                            loader: storageProductsLoader,
                                         },
                                         {
                                             path: ':id',
                                             element: <ProductDetails />,
                                             loader: productDetailsLoader,
                                             children: [
+                                                {
+                                                    path: 'lisaa',
+                                                    element: <ProductsIncreaseForm />,
+                                                    errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
+                                                    loader: productItemsReturnLoader,
+                                                    action: increaseProductsAction,
+                                                },
                                                 {
                                                     path: 'palauta',
                                                     element: <ProductsReturnForm />,

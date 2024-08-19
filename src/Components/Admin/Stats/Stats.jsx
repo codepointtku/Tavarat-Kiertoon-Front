@@ -5,10 +5,10 @@ import { Container, Box, Divider, Button, ButtonGroup, Grid } from '@mui/materia
 import BarChart from './BarChart';
 import AreaChart from './AreaChart';
 import LineChart from './LineChart';
-import MultiAxisLineChart from './MultiAxisLineChart';
+/* import MultiAxisLineChart from './MultiAxisLineChart';
 import PieChart from './PieChart';
 import PolarAreaChart from './PolarAreaChart';
-import RadarChart from './RadarChart';
+import RadarChart from './RadarChart'; */
 
 import SideAccordions from './SideAccordions';
 
@@ -36,7 +36,7 @@ const chartTypes = [
         type: 'line',
         component: LineChart,
     },
-    {
+    /*    {
         label: 'Multiviiva',
         type: 'multiline',
         component: MultiAxisLineChart,
@@ -55,7 +55,7 @@ const chartTypes = [
         label: 'Tutka',
         type: 'radar',
         component: RadarChart,
-    },
+    }, */
 ];
 
 function StatsPage() {
