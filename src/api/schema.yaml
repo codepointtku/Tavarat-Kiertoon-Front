@@ -2241,6 +2241,23 @@ paths:
       responses:
         '204':
           description: No response body
+  /orders/stat/:
+    get:
+      operationId: orders_stat_retrieve
+      tags:
+      - orders
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - jwtAuth: []
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderStat'
+          description: ''
   /orders/user/:
     get:
       operationId: orders_user_list
@@ -2934,7 +2951,6 @@ paths:
           - br
           - bs
           - ca
-          - ckb
           - cs
           - cy
           - da
@@ -5690,6 +5706,26 @@ components:
       - recipient_phone_number
       - status
       - user
+    OrderStat:
+      type: object
+      properties:
+        order_year:
+          type: string
+          format: date-time
+        order_month:
+          type: string
+          format: date-time
+        order_count:
+          type: string
+          readOnly: true
+        order_year_total:
+          type: string
+          readOnly: true
+      required:
+      - order_count
+      - order_month
+      - order_year
+      - order_year_total
     OrderStatusEnum:
       enum:
       - Waiting
