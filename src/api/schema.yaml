@@ -1944,6 +1944,18 @@ paths:
     get:
       operationId: orders_list
       parameters:
+      - in: query
+        name: delivery_address
+        schema:
+          type: string
+      - in: query
+        name: id
+        schema:
+          type: string
+      - in: query
+        name: order_info
+        schema:
+          type: string
       - name: ordering
         required: false
         in: query
@@ -1963,13 +1975,23 @@ paths:
         schema:
           type: integer
       - in: query
-        name: status
+        name: recipient
         schema:
           type: string
-          enum:
-          - Finished
-          - Processing
-          - Waiting
+      - in: query
+        name: recipient_phone_number
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - Finished
+            - Processing
+            - Waiting
         description: |-
           * `Waiting` - Waiting
           * `Processing` - Processing
@@ -1978,6 +2000,8 @@ paths:
           * `Waiting` - Waiting
           * `Processing` - Processing
           * `Finished` - Finished
+        explode: true
+        style: form
       tags:
       - orders
       security:
@@ -2217,6 +2241,23 @@ paths:
       responses:
         '204':
           description: No response body
+  /orders/stat/:
+    get:
+      operationId: orders_stat_retrieve
+      tags:
+      - orders
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - jwtAuth: []
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderStat'
+          description: ''
   /orders/user/:
     get:
       operationId: orders_user_list
@@ -3264,6 +3305,10 @@ paths:
         of ProductItem, Picture and Color
       parameters:
       - in: query
+        name: all
+        schema:
+          type: boolean
+      - in: query
         name: barcode_search
         schema:
           type: string
@@ -3294,6 +3339,11 @@ paths:
         description: Number of results to return per page.
         schema:
           type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search
       - in: query
         name: storage
         schema:
@@ -3594,6 +3644,14 @@ paths:
       description: List all users with all database fields, no POST here
       parameters:
       - in: query
+        name: email
+        schema:
+          type: string
+      - in: query
+        name: first_name
+        schema:
+          type: string
+      - in: query
         name: groups
         schema:
           type: array
@@ -3605,6 +3663,10 @@ paths:
         name: is_active
         schema:
           type: boolean
+      - in: query
+        name: last_name
+        schema:
+          type: string
       - name: ordering
         required: false
         in: query
@@ -3623,6 +3685,10 @@ paths:
         description: Number of results to return per page.
         schema:
           type: integer
+      - in: query
+        name: phone_number
+        schema:
+          type: string
       tags:
       - users
       security:
@@ -5640,6 +5706,26 @@ components:
       - recipient_phone_number
       - status
       - user
+    OrderStat:
+      type: object
+      properties:
+        order_year:
+          type: string
+          format: date-time
+        order_month:
+          type: string
+          format: date-time
+        order_count:
+          type: string
+          readOnly: true
+        order_year_total:
+          type: string
+          readOnly: true
+      required:
+      - order_count
+      - order_month
+      - order_year
+      - order_year_total
     OrderStatusEnum:
       enum:
       - Waiting
@@ -5986,6 +6072,13 @@ components:
         total_amount:
           type: integer
           readOnly: true
+        category_name:
+          type: string
+          readOnly: true
+        colors:
+          type: array
+          items:
+            type: integer
         product_items:
           type: array
           items:
@@ -6008,13 +6101,10 @@ components:
         category:
           type: integer
           nullable: true
-        colors:
-          type: array
-          items:
-            type: integer
       required:
       - amount
       - category
+      - category_name
       - colors
       - free_description
       - id
@@ -6246,6 +6336,14 @@ components:
         total_amount:
           type: integer
           readOnly: true
+        category_name:
+          type: string
+          readOnly: true
+        colors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Color'
+          readOnly: true
         name:
           type: string
           maxLength: 255
@@ -6263,13 +6361,10 @@ components:
         category:
           type: integer
           nullable: true
-        colors:
-          type: array
-          items:
-            type: integer
       required:
       - amount
       - category
+      - category_name
       - colors
       - free_description
       - id
@@ -6361,7 +6456,7 @@ components:
         storage:
           type: integer
         barcode:
-          type: integer
+          type: string
         name:
           type: string
           maxLength: 255

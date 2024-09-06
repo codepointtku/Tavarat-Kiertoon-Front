@@ -1,28 +1,57 @@
-import * as React from 'react';
-
-import { useLoaderData } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { Stack, Button } from '@mui/material';
 
-import {
-    DataGrid,
-    GridToolbarContainer,
-    GridToolbarColumnsButton,
-    GridToolbarDensitySelector,
-    GridToolbarExport,
-    GridToolbarQuickFilter,
-    GridToolbarFilterButton,
-} from '@mui/x-data-grid';
+import { DataGrid, getGridStringOperators } from '@mui/x-data-grid';
 
 import TypographyTitle from '../TypographyTitle';
-
-import type { GridColDef } from '@mui/x-data-grid';
-import type { productListLoader } from '../../Router/loaders';
+import type { GridColDef, GridFilterModel, GridFilterItem } from '@mui/x-data-grid';
+import { type ProductStorageResponse, storagesApi } from '../../api';
+import { useEffect, useState } from 'react';
+import CustomDataGridToolBarPanel from './Panel/CustomDataGridToolBarPanel';
 
 function ProductsGrid() {
-    const { count, /* next, previous, */ results } = useLoaderData() as Awaited<ReturnType<typeof productListLoader>>;
+    //const { products } = useLoaderData() as Awaited<ReturnType<typeof storageProductsLoader>>;
+    //const { count, /* next, previous, */ results } = products;
+    const [rowData, setRowData] = useState<ProductStorageResponse[]>([]);
+    const [totalAmount, setTotalAmount] = useState(0);
+    const [paginationModel, setPaginationModel] = useState({
+        page: 0,
+        pageSize: 25,
+    });
 
+    const [quickFilterModel, setQuickFilterModel] = useState<GridFilterModel>({
+        items: [],
+        quickFilterValues: [''],
+    });
+    const [filterItems, setFilterItems] = useState<GridFilterItem[]>([]);
+
+    const fetchData = async (
+        page: number,
+        pageSize: number,
+        barcodeSearch?: string | undefined,
+        category?: number[] | undefined,
+        ordering?: string | undefined,
+        search?: string | undefined,
+        storage?: string | undefined
+    ) => {
+        const { data: products } = await storagesApi.storagesProductsList(
+            true,
+            barcodeSearch,
+            category,
+            ordering,
+            page,
+            pageSize,
+            search,
+            storage
+        );
+        const results = products.results !== undefined ? products.results : [];
+        setRowData(results);
+        setTotalAmount(products.count !== undefined ? products.count : 0);
+    };
+    useEffect(() => {
+        fetchData(paginationModel.page + 1, paginationModel.pageSize);
+    }, []);
     // UPD: BE has new endpoint @ storagesApi (/storages/products). It contains more information than this productApi (/products).
 
     // productsApi contains:
@@ -55,23 +84,24 @@ function ProductsGrid() {
     //   ]
     // }
 
-    const pageSize = 10; // page_size @ BE: 10
-    const pageCount = Math.ceil(count! / pageSize);
-
-    const [rowCountState, setRowCountState] = React.useState(pageCount);
-    React.useEffect(() => {
-        setRowCountState((prevRowCountState) => (pageCount !== undefined ? pageCount : prevRowCountState));
-    }, [pageCount, setRowCountState]);
-
+    const containFilterOperator = getGridStringOperators().filter((val) => val.value === 'contains');
     const columns: GridColDef[] = [
-        { field: 'name', headerName: 'Tuotenimi', flex: 2 },
-        { field: 'amount', headerName: 'Vapaana', flex: 1 },
-        { field: 'total_amount', headerName: 'Järjestelmässä', flex: 1 },
+        {
+            field: 'product_items',
+            headerName: 'Viivakoodi',
+            renderCell: (params) => params.value[0].barcode,
+            flex: 1,
+            filterOperators: containFilterOperator,
+        },
+        { field: 'name', headerName: 'Tuotenimi', flex: 2, filterOperators: containFilterOperator },
+        { field: 'amount', headerName: 'Vapaana', flex: 1, filterable: false },
+        { field: 'total_amount', headerName: 'Järjestelmässä', flex: 1, filterable: false },
         // { field: 'category', headerName: 'Kategoriatunnus', flex: 1 },
-        { field: 'free_description', headerName: 'Kuvaus', flex: 1 },
+        { field: 'free_description', headerName: 'Kuvaus', flex: 1, filterOperators: containFilterOperator },
         {
             field: 'id',
             headerName: 'Toiminnot',
+            filterable: false,
             renderCell: (params) => (
                 <Button component={Link} to={`/admin/tuotteet/${params.value}`} variant="outlined">
                     Avaa
@@ -256,27 +286,91 @@ function ProductsGrid() {
         aggregationFunctionLabelSize: 'koko',
     };
 
-    if (!results) return null;
+    const onSubmit = async (formdata: {
+        filterForm: Array<{ column: string; filter: string; value: string; andor: string | undefined }>;
+    }) => {
+        let search = undefined;
+        let barcode = undefined;
+        let storage = undefined;
+        let category = undefined;
+        let items: GridFilterItem[] = [];
+        if (formdata.filterForm.length > 0)
+            formdata.filterForm.map((form) => {
+                const column = form.column;
+                const filter = form.filter;
+                const value = form.value;
+                const andor = form.andor;
+                items.push({ field: column, operator: filter, value: value });
 
+                switch (column) {
+                    case 'name':
+                        search = value;
+                        break;
+                    case 'free_description':
+                        search = value;
+                        break;
+                    case 'product_items':
+                        barcode = value;
+                        break;
+                }
+                console.log(column, value);
+                if (andor == 'and') {
+                    console.log('jippii');
+                }
+                return null;
+            });
+        fetchData(1, paginationModel.pageSize, barcode, category, undefined, search, storage);
+        setFilterItems(items);
+    };
+
+    if (!rowData) return null;
     const GridX = () => {
         return (
             <div style={{ height: 500 }}>
                 <DataGrid
                     // paginationMode={'server'}
                     // rowCount={pageCount}
-                    rowCount={rowCountState}
-                    rows={results}
+                    rowCount={totalAmount}
+                    rows={rowData}
                     columns={columns}
+                    sortingMode="server"
+                    filterMode="server"
+                    paginationMode="server"
+                    pagination
+                    paginationModel={paginationModel}
+                    filterModel={quickFilterModel}
+                    onPaginationModelChange={async (newPaginationModel) => {
+                        // fetch data from server
+                        setPaginationModel(newPaginationModel);
+                        fetchData(newPaginationModel.page + 1, newPaginationModel.pageSize);
+                    }}
+                    onSortModelChange={async (newSortModel) => {
+                        console.log(newSortModel);
+                    }}
+                    onFilterModelChange={async (newFilterModel) => {
+                        // fetch data from server
+                        console.log(newFilterModel);
+                        setPaginationModel({
+                            page: 0,
+                            pageSize: paginationModel.pageSize,
+                        });
+                        fetchData(
+                            1,
+                            paginationModel.pageSize,
+                            newFilterModel.quickFilterValues ? newFilterModel.quickFilterValues[0] : undefined
+                        );
+                        setQuickFilterModel({ items: [], quickFilterValues: newFilterModel.quickFilterValues });
+                    }}
                     slots={{
                         toolbar: () => {
                             return (
-                                <GridToolbarContainer sx={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
-                                    <GridToolbarQuickFilter />
-                                    <GridToolbarFilterButton />
-                                    <GridToolbarColumnsButton />
-                                    <GridToolbarDensitySelector />
-                                    <GridToolbarExport />
-                                </GridToolbarContainer>
+                                <CustomDataGridToolBarPanel
+                                    columns={columns}
+                                    localizedTextsMap={localizedTextsMap}
+                                    onSubmit={onSubmit}
+                                    setFilterItems={setFilterItems}
+                                    filterItems={filterItems}
+                                />
                             );
                         },
                     }}
