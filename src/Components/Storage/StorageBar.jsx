@@ -9,12 +9,12 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 export default function StorageBar() {
     const [currentPage, setCurrentPage] = useState('Tilaukset');
 
+    const location = useLocation();
     const pages = [
-        { name: 'Tilaukset', path: '/varasto/' },
-        { name: 'Tuotteet', path: '/varasto/tuotteet' },
+        { name: 'Tilaukset', path: location?.state?.from == 'admin' ? '/admin/tilaukset/' : '/varasto/' },
+        { name: 'Tuotteet', path: location?.state?.from == 'admin' ? '/admin/tuotteet/' : '/varasto/tuotteet' },
     ];
 
-    const location = useLocation();
     const { id } = useParams();
 
     useEffect(() => {
@@ -28,7 +28,6 @@ export default function StorageBar() {
             setCurrentPage(null);
         }
     }, [location]);
-
     return (
         <Box
         // sx={{ flexGrow: 1 }}

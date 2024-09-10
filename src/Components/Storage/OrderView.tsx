@@ -144,7 +144,7 @@ function OrderView() {
             );
         }
 
-        navigate(`/varasto/pdf/${order.id}`);
+        navigate(`/varasto/pdf/${order.id}`, { state: { from: 'admin' } });
     };
 
     const orderStatusTranslate = (value: string) => {
