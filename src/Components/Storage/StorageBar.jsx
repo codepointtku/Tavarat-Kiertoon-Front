@@ -11,8 +11,8 @@ export default function StorageBar() {
 
     const location = useLocation();
     const pages = [
-        { name: 'Tilaukset', path: location.state.from == 'admin' ? '/admin/tilaukset/' : '/varasto/' },
-        { name: 'Tuotteet', path: location.state.from == 'admin' ? '/admin/tuotteet/' : '/varasto/tuotteet' },
+        { name: 'Tilaukset', path: location?.state?.from == 'admin' ? '/admin/tilaukset/' : '/varasto/' },
+        { name: 'Tuotteet', path: location?.state?.from == 'admin' ? '/admin/tuotteet/' : '/varasto/tuotteet' },
     ];
 
     const { id } = useParams();
