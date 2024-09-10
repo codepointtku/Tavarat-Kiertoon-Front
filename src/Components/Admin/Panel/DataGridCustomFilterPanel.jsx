@@ -161,7 +161,6 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit, setFilterI
         console.log(fields);
         remove(id);
     };
-    console.log('JIPPIII', filterItems);
     let filterableColumns = columns.slice();
     useEffect(() => {
         if (filterItems.length === 0 && fields.length === 0) {
