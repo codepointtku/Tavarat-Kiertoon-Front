@@ -184,19 +184,19 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
                                 </Button>
                             </Box>
                             {/* Make "forgot password" -link more visible after failed login */}
-                            {responseStatus?.type === 'login' && !responseStatus?.status ? (
-                                <Button
-                                    sx={{
-                                        mt: 2,
-                                        backgroundColor: 'error.main',
-                                    }}
-                                    component={Link}
-                                    to="/salasananvaihto"
-                                    onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
-                                >
-                                    Unohtunut salasana?
-                                </Button>
-                            ) : (
+                            {/* {responseStatus?.type === 'login' && !responseStatus?.status ? ( */}
+                            <Button
+                                sx={{
+                                    mt: 2,
+                                }}
+                                variant="outlined"
+                                component={Link}
+                                to="/salasananvaihto"
+                                onClick={() => setCurrentOpenDrawer && setCurrentOpenDrawer('')}
+                            >
+                                Unohtunut salasana?
+                            </Button>
+                            {/*  ) : (
                                 <MuiLink
                                     variant="body2"
                                     component={Link}
@@ -209,7 +209,7 @@ function LoginForm({ redirectUrl, setCurrentOpenDrawer }: Props) {
                                 >
                                     Unohtunut salasana?
                                 </MuiLink>
-                            )}
+                            )} */}
 
                             <Button
                                 sx={{ mt: 2 }}
