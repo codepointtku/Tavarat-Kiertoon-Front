@@ -986,7 +986,7 @@ const updateBikesStockPacketOnlyFlag = async () => {
         const bikesWithuniqueBikeId = allBikes.data.filter((item) => item.bike.id === uniqueBikeId);
         const amountNeeded = bikeAmounts.find((item) => item.bikeId === uniqueBikeId)?.amount ?? 0;
         // bikes with packet_only === true
-        for (let i = 0; i < amountNeeded; i++) {
+        for (let i = 0; i < amountNeeded - 1; i++) {
             const newBike = {
                 ...bikesWithuniqueBikeId[i],
                 bike: bikesWithuniqueBikeId[i].bike.id,
