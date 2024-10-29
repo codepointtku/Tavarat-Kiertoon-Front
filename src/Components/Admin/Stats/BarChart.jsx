@@ -56,7 +56,7 @@ function BarChart() {
         .forEach(([year, monthly_value], index) => {
             let data_month = labels.map(() => 0);
             Object.entries(monthly_value).forEach(([month, value]) => {
-                data_month[month] = value;
+                data_month[month - 1] = value;
             });
             console.log(Math.floor(Math.random() * 256));
             data.datasets.push({
