@@ -18,6 +18,7 @@ interface CartState {
     deliveryAddress: string;
     deliveryRequired: string;
     recipient_phone_number: string;
+    recipient_workplace: string;
     orderInfo: string;
     firstName: string;
     lastName: string;
@@ -53,11 +54,15 @@ function Confirmation() {
             zip_code,
             city,
             recipient_phone_number,
+            recipient_workplace,
             orderInfo,
             deliveryRequired /* fetchDate */,
             fetchDate,
         } = state;
 
+        const new_orderInfo = recipient_workplace
+            ? 'TOIMIPAIKKA: ' + recipient_workplace + '\n' + orderInfo
+            : orderInfo;
         if (deliveryAddress === '') {
             submit(
                 {
@@ -66,8 +71,9 @@ function Confirmation() {
                     zip_code,
                     city,
                     recipient_phone_number,
+                    recipient_workplace,
                     id: id.toString(),
-                    orderInfo,
+                    orderInfo: new_orderInfo,
                     deliveryRequired,
                     fetchDate,
                 },
@@ -84,7 +90,7 @@ function Confirmation() {
                 city,
                 recipient_phone_number,
                 id: id.toString(),
-                orderInfo,
+                orderInfo: new_orderInfo,
                 deliveryRequired,
                 // fetchDate,
             },
@@ -127,6 +133,9 @@ function Confirmation() {
                                 </Typography>
                                 <Typography variant="subtitle1" {...register('recipient_phone_number')}>
                                     {state.recipient_phone_number}
+                                </Typography>
+                                <Typography variant="subtitle1" {...register('recipient_workplace')}>
+                                    {state.recipient_workplace}
                                 </Typography>
                             </Stack>
 
