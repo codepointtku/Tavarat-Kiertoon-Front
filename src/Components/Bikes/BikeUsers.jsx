@@ -71,6 +71,7 @@ export default function BikeUsers() {
                     <TableHead>
                         <TableRow>
                             <StyledTableCell align="right">Sähköposti</StyledTableCell>
+                            <StyledTableCell align="right">Käyttäjätunnus</StyledTableCell>
                             <StyledTableCell align="right">Etunimi</StyledTableCell>
                             <StyledTableCell align="right">Sukunimi</StyledTableCell>
                             <StyledTableCell align="right">Puhelinnumero</StyledTableCell>
@@ -88,6 +89,7 @@ export default function BikeUsers() {
                                     hover
                                 >
                                     <TableCell align="right">{user.email}</TableCell>
+                                    <TableCell align="right">{user.username}</TableCell>
                                     <TableCell align="right">{user.first_name}</TableCell>
                                     <TableCell align="right">{user.last_name}</TableCell>
                                     <TableCell align="right">{user.phone_number}</TableCell>

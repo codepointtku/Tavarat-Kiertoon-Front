@@ -172,7 +172,7 @@ function StorageProductsTable() {
                                         </StyledTableCell>
                                         <StyledTableCell align="right">
                                             {/* todo: link to working product page with storage related info and edit functionality */}
-                                            <Link to={`/varasto/tuotteet/${product.id}`}>{product.name}</Link>
+                                            <Link to={`/tuotteet/${product.id}`}>{product.name}</Link>
                                         </StyledTableCell>
                                         <StyledTableCell align="right">
                                             {/* TODO: only show add button if there is a search or barcode search in searchParams? */}

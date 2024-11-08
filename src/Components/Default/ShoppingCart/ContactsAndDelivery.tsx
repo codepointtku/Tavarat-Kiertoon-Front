@@ -28,6 +28,7 @@ import Toaster from '../../Toaster';
 export interface CartFormData {
     recipient: string;
     recipient_phone_number: string;
+    recipient_workplace: string;
     deliveryAddress: string;
     zip_code: string;
     city: string;
@@ -136,6 +137,7 @@ function ContactsAndDelivery() {
         defaultValues: {
             recipient: state.recipient ? state.recipient : '',
             recipient_phone_number: state.recipient_phone_number ? state.recipient_phone_number : '',
+            recipient_workplace: state.recipient_workplace ? state.recipient_workplace : '',
             deliveryAddress: state.deliveryAddress ? state.deliveryAddress : '',
             zip_code: state.zip_code ? state.zip_code : '',
             city: state.city ? state.city : '',
@@ -313,6 +315,18 @@ function ContactsAndDelivery() {
                             helperText={errors.recipient_phone_number?.message?.toString() || ' '}
                             inputProps={{ required: false }}
                             required
+                        />
+                        <TextField
+                            label="Toimipaikka"
+                            placeholder="Toimipaikka"
+                            variant="outlined"
+                            InputLabelProps={{ shrink: true }}
+                            {...register('recipient_workplace', {
+                                maxLength: { value: 101, message: 'Sisältö on liian pitkä' },
+                            })}
+                            error={!!errors.recipient_workplace}
+                            helperText={errors.recipient_workplace?.message?.toString() || ' '}
+                            inputProps={{ required: false }}
                         />
                     </Stack>
 
