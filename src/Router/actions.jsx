@@ -827,6 +827,7 @@ const confirmationAction = async ({ request }) => {
         if (getCart?.product_items?.length !== 0) {
             const response = await ordersApi.ordersCreate({
                 recipient: formData.get('recipient'),
+                recipient_workplace: formData.get('recipient_workplace'),
                 delivery_address: formData
                     .get('deliveryAddress')
                     .concat(' ', formData.get('zip_code').concat(' ', formData.get('city'))),
