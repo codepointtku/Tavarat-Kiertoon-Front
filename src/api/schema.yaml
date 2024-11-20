@@ -2951,6 +2951,7 @@ paths:
           - br
           - bs
           - ca
+          - ckb
           - cs
           - cy
           - da
@@ -4814,11 +4815,13 @@ components:
       enum:
       - AVAILABLE
       - MAINTENANCE
+      - RENTED
       - RETIRED
       type: string
       description: |-
         * `AVAILABLE` - Available
         * `MAINTENANCE` - Maintenance
+        * `RENTED` - Rented
         * `RETIRED` - Retired
     BikeStockCreate:
       type: object
