@@ -159,6 +159,23 @@ export default function BikeConfirmation({
                         )}
                     />
                 </Stack>
+                <Stack gap={1}>
+                    <Controller
+                        name="recipient_workplace"
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <TextField
+                                name="recipient_workplace"
+                                label="Toimipaikka"
+                                onChange={onChange}
+                                value={value}
+                                onBlur={onBlur}
+                                required
+                            />
+                        )}
+                    />
+                </Stack>
                 <Stack flexDirection="row" gap={2}>
                     <Controller
                         name="contactPersonName"
