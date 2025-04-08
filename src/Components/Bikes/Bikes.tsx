@@ -7,13 +7,16 @@ import {
     TableCell,
     TableContainer,
     TableHead,
+    Stack,
     TableRow,
     Typography,
 } from '@mui/material';
 import { useLoaderData } from 'react-router-dom';
 import StyledTableCell from '../StyledTableCell'; // used in Table Header
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams, createSearchParams } from 'react-router-dom';
 import CheckIcon from '@mui/icons-material/Check';
+import { useEffect, useState } from 'react';
+import { KeyboardArrowDown } from '@mui/icons-material';
 
 /**
  * interface for a single bike
@@ -65,6 +68,32 @@ export interface ColorInterface {
 export default function Bikes() {
     const { loaderData, colors } = useLoaderData() as { loaderData: BikeInterface[]; colors: ColorInterface[] };
 
+    const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
+    const [currentStatusChoices, setCurrentStatusChoices] = useState<string[]>([]);
+
+    useEffect(() => {
+        setSearchParams((prevParams) => {
+            return createSearchParams({
+                ...Object.fromEntries(prevParams.entries()),
+                suodata: currentStatusChoices,
+            });
+        });
+    }, [currentStatusChoices, setSearchParams]);
+    function handleOrderingChange(fieldName: string) {
+        setSearchParams((prevParams) => {
+            if (searchParams.get('jarjesta') === fieldName) {
+                return createSearchParams({
+                    ...Object.fromEntries(prevParams.entries()),
+                    jarjesta: `-${fieldName}`,
+                });
+            }
+            return createSearchParams({
+                ...Object.fromEntries(prevParams.entries()),
+                jarjesta: fieldName,
+            });
+        });
+    }
     return (
         <>
             <Typography variant="h3" align="center" color="primary.main" width="100%">
@@ -80,8 +109,26 @@ export default function Bikes() {
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell align="right">Numero</StyledTableCell>
-                            <StyledTableCell align="right">Tyyppi</StyledTableCell>
+                            <StyledTableCell
+                                sx={{ ':hover': { opacity: '80%', cursor: 'pointer' } }}
+                                align="right"
+                                onClick={() => handleOrderingChange('id')}
+                            >
+                                <Stack direction="row" alignItems="right" gap={1}>
+                                    <Typography variant="inherit">Numero</Typography>
+                                    <KeyboardArrowDown />
+                                </Stack>
+                            </StyledTableCell>
+                            <StyledTableCell
+                                sx={{ ':hover': { opacity: '80%', cursor: 'pointer' } }}
+                                align="right"
+                                onClick={() => handleOrderingChange('bike__type')}
+                            >
+                                <Stack direction="row" alignItems="center" gap={1}>
+                                    <Typography variant="inherit">Tyyppi</Typography>
+                                    <KeyboardArrowDown />
+                                </Stack>
+                            </StyledTableCell>
                             <StyledTableCell align="right">Väri</StyledTableCell>
                             <StyledTableCell align="right">
                                 <div>Varattu</div>
@@ -98,8 +145,8 @@ export default function Bikes() {
                                     sx={{ background: index % 2 ? 'rgba(199, 215, 235, 0.1)' : 'white' }}
                                     hover
                                 >
-                                    <TableCell align="right">{bike.number}</TableCell>
-                                    <TableCell align="right">{bike.bike.name}</TableCell>
+                                    <TableCell align="left">{bike.number}</TableCell>
+                                    <TableCell align="left">{bike.bike.name}</TableCell>
                                     <TableCell align="right">
                                         {colors?.find((color) => color.id === bike.color)?.name}
                                     </TableCell>
