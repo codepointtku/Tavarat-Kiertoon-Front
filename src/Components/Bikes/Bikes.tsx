@@ -10,13 +10,15 @@ import {
     Stack,
     TableRow,
     Typography,
+    TextField,
 } from '@mui/material';
-import { useLoaderData } from 'react-router-dom';
+import { Form, useLoaderData } from 'react-router-dom';
 import StyledTableCell from '../StyledTableCell'; // used in Table Header
 import { Link, useNavigate, useSearchParams, createSearchParams } from 'react-router-dom';
 import CheckIcon from '@mui/icons-material/Check';
 import { useEffect, useState } from 'react';
 import { KeyboardArrowDown } from '@mui/icons-material';
+import { useForm } from 'react-hook-form';
 
 /**
  * interface for a single bike
@@ -94,6 +96,22 @@ export default function Bikes() {
             });
         });
     }
+
+    const onSubmit = (data: any) => {
+        setCurrentStatusChoices(typeof data.bike__type == 'string' ? data.bike__type.split(',') : data.bike__type);
+    };
+    const {
+        handleSubmit,
+        register,
+        reset,
+        formState: { isDirty, isValid, errors, isSubmitting },
+    } = useForm({
+        mode: 'all',
+        defaultValues: {
+            bike__type: '',
+        },
+    });
+
     return (
         <>
             <Typography variant="h3" align="center" color="primary.main" width="100%">
@@ -105,6 +123,24 @@ export default function Bikes() {
                     Lisää uusi pyörä
                 </Button>
             </Box>
+
+            <Box
+                component={Form}
+                sx={{ alignItems: 'center', display: 'flex', flexDirection: 'row', width: '480px' }}
+                onSubmit={handleSubmit(onSubmit)}
+            >
+                <TextField
+                    id="bike-type"
+                    type="text"
+                    label="Suodata tyypin mukaan"
+                    fullWidth
+                    helperText={errors.bike__type?.message?.toString() || ' '}
+                    {...register('bike__type', {})}
+                ></TextField>
+                <Button type="submit" sx={{ marginLeft: '1rem', width: '180px' }} disabled={isSubmitting}>
+                    Suodata
+                </Button>
+            </Box>
             <TableContainer component={Paper} sx={{ padding: '2rem' }}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
@@ -112,7 +148,7 @@ export default function Bikes() {
                             <StyledTableCell
                                 sx={{ ':hover': { opacity: '80%', cursor: 'pointer' } }}
                                 align="right"
-                                onClick={() => handleOrderingChange('id')}
+                                onClick={() => handleOrderingChange('number')}
                             >
                                 <Stack direction="row" alignItems="right" gap={1}>
                                     <Typography variant="inherit">Numero</Typography>

@@ -348,7 +348,7 @@ const bikesDefaultLoader = async (auth, setAuth) => {
 const bikesListLoader = async (request, auth, setAuth) => {
     const url = new URL(request.url);
     const [{ data: loaderData }, { data: colors }] = await Promise.all([
-        bikesApi.bikesStockList(url.searchParams.get('jarjesta') || null),
+        bikesApi.bikesStockList(url.searchParams.get('jarjesta') || null, url.searchParams.getAll('suodata') || null),
         colorsApi.colorsList(),
     ]);
     return { loaderData, colors };

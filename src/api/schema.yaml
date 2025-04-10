@@ -698,6 +698,11 @@ paths:
         description: Which field to use when ordering the results.
         schema:
           type: string
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search
       tags:
       - bikes
       security:
