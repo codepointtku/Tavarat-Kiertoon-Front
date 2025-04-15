@@ -165,6 +165,9 @@ export default function BikeRentals() {
                             <StyledTableCell align="left" width="20%">
                                 Toimitusosoite
                             </StyledTableCell>
+                            <StyledTableCell align="left" width="20%">
+                                Toimipaikka/Lisätieto
+                            </StyledTableCell>
                             <StyledTableCell align="left" width="15%">
                                 Vastaanottaja
                             </StyledTableCell>
@@ -186,6 +189,9 @@ export default function BikeRentals() {
                                 <TableCell align="left">{getYearAndMonth(rental.start_date)}</TableCell>
                                 <TableCell align="left">{getYearAndMonth(rental.end_date)}</TableCell>
                                 <TableCell align="left">{rental.delivery_address}</TableCell>
+                                <TableCell align="left" sx={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
+                                    {rental.extra_info}
+                                </TableCell>
                                 {/* <TableCell align="center">{rental.pickup ? 'Kyllä' : 'Ei'}</TableCell> */}
                                 <TableCell align="left">{rental.contact_name}</TableCell>
                                 <TableCell align="left">{rental.contact_phone_number}</TableCell>
@@ -193,11 +199,11 @@ export default function BikeRentals() {
                         ))}
                     </TableBody>
                 </Table>
-                {results?.length === 0 &&
-                            <Typography variant="h6" align="center" paddingTop="1rem">
-                                Valituilla suodattimilla ei löytynyt tilauksia
-                            </Typography>
-                }
+                {results?.length === 0 && (
+                    <Typography variant="h6" align="center" paddingTop="1rem">
+                        Valituilla suodattimilla ei löytynyt tilauksia
+                    </Typography>
+                )}
             </TableContainer>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Pagination count={count} itemsText="Tilauksia" />

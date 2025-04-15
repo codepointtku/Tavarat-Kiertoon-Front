@@ -62,7 +62,6 @@ export default function BikeRentalView() {
 
     const bikeModels = rental?.bike_stock.map((item) => item.bike.id);
 
-
     const bikeModelData: (BikeStockDetail | undefined)[] = bikeModels
         .filter((item, index) => bikeModels.indexOf(item) === index)
         .map((bikeId: number) => rental?.bike_stock.find((item) => item.bike.id === bikeId));
@@ -218,7 +217,9 @@ export default function BikeRentalView() {
                             </TableRow>
                             <TableRow>
                                 <TableCell sx={{ fontWeight: 'bold' }}>Lisätiedot:</TableCell>
-                                <TableCell colSpan={3}>{rental.extra_info}</TableCell>
+                                <TableCell colSpan={3} sx={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
+                                    {rental.extra_info}
+                                </TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
