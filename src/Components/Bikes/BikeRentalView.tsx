@@ -21,6 +21,8 @@ import {
     Paper,
     Typography,
     MenuItem,
+    Stack,
+    IconButton,
 } from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -31,6 +33,7 @@ import DeleteBikeRentalModal from './DeleteBikeRentalModal';
 import type { bikeRentalViewLoader } from '../../Router/loaders';
 import type { bikeOrderEditAction } from '../../Router/actions';
 import type { BikeStockDetail } from '../../api';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 
 export default function BikeRentalView() {
     const rental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalViewLoader>>;
@@ -39,12 +42,18 @@ export default function BikeRentalView() {
 
     const [renderDeleteBikeRentalModal, setRenderDeleteBikeRentalModal] = useState(false);
 
+    const [rentalBikeStock, setRentalBikeStock] = useState(rental.bike_stock.map((item) => item.id));
     const submit = useSubmit();
     const onSubmit = (data: any) => {
-        submit(data, { method: 'put', action: `/pyorat/pyoravarasto/pyoratilaukset/${rental.id}` });
-    };
+        data['bikeStock'] = JSON.stringify(rentalBikeStock);
+        console.log(rentalBikeStock.length);
 
-    const rentalBikeStock = rental.bike_stock.map((item) => item.id);
+        if (rentalBikeStock.length == 0)
+            setRenderDeleteBikeRentalModal(
+                true
+            ); //submit(null, { method: 'delete', action: `/pyorat/pyoravarasto/pyoratilaukset/${rental.id}/poista` });
+        else submit(data, { method: 'put', action: `/pyorat/pyoravarasto/pyoratilaukset/${rental.id}` });
+    };
 
     const { handleSubmit, register, watch } = useForm({
         defaultValues: {
@@ -66,6 +75,14 @@ export default function BikeRentalView() {
         .filter((item, index) => bikeModels.indexOf(item) === index)
         .map((bikeId: number) => rental?.bike_stock.find((item) => item.bike.id === bikeId));
 
+    const [newBikeModels, setNewBikeModels] = useState(
+        Object.fromEntries(
+            bikeModels
+                .filter((item, index) => bikeModels.indexOf(item) === index)
+                .map((bikeId: number) => [bikeId, rental?.bike_stock.filter((item) => item.bike.id === bikeId)])
+        )
+    );
+
     // Parse Date objects from backend data string
     const dateParse = (value: string) => {
         const date = new Date(value);
@@ -83,6 +100,36 @@ export default function BikeRentalView() {
         if (value === 'FINISHED') {
             return 'Päättynyt';
         }
+    };
+
+    const modifyBikeStockAmounts = (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        index: number | undefined,
+        min: number,
+        max: number
+    ) => {
+        const regex = /^[0-9\b]+$/;
+
+        if (event.target.value === '' || regex.test(event.target.value)) {
+            const newValue = [...rentalBikeStock];
+            const newNumber = Number(event.target.value);
+            if (newNumber < min) newValue[index] = min;
+            else if (newNumber > max) newValue[index] = max;
+            else newValue[index] = newNumber;
+            setRentalBikeStock(newValue);
+        }
+    };
+
+    const modifyBikeStockAmounts2 = (index: number, min: number, max: number) => {
+        const regex = /^[0-9\b]+$/;
+
+        let newValue = [...rentalBikeStock];
+        const ID = newBikeModels[index].pop().id;
+
+        newValue = newValue.filter((item) => item !== ID);
+
+        setNewBikeModels(newBikeModels);
+        setRentalBikeStock(newValue);
     };
 
     return (
@@ -253,64 +300,92 @@ export default function BikeRentalView() {
                                 </TableCell>
                             </TableRow>
                         </TableHead>
-                        <TableBody id="bike-rental-bikes-content" sx={{ backgroundColor: 'grey.100' }}>
-                            {bikeModelData.map((item) => (
-                                <TableRow key={item?.bike.id}>
-                                    <TableCell
-                                        align="center"
-                                        width="20%"
-                                        sx={{ borderBottom: 0, fontWeight: 'bold', fontSize: '16px' }}
-                                    >
-                                        <img
-                                            src={`${window.location.protocol}//${window.location.hostname}:8000/media/${item?.bike.picture.picture_address}`}
-                                            alt="bike-model"
-                                        />
-                                        <Typography textAlign="center">{item?.bike.name}</Typography>
-                                    </TableCell>
-                                    <TableCell
-                                        width="10%"
-                                        sx={{ textAlign: 'center', borderBottom: 0, fontSize: '16px' }}
-                                    >
-                                        {'x '}{' '}
-                                        {
-                                            rental?.bike_stock.filter((bikeItem) => bikeItem.bike.id === item?.bike.id)
-                                                .length
-                                        }
-                                    </TableCell>
-                                    <TableCell sx={{ borderBottom: 0 }}>
-                                        <Table>
-                                            <TableHead>
-                                                <TableRow sx={{ borderBottom: 2, borderBottomColor: 'grey.500' }}>
-                                                    <TableCell width="50%" sx={{ fontWeight: 'bold' }}>
-                                                        Pyörän numero
-                                                    </TableCell>
-                                                    <TableCell
-                                                        align="right"
-                                                        sx={{ fontWeight: 'bold', fontSize: '14px' }}
-                                                    >
-                                                        Pyörän väri
-                                                    </TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                {rental?.bike_stock
-                                                    .filter((bikeItem) => bikeItem.bike.id === item?.bike.id)
-                                                    .map((filteredItem) => (
-                                                        <TableRow key={filteredItem.id}>
-                                                            <TableCell sx={{ borderLeftColor: 'grey.300' }}>
-                                                                {filteredItem.number}
-                                                            </TableCell>
-                                                            <TableCell align="right">
-                                                                {filteredItem.color.name}
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                            </TableBody>
-                                        </Table>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
+                        {bikeModelData && (
+                            <TableBody id="bike-rental-bikes-content" sx={{ backgroundColor: 'grey.100' }}>
+                                {bikeModelData.map((item) => (
+                                    <TableRow key={item?.bike.id}>
+                                        <TableCell
+                                            align="center"
+                                            width="20%"
+                                            sx={{ borderBottom: 0, fontWeight: 'bold', fontSize: '16px' }}
+                                        >
+                                            <img
+                                                src={`${window.location.protocol}//${window.location.hostname}:8000/media/${item?.bike.picture.picture_address}`}
+                                                alt="bike-model"
+                                            />
+                                            <Typography textAlign="center">{item?.bike.name}</Typography>
+                                        </TableCell>
+                                        <TableCell
+                                            width="10%"
+                                            sx={{ textAlign: 'center', borderBottom: 0, fontSize: '16px' }}
+                                        >
+                                            <Stack justifyContent="center" alignItems="center" direction="row">
+                                                <IconButton
+                                                    size="large"
+                                                    color="primary"
+                                                    onClick={(event) => {
+                                                        const newAmounts = [...rentalBikeStock];
+                                                        modifyBikeStockAmounts2(
+                                                            item.bike.id,
+                                                            0,
+                                                            newBikeModels[item.bike.id].length - 1
+                                                        );
+                                                    }}
+                                                    sx={{ m: 0, p: 0 }}
+                                                >
+                                                    <IndeterminateCheckBoxIcon
+                                                        sx={{ fontSize: '2.5rem', m: 0, p: 0 }}
+                                                    />
+                                                </IconButton>
+                                                <TextField
+                                                    size="small"
+                                                    value={newBikeModels[item.bike.id].length}
+                                                    InputProps={{ inputProps: { style: { textAlign: 'center' } } }}
+                                                    sx={{ width: '4rem', m: 0, p: 0 }}
+                                                />
+                                            </Stack>
+                                            {'x '}{' '}
+                                            {
+                                                rental?.bike_stock.filter(
+                                                    (bikeItem) => bikeItem.bike.id === item?.bike.id
+                                                ).length
+                                            }
+                                        </TableCell>
+                                        <TableCell sx={{ borderBottom: 0 }}>
+                                            <Table>
+                                                <TableHead>
+                                                    <TableRow sx={{ borderBottom: 2, borderBottomColor: 'grey.500' }}>
+                                                        <TableCell width="50%" sx={{ fontWeight: 'bold' }}>
+                                                            Pyörän numero
+                                                        </TableCell>
+                                                        <TableCell
+                                                            align="right"
+                                                            sx={{ fontWeight: 'bold', fontSize: '14px' }}
+                                                        >
+                                                            Pyörän väri
+                                                        </TableCell>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {rental?.bike_stock
+                                                        .filter((bikeItem) => bikeItem.bike.id === item?.bike.id)
+                                                        .map((filteredItem) => (
+                                                            <TableRow key={filteredItem.id}>
+                                                                <TableCell sx={{ borderLeftColor: 'grey.300' }}>
+                                                                    {filteredItem.number}
+                                                                </TableCell>
+                                                                <TableCell align="right">
+                                                                    {filteredItem.color.name}
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        )}
                     </Table>
                 </Box>
             </Container>
