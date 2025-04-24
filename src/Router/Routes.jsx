@@ -131,7 +131,6 @@ import ModifyBikeModelPage from '../Components/Bikes/ModifyBikeModelPage';
 import BikesHomePage from '../Components/Bikes/BikesHomePage';
 import BikeUsers from '../Components/Bikes/BikeUsers';
 import BikeUserEdit from '../Components/Bikes/BikeUserEdit';
-import Settings from '../Components/Admin/Settings';
 
 import {
     bikeUserLoader,
@@ -872,12 +871,6 @@ function Routes() {
                                 {
                                     path: 'viestit',
                                     element: <AdminInbox />,
-                                    loader: adminInboxLoader,
-                                    action: adminInboxAction,
-                                },
-                                {
-                                    path: 'asetukset',
-                                    element: <Settings />,
                                     loader: adminInboxLoader,
                                     action: adminInboxAction,
                                 },
