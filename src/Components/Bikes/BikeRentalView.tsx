@@ -27,6 +27,7 @@ import {
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import AlertBox from '../AlertBox';
 
 import DeleteBikeRentalModal from './DeleteBikeRentalModal';
@@ -34,6 +35,7 @@ import type { bikeRentalViewLoader } from '../../Router/loaders';
 import type { bikeOrderEditAction } from '../../Router/actions';
 import type { BikeStockDetail } from '../../api';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import UpdateBikeRentalModal from './UpdateBikeRentalModal';
 
 export default function BikeRentalView() {
     const rental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalViewLoader>>;
@@ -41,18 +43,17 @@ export default function BikeRentalView() {
     const currentRentalStatus = ['WAITING', 'ACTIVE', 'FINISHED'];
 
     const [renderDeleteBikeRentalModal, setRenderDeleteBikeRentalModal] = useState(false);
-
+    const [renderUpdateBikeRentalModal, setRenderUpdateBikeRentalModal] = useState(false);
     const [rentalBikeStock, setRentalBikeStock] = useState(rental.bike_stock.map((item) => item.id));
     const submit = useSubmit();
     const onSubmit = (data: any) => {
         data['bikeStock'] = JSON.stringify(rentalBikeStock);
         console.log(rentalBikeStock.length);
 
-        if (rentalBikeStock.length == 0)
-            setRenderDeleteBikeRentalModal(
-                true
-            ); //submit(null, { method: 'delete', action: `/pyorat/pyoravarasto/pyoratilaukset/${rental.id}/poista` });
+        if (rentalBikeStock.length == 0) setRenderDeleteBikeRentalModal(true);
+        //submit(null, { method: 'delete', action: `/pyorat/pyoravarasto/pyoratilaukset/${rental.id}/poista` });
         else submit(data, { method: 'put', action: `/pyorat/pyoravarasto/pyoratilaukset/${rental.id}` });
+        setRenderUpdateBikeRentalModal(false);
     };
 
     const { handleSubmit, register, watch } = useForm({
@@ -82,6 +83,13 @@ export default function BikeRentalView() {
                 .map((bikeId: number) => [bikeId, rental?.bike_stock.filter((item) => item.bike.id === bikeId)])
         )
     );
+    const [newBikeModels2, setNewBikeModels2] = useState(
+        Object.fromEntries(
+            bikeModels
+                .filter((item, index) => bikeModels.indexOf(item) === index)
+                .map((bikeId: number) => [bikeId, rental?.bike_stock.filter((item) => item.bike.id === bikeId)])
+        )
+    );
 
     // Parse Date objects from backend data string
     const dateParse = (value: string) => {
@@ -102,39 +110,60 @@ export default function BikeRentalView() {
         }
     };
 
-    const modifyBikeStockAmounts = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-        index: number | undefined,
-        min: number,
-        max: number
-    ) => {
+    const modifyBikeStockAmounts = (index: number | undefined, min: number, max: number, id: number) => {
         const regex = /^[0-9\b]+$/;
+        const newValue = [...rentalBikeStock];
+        console.log('jippiiiii', index);
+        console.log(rental?.bike_stock.filter((bikeItem) => bikeItem.bike.id === index));
 
-        if (event.target.value === '' || regex.test(event.target.value)) {
-            const newValue = [...rentalBikeStock];
-            const newNumber = Number(event.target.value);
-            if (newNumber < min) newValue[index] = min;
-            else if (newNumber > max) newValue[index] = max;
-            else newValue[index] = newNumber;
-            setRentalBikeStock(newValue);
-        }
-    };
+        console.log('jepjep');
+        rental?.bike_stock
+            .filter((bikeItem) => bikeItem.bike.id === id)
+            .some((item) => {
+                console.log('haaaaaa', newValue, item.id);
+                if (newValue.indexOf(item.id) < 0) {
+                    console.log('waaaa', newValue, item.id);
+                    newValue.push(item.id);
+                    for (const i in newBikeModels2) {
+                        console.log(newBikeModels2[i], item.id);
+                        console.log(
+                            'daaa',
+                            newBikeModels2[i].filter((bikeItem) => bikeItem.id === item.id)
+                        );
+                        newBikeModels[id].push(newBikeModels2[id].filter((bikeItem) => bikeItem.id === item.id)[0]);
+                        return true;
+                    }
+                    return true;
+                }
+            });
 
-    const modifyBikeStockAmounts2 = (index: number, min: number, max: number) => {
-        const regex = /^[0-9\b]+$/;
-
-        let newValue = [...rentalBikeStock];
-        const ID = newBikeModels[index].pop().id;
-
-        newValue = newValue.filter((item) => item !== ID);
+        console.log(newValue);
+        console.log('uusi', newBikeModels);
 
         setNewBikeModels(newBikeModels);
         setRentalBikeStock(newValue);
     };
 
+    const modifyBikeStockAmounts2 = (index: number, min: number, max: number) => {
+        if (newBikeModels[index].length > 0) {
+            console.log(newBikeModels[index]);
+            const regex = /^[0-9\b]+$/;
+            console.log(newBikeModels2);
+            console.log(newBikeModels);
+            let newValue = [...rentalBikeStock];
+            const ID = newBikeModels[index].pop().id;
+
+            newValue = newValue.filter((item) => item !== ID);
+
+            setNewBikeModels(newBikeModels);
+            setRentalBikeStock(newValue);
+        }
+    };
     return (
         <>
-            {response?.status === 200 && <AlertBox text="Tila päivitetty" status="success" timer={3000} />}
+            {response?.status === 200 && (
+                <AlertBox text="Tila päivitetty" status="success" timer={3000} response={response} />
+            )}
             <Grid id="rental-header" sx={{ display: 'flex', alignItems: 'center', margin: '0 0 1rem 0' }} container>
                 <Grid item xs={3}>
                     <Button
@@ -206,8 +235,8 @@ export default function BikeRentalView() {
                                     </TextField>
                                 </TableCell>
                                 <TableCell width="10%">
-                                    <Button id="submit-button" type="submit">
-                                        Päivitä tila
+                                    <Button id="submit-button" onClick={() => setRenderUpdateBikeRentalModal(true)}>
+                                        Päivitä tilaus
                                     </Button>
                                 </TableCell>
                                 <TableCell width="10%">
@@ -276,6 +305,16 @@ export default function BikeRentalView() {
                     setRenderModal={setRenderDeleteBikeRentalModal}
                     rentalId={rental.id}
                 />
+                <UpdateBikeRentalModal
+                    renderModal={renderUpdateBikeRentalModal}
+                    setRenderModal={setRenderUpdateBikeRentalModal}
+                    rentalId={rental.id}
+                    rentalBikeStock={rentalBikeStock}
+                    setRenderDeleteBikeRentalModal={setRenderDeleteBikeRentalModal}
+                    rental={rental}
+                    handleSubmit={handleSubmit}
+                    onSubmit={onSubmit}
+                />
                 <Box sx={{ margin: '0 0 1rem 0' }}>
                     <Table id="bike-rental-bikes-table">
                         <TableHead sx={{ borderBottom: 2, borderBottomColor: 'grey.300' }}>
@@ -302,7 +341,7 @@ export default function BikeRentalView() {
                         </TableHead>
                         {bikeModelData && (
                             <TableBody id="bike-rental-bikes-content" sx={{ backgroundColor: 'grey.100' }}>
-                                {bikeModelData.map((item) => (
+                                {bikeModelData.map((item, index) => (
                                     <TableRow key={item?.bike.id}>
                                         <TableCell
                                             align="center"
@@ -343,6 +382,28 @@ export default function BikeRentalView() {
                                                     InputProps={{ inputProps: { style: { textAlign: 'center' } } }}
                                                     sx={{ width: '4rem', m: 0, p: 0 }}
                                                 />
+                                                <IconButton
+                                                    size="large"
+                                                    color="primary"
+                                                    onClick={(event) => {
+                                                        const newAmounts = [...rentalBikeStock];
+                                                        modifyBikeStockAmounts(
+                                                            index,
+                                                            0,
+                                                            newBikeModels2[item.bike.id].length,
+                                                            item.bike.id
+                                                        );
+                                                    }}
+                                                    sx={{ m: 0, p: 0 }}
+                                                    disabled={
+                                                        newBikeModels[item.bike.id].length >=
+                                                        rental?.bike_stock.filter(
+                                                            (bikeItem) => bikeItem.bike.id === item?.bike.id
+                                                        ).length
+                                                    }
+                                                >
+                                                    <AddBoxIcon sx={{ fontSize: '2.5rem', m: 0, p: 0 }} />
+                                                </IconButton>
                                             </Stack>
                                             {'x '}{' '}
                                             {
