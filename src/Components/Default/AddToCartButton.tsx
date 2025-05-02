@@ -84,6 +84,14 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
     useEffect(() => {
         ref.current = 0;
     }, [product?.available]);
+    const paussi = true;
+    if (paussi) {
+        return (
+            <Tooltip title="TAVARATKIERTOON TOIMINTA ON TAUOLLA">
+                <AddShoppingCartOutlinedIcon fontSize={'large'} />
+            </Tooltip>
+        );
+    }
 
     return (
         <>

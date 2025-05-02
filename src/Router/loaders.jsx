@@ -13,6 +13,7 @@ import {
     storagesApi,
     userApi,
     usersApi,
+    pausestoreApi,
 } from '../api';
 
 /**
@@ -650,6 +651,12 @@ const bikeUserEditLoader = async ({ params }) => {
     return { bikeUserInfo, userAuthGroups };
 };
 
+const pauseStoreLoader = async () => {
+    const { data } = await pausestoreApi.pausestoreList();
+
+    return { data };
+};
+
 export {
     bikeUserEditLoader,
     bikeUserLoader,
@@ -699,4 +706,5 @@ export {
     gigaLoader,
     bikeTrailersLoader,
     OrderStatsLoader,
+    pauseStoreLoader,
 };

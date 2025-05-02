@@ -103,6 +103,8 @@ import Bulletins from '../Components/Default/BulletinsPage';
 import DeliveryView from '../Components/DeliveryView';
 import BgInfo from '../Components/Default/BgInfo';
 
+import StoreSettings from '../Components/Admin/StoreSettings';
+
 import PasswordChange from '../Components/Default/ResetPassword/PasswordChange';
 import ResetPassword from '../Components/Default/ResetPassword/ResetPassword';
 import ResetSuccessful from '../Components/Default/ResetPassword/ResetSuccessful';
@@ -181,6 +183,7 @@ import {
     bikeTrailersLoader,
     bikeUserEditLoader,
     OrderStatsLoader,
+    pauseStoreLoader,
 } from './loaders';
 
 import {
@@ -652,6 +655,11 @@ function Routes() {
                                     path: 'tilastot',
                                     element: <Stats />,
                                     loader: OrderStatsLoader,
+                                },
+                                {
+                                    path: 'asetukset',
+                                    element: <StoreSettings />,
+                                    loader: pauseStoreLoader,
                                 },
                                 {
                                     path: 'tilaukset',
