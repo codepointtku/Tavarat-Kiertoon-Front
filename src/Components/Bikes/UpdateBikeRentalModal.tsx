@@ -69,7 +69,7 @@ function UpdateBikeRentalModal({
                     onSubmit={handleSubmit(onSubmit)}
                 >
                     <Button onClick={() => setRenderModal(false)}>Peruuta</Button>
-                    <Button color="error" type="submit">
+                    <Button color="success" type="submit">
                         Päivitä
                     </Button>
                 </Box>
