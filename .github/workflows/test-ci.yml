@@ -21,6 +21,6 @@ jobs:
             - name: build
               run: npm run build
             - name: install playwright browsers
-              run: npx playwright install-deps
+              run: npx playwright install --with-deps
             - name: run tests
               run: npx playwright test tests/git/
