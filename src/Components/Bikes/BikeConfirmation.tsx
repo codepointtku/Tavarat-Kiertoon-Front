@@ -159,6 +159,23 @@ export default function BikeConfirmation({
                         )}
                     />
                 </Stack>
+                <Stack gap={1}>
+                    <Controller
+                        name="recipient_workplace"
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <TextField
+                                name="recipient_workplace"
+                                label="Toimipaikka"
+                                onChange={onChange}
+                                value={value}
+                                onBlur={onBlur}
+                                required
+                            />
+                        )}
+                    />
+                </Stack>
                 <Stack flexDirection="row" gap={2}>
                     <Controller
                         name="contactPersonName"
@@ -220,7 +237,7 @@ export default function BikeConfirmation({
                                 </Typography>
                                 <Typography component="li">
                                     Mikäli pyörissä ilmenee huoltotarvetta kesken laina-ajan, soita Antti Pikkuvirta p.
-                                    xxx xxxxx
+                                    0405695016
                                 </Typography>
                                 <Typography component="li">
                                     Lasten pyörät ovat käsijarrullisia. Ennen pyörän käyttöönottoa varmista ryhmän
@@ -269,7 +286,7 @@ export default function BikeConfirmation({
                                 </Typography>
                                 <Typography component="li">
                                     Mikäli pyörä tai muu varuste varastetaan tai rikkoutuu, tulee tästä ilmoittaa
-                                    viipymättä työpisteen työnjohtajalle xxxxxxx
+                                    viipymättä työpisteen työnjohtajalle Antti Pikkuvirta 0405695016
                                 </Typography>
                                 <Typography component="li">
                                     Muksubussin lainaaja on velvollinen käymään läpi mukana tulevat kuvalliset

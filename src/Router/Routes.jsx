@@ -908,7 +908,7 @@ function Routes() {
                                         },
                                         {
                                             path: 'pyoralista',
-                                            loader: async () => bikesListLoader(auth, setAuth),
+                                            loader: async ({ request }) => bikesListLoader(request, auth, setAuth),
                                             element: <Bikes />,
                                         },
                                         {
