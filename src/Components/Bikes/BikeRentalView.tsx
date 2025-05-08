@@ -151,7 +151,7 @@ export default function BikeRentalView() {
             console.log(newBikeModels2);
             console.log(newBikeModels);
             let newValue = [...rentalBikeStock];
-            const ID = newBikeModels[index].pop().id;
+            const ID = newBikeModels[index].pop()?.id;
 
             newValue = newValue.filter((item) => item !== ID);
 
@@ -358,53 +358,55 @@ export default function BikeRentalView() {
                                             width="10%"
                                             sx={{ textAlign: 'center', borderBottom: 0, fontSize: '16px' }}
                                         >
-                                            <Stack justifyContent="center" alignItems="center" direction="row">
-                                                <IconButton
-                                                    size="large"
-                                                    color="primary"
-                                                    onClick={(event) => {
-                                                        const newAmounts = [...rentalBikeStock];
-                                                        modifyBikeStockAmounts2(
-                                                            item.bike.id,
-                                                            0,
-                                                            newBikeModels[item.bike.id].length - 1
-                                                        );
-                                                    }}
-                                                    sx={{ m: 0, p: 0 }}
-                                                >
-                                                    <IndeterminateCheckBoxIcon
-                                                        sx={{ fontSize: '2.5rem', m: 0, p: 0 }}
+                                            {item && (
+                                                <Stack justifyContent="center" alignItems="center" direction="row">
+                                                    <IconButton
+                                                        size="large"
+                                                        color="primary"
+                                                        onClick={(event) => {
+                                                            const newAmounts = [...rentalBikeStock];
+                                                            modifyBikeStockAmounts2(
+                                                                item.bike.id,
+                                                                0,
+                                                                newBikeModels[item.bike.id].length - 1
+                                                            );
+                                                        }}
+                                                        sx={{ m: 0, p: 0 }}
+                                                    >
+                                                        <IndeterminateCheckBoxIcon
+                                                            sx={{ fontSize: '2.5rem', m: 0, p: 0 }}
+                                                        />
+                                                    </IconButton>
+                                                    <TextField
+                                                        size="small"
+                                                        value={newBikeModels[item.bike.id].length}
+                                                        InputProps={{ inputProps: { style: { textAlign: 'center' } } }}
+                                                        sx={{ width: '4rem', m: 0, p: 0 }}
                                                     />
-                                                </IconButton>
-                                                <TextField
-                                                    size="small"
-                                                    value={newBikeModels[item.bike.id].length}
-                                                    InputProps={{ inputProps: { style: { textAlign: 'center' } } }}
-                                                    sx={{ width: '4rem', m: 0, p: 0 }}
-                                                />
-                                                <IconButton
-                                                    size="large"
-                                                    color="primary"
-                                                    onClick={(event) => {
-                                                        const newAmounts = [...rentalBikeStock];
-                                                        modifyBikeStockAmounts(
-                                                            index,
-                                                            0,
-                                                            newBikeModels2[item.bike.id].length,
-                                                            item.bike.id
-                                                        );
-                                                    }}
-                                                    sx={{ m: 0, p: 0 }}
-                                                    disabled={
-                                                        newBikeModels[item.bike.id].length >=
-                                                        rental?.bike_stock.filter(
-                                                            (bikeItem) => bikeItem.bike.id === item?.bike.id
-                                                        ).length
-                                                    }
-                                                >
-                                                    <AddBoxIcon sx={{ fontSize: '2.5rem', m: 0, p: 0 }} />
-                                                </IconButton>
-                                            </Stack>
+                                                    <IconButton
+                                                        size="large"
+                                                        color="primary"
+                                                        onClick={(event) => {
+                                                            const newAmounts = [...rentalBikeStock];
+                                                            modifyBikeStockAmounts(
+                                                                index,
+                                                                0,
+                                                                newBikeModels2[item.bike.id].length,
+                                                                item.bike.id
+                                                            );
+                                                        }}
+                                                        sx={{ m: 0, p: 0 }}
+                                                        disabled={
+                                                            newBikeModels[item.bike.id].length >=
+                                                            rental?.bike_stock.filter(
+                                                                (bikeItem) => bikeItem.bike.id === item?.bike.id
+                                                            ).length
+                                                        }
+                                                    >
+                                                        <AddBoxIcon sx={{ fontSize: '2.5rem', m: 0, p: 0 }} />
+                                                    </IconButton>
+                                                </Stack>
+                                            )}
                                             {'x '}{' '}
                                             {
                                                 rental?.bike_stock.filter(
