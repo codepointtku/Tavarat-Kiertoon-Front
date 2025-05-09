@@ -177,8 +177,9 @@ export default function BikesPage() {
                 <FormControl required sx={{ maxWidth: 560 }}>
                     <FormLabel id="storage-label">Säilytystapa</FormLabel>
                     <Typography variant="caption">
-                        Kuomullinen peräkärry. Peräkärryyn mahtuu kerrallaan säilytykseen n. 7—10 pyörää, riippuen
-                        pyörien koosta. Peräkärryä ei voi valita jos niitä ei ole saatavilla haluttuna ajankohtana.
+                        Kuomullinen peräkärry. Peräkärryyn mahtuu kerrallaan säilytykseen n. 7 isoa tai 10 pientä
+                        pyörää, riippuen pyörien koosta. Peräkärryä ei voi valita jos niitä ei ole saatavilla haluttuna
+                        ajankohtana.
                     </Typography>
                     <RadioGroup
                         row
@@ -188,11 +189,15 @@ export default function BikesPage() {
                         value={trailerValue}
                         onBlur={onBlur}
                     >
-                        <FormControlLabel value={0} control={<Radio />} label="Sisällä" />
+                        <FormControlLabel
+                            value={0}
+                            control={<Radio />}
+                            label="Varastossa tai muussa lukitussa tilassa"
+                        />
                         <FormControlLabel
                             value={trailers[0]?.id}
                             control={<Radio />}
-                            label="Peräkärryssä"
+                            label="Peräkärryssä (HUOM: 7-10 pyörää)"
                             disabled={trailerAvailability === 0}
                         />
                     </RadioGroup>
@@ -215,7 +220,10 @@ export default function BikesPage() {
             setHours(data.endDate, Math.floor(data.endTime)),
             (data.endTime - Math.floor(data.endTime)) * 60
         ).toISOString();
-
+        console.log(data);
+        data['extraInfo'] = data['deliveryWorkplace']
+            ? 'TOIMIPAIKKA: ' + data['deliveryWorkplace'] + '\n' + data['extraInfo']
+            : data['extraInfo'];
         const formData = { ...data, startDateTime, endDateTime, selectedBikes: JSON.stringify(data.selectedBikes) };
 
         submit(formData, {

@@ -691,6 +691,18 @@ paths:
   /bikes/stock/:
     get:
       operationId: bikes_stock_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search
       tags:
       - bikes
       security:
@@ -2951,7 +2963,6 @@ paths:
           - br
           - bs
           - ca
-          - ckb
           - cs
           - cy
           - da
