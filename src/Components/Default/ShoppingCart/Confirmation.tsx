@@ -12,6 +12,7 @@ import type { AnyCallback, ActionsOutput, GlobalState } from 'little-state-machi
 import ClearInfo from './ClearInfo';
 import TypographyHeading from '../../TypographyHeading';
 import CartEmptyWarningModal from './CartEmptyWarningModal';
+import ShoppingPauseWarningModal from './ShoppingPauseWarningModal';
 
 interface CartState {
     recipient: string;
@@ -35,7 +36,7 @@ function Confirmation() {
     } = useForm();
     const submit = useSubmit();
     const navigate = useNavigate();
-    const responseStatus = useActionData() as { type: string; status: boolean };
+    const responseStatus = useActionData() as { type: string; status: boolean; status_code: number };
     const { actions, state } = useStateMachine({ ClearInfo }) as unknown as {
         actions: ActionsOutput<
             AnyCallback,
@@ -104,12 +105,17 @@ function Confirmation() {
             navigate('/', { state: { ...responseStatus } });
         }
     }, [responseStatus]);
-
+    console.log(responseStatus);
     return (
         <>
             {products.length === 0 && <CartEmptyWarningModal />}
 
-            {responseStatus?.type === 'orderCreated' && responseStatus?.status === false && <CartEmptyWarningModal />}
+            {responseStatus?.type === 'orderCreated' && responseStatus.status_code === 418 && (
+                <ShoppingPauseWarningModal />
+            )}
+            {responseStatus?.type === 'orderCreated' &&
+                responseStatus?.status === false &&
+                responseStatus.status_code !== 418 && <CartEmptyWarningModal />}
 
             <Container maxWidth="md">
                 <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '-2rem' }}>

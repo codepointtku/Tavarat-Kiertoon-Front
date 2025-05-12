@@ -13,7 +13,8 @@ import AuthContext from '../../Context/AuthContext';
 
 import type { OverridableStringUnion } from '@material-ui/types';
 import type { ButtonPropsSizeOverrides } from '@mui/material';
-import type { shoppingCartLoader } from '../../Router/loaders';
+import type { pauseStoreLoader, shoppingCartLoader } from '../../Router/loaders';
+import { format } from 'date-fns';
 
 interface Props {
     size: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides> | undefined;
@@ -47,9 +48,11 @@ function AddingToCart() {
 }
 
 function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
-    const { cart, products: productsInShoppingCart } = useRouteLoaderData('frontPage') as Awaited<
-        ReturnType<typeof shoppingCartLoader>
-    >;
+    const {
+        cart,
+        products: productsInShoppingCart,
+        pauseShopping,
+    } = useRouteLoaderData('frontPage') as Awaited<ReturnType<typeof shoppingCartLoader>>;
     const { auth } = useContext(AuthContext);
     const { username } = auth;
 
@@ -84,10 +87,16 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
     useEffect(() => {
         ref.current = 0;
     }, [product?.available]);
-    const paussi = true;
+
+    let paussi = pauseShopping.length > 0 ? true : false;
     if (paussi) {
         return (
-            <Tooltip title="TAVARATKIERTOON TOIMINTA ON TAUOLLA">
+            <Tooltip
+                title={`TAVARATKIERTOON TOIMINTA ON TAUOLLA\n${format(
+                    new Date(pauseShopping[0].start_date),
+                    'dd.MM.yyyy'
+                )} - ${format(new Date(pauseShopping[0].end_date), 'dd.MM.yyyy')} `}
+            >
                 <AddShoppingCartOutlinedIcon fontSize={'large'} />
             </Tooltip>
         );
