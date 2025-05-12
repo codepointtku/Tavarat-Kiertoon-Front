@@ -862,6 +862,9 @@ const confirmationAction = async ({ request }) => {
  */
 const bikeOrderAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
+    const extrainfo = formData.get('recipient_workplace')
+        ? 'TOIMIPAIKKA: ' + formData.get('recipient_workplace') + '\n' + formData.get('extraInfo')
+        : formData.get('extraInfo');
     if (formData.get('storageType') === 0) {
         const response = await bikesApi.bikesRentalCreate({
             contact_name: formData.get('contactPersonName'),
@@ -870,7 +873,7 @@ const bikeOrderAction = async (auth, setAuth, request) => {
             start_date: formData.get('startDateTime'),
             end_date: formData.get('endDateTime'),
             bike_stock: JSON.parse(formData.get('selectedBikes')),
-            extra_info: formData.get('extraInfo'),
+            extra_info: extrainfo,
         });
         return response.data || null;
     } else {
@@ -881,7 +884,7 @@ const bikeOrderAction = async (auth, setAuth, request) => {
             start_date: formData.get('startDateTime'),
             end_date: formData.get('endDateTime'),
             bike_stock: JSON.parse(formData.get('selectedBikes')),
-            extra_info: formData.get('extraInfo'),
+            extra_info: extrainfo,
             bike_trailer: formData.get('storageType'),
         });
         return response.data || null;

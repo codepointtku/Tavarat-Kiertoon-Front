@@ -7,6 +7,7 @@ import { Alert, Snackbar } from '@mui/material';
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import { AxiosResponse } from 'axios';
 
 // USAGE:
 // available status cases: info, warning, error, success
@@ -20,9 +21,10 @@ interface Props {
     status: AlertColor;
     timer?: number;
     redirectUrl?: string | number;
+    response?: AxiosResponse<any>;
 }
 
-function AlertBox({ text, status, timer, redirectUrl }: Props) {
+function AlertBox({ text, status, timer, redirectUrl, response }: Props) {
     const [open, setOpen] = useState(true);
     const navigate = useNavigate();
 
@@ -30,6 +32,9 @@ function AlertBox({ text, status, timer, redirectUrl }: Props) {
         if (timer) {
             setTimeout(() => {
                 setOpen(false);
+                if (response) {
+                    response.status = 0;
+                }
                 if (redirectUrl) {
                     navigate(redirectUrl as string);
                 }
