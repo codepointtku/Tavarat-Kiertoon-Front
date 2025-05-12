@@ -238,6 +238,7 @@ import {
     colorsManageAction,
     deleteCreateBikeTrailerAction,
     retireProductsAction,
+    pauseStoreAction,
 } from './actions';
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
@@ -658,8 +659,10 @@ function Routes() {
                                 },
                                 {
                                     path: 'asetukset',
+                                    id: 'pauseStore',
                                     element: <StoreSettings />,
                                     loader: pauseStoreLoader,
+                                    action: pauseStoreAction,
                                 },
                                 {
                                     path: 'tilaukset',

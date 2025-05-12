@@ -37,9 +37,10 @@ const rootLoader = async () => {
  * Get shoppingCart for logged in user
  */
 const shoppingCartLoader = async () => {
-    const [{ data: cart }, { data: amountList }] = await Promise.all([
+    const [{ data: cart }, { data: amountList }, { data: pauseShopping }] = await Promise.all([
         await shoppingCartApi.shoppingCartRetrieve(),
         await shoppingCartApi.shoppingCartAvailableAmountList(),
+        await pausestoreApi.pausestoreTodayList(),
     ]);
 
     // // // auth check for future
@@ -62,7 +63,7 @@ const shoppingCartLoader = async () => {
 
     // const products = cart?.product_items;
 
-    return { products, cart, amountList };
+    return { products, cart, amountList, pauseShopping };
 };
 
 /**
@@ -651,6 +652,11 @@ const bikeUserEditLoader = async ({ params }) => {
     return { bikeUserInfo, userAuthGroups };
 };
 
+const pauseStoreTodayLoader = async () => {
+    const { data } = await pausestoreApi.pausestoreTodayList();
+
+    return { data };
+};
 const pauseStoreLoader = async () => {
     const { data } = await pausestoreApi.pausestoreList();
 
@@ -707,4 +713,5 @@ export {
     bikeTrailersLoader,
     OrderStatsLoader,
     pauseStoreLoader,
+    pauseStoreTodayLoader,
 };
