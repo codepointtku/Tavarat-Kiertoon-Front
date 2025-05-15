@@ -2317,6 +2317,126 @@ paths:
                 items:
                   $ref: '#/components/schemas/OrderDetailResponse'
           description: ''
+  /pausestore/:
+    get:
+      operationId: pausestore_list
+      tags:
+      - pausestore
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - jwtAuth: []
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pause'
+          description: ''
+    post:
+      operationId: pausestore_create
+      tags:
+      - pausestore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pause'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Pause'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Pause'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - jwtAuth: []
+      - CustomJWTAuthentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pause'
+          description: ''
+  /pausestore/{id}/:
+    put:
+      operationId: pausestore_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - pausestore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pause'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Pause'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Pause'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - jwtAuth: []
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pause'
+          description: ''
+    delete:
+      operationId: pausestore_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - pausestore
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - jwtAuth: []
+      - CustomJWTAuthentication: []
+      responses:
+        '204':
+          description: No response body
+  /pausestore/today:
+    get:
+      operationId: pausestore_today_list
+      tags:
+      - pausestore
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - jwtAuth: []
+      - CustomJWTAuthentication: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pause'
+          description: ''
   /pictures/:
     get:
       operationId: pictures_list
@@ -5997,6 +6117,22 @@ components:
         description:
           type: string
           maxLength: 255
+    Pause:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+      required:
+      - end_date
+      - id
+      - start_date
     Picture:
       type: object
       properties:
