@@ -88,6 +88,7 @@ function StoreSettings() {
     };
 
     const handleEditClick = (id: GridRowId) => () => {
+        console.log(id);
         setRowModesModel({
             ...rowModesModel,
             [id]: { mode: GridRowModes.Edit },
@@ -100,30 +101,32 @@ function StoreSettings() {
             end_date: format(new Date(newRow.end_date), 'yyyy-MM-dd'),
             id: newRow.id,
         };
+        console.log('isnew', newRow.isNew, newRow.id);
 
         fetcher.submit(data, {
             method: newRow.isNew ? 'post' : 'put',
         });
-        const updatedRow = { ...newRow, isNew: false, id: -1 };
         const newrows = [...rows];
         const new2 = newrows.find((row) => row.id === newRow.id);
         if (new2) {
-            new2.isNew = false;
-            new2.id = -1;
+            new2.isNew = newRow.isNew;
+            new2.start_date = newRow.start_date;
+            new2.end_date = newRow.end_date;
         }
         setRows(newrows);
-        return updatedRow;
+        return newRow;
     };
 
     useEffect(() => {
+        console.log(fetcher.data);
         if (fetcher.data?.data) {
             const newrows = [...rows];
-            const new2 = newrows.find((row) => row.id === -1);
+            const new2 = newrows.find((row) => row.isNew === true);
             if (new2) {
                 new2.id = fetcher.data.data.id;
-                new2.start_date = fetcher.data.data.start_date;
-                new2.end_date = fetcher.data.data.end_date;
+                new2.isNew = false;
             }
+            console.log('päivitetty', new2);
             setRows(newrows);
         }
     }, [fetcher.data]);
@@ -266,8 +269,8 @@ function StoreSettings() {
                         color="inherit"
                     />,
                     <GridActionsCellItem
-                        key="delete"
                         icon={<DeleteIcon />}
+                        key="delete"
                         label="Delete"
                         onClick={handleDeleteClick(id)}
                         color="inherit"
