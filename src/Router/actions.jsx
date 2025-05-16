@@ -13,6 +13,7 @@ import {
     storagesApi,
     userApi,
     usersApi,
+    pausestoreApi,
 } from '../api';
 
 /**
@@ -846,7 +847,7 @@ const confirmationAction = async ({ request }) => {
         }
         // if the cart has been emptied backend throws 400 -->
     } catch (error) {
-        return { type: 'orderCreated', status: false };
+        return { type: 'orderCreated', status: false, status_code: error.response.status };
     }
 
     return null;
@@ -1386,6 +1387,39 @@ const bikeUserEditAction = async ({ request, params }) => {
     return response;
 };
 
+const pauseStoreAction = async ({ request, params }) => {
+    const formData = await request.formData();
+    const id = formData.get('id');
+    const data = {
+        start_date: formData.get('start_date'),
+        end_date: formData.get('end_date'),
+    };
+    try {
+        if (request.method === 'POST') {
+            const response = await pausestoreApi.pausestoreCreate(data);
+            if (response.status === 201) {
+                return response;
+            }
+        } else if (request.method === 'PUT') {
+            const response = pausestoreApi.pausestoreUpdate(id, data);
+
+            if (response.status === 200) {
+                console.log('abc2', response);
+                return response;
+            }
+        } else if (request.method === 'DELETE') {
+            const response = await pausestoreApi.pausestoreDestroy(id);
+
+            if (response.status === 204) {
+                return response;
+            }
+        }
+    } catch (err) {
+        return err.request;
+    }
+    return null;
+};
+
 export {
     bikeUserEditAction,
     deleteBikeOrderAction,
@@ -1440,4 +1474,5 @@ export {
     categoriesManageAction,
     searchWatchCreateAction,
     deleteCreateBikeTrailerAction,
+    pauseStoreAction,
 };

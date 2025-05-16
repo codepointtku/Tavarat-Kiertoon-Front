@@ -40,6 +40,8 @@ import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import DomainIcon from '@mui/icons-material/Domain';
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import MailIcon from '@mui/icons-material/Mail';
+import SettingsIcon from '@mui/icons-material/Settings';
+
 // import MarkEmailUnreadIcon from '@mui/icons-material/MarkEmailUnread';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
@@ -83,6 +85,8 @@ const viestit = [
     // { icon: <MarkEmailUnreadIcon />, label: 'Lukemattomat', to: '/admin/viestit?tila=Lukemattomat' },
 ];
 
+const jarjestelma = [{ icon: <SettingsIcon />, label: 'Asetukset', to: '/admin/asetukset' }];
+
 const NavStyles = styled(List)<{ component?: React.ElementType }>({
     '& .MuiListItemButton-root': {
         paddingLeft: 24,
@@ -108,6 +112,7 @@ function NavigationTree() {
         storagesNavList: false,
         bulletinsNavList: false,
         messagingNavList: false, // // messages nowadays (read only)
+        settingNavList: false,
     });
 
     // ux functions
@@ -119,6 +124,7 @@ function NavigationTree() {
             storagesNavList: false,
             bulletinsNavList: false,
             messagingNavList: false,
+            settingNavList: false,
         });
     };
 
@@ -130,6 +136,7 @@ function NavigationTree() {
             storagesNavList: true,
             bulletinsNavList: true,
             messagingNavList: true,
+            settingNavList: false,
         });
     };
 
@@ -196,6 +203,14 @@ function NavigationTree() {
                 } else {
                     setOpen((open) => ({ ...open, messagingNavList: !open.messagingNavList }));
                     navigoiTonne('/admin/viestit');
+                }
+                break;
+            case 'settings':
+                if (open.settingNavList) {
+                    setOpen((open) => ({ ...open, settingNavList: !open.settingNavList }));
+                } else {
+                    setOpen((open) => ({ ...open, settingNavList: !open.settingNavList }));
+                    navigoiTonne('/admin/asetukset');
                 }
                 break;
             default:
@@ -576,6 +591,65 @@ function NavigationTree() {
                 ))}
         </Box>
     );
+    const settingListItems = (
+        <Box
+            sx={{
+                bgcolor: open.settingNavList ? 'rgba(71, 98, 130, 0.2)' : null,
+                pb: open.settingNavList ? 2 : 0,
+            }}
+        >
+            <ListItemButton
+                alignItems="flex-start"
+                onClick={() => handleListTitleClick('settings')}
+                sx={{
+                    px: 3,
+                    pt: 2.5,
+                    pb: open.settingNavList ? 0 : 2.5,
+                    '&:hover, &:focus': { '& svg': { opacity: open.settingNavList ? 1 : 0 } },
+                }}
+            >
+                <ListItemText
+                    primary="Asetukset"
+                    primaryTypographyProps={{
+                        fontSize: 15,
+                        fontWeight: 'medium',
+                        lineHeight: '20px',
+                        mb: '2px',
+                    }}
+                    secondary="Järjestelmän asetukset"
+                    secondaryTypographyProps={{
+                        noWrap: true,
+                        fontSize: 12,
+                        lineHeight: '16px',
+                        color: open.settingNavList ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.5)',
+                    }}
+                    sx={{ my: 0 }}
+                />
+                <KeyboardArrowDown
+                    sx={{
+                        mr: -1,
+                        opacity: 0,
+                        transform: open.settingNavList ? 'rotate(-180deg)' : 'rotate(0)',
+                        transition: '0.2s',
+                    }}
+                />
+            </ListItemButton>
+            {open.settingNavList &&
+                jarjestelma.map((item) => (
+                    <ListItemButtonLink
+                        to={item.to}
+                        key={item.label}
+                        sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}
+                    >
+                        <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
+                        <ListItemText
+                            primary={item.label}
+                            primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }}
+                        />
+                    </ListItemButtonLink>
+                ))}
+        </Box>
+    );
 
     return (
         <Box id="admin-panel-navigation-tree" sx={{ display: 'flex', backgroundColor: 'primary.main' }}>
@@ -626,6 +700,7 @@ function NavigationTree() {
                                     }}
                                 />
                             </ListItemButtonLink>
+
                             <IconButton
                                 id="settings-icon-button"
                                 aria-controls={settingsDropDownMenuOpen ? 'settings-dropdown-menu' : undefined}
@@ -704,6 +779,7 @@ function NavigationTree() {
                         {storagesListItems}
                         {bulletinsListItems}
                         {messagingListItems}
+                        {settingListItems}
                     </NavStyles>
                 </Paper>
             </ThemeProvider>
