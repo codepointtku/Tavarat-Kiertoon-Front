@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import { Link, createSearchParams, useLoaderData, useRouteLoaderData, useSearchParams } from 'react-router-dom';
+import { Form, Link, createSearchParams, useLoaderData, useRouteLoaderData, useSearchParams } from 'react-router-dom';
 
-import { Box, Grid, IconButton, Modal, Typography, styled } from '@mui/material';
+import { Box, Button, Grid, IconButton, Modal, TextField, Typography, styled } from '@mui/material';
 import HorizontalSplitIcon from '@mui/icons-material/HorizontalSplit';
 
 import StorageProductsTable from './StorageProductsTable';
 import AddCircle from '@mui/icons-material/AddCircle';
 import Html5QrcodePlugin from '../../Utils/qrcodeScanner';
+
+import ClearIcon from '@mui/icons-material/Clear';
+import { useForm } from 'react-hook-form';
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
     display: 'flex',
@@ -17,11 +20,15 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 }));
 
 // TODO: convert to typescipt
-
+interface Search {
+    searchString: string | null;
+}
 function StorageProducts() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [qrSearchOpen, setQrSearchOpen] = useState(false);
-
+    const { register, handleSubmit } = useForm({
+        defaultValues: { searchString: searchParams.get('search'), search: searchParams.get('search') },
+    });
     const onNewScanResult = (decodedText, decodedResult) => {
         setQrSearchOpen(false);
         setSearchParams((prevParams) => {
@@ -35,7 +42,28 @@ function StorageProducts() {
             });
         });
     };
-
+    const handleBarcodeSearch = (formData: Search) => {
+        setSearchParams((prevParams) => {
+            return createSearchParams({
+                ...Object.fromEntries(prevParams.entries()),
+                viivakoodi: formData.searchString as string,
+                sivu: '1',
+                // TODO: show also unavailable products in storage
+                // all: true,
+            });
+        });
+    };
+    const handleSearch = (formData: Search) => {
+        setSearchParams((prevParams) => {
+            return createSearchParams({
+                ...Object.fromEntries(prevParams.entries()),
+                search: formData.searchString as string,
+                sivu: '1',
+                // TODO: show also unavailable products in storage
+                // all: true,
+            });
+        });
+    };
     return (
         <>
             <Modal
@@ -99,7 +127,27 @@ function StorageProducts() {
                     </IconButton>
                 </StyledGrid> */}
             </Grid>
-
+            <Form onSubmit={handleSubmit(handleSearch)}>
+                {/* todo: näytä vain hakuikoni kunnes painetaan, jolloin tekstikenttä laajenee/aktivoituu? */}
+                <TextField
+                    type="search"
+                    {...register('searchString')}
+                    placeholder="haku"
+                    sx={{ backgroundColor: 'white' }}
+                    size="medium"
+                >
+                    <IconButton children={<ClearIcon />} />
+                </TextField>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    sx={{ marginLeft: 1, padding: 1.5 }}
+                >
+                    Hae
+                </Button>
+            </Form>
             <StorageProductsTable />
         </>
     );

@@ -60,7 +60,7 @@ function StorageProductsTable() {
         setSearchParams((prevParams) => {
             return createSearchParams({
                 ...Object.fromEntries(prevParams.entries()),
-                viivakoodi: formData.searchString as string,
+                search: formData.searchString as string,
                 sivu: '1',
                 // TODO: show also unavailable products in storage
                 // all: true,
@@ -81,36 +81,8 @@ function StorageProductsTable() {
                             {/* TODO: Tablerow for search boxes, filters, etc. */}
                             {/* <StyledTableCell></StyledTableCell> */}
                             <StyledTableCell>Viivakoodi</StyledTableCell>
-                            <StyledTableCell>
-                                {/* todo: searchbar peruskomponentti tuotteiden hakua varten */}
-                                <Form onSubmit={handleSubmit(handleBarcodeSearch)}>
-                                    {/* todo: näytä vain hakuikoni kunnes painetaan, jolloin tekstikenttä laajenee/aktivoituu? */}
-                                    <TextField
-                                        type="search"
-                                        {...register('searchString')}
-                                        placeholder="Viivakoodihaku"
-                                        sx={{ backgroundColor: 'white' }}
-                                        size="medium"
-                                    >
-                                        <IconButton children={<ClearIcon />} />
-                                    </TextField>
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        color="primary"
-                                        size="large"
-                                        sx={{ marginLeft: 1, padding: 1.5 }}
-                                    >
-                                        Hae
-                                    </Button>
-                                </Form>
-                            </StyledTableCell>
-                            <StyledTableCell align="right">
-                                Tuotenimi {/* Testing icon for sorting: */}
-                                <TableSortLabel IconComponent={IconButton}>
-                                    <SearchIcon></SearchIcon>
-                                </TableSortLabel>
-                            </StyledTableCell>
+                            <StyledTableCell></StyledTableCell>
+                            <StyledTableCell align="right">Tuotenimi {/* Testing icon for sorting: */}</StyledTableCell>
                             {/* // TODO change description after filtering added? */}
                             <StyledTableCell align="right">Määrä tilattavissa / Järjestelmässä</StyledTableCell>
                             <StyledTableCell align="right">Varasto</StyledTableCell>

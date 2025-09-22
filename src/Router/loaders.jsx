@@ -193,11 +193,12 @@ const emailRecipientsLoader = async () => {
  */
 const storageProductsLoader = async ({ request }) => {
     const url = new URL(request.url);
-
+    console.log(url.searchParams);
     const [/* { data: storages }, { data: colors }, { data: categories }, */ { data: products }] = await Promise.all([
         //storagesApi.storagesList(),
         //colorsApi.colorsList(),
         //categoriesApi.categoriesList(),
+
         storagesApi.storagesProductsList(
             // barcode should support partial search
             true,
@@ -206,7 +207,7 @@ const storageProductsLoader = async ({ request }) => {
             null,
             url.searchParams.get('sivu'),
             url.searchParams.get('sivukoko'),
-            undefined
+            url.searchParams.get('search')
             // url.searchParams.get('varasto') // alternatively: varasto could be a param, storages/id/products
         ),
     ]);

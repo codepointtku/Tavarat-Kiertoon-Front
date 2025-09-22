@@ -349,6 +349,7 @@ function ProductsGrid() {
                     }}
                     onFilterModelChange={async (newFilterModel) => {
                         // fetch data from server
+                        console.log('nyt filtteröidään');
                         console.log(newFilterModel);
                         setPaginationModel({
                             page: 0,
@@ -357,6 +358,9 @@ function ProductsGrid() {
                         fetchData(
                             1,
                             paginationModel.pageSize,
+                            undefined,
+                            undefined,
+                            undefined,
                             newFilterModel.quickFilterValues ? newFilterModel.quickFilterValues[0] : undefined
                         );
                         setQuickFilterModel({ items: [], quickFilterValues: newFilterModel.quickFilterValues });
