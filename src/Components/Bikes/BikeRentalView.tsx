@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Form, useSubmit, useLoaderData, useActionData, Link } from 'react-router-dom';
 
-import { useForm } from 'react-hook-form';
+import { type FieldValues, useForm } from 'react-hook-form';
 
 import {
     Accordion,
@@ -33,14 +33,14 @@ import AlertBox from '../AlertBox';
 import DeleteBikeRentalModal from './DeleteBikeRentalModal';
 import type { bikeRentalViewLoader } from '../../Router/loaders';
 import type { bikeOrderEditAction } from '../../Router/actions';
-import type { BikeStockDetail } from '../../api';
+import { BikeRentalEnum, type BikeStockDetail } from '../../api';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import UpdateBikeRentalModal from './UpdateBikeRentalModal';
 
 export default function BikeRentalView() {
     const rental = useLoaderData() as Awaited<ReturnType<typeof bikeRentalViewLoader>>;
     const response = useActionData() as Awaited<ReturnType<typeof bikeOrderEditAction>>;
-    const currentRentalStatus = ['WAITING', 'ACTIVE', 'FINISHED'];
+    const currentRentalStatus = Object.values(BikeRentalEnum) as string[];
 
     const [renderDeleteBikeRentalModal, setRenderDeleteBikeRentalModal] = useState(false);
     const [renderUpdateBikeRentalModal, setRenderUpdateBikeRentalModal] = useState(false);
@@ -94,13 +94,18 @@ export default function BikeRentalView() {
     // Parse Date objects from backend data string
     const dateParse = (value: string) => {
         const date = new Date(value);
-        const dateString = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+        const dateString = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} klo: ${date.getHours()}:${
+            date.getMinutes() < 10 ? '0' : ''
+        }${date.getMinutes()}`;
         return dateString;
     };
 
     const statusTranslate = (value: string) => {
         if (value === 'WAITING') {
             return 'Odottaa';
+        }
+        if (value === 'PROCESSING') {
+            return 'Käsittelyssä';
         }
         if (value === 'ACTIVE') {
             return 'Aktiivinen';
@@ -113,23 +118,13 @@ export default function BikeRentalView() {
     const modifyBikeStockAmounts = (index: number | undefined, min: number, max: number, id: number) => {
         const regex = /^[0-9\b]+$/;
         const newValue = [...rentalBikeStock];
-        console.log('jippiiiii', index);
         console.log(rental?.bike_stock.filter((bikeItem) => bikeItem.bike.id === index));
-
-        console.log('jepjep');
         rental?.bike_stock
             .filter((bikeItem) => bikeItem.bike.id === id)
             .some((item) => {
-                console.log('haaaaaa', newValue, item.id);
                 if (newValue.indexOf(item.id) < 0) {
-                    console.log('waaaa', newValue, item.id);
                     newValue.push(item.id);
                     for (const i in newBikeModels2) {
-                        console.log(newBikeModels2[i], item.id);
-                        console.log(
-                            'daaa',
-                            newBikeModels2[i].filter((bikeItem) => bikeItem.id === item.id)
-                        );
                         newBikeModels[id].push(newBikeModels2[id].filter((bikeItem) => bikeItem.id === item.id)[0]);
                         return true;
                     }
@@ -137,19 +132,13 @@ export default function BikeRentalView() {
                 }
             });
 
-        console.log(newValue);
-        console.log('uusi', newBikeModels);
-
         setNewBikeModels(newBikeModels);
         setRentalBikeStock(newValue);
     };
 
     const modifyBikeStockAmounts2 = (index: number, min: number, max: number) => {
         if (newBikeModels[index].length > 0) {
-            console.log(newBikeModels[index]);
             const regex = /^[0-9\b]+$/;
-            console.log(newBikeModels2);
-            console.log(newBikeModels);
             let newValue = [...rentalBikeStock];
             const ID = newBikeModels[index].pop()?.id;
 
@@ -159,6 +148,29 @@ export default function BikeRentalView() {
             setRentalBikeStock(newValue);
         }
     };
+    /*  const changeStatus = async (data: FieldValues) => {
+        const productItemlist: number[] = [];
+        productRenderItems.map((item) => {
+            item.map((prod) => {
+                productItemlist.push(prod.id);
+                return null;
+            });
+            return null;
+        });
+        await submit(
+            {
+                status: data.status,
+                orderId: order.id.toString(),
+                deliveryAddress: order.delivery_address,
+                recipient: order.recipient,
+                recipient_phone_number: order.recipient_phone_number,
+                productItems: JSON.stringify(productItemlist),
+            },
+            {
+                method: 'put',
+            }
+        );
+    }; */
     return (
         <>
             {response?.status === 200 && (
@@ -242,7 +254,10 @@ export default function BikeRentalView() {
                                 <TableCell width="10%">
                                     <Button
                                         color="info"
-                                        onClick={window.print}
+                                        onClick={() => {
+                                            console.log('testi');
+                                            window.print();
+                                        }}
                                         sx={{
                                             '&:hover': {
                                                 backgroundColor: 'success.dark',

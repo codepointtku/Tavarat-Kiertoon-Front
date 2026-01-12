@@ -26,6 +26,8 @@ import { useEffect, useState } from 'react';
 import Pagination from '../Pagination';
 import { KeyboardArrowDown } from '@mui/icons-material';
 
+import { BikeRentalEnum } from '../../api';
+
 function getYearAndMonth(dateString: string) {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -38,9 +40,10 @@ export default function BikeRentals() {
     const { results, count } = useLoaderData() as Awaited<ReturnType<typeof bikeRentalLoader>>;
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
-    const statusChoices = ['WAITING', 'ACTIVE', 'FINISHED'];
+    const statusChoices = Object.values(BikeRentalEnum) as string[];
     const [currentStatusChoices, setCurrentStatusChoices] = useState<string[]>([]);
 
+    console.log(statusChoices);
     useEffect(() => {
         setSearchParams((prevParams) => {
             return createSearchParams({
@@ -75,6 +78,9 @@ export default function BikeRentals() {
     const statusTranslate = (value: string) => {
         if (value === 'WAITING') {
             return 'Odottaa';
+        }
+        if (value === 'PROCESSING') {
+            return 'Käsittelyssä';
         }
         if (value === 'ACTIVE') {
             return 'Aktiivinen';
