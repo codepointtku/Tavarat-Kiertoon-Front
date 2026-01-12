@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Form, Link, createSearchParams, useLoaderData, useRouteLoaderData, useSearchParams } from 'react-router-dom';
+import { Form, Link, createSearchParams, useSearchParams } from 'react-router-dom';
 
-import { Box, Button, Grid, IconButton, Modal, TextField, Typography, styled } from '@mui/material';
+import { Box, Button, Grid, IconButton, Modal, TextField, styled } from '@mui/material';
 import HorizontalSplitIcon from '@mui/icons-material/HorizontalSplit';
 
 import StorageProductsTable from './StorageProductsTable';
@@ -29,7 +29,7 @@ function StorageProducts() {
     const { register, handleSubmit } = useForm({
         defaultValues: { searchString: searchParams.get('search'), search: searchParams.get('search') },
     });
-    const onNewScanResult = (decodedText, decodedResult) => {
+    const onNewScanResult = (decodedText: string, _decodedResult: any) => {
         setQrSearchOpen(false);
         setSearchParams((prevParams) => {
             return createSearchParams({
@@ -86,14 +86,18 @@ function StorageProducts() {
             <Grid container spacing={4} sx={{ marginTop: 2, marginBottom: 2 }} justifyContent={'space-evenly'}>
                 <StyledGrid
                     item
-                    component={Link}
-                    to="/varasto/tuotteet/luo"
                     xs={3}
                     sx={{
                         textDecoration: 'none',
                     }}
                 >
-                    <IconButton fontSize="large" color="primary" variant="contained" aria-label="add new item">
+                    <IconButton
+                        size="large"
+                        color="primary"
+                        /* variant="contained" */ aria-label="add new item"
+                        component={Link}
+                        to="/varasto/tuotteet/luo"
+                    >
                         <AddCircle sx={{ color: 'primary' }} fontSize="large" />
                         Lisää uusi tuote
                     </IconButton>
@@ -105,7 +109,7 @@ function StorageProducts() {
                     item
                     xs={3}
                 >
-                    <IconButton fontSize="large" color="primary" variant="contained" aria-label="barcode search">
+                    <IconButton size="large" color="primary" /* variant="contained" */ aria-label="barcode search">
                         <HorizontalSplitIcon
                             sx={{
                                 color: 'primary',

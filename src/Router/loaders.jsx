@@ -534,7 +534,6 @@ const bikeNewModelLoader = async (auth, setAuth, params) => {
  * Gets user info for shopping cart process
  */
 const shoppingProcessLoader = async () => {
-    // const { data: user } = await apiCall(auth, setAuth, '/user/', 'get');
     const { data: user } = await userApi.userRetrieve();
     return user;
 };
