@@ -1,11 +1,11 @@
-FROM node:16.18.0-alpine3.16 as build
+FROM node:25.2.1-trixie-slim as build
 
 # To run the front&backends at the same time with docker:
 # Install OpenJDK-17 (uncomment line 8) and
 # @ openapitools.json : "useDocker": false
 # Add your machines IP to BE .env ALLOWED_HOSTS && CORS_ALLOWED_ORIGINS
 
-RUN apk add openjdk17
+RUN apt-get install -y openjdk17
 
 WORKDIR /usr/src/app
 
@@ -14,10 +14,10 @@ RUN npm ci && npm cache clean --force
 
 COPY . .
 # Install dependencies and build the React app
-RUN npm install
+RUN npm ci
 RUN npm run build
 
-FROM nginx:1.25.3-alpine3.18
+FROM nginx:1.29.4
 
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 #COPY /etc/ssl /etc/ssl
