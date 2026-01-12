@@ -589,7 +589,7 @@ function Routes() {
                                             path: 'palauta',
                                             element: <ProductsReturnForm />,
                                             errorElement: <div>Virhe haettaessa tuotteen tietoja</div>,
-                                            loader: productDetailsLoader,
+                                            loader: productItemsReturnLoader,
                                             action: returnProductsAction,
                                         },
                                         {
