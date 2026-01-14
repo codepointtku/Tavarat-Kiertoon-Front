@@ -29,7 +29,7 @@ interface Props {
     groupId: number;
     freeDescription: string;
     categoryName: string;
-    storageName: string;
+    /* storageName: string; */
     colors: {
         id: number;
         name: string;
@@ -48,13 +48,13 @@ function ProductCard({
     pictures,
     freeDescription,
     categoryName,
-    storageName,
+    /* storageName, */
     colors,
     measurements,
     weight,
     count,
 }: Props) {
-    const [openInfo, setOpenInfo] = useState<Boolean>(false);
+    const [openInfo, setOpenInfo] = useState<boolean>(false);
     const [delayHandler, setDelayHandler] = useState<NodeJS.Timeout | null>(null);
 
     function handleHover(event: React.MouseEvent) {
