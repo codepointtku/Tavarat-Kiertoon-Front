@@ -65,7 +65,7 @@ function CategoryTree() {
     const [showMutateErrorMessage, setShowMutateErrorMessage] = useState<boolean>(false);
     const [selectedChoice, setSelectedChoice] = useState<string>('');
     const [selectedCategory, setSelectedCategory] = useState<CategoryObject | EmptyObject | null>(null);
-    let selectedNodeRef = useRef<CategoryObject | EmptyObject>({});
+    const selectedNodeRef = useRef<CategoryObject | EmptyObject>({});
 
     const handleClick = (node: any) => {
         selectedNodeRef.current = node;
