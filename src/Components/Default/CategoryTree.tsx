@@ -115,6 +115,7 @@ function CategoryTree({ treeSelectedState }: TreeSelectedProps) {
             <TreeView
                 aria-label="product category tree view"
                 defaultExpanded={['root', ...expandedCategories]}
+                multiSelect={true}
                 selected={categoryParams}
                 sx={{ flexGrow: 1, overflowY: 'auto' }}
             >
