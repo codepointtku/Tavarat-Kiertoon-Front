@@ -158,7 +158,6 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit, setFilterI
         if (fields.length <= 1) {
             onSubmit({ filterForm: [] });
         }
-        console.log(fields);
         remove(id);
     };
     let filterableColumns = columns.slice();
@@ -200,7 +199,6 @@ const DataGridCustomFilter = ({ columns, localizedTextsMap, onSubmit, setFilterI
         filterableColumns = filterableColumns.filter(
             (el) => !fields.find((rm) => rm.column === el.field) && el.filterable !== false
         );
-        console.log(filterableColumns);
         append({
             column: filterableColumns[0].field,
             filter: 'contains',

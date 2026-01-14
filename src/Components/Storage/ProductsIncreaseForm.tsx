@@ -36,7 +36,6 @@ function ProductsIncreaseForm() {
 
     const onSubmit = (formData: FieldValues) => {
         // const {id} = product
-        console.log('submitting');
         submit(formData, { method: 'post' });
         reset();
     };

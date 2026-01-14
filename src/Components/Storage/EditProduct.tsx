@@ -175,7 +175,6 @@ function EditProduct() {
         Object.values(oldPictures).forEach((pic) => formData.append('old_pictures[]', pic.id.toString()));
         Object.values(fileList).forEach((pic: PicUpload) => formData.append('pictures[]', pic.file));
 
-        console.log(formData.forEach((item, key) => console.log(key, item)));
         submit(formData, {
             method: 'PUT',
             encType: 'multipart/form-data',

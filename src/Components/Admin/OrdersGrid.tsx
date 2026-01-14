@@ -54,7 +54,6 @@ function OrdersGrid() {
             orderStatus
         );
         const results = orders.results !== undefined ? orders.results : [];
-        console.log('what', results);
         setRowData(results);
         setTotalAmount(orders.count !== undefined ? orders.count : 0);
     };
@@ -374,10 +373,6 @@ function OrdersGrid() {
                         orderInfo = value;
                         break;
                 }
-                console.log(column, value);
-                if (andor == 'and') {
-                    console.log('jippii');
-                }
                 return null;
             });
         fetchData(
@@ -391,7 +386,6 @@ function OrdersGrid() {
             ordering,
             orderStatus
         );
-        console.log(items);
         setFilterItems(items);
     };
     if (!rowData) return null;
@@ -414,7 +408,6 @@ function OrdersGrid() {
                     apiRef={apiRef}
                     onPaginationModelChange={(newPaginationModel, details) => {
                         // fetch data from server
-                        console.log('guh');
                         setPaginationModel(newPaginationModel);
                         fetchData(newPaginationModel.page + 1, newPaginationModel.pageSize);
                     }}
@@ -423,17 +416,13 @@ function OrdersGrid() {
                     }}
                     onFilterModelChange={(newFilterModel, details) => {
                         // fetch data from server
-                        console.log(newFilterModel);
-                        console.log(quickFilterModel.items);
                         setPaginationModel({
                             page: 0,
                             pageSize: paginationModel.pageSize,
                         });
-                        console.log('huh');
                         const ordernumber = newFilterModel.quickFilterValues
                             ? newFilterModel.quickFilterValues[0]
                             : undefined;
-                        console.log('ordernumber:', ordernumber);
                         fetchData(
                             paginationModel.page + 1,
                             paginationModel.pageSize,

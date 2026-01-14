@@ -300,9 +300,9 @@ function UsersGrid() {
         let isActive = undefined;
         let lastName = undefined;
         let phoneNumber = undefined;
-        let ordering = undefined;
+        const ordering = undefined;
         let email = undefined;
-        let items: GridFilterItem[] = [];
+        const items: GridFilterItem[] = [];
         if (formdata.filterForm.length > 0)
             formdata.filterForm.map((form) => {
                 const column = form.column;
@@ -329,10 +329,6 @@ function UsersGrid() {
                     case 'is_active':
                         isActive = value;
                         break;
-                }
-                console.log(column, value);
-                if (andor == 'and') {
-                    console.log('jippii');
                 }
                 return null;
             });
@@ -367,7 +363,6 @@ function UsersGrid() {
                     }}
                     onFilterModelChange={async (newFilterModel) => {
                         // fetch data from server
-                        console.log(newFilterModel);
                         setPaginationModel({
                             page: 0,
                             pageSize: paginationModel.pageSize,

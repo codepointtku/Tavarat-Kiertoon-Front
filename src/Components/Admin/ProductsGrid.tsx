@@ -313,10 +313,6 @@ function ProductsGrid() {
                         barcode = value;
                         break;
                 }
-                console.log(column, value);
-                if (andor == 'and') {
-                    console.log('jippii');
-                }
                 return null;
             });
         fetchData(1, paginationModel.pageSize, barcode, category, undefined, search, storage);
@@ -349,7 +345,6 @@ function ProductsGrid() {
                     }}
                     onFilterModelChange={async (newFilterModel) => {
                         // fetch data from server
-                        console.log(newFilterModel);
                         setPaginationModel({
                             page: 0,
                             pageSize: paginationModel.pageSize,
