@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 
 import arrayToTree from 'array-to-tree';
 
-import { TreeView, TreeItem } from '@mui/lab';
+import { TreeView, TreeItem } from '@mui/x-tree-view';
 import { Box, Typography } from '@mui/material';
 
 import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
