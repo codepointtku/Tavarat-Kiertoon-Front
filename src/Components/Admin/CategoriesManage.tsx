@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import arrayToTree from 'array-to-tree';
 
-import { TreeView, TreeItem } from '@mui/lab';
+import { TreeView, TreeItem } from '@mui/x-tree-view';
 import {
     Box,
     Button,
