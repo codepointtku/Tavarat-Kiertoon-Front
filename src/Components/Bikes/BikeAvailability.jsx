@@ -124,8 +124,8 @@ export default function BikeAvailability({
     rows = 2,
     unavailable,
     maxAvailable,
-    selectedStartDate = null,
-    selectedEndDate = null,
+    selectedStartDate,
+    selectedEndDate,
     amountSelected,
 }) {
     const [state, dispatch] = useReducer(reducer, { dateInfo, rows, unavailable, maxAvailable }, createInitialState);

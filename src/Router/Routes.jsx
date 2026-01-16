@@ -1073,6 +1073,7 @@ function Routes() {
                                 },
                             ],
                         },
+                        { path: '*', element: <ErrorBoundary /> },
                     ],
                 },
             ]),
