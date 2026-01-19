@@ -1,4 +1,4 @@
-FROM node:25.2.1-trixie-slim as build
+FROM node:24.13.0-alpine3.23 as build
 
 # To run the front&backends at the same time with docker:
 # Install OpenJDK-17 (uncomment line 8) and
