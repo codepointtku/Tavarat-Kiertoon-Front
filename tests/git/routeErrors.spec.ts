@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
+import { setupComprehensiveMocks } from '../mockApi';
 
 // const testText: string = 'Jokin meni pieleen';
 const testText: string = 'Etsimääsi sijaintia';
@@ -8,11 +9,16 @@ const testText: string = 'Etsimääsi sijaintia';
 
 //
 
+async function setupMocks(page: Page) {
+    await setupComprehensiveMocks(page);
+}
+
 // --- Defaultview route tests
 
 test.describe('mainpage', () => {
     test('no errors', async ({ page }) => {
         test.setTimeout(120000);
+        await setupMocks(page);
         await page.goto('/');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -20,6 +26,7 @@ test.describe('mainpage', () => {
 
 test.describe('tuotteet', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('tuotteet/4321');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -27,6 +34,7 @@ test.describe('tuotteet', () => {
 
 test.describe('taustatietoa', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/taustatietoa');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -34,6 +42,7 @@ test.describe('taustatietoa', () => {
 
 test.describe('tilastot', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/tilastot');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -41,6 +50,7 @@ test.describe('tilastot', () => {
 
 test.describe('tiedotteet', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/tiedotteet');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -48,6 +58,7 @@ test.describe('tiedotteet', () => {
 
 test.describe('kirjaudu', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/kirjaudu');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -55,6 +66,7 @@ test.describe('kirjaudu', () => {
 
 test.describe('rekisteroidy', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/rekisteroidy');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -62,6 +74,7 @@ test.describe('rekisteroidy', () => {
 
 test.describe('rekisteroidykayttaja', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/rekisteroidy/kayttaja');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -69,6 +82,7 @@ test.describe('rekisteroidykayttaja', () => {
 
 test.describe('rekisteroidytoimipaikka', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/rekisteroidy/toimipaikka');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -76,6 +90,7 @@ test.describe('rekisteroidytoimipaikka', () => {
 
 test.describe('ohjeet', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/ohjeet');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -83,6 +98,7 @@ test.describe('ohjeet', () => {
 
 test.describe('ohjeetukk', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/ohjeet/ukk');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -90,6 +106,7 @@ test.describe('ohjeetukk', () => {
 
 test.describe('ohjeettili', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/ohjeet/tili');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -97,6 +114,7 @@ test.describe('ohjeettili', () => {
 
 test.describe('ohjeettilaus', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/ohjeet/tilaus');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -104,6 +122,7 @@ test.describe('ohjeettilaus', () => {
 
 test.describe('ohjeetnouto', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/ohjeet/nouto');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -111,6 +130,7 @@ test.describe('ohjeetnouto', () => {
 
 test.describe('ohjeetpyorat', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/ohjeet/pyorat');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -118,6 +138,7 @@ test.describe('ohjeetpyorat', () => {
 
 test.describe('otayhteytta', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/otayhteytta');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -125,6 +146,7 @@ test.describe('otayhteytta', () => {
 
 test.describe('passwordreset', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/salasananpalautus');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -132,6 +154,7 @@ test.describe('passwordreset', () => {
 
 test.describe('passwordresetsuccessful', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/salasananpalautus/salasanapalautettu');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -139,6 +162,7 @@ test.describe('passwordresetsuccessful', () => {
 
 test.describe('linkexpired', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/salasananpalautus/linkexpired');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
@@ -146,6 +170,7 @@ test.describe('linkexpired', () => {
 
 test.describe('pwdresetsession', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/salasananpalautus/asd/das');
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
