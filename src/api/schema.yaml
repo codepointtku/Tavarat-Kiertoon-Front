@@ -443,10 +443,6 @@ paths:
           * `WAITING` - Waiting
           * `ACTIVE` - Active
           * `FINISHED` - Finished
-
-          * `WAITING` - Waiting
-          * `ACTIVE` - Active
-          * `FINISHED` - Finished
         explode: true
         style: form
       tags:
@@ -1707,9 +1703,6 @@ paths:
         description: |-
           * `Not read` - Not Read
           * `Read` - Read
-
-          * `Not read` - Not Read
-          * `Read` - Read
       tags:
       - contact_forms
       security:
@@ -2008,10 +2001,6 @@ paths:
           * `Waiting` - Waiting
           * `Processing` - Processing
           * `Finished` - Finished
-
-          * `Waiting` - Waiting
-          * `Processing` - Processing
-          * `Finished` - Finished
         explode: true
         style: form
       tags:
@@ -2292,10 +2281,6 @@ paths:
             - Processing
             - Waiting
         description: |-
-          * `Waiting` - Waiting
-          * `Processing` - Processing
-          * `Finished` - Finished
-
           * `Waiting` - Waiting
           * `Processing` - Processing
           * `Finished` - Finished
@@ -3083,6 +3068,7 @@ paths:
           - br
           - bs
           - ca
+          - ckb
           - cs
           - cy
           - da
@@ -3163,6 +3149,7 @@ paths:
           - tr
           - tt
           - udm
+          - ug
           - uk
           - ur
           - uz
@@ -4321,16 +4308,6 @@ paths:
           - Users permissions were changed
           - Users search watch was edited
         description: |-
-          * `User was created` - Created
-          * `User was activated` - Activated
-          * `Users password was changed` - Password
-          * `User info was changed` - User Info
-          * `User address info was changed` - User Address Info
-          * `User address info was deleted` - User Address Info Delete
-          * `Users permissions were changed` - Permissions
-          * `Users email was changed` - Email
-          * `Users search watch was edited` - Watch
-
           * `User was created` - Created
           * `User was activated` - Activated
           * `Users password was changed` - Password
@@ -5915,6 +5892,9 @@ components:
       - status
     PaginatedBikeRentalSchemaResponseList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -5935,6 +5915,9 @@ components:
             $ref: '#/components/schemas/BikeRentalSchemaResponse'
     PaginatedBikeUserList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -5955,6 +5938,9 @@ components:
             $ref: '#/components/schemas/BikeUser'
     PaginatedContactFormResponseList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -5975,6 +5961,9 @@ components:
             $ref: '#/components/schemas/ContactFormResponse'
     PaginatedOrderResponseList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -5995,6 +5984,9 @@ components:
             $ref: '#/components/schemas/OrderResponse'
     PaginatedProductItemResponseList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -6015,6 +6007,9 @@ components:
             $ref: '#/components/schemas/ProductItemResponse'
     PaginatedProductResponseList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -6035,6 +6030,9 @@ components:
             $ref: '#/components/schemas/ProductResponse'
     PaginatedProductStorageResponseList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -6055,6 +6053,9 @@ components:
             $ref: '#/components/schemas/ProductStorageResponse'
     PaginatedUserFullResponseSchemaList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -6075,6 +6076,9 @@ components:
             $ref: '#/components/schemas/UserFullResponseSchema'
     PaginatedUserLogResponseSchemaList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -6284,7 +6288,7 @@ components:
           type: string
           maxLength: 255
         status:
-          $ref: '#/components/schemas/Status2c2Enum'
+          $ref: '#/components/schemas/Status948Enum'
         product:
           type: integer
           nullable: true
@@ -6380,7 +6384,7 @@ components:
           type: string
           maxLength: 255
         status:
-          $ref: '#/components/schemas/Status2c2Enum'
+          $ref: '#/components/schemas/Status948Enum'
       required:
       - available
       - barcode
@@ -6419,7 +6423,7 @@ components:
           type: string
           maxLength: 255
         status:
-          $ref: '#/components/schemas/Status2c2Enum'
+          $ref: '#/components/schemas/Status948Enum'
       required:
       - available
       - barcode
@@ -6451,7 +6455,7 @@ components:
           type: string
           maxLength: 255
         status:
-          $ref: '#/components/schemas/Status2c2Enum'
+          $ref: '#/components/schemas/Status948Enum'
         product:
           type: integer
           readOnly: true
@@ -6793,7 +6797,7 @@ components:
       - id
       - product_items
       - user
-    Status2c2Enum:
+    Status948Enum:
       enum:
       - Available
       - In cart

@@ -88,7 +88,6 @@ function StoreSettings() {
     };
 
     const handleEditClick = (id: GridRowId) => () => {
-        console.log(id);
         setRowModesModel({
             ...rowModesModel,
             [id]: { mode: GridRowModes.Edit },
@@ -96,12 +95,11 @@ function StoreSettings() {
     };
 
     const processRowUpdate = async (newRow: GridRowModel) => {
-        let data = {
+        const data = {
             start_date: format(new Date(newRow.start_date), 'yyyy-MM-dd'),
             end_date: format(new Date(newRow.end_date), 'yyyy-MM-dd'),
             id: newRow.id,
         };
-        console.log('isnew', newRow.isNew, newRow.id);
 
         fetcher.submit(data, {
             method: newRow.isNew ? 'post' : 'put',
@@ -118,7 +116,6 @@ function StoreSettings() {
     };
 
     useEffect(() => {
-        console.log(fetcher.data);
         if (fetcher.data?.data) {
             const newrows = [...rows];
             const new2 = newrows.find((row) => row.isNew === true);
@@ -126,7 +123,6 @@ function StoreSettings() {
                 new2.id = fetcher.data.data.id;
                 new2.isNew = false;
             }
-            console.log('päivitetty', new2);
             setRows(newrows);
         }
     }, [fetcher.data]);

@@ -220,7 +220,6 @@ export default function BikesPage() {
             setHours(data.endDate, Math.floor(data.endTime)),
             (data.endTime - Math.floor(data.endTime)) * 60
         ).toISOString();
-        console.log(data);
         data['extraInfo'] = data['deliveryWorkplace']
             ? 'TOIMIPAIKKA: ' + data['deliveryWorkplace'] + '\n' + data['extraInfo']
             : data['extraInfo'];

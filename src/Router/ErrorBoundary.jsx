@@ -14,7 +14,7 @@ function ErrorBoundary() {
         console.log(err);
         if (
             err?.status === 401 ||
-            err?.response?.status === 403 ||
+            err?.response?.status === 401 ||
             err?.status === 403 ||
             err?.response?.status === 403
         ) {

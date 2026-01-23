@@ -3,7 +3,7 @@
     "spaces": 2,
     "generator-cli": {
         "useDocker": false,
-        "version": "6.5.0",
+        "version": "6.6.0",
         "generators": {
             "main": {
                 "inputSpec": "src/api/schema.yaml",

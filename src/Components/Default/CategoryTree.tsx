@@ -3,15 +3,14 @@ import { useMemo } from 'react';
 
 import arrayToTree from 'array-to-tree';
 
-import { TreeView, TreeItem } from '@mui/lab';
+import { TreeView, TreeItem } from '@mui/x-tree-view';
 import { Box, Typography } from '@mui/material';
 
 import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
-import type { TreeSelectedProps } from './SearchField';
+import type { TreeSelectedProps, CategoryTreeIndexes } from './SearchField';
 import type { rootLoader } from '../../Router/loaders';
 import type { CategoryResponse } from '../../api';
-import type { CategoryTreeIndexes } from './SearchField';
 
 function useExpandedCategories(categoryParam: string, categories: { id: number; parent: null | number }[]) {
     return useMemo(() => {
@@ -115,6 +114,7 @@ function CategoryTree({ treeSelectedState }: TreeSelectedProps) {
             <TreeView
                 aria-label="product category tree view"
                 defaultExpanded={['root', ...expandedCategories]}
+                multiSelect={true}
                 selected={categoryParams}
                 sx={{ flexGrow: 1, overflowY: 'auto' }}
             >

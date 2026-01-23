@@ -121,7 +121,7 @@ function reducer(state, action) {
 
 export default function BikeAvailability({
     dateInfo,
-    rows,
+    rows = 2,
     unavailable,
     maxAvailable,
     selectedStartDate,
@@ -228,10 +228,4 @@ BikeAvailability.propTypes = {
     selectedStartDate: PropTypes.instanceOf(Date),
     selectedEndDate: PropTypes.instanceOf(Date),
     amountSelected: PropTypes.number.isRequired,
-};
-
-BikeAvailability.defaultProps = {
-    rows: 2,
-    selectedStartDate: null,
-    selectedEndDate: null,
 };

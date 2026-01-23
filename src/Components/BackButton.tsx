@@ -10,10 +10,7 @@ interface LinkProps {
     to?: number | string;
 }
 
-const defaultProps: LinkProps = {
-    to: -1,
-};
-const BackButton = (prop: LinkProps) => {
+const BackButton = ({ to = -1 }: LinkProps) => {
     const iconHover = {
         '&:hover .MuiAvatar-root': {
             backgroundColor: 'primary.dark',
@@ -25,7 +22,7 @@ const BackButton = (prop: LinkProps) => {
             <IconButtonLink
                 id="back-btn-iconbtn-link"
                 component={Link}
-                to={prop.to as unknown as string}
+                to={to as unknown as string}
                 sx={[iconHover, { p: '0' }]}
             >
                 <Avatar
@@ -41,5 +38,5 @@ const BackButton = (prop: LinkProps) => {
         </Tooltip>
     );
 };
-BackButton.defaultProps = defaultProps;
+
 export default BackButton;
