@@ -148,6 +148,9 @@ export async function setupComprehensiveMocks(page: Page) {
     await page.route(`${baseUrl}/pausestore/today/`, async (route) => {
         return route.fulfill(mockResponse([]));
     });
+    await page.route(`${baseUrl}/pausestore/today`, async (route) => {
+        return route.fulfill(mockResponse([]));
+    });
 
     // Pictures
     await page.route(`${baseUrl}/pictures/`, async (route) => {
