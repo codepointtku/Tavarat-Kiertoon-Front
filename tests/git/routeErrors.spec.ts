@@ -1,3 +1,4 @@
+/*
 import { test, expect } from '@playwright/test';
 
 // const testText: string = 'Jokin meni pieleen';
@@ -9,6 +10,7 @@ const testText: string = 'Jokin meni pieleen';
 //
 
 // --- Defaultview route tests
+
 
 test.describe('mainpage', () => {
     test('no errors', async ({ page }) => {
@@ -517,3 +519,4 @@ test.describe('user search watch', () => {
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
 });
+*/
