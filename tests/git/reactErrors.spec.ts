@@ -1,15 +1,23 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
+import { setupComprehensiveMocks } from '../mockApi';
+
+async function setupMocks(page: Page) {
+    await setupComprehensiveMocks(page);
+}
 
 test.describe('mainpage', () => {
     test('no errors', async ({ page }) => {
         test.setTimeout(120000);
+        await setupMocks(page);
         await page.goto('/');
+        await page.waitForTimeout(1000);
         await expect(page.getByText('Virhe sijainnissa /')).not.toBeVisible();
     });
 });
 
 test.describe('tuotteet', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('tuotteet/4321');
         await expect(page.getByText('Virhe sijainnissa /tuotteet/4321')).not.toBeVisible();
     });
@@ -17,6 +25,7 @@ test.describe('tuotteet', () => {
 
 test.describe('taustatietoa', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/taustatietoa');
         await expect(page.getByText('Virhe sijainnissa /taustatietoa')).not.toBeVisible();
     });
@@ -24,6 +33,7 @@ test.describe('taustatietoa', () => {
 
 test.describe('tilastot', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/tilastot');
         await expect(page.getByText('Virhe sijainnissa /tilastot')).not.toBeVisible();
     });
@@ -31,6 +41,7 @@ test.describe('tilastot', () => {
 
 test.describe('tiedotteet', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/tiedotteet');
         await expect(page.getByText('Virhe sijainnissa /tiedotteet')).not.toBeVisible();
     });
@@ -38,6 +49,7 @@ test.describe('tiedotteet', () => {
 
 test.describe('rekisteroidy', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/rekisteroidy');
         await expect(page.getByText('Virhe sijainnissa /rekisteroidy')).not.toBeVisible();
     });
@@ -45,6 +57,7 @@ test.describe('rekisteroidy', () => {
 
 test.describe('rekisteroidykayttaja', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/rekisteroidy/kayttaja');
         await expect(page.getByText('Virhe sijainnissa /rekisteroidy/kayttaja')).not.toBeVisible();
     });
@@ -52,6 +65,7 @@ test.describe('rekisteroidykayttaja', () => {
 
 test.describe('rekisteroidytoimipaikka', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/rekisteroidy/toimipaikka');
         await expect(page.getByText('Virhe sijainnissa /rekisteroidy/toimipaikka')).not.toBeVisible();
     });
@@ -59,6 +73,7 @@ test.describe('rekisteroidytoimipaikka', () => {
 
 test.describe('kirjaudu', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/kirjaudu');
         await expect(page.getByText('Virhe sijainnissa /kirjaudu')).not.toBeVisible();
     });
@@ -66,6 +81,7 @@ test.describe('kirjaudu', () => {
 
 test.describe('ohjeet', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/ohjeet');
         await expect(page.getByText('Virhe sijainnissa /ohjeet')).not.toBeVisible();
     });
@@ -73,6 +89,7 @@ test.describe('ohjeet', () => {
 
 test.describe('ohjeetukk', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/ohjeet/ukk');
         await expect(page.getByText('Virhe sijainnissa /ohjeet/ukk')).not.toBeVisible();
     });
@@ -80,6 +97,7 @@ test.describe('ohjeetukk', () => {
 
 test.describe('ohjeettili', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/ohjeet/tili');
         await expect(page.getByText('Virhe sijainnissa /ohjeet/tili')).not.toBeVisible();
     });
@@ -87,6 +105,7 @@ test.describe('ohjeettili', () => {
 
 test.describe('ohjeettilaus', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/ohjeet/tilaus');
         await expect(page.getByText('Virhe sijainnissa /ohjeet/tilaus')).not.toBeVisible();
     });
@@ -94,6 +113,7 @@ test.describe('ohjeettilaus', () => {
 
 test.describe('ohjeetnouto', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/ohjeet/nouto');
         await expect(page.getByText('Virhe sijainnissa /ohjeet/nouto')).not.toBeVisible();
     });
@@ -101,6 +121,7 @@ test.describe('ohjeetnouto', () => {
 
 test.describe('ohjeetpyorat', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/ohjeet/pyorat');
         await expect(page.getByText('Virhe sijainnissa /ohjeet/pyorat')).not.toBeVisible();
     });
@@ -108,6 +129,7 @@ test.describe('ohjeetpyorat', () => {
 
 test.describe('otayhteytta', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/otayhteytta');
         await expect(page.getByText('Virhe sijainnissa /otayhteytta')).not.toBeVisible();
     });
@@ -115,6 +137,7 @@ test.describe('otayhteytta', () => {
 
 test.describe('varasto', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/varasto');
         await expect(page.getByText('Virhe sijainnissa /varasto')).not.toBeVisible();
     });
@@ -122,6 +145,7 @@ test.describe('varasto', () => {
 
 test.describe('tilaus', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/varasto/tilaus/4127');
         await expect(page.getByText('Virhe sijainnissa /tilaus/4127')).not.toBeVisible();
     });
@@ -129,6 +153,7 @@ test.describe('tilaus', () => {
 
 test.describe('varasto-tuotteet', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('varasto/tuotteet');
         await expect(page.getByText('Virhe sijainnissa /varasto/tuotteet')).not.toBeVisible();
     });
@@ -136,6 +161,7 @@ test.describe('varasto-tuotteet', () => {
 
 test.describe('koodinlukija', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('varasto/koodinlukija');
         await expect(page.getByText('Virhe sijainnissa /varasto/koodinlukija')).not.toBeVisible();
     });
@@ -143,6 +169,7 @@ test.describe('koodinlukija', () => {
 
 test.describe('admin', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('admin');
         await expect(page.getByText('Virhe sijainnissa /admin')).not.toBeVisible();
     });
@@ -150,6 +177,7 @@ test.describe('admin', () => {
 
 test.describe('kayttajat', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('admin/kayttajat');
         await expect(page.getByText('Virhe sijainnissa /admin/kayttajat')).not.toBeVisible();
     });
@@ -157,6 +185,7 @@ test.describe('kayttajat', () => {
 
 test.describe('kayttaja', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('admin/kayttajat/0');
         await expect(page.getByText('Virhe sijainnissa /admin/kayttajat/0')).not.toBeVisible();
     });
@@ -164,6 +193,7 @@ test.describe('kayttaja', () => {
 
 test.describe('hakemukset', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/admin/hakemukset');
         await expect(page.getByText('Virhe sijainnissa /admin/hakemukset')).not.toBeVisible();
     });
@@ -171,6 +201,7 @@ test.describe('hakemukset', () => {
 
 test.describe('pdf', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/varasto/pdf/0');
         await expect(page.getByText('Virhe sijainnissa /varasto/pdf/0')).not.toBeVisible();
     });
@@ -178,6 +209,7 @@ test.describe('pdf', () => {
 
 test.describe('fail-test', () => {
     test('fail-test', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/test/failing');
         await expect(page.getByText('Virhe sijainnissa /test/failing')).not.toBeVisible();
     });
@@ -185,6 +217,7 @@ test.describe('fail-test', () => {
 
 test.describe('luotiedote', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/admin/tiedotteet/luo');
         await expect(page.getByText('Virhe sijainnissa /admin/tiedotteet/luo')).not.toBeVisible();
     });
@@ -192,6 +225,7 @@ test.describe('luotiedote', () => {
 
 test.describe('admin-emailrecipientslist', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/admin/tilaukset/sahkopostilista');
         await expect(page.getByText('Virhe sijainnissa /admin/tilaukset/sahkopostilista')).not.toBeVisible();
     });
@@ -199,6 +233,7 @@ test.describe('admin-emailrecipientslist', () => {
 
 test.describe('admin-orderslist', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/admin/tilaukset');
         await expect(page.getByText('Virhe sijaintia /admin/tilaukset')).not.toBeVisible();
     });
@@ -213,6 +248,7 @@ test.describe('admin-orderslist', () => {
 
 test.describe('admin-createorder', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/admin/tilaukset/uusi');
         await expect(page.getByText('Virhe sijaintia /admin/tilaukset/uusi')).not.toBeVisible();
     });
@@ -220,6 +256,7 @@ test.describe('admin-createorder', () => {
 
 test.describe('admin-productslist', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/admin/tuotteet');
         await expect(page.getByText('Virhe sijaintia /admin/tuotteet')).not.toBeVisible();
     });
@@ -234,6 +271,7 @@ test.describe('admin-productslist', () => {
 
 test.describe('admin-createproduct', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/admin/tilaukset/uusi');
         await expect(page.getByText('Virhe sijaintia /admin/tuotteet/uusi')).not.toBeVisible();
     });
@@ -255,6 +293,7 @@ test.describe('admin-createproduct', () => {
  */
 test.describe('bikes', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/pyorat');
         await expect(page.getByText('Virhe sijainnissa /pyorat')).not.toBeVisible();
     });
@@ -262,18 +301,21 @@ test.describe('bikes', () => {
 // bike tests
 test.describe('bike-list', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/pyorat/pyoravarasto');
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto')).not.toBeVisible();
     });
 });
 test.describe('bike-modify-1', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/pyorat/pyoravarasto/muokkaa/1');
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/pyorapaketit/1')).not.toBeVisible();
     });
 });
 test.describe('bike-add-new', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/pyorat/pyoravarasto/lisaa');
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/lisaa')).not.toBeVisible();
     });
@@ -281,18 +323,21 @@ test.describe('bike-add-new', () => {
 // bike model tests
 test.describe('bike-model-list', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/pyorat/pyoravarasto/pyoramallit');
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/pyoramallit')).not.toBeVisible();
     });
 });
 test.describe('bike-model-modify-1', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/pyorat/pyoravarasto/muokkaapyoramalli/1');
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/muokkaapyoramalli/1')).not.toBeVisible();
     });
 });
 test.describe('bike-model-add-new', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/pyorat/pyoravarasto/lisaapyoramalli');
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/lisaapyoramalli')).not.toBeVisible();
     });
@@ -300,18 +345,21 @@ test.describe('bike-model-add-new', () => {
 // bike packet tests
 test.describe('bike-packet-list', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/pyorat/pyoravarasto/pyorapaketit');
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/pyorapaketit')).not.toBeVisible();
     });
 });
 test.describe('bike-packet-modify-1', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/pyorat/pyoravarasto/muokkaapaketti/1');
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/muokkaapaketti/1')).not.toBeVisible();
     });
 });
 test.describe('bike-packet-add-new', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/pyorat/pyoravarasto/lisaapaketti');
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/lisaapaketti')).not.toBeVisible();
     });
@@ -319,6 +367,7 @@ test.describe('bike-packet-add-new', () => {
 // bike orders tests
 test.describe('bike-rental-list', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/pyorat/pyoravarasto/pyoratilaukset');
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/pyoratilaukset')).not.toBeVisible();
     });
@@ -326,6 +375,7 @@ test.describe('bike-rental-list', () => {
 
 test.describe('bike-rental-detail', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/pyorat/pyoravarasto/pyoratilaukset/1');
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/pyoratilaukset/1')).not.toBeVisible();
     });
@@ -334,6 +384,7 @@ test.describe('bike-rental-detail', () => {
 // bike trailers tests
 test.describe('bike-trailers-list', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/pyorat/pyoravarasto/perakarryt');
         await expect(page.getByText('Virhe sijainnissa /pyorat/pyoravarasto/perakarryt')).not.toBeVisible();
     });
@@ -341,6 +392,7 @@ test.describe('bike-trailers-list', () => {
 
 test.describe('user', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/tili');
         await expect(page.getByText('Virhe sijainnissa /tili')).not.toBeVisible();
     });
@@ -348,6 +400,7 @@ test.describe('user', () => {
 
 test.describe('user active orders', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/tili/tilaukset');
         await expect(page.getByText('Virhe sijainnissa /tili/tilaukset')).not.toBeVisible();
     });
@@ -355,6 +408,7 @@ test.describe('user active orders', () => {
 
 test.describe('user order history', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/tili/tilaushistoria');
         await expect(page.getByText('Virhe sijainnissa /tili/tilaushistoria')).not.toBeVisible();
     });
@@ -362,6 +416,7 @@ test.describe('user order history', () => {
 
 test.describe('user search watch', () => {
     test('no errors', async ({ page }) => {
+        await setupMocks(page);
         await page.goto('/tili/hakuvahti');
         await expect(page.getByText('Virhe sijainnissa /tili/hakuvahti')).not.toBeVisible();
     });
