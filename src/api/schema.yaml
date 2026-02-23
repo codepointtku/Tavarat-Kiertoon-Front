@@ -3440,6 +3440,10 @@ paths:
             type: integer
         explode: true
         style: form
+      - in: query
+        name: name
+        schema:
+          type: string
       - name: ordering
         required: false
         in: query

@@ -202,7 +202,7 @@ const storageProductsLoader = async ({ request }) => {
             true,
             url.searchParams.get('viivakoodi'),
             url.searchParams.get('kategoria'),
-            null,
+            url.searchParams.get('tuotenimi'),
             url.searchParams.get('sivu'),
             url.searchParams.get('sivukoko'),
             undefined

@@ -39,9 +39,10 @@ import StyledTableRow from '../StyledTableRow';
 import type { storageProductsLoader } from '../../Router/loaders';
 import { type ProductStorageResponse } from '../../api';
 
-interface Search {
+/* interface Search {
     searchString: string | null;
-}
+    nameSearchString: string | null;
+} */
 
 export type StorageProductsLoaderType = Awaited<ReturnType<typeof storageProductsLoader>>;
 
@@ -53,24 +54,54 @@ function StorageProductsTable() {
     const [isOpen, setIsOpen] = useState<number>();
     const [searchParams, setSearchParams] = useSearchParams();
     const { products } = useLoaderData() as StorageProductsLoaderType;
-    const { register, handleSubmit } = useForm({
-        defaultValues: { searchString: searchParams.get('viivakoodi') },
+    const { register /* handleSubmit */ } = useForm({
+        defaultValues: {
+            viivakoodi: searchParams.get('viivakoodi'),
+            tuotenimi: searchParams.get('tuotenimi'),
+        },
     });
-    const handleBarcodeSearch = (formData: Search) => {
+    const [showSearch, setShowSearch] = useState('viivakoodi');
+    /*     const handleBarcodeSearch = (formData: Search) => {
         setSearchParams((prevParams) => {
             return createSearchParams({
                 ...Object.fromEntries(prevParams.entries()),
-                viivakoodi: formData.searchString as string,
+                viivakoodi: formData.viivakoodi as string,
+                tuotenimi: formData.tuotenimi as string,
                 sivu: '1',
                 // TODO: show also unavailable products in storage
                 // all: true,
             });
         });
+    }; */
+    const handleSearchParams = (search: string) => {
+        if (search === 'viivakoodi') {
+            setSearchParams((prevParams) => {
+                return createSearchParams({
+                    ...Object.fromEntries(prevParams.entries()),
+                    viivakoodi: search,
+                    sivu: '1',
+                });
+            });
+        }
+        if (search === 'tuotenimi') {
+            setSearchParams((prevParams) => {
+                return createSearchParams({
+                    ...Object.fromEntries(prevParams.entries()),
+                    tuotenimi: search,
+                    sivu: '1',
+                });
+            });
+        }
     };
     let spotId = useParams();
     useEffect(() => {
         setIsOpen(Number(spotId.id));
     }, [spotId]);
+
+    const ShowSearchField = (field: string) => {
+        setShowSearch(field);
+    };
+
     return (
         <>
             <TableContainer component={Box} sx={{ mt: '3rem' }}>
@@ -82,33 +113,72 @@ function StorageProductsTable() {
                             {/* <StyledTableCell></StyledTableCell> */}
                             <StyledTableCell>Viivakoodi</StyledTableCell>
                             <StyledTableCell>
-                                {/* todo: searchbar peruskomponentti tuotteiden hakua varten */}
-                                <Form onSubmit={handleSubmit(handleBarcodeSearch)}>
-                                    {/* todo: näytä vain hakuikoni kunnes painetaan, jolloin tekstikenttä laajenee/aktivoituu? */}
-                                    <TextField
-                                        type="search"
-                                        {...register('searchString')}
-                                        placeholder="Viivakoodihaku"
-                                        sx={{ backgroundColor: 'white' }}
-                                        size="medium"
+                                <TableSortLabel IconComponent={IconButton}>
+                                    {/* todo: searchbar peruskomponentti tuotteiden hakua varten */}
+                                    <Form
+                                        onSubmit={() => handleSearchParams('viivakoodi')}
+                                        hidden={showSearch !== 'viivakoodi'}
                                     >
-                                        <IconButton children={<ClearIcon />} />
-                                    </TextField>
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        color="primary"
-                                        size="large"
-                                        sx={{ marginLeft: 1, padding: 1.5 }}
-                                    >
-                                        Hae
-                                    </Button>
-                                </Form>
+                                        {/* todo: näytä vain hakuikoni kunnes painetaan, jolloin tekstikenttä laajenee/aktivoituu? */}
+                                        <TextField
+                                            type="search"
+                                            {...register('viivakoodi')}
+                                            placeholder="Viivakoodihaku"
+                                            sx={{ backgroundColor: 'white' }}
+                                            size="medium"
+                                        >
+                                            <IconButton children={<ClearIcon />} />
+                                        </TextField>
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            color="primary"
+                                            size="large"
+                                            sx={{ marginLeft: 1, padding: 1.5 }}
+                                        >
+                                            Hae
+                                        </Button>
+                                    </Form>
+                                    <SearchIcon
+                                        onClick={() => {
+                                            ShowSearchField('viivakoodi');
+                                        }}
+                                    />
+                                </TableSortLabel>
                             </StyledTableCell>
                             <StyledTableCell align="right">
                                 Tuotenimi {/* Testing icon for sorting: */}
                                 <TableSortLabel IconComponent={IconButton}>
-                                    <SearchIcon></SearchIcon>
+                                    <SearchIcon
+                                        onClick={() => {
+                                            ShowSearchField('tuotenimi');
+                                        }}
+                                    />
+                                    {/* todo: searchbar peruskomponentti tuotteiden hakua varten */}
+                                    <Form
+                                        onSubmit={() => handleSearchParams('tuotenimi')}
+                                        hidden={showSearch !== 'tuotenimi'}
+                                    >
+                                        {/* todo: näytä vain hakuikoni kunnes painetaan, jolloin tekstikenttä laajenee/aktivoituu? */}
+                                        <TextField
+                                            type="search"
+                                            {...register('tuotenimi')}
+                                            placeholder="Tuotenimihaku"
+                                            sx={{ backgroundColor: 'white' }}
+                                            size="medium"
+                                        >
+                                            <IconButton children={<ClearIcon />} />
+                                        </TextField>
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            color="primary"
+                                            size="large"
+                                            sx={{ marginLeft: 1, padding: 1.5 }}
+                                        >
+                                            Hae
+                                        </Button>
+                                    </Form>
                                 </TableSortLabel>
                             </StyledTableCell>
                             {/* // TODO change description after filtering added? */}
