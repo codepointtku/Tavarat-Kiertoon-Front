@@ -335,9 +335,14 @@ const gigaLoader = async () => {
  * @param {*} setAuth
  * @returns
  */
-const bikesDefaultLoader = async (auth, setAuth) => {
+const bikesDefaultLoader = async (request, auth, setAuth) => {
     //const { data } = await bikesApi.bikesList();
-    const [{ data: loaderData }, { data: colors }] = await Promise.all([bikesApi.bikesList(), colorsApi.colorsList()]);
+
+    const url = new URL(request.url);
+    const [{ data: loaderData }, { data: colors }] = await Promise.all([
+        bikesApi.bikesList(url.searchParams.get('end_date'), url.searchParams.get('start_date')),
+        colorsApi.colorsList(),
+    ]);
     return { loaderData, colors };
 };
 

@@ -93,10 +93,31 @@ export default function BikesPage() {
     const [CalendarError, setCalendarError] = useState(null);
 
     const { loaderData, colors } = useLoaderData();
+    const [searchParams, setSearchParams] = useSearchParams();
     const minDate = parseISO(loaderData.date_info.available_from);
     const maxDate = parseISO(loaderData.date_info.available_to);
     const trailers = [...loaderData.trailers];
     const trailerAvailability = trailerDates(getValues('startDate'), getValues('endDate'), trailers[0]);
+
+    const handleDateChange = (dateValue, isStartDate) => {
+        setSearchParams((prevParams) => {
+            const params = new URLSearchParams(prevParams);
+            if (isStartDate) {
+                if (dateValue) {
+                    params.set('start_date', format(dateValue, 'dd.MM.yyyy'));
+                } else {
+                    params.delete('start_date');
+                }
+            } else {
+                if (dateValue) {
+                    params.set('end_date', format(dateValue, 'dd.MM.yyyy'));
+                } else {
+                    params.delete('end_date');
+                }
+            }
+            return params;
+        });
+    };
     useEffect(() => {
         if (trailerAvailability === 0) {
             setTrailerValue(0);
@@ -119,8 +140,6 @@ export default function BikesPage() {
         })),
         ...loaderData.bikes,
     ];
-    // ].sort((a, b) => b.max_available - a.max_available);
-    const [searchParams, setSearchParams] = useSearchParams();
     const filteredBikes = searchParams.get('filters')
         ? bikes.filter((bike) => {
               if (
@@ -272,7 +291,10 @@ export default function BikesPage() {
                                                             rules={{ required: true }}
                                                             render={({ field: { onChange, onBlur, value } }) => (
                                                                 <BikeCalendar
-                                                                    onChange={onChange}
+                                                                    onChange={(date) => {
+                                                                        onChange(date);
+                                                                        handleDateChange(date, true);
+                                                                    }}
                                                                     onBlur={onBlur}
                                                                     startDate={value}
                                                                     endDate={watch('endDate')}
@@ -288,7 +310,10 @@ export default function BikesPage() {
                                                             rules={{ required: true }}
                                                             render={({ field: { onChange, onBlur, value } }) => (
                                                                 <BikeCalendar
-                                                                    onChange={onChange}
+                                                                    onChange={(date) => {
+                                                                        onChange(date);
+                                                                        handleDateChange(date, false);
+                                                                    }}
                                                                     onBlur={onBlur}
                                                                     startDate={watch('startDate')}
                                                                     endDate={value}
@@ -477,7 +502,10 @@ export default function BikesPage() {
                                                                 rules={{ required: true }}
                                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                                     <BikeCalendar
-                                                                        onChange={onChange}
+                                                                        onChange={(date) => {
+                                                                            onChange(date);
+                                                                            handleDateChange(date, true);
+                                                                        }}
                                                                         onBlur={onBlur}
                                                                         startDate={value}
                                                                         endDate={watch('endDate')}
@@ -493,7 +521,10 @@ export default function BikesPage() {
                                                                 rules={{ required: true }}
                                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                                     <BikeCalendar
-                                                                        onChange={onChange}
+                                                                        onChange={(date) => {
+                                                                            onChange(date);
+                                                                            handleDateChange(date, false);
+                                                                        }}
                                                                         onBlur={onBlur}
                                                                         startDate={watch('startDate')}
                                                                         endDate={value}

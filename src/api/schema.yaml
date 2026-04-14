@@ -6,6 +6,17 @@ paths:
   /bikes/:
     get:
       operationId: bikes_list
+      parameters:
+      - in: query
+        name: end_date
+        schema:
+          type: string
+        description: 'Filter: end date (DD.MM.YYYY).'
+      - in: query
+        name: start_date
+        schema:
+          type: string
+        description: 'Filter: start date (DD.MM.YYYY).'
       tags:
       - bikes
       security:
