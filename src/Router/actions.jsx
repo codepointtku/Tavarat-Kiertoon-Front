@@ -164,7 +164,7 @@ const contactAction = async ({ request }) => {
  */
 const orderEditAction = async ({ request, params }) => {
     const formData = await request.formData();
-    console.log(formData.get('orderId'));
+
     const submission = {
         id: formData.get('orderId'),
         recipient: formData.get('recipient'),
@@ -301,10 +301,6 @@ const addProductAction = async (auth, setAuth, request) => {
 const editProductAction = async (auth, setAuth, request, params) => {
     const formData = await request.formData();
     // const id = Number(formData.get(formData.has('id') ? 'id' : 'index'));
-    console.log('formData actionissa :', formData);
-    console.log(formData.getAll('old_pictures[]'));
-    console.log('get colors', formData.get('colors[]'));
-    console.log('getAll colors', formData.getAll('colors[]'));
 
     const formDataWithProductItem = {
         barcode: formData.get('barcode'),
@@ -323,12 +319,10 @@ const editProductAction = async (auth, setAuth, request, params) => {
         old_pictures: formData.getAll('old_pictures[]'),
         new_pictures: formData.getAll('pictures[]'),
     };
-    console.log(formDataWithProductItem);
 
     const response = await productsApi.productsUpdate(params.id, formDataWithProductItem, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
-    console.log('response actionissa :', response);
     if (response.status === 200) {
         return { type: 'editProduct', status: true };
     }
@@ -1095,8 +1089,6 @@ const deletePacketAction = async (params) => {
  * Delete existing bike trailer or create a new bike trailer
  */
 const deleteCreateBikeTrailerAction = async ({ request }) => {
-    console.log(request);
-
     const formData = await request.formData();
     if (request.method === 'DELETE') {
         const response = await bikesApi.bikesTrailersDestroy(formData.get('id'));
@@ -1404,7 +1396,6 @@ const pauseStoreAction = async ({ request, params }) => {
             const response = pausestoreApi.pausestoreUpdate(id, data);
 
             if (response.status === 200) {
-                console.log('abc2', response);
                 return response;
             }
         } else if (request.method === 'DELETE') {

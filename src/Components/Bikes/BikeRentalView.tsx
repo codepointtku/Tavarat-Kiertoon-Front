@@ -48,7 +48,6 @@ export default function BikeRentalView() {
     const submit = useSubmit();
     const onSubmit = (data: any) => {
         data['bikeStock'] = JSON.stringify(rentalBikeStock);
-        console.log(rentalBikeStock.length);
 
         if (rentalBikeStock.length == 0) setRenderDeleteBikeRentalModal(true);
         //submit(null, { method: 'delete', action: `/pyorat/pyoravarasto/pyoratilaukset/${rental.id}/poista` });
@@ -113,23 +112,12 @@ export default function BikeRentalView() {
     const modifyBikeStockAmounts = (index: number | undefined, min: number, max: number, id: number) => {
         const regex = /^[0-9\b]+$/;
         const newValue = [...rentalBikeStock];
-        console.log('jippiiiii', index);
-        console.log(rental?.bike_stock.filter((bikeItem) => bikeItem.bike.id === index));
-
-        console.log('jepjep');
         rental?.bike_stock
             .filter((bikeItem) => bikeItem.bike.id === id)
             .some((item) => {
-                console.log('haaaaaa', newValue, item.id);
                 if (newValue.indexOf(item.id) < 0) {
-                    console.log('waaaa', newValue, item.id);
                     newValue.push(item.id);
                     for (const i in newBikeModels2) {
-                        console.log(newBikeModels2[i], item.id);
-                        console.log(
-                            'daaa',
-                            newBikeModels2[i].filter((bikeItem) => bikeItem.id === item.id)
-                        );
                         newBikeModels[id].push(newBikeModels2[id].filter((bikeItem) => bikeItem.id === item.id)[0]);
                         return true;
                     }
@@ -137,19 +125,13 @@ export default function BikeRentalView() {
                 }
             });
 
-        console.log(newValue);
-        console.log('uusi', newBikeModels);
-
         setNewBikeModels(newBikeModels);
         setRentalBikeStock(newValue);
     };
 
     const modifyBikeStockAmounts2 = (index: number, min: number, max: number) => {
         if (newBikeModels[index].length > 0) {
-            console.log(newBikeModels[index]);
             const regex = /^[0-9\b]+$/;
-            console.log(newBikeModels2);
-            console.log(newBikeModels);
             let newValue = [...rentalBikeStock];
             const ID = newBikeModels[index].pop()?.id;
 

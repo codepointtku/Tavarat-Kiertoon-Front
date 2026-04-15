@@ -28,7 +28,6 @@ export const bikeGroupNames = {
 export default function BikeUsers() {
     const { count, results: userArray } = useLoaderData();
     const [searchParams, setSearchParams] = useSearchParams();
-    console.log(userArray);
     const { register, handleSubmit } = useForm({
         defaultValues: { searchString: searchParams.get('suodata') },
     });

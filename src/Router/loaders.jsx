@@ -179,7 +179,6 @@ const orderEditLoader = async ({ params }) => {
  */
 const OrderStatsLoader = async () => {
     const { data } = await ordersApi.ordersStatRetrieve();
-    console.log(data);
     return data;
 };
 

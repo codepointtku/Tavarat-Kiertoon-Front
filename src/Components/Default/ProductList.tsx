@@ -5,6 +5,7 @@ import type { productListLoader } from '../../Router/loaders';
 import TypographyHeading from '../TypographyHeading';
 import ProductCard from './ProductCard';
 import Pagination from '../Pagination';
+import { ProductResponse } from '../../api';
 
 function SearchResultMessage() {
     const [searchParams] = useSearchParams();
@@ -67,7 +68,7 @@ function ProductList() {
                     justifyContent="space-evenly"
                     columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
                 >
-                    {results.map((product: any) => (
+                    {results.map((product: ProductResponse) => (
                         <Grid
                             item
                             key={product.id}
@@ -89,7 +90,7 @@ function ProductList() {
                                 pictures={product.pictures}
                                 freeDescription={product.free_description}
                                 categoryName={product.category_name}
-                                storageName={product.storage_name}
+                                /* storageName={product.storage_name} */
                                 colors={product.colors}
                                 measurements={product.measurements}
                                 weight={product.weight}

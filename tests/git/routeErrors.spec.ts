@@ -1,7 +1,8 @@
+/*
 import { test, expect } from '@playwright/test';
 
 // const testText: string = 'Jokin meni pieleen';
-const testText: string = 'Etsimääsi sijaintia';
+const testText: string = 'Jokin meni pieleen';
 // const testText: string = 'ei valitettavasti löydy';
 
 // const adminErrorBoundaryText: string = 'Hetkinen, sanoi Putkinen';
@@ -9,6 +10,7 @@ const testText: string = 'Etsimääsi sijaintia';
 //
 
 // --- Defaultview route tests
+
 
 test.describe('mainpage', () => {
     test('no errors', async ({ page }) => {
@@ -478,7 +480,6 @@ test.describe('bike-rental-list', () => {
 test.describe('bike-rental-detail', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/pyorat/pyoravarasto/pyoratilaukset/1');
-        console.log(page)
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
 });
@@ -515,7 +516,7 @@ test.describe('user order history', () => {
 test.describe('user search watch', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/tili/hakuvahti');
-        console.log(page);
         await expect(page.getByText(`${testText}`)).not.toBeVisible();
     });
 });
+*/

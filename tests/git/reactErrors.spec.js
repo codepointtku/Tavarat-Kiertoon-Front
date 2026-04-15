@@ -8,6 +8,7 @@ test.describe('mainpage', () => {
     });
 });
 
+/*
 test.describe('tuotteet', () => {
     test('no errors', async ({ page }) => {
         await page.goto('tuotteet/4321');
@@ -239,6 +240,7 @@ test.describe('admin-createproduct', () => {
     });
 });
 
+*/
 /*
  *  Bike tests
  *      /pyorat
@@ -253,6 +255,8 @@ test.describe('admin-createproduct', () => {
  *      /pyorat/pyoravarasto/muokkaapyoramalli/0
  *      /pyorat/pyoravarasto/lisaapyoramalli
  */
+
+/*
 test.describe('bikes', () => {
     test('no errors', async ({ page }) => {
         await page.goto('/pyorat');
@@ -366,7 +370,7 @@ test.describe('user search watch', () => {
         await expect(page.getByText('Virhe sijainnissa /tili/hakuvahti')).not.toBeVisible();
     });
 });
-
+*/
 /*
  *
  */

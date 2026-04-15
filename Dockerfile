@@ -1,4 +1,4 @@
-FROM node:16.18.0-alpine3.16
+FROM node:24.13.0-alpine3.23
 
 # To run the front&backends at the same time with docker:
 # Install OpenJDK-17 (uncomment line 8) and

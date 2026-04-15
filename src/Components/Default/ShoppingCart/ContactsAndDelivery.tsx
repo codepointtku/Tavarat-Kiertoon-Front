@@ -216,7 +216,6 @@ function ContactsAndDelivery() {
 
     const onSubmit = (data: CartFormData) => {
         if (fetchDate.setHours(0, 0, 0, 0) === currentDate.setHours(0, 0, 0, 0) && selectedDeliveryMethod === 'false') {
-            console.log('mikäs tää on O_o');
             return null;
         }
 

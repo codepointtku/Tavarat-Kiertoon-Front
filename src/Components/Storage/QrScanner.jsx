@@ -6,7 +6,6 @@ function QrScanner() {
     const location = useLocation();
 
     const onNewScanResult = (decodedText, decodedResult) => {
-        console.log(decodedResult, decodedText);
         navigate(generatePath(location.state.returnpath), {
             replace: true,
             state: { ...location.state, barcode: decodedText },

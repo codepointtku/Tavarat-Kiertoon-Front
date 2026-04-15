@@ -25,7 +25,6 @@ function ProductsAddForm() {
     const onSubmit = async () => {
         const { id } = product as ProductStorageResponse;
         const addamount = getValues('amount');
-        console.log(addamount);
         productsApi.productsAddCreate(id, { amount: addamount });
         reset();
         navigate(`/varasto/tuotteet/${id}/toiminnot`, { replace: true });
