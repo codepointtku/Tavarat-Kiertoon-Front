@@ -6,6 +6,25 @@ paths:
   /bikes/:
     get:
       operationId: bikes_list
+      tags:
+      - bikes
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - jwtAuth: []
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MainBikeListSchema'
+          description: ''
+  /bikes/availability/:
+    get:
+      operationId: bikes_availability_list
       parameters:
       - in: query
         name: end_date

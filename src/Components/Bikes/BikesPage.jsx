@@ -29,6 +29,7 @@ import BikeCard from './BikeCard';
 import BikeConfirmation from './BikeConfirmation';
 import BikeThankYouModal from './BikeThankYouModal';
 import isValidBikeAmount, { bikePackageUnavailable } from './isValidBikeAmount';
+import { bikesApi } from '../../Api';
 
 function trailerDates(startDate, endDate, trailer) {
     const start = new Date(startDate);
@@ -99,31 +100,12 @@ export default function BikesPage() {
     const trailers = [...loaderData.trailers];
     const trailerAvailability = trailerDates(getValues('startDate'), getValues('endDate'), trailers[0]);
 
-    const handleDateChange = (dateValue, isStartDate) => {
-        setSearchParams((prevParams) => {
-            const params = new URLSearchParams(prevParams);
-            if (isStartDate) {
-                if (dateValue) {
-                    params.set('start_date', format(dateValue, 'dd.MM.yyyy'));
-                } else {
-                    params.delete('start_date');
-                }
-            } else {
-                if (dateValue) {
-                    params.set('end_date', format(dateValue, 'dd.MM.yyyy'));
-                } else {
-                    params.delete('end_date');
-                }
-            }
-            return params;
-        });
-    };
     useEffect(() => {
         if (trailerAvailability === 0) {
             setTrailerValue(0);
         }
     }, [trailerAvailability]);
-    const bikes = [
+    let bikes = [
         // The bike package id and bike id would have possibility for overlap since they're both just incrementing from 0
         ...loaderData.packages.map((bikePackage) => ({
             ...bikePackage,
@@ -138,8 +120,18 @@ export default function BikesPage() {
                 watch('endDate')
             ),
         })),
-        ...loaderData.bikes,
+        //...loaderData.bikes,
     ];
+    useEffect(() => {
+        if (watch('startDate') && watch('endDate')) {
+            bikesApi
+                .bikesAvailabilityList(format(watch('endDate'), 'dd.MM.yyyy'), format(watch('startDate'), 'dd.MM.yyyy'))
+                .then(({ data }) => {
+                    bikes = data.bikes;
+                });
+        }
+    }, [watch('startDate'), watch('endDate')]);
+
     const filteredBikes = searchParams.get('filters')
         ? bikes.filter((bike) => {
               if (
@@ -162,10 +154,14 @@ export default function BikesPage() {
     const brandOptionsSet = new Set();
     const typeOptionsSet = new Set();
 
-    bikes.forEach((bike) => {
-        if (bike.size !== null) sizeOptionsSet.add(bike.size);
-        if (bike.brand !== null) brandOptionsSet.add(bike.brand);
-        if (bike.type !== null) typeOptionsSet.add(bike.type);
+    loaderData.bike_types.forEach((type) => {
+        typeOptionsSet.add(type.name);
+    });
+    loaderData.bike_sizes.forEach((size) => {
+        sizeOptionsSet.add(size.name);
+    });
+    loaderData.bike_brands.forEach((brand) => {
+        brandOptionsSet.add(brand.name);
     });
     colors.forEach((color) => {
         colorOptionsSet.add(color.name);
@@ -246,7 +242,6 @@ export default function BikesPage() {
             method: 'post',
             action: '/pyorat?index',
         });
-
         // Show Thank You modal visible
         setIsThankYouModalVisible(true);
     };
@@ -293,7 +288,6 @@ export default function BikesPage() {
                                                                 <BikeCalendar
                                                                     onChange={(date) => {
                                                                         onChange(date);
-                                                                        handleDateChange(date, true);
                                                                     }}
                                                                     onBlur={onBlur}
                                                                     startDate={value}
@@ -312,7 +306,6 @@ export default function BikesPage() {
                                                                 <BikeCalendar
                                                                     onChange={(date) => {
                                                                         onChange(date);
-                                                                        handleDateChange(date, false);
                                                                     }}
                                                                     onBlur={onBlur}
                                                                     startDate={watch('startDate')}
@@ -504,7 +497,6 @@ export default function BikesPage() {
                                                                     <BikeCalendar
                                                                         onChange={(date) => {
                                                                             onChange(date);
-                                                                            handleDateChange(date, true);
                                                                         }}
                                                                         onBlur={onBlur}
                                                                         startDate={value}
@@ -523,7 +515,6 @@ export default function BikesPage() {
                                                                     <BikeCalendar
                                                                         onChange={(date) => {
                                                                             onChange(date);
-                                                                            handleDateChange(date, false);
                                                                         }}
                                                                         onBlur={onBlur}
                                                                         startDate={watch('startDate')}
