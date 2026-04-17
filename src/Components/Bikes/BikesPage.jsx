@@ -29,7 +29,7 @@ import BikeCard from './BikeCard';
 import BikeConfirmation from './BikeConfirmation';
 import BikeThankYouModal from './BikeThankYouModal';
 import isValidBikeAmount, { bikePackageUnavailable } from './isValidBikeAmount';
-import { bikesApi } from '../../Api';
+import { bikesApi } from '../../api';
 
 function trailerDates(startDate, endDate, trailer) {
     const start = new Date(startDate);
@@ -89,6 +89,7 @@ export default function BikesPage() {
     const [isIntroVisible, setIsIntroVisible] = useState(true);
     const [isThankYouModalVisible, setIsThankYouModalVisible] = useState(false);
     const [trailerValue, setTrailerValue] = useState(0);
+    const [bikes, setBikes] = useState([]);
     const containerRef = useRef(null);
 
     const [CalendarError, setCalendarError] = useState(null);
@@ -105,29 +106,13 @@ export default function BikesPage() {
             setTrailerValue(0);
         }
     }, [trailerAvailability]);
-    let bikes = [
-        // The bike package id and bike id would have possibility for overlap since they're both just incrementing from 0
-        ...loaderData.packages.map((bikePackage) => ({
-            ...bikePackage,
-            id: `package-${bikePackage.id}`,
-            unavailable: bikePackageUnavailable(
-                bikePackage,
-                minDate,
-                maxDate,
-                loaderData.bikes,
-                watch('selectedBikes'),
-                watch('startDate'),
-                watch('endDate')
-            ),
-        })),
-        //...loaderData.bikes,
-    ];
+
     useEffect(() => {
         if (watch('startDate') && watch('endDate')) {
             bikesApi
                 .bikesAvailabilityList(format(watch('endDate'), 'dd.MM.yyyy'), format(watch('startDate'), 'dd.MM.yyyy'))
                 .then(({ data }) => {
-                    bikes = data.bikes;
+                    setBikes(data.bikes);
                 });
         }
     }, [watch('startDate'), watch('endDate')]);
