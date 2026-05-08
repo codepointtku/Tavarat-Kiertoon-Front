@@ -18,7 +18,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { parseISO, setHours, setMinutes } from 'date-fns';
+import { parseISO, setHours, setMinutes, format } from 'date-fns';
 import { useRef, useState, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Form, useLoaderData, useSearchParams, useSubmit } from 'react-router-dom';
@@ -35,11 +35,9 @@ function trailerDates(startDate, endDate, trailer) {
     const end = new Date(endDate);
     const date = new Date(start.getTime());
     const dates = [];
+    // Use a fixed, predictable format for keys so lookups match the trailer.unavailable keys
     while (date <= end) {
-        const year = date.getFullYear();
-        const day = date.getDate();
-        const month = date.getMonth() + 1; // add 1 since getMonth() returns 0-indexed months
-        dates.push(date.toLocaleDateString('FI-fi'));
+        dates.push(format(date, 'dd.MM.yyyy'));
         date.setDate(date.getDate() + 1);
     }
     let availableTrailers = 0;
@@ -51,7 +49,7 @@ function trailerDates(startDate, endDate, trailer) {
     } else {
         if (trailer?.unavailable) {
             dates.forEach((iterableDate) => {
-                if (iterableDate in trailer?.unavailable) {
+                if (trailer?.unavailable.hasOwnProperty(iterableDate)) {
                     if (trailer?.unavailable[iterableDate] < trailer?.max_available) {
                         availableTrailers = trailer?.id;
                     } else {
@@ -220,7 +218,6 @@ export default function BikesPage() {
             setHours(data.endDate, Math.floor(data.endTime)),
             (data.endTime - Math.floor(data.endTime)) * 60
         ).toISOString();
-        console.log(data);
         data['extraInfo'] = data['deliveryWorkplace']
             ? 'TOIMIPAIKKA: ' + data['deliveryWorkplace'] + '\n' + data['extraInfo']
             : data['extraInfo'];
@@ -557,7 +554,6 @@ export default function BikesPage() {
                                                                 </TransitionGroup>
                                                             </List>
                                                         </Box>
-                                                        {storageTypeForm}
                                                         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
                                                             <Button
                                                                 color="success"

@@ -88,7 +88,7 @@ function AddToCartButton({ size, id, groupId /*, count */ }: Props) {
         ref.current = 0;
     }, [product?.available]);
 
-    let paussi = pauseShopping.length > 0 ? true : false;
+    const paussi = pauseShopping.length > 0 ? true : false;
     if (paussi) {
         return (
             <Tooltip

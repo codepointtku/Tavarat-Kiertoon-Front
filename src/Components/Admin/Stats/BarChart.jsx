@@ -42,7 +42,7 @@ const labels = [
 
 function BarChart() {
     const statdata = useLoaderData();
-    console.log(statdata);
+
     const data = {
         labels,
         datasets: [],
@@ -50,7 +50,7 @@ function BarChart() {
 
     const first = Object.keys(statdata).length - 2;
     const last = Object.keys(statdata).length;
-    console.log('eeee', first, last);
+
     Object.entries(statdata)
         .slice(first, last)
         .forEach(([year, monthly_value], index) => {
@@ -58,7 +58,6 @@ function BarChart() {
             Object.entries(monthly_value).forEach(([month, value]) => {
                 data_month[month - 1] = value;
             });
-            console.log(Math.floor(Math.random() * 256));
             data.datasets.push({
                 label: year,
                 data: data_month,
@@ -74,7 +73,6 @@ function BarChart() {
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
             } */
         });
-    console.log(data);
     return (
         <Container maxWidth="lg">
             <Bar options={options} data={data} />

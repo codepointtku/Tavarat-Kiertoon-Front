@@ -20,7 +20,6 @@ function ProductsRetireForm() {
     const submit = useSubmit();
 
     const onSubmit = (formData: FieldValues) => {
-        console.log('submitting');
         submit(formData, { method: 'post' });
         reset();
     };

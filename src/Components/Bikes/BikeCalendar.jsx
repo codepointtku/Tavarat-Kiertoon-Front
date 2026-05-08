@@ -12,11 +12,11 @@ import PropTypes from 'prop-types';
 export default function BikeCalendar({
     onChange,
     onBlur,
-    startDate,
-    endDate,
+    startDate = null,
+    endDate = null,
     minDate,
     maxDate,
-    isStartDate,
+    isStartDate = true,
     setCalendarError,
 }) {
     const hd = new Holidays('FI');
@@ -92,10 +92,4 @@ BikeCalendar.propTypes = {
     endDate: PropTypes.instanceOf(Date),
     onChange: PropTypes.func.isRequired,
     isStartDate: PropTypes.bool,
-};
-
-BikeCalendar.defaultProps = {
-    startDate: null,
-    endDate: null,
-    isStartDate: true,
 };

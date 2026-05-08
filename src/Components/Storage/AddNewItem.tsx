@@ -126,7 +126,6 @@ function AddNewItem() {
     const onSubmit = async (data: any) => {
         const formData = new FormData();
 
-        console.log(data);
         Object.entries(data).forEach(([key, value]) => {
             if (key !== 'pictures' && key !== 'colors') formData.append(key, data[key]);
         });

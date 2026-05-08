@@ -79,7 +79,6 @@ function AreaChart() {
             Object.entries(monthly_value).forEach(([month, value]) => {
                 data_month[month - 1] = value;
             });
-            console.log(Math.floor(Math.random() * 256));
             data.datasets.push({
                 label: year,
                 data: data_month,

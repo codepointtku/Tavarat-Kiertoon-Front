@@ -105,7 +105,6 @@ function Confirmation() {
             navigate('/', { state: { ...responseStatus } });
         }
     }, [responseStatus]);
-    console.log(responseStatus);
     return (
         <>
             {products.length === 0 && <CartEmptyWarningModal />}

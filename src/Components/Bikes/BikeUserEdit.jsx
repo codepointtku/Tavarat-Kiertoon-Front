@@ -9,7 +9,6 @@ import AlertBox from '../AlertBox';
 export default function () {
     const { bikeUserInfo, userAuthGroups } = useLoaderData();
     const actionData = useActionData();
-    console.log(actionData);
     const {
         register,
         handleSubmit: createHandleSubmit,
