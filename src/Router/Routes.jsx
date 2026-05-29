@@ -902,7 +902,7 @@ function Routes() {
                                 {
                                     index: true,
                                     element: <BikesPage />,
-                                    loader: async () => bikesDefaultLoader(auth, setAuth),
+                                    loader: async ({ request }) => bikesDefaultLoader(request, auth, setAuth),
                                     action: async ({ request }) => bikeOrderAction(auth, setAuth, request),
                                 },
                                 {

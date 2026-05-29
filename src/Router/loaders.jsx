@@ -335,9 +335,24 @@ const gigaLoader = async () => {
  * @param {*} setAuth
  * @returns
  */
-const bikesDefaultLoader = async (auth, setAuth) => {
+const bikesDefaultLoader = async (request, auth, setAuth) => {
     //const { data } = await bikesApi.bikesList();
-    const [{ data: loaderData }, { data: colors }] = await Promise.all([bikesApi.bikesList(), colorsApi.colorsList()]);
+
+    const [{ data: loaderData }, { data: colors }] = await Promise.all([
+        bikesApi.bikesList('21.04.2026', '20.04.2026'),
+        colorsApi.colorsList(),
+    ]);
+    return { loaderData, colors };
+};
+
+const bikesAvailableLoader = async (request, auth, setAuth) => {
+    //const { data } = await bikesApi.bikesList();
+
+    const url = new URL(request.url);
+    const [{ data: loaderData }, { data: colors }] = await Promise.all([
+        bikesApi.bikesAvailabilityList(url.searchParams.get('end_date'), url.searchParams.get('start_date')),
+        colorsApi.colorsList(),
+    ]);
     return { loaderData, colors };
 };
 
@@ -714,4 +729,5 @@ export {
     OrderStatsLoader,
     pauseStoreLoader,
     pauseStoreTodayLoader,
+    bikesAvailableLoader,
 };
