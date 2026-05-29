@@ -31,11 +31,13 @@ paths:
         schema:
           type: string
         description: 'Filter: end date (DD.MM.YYYY).'
+        required: true
       - in: query
         name: start_date
         schema:
           type: string
         description: 'Filter: start date (DD.MM.YYYY).'
+        required: true
       tags:
       - bikes
       security:
