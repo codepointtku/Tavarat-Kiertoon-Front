@@ -5,7 +5,7 @@ import type { productListLoader } from '../../Router/loaders';
 import TypographyHeading from '../TypographyHeading';
 import ProductCard from './ProductCard';
 import Pagination from '../Pagination';
-import { ProductResponse } from '../../api';
+import { type ProductResponse } from '../../api';
 
 function SearchResultMessage() {
     const [searchParams] = useSearchParams();
