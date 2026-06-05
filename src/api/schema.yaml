@@ -22,6 +22,38 @@ paths:
                 items:
                   $ref: '#/components/schemas/MainBikeListSchema'
           description: ''
+  /bikes/availability/:
+    get:
+      operationId: bikes_availability_list
+      parameters:
+      - in: query
+        name: end_date
+        schema:
+          type: string
+        description: 'Filter: end date (DD.MM.YYYY).'
+        required: true
+      - in: query
+        name: start_date
+        schema:
+          type: string
+        description: 'Filter: start date (DD.MM.YYYY).'
+        required: true
+      tags:
+      - bikes
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - jwtAuth: []
+      - CustomJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MainBikeListSchema'
+          description: ''
   /bikes/brand/:
     get:
       operationId: bikes_brand_list
