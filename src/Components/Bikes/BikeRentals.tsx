@@ -83,12 +83,42 @@ export default function BikeRentals() {
             target: { value },
         } = event;
         setCurrentStatusChoices(typeof value === 'string' ? value.split(',') : value);
+        console.log(searchParams.toString());
+        setSearchParams((prevParams) => {
+            prevParams.set('sivu', '1');
+            return createSearchParams({
+                ...Object.fromEntries(prevParams.entries()),
+            });
+        });
+        console.log(searchParams.toString());
     };
     const handlefilteringBikeChange = (event: SelectChangeEvent<typeof currentBikeChoice>) => {
         const {
             target: { value },
         } = event;
         setCurrentBikeChoice(value === '' ? '' : Number(value));
+        console.log(searchParams.toString());
+        setSearchParams((prevParams) => {
+            prevParams.set('sivu', '1');
+            return createSearchParams({
+                ...Object.fromEntries(prevParams.entries()),
+            });
+        });
+        console.log(searchParams.toString());
+    };
+    const handlefilteringDateChange = (newDate: Date | null, type: 'start' | 'end') => {
+        const dateString = newDate ? new Date(newDate).toISOString().split('T')[0] : '';
+        if (type === 'start') {
+            setCurrentStartDate(dateString);
+        } else {
+            setCurrentEndDate(dateString);
+        }
+        setSearchParams((prevParams) => {
+            prevParams.set('sivu', '1');
+            return createSearchParams({
+                ...Object.fromEntries(prevParams.entries()),
+            });
+        });
     };
     const statusTranslate = (value: string) => {
         if (value === 'WAITING') {
@@ -139,7 +169,7 @@ export default function BikeRentals() {
                                 value={currentStartDate == '' ? null : new Date(currentStartDate)}
                                 onChange={(newValue) => {}}
                                 onAccept={(newDate) => {
-                                    setCurrentStartDate(new Date(newDate || '').toISOString().split('T')[0]);
+                                    handlefilteringDateChange(newDate, 'start');
                                 }}
                                 renderInput={(params) => (
                                     <Box sx={{ position: 'relative', display: 'inline-block', width: 'max-content' }}>
@@ -151,7 +181,7 @@ export default function BikeRentals() {
                                                 margin: 'auto',
                                                 right: '30px',
                                             }}
-                                            onClick={() => setCurrentStartDate('')}
+                                            onClick={() => handlefilteringDateChange(null, 'start')}
                                         >
                                             <ClearIcon />
                                         </IconButton>
@@ -170,7 +200,7 @@ export default function BikeRentals() {
                                 value={currentEndDate == '' ? null : new Date(currentEndDate)}
                                 onChange={(newValue) => {}}
                                 onAccept={(newDate) => {
-                                    setCurrentEndDate(new Date(newDate || '').toISOString().split('T')[0]);
+                                    handlefilteringDateChange(newDate, 'end');
                                 }}
                                 renderInput={(params) => (
                                     <Box sx={{ position: 'relative', display: 'inline-block', width: 'max-content' }}>
@@ -182,7 +212,7 @@ export default function BikeRentals() {
                                                 margin: 'auto',
                                                 right: '30px',
                                             }}
-                                            onClick={() => setCurrentEndDate('')}
+                                            onClick={() => handlefilteringDateChange(null, 'end')}
                                         >
                                             <ClearIcon />
                                         </IconButton>
