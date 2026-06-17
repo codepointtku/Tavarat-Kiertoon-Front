@@ -16,12 +16,7 @@ import {
     pausestoreApi,
 } from '../api';
 
-const getCookie = (name) => {
-    return document.cookie
-        .split('; ')
-        .find((row) => row.startsWith(name + '='))
-        ?.split('=')[1];
-};
+import getCookie from '../Utils/getCookie';
 /**
  * logins or logouts user, adds a product to shopping cart and deletes product from shopping cart
  */
@@ -35,17 +30,27 @@ const frontPageActions = async ({ request }) => {
 
     if (request.method === 'POST') {
         if (formData.get('password')) {
-            const response = await usersApi.usersLoginCreate({
-                username: formData.get('email'),
-                password: formData.get('password'),
-            });
+            const response = await usersApi.usersLoginCreate(
+                {
+                    username: formData.get('email'),
+                    password: formData.get('password'),
+                },
+                {
+                    headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                }
+            );
             if (response.status === 200 && response.data.username) {
                 return { type: 'login', status: true };
             }
             return { type: 'login', status: false };
         } else {
             // drawer log out btn -->
-            const response = await usersApi.usersLogoutCreate();
+            const response = await usersApi.usersLogoutCreate(
+                {},
+                {
+                    headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                }
+            );
 
             if (response.data.Success) {
                 return { type: 'logout', status: true };
@@ -1107,7 +1112,7 @@ const updateBikesStockPacketOnlyFlag = async () => {
 
     // Get all bikes, compare their package_only flagged bike amounts to packets amounts
     // and change the needed number of flags to true or false
-    const allBikes = await bikesApi.bikesStockList();
+    const allBikes = await bikesApi.bikesStockList({}, {}, { headers: { 'X-CSRFToken': getCookie('csrftoken') } });
     const uniqueBikeIds = [...new Set(allBikes.data.map((item) => item.bike.id))];
     for (const uniqueBikeId of uniqueBikeIds) {
         const bikesWithuniqueBikeId = allBikes.data.filter((item) => item.bike.id === uniqueBikeId);
@@ -1377,7 +1382,12 @@ const userAccountPageAction = async ({ request }) => {
     const formData = await request.formData();
 
     if (request.method === 'POST') {
-        await usersApi.usersLogoutCreate();
+        await usersApi.usersLogoutCreate(
+            {},
+            {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            }
+        );
         return redirect('/');
     }
 
@@ -1452,10 +1462,13 @@ const userAddressCreateAction = async ({ request }) => {
 const activationAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
 
-    const response = await usersApi.usersActivateCreate({
-        uid: formData.get('uid'),
-        token: formData.get('token'),
-    });
+    const response = await usersApi.usersActivateCreate(
+        {
+            uid: formData.get('uid'),
+            token: formData.get('token'),
+        },
+        { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
+    );
     if (response.status === 200) {
         return { type: 'userActivation', status: true };
     }
@@ -1465,9 +1478,14 @@ const activationAction = async (auth, setAuth, request) => {
 const changeEmailAction = async ({ request }) => {
     const formData = await request.formData();
 
-    const response = await usersApi.usersEmailchangeCreate({
-        new_email: formData.get('newEmail'),
-    });
+    const response = await usersApi.usersEmailchangeCreate(
+        {
+            new_email: formData.get('newEmail'),
+        },
+        {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        }
+    );
 
     if (response.status === 200) {
         return { type: 'changeEmail', status: true };
@@ -1478,11 +1496,16 @@ const changeEmailAction = async ({ request }) => {
 const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
 
-    const response = await usersApi.usersEmailchangeFinishCreate({
-        uid: formData.get('uid'),
-        token: formData.get('token'),
-        new_email: formData.get('newEmail'),
-    });
+    const response = await usersApi.usersEmailchangeFinishCreate(
+        {
+            uid: formData.get('uid'),
+            token: formData.get('token'),
+            new_email: formData.get('newEmail'),
+        },
+        {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        }
+    );
 
     if (response.status === 200) {
         return { type: 'emailchangesuccessful', status: true };
@@ -1496,9 +1519,14 @@ const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
 const resetEmailAction = async ({ request }) => {
     const formData = await request.formData();
 
-    const response = await usersApi.usersPasswordResetemailCreate({
-        username: formData.get('username'),
-    });
+    const response = await usersApi.usersPasswordResetemailCreate(
+        {
+            username: formData.get('username'),
+        },
+        {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        }
+    );
     if (response.status === 200) {
         return { type: 'emailsent', status: true };
     }
@@ -1508,12 +1536,17 @@ const resetEmailAction = async ({ request }) => {
 const resetPasswordAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
 
-    const response = await usersApi.usersPasswordResetCreate({
-        new_password: formData.get('new_password'),
-        new_password_again: formData.get('new_password_again'),
-        uid: formData.get('uid'),
-        token: formData.get('token'),
-    });
+    const response = await usersApi.usersPasswordResetCreate(
+        {
+            new_password: formData.get('new_password'),
+            new_password_again: formData.get('new_password_again'),
+            uid: formData.get('uid'),
+            token: formData.get('token'),
+        },
+        {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        }
+    );
     if (response.status === 200) {
         return { type: 'passwordreset', status: true };
     } else if (response.status === 204) {
