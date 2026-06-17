@@ -151,8 +151,13 @@ const ordersListLoader = async ({ request }) => {
     const url = new URL(request.url);
     const { data } = await ordersApi.ordersList(
         null,
+        null,
+        null,
+        null,
         url.searchParams.get('sivu'),
         url.searchParams.get('sivukoko'),
+        null,
+        null,
         url.searchParams.get('tila')
     );
 
