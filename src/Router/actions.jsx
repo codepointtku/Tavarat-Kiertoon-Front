@@ -16,9 +16,11 @@ import {
     pausestoreApi,
 } from '../api';
 
+import getCookie from '../Utils/getCookie';
 /**
  * logins or logouts user, adds a product to shopping cart and deletes product from shopping cart
  */
+
 const frontPageActions = async ({ request }) => {
     const formData = await request.formData();
 
@@ -28,17 +30,27 @@ const frontPageActions = async ({ request }) => {
 
     if (request.method === 'POST') {
         if (formData.get('password')) {
-            const response = await usersApi.usersLoginCreate({
-                username: formData.get('email'),
-                password: formData.get('password'),
-            });
+            const response = await usersApi.usersLoginCreate(
+                {
+                    username: formData.get('email'),
+                    password: formData.get('password'),
+                },
+                {
+                    headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                }
+            );
             if (response.status === 200 && response.data.username) {
                 return { type: 'login', status: true };
             }
             return { type: 'login', status: false };
         } else {
             // drawer log out btn -->
-            const response = await usersApi.usersLogoutCreate();
+            const response = await usersApi.usersLogoutCreate(
+                {},
+                {
+                    headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                }
+            );
 
             if (response.data.Success) {
                 return { type: 'logout', status: true };
@@ -53,19 +65,25 @@ const frontPageActions = async ({ request }) => {
             // const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
             //     amount: -1,
             // });
-            const response = await shoppingCartApi.shoppingCartUpdate({
-                amount: -1,
-            });
+            const response = await shoppingCartApi.shoppingCartUpdate(
+                {
+                    amount: -1,
+                },
+                { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
+            );
             return response;
         }
         // const response = await apiCall(auth, setAuth, '/shopping_cart/', 'put', {
         //     products: id,
         //     amount,
         // });
-        const response = await shoppingCartApi.shoppingCartUpdate({
-            product: id,
-            amount,
-        });
+        const response = await shoppingCartApi.shoppingCartUpdate(
+            {
+                product: id,
+                amount,
+            },
+            { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
+        );
         if (response.status === 202) {
             // alert('Item added successfully');
             return { type: 'update', status: true };
@@ -78,10 +96,13 @@ const frontPageActions = async ({ request }) => {
         //     amount,
         // });
         // console.log('is in delete block');
-        const response = await shoppingCartApi.shoppingCartUpdate({
-            product: id,
-            amount,
-        });
+        const response = await shoppingCartApi.shoppingCartUpdate(
+            {
+                product: id,
+                amount,
+            },
+            { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
+        );
 
         if (response.status === 202) {
             return { type: 'delete', status: true };
@@ -122,7 +143,9 @@ const userSignupAction = async (request) => {
     }
 
     try {
-        const response = await usersApi.usersCreateCreate(userSignUpValues);
+        const response = await usersApi.usersCreateCreate(userSignUpValues, {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        });
         if (response.status === 201) {
             return { type: 'create', status: true, message: response.data.message };
         }
@@ -150,7 +173,9 @@ const contactAction = async ({ request }) => {
         order_id: formData.get('order_id') === '' || isNaN(formData.get('order_id')) ? null : formData.get('order_id'),
     };
 
-    const response = await contactFormsApi.contactFormsCreate(newContactForm);
+    const response = await contactFormsApi.contactFormsCreate(newContactForm, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
 
     if (response.status === 201) {
         return { type: 'contactform', status: true };
@@ -175,7 +200,9 @@ const orderEditAction = async ({ request, params }) => {
         product_items: JSON.parse(formData.get('productItems')),
     };
 
-    const response = await ordersApi.ordersUpdate(params.id, submission);
+    const response = await ordersApi.ordersUpdate(params.id, submission, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
 
     if (response.status === 202) {
         return { type: 'orderupdate', status: true };
@@ -193,7 +220,9 @@ const orderEditStatusAction = async ({ request, params }) => {
         product_items: JSON.parse(formData.get('productItems')),
     };
 
-    const response = await ordersApi.ordersUpdate(params.id, submission);
+    const response = await ordersApi.ordersUpdate(params.id, submission, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
 
     if (response.status === 202) {
         return { type: 'orderstatusupdate', status: true };
@@ -263,7 +292,7 @@ const logOutAction = async ({ request }) => {
 };
 
 const orderDeleteAction = async ({ params }) => {
-    await ordersApi.ordersDestroy(params.id);
+    await ordersApi.ordersDestroy(params.id, { headers: { 'X-CSRFToken': getCookie('csrftoken') } });
     return redirect('/admin/tilaukset');
 };
 
@@ -290,7 +319,7 @@ const addProductAction = async (auth, setAuth, request) => {
     };
 
     const response = await productsApi.productsCreate(newProduct, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: { 'Content-Type': 'multipart/form-data', 'X-CSRFToken': getCookie('csrftoken') },
     });
     if (response.status === 201) {
         return { type: 'createProduct', status: true };
@@ -321,7 +350,7 @@ const editProductAction = async (auth, setAuth, request, params) => {
     };
 
     const response = await productsApi.productsUpdate(params.id, formDataWithProductItem, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: { 'Content-Type': 'multipart/form-data', 'X-CSRFToken': getCookie('csrftoken') },
     });
     if (response.status === 200) {
         return { type: 'editProduct', status: true };
@@ -342,7 +371,8 @@ const returnProductsAction = async ({ request, params }) => {
         params.id,
         {
             amount: parseInt(formData.get('amount')),
-        }
+        },
+        { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
     );
 
     if (response.status === 200) {
@@ -354,7 +384,11 @@ const returnProductsAction = async ({ request, params }) => {
 const increaseProductsAction = async ({ request, params }) => {
     const formData = await request.formData();
     formData.get('amount');
-    const response = await productsApi.productsAddCreate(params.id, { amount: formData.get('amount') });
+    const response = await productsApi.productsAddCreate(
+        params.id,
+        { amount: formData.get('amount') },
+        { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
+    );
     if (response.status === 200) {
         return { type: 'returnProduct', status: true };
     }
@@ -367,9 +401,13 @@ const increaseProductsAction = async ({ request, params }) => {
 const retireProductsAction = async ({ request, params }) => {
     const formData = await request.formData();
 
-    const response = await productsApi.productsRetireCreate(params.id, {
-        amount: parseInt(formData.get('amount')),
-    });
+    const response = await productsApi.productsRetireCreate(
+        params.id,
+        {
+            amount: parseInt(formData.get('amount')),
+        },
+        { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
+    );
 
     if (response.status === 200) {
         return { type: 'retireProduct', status: true };
@@ -391,7 +429,9 @@ const storageCreateAction = async ({ request }) => {
         in_use: formData.get('in_use') === 'Käytössä' ? true : false,
     };
 
-    const response = await storagesApi.storagesCreate(newStorage);
+    const response = await storagesApi.storagesCreate(newStorage, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
 
     if (response.status === 201) {
         return { type: 'createstorage', status: true };
@@ -406,13 +446,17 @@ const storageCreateAction = async ({ request }) => {
 const storageEditAction = async ({ request, params }) => {
     const formData = await request.formData();
 
-    const response = await storagesApi.storagesUpdate(params.id, {
-        address: formData.get('address'),
-        name: formData.get('name'),
-        zip_code: formData.get('zip_code'),
-        city: formData.get('city'),
-        in_use: formData.get('in_use') === 'Käytössä' ? true : false,
-    });
+    const response = await storagesApi.storagesUpdate(
+        params.id,
+        {
+            address: formData.get('address'),
+            name: formData.get('name'),
+            zip_code: formData.get('zip_code'),
+            city: formData.get('city'),
+            in_use: formData.get('in_use') === 'Käytössä' ? true : false,
+        },
+        { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
+    );
 
     if (response.status === 200) {
         return { type: 'updatestorage', status: true };
@@ -425,7 +469,7 @@ const storageEditAction = async ({ request, params }) => {
  * Deletes storage information
  */
 const storageDeleteAction = async ({ params }) => {
-    await storagesApi.storagesDestroy(params.id);
+    await storagesApi.storagesDestroy(params.id, { headers: { 'X-CSRFToken': getCookie('csrftoken') } });
     return redirect('/admin/varastot');
 };
 
@@ -447,7 +491,9 @@ const productsTransferAction = async ({ request }) => {
 
     // console.log(' @action function, transfer object:', transfer);
 
-    const response = await productsApi.productsTransferUpdate(transfer);
+    const response = await productsApi.productsTransferUpdate(transfer, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
 
     if (productIds.length === 0 && response.status === 200) {
         return { type: 'productstransferempty', status: true };
@@ -471,9 +517,13 @@ const userEditAction = async ({ request, params }) => {
     const selectedAuthGroup = { group: formData.get('group') };
 
     try {
-        const userPermissionsUpdateResponse = await usersApi.usersGroupsUpdate(params.userid, selectedAuthGroup);
+        const userPermissionsUpdateResponse = await usersApi.usersGroupsUpdate(params.userid, selectedAuthGroup, {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        });
 
-        const userInfoUpdateResponse = await usersApi.usersUpdate(params.userid, userInfo);
+        const userInfoUpdateResponse = await usersApi.usersUpdate(params.userid, userInfo, {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        });
 
         if (userInfoUpdateResponse.status === 200 && userPermissionsUpdateResponse.status === 200) {
             return { type: 'userdataupdate', status: true };
@@ -485,7 +535,9 @@ const userEditAction = async ({ request, params }) => {
 
 const userDeleteAction = async ({ params }) => {
     try {
-        await usersApi.usersDestroy(params.userid);
+        await usersApi.usersDestroy(params.userid, {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        });
         return redirect('/admin/kayttajat');
     } catch (err) {
         return { type: 'userdelete', status: false };
@@ -502,7 +554,9 @@ const adminUserAddressEditAction = async ({ request, params }) => {
         user: params.userid,
     };
 
-    const userAddressUpdateResponse = await usersApi.usersAddressUpdate(params.aid, modifiedAddress);
+    const userAddressUpdateResponse = await usersApi.usersAddressUpdate(params.aid, modifiedAddress, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
 
     if (userAddressUpdateResponse.status === 200) {
         return { type: 'addressupdate', status: true };
@@ -521,7 +575,9 @@ const adminUserAddressCreateAction = async ({ request, params }) => {
         user: params.userid,
     };
 
-    const userAddressCreateResponse = await usersApi.usersAddressCreate(newAddress);
+    const userAddressCreateResponse = await usersApi.usersAddressCreate(newAddress, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
 
     if (userAddressCreateResponse.status === 201) {
         return { type: 'addresscreate', status: true };
@@ -537,7 +593,9 @@ const adminBulletinsAction = async ({ request, params }) => {
     const formData = await request.formData();
 
     if (request.method === 'DELETE') {
-        const response = await bulletinsApi.bulletinsDestroy(formData.get('id'));
+        const response = await bulletinsApi.bulletinsDestroy(formData.get('id'), {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        });
         if (response.status === 204) {
             return { type: 'bulletindelete', status: true };
         }
@@ -545,10 +603,16 @@ const adminBulletinsAction = async ({ request, params }) => {
     }
 
     if (request.method === 'PUT') {
-        const response = await bulletinsApi.bulletinsUpdate(params.id, {
-            title: formData.get('title'),
-            content: formData.get('content'),
-        });
+        const response = await bulletinsApi.bulletinsUpdate(
+            params.id,
+            {
+                title: formData.get('title'),
+                content: formData.get('content'),
+            },
+            {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            }
+        );
 
         if (response.status === 200) {
             return { type: 'bulletinedit', status: true };
@@ -564,7 +628,9 @@ const adminBulletinsAction = async ({ request, params }) => {
  */
 const createBulletinAction = async ({ request }) => {
     const formData = await request.formData();
-    const response = await bulletinsApi.bulletinsCreate(Object.fromEntries(formData.entries()));
+    const response = await bulletinsApi.bulletinsCreate(Object.fromEntries(formData.entries()), {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
 
     if (response.status === 201) {
         return { type: 'bulletincreate', status: true };
@@ -581,13 +647,19 @@ const adminInboxAction = async ({ request }) => {
     const formData = await request.formData();
     const id = Number(formData.get('id'));
 
-    const response = await contactFormsApi.contactFormsUpdate(id, {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        subject: formData.get('subject'),
-        message: formData.get('message'),
-        status: formData.get('status'),
-    });
+    const response = await contactFormsApi.contactFormsUpdate(
+        id,
+        {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            subject: formData.get('subject'),
+            message: formData.get('message'),
+            status: formData.get('status'),
+        },
+        {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        }
+    );
 
     if (response.status === 200) {
         return { type: 'markasread', status: true };
@@ -602,12 +674,19 @@ const adminEmailRecipientsAction = async ({ request }) => {
     const id = formData.get('id');
 
     if (request.method === 'POST') {
-        await ordersApi.ordersEmailrecipientsCreate({ email: recipient });
+        await ordersApi.ordersEmailrecipientsCreate(
+            { email: recipient },
+            {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            }
+        );
         return { type: 'emailrecipient', status: true };
     }
 
     if (request.method === 'DELETE') {
-        await ordersApi.ordersEmailrecipientsDestroy(id);
+        await ordersApi.ordersEmailrecipientsDestroy(id, {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        });
         return { type: 'emailrecipient-del', status: true };
     }
 
@@ -619,9 +698,14 @@ const colorsManageAction = async ({ request }) => {
     const color = formData.get('color');
 
     if (request.method === 'POST') {
-        const response = await colorsApi.colorsCreate({
-            name: color.charAt(0).toUpperCase() + color.slice(1),
-        });
+        const response = await colorsApi.colorsCreate(
+            {
+                name: color.charAt(0).toUpperCase() + color.slice(1),
+            },
+            {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            }
+        );
 
         if (response.status === 201) {
             return { type: 'colorcreate', status: true };
@@ -632,7 +716,9 @@ const colorsManageAction = async ({ request }) => {
 
     if (request.method === 'DELETE') {
         try {
-            const response = await colorsApi.colorsDestroy(formData.get('id'));
+            const response = await colorsApi.colorsDestroy(formData.get('id'), {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            });
 
             if (response.status === 204) {
                 return { type: 'colordelete', status: true };
@@ -651,7 +737,9 @@ const colorsManageAction = async ({ request }) => {
             name: formData.get('name'),
         };
 
-        const response = await colorsApi.colorsUpdate(formData.get('id'), newColorName);
+        const response = await colorsApi.colorsUpdate(formData.get('id'), newColorName, {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        });
 
         if (response.status === 200) {
             return { type: 'colorupdate', status: true };
@@ -678,7 +766,9 @@ const categoriesManageAction = async ({ request }) => {
                 parent: null,
             };
 
-            const response = await categoriesApi.categoriesCreate(newMainCategory);
+            const response = await categoriesApi.categoriesCreate(newMainCategory, {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            });
 
             if (response.status === 201) {
                 return { type: 'categorycreate', status: true };
@@ -691,7 +781,9 @@ const categoriesManageAction = async ({ request }) => {
             parent: formData.get('parent'),
         };
 
-        const response = await categoriesApi.categoriesCreate(newCategory);
+        const response = await categoriesApi.categoriesCreate(newCategory, {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        });
 
         if (response.status === 201) {
             return { type: 'categorycreate', status: true };
@@ -703,7 +795,9 @@ const categoriesManageAction = async ({ request }) => {
         const mutatedCategory = { name: formData.get('cat'), parent: formData.get('parent') };
 
         if (mutatedCategory.parent !== 'null') {
-            const response = await categoriesApi.categoriesUpdate(id, mutatedCategory);
+            const response = await categoriesApi.categoriesUpdate(id, mutatedCategory, {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            });
 
             if (response.status === 200) {
                 return { type: 'categorymutate', status: true };
@@ -711,7 +805,13 @@ const categoriesManageAction = async ({ request }) => {
         }
 
         if (mutatedCategory.parent === 'null') {
-            const response = await categoriesApi.categoriesUpdate(id, { name: formData.get('cat') });
+            const response = await categoriesApi.categoriesUpdate(
+                id,
+                { name: formData.get('cat') },
+                {
+                    headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                }
+            );
 
             if (response.status === 200) {
                 return { type: 'categorymutate', status: true };
@@ -723,7 +823,9 @@ const categoriesManageAction = async ({ request }) => {
 
     if (request.method === 'DELETE') {
         try {
-            const response = await categoriesApi.categoriesDestroy(id);
+            const response = await categoriesApi.categoriesDestroy(id, {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            });
 
             if (response.status === 204) {
                 return { type: 'categorydelete', status: true };
@@ -744,7 +846,7 @@ const categoriesManageAction = async ({ request }) => {
 const itemCreateAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
     const response = await apiCall(auth, setAuth, '/storage/products/', 'post', formData, {
-        headers: { 'content-type': 'multipart/form-data' },
+        headers: { 'content-type': 'multipart/form-data', 'X-CSRFToken': getCookie('csrftoken') },
     });
     if (response.status === 201) {
         return { type: 'createitem', status: true };
@@ -759,7 +861,9 @@ const itemCreateAction = async (auth, setAuth, request) => {
 // this will be replaced with openapi api call
 const itemUpdateAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
-    const response = await apiCall(auth, setAuth, '/storage/products/', 'put', formData);
+    const response = await apiCall(auth, setAuth, '/storage/products/', 'put', formData, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
     if (response.status === 200) {
         return { type: 'updateitem', status: true };
     }
@@ -779,10 +883,15 @@ const cartViewAction = async ({ request }) => {
         //     product: id,
         //     amount,
         // });
-        const response = await shoppingCartApi.shoppingCartUpdate({
-            product: id,
-            amount,
-        });
+        const response = await shoppingCartApi.shoppingCartUpdate(
+            {
+                product: id,
+                amount,
+            },
+            {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            }
+        );
         // console.log(id, 'put method test', response.status);
         if (response.status === 202) {
             // alert('Item added successfully');
@@ -795,10 +904,15 @@ const cartViewAction = async ({ request }) => {
         //     product: id,
         //     amount,
         // });
-        const response = await shoppingCartApi.shoppingCartUpdate({
-            product: id,
-            amount,
-        });
+        const response = await shoppingCartApi.shoppingCartUpdate(
+            {
+                product: id,
+                amount,
+            },
+            {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            }
+        );
 
         if (response.status === 202) {
             return { type: 'delete', status: true };
@@ -820,20 +934,25 @@ const confirmationAction = async ({ request }) => {
     // check if the cart has not been emptied @ backend
     try {
         if (getCart?.product_items?.length !== 0) {
-            const response = await ordersApi.ordersCreate({
-                recipient: formData.get('recipient'),
-                recipient_workplace: formData.get('recipient_workplace'),
-                delivery_address: formData
-                    .get('deliveryAddress')
-                    .concat(' ', formData.get('zip_code').concat(' ', formData.get('city'))),
-                recipient_phone_number: formData.get('recipient_phone_number'),
-                user: Number(formData.get('id')),
-                order_info: formData.get('orderInfo'),
-                delivery_required: formData.get('deliveryRequired'),
-                pickup_date: formData.get('fetchDate'),
-                // ^ uncomment when date works
-                status: 'Waiting',
-            });
+            const response = await ordersApi.ordersCreate(
+                {
+                    recipient: formData.get('recipient'),
+                    recipient_workplace: formData.get('recipient_workplace'),
+                    delivery_address: formData
+                        .get('deliveryAddress')
+                        .concat(' ', formData.get('zip_code').concat(' ', formData.get('city'))),
+                    recipient_phone_number: formData.get('recipient_phone_number'),
+                    user: Number(formData.get('id')),
+                    order_info: formData.get('orderInfo'),
+                    delivery_required: formData.get('deliveryRequired'),
+                    pickup_date: formData.get('fetchDate'),
+                    // ^ uncomment when date works
+                    status: 'Waiting',
+                },
+                {
+                    headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                }
+            );
 
             if (response.status === 201) {
                 return { type: 'orderCreated', status: true };
@@ -860,27 +979,35 @@ const bikeOrderAction = async (auth, setAuth, request) => {
         ? 'TOIMIPAIKKA: ' + formData.get('recipient_workplace') + '\n' + formData.get('extraInfo')
         : formData.get('extraInfo');
     if (formData.get('storageType') === 0) {
-        const response = await bikesApi.bikesRentalCreate({
-            contact_name: formData.get('contactPersonName'),
-            contact_phone_number: formData.get('contactPersonPhoneNumber'),
-            delivery_address: formData.get('deliveryAddress'),
-            start_date: formData.get('startDateTime'),
-            end_date: formData.get('endDateTime'),
-            bike_stock: JSON.parse(formData.get('selectedBikes')),
-            extra_info: extrainfo,
-        });
+        const response = await bikesApi.bikesRentalCreate(
+            {
+                contact_name: formData.get('contactPersonName'),
+                contact_phone_number: formData.get('contactPersonPhoneNumber'),
+                delivery_address: formData.get('deliveryAddress'),
+                start_date: formData.get('startDateTime'),
+                end_date: formData.get('endDateTime'),
+                bike_stock: JSON.parse(formData.get('selectedBikes')),
+                extra_info: extrainfo,
+            },
+            {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            }
+        );
         return response.data || null;
     } else {
-        const response = await bikesApi.bikesRentalCreate({
-            contact_name: formData.get('contactPersonName'),
-            contact_phone_number: formData.get('contactPersonPhoneNumber'),
-            delivery_address: formData.get('deliveryAddress'),
-            start_date: formData.get('startDateTime'),
-            end_date: formData.get('endDateTime'),
-            bike_stock: JSON.parse(formData.get('selectedBikes')),
-            extra_info: extrainfo,
-            bike_trailer: formData.get('storageType'),
-        });
+        const response = await bikesApi.bikesRentalCreate(
+            {
+                contact_name: formData.get('contactPersonName'),
+                contact_phone_number: formData.get('contactPersonPhoneNumber'),
+                delivery_address: formData.get('deliveryAddress'),
+                start_date: formData.get('startDateTime'),
+                end_date: formData.get('endDateTime'),
+                bike_stock: JSON.parse(formData.get('selectedBikes')),
+                extra_info: extrainfo,
+                bike_trailer: formData.get('storageType'),
+            },
+            { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
+        );
         return response.data || null;
     }
 };
@@ -904,7 +1031,9 @@ const bikeOrderEditAction = async ({ request, params }) => {
         bike_stock: JSON.parse(formData.get('bikeStock')),
     };
 
-    const response = await bikesApi.bikesRentalUpdate(params.id, submission);
+    const response = await bikesApi.bikesRentalUpdate(params.id, submission, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
 
     return response;
 };
@@ -931,7 +1060,9 @@ const modifyBikeAction = async (auth, setAuth, request, params) => {
     };
 
     // send data and redirect back to bike list
-    await bikesApi.bikesStockUpdate(params.id, submission);
+    await bikesApi.bikesStockUpdate(params.id, submission, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
     return redirect('/pyorat/pyoravarasto/pyoralista');
 };
 
@@ -949,7 +1080,9 @@ const createNewBikeAction = async (auth, setAuth, request) => {
     };
 
     // send data and redirect back to bike list
-    await bikesApi.bikesStockCreate(submission);
+    await bikesApi.bikesStockCreate(submission, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
     return redirect('/pyorat/pyoravarasto/pyoralista');
 };
 
@@ -979,7 +1112,7 @@ const updateBikesStockPacketOnlyFlag = async () => {
 
     // Get all bikes, compare their package_only flagged bike amounts to packets amounts
     // and change the needed number of flags to true or false
-    const allBikes = await bikesApi.bikesStockList();
+    const allBikes = await bikesApi.bikesStockList({}, {}, { headers: { 'X-CSRFToken': getCookie('csrftoken') } });
     const uniqueBikeIds = [...new Set(allBikes.data.map((item) => item.bike.id))];
     for (const uniqueBikeId of uniqueBikeIds) {
         const bikesWithuniqueBikeId = allBikes.data.filter((item) => item.bike.id === uniqueBikeId);
@@ -991,7 +1124,9 @@ const updateBikesStockPacketOnlyFlag = async () => {
                 bike: bikesWithuniqueBikeId[i].bike.id,
                 package_only: true,
             };
-            await bikesApi.bikesStockUpdate(bikesWithuniqueBikeId[i].id, newBike);
+            await bikesApi.bikesStockUpdate(bikesWithuniqueBikeId[i].id, newBike, {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            });
         }
         // bikes with packet_only === false
         for (let i = amountNeeded; i < bikesWithuniqueBikeId.length; i++) {
@@ -1000,7 +1135,9 @@ const updateBikesStockPacketOnlyFlag = async () => {
                 bike: bikesWithuniqueBikeId[i].bike.id,
                 package_only: false,
             };
-            await bikesApi.bikesStockUpdate(bikesWithuniqueBikeId[i].id, newBike);
+            await bikesApi.bikesStockUpdate(bikesWithuniqueBikeId[i].id, newBike, {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            });
         }
     }
 };
@@ -1022,7 +1159,9 @@ const modifyBikePacketAction = async (request, params) => {
     };
 
     // send data and redirect back to bike list
-    await bikesApi.bikesPackagesUpdate(params.id, submission);
+    await bikesApi.bikesPackagesUpdate(params.id, submission, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
     await updateBikesStockPacketOnlyFlag();
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
@@ -1035,7 +1174,9 @@ const modifyBikePacketAction = async (request, params) => {
  * @returns
  */
 const deleteBikeOrderAction = async (auth, setAuth, params) => {
-    const response = await bikesApi.bikesRentalDestroy(params.id);
+    const response = await bikesApi.bikesRentalDestroy(params.id, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
     return redirect('/pyorat/pyoravarasto/pyoratilaukset');
 };
 
@@ -1047,7 +1188,9 @@ const deleteBikeOrderAction = async (auth, setAuth, params) => {
  * @returns
  */
 const deleteBikeAction = async (auth, setAuth, params) => {
-    await bikesApi.bikesStockDestroy(params.id);
+    await bikesApi.bikesStockDestroy(params.id, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
     return redirect('/pyorat/pyoravarasto/pyoralista');
 };
 
@@ -1067,7 +1210,9 @@ const createNewPacketAction = async (request) => {
     };
 
     // send data and redirect back to bike list
-    await bikesApi.bikesPackagesCreate(submission);
+    await bikesApi.bikesPackagesCreate(submission, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
     await updateBikesStockPacketOnlyFlag();
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
 };
@@ -1079,7 +1224,9 @@ const createNewPacketAction = async (request) => {
  * @returns
  */
 const deletePacketAction = async (params) => {
-    await bikesApi.bikesPackagesDestroy(params.id);
+    await bikesApi.bikesPackagesDestroy(params.id, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
     await updateBikesStockPacketOnlyFlag();
 
     return redirect('/pyorat/pyoravarasto/pyorapaketit/');
@@ -1091,13 +1238,20 @@ const deletePacketAction = async (params) => {
 const deleteCreateBikeTrailerAction = async ({ request }) => {
     const formData = await request.formData();
     if (request.method === 'DELETE') {
-        const response = await bikesApi.bikesTrailersDestroy(formData.get('id'));
+        const response = await bikesApi.bikesTrailersDestroy(formData.get('id'), {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        });
         return response;
     } else if (request.method === 'POST') {
-        const response = await bikesApi.bikesTrailersCreate({
-            register_number: formData.get('register_number'),
-            trailer_type: formData.get('trailer_type'),
-        });
+        const response = await bikesApi.bikesTrailersCreate(
+            {
+                register_number: formData.get('register_number'),
+                trailer_type: formData.get('trailer_type'),
+            },
+            {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            }
+        );
         return response;
     }
 
@@ -1108,7 +1262,9 @@ const deleteCreateBikeTrailerAction = async ({ request }) => {
  * Delete a single bike model
  */
 const deleteBikeModelAction = async (auth, setAuth, params) => {
-    await bikesApi.bikesModelsDestroy(params.id);
+    await bikesApi.bikesModelsDestroy(params.id, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
 
@@ -1130,17 +1286,26 @@ const getOrCreateBikeModelIds = async (auth, setAuth, data) => {
     let bikeName =
         data.get('bikeModelSizeName') + '" ' + data.get('bikeModelTypeName') + ' ' + data.get('bikeModelBrandName');
     if (typeId <= 0) {
-        const response = await bikesApi.bikesTypeCreate({ name: data.get('bikeModelTypeName') });
+        const response = await bikesApi.bikesTypeCreate(
+            { name: data.get('bikeModelTypeName') },
+            { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
+        );
         typeId = response.data.id;
     }
     let brandId = data.get('bikeModelBrandId');
     if (brandId <= 0) {
-        const response = await bikesApi.bikesBrandCreate({ name: data.get('bikeModelBrandName') });
+        const response = await bikesApi.bikesBrandCreate(
+            { name: data.get('bikeModelBrandName') },
+            { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
+        );
         brandId = response.data.id;
     }
     let sizeId = data.get('bikeModelSizeId');
     if (sizeId <= 0) {
-        const response = await bikesApi.bikesSizeCreate({ name: data.get('bikeModelSizeName') });
+        const response = await bikesApi.bikesSizeCreate(
+            { name: data.get('bikeModelSizeName') },
+            { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
+        );
         sizeId = response.data.id;
     }
     return { typeId, brandId, sizeId, bikeName };
@@ -1172,7 +1337,9 @@ const modifyBikeModelAction = async (auth, setAuth, request, params) => {
     data.append('size', sizeId);
 
     // send data and redirect
-    await bikesApi.bikesModelsUpdate(params.id, data, { headers: { 'Content-Type': 'multipart/form-data' } });
+    await bikesApi.bikesModelsUpdate(params.id, data, {
+        headers: { 'Content-Type': 'multipart/form-data', 'X-CSRFToken': getCookie('csrftoken') },
+    });
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
 
@@ -1201,7 +1368,9 @@ const createBikeModelAction = async (auth, setAuth, request) => {
     data.append('size', sizeId);
 
     // send data and redirect
-    await bikesApi.bikesModelsCreate(data, { headers: { 'Content-Type': 'multipart/form-data' } });
+    await bikesApi.bikesModelsCreate(data, {
+        headers: { 'Content-Type': 'multipart/form-data', 'X-CSRFToken': getCookie('csrftoken') },
+    });
     return redirect('/pyorat/pyoravarasto/pyoramallit');
 };
 
@@ -1213,16 +1382,24 @@ const userAccountPageAction = async ({ request }) => {
     const formData = await request.formData();
 
     if (request.method === 'POST') {
-        await usersApi.usersLogoutCreate();
+        await usersApi.usersLogoutCreate(
+            {},
+            {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            }
+        );
         return redirect('/');
     }
 
     if (request.method === 'PUT') {
-        const response = await userApi.userUpdate({
-            first_name: formData.get('first_name'),
-            last_name: formData.get('last_name'),
-            phone_number: formData.get('phone_number'),
-        });
+        const response = await userApi.userUpdate(
+            {
+                first_name: formData.get('first_name'),
+                last_name: formData.get('last_name'),
+                phone_number: formData.get('phone_number'),
+            },
+            { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
+        );
 
         if (response.status === 200) {
             return { type: 'userinfoupdated', status: true };
@@ -1243,7 +1420,9 @@ const userAddressEditAction = async ({ request, params }) => {
             zip_code: formData.get('zip_code'),
         };
 
-        const response = await userApi.userAddressUpdate(params.aid, newAddress);
+        const response = await userApi.userAddressUpdate(params.aid, newAddress, {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        });
 
         if (response.status === 200) {
             return { type: 'addressmodified', status: true };
@@ -1253,7 +1432,7 @@ const userAddressEditAction = async ({ request, params }) => {
     }
 
     if (request.method === 'DELETE') {
-        userApi.userAddressDestroy(params.aid);
+        await userApi.userAddressDestroy(params.aid, { headers: { 'X-CSRFToken': getCookie('csrftoken') } });
         return redirect('/tili');
     }
 
@@ -1269,7 +1448,9 @@ const userAddressCreateAction = async ({ request }) => {
         zip_code: formData.get('zip_code'),
     };
 
-    const response = await userApi.userAddressCreate(newAddress);
+    const response = await userApi.userAddressCreate(newAddress, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    });
 
     if (response.status === 200) {
         return { type: 'addresscreate', status: true };
@@ -1281,10 +1462,13 @@ const userAddressCreateAction = async ({ request }) => {
 const activationAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
 
-    const response = await usersApi.usersActivateCreate({
-        uid: formData.get('uid'),
-        token: formData.get('token'),
-    });
+    const response = await usersApi.usersActivateCreate(
+        {
+            uid: formData.get('uid'),
+            token: formData.get('token'),
+        },
+        { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
+    );
     if (response.status === 200) {
         return { type: 'userActivation', status: true };
     }
@@ -1294,9 +1478,14 @@ const activationAction = async (auth, setAuth, request) => {
 const changeEmailAction = async ({ request }) => {
     const formData = await request.formData();
 
-    const response = await usersApi.usersEmailchangeCreate({
-        new_email: formData.get('newEmail'),
-    });
+    const response = await usersApi.usersEmailchangeCreate(
+        {
+            new_email: formData.get('newEmail'),
+        },
+        {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        }
+    );
 
     if (response.status === 200) {
         return { type: 'changeEmail', status: true };
@@ -1307,11 +1496,16 @@ const changeEmailAction = async ({ request }) => {
 const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
 
-    const response = await usersApi.usersEmailchangeFinishCreate({
-        uid: formData.get('uid'),
-        token: formData.get('token'),
-        new_email: formData.get('newEmail'),
-    });
+    const response = await usersApi.usersEmailchangeFinishCreate(
+        {
+            uid: formData.get('uid'),
+            token: formData.get('token'),
+            new_email: formData.get('newEmail'),
+        },
+        {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        }
+    );
 
     if (response.status === 200) {
         return { type: 'emailchangesuccessful', status: true };
@@ -1325,9 +1519,14 @@ const emailChangeSuccessfulAction = async (auth, setAuth, request) => {
 const resetEmailAction = async ({ request }) => {
     const formData = await request.formData();
 
-    const response = await usersApi.usersPasswordResetemailCreate({
-        username: formData.get('username'),
-    });
+    const response = await usersApi.usersPasswordResetemailCreate(
+        {
+            username: formData.get('username'),
+        },
+        {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        }
+    );
     if (response.status === 200) {
         return { type: 'emailsent', status: true };
     }
@@ -1337,12 +1536,17 @@ const resetEmailAction = async ({ request }) => {
 const resetPasswordAction = async (auth, setAuth, request) => {
     const formData = await request.formData();
 
-    const response = await usersApi.usersPasswordResetCreate({
-        new_password: formData.get('new_password'),
-        new_password_again: formData.get('new_password_again'),
-        uid: formData.get('uid'),
-        token: formData.get('token'),
-    });
+    const response = await usersApi.usersPasswordResetCreate(
+        {
+            new_password: formData.get('new_password'),
+            new_password_again: formData.get('new_password_again'),
+            uid: formData.get('uid'),
+            token: formData.get('token'),
+        },
+        {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        }
+    );
     if (response.status === 200) {
         return { type: 'passwordreset', status: true };
     } else if (response.status === 204) {
@@ -1354,12 +1558,17 @@ const resetPasswordAction = async (auth, setAuth, request) => {
 const searchWatchCreateAction = async ({ request }) => {
     const formData = await request.formData();
     if (request.method === 'DELETE') {
-        const response = await userApi.userSearchwatchDestroy(formData.get('id'));
+        const response = await userApi.userSearchwatchDestroy(formData.get('id'), {
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        });
         return response;
     } else if (request.method === 'POST') {
-        const response = await userApi.userSearchwatchCreate({
-            words: formData.get('words').split(' '),
-        });
+        const response = await userApi.userSearchwatchCreate(
+            {
+                words: formData.get('words').split(' '),
+            },
+            { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
+        );
         return response;
     }
 
@@ -1369,7 +1578,11 @@ const searchWatchCreateAction = async ({ request }) => {
 const bikeUserEditAction = async ({ request, params }) => {
     const formData = await request.formData();
     try {
-        const response = await usersApi.usersBikeGroupsUpdate(params.id, { bike_group: formData.get('bike_group') });
+        const response = await usersApi.usersBikeGroupsUpdate(
+            params.id,
+            { bike_group: formData.get('bike_group') },
+            { headers: { 'X-CSRFToken': getCookie('csrftoken') } }
+        );
         if (response.status === 200) {
             return response;
         }
@@ -1388,18 +1601,24 @@ const pauseStoreAction = async ({ request, params }) => {
     };
     try {
         if (request.method === 'POST') {
-            const response = await pausestoreApi.pausestoreCreate(data);
+            const response = await pausestoreApi.pausestoreCreate(data, {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            });
             if (response.status === 201) {
                 return response;
             }
         } else if (request.method === 'PUT') {
-            const response = pausestoreApi.pausestoreUpdate(id, data);
+            const response = await pausestoreApi.pausestoreUpdate(id, data, {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            });
 
             if (response.status === 200) {
                 return response;
             }
         } else if (request.method === 'DELETE') {
-            const response = await pausestoreApi.pausestoreDestroy(id);
+            const response = await pausestoreApi.pausestoreDestroy(id, {
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            });
 
             if (response.status === 204) {
                 return response;

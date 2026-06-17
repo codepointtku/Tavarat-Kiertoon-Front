@@ -443,6 +443,15 @@ paths:
     get:
       operationId: bikes_rental_list
       parameters:
+      - in: query
+        name: bike
+        schema:
+          type: integer
+      - in: query
+        name: end_date
+        schema:
+          type: string
+          format: date
       - name: ordering
         required: false
         in: query
@@ -461,6 +470,11 @@ paths:
         description: Number of results to return per page.
         schema:
           type: integer
+      - in: query
+        name: start_date
+        schema:
+          type: string
+          format: date
       - in: query
         name: state
         schema:
