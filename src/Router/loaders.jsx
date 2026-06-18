@@ -151,8 +151,13 @@ const ordersListLoader = async ({ request }) => {
     const url = new URL(request.url);
     const { data } = await ordersApi.ordersList(
         null,
+        null,
+        null,
+        null,
         url.searchParams.get('sivu'),
         url.searchParams.get('sivukoko'),
+        null,
+        null,
         url.searchParams.get('tila')
     );
 
@@ -373,14 +378,27 @@ const bikesListLoader = async (request, auth, setAuth) => {
 // bike rental list
 const bikeRentalLoader = async (request, auth, setAuth) => {
     const url = new URL(request.url);
-
-    const { data } = await bikesApi.bikesRentalList(
+    const [{ data: loaderData }, { data: bikes }] = await Promise.all([
+        bikesApi.bikesRentalList(
+            url.searchParams.get('pyora') || null,
+            url.searchParams.get('loppupvm') || null,
+            url.searchParams.get('jarjesta') || null,
+            url.searchParams.get('sivu') || 1,
+            url.searchParams.get('sivukoko') || 25,
+            url.searchParams.get('alkupvm') || null,
+            url.searchParams.getAll('suodata') || null
+        ),
+        bikesApi.bikesModelsList(),
+    ]);
+    /* const { data } = await bikesApi.bikesRentalList(
+        url.searchParams.get('loppupvm') || null,
         url.searchParams.get('jarjesta') || null,
         url.searchParams.get('sivu') || 1,
         url.searchParams.get('sivukoko') || 25,
+        url.searchParams.get('alkupvm') || null,
         url.searchParams.getAll('suodata') || null
-    );
-    return data;
+    ); */
+    return { loaderData, bikes };
 };
 
 /**
