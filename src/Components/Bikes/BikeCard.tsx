@@ -76,7 +76,7 @@ export default function BikeCard({
                             alt="kuva"
                             image={`${window.location.protocol}//${
                                 window.location.hostname
-                            }:8000/media/${bike.picture.slice(0, bike.picture.indexOf('&'))}`}
+                            }/api/media/${bike.picture.slice(0, bike.picture.indexOf('&'))}`}
                             height="90px"
                             sx={{ objectFit: 'contain' }}
                         />
@@ -85,7 +85,7 @@ export default function BikeCard({
                             alt="kuva"
                             image={`${window.location.protocol}//${
                                 window.location.hostname
-                            }:8000/media/${bike.picture.slice(bike.picture.indexOf('&')+1)}`}
+                            }/api/media/${bike.picture.slice(bike.picture.indexOf('&') + 1)}`}
                             height="90px"
                             sx={{ objectFit: 'contain' }}
                         />
@@ -94,7 +94,7 @@ export default function BikeCard({
                     <CardMedia
                         component="img"
                         alt="kuva"
-                        image={`${window.location.protocol}//${window.location.hostname}:8000/media/${bike.picture}`}
+                        image={`${window.location.protocol}//${window.location.hostname}/api/media/${bike.picture}`}
                         height="180px"
                         sx={{ objectFit: 'contain' }}
                     />
@@ -102,7 +102,7 @@ export default function BikeCard({
                 {/* <CardMedia
                     component="img"
                     alt="kuva"
-                    image={`${window.location.protocol}//${window.location.hostname}:8000/media/${bike.picture}`}
+                    image={`${window.location.protocol}//${window.location.hostname}/api/media/${bike.picture}`}
                     height="180px"
                     sx={{ objectFit: 'contain' }}
                 /> */}

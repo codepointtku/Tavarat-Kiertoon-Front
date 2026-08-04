@@ -26,5 +26,8 @@ server {
         index index.html;
         try_files $uri /index.html;
     }
+    location /api/ {
+        proxy_pass ${API_URL};
+    }
 }
 

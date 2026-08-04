@@ -36,9 +36,10 @@ Add this into settings.json:
 Setup:
 
 1. Make sure you have Docker installed and running: `docker -v`
-2. Make sure you have backend running
+2. Make sure to create new Docker network: `docker network create -d bridge tavaratnet`
+3. Make sure you have backend running
 
-3. Run `npm run generate-api`:
+4. Run `npm run generate-api`:
     1. Schema is downloaded from the server from `/schema` path to a local file: `src/api/schema.yaml`
     2. TypeScript interfaces typed Axios methods are generated to `src/api/client`
 
@@ -92,6 +93,11 @@ You need to be in the same folder as docker-compose.yml and to have Docker runni
 `docker-compose up --build -d` builds new images.
 
 `docker-compose down` closes.
+
+If you want to use docker build and run.
+`docker build --build-arg API_URL=http://backend-container-servicename:8000/ --build-arg DOMAIN=localhost --build-arg SSL_CERT=./ssl/localhost.crt --build-arg SSL_KEY=./ssl/localhost.key -t tavarat-kiertoon-front -f Production.Dockerfile .`
+
+`docker run -p 80:80 -p 443:443 --name frontend --hostname frontend --network tavaratnet tavarat-kiertoon-front`
 
 ### How to update
 

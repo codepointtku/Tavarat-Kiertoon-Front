@@ -91,7 +91,7 @@ function ProductCard({
                                 component={Box}
                                 sx={{ position: 'relative', alt: 'kuva' }}
                                 height={300}
-                                image={`${window.location.protocol}//${window.location.hostname}:8000/media/${picture.picture_address}`}
+                                image={`${window.location.protocol}//${window.location.hostname}/api/media/${picture.picture_address}`}
                             >
                                 {openInfo && (
                                     <Grid

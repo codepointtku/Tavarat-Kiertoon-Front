@@ -113,7 +113,7 @@ function EditProduct() {
     const [imageList, setImageList] = useState<string[]>(
         pictures.map(
             (pic: { id: number; picture_address: string }) =>
-                `${window.location.protocol}//${window.location.hostname}:8000/media/${pic.picture_address}`
+                `${window.location.protocol}//${window.location.hostname}/api/media/${pic.picture_address}`
         )
     );
 
@@ -138,7 +138,7 @@ function EditProduct() {
         setOldPictures((prevOldPictures) =>
             prevOldPictures.filter(
                 (value, index) =>
-                    `${window.location.protocol}//${window.location.hostname}:8000/media/${value.picture_address}` !==
+                    `${window.location.protocol}//${window.location.hostname}/api/media/${value.picture_address}` !==
                     pic
             )
         );

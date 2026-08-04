@@ -64,7 +64,7 @@ function ProductDetails() {
                                     <CardMedia
                                         component="img"
                                         alt="product image"
-                                        image={`${window.location.protocol}//${window.location.hostname}:8000/media/${image}`}
+                                        image={`${window.location.protocol}//${window.location.hostname}/api/media/${image}`}
                                     />
                                 </CardActionArea>
                                 <ImageList cols={6} rowHeight={90} sx={{ mt: 0 }}>
@@ -85,7 +85,7 @@ function ProductDetails() {
                                                         component={Box}
                                                         sx={{ alt: 'kuvan valinta' }}
                                                         height={100}
-                                                        image={`${window.location.protocol}//${window.location.hostname}:8000/media/${pic.picture_address}`}
+                                                        image={`${window.location.protocol}//${window.location.hostname}/api/media/${pic.picture_address}`}
                                                     />
                                                 </CardActionArea>
                                             </Card>

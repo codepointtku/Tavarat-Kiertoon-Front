@@ -331,7 +331,7 @@ export default function BikeRentalView() {
                                             sx={{ borderBottom: 0, fontWeight: 'bold', fontSize: '16px' }}
                                         >
                                             <img
-                                                src={`${window.location.protocol}//${window.location.hostname}:8000/media/${item?.bike.picture.picture_address}`}
+                                                src={`${window.location.protocol}//${window.location.hostname}/api/media/${item?.bike.picture.picture_address}`}
                                                 alt="bike-model"
                                             />
                                             <Typography textAlign="center">{item?.bike.name}</Typography>

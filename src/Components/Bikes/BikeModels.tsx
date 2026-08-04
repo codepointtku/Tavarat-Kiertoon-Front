@@ -72,7 +72,7 @@ function BikeModels() {
                                             height="175"
                                             sx={{ objectFit: 'contain' }}
                                             // image="/bike.jpg"
-                                            image={`${window.location.protocol}//${window.location.hostname}:8000/media/${model.picture.picture_address}`} // TODO: Fix pic path
+                                            image={`${window.location.protocol}//${window.location.hostname}/api/media/${model.picture.picture_address}`} // TODO: Fix pic path
                                             alt="Bike Model"
                                         />
                                         <Button

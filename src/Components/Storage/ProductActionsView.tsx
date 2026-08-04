@@ -22,7 +22,7 @@ function ProductActionsView() {
             <Grid item xs={12} md={6} height={800}>
                 <Box>
                     <img
-                        src={`${window.location.protocol}//${window.location.hostname}:8000/media/${product?.pictures[picId]?.picture_address}`}
+                        src={`${window.location.protocol}//${window.location.hostname}/api/media/${product?.pictures[picId]?.picture_address}`}
                         alt="product"
                         height={600}
                         width="90%"
@@ -33,7 +33,7 @@ function ProductActionsView() {
                     {product?.pictures.map((picture, index) => (
                         <img
                             key={picture.id}
-                            src={`${window.location.protocol}//${window.location.hostname}:8000/media/${picture.picture_address}`}
+                            src={`${window.location.protocol}//${window.location.hostname}/api/media/${picture.picture_address}`}
                             alt="product"
                             height={164}
                             onClick={() => setPicId(index)}

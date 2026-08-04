@@ -3,7 +3,7 @@ import logo from '../../Assets/LOGO.png';
 import { type PDFOrderType } from './PDFView';
 
 // TODO: JTo: Temporary baseUrl. Move this to env variable.
-const baseUrl = `${window.location.protocol}//${window.location.hostname}:8000`;
+const baseUrl = `${window.location.protocol}//${window.location.hostname}/api`;
 
 // Create styles
 const styles = StyleSheet.create({
