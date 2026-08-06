@@ -95,7 +95,7 @@ You need to be in the same folder as docker-compose.yml and to have Docker runni
 `docker-compose down` closes.
 
 If you want to use docker build and run.
-`docker build --build-arg API_URL=http://backend-container-servicename:8000/ --build-arg DOMAIN=localhost --build-arg SSL_CERT=./ssl/localhost.crt --build-arg SSL_KEY=./ssl/localhost.key -t tavarat-kiertoon-front -f Production.Dockerfile .`
+`docker build --build-arg API_URL=http://backend-container-hostname:8000/ --build-arg DOMAIN=localhost --build-arg SSL_CERT=./ssl/localhost.crt --build-arg SSL_KEY=./ssl/localhost.key -t tavarat-kiertoon-front -f Production.Dockerfile .`
 
 `docker run -p 80:80 -p 443:443 --name frontend --hostname frontend --network tavaratnet tavarat-kiertoon-front`
 
