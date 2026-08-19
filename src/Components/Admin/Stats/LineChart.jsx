@@ -66,14 +66,14 @@ const labels = [
 }; */
 
 function LineChart() {
-    const statdata = useLoaderData();
-    const first = Object.keys(statdata).length - 2;
-    const last = Object.keys(statdata).length;
+    const { order_list, price_list } = useLoaderData();
+    const first = Object.keys(order_list).length - 2;
+    const last = Object.keys(order_list).length;
     const data = {
         labels,
         datasets: [],
     };
-    Object.entries(statdata)
+    Object.entries(order_list)
         .slice(first, last)
         .forEach(([year, monthly_value], index) => {
             let data_month = labels.map(() => 0);

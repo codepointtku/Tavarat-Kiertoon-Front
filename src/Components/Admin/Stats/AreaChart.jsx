@@ -64,15 +64,15 @@ export const data = {
 };
 
 function AreaChart() {
-    const statdata = useLoaderData();
+    const { order_list, price_list } = useLoaderData();
     const data = {
         labels,
         datasets: [],
     };
 
-    const first = Object.keys(statdata).length - 1;
-    const last = Object.keys(statdata).length;
-    Object.entries(statdata)
+    const first = Object.keys(order_list).length - 1;
+    const last = Object.keys(order_list).length;
+    Object.entries(order_list)
         .slice(first, last)
         .forEach(([year, monthly_value], index) => {
             let data_month = labels.map(() => 0);

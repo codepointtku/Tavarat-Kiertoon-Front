@@ -41,17 +41,17 @@ const labels = [
 ];
 
 function BarChart() {
-    const statdata = useLoaderData();
+    const { order_list, price_list, product_items_list } = useLoaderData();
 
     const data = {
         labels,
         datasets: [],
     };
 
-    const first = Object.keys(statdata).length - 2;
-    const last = Object.keys(statdata).length;
+    const first = Object.keys(product_items_list).length - 2;
+    const last = Object.keys(product_items_list).length;
 
-    Object.entries(statdata)
+    Object.entries(product_items_list)
         .slice(first, last)
         .forEach(([year, monthly_value], index) => {
             let data_month = labels.map(() => 0);
