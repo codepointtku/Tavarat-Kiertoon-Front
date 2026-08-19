@@ -65,7 +65,7 @@ function StatsPage() {
     const VisibleChart = chartType.component;
 
     return (
-        <Box mb={2}>
+        <Box mb={2} sx={{ width: '100%' }}>
             <Divider />
             <Grid container>
                 <Grid item xs={2}>
