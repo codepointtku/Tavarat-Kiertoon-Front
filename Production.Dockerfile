@@ -31,7 +31,7 @@ ENV API_URL=$API_URL
 
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 #COPY /etc/ssl /etc/ssl
-COPY --from=build /usr/src/app/ssl /etc
+COPY --from=build /usr/src/app/ssl /etc/ssl
 
 # Remove the default NGINX configuration (if any) and copy custom NGINX config
 RUN rm /etc/nginx/conf.d/default.conf
