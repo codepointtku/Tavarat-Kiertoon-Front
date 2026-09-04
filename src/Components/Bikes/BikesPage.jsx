@@ -600,6 +600,7 @@ export default function BikesPage() {
                                 control={control}
                                 bikes={bikes}
                                 setIsConfirmationVisible={setIsConfirmationVisible}
+                                trailer={trailerValue}
                             />
                         </Box>
                     </Slide>

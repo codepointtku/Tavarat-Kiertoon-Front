@@ -32,6 +32,7 @@ interface BikeConfirmationInterface {
     control: Control;
     bikes: BikeInterface[];
     setIsConfirmationVisible: Function;
+    trailer: boolean;
 }
 
 export default function BikeConfirmation({
@@ -41,6 +42,7 @@ export default function BikeConfirmation({
     control,
     bikes,
     setIsConfirmationVisible,
+    trailer,
 }: BikeConfirmationInterface) {
     const [requiredCheckboxes, setRequiredCheckboxes] = useState({ education: false, responsibilities: false });
 
@@ -71,75 +73,22 @@ export default function BikeConfirmation({
                                 ([key, value]) =>
                                     !!value && (
                                         <Typography key={key}>
-                                            {value}x {bikes.find((bike) => String(bike.id) === String(key))?.name}
+                                            {value} kpl {bikes.find((bike) => String(bike.id) === String(key))?.name}
                                         </Typography>
                                     )
                             )}
                         </Box>
+                        <Box>
+                            <Typography>{!!trailer && '1 kpl peräkärry'}</Typography>
+                        </Box>
                     </Stack>
                     <Stack>
-                        <Controller
-                            name="startTime"
-                            control={control}
-                            rules={{ required: true }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <FormControl sx={{ m: 1, minWidth: 120 }} required>
-                                    <InputLabel id="deliveryTime-label">Toimitusaika</InputLabel>
-                                    <Select
-                                        value={value}
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        label="Toimitusaika"
-                                        labelId="deliveryTime-label"
-                                        id="deliveryTime"
-                                    >
-                                        <MenuItem value={8}>08:00</MenuItem>
-                                        <MenuItem value={8.5}>08:30</MenuItem>
-                                        <MenuItem value={9}>09:00</MenuItem>
-                                        <MenuItem value={9.5}>09:30</MenuItem>
-                                        <MenuItem value={10}>10:00</MenuItem>
-                                        <MenuItem value={10.5}>10:30</MenuItem>
-                                        <MenuItem value={11}>11:00</MenuItem>
-                                        <MenuItem value={11.5}>11:30</MenuItem>
-                                        <MenuItem value={12}>12:00</MenuItem>
-                                        <MenuItem value={12.5}>12:30</MenuItem>
-                                        <MenuItem value={13}>13:00</MenuItem>
-                                    </Select>
-                                    <FormHelperText>{format(startDate, 'd.M.yyyy')}</FormHelperText>
-                                </FormControl>
-                            )}
-                        />
-                        <Controller
-                            name="endTime"
-                            control={control}
-                            rules={{ required: true }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <FormControl sx={{ m: 1, minWidth: 120 }} required>
-                                    <InputLabel id="returnTime-label">Noutoaika</InputLabel>
-                                    <Select
-                                        value={value}
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        label="Noutoaika"
-                                        labelId="returnTime-label"
-                                        id="returnTime"
-                                    >
-                                        <MenuItem value={8}>08:00</MenuItem>
-                                        <MenuItem value={8.5}>08:30</MenuItem>
-                                        <MenuItem value={9}>09:00</MenuItem>
-                                        <MenuItem value={9.5}>09:30</MenuItem>
-                                        <MenuItem value={10}>10:00</MenuItem>
-                                        <MenuItem value={10.5}>10:30</MenuItem>
-                                        <MenuItem value={11}>11:00</MenuItem>
-                                        <MenuItem value={11.5}>11:30</MenuItem>
-                                        <MenuItem value={12}>12:00</MenuItem>
-                                        <MenuItem value={12.5}>12:30</MenuItem>
-                                        <MenuItem value={13}>13:00</MenuItem>
-                                    </Select>
-                                    <FormHelperText>{format(endDate, 'd.M.yyyy')}</FormHelperText>
-                                </FormControl>
-                            )}
-                        />
+                        <Box>
+                            <Typography>Toimitus: Aamupäivällä</Typography>
+                        </Box>
+                        <Box>
+                            <Typography>Nouto: Aamupäivällä</Typography>
+                        </Box>
                     </Stack>
                 </Stack>
                 <Stack gap={1}>
