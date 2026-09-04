@@ -84,7 +84,7 @@ export default function BikesPage() {
             extraInfo: '',
         },
     });
-
+    const [totalSelectedBikes, setTotalSelectedBikes] = useState(0);
     const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
     const [isIntroVisible, setIsIntroVisible] = useState(true);
     const [isThankYouModalVisible, setIsThankYouModalVisible] = useState(false);
@@ -422,8 +422,26 @@ export default function BikesPage() {
                                                                         <BikeCard
                                                                             bike={bike}
                                                                             dateInfo={loaderData.date_info}
+                                                                            disabled={totalSelectedBikes >= 12}
                                                                             amountSelected={value[bike.id] ?? 0}
+                                                                            trailerAvailability={trailerAvailability}
                                                                             onChange={(newValue) => {
+                                                                                setTotalSelectedBikes(0);
+                                                                                Object.entries(value).forEach(
+                                                                                    ([key, val]) => {
+                                                                                        if (key === String(bike.id)) {
+                                                                                            setTotalSelectedBikes(
+                                                                                                totalSelectedBikes +
+                                                                                                    Number(newValue)
+                                                                                            );
+                                                                                        } else {
+                                                                                            setTotalSelectedBikes(
+                                                                                                totalSelectedBikes +
+                                                                                                    Number(val)
+                                                                                            );
+                                                                                        }
+                                                                                    }
+                                                                                );
                                                                                 if (
                                                                                     Number.isNaN(newValue) ||
                                                                                     !Number(newValue)

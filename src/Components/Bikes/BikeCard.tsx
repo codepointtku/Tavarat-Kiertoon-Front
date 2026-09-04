@@ -31,7 +31,9 @@ interface BikeCardInterface {
     bike: BikeInterface;
     dateInfo: DateInfoInterface;
     amountSelected: number;
+    trailerAvailability: number;
     onChange: Function;
+    disabled: boolean;
     startDate?: Date;
     endDate?: Date;
 }
@@ -40,6 +42,8 @@ export default function BikeCard({
     bike,
     dateInfo,
     amountSelected,
+    trailerAvailability,
+    disabled,
     onChange,
     startDate: selectedStartDate,
     endDate: selectedEndDate,
@@ -85,7 +89,7 @@ export default function BikeCard({
                             alt="kuva"
                             image={`${window.location.protocol}//${
                                 window.location.hostname
-                            }:8000/media/${bike.picture.slice(bike.picture.indexOf('&')+1)}`}
+                            }:8000/media/${bike.picture.slice(bike.picture.indexOf('&') + 1)}`}
                             height="90px"
                             sx={{ objectFit: 'contain' }}
                         />
@@ -145,7 +149,7 @@ export default function BikeCard({
                             aria-label="lisää yksi"
                             size="small"
                             color="primary"
-                            disabled={amountSelected >= maxNonPackageAvailable}
+                            disabled={amountSelected >= maxNonPackageAvailable || disabled}
                             onClick={() => onChange(amountSelected + 1)}
                         >
                             <AddCircleIcon fontSize="inherit" />
