@@ -426,22 +426,8 @@ export default function BikesPage() {
                                                                             amountSelected={value[bike.id] ?? 0}
                                                                             trailerAvailability={trailerAvailability}
                                                                             onChange={(newValue) => {
-                                                                                setTotalSelectedBikes(0);
-                                                                                Object.entries(value).forEach(
-                                                                                    ([key, val]) => {
-                                                                                        if (key === String(bike.id)) {
-                                                                                            setTotalSelectedBikes(
-                                                                                                totalSelectedBikes +
-                                                                                                    Number(newValue)
-                                                                                            );
-                                                                                        } else {
-                                                                                            setTotalSelectedBikes(
-                                                                                                totalSelectedBikes +
-                                                                                                    Number(val)
-                                                                                            );
-                                                                                        }
-                                                                                    }
-                                                                                );
+                                                                                let total = 0;
+
                                                                                 if (
                                                                                     Number.isNaN(newValue) ||
                                                                                     !Number(newValue)
@@ -462,6 +448,30 @@ export default function BikesPage() {
                                                                                         ...value,
                                                                                         [bike.id]: Number(newValue),
                                                                                     });
+                                                                                Object.entries(value).forEach(
+                                                                                    ([key, val]) => {
+                                                                                        console.log(
+                                                                                            'key',
+                                                                                            key,
+                                                                                            'val',
+                                                                                            val,
+                                                                                            'bike.id',
+                                                                                            bike.id,
+                                                                                            'newValue',
+                                                                                            newValue
+                                                                                        );
+                                                                                        if (
+                                                                                            String(key) !==
+                                                                                            String(bike.id)
+                                                                                        )
+                                                                                            total += Number(val);
+                                                                                        else total += Number(newValue);
+                                                                                    }
+                                                                                );
+                                                                                if (value[bike.id] === undefined)
+                                                                                    total += Number(newValue);
+                                                                                console.log('total', total);
+                                                                                setTotalSelectedBikes(total);
                                                                             }}
                                                                             startDate={watch('startDate')}
                                                                             endDate={watch('endDate')}
