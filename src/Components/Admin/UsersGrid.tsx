@@ -86,7 +86,7 @@ function UsersGrid() {
         },
         { field: 'first_name', headerName: 'Etunimi', filterOperators: containFilterOperator },
         { field: 'last_name', headerName: 'Sukunimi', filterOperators: containFilterOperator },
-        { field: 'phone_number', headerName: 'Puhelinnumero', flex: 1, filterOperators: containFilterOperator },
+        { field: 'phone_number', headerName: 'Puhelinnumero', flex: 0.5, filterOperators: containFilterOperator },
         {
             field: 'group',
             headerName: 'Oikeudet',
@@ -103,6 +103,15 @@ function UsersGrid() {
             valueOptions: activeOptions,
             filterOperators: equalFilterOperator,
             filterable: false,
+        },
+        {
+            field: 'last_login',
+            headerName: 'Viimeisin kirjautuminen',
+            valueGetter: (params: GridValueGetterParams) =>
+                params.row.last_login ? new Date(params.row.last_login).toLocaleString() : '',
+            filterOperators: containFilterOperator,
+            filterable: false,
+            flex: 0.5,
         },
         {
             field: 'id',
