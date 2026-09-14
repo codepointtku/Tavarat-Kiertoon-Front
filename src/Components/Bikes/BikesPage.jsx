@@ -258,6 +258,9 @@ export default function BikesPage() {
                                                 <Typography align="center" variant="h6">
                                                     Vuokraustiedot
                                                 </Typography>
+                                                <Typography align="center" variant="body1">
+                                                    Toimitus ja nouto tapahtuvat aamupäivän aikana.
+                                                </Typography>
                                                 <Stack gap={1} alignItems="center">
                                                     <Stack
                                                         gap={2}

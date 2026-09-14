@@ -84,10 +84,14 @@ export default function BikeConfirmation({
                     </Stack>
                     <Stack>
                         <Box>
-                            <Typography>Toimitus: Aamupäivällä</Typography>
+                            <Typography>
+                                Toimitus: <b>Aamupäivällä</b>
+                            </Typography>
                         </Box>
                         <Box>
-                            <Typography>Nouto: Aamupäivällä</Typography>
+                            <Typography>
+                                Nouto: <b>Aamupäivällä</b>
+                            </Typography>
                         </Box>
                     </Stack>
                 </Stack>
