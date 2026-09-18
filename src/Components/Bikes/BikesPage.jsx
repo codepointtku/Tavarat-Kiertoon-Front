@@ -84,7 +84,7 @@ export default function BikesPage() {
             extraInfo: '',
         },
     });
-
+    const [totalSelectedBikes, setTotalSelectedBikes] = useState(0);
     const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
     const [isIntroVisible, setIsIntroVisible] = useState(true);
     const [isThankYouModalVisible, setIsThankYouModalVisible] = useState(false);
@@ -258,6 +258,9 @@ export default function BikesPage() {
                                                 <Typography align="center" variant="h6">
                                                     Vuokraustiedot
                                                 </Typography>
+                                                <Typography align="center" variant="body1">
+                                                    Toimitus ja nouto tapahtuvat aamupäivän aikana.
+                                                </Typography>
                                                 <Stack gap={1} alignItems="center">
                                                     <Stack
                                                         gap={2}
@@ -422,8 +425,12 @@ export default function BikesPage() {
                                                                         <BikeCard
                                                                             bike={bike}
                                                                             dateInfo={loaderData.date_info}
+                                                                            disabled={totalSelectedBikes >= 12}
                                                                             amountSelected={value[bike.id] ?? 0}
+                                                                            trailerAvailability={trailerAvailability}
                                                                             onChange={(newValue) => {
+                                                                                let total = 0;
+
                                                                                 if (
                                                                                     Number.isNaN(newValue) ||
                                                                                     !Number(newValue)
@@ -444,6 +451,30 @@ export default function BikesPage() {
                                                                                         ...value,
                                                                                         [bike.id]: Number(newValue),
                                                                                     });
+                                                                                Object.entries(value).forEach(
+                                                                                    ([key, val]) => {
+                                                                                        console.log(
+                                                                                            'key',
+                                                                                            key,
+                                                                                            'val',
+                                                                                            val,
+                                                                                            'bike.id',
+                                                                                            bike.id,
+                                                                                            'newValue',
+                                                                                            newValue
+                                                                                        );
+                                                                                        if (
+                                                                                            String(key) !==
+                                                                                            String(bike.id)
+                                                                                        )
+                                                                                            total += Number(val);
+                                                                                        else total += Number(newValue);
+                                                                                    }
+                                                                                );
+                                                                                if (value[bike.id] === undefined)
+                                                                                    total += Number(newValue);
+                                                                                console.log('total', total);
+                                                                                setTotalSelectedBikes(total);
                                                                             }}
                                                                             startDate={watch('startDate')}
                                                                             endDate={watch('endDate')}
@@ -600,6 +631,7 @@ export default function BikesPage() {
                                 control={control}
                                 bikes={bikes}
                                 setIsConfirmationVisible={setIsConfirmationVisible}
+                                trailer={trailerValue}
                             />
                         </Box>
                     </Slide>
