@@ -72,7 +72,7 @@ function EditToolbar(props: EditToolbarProps) {
     );
 }
 
-function StoreSettings() {
+function BikePauseShop() {
     const { data } = useLoaderData() as Awaited<ReturnType<typeof pauseStoreLoader>>;
     const fetcher = useFetcher();
     const [rows, setRows] = useState<GridRowsProp>(data);
@@ -98,7 +98,7 @@ function StoreSettings() {
         const data = {
             start_date: format(new Date(newRow.start_date), 'yyyy-MM-dd'),
             end_date: format(new Date(newRow.end_date), 'yyyy-MM-dd'),
-            department: "TAVARATKIERTOON",
+            department: "BIKES",
             id: newRow.id,
         };
 
@@ -111,6 +111,7 @@ function StoreSettings() {
             new2.isNew = newRow.isNew;
             new2.start_date = newRow.start_date;
             new2.end_date = newRow.end_date;
+            new2.department = "BIKES"
         }
         setRows(newrows);
         return newRow;
@@ -428,7 +429,7 @@ function StoreSettings() {
     return (
         <Container maxWidth="lg">
             <HeroHeader Icon={<SettingsIcon />} hideInAdmin />
-            <HeroText title="Järjestelmän asetukset" />
+            <HeroText title="Pyörätilausten tauko" />
             <Stack id="admin-settings-stack" sx={{ m: '1rem 0 1rem 0' }}>
                 järjestelmä tauolla
                 <DataGrid
@@ -455,4 +456,4 @@ function StoreSettings() {
     );
 }
 
-export default StoreSettings;
+export default BikePauseShop;

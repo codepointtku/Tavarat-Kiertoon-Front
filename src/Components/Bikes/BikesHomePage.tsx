@@ -4,6 +4,7 @@ import ScheduleIcon from '@mui/icons-material/Schedule';
 import GroupIcon from '@mui/icons-material/Group';
 import RvHookupIcon from '@mui/icons-material/RvHookup';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
+import CoffeeIcon from '@mui/icons-material/Coffee';
 import { Link } from 'react-router-dom';
 
 export default function BikesHomePage() {
@@ -96,6 +97,19 @@ export default function BikesHomePage() {
                     </Box>
                     <Typography variant="body1" mt="1rem" color="primary.main">
                         Kaikkien saatavilla olevat pyörien mallit
+                    </Typography>
+                </Paper>
+            </Box>
+            <Box display="flex" justifyContent="space-between" m="2rem 0">
+                <Paper component={Link} to="pyoratauko" sx={paperStyle}>
+                    <Box display="flex" alignItems="center">
+                        <CoffeeIcon sx={{ marginRight: '5px', color: 'primary.main' }} />
+                        <Typography variant="h5" color="primary.main">
+                            Järjestelmän tauko
+                        </Typography>
+                    </Box>
+                    <Typography variant="body1" mt="1rem" color="primary.main">
+                        Laitetaan tilauksien tekoon tauko
                     </Typography>
                 </Paper>
             </Box>

@@ -5476,6 +5476,14 @@ components:
       description: |-
         * `Not read` - Not Read
         * `Read` - Read
+    DepartmentEnum:
+      enum:
+      - TAVARATKIERTOON
+      - BIKES
+      type: string
+      description: |-
+        * `TAVARATKIERTOON` - Tavaratkiertoon
+        * `BIKES` - Bikes
     GroupEnum:
       enum:
       - admin_group
@@ -6179,6 +6187,8 @@ components:
         end_date:
           type: string
           format: date
+        department:
+          $ref: '#/components/schemas/DepartmentEnum'
       required:
       - end_date
       - id

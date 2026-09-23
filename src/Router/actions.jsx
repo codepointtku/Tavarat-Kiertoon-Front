@@ -1598,6 +1598,7 @@ const pauseStoreAction = async ({ request, params }) => {
     const data = {
         start_date: formData.get('start_date'),
         end_date: formData.get('end_date'),
+        department: formData.get('department')
     };
     try {
         if (request.method === 'POST') {
