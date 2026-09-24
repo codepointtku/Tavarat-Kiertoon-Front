@@ -40,7 +40,7 @@ const shoppingCartLoader = async () => {
     const [{ data: cart }, { data: amountList }, { data: pauseShopping }] = await Promise.all([
         await shoppingCartApi.shoppingCartRetrieve(),
         await shoppingCartApi.shoppingCartAvailableAmountList(),
-        await pausestoreApi.pausestoreTodayList(),
+        await pausestoreApi.pausestoreTodayList('TAVARATKIERTOON'),
     ]);
 
     // // // auth check for future
@@ -343,11 +343,12 @@ const gigaLoader = async () => {
 const bikesDefaultLoader = async (request, auth, setAuth) => {
     //const { data } = await bikesApi.bikesList();
 
-    const [{ data: loaderData }, { data: colors }] = await Promise.all([
+    const [{ data: loaderData }, { data: colors }, { data: pauseShopping }] = await Promise.all([
         bikesApi.bikesList('21.04.2026', '20.04.2026'),
         colorsApi.colorsList(),
+        pausestoreApi.pausestoreTodayList('BIKES'),
     ]);
-    return { loaderData, colors };
+    return { loaderData, colors, pauseShopping };
 };
 
 const bikesAvailableLoader = async (request, auth, setAuth) => {
@@ -686,12 +687,22 @@ const bikeUserEditLoader = async ({ params }) => {
 };
 
 const pauseStoreTodayLoader = async () => {
-    const { data } = await pausestoreApi.pausestoreTodayList();
+    const { data } = await pausestoreApi.pausestoreTodayList('TAVARATKIERTOON');
+
+    return { data };
+};
+const pauseBikeStoreTodayLoader = async () => {
+    const { data } = await pausestoreApi.pausestoreTodayList('BIKES');
 
     return { data };
 };
 const pauseStoreLoader = async () => {
-    const { data } = await pausestoreApi.pausestoreList();
+    const { data } = await pausestoreApi.pausestoreList('TAVARATKIERTOON');
+
+    return { data };
+};
+const bikePauseStoreLoader = async () => {
+    const { data } = await pausestoreApi.pausestoreList('BIKES');
 
     return { data };
 };
@@ -748,4 +759,6 @@ export {
     pauseStoreLoader,
     pauseStoreTodayLoader,
     bikesAvailableLoader,
+    bikePauseStoreLoader,
+    pauseBikeStoreTodayLoader,
 };

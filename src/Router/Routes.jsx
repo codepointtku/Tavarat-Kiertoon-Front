@@ -184,6 +184,7 @@ import {
     bikeUserEditLoader,
     OrderStatsLoader,
     pauseStoreLoader,
+    bikePauseStoreLoader,
 } from './loaders';
 
 import {
@@ -985,8 +986,8 @@ function Routes() {
                                         },
                                         {
                                             path: 'pyoratauko',
-                                            element: <BikePauseShop/>,
-                                            loader: pauseStoreLoader,
+                                            element: <BikePauseShop />,
+                                            loader: bikePauseStoreLoader,
                                             action: pauseStoreAction,
                                         },
                                         {

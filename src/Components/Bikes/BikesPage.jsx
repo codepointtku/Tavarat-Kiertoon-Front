@@ -94,7 +94,7 @@ export default function BikesPage() {
 
     const [CalendarError, setCalendarError] = useState(null);
 
-    const { loaderData, colors } = useLoaderData();
+    const { loaderData, colors, pauseShopping } = useLoaderData();
     const [searchParams, setSearchParams] = useSearchParams();
     const minDate = parseISO(loaderData.date_info.available_from);
     const maxDate = parseISO(loaderData.date_info.available_to);
@@ -230,6 +230,8 @@ export default function BikesPage() {
         // Show Thank You modal visible
         setIsThankYouModalVisible(true);
     };
+    const paussi = pauseShopping.length > 0 ? true : false;
+    console.log('paussi', paussi);
     return (
         <Container component={Form} onSubmit={handleSubmit(onSubmit)} sx={{ mb: 6 }} ref={containerRef}>
             <Typography variant="h3" align="center" color="primary.main" my={3}>
@@ -261,60 +263,79 @@ export default function BikesPage() {
                                                 <Typography align="center" variant="body1">
                                                     Toimitus ja nouto tapahtuvat aamupäivän aikana.
                                                 </Typography>
-                                                <Stack gap={1} alignItems="center">
-                                                    <Stack
-                                                        gap={2}
-                                                        flexDirection="row"
-                                                        justifyContent="center"
-                                                        alignItems="center"
-                                                    >
-                                                        <Controller
-                                                            name="startDate"
-                                                            control={control}
-                                                            rules={{ required: true }}
-                                                            render={({ field: { onChange, onBlur, value } }) => (
-                                                                <BikeCalendar
-                                                                    onChange={(date) => {
-                                                                        onChange(date);
-                                                                    }}
-                                                                    onBlur={onBlur}
-                                                                    startDate={value}
-                                                                    endDate={watch('endDate')}
-                                                                    minDate={minDate}
-                                                                    maxDate={maxDate}
-                                                                    setCalendarError={setCalendarError}
-                                                                />
-                                                            )}
-                                                        />
-                                                        <Controller
-                                                            name="endDate"
-                                                            control={control}
-                                                            rules={{ required: true }}
-                                                            render={({ field: { onChange, onBlur, value } }) => (
-                                                                <BikeCalendar
-                                                                    onChange={(date) => {
-                                                                        onChange(date);
-                                                                    }}
-                                                                    onBlur={onBlur}
-                                                                    startDate={watch('startDate')}
-                                                                    endDate={value}
-                                                                    minDate={minDate}
-                                                                    maxDate={maxDate}
-                                                                    isStartDate={false}
-                                                                    setCalendarError={setCalendarError}
-                                                                />
-                                                            )}
-                                                        />
+                                                {paussi ? (
+                                                    <Stack gap={3} justifyContent="space-between">
+                                                        <Typography align="center" variant="h1">
+                                                            Järjestelmä on tauolla
+                                                        </Typography>
+                                                        <Typography align="center" variant="h4">
+                                                            {format(
+                                                                new Date(pauseShopping[0].start_date),
+                                                                'dd.MM.yyyy'
+                                                            )}{' '}
+                                                            -{' '}
+                                                            {format(new Date(pauseShopping[0].end_date), 'dd.MM.yyyy')}
+                                                        </Typography>
                                                     </Stack>
-                                                    <Typography align="center">Max 2vk</Typography>
-                                                    {storageTypeForm}
-                                                </Stack>
+                                                ) : (
+                                                    <Stack gap={1} alignItems="center">
+                                                        <Stack
+                                                            gap={2}
+                                                            flexDirection="row"
+                                                            justifyContent="center"
+                                                            alignItems="center"
+                                                        >
+                                                            <Controller
+                                                                name="startDate"
+                                                                control={control}
+                                                                rules={{ required: true }}
+                                                                render={({ field: { onChange, onBlur, value } }) => (
+                                                                    <BikeCalendar
+                                                                        onChange={(date) => {
+                                                                            onChange(date);
+                                                                        }}
+                                                                        onBlur={onBlur}
+                                                                        startDate={value}
+                                                                        endDate={watch('endDate')}
+                                                                        minDate={minDate}
+                                                                        maxDate={maxDate}
+                                                                        setCalendarError={setCalendarError}
+                                                                    />
+                                                                )}
+                                                            />
+                                                            <Controller
+                                                                name="endDate"
+                                                                control={control}
+                                                                rules={{ required: true }}
+                                                                render={({ field: { onChange, onBlur, value } }) => (
+                                                                    <BikeCalendar
+                                                                        onChange={(date) => {
+                                                                            onChange(date);
+                                                                        }}
+                                                                        onBlur={onBlur}
+                                                                        startDate={watch('startDate')}
+                                                                        endDate={value}
+                                                                        minDate={minDate}
+                                                                        maxDate={maxDate}
+                                                                        isStartDate={false}
+                                                                        setCalendarError={setCalendarError}
+                                                                    />
+                                                                )}
+                                                            />
+                                                        </Stack>
+                                                        <Typography align="center">Max 2vk</Typography>
+                                                        {storageTypeForm}
+                                                    </Stack>
+                                                )}
                                                 <Box sx={{ display: 'flex', justifyContent: 'end' }}>
                                                     <Button
                                                         color="success"
                                                         onClick={() => setIsIntroVisible(false)}
                                                         disabled={
-                                                            !watch('startDate') || !watch('endDate') || CalendarError
+                                                            !watch('startDate') ||
+                                                            !watch('endDate') ||
+                                                            CalendarError ||
+                                                            paussi
                                                         }
                                                     >
                                                         Seuraava

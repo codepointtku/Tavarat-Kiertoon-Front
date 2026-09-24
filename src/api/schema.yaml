@@ -2351,6 +2351,21 @@ paths:
   /pausestore/:
     get:
       operationId: pausestore_list
+      parameters:
+      - in: query
+        name: department
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - BIKES
+            - TAVARATKIERTOON
+        description: |-
+          * `TAVARATKIERTOON` - Tavaratkiertoon
+          * `BIKES` - Bikes
+        explode: true
+        style: form
       tags:
       - pausestore
       security:
@@ -2451,6 +2466,21 @@ paths:
   /pausestore/today:
     get:
       operationId: pausestore_today_list
+      parameters:
+      - in: query
+        name: department
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - BIKES
+            - TAVARATKIERTOON
+        description: |-
+          * `TAVARATKIERTOON` - Tavaratkiertoon
+          * `BIKES` - Bikes
+        explode: true
+        style: form
       tags:
       - pausestore
       security:

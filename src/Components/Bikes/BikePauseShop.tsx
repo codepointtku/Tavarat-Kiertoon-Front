@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 
 import SettingsIcon from '@mui/icons-material/Settings';
 
-import type { pauseStoreLoader } from '../../Router/loaders';
+import type { bikePauseStoreLoader } from '../../Router/loaders';
 
 import {
     DataGrid,
@@ -73,7 +73,7 @@ function EditToolbar(props: EditToolbarProps) {
 }
 
 function BikePauseShop() {
-    const { data } = useLoaderData() as Awaited<ReturnType<typeof pauseStoreLoader>>;
+    const { data } = useLoaderData() as Awaited<ReturnType<typeof bikePauseStoreLoader>>;
     const fetcher = useFetcher();
     const [rows, setRows] = useState<GridRowsProp>(data);
 
@@ -98,7 +98,7 @@ function BikePauseShop() {
         const data = {
             start_date: format(new Date(newRow.start_date), 'yyyy-MM-dd'),
             end_date: format(new Date(newRow.end_date), 'yyyy-MM-dd'),
-            department: "BIKES",
+            department: 'BIKES',
             id: newRow.id,
         };
 
@@ -111,7 +111,7 @@ function BikePauseShop() {
             new2.isNew = newRow.isNew;
             new2.start_date = newRow.start_date;
             new2.end_date = newRow.end_date;
-            new2.department = "BIKES"
+            new2.department = 'BIKES';
         }
         setRows(newrows);
         return newRow;
