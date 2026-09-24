@@ -106,8 +106,8 @@ function AddRecipient({ recipientsEmails }: RecipientsEmails) {
                             required: { value: true, message: 'Kirjoita listaan lisättävä sähköpostiosoite' },
                             minLength: { value: 5, message: 'Sähköpostiosoitteen on oltava vähintään 5 merkkiä' },
                             pattern: {
-                                value: /^[\w\-\.åÅäÄöÖ]+@(edu\.)?turku\.fi$/,
-                                message: 'Sähköpostin on oltava muotoa @turku.fi tai @edu.turku.fi',
+                                value: /.+@turku.fi$|.+@edu.turku.fi$|.+@turunaurava.fi$/,
+                                message: 'Sähköpostin on oltava muotoa @turku.fi, @edu.turku.fi tai @turunaurava.fi',
                             },
                             validate: (val: string) => {
                                 if (recipientsEmails.includes(val)) {
