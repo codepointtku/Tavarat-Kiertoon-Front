@@ -68,8 +68,8 @@ function ChangeEmail() {
                                 {...register('newEmail', {
                                     required: { value: true, message: 'Syötä sähköpostiosoite' },
                                     pattern: {
-                                        value: /.+@turku.fi$|.+@edu.turku.fi$/,
-                                        message: 'Osoitteen on oltava muotoa @turku.fi tai @edu.turku.fi',
+                                        value: /.+@turku.fi$|.+@edu.turku.fi$|.+@turunaurava.fi$/,
+                                        message: 'Osoitteen on oltava muotoa @turku.fi, @edu.turku.fi tai @turunaurava.fi',
                                     },
                                 })}
                                 inputProps={{ required: false }}
