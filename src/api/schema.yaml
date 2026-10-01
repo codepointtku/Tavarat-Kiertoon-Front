@@ -2351,6 +2351,21 @@ paths:
   /pausestore/:
     get:
       operationId: pausestore_list
+      parameters:
+      - in: query
+        name: department
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - BIKES
+            - TAVARATKIERTOON
+        description: |-
+          * `TAVARATKIERTOON` - Tavaratkiertoon
+          * `BIKES` - Bikes
+        explode: true
+        style: form
       tags:
       - pausestore
       security:
@@ -2451,6 +2466,21 @@ paths:
   /pausestore/today:
     get:
       operationId: pausestore_today_list
+      parameters:
+      - in: query
+        name: department
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - BIKES
+            - TAVARATKIERTOON
+        description: |-
+          * `TAVARATKIERTOON` - Tavaratkiertoon
+          * `BIKES` - Bikes
+        explode: true
+        style: form
       tags:
       - pausestore
       security:
@@ -5476,6 +5506,14 @@ components:
       description: |-
         * `Not read` - Not Read
         * `Read` - Read
+    DepartmentEnum:
+      enum:
+      - TAVARATKIERTOON
+      - BIKES
+      type: string
+      description: |-
+        * `TAVARATKIERTOON` - Tavaratkiertoon
+        * `BIKES` - Bikes
     GroupEnum:
       enum:
       - admin_group
@@ -6179,6 +6217,8 @@ components:
         end_date:
           type: string
           format: date
+        department:
+          $ref: '#/components/schemas/DepartmentEnum'
       required:
       - end_date
       - id

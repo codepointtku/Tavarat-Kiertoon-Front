@@ -184,6 +184,7 @@ import {
     bikeUserEditLoader,
     OrderStatsLoader,
     pauseStoreLoader,
+    bikePauseStoreLoader,
 } from './loaders';
 
 import {
@@ -243,6 +244,7 @@ import {
 
 import useLoginAxiosInterceptor from '../Utils/useLoginAxiosInterceptor';
 import { getRandomInt } from '../Utils/getRandomInt';
+import BikePauseShop from '../Components/Bikes/BikePauseShop';
 
 createStore({});
 
@@ -981,6 +983,12 @@ function Routes() {
                                                     ],
                                                 },
                                             ],
+                                        },
+                                        {
+                                            path: 'pyoratauko',
+                                            element: <BikePauseShop />,
+                                            loader: bikePauseStoreLoader,
+                                            action: pauseStoreAction,
                                         },
                                         {
                                             path: 'lisaapaketti',
